@@ -13,7 +13,7 @@ def rules1(bot, input):
 rules1.commands = ['rules1']
 
 def rules2(bot, input):
-    bot.say('You're expected to treat people as if they're human. Failing to do so will result in us banning you or telling your mother.')
+    bot.say('You are expected to treat people as if they're human. Failing to do so will result in us banning you or telling your mother.')
 rules2.commands = ['rules2']
 
 def rules3(bot, input):
@@ -41,7 +41,7 @@ def rules8(bot, input):
 rules8.commands = ['rules8']
             
 def rules9(bot, input):
-    bot.say('If your client, connection or freenode link decide to become uunstable and start shouting joins and quits into the channel while you're away we will kick and, if needed, ban you. A notification to anyone with power that your problems are over will get you back in. Your will probably have a PM waiting telling you this, too.')
+    bot.say('If your client, connection or freenode link decide to become uunstable and start shouting joins and quits into the channel while you are away we will kick and, if needed, ban you. A notification to anyone with power that your problems are over will get you back in. Your will probably have a PM waiting telling you this, too.')
 rules9.commands = ['rules9']
             
 def rules10(bot, input):
