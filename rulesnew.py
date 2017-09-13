@@ -17,7 +17,7 @@ def rules2(bot, input):
 rules2.commands = ['rules2']
 
 def rules3(bot, input):
-    bot.say('Swearing and profanities are allowed. Direct insults, trolling or being a jackass will get you kicked and/or banned. This is a subjective matter and decisions made by the operators are not up for debate. We don't kick often and ban rarely at best, so don't be that special kind of stupid.')
+    bot.say('Swearing and profanities are allowed. Direct insults, trolling or being a jackass will get you kicked and/or banned. This is a subjective matter and decisions made by the operators are not up for debate. We dont kick often and ban rarely at best, so dont be that special kind of stupid.')
 rules3.commands = ['rules3']
 
 def rules4(bot, input):
@@ -25,7 +25,7 @@ def rules4(bot, input):
 rules4.commands = ['rules4']
 
 def rules5(bot, input):
-    bot.say('If no ops are available during times of distress don't hesitate to PM them, many have notifications enabled.')
+    bot.say('If no ops are available during times of distress dont hesitate to PM them, many have notifications enabled.')
 rules5.commands = ['rules5']
             
 def rules6(bot, input):
@@ -57,7 +57,7 @@ def rules12(bot, input):
 rules12.commands = ['rules12']
             
 def rules13(bot, input):
-    bot.say('Please don't dox. We already have people for that.')
+    bot.say('Please dont dox. We already have people for that.')
 rules13.commands = ['rules13']
             
 def rules14(bot, input):
