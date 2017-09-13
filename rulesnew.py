@@ -13,7 +13,7 @@ def rules1(bot, input):
 rules1.commands = ['rules1']
 
 def rules2(bot, input):
-    bot.say('You are expected to treat people as if they're human. Failing to do so will result in us banning you or telling your mother.')
+    bot.say('You are expected to treat people as if they are human. Failing to do so will result in us banning you or telling your mother.')
 rules2.commands = ['rules2']
 
 def rules3(bot, input):
