@@ -21,7 +21,7 @@ def rules3(bot, input):
 rules3.commands = ['rules3']
 
 def rules4(bot, input):
-    bot.say('If someone's out of line in channel, call them on it. If it continues, hail one of the ops. If someone's annoying you in PMs, make liberal use of the /ignore command and notify Freenode staff. (see http://freenode.net/faq.shtml#helpfromstaff)')
+    bot.say('If someones out of line in channel, call them on it. If it continues, hail one of the ops. If someones annoying you in PMs, make liberal use of the /ignore command and notify Freenode staff. (see http://freenode.net/faq.shtml#helpfromstaff)')
 rules4.commands = ['rules4']
 
 def rules5(bot, input):
@@ -33,7 +33,7 @@ def rules6(bot, input):
 rules6.commands = ['rules6']
             
 def rules7(bot, input):
-    bot.say('Flooding is 3 times identical lines or over, or a short burst of 5 or more lines. There's no autokick but ops will dislike you. Please use Pastebin or the like for multiline pasts. Others will be considered as flood.')
+    bot.say('Flooding is 3 times identical lines or over, or a short burst of 5 or more lines. Theres no autokick but ops will dislike you. Please use Pastebin or the like for multiline pasts. Others will be considered as flood.')
 rules7.commands = ['rules7']
             
 def rules8(bot, input):
