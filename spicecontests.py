@@ -25,32 +25,44 @@ def getSWContests(bot,trigger):
             titles = xmldoc.getElementsByTagName('title')
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
-            link = links[2].childNodes[0].nodeValue
+            link = links[2].childNodes[0].nodeValue.split("?")[0]
             bot.say("A new Spiceworks Contest is available!")
-            bot.say("Title: " + title + " Link: " + link)
-            #print("A new Spiceworks Contest is available!")
-            #print("Title: " + title + " Link: " + link)
+	    bot.say("Title: " + title)
+	    bot.say("Link: " + link)
+	else:
+	    bot.say("No new contests are available at this time!")	
     else:
-		bot.say("Unable to reach the Spiceworks Contest Page.")
+	bot.say("Unable to reach the Spiceworks Contest Page.")
 
 
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
-    lastBuildXML = xmldoc.getElementsByTagName('lastBuildDate')
+    lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+    #lastBuildXML = str(lastBuildXML).encode('ascii','ignore').decode('ascii')
+    lastBuildXML = str(lastBuildXML)
 
     if exists(lastBuildFile):
-		f = open(lastBuildFile, 'w+')
-		lastBuildTxt = f.Read()
+		#f = open(lastBuildFile, 'w+')
+		#lastBuildTxt = f.Read()
+		infile = open(lastBuildFile,'r')
+		lastBuildTxt = str(infile.readlines()[:1])
+		infile.close()
 		if lastBuildXML.strip() != lastBuildTxt.strip():
 			newContest = True
-			f.Write(lastBuildXML)
-			f.Close()
+			#f.Write(lastBuildXML)
+			#f.Close()
+			outfile = open(lastBuildFile,'w')
+			outfile.write(lastBuildXML)
+			outfile.close()
 		else:
 			newContest = False
     else:
-		f = open(lastBuildFile, 'w+')
-		f.Write(lastBuildXML)
-		f.Close()
+		#f = open(lastBuildFile, 'w+')
+		#f.Write(lastBuildXML)
+		#f.Close()
+		outfile = open(lastBuildFile,'w')
+		outfile.write(lastBuildXML)
+		outfile.close()
 		newContest = True
     return newContest
