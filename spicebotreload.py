@@ -4,4 +4,4 @@ import sys
 
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  os.system("sh reload.sh")
+  os.system("sh /home/pi/.sopel/github/reload.sh")
