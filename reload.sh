@@ -2,7 +2,7 @@
 ## Simply reload the bot
 
 ## vars
-REPODIR=/home/pi/.sopel/github/
+REPODIR=$(dirname $0)
 
 ## pull modules
 git -C $REPODIR pull
