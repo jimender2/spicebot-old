@@ -13,7 +13,7 @@ These are custom modules for sopel
 ## service install
 `cd /lib/systemd/system/`
 
-`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/service/sopel.service`
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/sopel.service`
 
 `sudo systemctl enable sopel.service`
 
