@@ -22,6 +22,3 @@ These are custom modules for sopel
 `sudo service sopel status`
 
 ## dependencies (need to adjust this later)
-`sudo pip install IPython`
-
-`sudo pip install fake_useragent`
