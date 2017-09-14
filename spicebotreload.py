@@ -10,4 +10,4 @@ abs_file_path = os.path.join(script_dir, rel_path)
 @sopel.module.require_admin
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  os.system("sh" + abs_file_path)
+  os.system("sh " + abs_file_path)
