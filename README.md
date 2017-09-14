@@ -2,8 +2,10 @@
 
 These are custom modules for sopel
 
+(instructions are for linux)
+
 ## Install
-sudo pip install sopel
+`sudo pip install sopel`
 
 ## dependencies (need to adjust this later)
 `sudo pip install IPython`
