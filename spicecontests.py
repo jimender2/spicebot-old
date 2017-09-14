@@ -5,6 +5,10 @@ from xml.dom import minidom
 from fake_useragent import UserAgent
 from os.path import exists
 
+script_dir = os.path.dirname(__file__)
+rel_path = "swContestsLastBuild.txt"
+abs_file_path = os.path.join(script_dir, rel_path)
+
 @sopel.module.commands('swcontests')
 def getSWContests(bot,trigger):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
@@ -31,7 +35,7 @@ def getSWContests(bot,trigger):
 
 
 def checkLastBuildDate(xmldoc):
-    lastBuildFile = os.getcwd() + "\\swContestsLastBuild.txt"
+    lastBuildFile = os.getcwd() + abs_file_path
     lastBuildXML = xmldoc.getElementsByTagName('lastBuildDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
 
