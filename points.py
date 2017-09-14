@@ -7,4 +7,4 @@ def points(bot, trigger):
         rando = randint(1, 666)
         winner = trigger.group(2)
         randopoints = ('is awarded' , rando , 'points from')
-        bot.say(winner , randopoints , trigger.nick )
+        bot.say(winner , randopoints , trigger.nick)
