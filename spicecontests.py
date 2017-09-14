@@ -44,8 +44,8 @@ def checkLastBuildDate(xmldoc):
 		lastBuildTxt = f.Read()
 		if lastBuildXML != lastBuildTxt:
 			newContest = True
-			lastBuildFile.Write(lastBuildXML)
-			lastBuildFile.Close()
+			f.Write(lastBuildXML)
+			f.Close()
 		else:
 			newContest = False
     else:
