@@ -42,7 +42,7 @@ def checkLastBuildDate(xmldoc):
     if exists(lastBuildFile):
 		f = open(lastBuildFile, 'w+')
 		lastBuildTxt = f.Read()
-		if lastBuildXML != lastBuildTxt:
+		if lastBuildXML.strip() != lastBuildTxt.strip():
 			newContest = True
 			f.Write(lastBuildXML)
 			f.Close()
