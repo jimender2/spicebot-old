@@ -1,4 +1,5 @@
 import sopel.module
+from sopel.tools.target import User, Channel
 
 @sopel.module.commands('getchannels')
 def getChannels(bot,trigger):
@@ -6,4 +7,5 @@ def getChannels(bot,trigger):
 		bot.say("You can find me in " + c)
 @sopel.module.commands('getmembers')
 def getMembers(bot,trigger):
-    print(sopel.tools.target.Channel(trigger.sender.lower()).users)    
+    for u in bot.channels.users:
+        bot.say(u + " is in here")
