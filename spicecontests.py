@@ -66,4 +66,3 @@ def checkLastBuildDate(xmldoc):
 		outfile.close()
 		newContest = True
     return newContest
-@sopel.module.commands('swcontests')
