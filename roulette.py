@@ -24,7 +24,7 @@ ROULETTE_SETTINGS = {
 # edit this setting for text displays
 ROULETTE_STRINGS = {
     'CLICK': '*CLICK*',
-    'KICK_REASON': '*The brains of ' + trigger.nick + 'slide down the wall*',
+    'KICK_REASON': '*Your brains slide down the wall*',
     'GAME_END': 'Game stopped.',
     'GAME_END_FAIL': "%s: Please wait %s seconds to stop Roulette.",
 }
@@ -54,7 +54,7 @@ def roulette(bot, trigger):
     ROULETTE_TMP['LAST-ACTIVITY'] = datetime.now()
     ROULETTE_TMP['LAST-PLAYER'] = trigger.nick
     if ROULETTE_TMP['NUMBER'] == random.randint(0, ROULETTE_SETTINGS['MAX_RANGE']):
-        bot.say(ROULETTE_STRINGS['KICK_REASON'])
+        bot.say('*The brains of ' + trigger.nick + 'slide down the wall*')
         ROULETTE_TMP['LAST-PLAYER'] = None
         ROULETTE_TMP['NUMBER'] = None
         ROULETTE_TMP['LAST-ACTIVITY'] = None
