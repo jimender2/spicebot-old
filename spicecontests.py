@@ -5,12 +5,14 @@ from xml.dom import minidom
 from fake_useragent import UserAgent
 from os.path import exists
 
+@interval(3)
+
 script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.commands('swcontests')
-def getSWContests(bot,trigger):
+def getSWContests(bot):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
     header = {'User-Agent': str(ua.chrome)}
