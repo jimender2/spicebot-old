@@ -11,7 +11,7 @@ import requests
 import sopel.module
 from sopel.logger import get_logger
 import re
-from urllib.parse import quote 
+from urllib import quote
 
 LOGGER = get_logger(__name__)
 
