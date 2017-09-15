@@ -9,8 +9,9 @@ script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
+@sopel.module.interval(5)
 @sopel.module.commands('swcontests')
-def getSWContests(bot,trigger):
+def getSWContests(bot, trigger):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
     header = {'User-Agent': str(ua.chrome)}
@@ -39,7 +40,6 @@ def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
-    #lastBuildXML = str(lastBuildXML).encode('ascii','ignore').decode('ascii')
     lastBuildXML = str(lastBuildXML)
 
     if exists(lastBuildFile):
@@ -47,6 +47,9 @@ def checkLastBuildDate(xmldoc):
 		#lastBuildTxt = f.Read()
 		infile = open(lastBuildFile,'r')
 		lastBuildTxt = str(infile.readlines()[:1])
+		lastBuildTxt = lastBuildTxt.replace("'","")
+		lastBuildTxt = lastBuildTxt.replace("[","")
+		lastBuildTxt = lastBuildTxt.replace("]","")
 		infile.close()
 		if lastBuildXML.strip() != lastBuildTxt.strip():
 			newContest = True
@@ -57,10 +60,7 @@ def checkLastBuildDate(xmldoc):
 			outfile.close()
 		else:
 			newContest = False
-    else:
-		#f = open(lastBuildFile, 'w+')
-		#f.Write(lastBuildXML)
-		#f.Close()
+    else:		
 		outfile = open(lastBuildFile,'w')
 		outfile.write(lastBuildXML)
 		outfile.close()
