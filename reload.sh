@@ -3,10 +3,9 @@
 
 ## vars
 REPODIR=$(dirname $0)
-COMPLETEFOLDERPATH=$(realpath $REPODIR)
 
 ## pull modules
-git -C $COMPLETEFOLDERPATH pull
+sudo git -C $REPODIR pull
 
 ## restart service
 sudo service sopel restart
