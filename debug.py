@@ -1,4 +1,5 @@
 import sopel.module
+import subprocess
 
 @sopel.module.commands('debug')
 def debug(bot, trigger):
