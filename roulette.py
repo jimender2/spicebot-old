@@ -47,7 +47,7 @@ def roulette(bot, trigger):
         ROULETTE_TMP['NUMBER'] = random.randint(0, ROULETTE_SETTINGS['MAX_RANGE'])
         ROULETTE_TMP['LAST-PLAYER'] = trigger.nick
         ROULETTE_TMP['LAST-ACTIVITY'] = datetime.now()
-        bot.say(ROULETTE_STRINGS['ClICK'])
+        bot.say(ROULETTE_STRINGS['CLICK'])
         return
     if ROULETTE_TMP['LAST-PLAYER'] == trigger.nick:
         return
