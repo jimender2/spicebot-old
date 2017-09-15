@@ -9,6 +9,7 @@ script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
+@sopel.module.commands('swcontests')
 @sopel.module.interval(5)
 def getSWContests(bot, trigger):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
