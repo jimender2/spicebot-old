@@ -9,9 +9,8 @@ script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
-@sopel.module.interval(5)
-@sopel.module.commands('swcontests')
-def getSWContests(bot, trigger):
+@sopel.module.interval(60)
+def getSWContests(bot):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
     header = {'User-Agent': str(ua.chrome)}
@@ -27,15 +26,45 @@ def getSWContests(bot, trigger):
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.say("A new Spiceworks Contest is available!")
-	    bot.say("Title: " + title)
-	    bot.say("Link: " + link)
-	else:
-	    bot.say("No new contests are available at this time!")	
+            bot.msg("##test", "A new Spiceworks Contest is available!")
+	    bot.msg("##test", "Title: " + title)
+	    bot.msg("##test", "Link: " + link)
+	else:	    
+	    links = xmldoc.getElementsByTagName('link')
+            link = links[2].childNodes[0].nodeValue.split("?")[0]
+	    bot.msg("##test", "No new contests are available at this time!")
+	    bot.msg("##test", "Here is the link to the latest contest: " + link)
     else:
-	bot.say("Unable to reach the Spiceworks Contest Page.")
+	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
 
+@sopel.module.commands('swcontests')
+def manualCheck(bot,trigger):
+    url = 'https://community.spiceworks.com/feed/forum/1550.rss'
+    ua = UserAgent()
+    header = {'User-Agent': str(ua.chrome)}
+    page = requests.get(url, headers=header)
 
+    if page.status_code == 200:
+        xml = page.text
+        xml = xml.encode('ascii', 'ignore').decode('ascii')
+        xmldoc = minidom.parseString(xml)
+        newContest = checkLastBuildDate(xmldoc)
+        if newContest == True:
+            titles = xmldoc.getElementsByTagName('title')
+            title = titles[2].childNodes[0].nodeValue
+            links = xmldoc.getElementsByTagName('link')
+            link = links[2].childNodes[0].nodeValue.split("?")[0]
+            bot.msg("##test", "A new Spiceworks Contest is available!")
+	    bot.msg("##test", "Title: " + title)
+	    bot.msg("##test", "Link: " + link)
+	else:	    
+	    links = xmldoc.getElementsByTagName('link')
+            link = links[2].childNodes[0].nodeValue.split("?")[0]
+	    bot.msg("##test", "No new contests are available at this time!")
+	    bot.msg("##test", "Here is the link to the latest contest: " + link)
+    else:
+	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
+	
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
