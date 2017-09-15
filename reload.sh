@@ -5,7 +5,7 @@
 REPODIR=$(dirname $0)
 
 ## pull modules
-git -C $REPODIR pull
+git -C $REPODIR"/" pull
 
 ## restart service
 sudo service sopel restart
