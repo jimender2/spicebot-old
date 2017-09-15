@@ -2,7 +2,7 @@
 8ball.py - Ask the magic 8ball a question
 Copyright 2013, Sander Brand http://brantje.com
 Licensed under the Eiffel Forum License 2.
-
+f
 http://sopel.dfbta.net
 """
 import sopel
