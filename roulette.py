@@ -54,7 +54,7 @@ def roulette(bot, trigger):
     ROULETTE_TMP['LAST-ACTIVITY'] = datetime.now()
     ROULETTE_TMP['LAST-PLAYER'] = trigger.nick
     if ROULETTE_TMP['NUMBER'] == random.randint(0, ROULETTE_SETTINGS['MAX_RANGE']):
-        bot.say([' ', '%s %s :%s' % (trigger.sender, trigger.nick, ROULETTE_STRINGS['KICK_REASON'])])
+        bot.say(ROULETTE_STRINGS['KICK_REASON'])
         ROULETTE_TMP['LAST-PLAYER'] = None
         ROULETTE_TMP['NUMBER'] = None
         ROULETTE_TMP['LAST-ACTIVITY'] = None
