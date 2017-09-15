@@ -11,7 +11,7 @@ abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.interval(60)
 @sopel.module.commands('swcontests')
-def getSWContests(bot, trigger):
+def getSWContests(bot):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
     header = {'User-Agent': str(ua.chrome)}
