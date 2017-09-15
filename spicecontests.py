@@ -27,15 +27,15 @@ def getSWContests(bot):
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
             bot.msg("##test", "A new Spiceworks Contest is available!")
-	    bot.msg("##test", "Title: " + title)
-	    bot.msg("##test", "Link: " + link)
-	else:	    
-	    links = xmldoc.getElementsByTagName('link')
-            link = links[2].childNodes[0].nodeValue.split("?")[0]
-	    bot.msg("##test", "No new contests are available at this time!")
-	    bot.msg("##test", "Here is the link to the latest contest: " + link)
+			bot.msg("##test", "Title: " + title)
+			bot.msg("##test", "Link: " + link)
+		else:	    
+			links = xmldoc.getElementsByTagName('link')
+			link = links[2].childNodes[0].nodeValue.split("?")[0]
+			bot.msg("##test", "No new contests are available at this time!")
+			bot.msg("##test", "Here is the link to the latest contest: " + link)
     else:
-	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
+		bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
 
 @sopel.module.commands('swcontests')
 def manualCheck(bot,trigger):
@@ -58,12 +58,12 @@ def manualCheck(bot,trigger):
            bot.msg("##test", "Title: " + title)
            bot.msg("##test", "Link: " + link)
        else:	    
-		   links = xmldoc.getElementsByTagName('link')
+	   links = xmldoc.getElementsByTagName('link')
            link = links[2].childNodes[0].nodeValue.split("?")[0]
-	       bot.msg("##test", "No new contests are available at this time!")
-	   	   bot.msg("##test", "Here is the link to the latest contest: " + link)
+	   bot.msg("##test", "No new contests are available at this time!")
+	   bot.msg("##test", "Here is the link to the latest contest: " + link)
     else:
-		bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
+	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
 	
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
