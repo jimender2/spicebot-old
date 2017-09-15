@@ -30,8 +30,11 @@ def getSWContests(bot, trigger):
             bot.say("A new Spiceworks Contest is available!")
 	    bot.say("Title: " + title)
 	    bot.say("Link: " + link)
-	else:
-	    bot.say("No new contests are available at this time!")	
+	else:	    
+	    links = xmldoc.getElementsByTagName('link')
+            link = links[2].childNodes[0].nodeValue.split("?")[0]
+	    bot.say("No new contests are available at this time!")
+	    bot.say("Here is the link to the latest contest: " + link)
     else:
 	bot.say("Unable to reach the Spiceworks Contest Page.")
 
