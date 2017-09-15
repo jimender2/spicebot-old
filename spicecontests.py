@@ -4,6 +4,7 @@ import os
 from xml.dom import minidom
 from fake_useragent import UserAgent
 from os.path import exists
+import interval
 
 script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
