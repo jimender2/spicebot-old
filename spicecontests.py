@@ -11,11 +11,11 @@ abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.interval(60)
 def getSWContestsInterval(bot):
-    getSWContests(bot,'')
+    getSWContests(bot)
 
 @sopel.module.commands('swcontests')
 def manualCheck(bot):
-	getSWContests(bot)
+    getSWContests(bot)
 	
 def getSWContests(bot):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
