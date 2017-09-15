@@ -133,6 +133,10 @@ ______________________________________
 #### Then download desired modules to
 `~/.sopel/modules/`
 
+`~/.local/lib/python2.7/site-packages/sopel/modules`
+
+`/usr/local/lib/python2.7/dist-packages/sopel/modules`
+
 ## service install
 `cd /lib/systemd/system/`
 
