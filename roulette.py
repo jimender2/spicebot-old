@@ -24,7 +24,7 @@ ROULETTE_SETTINGS = {
 # edit this setting for text displays
 ROULETTE_STRINGS = {
     'CLICK': '*CLICK*',
-    'KICK_REASON': '*SNIPED! YOU LOSE!*',
+    'KICK_REASON': '*The brains of ' + trigger.nick + 'slide down the wall*',
     'GAME_END': 'Game stopped.',
     'GAME_END_FAIL': "%s: Please wait %s seconds to stop Roulette.",
 }
