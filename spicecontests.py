@@ -60,8 +60,11 @@ def manualCheck(bot,trigger):
 	else:	    
 	    links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-	    bot.msg("##test", "No new contests are available at this time!")
-	    bot.msg("##test", "Here is the link to the latest contest: " + link)
+		if not trigger.nick:
+			return
+		else
+			bot.msg("##test", "No new contests are available at this time!")
+			bot.msg("##test", "Here is the link to the latest contest: " + link)
     else:
 	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
 	
