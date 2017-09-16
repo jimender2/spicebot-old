@@ -38,7 +38,7 @@ def getSWContests(bot):
 	    bot.msg(channel_name + "No new contests are available at this time!")
 	    bot.msg(channel_name + "Here is the link to the latest contest: " + link)
     else:
-	bot.msg("channel_name + "Unable to reach the Spiceworks Contest Page.")
+	bot.msg(channel_name + "Unable to reach the Spiceworks Contest Page.")
 
 @sopel.module.commands('swcontests')
 def manualCheck(bot,trigger):
