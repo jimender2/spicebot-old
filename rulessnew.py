@@ -1,6 +1,5 @@
 import sopel.module
 import urllib
-import linecache
 
 rulesurl = 'https://pastebin.com/Vrq9bHBD'
 
@@ -11,6 +10,5 @@ def rules(bot, trigger):
         else:
                 rulenumber = trigger.group(2).strip()
                 htmlfile=urllib.urlopen(rulesurl)
-                lines=htmlfile.read().splitlines()
-                myline=linecache.getline(lines, rulenumber)
+                myline=htmlfile.readlines(rulenumber)
                 bot.say(myline)
