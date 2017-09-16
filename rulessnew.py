@@ -5,7 +5,7 @@ import linecache
 rulesurl = 'https://pastebin.com/Vrq9bHBD'
 
 @sopel.module.commands('rulesa','rulea')
-def rules(bot, input):
+def rules(bot, trigger):
         if not trigger.group(2):
                 bot.say('Chat Rules:     https://pastebin.com/Vrq9bHBD')
         else:
