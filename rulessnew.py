@@ -11,5 +11,5 @@ def rules(bot, trigger):
                 rulenumber = trigger.group(2)
                 htmlfile=urllib.urlopen(rulesurl)
                 lines=htmlfile.readlines()
-                mylines=lines[3]
+                myline=lines[3]
                 bot.say(myline)
