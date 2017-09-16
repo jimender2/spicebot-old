@@ -8,7 +8,7 @@ def rules(bot, trigger):
         if not trigger.group(2):
                 bot.say('Chat Rules:     https://pastebin.com/Vrq9bHBD')
         else:
-                rulenumber = trigger.group(2).strip()
+                rulenumber = trigger.group(2)
                 htmlfile=urllib.urlopen(rulesurl)
                 myline=htmlfile.read()[rulenumber]
                 bot.say(myline)
