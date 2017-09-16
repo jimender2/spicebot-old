@@ -6,13 +6,16 @@ rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 @sopel.module.commands('rulesa','rulea')
 def rules(bot, trigger):
         if not trigger.group(2):
-                bot.say('Chat Rules:     https://pastebin.com/Vrq9bHBD')
+                myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
         else:
                 rulenumber = int(trigger.group(2))
                 if rulenumber == 0:
-                        bot.say('Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD')
+                        myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
                 else:
                         htmlfile=urllib.urlopen(rulesurl)
                         lines=htmlfile.readlines()
-                        myline=lines[rulenumber-1]
-                        bot.say(myline)
+                        try:
+                                myline=lines[rulenumber-1]
+                        except IndexError:
+                                myline= 'That doesnt appear to be a rule number.'
+        bot.say(myline)
