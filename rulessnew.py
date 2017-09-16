@@ -8,7 +8,7 @@ def rules(bot, trigger):
         rulenumber = int(trigger.group(2))
         if not trigger.group(2):
                 bot.say('Chat Rules:     https://pastebin.com/Vrq9bHBD')
-        if trigger.group == 0:
+        if rulenumber == 0:
                 bot.say('Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD')
         else:
                 htmlfile=urllib.urlopen(rulesurl)
