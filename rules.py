@@ -3,7 +3,7 @@ import urllib
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
-@sopel.module.commands('rulesa','rulea')
+@sopel.module.commands('rules','rule')
 def rules(bot, trigger):
         if not trigger.group(2):
                 myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
