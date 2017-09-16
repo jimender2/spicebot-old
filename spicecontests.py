@@ -10,8 +10,8 @@ rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
 def getChannels(bot):
-for c in bot.channels:
-	channel_name = c
+	for c in bot.channels:
+		channel_name = c
 
 @sopel.module.interval(60)
 def getSWContests(bot):
