@@ -54,9 +54,9 @@ def manualCheck(bot,trigger):
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.msg("##test", "A new Spiceworks Contest is available!")
-	    bot.msg("##test", "Title: " + title)
-	    bot.msg("##test", "Link: " + link)
+            bot.say("A new Spiceworks Contest is available!")
+	    bot.say("Title: " + title)
+	    bot.say("Link: " + link)
 	else:	    
 	    links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
