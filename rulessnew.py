@@ -10,7 +10,7 @@ def rules(bot, trigger):
                 bot.say('Chat Rules:     https://pastebin.com/Vrq9bHBD')
         else:
                 rulenumber = trigger.group(2).strip()
-                htmlfile=urllib.urlopen(fra)
+                htmlfile=urllib.urlopen(rulesurl)
                 lines=htmlfile.read().splitlines()
                 myline=linecache.getline(lines, rulenumber)
                 bot.say(myline)
