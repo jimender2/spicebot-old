@@ -9,6 +9,9 @@ script_dir = os.path.dirname(__file__)
 rel_path = "swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
+for c in bot.channels:
+	channel_name = c
+
 @sopel.module.interval(60)
 def getSWContests(bot):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
@@ -26,16 +29,16 @@ def getSWContests(bot):
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.msg("##test", "A new Spiceworks Contest is available!")
-	    bot.msg("##test", "Title: " + title)
-	    bot.msg("##test", "Link: " + link)
+            bot.msg(channel_name + "A new Spiceworks Contest is available!")
+	    bot.msg(channel_name + "Title: " + title)
+	    bot.msg(channel_name + "Link: " + link)
 	else:	    
 	    links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-	    bot.msg("##test", "No new contests are available at this time!")
-	    bot.msg("##test", "Here is the link to the latest contest: " + link)
+	    bot.msg(channel_name + "No new contests are available at this time!")
+	    bot.msg(channel_name + "Here is the link to the latest contest: " + link)
     else:
-	bot.msg("##test", "Unable to reach the Spiceworks Contest Page.")
+	bot.msg("channel_name + "Unable to reach the Spiceworks Contest Page.")
 
 @sopel.module.commands('swcontests')
 def manualCheck(bot,trigger):
