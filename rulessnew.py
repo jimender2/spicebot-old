@@ -1,7 +1,7 @@
 import sopel.module
 import urllib
 
-rulesurl = 'https://pastebin.com/Vrq9bHBD'
+rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
 @sopel.module.commands('rulesa','rulea')
 def rules(bot, trigger):
