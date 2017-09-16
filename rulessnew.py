@@ -13,4 +13,3 @@ def rules(bot, trigger):
                 lines=htmlfile.readlines()
                 myline=lines[rulenumber-1]
                 bot.say(myline)
-                bot.say(rulenumber)
