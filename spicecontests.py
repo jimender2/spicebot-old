@@ -11,6 +11,7 @@ abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.interval(60)
 def getSWContests(bot):
+    for channel in bot.channels:
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
     header = {'User-Agent': str(ua.chrome)}
@@ -26,9 +27,9 @@ def getSWContests(bot):
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.msg("##test", "A new Spiceworks Contest is available!")
-	    bot.msg("##test", "Title: " + title)
-	    bot.msg("##test", "Link: " + link)
+            bot.msg(channel, "A new Spiceworks Contest is available!")
+	    bot.msg(channel, "Title: " + title)
+	    bot.msg(channel, "Link: " + link)
 
 @sopel.module.commands('swcontests')
 def manualCheck(bot,trigger):
