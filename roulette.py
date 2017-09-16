@@ -23,8 +23,8 @@ ROULETTE_SETTINGS = {
 
 # edit this setting for text displays
 ROULETTE_STRINGS = {
-    'TICK': '*TICK*',
-    'KICK_REASON': '*SNIPED! YOU LOSE!*',
+    'CLICK': '*CLICK*',
+    'KICK_REASON': '*Your brains slide down the wall*',
     'GAME_END': 'Game stopped.',
     'GAME_END_FAIL': "%s: Please wait %s seconds to stop Roulette.",
 }
@@ -47,19 +47,19 @@ def roulette(bot, trigger):
         ROULETTE_TMP['NUMBER'] = random.randint(0, ROULETTE_SETTINGS['MAX_RANGE'])
         ROULETTE_TMP['LAST-PLAYER'] = trigger.nick
         ROULETTE_TMP['LAST-ACTIVITY'] = datetime.now()
-        bot.say(ROULETTE_STRINGS['TICK'])
+        bot.say(ROULETTE_STRINGS['CLICK'])
         return
     if ROULETTE_TMP['LAST-PLAYER'] == trigger.nick:
         return
     ROULETTE_TMP['LAST-ACTIVITY'] = datetime.now()
     ROULETTE_TMP['LAST-PLAYER'] = trigger.nick
     if ROULETTE_TMP['NUMBER'] == random.randint(0, ROULETTE_SETTINGS['MAX_RANGE']):
-        bot.write(['KICK', '%s %s :%s' % (trigger.sender, trigger.nick, ROULETTE_STRINGS['KICK_REASON'])])
+        bot.say(ROULETTE_STRINGS['KICK_REASON'])
         ROULETTE_TMP['LAST-PLAYER'] = None
         ROULETTE_TMP['NUMBER'] = None
         ROULETTE_TMP['LAST-ACTIVITY'] = None
     else:
-        bot.say(ROULETTE_STRINGS['TICK'])
+        bot.say(ROULETTE_STRINGS['CLICK'])
 
 
 @commands('roulette-stop')
