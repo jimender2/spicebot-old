@@ -1,5 +1,6 @@
 import sopel.module
-import aiohttp
+import requests
+from fake_useragent import UserAgent
 
 @sopel.module.commands('dad','dadjoke')
 def sayDadJoke(bot,trigger):
@@ -12,6 +13,7 @@ def sayDadJoke(bot,trigger):
 
 def getDadJoke():
     url = 'https://icanhazdadjoke.com'
-    r = aiohttp.request('GET', url, header = {'Accept:': 'text/plain'}) 
-    joke = r.text()
+    'ua = UserAgent()
+    page = requests.get(url,headers = {'Accept':'text/plain'})
+    joke = page.content
     return joke
