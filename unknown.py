@@ -1,5 +1,5 @@
 import sopel.module
 
-@module.events(events.ERR_UNKNOWNCOMMAND)
-def davie(bot,trigger):
+@sopel.module.event(events.ERR_UNKNOWNCOMMAND)
+def davie(bot):
 	bot.say(trigger.nick + " , I haven't been programmed for that yet.")
