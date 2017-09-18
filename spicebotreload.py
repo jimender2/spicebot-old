@@ -6,6 +6,7 @@ from os.path import exists
 script_dir = os.path.dirname(__file__)
 
 @sopel.module.require_admin
+@sopel.module.require_privmsg
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
   bot.say('Pulling From Github')
