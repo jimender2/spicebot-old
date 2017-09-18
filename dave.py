@@ -9,6 +9,6 @@ def sorry(bot, trigger):
     else:
                 bot.say('Im sorry, ' + trigger.nick + ', but I cannot help you.')
 
-@sopel.tools.events('421')
+@sopel.tools.events()[421]
 def davie(bot):
 	bot.say(trigger.nick + " , I haven't been programmed for that yet.")
