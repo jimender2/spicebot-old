@@ -7,4 +7,8 @@ def rules(bot, trigger):
         else:
                 myline = trigger.group(2).strip()
                 
-        bot.say(myline + ' are for suckers!!')
+        if myline.endswith('s'):
+                bot.say(myline + ' are for suckers!!')
+        else:
+                bot.say(myline + ' is for suckers!!')
+                
