@@ -13,7 +13,8 @@ def debug(bot, trigger):
     bot.action('Is Copying Log')
     os.system("sudo journalctl -u sopel >> " + abs_file_path)
     bot.action('Is Filtering Log')
-    os.system("sudo sed -i '/Starting Sopel IRC bot/h;//!H;$!d;x; /sudo/d; /COMMAND/d' " + abs_file_path)
+    os.system("sudo sed -i '/Starting Sopel IRC bot/h;//!H;$!d;x;' " + abs_file_path)
+    os.system("sudo sed -i '/sudo/d; /COMMAND/d' " + abs_file_path)
     for line in open(abs_file_path):
         bot.say(line)
     bot.action('Is Removing Log')
