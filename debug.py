@@ -8,6 +8,7 @@ rel_path = "templog.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.require_admin
+@sopel.module.require_privmsg
 @sopel.module.commands('debug')
 def debug(bot, trigger):
     bot.action('Is Copying Log')
