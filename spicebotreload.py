@@ -8,5 +8,4 @@ script_dir = os.path.dirname(__file__)
 @sopel.module.require_admin
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  os.system("sudo git -C " + script_dir + " pull")
-  os.system("sudo service sopel restart")
+  os.system("sudo git -C " , script_dir , " pull && sudo service sopel restart")
