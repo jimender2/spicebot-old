@@ -2,12 +2,15 @@ import sopel.module
 import os
 import sys
 from os.path import exists
+import git
 
-script_dir = os.path.dirname(__file__)
-rel_path = "reload.sh"
-abs_file_path = os.path.join(script_dir, rel_path)
+git_dir = os.path.dirname(__file__)
+g = git.cmd.Git(git_dir)
 
 @sopel.module.require_admin
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  os.system("sh " + abs_file_path)
+  bot.say('Pulling From Github')
+  g.pull()
+  bot.say('Restarting Service')
+  os.system("sudo service sopel restart")
