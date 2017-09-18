@@ -14,6 +14,5 @@ def getJoke():
     url = 'http://api.yomomma.info'
     page = requests.get(url,headers = {'Accept':'text/plain'})
     result = page.content
-    if result:
-        _joke = json.loads(result)
-        joke = _joke['joke']
+    jsonjoke = json.loads(result)
+    joke = jsonjoke['joke']
