@@ -5,6 +5,6 @@ def rules(bot, trigger):
         if not trigger.group(2):
                 myline='suckers'
         else:
-                myline = trigger.group(2)
+                myline = trigger.group(2).strip()
                 
-        bot.say(myline + 'are for suckers')
+        bot.say(myline + ' are for suckers')
