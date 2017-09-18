@@ -3,21 +3,14 @@ import os
 import sys
 from os.path import exists
 import git
-import shutil
 
-DIR_NAME = os.path.dirname(__file__)
-repo = git.Repo.init(DIR_NAME)
-REMOTE_URL = "https://github.com/deathbybandaid/sopel-modules.git"
+git_dir = os.path.dirname(__file__)
+g = git.cmd.Git(git_dir)
 
 @sopel.module.require_admin
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
   bot.say('Pulling From Github')
-  if os.path.isdir(DIR_NAME):
-    origin = repo.create_remote('origin',REMOTE_URL)
-    origin.pull(origin.refs[0].remote_head)
-  else
-    bot.say('Git directory is NOT present.')
-  
+  g.pull()
   bot.say('Restarting Service')
   os.system("sudo service sopel restart")
