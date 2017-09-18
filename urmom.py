@@ -7,7 +7,7 @@ def sayJoke(bot,trigger):
     joke = getJoke()
     if joke:
         if trigger.group(2):
-            bot.say('Hey, ' + trigger.group(2).trim() + '! ' + joke)
+            bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)
         else:
             bot.say(joke)
     else:
