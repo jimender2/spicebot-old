@@ -6,7 +6,7 @@ import json
 def sayJoke(bot,trigger):
     joke = getJoke()
     if joke:
-        bot.say('Hey, ' + trigger.group(2) + '! ' + joke)
+        bot.say('Hey, ' + trigger.group(2).trim() + '! ' + joke)
     else:
         bot.say('Please leave the mothers out of it.')
     
