@@ -1,6 +1,5 @@
 import sopel.module
 import requests
-from fake_useragent import UserAgent
 
 @sopel.module.commands('dad','dadjoke')
 def sayDadJoke(bot,trigger):
