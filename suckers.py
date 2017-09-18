@@ -7,4 +7,4 @@ def rules(bot, trigger):
         else:
                 myline = trigger.group(2).strip()
                 
-        bot.say(myline + ' are for suckers')
+        bot.say(myline + ' are for suckers!!')
