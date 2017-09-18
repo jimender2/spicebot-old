@@ -1,0 +1,13 @@
+import sopel.module
+import os
+import sys
+from os.path import exists
+
+@sopel.module.commands('debug')
+def debug(bot, trigger):
+    bot.say(Copying Log)
+    os.system("sudo journalctl -u sopel > ~/.sopel/templog.txt")
+    #bot.say(Filtering Log)
+    #os.system("sudo sed ~/.sopel/templog.txt")
+    bot.say(Removing Log)
+    os.system("sudo rm ~/.sopel/templog.txt")
