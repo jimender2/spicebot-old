@@ -12,8 +12,7 @@ def sayDadJoke(bot,trigger):
         
 
 def getDadJoke():
-    url = 'https://icanhazdadjoke.com'
-    'ua = UserAgent()
+    url = 'https://icanhazdadjoke.com'    
     page = requests.get(url,headers = {'Accept':'text/plain'})
     joke = page.content
     return joke
