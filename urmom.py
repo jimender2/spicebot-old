@@ -11,7 +11,7 @@ def sayJoke(bot,trigger):
         bot.say('Please leave the mothers out of it.')
 
 def getJoke():
-    url = 'http://api.yomomma.info/'
+    url = 'http://api.yomomma.info'
     page = requests.get(url,headers = {'Accept':'text/plain'})
     result = page.content
     if result:
