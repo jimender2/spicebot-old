@@ -14,8 +14,8 @@ def debug(bot, trigger):
     bot.action('Is Filtering Log')
     os.system("sudo sed -i '/Starting Sopel IRC bot/h;//!H;$!d;x' " , abs_file_path)
     f = open(abs_file_path)
-         lines = f.readline()
-         for line in lines:
-               bot.say(line)
+        lines = f.readline()
+            for line in lines:
+                bot.say(line)
     bot.action('Is Removing Log')
     os.system("sudo rm ", abs_file_path)
