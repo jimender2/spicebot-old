@@ -6,7 +6,7 @@ import git
 import shutil
 
 DIR_NAME = os.path.dirname(__file__)
-repo = git.Repo.init(script_dir)
+repo = git.Repo.init(DIR_NAME)
 REMOTE_URL = "https://github.com/deathbybandaid/sopel-modules.git"
 
 @sopel.module.require_admin
