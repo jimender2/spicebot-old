@@ -9,6 +9,6 @@ def sorry(bot, trigger):
     else:
                 bot.say('Im sorry, ' + trigger.nick + ', but I cannot help you.')
 
-@sopel.module.event(event.ERR_UNKNOWNCOMMAND)
+@sopel.module.event('421')
 def davie(bot):
 	bot.say(trigger.nick + " , I haven't been programmed for that yet.")
