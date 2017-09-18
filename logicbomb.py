@@ -1,4 +1,5 @@
 import sopel.module
+import random
 
 @sopel.module.commands('logicbomb')
 def logicbomb(bot, trigger):
