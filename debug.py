@@ -18,6 +18,6 @@ def debug(bot, trigger):
     for line in open(abs_file_path):
         bot.say(line)
     if os.path.getsize(abs_file_path) == 0:
-        bot.say(Log File Not Updated.)
+        bot.say('Log File Not Updated.')
     bot.action('Is Removing Log')
     os.system("sudo rm " + abs_file_path)
