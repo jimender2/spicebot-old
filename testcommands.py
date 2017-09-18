@@ -9,6 +9,6 @@ def getChannels(bot,trigger):
 def getMembers(bot,trigger):
     #users = str(bot.channels[trigger.sender].users)
     #bot.say(users)
-    for u in bot.channels[trigger.sender].users
+    for u in bot.channels[trigger.sender].users:
         bot.say(u)
 
