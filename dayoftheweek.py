@@ -3,7 +3,7 @@ import datetime
 
 def daybot(bot, input):
     whichtrigday = whattriggerday()
-    whichtrigmood = whattriggermood():
+    whichtrigmood = whattriggermood()
     today = whatdayisit()
     if whichtrigmood == 'salty':
         if whichtrigday == today:
