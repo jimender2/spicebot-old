@@ -9,4 +9,7 @@ def pee(bot, trigger):
     if winner == "in the designated corner":
         bot.say(trigger.nick + ' poops ' + winner + '!')
     else:
-        bot.say(trigger.nick + ' poops on ' + winner + ', maintaining eye contact the entire time!')
+        if myline.endswith('desk'):
+            bot.say(trigger.nick + ' poops on ' + winner + ', maintaining eye contact the entire time!')
+        else:
+            bot.say(trigger.nick + ' poops on ' + winner + ' desk, maintaining eye contact the entire time!')
