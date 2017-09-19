@@ -10,7 +10,7 @@ def daybot(bot, input):
             bot.say(today + "s " + "really do suck!")
         else:
             bot.say(whichtrigday + "s " + "sometimes do suck!")
-     else:
+    else:
         if today == whichtrigday:
             bot.say("Today is" + today + ", what about it?")
         else:
