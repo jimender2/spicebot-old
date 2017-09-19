@@ -1,9 +1,9 @@
 from sopel import module
 import datetime
 
-whatistoday = datetime.datetime.today().weekday()
-
 def monday(bot, input):
+    whatistoday = datetime.datetime.today().weekday()
+    bot.say(whatistoday)
     whichtrig = str(input)
     if whichtrig == ".fuckmonday":
         if whatistoday == '0':
@@ -18,6 +18,8 @@ def monday(bot, input):
 monday.commands = ['monday','fuckmonday']
 
 def tuesday(bot, input):
+    whatistoday = datetime.datetime.today().weekday()
+    bot.say(whatistoday)
     whichtrig = str(input)
     if whichtrig == ".fucktuesday":
         if whatistoday == '1':
