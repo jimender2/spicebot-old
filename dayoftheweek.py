@@ -37,19 +37,19 @@ def whatdayisit():
 
 def whattriggerday():
     whichtrig = str(input)
-    if whichtrig.endswith(monday): 
+    if whichtrig.endswith('monday'): 
         whichtrigday = 'monday'
-    if whichtrig.endswith(tuesday): 
+    if whichtrig.endswith('tuesday'): 
         whichtrigday = 'tuesday'
-    if whichtrig.endswith(wednesday): 
+    if whichtrig.endswith('wednesday'): 
         whichtrigday = 'wednesday'
-    if whichtrig.endswith(thursday): 
+    if whichtrig.endswith('thursday'): 
         whichtrigday = 'thursday'
-    if whichtrig.endswith(friday): 
+    if whichtrig.endswith('friday'): 
         whichtrigday = 'friday'
-    if whichtrig.endswith(saturday): 
+    if whichtrig.endswith('saturday'): 
         whichtrigday = 'saturday'
-    if whichtrig.endswith(sunday): 
+    if whichtrig.endswith('sunday'): 
         whichtrigday = 'sunday'    
     return whichtrigday
 
