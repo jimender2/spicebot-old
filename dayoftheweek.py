@@ -1,8 +1,7 @@
-import sopel.module
+from sopel import module
 import datetime
 
-@sopel.module.commands('monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday')
-def daybot(bot, trigger):
+def daybot(bot, input):
     whichtrig = str(input)
     bot.say(whichtrig + " is the command")
     
@@ -23,8 +22,7 @@ def daybot(bot, trigger):
     else:
         whichtrigday = 'null'
     bot.say(whichtrigday + " is the day used in the command")
-    
-    
+     
     if whichtrig.startswith('.fuck'):
         whichtrigmood = 'salty'
     else:
@@ -35,19 +33,19 @@ def daybot(bot, trigger):
     bot.say(whatistoday + " is todays number")
     if whatistoday == '0':
         today = "monday"
-    if whatistoday == '1':
+    elif whatistoday == '1':
         today = "tuesday"
-    if whatistoday == '2':
+    elif whatistoday == '2':
         today = "wednesday"
-    if whatistoday == '3':
+    elif whatistoday == '3':
         today = "thursday"
-    if whatistoday == '4':
+    elif whatistoday == '4':
         today = "friday"
-    if whatistoday == '5':
+    elif whatistoday == '5':
         today = "saturday"
-    if whatistoday == '6':
+    elif whatistoday == '6':
         today = "sunday"
-    bot.say(whatistoday + " is today")
+    bot.say(today + " is today")
     
     if whichtrigmood == 'salty':
         if whichtrigday == today:
@@ -59,3 +57,4 @@ def daybot(bot, trigger):
             bot.say("Today is" + today + ", what about it?")
         else:
             bot.say(whichtrigday + ", what about it?")
+daybot.commands = ['monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday']
