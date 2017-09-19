@@ -17,7 +17,7 @@ def getMembers(bot,trigger):
 @sopel.module.require_admin
 @sopel.module.commands('dbtest')
 def get_tables(bot, trigger):
-    con = sqlite3.connect('sopel.db')
+    con = bot.db.connect()
     cursor = con.cursor()
     cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table';")
     bot.say(str(cursor.fetchall()))
