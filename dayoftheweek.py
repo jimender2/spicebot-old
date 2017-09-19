@@ -1,7 +1,8 @@
-from sopel import module
+import sopel.module
 import datetime
 
-def daybot(bot, input):
+@sopel.module.commands('monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday')
+def daybot(bot, trigger):
     whichtrigday = whattriggerday()
     whichtrigmood = whattriggermood()
     today = whatdayisit()
@@ -15,7 +16,6 @@ def daybot(bot, input):
             bot.say("Today is" + today + ", what about it?")
         else:
             bot.say(whichtrigday + ", what about it?")
-daybot.commands = ['monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday',]
 
 def whatdayisit():
     whatistoday = str(datetime.datetime.today().weekday())
