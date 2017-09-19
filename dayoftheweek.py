@@ -1,7 +1,7 @@
 from sopel import module
 import datetime
 
-def daybot(bot,trigger,input):
+def daybot(bot,trigger):
     whichtrig = trigger.group(1)
     
     #check if whichtrig ends with s
