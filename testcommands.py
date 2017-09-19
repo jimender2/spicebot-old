@@ -1,4 +1,5 @@
 import sopel.module
+import sqlite3
 from sopel.tools.target import User, Channel
 
 @sopel.module.commands('getchannels')
@@ -12,8 +13,10 @@ def getMembers(bot,trigger):
     for u in bot.channels[trigger.sender].users:
         bot.say(u)
 @sopel.module.commands('dbtest')
-def get_duels(bot, trigger):
-    wins = bot.db.get_nick_value(trigger.nick, 'duel_wins') or 0
-    losses = bot.db.get_nick_value(trigger.nick, 'duel_losses') or 0
-    bot.say(str(wins))
-    bot.say(str(losses))
+def get_tables(bot, trigger):
+    con = sqlite3.connect('sopel.db')
+    cursor = con.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table';")
+    bot.say(str(cursor.fetchall()))
+    
+   
