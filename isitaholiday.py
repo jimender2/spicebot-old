@@ -5,10 +5,7 @@ import json
 @sopel.module.commands('isitaholiday')
 def isitaholiday(bot,trigger):
     holiday = getholiday()
-    if holiday == 'false':
-        bot.say('Today Is Not A Holiday.')
-    else:
-        bot.say(holiday)
+    bot.say(holiday)
 
 def getholiday():
     url = 'http://isitaholiday.herokuapp.com/api/v2/holidays/today/'
