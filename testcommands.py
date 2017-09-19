@@ -15,5 +15,5 @@ def getMembers(bot,trigger):
 def get_duels(bot, nick):
     wins = bot.db.get_nick_value(nick, 'duel_wins') or 0
     losses = bot.db.get_nick_value(nick, 'duel_losses') or 0
-    bot.say(wins)
-    bot.say(losses)
+    bot.say(str(wins))
+    bot.say(str(losses))
