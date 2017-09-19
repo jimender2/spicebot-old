@@ -3,7 +3,7 @@ from random import random
 from random import randint
 
 def points(bot, trigger):
-    whichtrig = str(input)    
+    whichtrig = trigger.group(1)    
     rando = randint(1, 666)
     if not trigger.group(2):
         winner = "Everybody"
