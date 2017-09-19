@@ -3,7 +3,6 @@ import datetime
 
 def daybot(bot, input):
     whichtrig = str(input)
-    bot.say(whichtrig + " is the command")
     
     if whichtrig.endswith('monday'): 
         whichtrigday = 'monday'
@@ -21,13 +20,11 @@ def daybot(bot, input):
         whichtrigday = 'sunday'    
     else:
         whichtrigday = 'null'
-    bot.say(whichtrigday + " is the day used in the command")
      
     if whichtrig.startswith('.fuck'):
         whichtrigmood = 'salty'
     else:
        whichtrigmood = 'null'
-    bot.say(whichtrigmood + " is the mood")
     
     whatistoday = str(datetime.datetime.today().weekday())
     bot.say(whatistoday + " is todays number")
@@ -45,7 +42,6 @@ def daybot(bot, input):
         today = "saturday"
     elif whatistoday == '6':
         today = "sunday"
-    bot.say(today + " is today")
     
     if whichtrigmood == 'salty':
         if whichtrigday == today:
