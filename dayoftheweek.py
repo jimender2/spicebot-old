@@ -1,16 +1,17 @@
 from sopel import module
 import datetime
 
+whatistoday = datetime.datetime.today().weekday()
+
 def monday(bot, input):
-    whatistoday = datetime.datetime.today().weekday()
     whichtrig = str(input)
     if whichtrig == ".fuckmonday":
-        if whatistoday == 0:
+        if whatistoday == '0':
             bot.say("This is only the first monday of the week!")
         else:
             bot.say("Mondays really do suck!")
     else:
-        if whatistoday == 0:
+        if whatistoday == '0':
             bot.say("Today is Monday, what about it?")
         else:
             bot.say("Monday, what about it?")
