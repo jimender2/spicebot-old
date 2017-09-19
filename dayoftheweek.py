@@ -39,19 +39,19 @@ def whattriggerday():
     whichtrig = str(input)
     if whichtrig.endswith('monday'): 
         whichtrigday = 'monday'
-    if whichtrig.endswith('tuesday'): 
+    elif whichtrig.endswith('tuesday'): 
         whichtrigday = 'tuesday'
-    if whichtrig.endswith('wednesday'): 
+    elif whichtrig.endswith('wednesday'): 
         whichtrigday = 'wednesday'
-    if whichtrig.endswith('thursday'): 
+    elif whichtrig.endswith('thursday'): 
         whichtrigday = 'thursday'
-    if whichtrig.endswith('friday'): 
+    elif whichtrig.endswith('friday'): 
         whichtrigday = 'friday'
-    if whichtrig.endswith('saturday'): 
+    elif whichtrig.endswith('saturday'): 
         whichtrigday = 'saturday'
-    if whichtrig.endswith('sunday'): 
+    elif whichtrig.endswith('sunday'): 
         whichtrigday = 'sunday'    
-    if not whichtrigday:
+    else not whichtrigday:
         whichtrigday = 'null'
     return whichtrigday
 
@@ -61,6 +61,4 @@ def whattriggermood():
         whichtrigmood = 'salty'
     else:
        whichtrigmood = 'null'
-    if not whichtrigmood:
-        whichtrigmood = 'null'
     return whichtrigmood
