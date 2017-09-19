@@ -4,7 +4,7 @@ These are custom modules for sopel
 
 ## Commands
 
-(List Of Commands)[https://gist.github.com/anonymous/15e7b91d2d434a774b9ccce3af186bf6]
+[List Of Commands](https://gist.github.com/anonymous/15e7b91d2d434a774b9ccce3af186bf6)
 ______________________________________
 
 
