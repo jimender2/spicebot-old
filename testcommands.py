@@ -11,4 +11,9 @@ def getMembers(bot,trigger):
     #bot.say(users)
     for u in bot.channels[trigger.sender].users:
         bot.say(u)
-
+@sopel.module.commands('dbtest')
+def get_duels(bot, trigger):
+    wins = bot.db.get_nick_value(trigger.nick, 'duel_wins') or 0
+    losses = bot.db.get_nick_value(trigger.nick, 'duel_losses') or 0
+    bot.say(str(wins))
+    bot.say(str(losses))
