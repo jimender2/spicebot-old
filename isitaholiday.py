@@ -8,7 +8,7 @@ def isitaholiday(bot,trigger):
     if holiday == 'false':
         bot.say('Today Is Not A Holiday.')
     else:
-        bot.say("The Current Holiday Is: " , holiday)
+        bot.say(holiday)
 
 def getholiday():
     url = 'http://isitaholiday.herokuapp.com/api/v2/holidays/today/'
