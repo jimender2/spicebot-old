@@ -27,7 +27,6 @@ def daybot(bot, input):
        whichtrigmood = 'null'
     
     whatistoday = str(datetime.datetime.today().weekday())
-    bot.say(whatistoday + " is todays number")
     if whatistoday == '0':
         today = "monday"
     elif whatistoday == '1':
