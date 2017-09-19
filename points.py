@@ -14,4 +14,4 @@ def points(bot, trigger):
         bot.say("You can't give yourself points!")
     else:
         bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
-daybot.commands = ['points','pants']
+points.commands = ['points','pants']
