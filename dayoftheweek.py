@@ -25,7 +25,7 @@ def daybot(bot, input):
     else:
         whichtrigday = 'null'
      
-    if whichtrig.startswith('.fuck'):
+    if whichtrig.startswith('fuck'):
         whichtrigmood = 'salty'
     else:
        whichtrigmood = 'null'
