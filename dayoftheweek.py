@@ -1,7 +1,7 @@
 from sopel import module
 import datetime
 
-whatistoday = str(datetime.datetime.today().weekday())
+whatistoday = datetime.datetime.today().weekday()
 
 def monday(bot, input):
     whichtrig = str(input)
