@@ -12,4 +12,4 @@ def pee(bot, trigger):
         if myline.endswith('desk'):
             bot.say(trigger.nick + ' poops on ' + myline + ', maintaining eye contact the entire time!')
         else:
-            bot.say(trigger.nick + ' poops on ' + myline + "'s desk, maintaining eye contact the entire time!")
+            bot.say(trigger.nick + ' poops on ' + myline + '\'s desk, maintaining eye contact the entire time!')
