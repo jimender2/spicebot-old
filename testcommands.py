@@ -19,7 +19,7 @@ def getMembers(bot,trigger):
 def get_tables(bot, trigger):
     con = bot.db.connect()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM nick_ids;")
+    cursor.execute("SELECT * FROM nicknames;")
     bot.say(str(cursor.fetchall()))
 
 @sopel.module.commands('getcmd')
