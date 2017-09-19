@@ -4,6 +4,10 @@ import datetime
 def daybot(bot, input):
     whichtrig = str(input)
     
+    #check if whichtrig ends with s
+    if whichtrig.endswith('s'):
+        whichtrig = whichtrig[:-1]
+    
     if whichtrig.endswith('monday'): 
         whichtrigday = 'monday'
     elif whichtrig.endswith('tuesday'): 
