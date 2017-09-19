@@ -2,7 +2,7 @@ from sopel import module
 import datetime
 
 def daybot(bot, input):
-    whichtrig = whichtrigger()
+    whichtrig = whattriggerused()
     today = whatdayisit()
     if whichtrig.startswith(".fuck"):
         bot.say(today + "s " + "really do suck!")
@@ -32,5 +32,5 @@ def whatdayisit():
     return today
 
 def whattriggerused():
-    whichtrigger = str(input)
-    return whichtrigger
+    whichtrig = str(input)
+    return whichtrig
