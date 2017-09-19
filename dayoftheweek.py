@@ -2,15 +2,19 @@ from sopel import module
 import datetime
 
 def daybot(bot, input):
-    whichtrig = whattriggerused()
+    whichtrigday = whattriggerday()
+    whichtrigmood = whattriggermood():
     today = whatdayisit()
-    if whichtrig.startswith(".fuck"):
-        bot.say(today + "s " + "really do suck!")
-    else:
-        if today == whichtrig:
+    if whichtrigmood == 'salty':
+        if whichtrigday == today:
+            bot.say(today + "s " + "really do suck!")
+        else:
+            bot.say(whichtrigday + "s " + "sometimes do suck!")
+     else:
+        if today == whichtrigday:
             bot.say("Today is" + today + ", what about it?")
         else:
-            bot.say(today + ", what about it?")
+            bot.say(whichtrigday + ", what about it?")
 daybot.commands = ['monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday',]
 
 def whatdayisit():
@@ -31,6 +35,28 @@ def whatdayisit():
         today = "sunday"
     return today
 
-def whattriggerused():
+def whattriggerday():
     whichtrig = str(input)
-    return whichtrig
+    if whichtrig.endswith(monday): 
+        whichtrigday = 'monday'
+    if whichtrig.endswith(tuesday): 
+        whichtrigday = 'tuesday'
+    if whichtrig.endswith(wednesday): 
+        whichtrigday = 'wednesday'
+    if whichtrig.endswith(thursday): 
+        whichtrigday = 'thursday'
+    if whichtrig.endswith(friday): 
+        whichtrigday = 'friday'
+    if whichtrig.endswith(saturday): 
+        whichtrigday = 'saturday'
+    if whichtrig.endswith(sunday): 
+        whichtrigday = 'sunday'    
+    return whichtrigday
+
+def whattriggermood():
+    whichtrig = str(input)
+    if whichtrig.startswith('.fuck'):
+        whichtrigmood = 'salty'
+    else:
+       whichtrigmood = 'null'
+    return whichtrigmood     
