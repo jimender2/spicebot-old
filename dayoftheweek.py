@@ -1,12 +1,29 @@
 from sopel import module
+import datetime
+
+whatistoday = str(datetime.datetime.today().weekday())
 
 def monday(bot, input):
     whichtrig = str(input)
-    if whichtrig == ".fuckmondays":
-        bot.say("This Is only the first monday of the week!")
+    if whichtrig == ".fuckmonday":
+        if whatistoday == 0:
+            bot.say("This is only the first monday of the week!")
+        else:
+            bot.say("Mondays really do suck!")
     else:
-        bot.say("This is Monday, what about it?")
-monday.commands = ['monday','fuckmondays']
+        if whatistoday == 0:
+            bot.say("Today is Monday, what about it?")
+        else:
+            bot.say("Monday, what about it?")
+monday.commands = ['monday','fuckmonday']
+
+def tuesday(bot, input):
+    whichtrig = str(input)
+    if whichtrig == ".fucktuesday":
+        bot.say("This is only the second monday of the week!")
+    else:
+        bot.say("Tuesday, what about it?")
+monday.commands = ['tuesday','fucktuesday']
 
 def tuesday(bot, input):
     bot.say('tuesday')
