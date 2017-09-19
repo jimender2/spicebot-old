@@ -4,7 +4,7 @@ from random import randint
 
 @sopel.module.commands('points','pants')
 def points(bot, trigger):
-    whichtrig = str(input.lower())    
+    whichtrig = str(input)    
     rando = randint(1, 666)
     if not trigger.group(2):
         winner = "Everybody"
