@@ -4,7 +4,7 @@ def monday(bot, input):
     whichtrig = str(input)
     if whichtrig == ".fuckmondays":
         bot.say("This Is only the first monday of the week!")
-    else
+    else:
         bot.say("This is Monday, what about it?")
 monday.commands = ['monday','fuckmondays']
 
