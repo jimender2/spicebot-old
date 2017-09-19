@@ -9,19 +9,19 @@ def daybot(bot, input):
         whichtrig = whichtrig[:-1]
     
     if whichtrig.endswith('monday'): 
-        whichtrigday = 'monday'
+        whichtrigday = 'Monday'
     elif whichtrig.endswith('tuesday'): 
-        whichtrigday = 'tuesday'
+        whichtrigday = 'Tuesday'
     elif whichtrig.endswith('wednesday'): 
-        whichtrigday = 'wednesday'
+        whichtrigday = 'Wednesday'
     elif whichtrig.endswith('thursday'): 
-        whichtrigday = 'thursday'
+        whichtrigday = 'Thursday'
     elif whichtrig.endswith('friday'): 
-        whichtrigday = 'friday'
+        whichtrigday = 'Friday'
     elif whichtrig.endswith('saturday'): 
-        whichtrigday = 'saturday'
+        whichtrigday = 'Saturday'
     elif whichtrig.endswith('sunday'): 
-        whichtrigday = 'sunday'    
+        whichtrigday = 'Sunday'    
     else:
         whichtrigday = 'null'
      
@@ -32,19 +32,19 @@ def daybot(bot, input):
     
     whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':
-        today = "monday"
+        today = "Monday"
     elif whatistoday == '1':
-        today = "tuesday"
+        today = "Tuesday"
     elif whatistoday == '2':
-        today = "wednesday"
+        today = "Wednesday"
     elif whatistoday == '3':
-        today = "thursday"
+        today = "Thursday"
     elif whatistoday == '4':
-        today = "friday"
+        today = "Friday"
     elif whatistoday == '5':
-        today = "saturday"
+        today = "Saturday"
     elif whatistoday == '6':
-        today = "sunday"
+        today = "Sunday"
     
     if whichtrigmood == 'salty':
         if whichtrigday == today:
