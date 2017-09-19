@@ -2,8 +2,10 @@ from sopel import module
 
 def monday(bot, input):
     whichtrig = str(input)
-    bot.say(whichtrig)
-    bot.say('monday')
+    if whichtrig == ".fuckmondays":
+        bot.say("This Is only the first monday of the week!")
+    else
+        bot.say("This is Monday, what about it?")
 monday.commands = ['monday','fuckmondays']
 
 def tuesday(bot, input):
