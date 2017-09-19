@@ -4,7 +4,7 @@ def monday(bot, input):
     whichtrig = str(monday.commands)
     bot.say('monday')
     bot.say(whichtrig)
-monday.commands = ['monday']
+monday.commands = ['monday','fuckmondays']
 
 def tuesday(bot, input):
     bot.say('tuesday')
