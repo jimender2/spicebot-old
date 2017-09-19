@@ -20,9 +20,15 @@ monday.commands = ['monday','fuckmonday']
 def tuesday(bot, input):
     whichtrig = str(input)
     if whichtrig == ".fucktuesday":
-        bot.say("This is only the second monday of the week!")
+        if whatistoday == '1':
+            bot.say("This is only the second monday of the week!")
+        else:
+            bot.say("Tuesdays sometimes do suck!")
     else:
-        bot.say("Tuesday, what about it?")
+        if whatistoday == '1':
+            bot.say("Today is Tuesday, what about it?")
+        else:
+            bot.say("Tuesday, what about it?")
 tuesday.commands = ['tuesday','fucktuesday']
 
 def wednesday(bot, input):
