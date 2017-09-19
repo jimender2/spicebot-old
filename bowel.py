@@ -6,4 +6,4 @@ def pee(bot, trigger):
         winner = "in the designated corner"
     else:
         winner = 'on'trigger.group(2).strip()
-    bot.say(trigger.nick + ' poops ' + winner + '!')
+    bot.say(trigger.nick + ' poops ' + winner + 'maintaining eye contact the entire time!')
