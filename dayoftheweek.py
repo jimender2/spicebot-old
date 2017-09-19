@@ -2,7 +2,7 @@ from sopel import module
 import datetime
 
 def daybot(bot, input):
-    whichtrig = str(input)
+    whichtrig = str(input.lower())
     
     #check if whichtrig ends with s
     if whichtrig.endswith('s'):
