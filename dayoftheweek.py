@@ -2,7 +2,7 @@ from sopel import module
 
 def monday(bot, input):
     bot.say('monday')
-    bot.say(trigger)
+    bot.say(monday)
 monday.commands = ['monday']
 
 def tuesday(bot, input):
