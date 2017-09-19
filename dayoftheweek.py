@@ -1,52 +1,36 @@
 from sopel import module
 import datetime
 
-whatistoday = str(datetime.datetime.today().weekday())
-
-def monday(bot, input):
-    whichtrig = str(input)
-    if whichtrig == ".fuckmonday":
-        if whatistoday == '0':
-            bot.say("This is only the first monday of the week!")
-        else:
-            bot.say("Mondays really do suck!")
+def daybot(bot, input):
+    whichtrig = whichtrigger()
+    today = whatdayisit()
+    if whichtrig.startswith(".fuck"):
+        bot.say(today + "s " + "really do suck!")
     else:
-        if whatistoday == '0':
-            bot.say("Today is Monday, what about it?")
+        if today == whichtrig:
+            bot.say("Today is" + today + ", what about it?")
         else:
-            bot.say("Monday, what about it?")
-monday.commands = ['monday','fuckmonday']
+            bot.say(today + ", what about it?")
+daybot.commands = ['monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday',]
 
-def tuesday(bot, input):
-    whichtrig = str(input)
-    if whichtrig == ".fucktuesday":
-        if whatistoday == '1':
-            bot.say("This is only the second monday of the week!")
-        else:
-            bot.say("Tuesdays sometimes do suck!")
-    else:
-        if whatistoday == '1':
-            bot.say("Today is Tuesday, what about it?")
-        else:
-            bot.say("Tuesday, what about it?")
-tuesday.commands = ['tuesday','fucktuesday']
+def whatdayisit():
+    whatistoday = str(datetime.datetime.today().weekday())
+    if whatistoday == '0':
+        today = "monday"
+    if whatistoday == '1':
+        today = "tuesday"
+    if whatistoday == '2':
+        today = "wednesday"
+    if whatistoday == '3':
+        today = "thursday"
+    if whatistoday == '4':
+        today = "friday"
+    if whatistoday == '5':
+        today = "saturday"
+    if whatistoday == '6':
+        today = "sunday"
+    return today
 
-def wednesday(bot, input):
-    bot.say('wednesday')
-wednesday.commands = ['wednesday']
-
-def thursday(bot, input):
-    bot.say('thursday')
-thursday.commands = ['thursday']
-
-def friday(bot, input):
-    bot.say('friday')
-friday.commands = ['friday']
-
-def saturday(bot, input):
-    bot.say('saturday')
-saturday.commands = ['saturday']
-
-def sunday(bot, input):
-    bot.say('sunday')
-sunday.commands = ['sunday']
+def whattriggerused():
+    whichtrigger = str(input)
+    return whichtrigger
