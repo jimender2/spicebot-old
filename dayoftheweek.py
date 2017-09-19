@@ -51,7 +51,6 @@ def whattriggerday():
         whichtrigday = 'saturday'
     if whichtrig.endswith('sunday'): 
         whichtrigday = 'sunday'    
-    return whichtrigday
 
 def whattriggermood():
     whichtrig = str(input)
@@ -59,4 +58,3 @@ def whattriggermood():
         whichtrigmood = 'salty'
     else:
        whichtrigmood = 'null'
-    return whichtrigmood     
