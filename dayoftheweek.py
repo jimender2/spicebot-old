@@ -1,8 +1,11 @@
 from sopel import module
 
 def monday(bot, input):
-    bot.say('monday')
-monday.commands = ['monday']
+    if monday.commands == 'fuckmondays':
+        bot.say('fuck monday')
+    else:
+        bot.say('monday')
+monday.commands = ['monday','fuckmondays']
 
 def tuesday(bot, input):
     bot.say('tuesday')
