@@ -24,5 +24,5 @@ def get_tables(bot, trigger):
 
 @sopel.module.commands('getcmd')
 def get_tables(bot, trigger):
-    bot.say(trigger.group(1)
+    bot.say(trigger.group(1))
    
