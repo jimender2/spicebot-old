@@ -21,5 +21,8 @@ def get_tables(bot, trigger):
     cursor = con.cursor()
     cursor.execute("SELECT * FROM nick_ids;")
     bot.say(str(cursor.fetchall()))
-    
+
+ @sopel.module.commands('getcmd')
+def get_tables(bot, trigger):
+    bot.say(trigger.group(1)
    
