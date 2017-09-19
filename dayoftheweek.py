@@ -1,9 +1,9 @@
 from sopel import module
 
 def monday(bot, input):
-    whichtrig = str(monday.commands)
-    bot.say('monday')
+    whichtrig = str(input)
     bot.say(whichtrig)
+    bot.say('monday')
 monday.commands = ['monday','fuckmondays']
 
 def tuesday(bot, input):
