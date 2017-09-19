@@ -23,11 +23,7 @@ def tuesday(bot, input):
         bot.say("This is only the second monday of the week!")
     else:
         bot.say("Tuesday, what about it?")
-monday.commands = ['tuesday','fucktuesday']
-
-def tuesday(bot, input):
-    bot.say('tuesday')
-tuesday.commands = ['tuesday']
+tuesday.commands = ['tuesday','fucktuesday']
 
 def wednesday(bot, input):
     bot.say('wednesday')
