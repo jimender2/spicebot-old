@@ -51,7 +51,7 @@ def whattriggerday():
         whichtrigday = 'saturday'
     elif whichtrig.endswith('sunday'): 
         whichtrigday = 'sunday'    
-    else not whichtrigday:
+    else:
         whichtrigday = 'null'
     return whichtrigday
 
