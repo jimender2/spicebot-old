@@ -1,8 +1,7 @@
-import sopel.module
+from sopel import module
 from random import random
 from random import randint
 
-@sopel.module.commands('points','pants')
 def points(bot, trigger):
     whichtrig = str(input)    
     rando = randint(1, 666)
@@ -15,3 +14,4 @@ def points(bot, trigger):
         bot.say("You can't give yourself points!")
     else:
         bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
+daybot.commands = ['points','pants']
