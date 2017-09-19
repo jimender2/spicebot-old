@@ -18,7 +18,7 @@ def monday(bot, input):
 monday.commands = ['monday','fuckmonday']
 
 def tuesday(bot, input):
-    whatistoday = datetime.datetime.today().weekday()
+    whatistoday = str(datetime.datetime.today().weekday())
     bot.say(whatistoday)
     whichtrig = str(input)
     if whichtrig == ".fucktuesday":
