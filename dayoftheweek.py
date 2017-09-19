@@ -49,7 +49,7 @@ def daybot(bot, input):
             bot.say(whichtrigday + "s " + "sometimes do suck!")
     else:
         if today == whichtrigday:
-            bot.say("Today is" + today + ", what about it?")
+            bot.say("Today is " + today + ", what about it?")
         else:
             bot.say(whichtrigday + ", what about it?")
 daybot.commands = ['monday','fuckmonday','tuesday','fucktuesday','wednesday','fuckwednesday','thursday','fuckthursday','friday','fuckfriday','saterday','fucksaturday','sunday','fucksunday']
