@@ -10,7 +10,7 @@ def points(bot, trigger):
         winner = "Everybody"
     else:
         winner = trigger.group(2).strip()
-    randopoints = ('is awarded ' + str(rando) + whichtrig ' from' )
+    randopoints = ('is awarded ' + str(rando) + whichtrig + ' from' )
     if winner == trigger.nick:
         bot.say("You can't give yourself points!")
     else:
