@@ -19,7 +19,7 @@ def getMembers(bot,trigger):
 def get_tables(bot, trigger):
     con = bot.db.connect()
     cursor = con.cursor()
-    cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table';")
+    cursor.execute("SELECT * FROM nick_ids;")
     bot.say(str(cursor.fetchall()))
     
    
