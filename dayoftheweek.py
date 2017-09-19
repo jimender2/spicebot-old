@@ -17,7 +17,7 @@ def daybot(bot, trigger):
         else:
             bot.say(whichtrigday + ", what about it?")
 
-def whatdayisit():
+def whatdayisit(bot):
     whatistoday = str(datetime.datetime.today().weekday())
     bot.say(whatistoday + " is today")
     if whatistoday == '0':
@@ -36,7 +36,7 @@ def whatdayisit():
         today = "sunday"
     return today
 
-def whattriggerday():
+def whattriggerday(bot):
     whichtrig = str(input)
     bot.say(whichtrig + " is the day used in the command")
     if whichtrig.endswith('monday'): 
@@ -57,7 +57,7 @@ def whattriggerday():
         whichtrigday = 'null'
     return whichtrigday
 
-def whattriggermood():
+def whattriggermood(bot):
     whichtrig = str(input)
     bot.say(whichtrig + " is the mood")
     if whichtrig.startswith('.fuck'):
