@@ -2,7 +2,7 @@ import sopel.module
 import sys
 import datetime
 
-@sopel.module.commands('isitfriday','isitfridayyet')
+@sopel.module.commands('isitfridaya','isitfridayyeta')
 def isitfriday(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     fridaynumber = '4'
