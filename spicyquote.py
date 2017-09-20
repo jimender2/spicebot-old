@@ -37,9 +37,12 @@ def getQuote(query):
         for qlink in links:
             if str(qlink).startswith("./?"):
 				link = qlink.replace(".","http://spice.dussed.com")
-				qlinks.append(link) 		
-        randno = randint(1,len(qlinks))
-        url = qlinks[randno]   	
+				qlinks.append(link)
+        try:
+            randno = randint(1,len(qlinks))
+            url = qlinks[randno]   	
+        except IndexError:
+            url = ""
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
