@@ -27,16 +27,19 @@ def getQuote(query):
     else:
         #someday we can have this check against the db and see if it is a known user.
         url = urlsuffix + 'do=search&q=' + query
+        print(url)
         page = urllib2.urlopen(url)
         soup = BeautifulSoup(page)
         links = []
+        qlinks = []
         for link in soup.findAll('a'):
-            if link.startswith('./?'):
-                hfref = link.get('href')
-                qlink = href.replace(".","http://spice.dussed.com")
-                links.append(qlink)                            
-        randno = randint(0,len(links))
-        url = links[randno]                
+			links.append(link.get('href'))
+        for qlink in links:
+            if str(qlink).startswith("./?"):
+				link = qlink.replace(".","http://spice.dussed.com")
+				qlinks.append(link) 		
+        randno = randint(1,len(qlinks))
+        url = qlinks[randno]   	
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
