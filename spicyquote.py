@@ -42,8 +42,8 @@ def getQuote(query):
             if str(qlink).startswith("./?"):
 				link = qlink.replace(".","http://spice.dussed.com")
 				qlinks.append(link)
-        try:
             randno = randint(1,len(qlinks))
+	try:
             url = qlinks[randno]   	
         except ValueError:
             url = ""
