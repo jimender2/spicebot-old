@@ -5,7 +5,7 @@ import sys
 def isitfriday(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     fridaynumber = '4'
-    if whatistoday = fridaynumber:
+    if whatistoday == fridaynumber:
         bot.say("TGIF! It's finally here!!!")
     elif whatistoday = '5' or whatistoday = '6'::
         bot.say("It's the Weekend. It should be better than Friday!")
