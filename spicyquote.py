@@ -52,7 +52,7 @@ def getQuote(query):
         txt = soup.find('td',{'class':'body'}).text
         txt = txt.replace("&lt;","<")
         txt = txt.replace("&gt;",">")
-        txt = unescape_xml_entities(stripper.transformString(txt)))
+        txt = unescape_xml_entities(stripper.transformString(txt))
     except:
         txt = "Invalid quote"
     quote = txt
