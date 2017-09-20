@@ -33,8 +33,8 @@ def getQuote(query):
         for link in soup.findAll('a'):
             if link.startswith('./?'):
                 hfref = link.get('href')
-                link = href.replace(".","http://spice.dussed.com")
-                links.append(link)                            
+                qlink = href.replace(".","http://spice.dussed.com")
+                links.append(qlink)                            
         randno = randint(0,len(links))
         url = links[randno]                
     soup = BeautifulSoup(urllib2.urlopen(url).read())
