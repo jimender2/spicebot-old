@@ -1,7 +1,7 @@
 from sopel import module
 
 def matrix(bot, input):
-    bot.say('You have two choices. Red Pill Or Blue Pill')
+    bot.say('You have two choices. .redpill Or .bluepill')
 matrix.commands = ['matrix']
 
 def redpill(bot, input):
