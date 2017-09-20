@@ -23,5 +23,6 @@ def getQuote(qNum):
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
     txt = txt.replace("&gt;",">")
+    quote = txt
     return quote
 
