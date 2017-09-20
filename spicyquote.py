@@ -45,11 +45,11 @@ def getQuote(query):
 	try:
             randno = randint(1,len(qlinks))
         except ValueError:
-            randno = ""
+            randno = int("0")
 	try:
-            url = int(qlinks[randno])
+            url = qlinks[randno]
         except IndexError:
-            url = int("0")
+            url = ""
     try:
         soup = BeautifulSoup(urllib2.urlopen(url).read())
         txt = soup.find('td',{'class':'body'}).text
