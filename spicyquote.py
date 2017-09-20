@@ -7,8 +7,11 @@ def spicyQuote(bot,trigger):
     qNum = str(trigger.group(2))
     if qNum != "None":
         quote = getQuote(qNum)
-        bot.say('Spicy quote #' + qNum + ' coming up!')
-        bot.say(quote)
+        if quote != "Quote " + qNum + '; Invalid quote!":        
+            bot.say('Spicy quote #' + qNum + ' coming up!')
+            bot.say(quote)
+        else:
+            bot.say('There is not a quote #' + qNum + '!')
     else:
         bot.say('Please provide a quote number and try again!')
 
