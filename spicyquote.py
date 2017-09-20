@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 def spicyQuote(bot,trigger):
     qNum = str(trigger.group(2))
     if qNum != "None":
-        quote = getQuote(qNum)
+        quote = getQuote(query)
         if quote != "Quote " + qNum + '; Invalid quote!':        
             bot.say('Spicy quote #' + qNum + ' coming up!')
             bot.say(quote)
@@ -18,10 +18,13 @@ def spicyQuote(bot,trigger):
 
 
 
-def getQuote(qNum):
+def getQuote(query):
     urlsuffix = 'http://spice.dussed.com/?'
-    quotenum = qNum
-    url = urlsuffix + qNum
+    if query.isdigit():
+        quotenum = qNum
+        url = urlsuffix + qNum
+    else:
+        #
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
