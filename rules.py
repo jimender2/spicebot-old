@@ -13,6 +13,8 @@ def rules(bot, trigger):
             myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
         elif rulenumber == 69:
             myline='giggles'
+        elif rulenumber == 34:
+            myline='If it exists, there is porn of it.'
         else:
             htmlfile=urllib.urlopen(rulesurl)
             lines=htmlfile.readlines()
@@ -20,6 +22,7 @@ def rules(bot, trigger):
                 myline=lines[rulenumber-1]
             except IndexError:
                 myline= 'That doesnt appear to be a rule number.'
+    
     if myline == 'giggles':
             bot.action(myline)
     else:
