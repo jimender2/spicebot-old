@@ -5,14 +5,14 @@ from random import randint
 
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
-    qNum = str(trigger.group(2))
-    if qNum != "None":
+    query = str(trigger.group(2))
+    if query != "None":
         quote = getQuote(query)
-        if quote != "Quote " + qNum + '; Invalid quote!':        
-            bot.say('Spicy quote #' + qNum + ' coming up!')
+        if 'Invalid quote' not in quote:
+            #bot.say('Spicy quote #' + qNum + ' coming up!')
             bot.say(quote)
         else:
-            bot.say('There is not a quote #' + qNum + '!')
+            bot.say('Could not find that quote!')
     else:
         bot.say('Please provide a quote number and try again!')
 
