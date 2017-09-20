@@ -49,7 +49,7 @@ def getQuote(query):
         txt = txt.replace("&lt;","<")
         txt = txt.replace("&gt;",">")
     except:
-        txt = ""
+        txt = "Invalid quote"
     quote = txt
     return quote
 
