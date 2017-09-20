@@ -41,12 +41,15 @@ def getQuote(query):
         try:
             randno = randint(1,len(qlinks))
             url = qlinks[randno]   	
-        except IndexError:
+        except ValueError:
             url = ""
-    soup = BeautifulSoup(urllib2.urlopen(url).read())
-    txt = soup.find('td',{'class':'body'}).text
-    txt = txt.replace("&lt;","<")
-    txt = txt.replace("&gt;",">")
+    try:
+        soup = BeautifulSoup(urllib2.urlopen(url).read())
+        txt = soup.find('td',{'class':'body'}).text
+        txt = txt.replace("&lt;","<")
+        txt = txt.replace("&gt;",">")
+    except:
+        txt = ""
     quote = txt
     return quote
 
