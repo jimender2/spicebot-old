@@ -11,7 +11,7 @@ def points(bot, trigger):
         winner = trigger.group(2).strip()
     randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
     if winner == trigger.nick:
-        bot.say("You can't give yourself points!")
+        bot.say('You can\'t give yourself ' + whichtrig + '!')
     else:
         bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
 points.commands = ['points','pants']
