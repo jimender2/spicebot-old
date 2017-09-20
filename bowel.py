@@ -4,6 +4,8 @@ import sopel.module
 def pee(bot, trigger):
     if not trigger.group(2):
         myline = "in the designated corner"
+    elif trigger.group(2) == 'all':
+        myline = everyone
     else:
         myline = trigger.group(2).strip()
     if myline == "in the designated corner":
