@@ -1,6 +1,7 @@
 import sopel.module
 import urllib2
 from BeautifulSoup import BeautifulSoup
+from random import randint
 
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
@@ -24,7 +25,17 @@ def getQuote(query):
         quotenum = qNum
         url = urlsuffix + qNum
     else:
-        #
+        #someday we can have this check against the db and see if it is a known user.
+        url = urlsuffix + 'do=search&q=' + query
+        page = urllib2.urlopen(url)
+        soup = BeautifulSoup(page)
+        links = []
+        for link in soup.findAll('a'):
+            if link.startswith('./?'):
+                link = link.replace(".","http://spice.dussed.com")
+                links.append(link)                            
+        randno = randint(0,len(links))
+        url = links[randno]                
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
