@@ -11,5 +11,5 @@ def isitfriday(bot,trigger):
     elif whatistoday == '5' or whatistoday == '6':
         bot.say("It's the Weekend. It should be better than Friday!")
     else:
-        daysmath = int(fridaynumber) - int(whatistoday)
+        daysmath = fridaynumber - whatistoday
         bot.say("Unfortunately Friday is " + daysmath + " away. I'm sure we'll make it there!")
