@@ -22,7 +22,7 @@ def spicyQuote(bot,trigger):
 def getQuote(query):
     urlsuffix = 'http://spice.dussed.com/?'
     if query.isdigit():
-        quotenum = qNum
+        qNum = query
         url = urlsuffix + qNum
     else:
         #someday we can have this check against the db and see if it is a known user.
