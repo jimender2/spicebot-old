@@ -1,4 +1,5 @@
 import sopel.module
+import urllib
 from BeautifulSoup import BeautifulSoup
 
 @sopel.module.commands('spicyquote')
