@@ -7,3 +7,5 @@ def wanted(bot,trigger):
     rando = randint(2, 50)
     if trigger.group(2):
         bot.say(trigger.group(2).strip() + ' was never wanted as a child, but now is wanted in ' + str(rando) + ' states!')
+    else:
+        bot.say('You must choose a Person.')
