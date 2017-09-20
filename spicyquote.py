@@ -32,7 +32,8 @@ def getQuote(query):
         links = []
         for link in soup.findAll('a'):
             if link.startswith('./?'):
-                link = link.replace(".","http://spice.dussed.com")
+                hfref = link.get('href')
+                link = href.replace(".","http://spice.dussed.com")
                 links.append(link)                            
         randno = randint(0,len(links))
         url = links[randno]                
