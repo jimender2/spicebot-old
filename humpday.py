@@ -2,7 +2,7 @@ import sopel.module
 import sys
 import datetime
 
-@sopel.module.commands('humpday')
+@sopel.module.commands('humpdaya')
 def isithumpday(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     wednesdaynumber = '2'
