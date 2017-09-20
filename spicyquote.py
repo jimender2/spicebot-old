@@ -18,7 +18,7 @@ def getQuote(qNum):
     urlsuffix = 'http://spice.dussed.com/?'
     quotenum = qNum
     url = urlsuffix + qNum
-    soup = BeautifulSoup(urlib2.urlopen(url).read())
+    soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = txt.replace("&lt;","<")
     txt = txt.replace("&gt;",">")
