@@ -47,7 +47,7 @@ def getQuote(query):
         except ValueError:
             randno = ""
 	try:
-            url = qlinks[randno]   	
+            url = int(qlinks[randno])
         except IndexError:
             url = ""
     try:
