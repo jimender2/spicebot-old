@@ -48,7 +48,7 @@ def getQuote(query):
             randno = ""
 	try:
             url = qlinks[randno]   	
-        except ValueError:
+        except IndexError:
             url = ""
     try:
         soup = BeautifulSoup(urllib2.urlopen(url).read())
