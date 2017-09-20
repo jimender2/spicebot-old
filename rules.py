@@ -19,7 +19,7 @@ def rules(bot, trigger):
             try:
                 myline=lines[rulenumber-1]
             except IndexError:
-            myline= 'That doesnt appear to be a rule number.'
+                myline= 'That doesnt appear to be a rule number.'
     if myline == 'giggles':
             bot.action(myline)
     else:
