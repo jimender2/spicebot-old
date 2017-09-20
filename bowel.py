@@ -15,7 +15,7 @@ def pee(bot, trigger):
     elif myline == "everyone":
         bot.say(trigger.nick + ' poops on ' + myline + '\'s desk, one at a a time!')
     elif myline == "poopgroup":
-        bot.say(trigger.nick + ' get your poop in a group.')
+        bot.say(trigger.nick + ', get your poop in a group.')
     else:
         if myline.endswith('desk'):
             bot.say(trigger.nick + ' poops on ' + myline + ', maintaining eye contact the entire time!')
