@@ -59,7 +59,7 @@ def daybot(bot,trigger):
             bot.say(whichtrigday + ", what about it?")
 daybot.commands = ['monday','mondays','fuckmonday','fuckmondays','tuesday','tuesdays','fucktuesday','fucktuesdays','wednesday','wednesdays','fuckwednesday','fuckwednesdays','thursday','thursdays','fuckthursday','fuckthursdays','friday','fridays','fuckfriday','fuckfridays','saterday','saterdays','fucksaturday','fucksaturdays','sunday','sundays','fucksunday','fucksundays']
 
-def isitfriday(bot,trigger):
+def fridaybot(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     fridaynumber = '4'
     if whatistoday == fridaynumber:
@@ -71,7 +71,7 @@ def isitfriday(bot,trigger):
         bot.say("Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!")
 fridaybot.commands = ['isitfriday','isitfridayyet']
         
-def isithumpday(bot,trigger):
+def humpdaybot(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     wednesdaynumber = '2'
     if whatistoday == wednesdaynumber:
