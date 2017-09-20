@@ -5,7 +5,7 @@ from BeautifulSoup import BeautifulSoup
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
     qNum = str(trigger.group(2))
-    if qNum != "-1":
+    if qNum != "None":
         quote = getQuote(qNum)
         bot.say('Spicy quote #' + qNum + ' coming up!')
         bot.say(quote)
