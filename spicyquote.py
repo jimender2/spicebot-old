@@ -22,7 +22,7 @@ def spicyQuote(bot,trigger):
 
 
 def getQuote(query):
-	unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
+    unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
     urlsuffix = 'http://spice.dussed.com/?'
     if query.isdigit():
