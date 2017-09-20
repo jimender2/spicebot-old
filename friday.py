@@ -1,5 +1,6 @@
 import sopel.module
 import sys
+import datetime
 
 @sopel.module.commands('isitfriday','isitfridayyet')
 def isitfriday(bot,trigger):
