@@ -49,7 +49,7 @@ def getQuote(query):
 	try:
             url = int(qlinks[randno])
         except IndexError:
-            url = ""
+            url = int("0")
     try:
         soup = BeautifulSoup(urllib2.urlopen(url).read())
         txt = soup.find('td',{'class':'body'}).text
