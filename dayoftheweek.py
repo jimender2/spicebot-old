@@ -1,5 +1,6 @@
 from sopel import module
 import datetime
+import sys
 
 def daybot(bot,trigger):
     whichtrig = trigger.group(1)
@@ -57,3 +58,24 @@ def daybot(bot,trigger):
         else:
             bot.say(whichtrigday + ", what about it?")
 daybot.commands = ['monday','mondays','fuckmonday','fuckmondays','tuesday','tuesdays','fucktuesday','fucktuesdays','wednesday','wednesdays','fuckwednesday','fuckwednesdays','thursday','thursdays','fuckthursday','fuckthursdays','friday','fridays','fuckfriday','fuckfridays','saterday','saterdays','fucksaturday','fucksaturdays','sunday','sundays','fucksunday','fucksundays']
+
+def isitfriday(bot,trigger):
+    whatistoday = str(datetime.datetime.today().weekday())        
+    fridaynumber = '4'
+    if whatistoday == fridaynumber:
+        bot.say("TGIF! It's finally here!!!")
+    elif whatistoday == '5' or whatistoday == '6':
+        bot.say("It's the Weekend. It should be better than Friday!")
+    else:
+        daysmath = int(fridaynumber) - int(whatistoday)
+        bot.say("Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!")
+fridaybot.commands = ['isitfriday','isitfridayyet']
+        
+def isithumpday(bot,trigger):
+    whatistoday = str(datetime.datetime.today().weekday())        
+    wednesdaynumber = '2'
+    if whatistoday == wednesdaynumber:
+        bot.say("Today is Wednesday, AKA HUMPDAY!!!!")
+    else:
+        bot.say("Today is not humpday.")
+humpdaybot.commands = ['humpday']
