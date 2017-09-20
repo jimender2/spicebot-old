@@ -1,3 +1,4 @@
+import sopel.module
 from BeautifulSoup import BeautifulSoup
 
 @sopel.module.commands('spicyquote')
