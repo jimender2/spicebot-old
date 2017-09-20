@@ -2,8 +2,8 @@ import sopel.module
 import sys
 import datetime
 
-@sopel.module.commands('isitfriday','isitfridayyet')
-def isitfriday(bot,trigger):
+@sopel.module.commands('humpday')
+def isithumpday(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     wednesdaynumber = '2'
     if whatistoday == wednesdaynumber:
