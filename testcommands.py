@@ -17,7 +17,7 @@ def getMembers(bot,trigger):
     for u in bot.channels[trigger.sender].users:
         bot.say(u)
         userlist.append(u)
-    randno = randint(0,userlist.count())
+    randno = randint(0,len(userlist))
     randUser = userlist[randno]
     bot.say('Here is a randomly picked user: ' + randUser)
 @sopel.module.require_admin
