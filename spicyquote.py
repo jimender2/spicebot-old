@@ -2,6 +2,8 @@ import sopel.module
 import urllib2
 from BeautifulSoup import BeautifulSoup
 from random import randint
+from pyparsing import anyOpenTag, anyCloseTag
+from xml.sax.saxutils import unescape as unescape
 
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
@@ -20,6 +22,8 @@ def spicyQuote(bot,trigger):
 
 
 def getQuote(query):
+	unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
+    stripper = (anyOpenTag | anyCloseTag).suppress()
     urlsuffix = 'http://spice.dussed.com/?'
     if query.isdigit():
         qNum = query
@@ -48,6 +52,7 @@ def getQuote(query):
         txt = soup.find('td',{'class':'body'}).text
         txt = txt.replace("&lt;","<")
         txt = txt.replace("&gt;",">")
+        txt = unescape_xml_entities(stripper.transformString(txt)))
     except:
         txt = "Invalid quote"
     quote = txt
