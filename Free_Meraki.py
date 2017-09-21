@@ -1,6 +1,6 @@
 import sopel.module
 
-@sopel.module.commands('meraki')
+@sopel.module.commands('meraki','freemeraki')
 def meraki(bot, trigger):
     bot.say('MX     https://meraki.cisco.com/tc/freemx')
     bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
