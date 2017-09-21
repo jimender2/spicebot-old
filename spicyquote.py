@@ -12,7 +12,7 @@ def spicyQuote(bot,trigger):
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
             if 'http://spice.dussed.com' in quote:
-                bot.say('That is a long quote! Here is the link: ' + url)
+                bot.say('That is a long quote! Here is the link: ' + quote)
             else:
                 bot.say(quote)
         else:
