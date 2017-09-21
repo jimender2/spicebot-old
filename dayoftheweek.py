@@ -68,7 +68,7 @@ def fridaybot(bot,trigger):
         bot.say("It's the Weekend. It should be better than Friday!")
     else:
         daysmath = int(fridaynumber) - int(whatistoday)
-        if daysmath == '1':
+        if daysmath == int('1'):
             bot.say("Unfortunately Friday is " + str(daysmath) + " day away. I'm sure we'll make it there!")
         else:
             bot.say("Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!")
