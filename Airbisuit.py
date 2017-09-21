@@ -1,5 +1,5 @@
 import sopel.module
 
-@sopel.module.commands('airbisuit')
-def airbisuit(bot,trigger):
+@sopel.module.commands('airbiscuit')
+def airbiscuit(bot,trigger):
     bot.say(trigger.nick + " floats an air biscuit.")
