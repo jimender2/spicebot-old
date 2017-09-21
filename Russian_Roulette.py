@@ -1,11 +1,3 @@
-"""
-roulette.py - Sopel Roulette Game Module
-Copyright 2010, Kenneth Sham
-Licensed under the Eiffel Forum License 2.
-
-http://sopel.chat
-"""
-
 from __future__ import print_function
 from sopel.module import commands, priority
 import random
