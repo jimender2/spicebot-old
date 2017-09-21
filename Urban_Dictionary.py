@@ -3,7 +3,6 @@ import re
 import urllib
 from sopel import module
 
-
 def format_defn(defn, num, max):
     lines = []
     pieces = re.split(r'\n+', defn['definition'])
@@ -11,7 +10,6 @@ def format_defn(defn, num, max):
     lines.extend(pieces)
     lines.append('Example: %s' % defn['example'].split('\n')[0])
     return lines
-
 
 def urban(bot, input):
     baseurl = 'http://api.urbandictionary.com/v0/'
