@@ -1,6 +1,6 @@
 import sopel.module
 
-@sopel.module.commands('pee','claim')
+@sopel.module.commands('pee','claim','urinate')
 def pee(bot, trigger):
     if not trigger.group(2):
         winner = "new user"
