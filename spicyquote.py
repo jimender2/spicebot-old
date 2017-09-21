@@ -11,8 +11,10 @@ def spicyQuote(bot,trigger):
     if query != "None":
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
-            #bot.say('Spicy quote #' + qNum + ' coming up!')
-            bot.say(quote)
+            if 'http://spice.dussed.com' in quote:
+                bot.say('That is a long quote! Here is the link: ' + url)
+            else:
+                bot.say(quote)
         else:
             bot.say('Could not find that quote!')
     else:
@@ -58,6 +60,10 @@ def getQuote(query):
         txt = unescape_xml_entities(stripper.transformString(txt))
     except:
         txt = "Invalid quote"
-    quote = txt
+    
+    if len(quote) > 200:
+        quote = url
+    else:
+        quote = txt
     return quote
 
