@@ -2,4 +2,4 @@ import sopel.module
 
 @sopel.module.commands('boat')
 def boat(bot,trigger):
-    bot.say(trigger.nick + " should buy a boat.")
+    bot.say(trigger.nick + ' should buy a boat.')
