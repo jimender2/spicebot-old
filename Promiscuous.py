@@ -1,4 +1,6 @@
 import sopel.module
+from random import random
+from random import randint
 
 @sopel.module.commands('sexbot','cockbot')
 def promiscuous(bot,trigger):
