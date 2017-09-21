@@ -31,7 +31,7 @@ def getSWContests(bot):
 	        bot.msg(channel, "Title: " + title)
 	        bot.msg(channel, "Link: " + link)
 
-@sopel.module.commands('swcontests')
+@sopel.module.commands('swcontests','spicecontests')
 def manualCheck(bot,trigger):
     url = 'https://community.spiceworks.com/feed/forum/1550.rss'
     ua = UserAgent()
