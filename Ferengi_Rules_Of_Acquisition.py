@@ -2,9 +2,10 @@ import sopel.module
 import random
 import urllib
 
+fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
+
 @sopel.module.commands('ferengi')
 def ferengi(bot, trigger):
-    fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
     if not trigger.group(2):
         myline = randomfra()
     else:
