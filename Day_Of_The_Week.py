@@ -5,7 +5,6 @@ import sys
 def daybot(bot,trigger):
     whichtrig = trigger.group(1)
     
-    #check if whichtrig ends with s
     if whichtrig.endswith('s'):
         whichtrig = whichtrig[:-1]
     
