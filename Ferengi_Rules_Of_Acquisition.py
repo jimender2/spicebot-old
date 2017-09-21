@@ -18,6 +18,6 @@ def ferengi(bot, trigger):
         except IndexError:
             myline= 'That doesnt appear to be a rule number.'
     
-    if myline == '':
+    if not myline:
         myline = 'There is no cannonized rule tied to this number.'
     bot.say(myline)
