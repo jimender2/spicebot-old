@@ -1,8 +1,3 @@
-"""
-duel.py - clone of a mIRC script to let users duel each other
-Copyright 2015 dgw
-"""
-
 from __future__ import division
 from sopel import module, tools
 import random
