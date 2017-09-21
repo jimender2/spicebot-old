@@ -14,9 +14,9 @@ def ferengi(bot, trigger):
         htmlfile=urllib.urlopen(fra)
         lines=htmlfile.readlines()
         try:
-            myline=lines[rulenumber-1]
+            myline = str(lines[rulenumber-1])
         except IndexError:
-            myline= 'That doesnt appear to be a rule number.'
+            myline = 'That doesnt appear to be a rule number.'
     
     if not myline:
         myline = 'There is no cannonized rule tied to this number.'
