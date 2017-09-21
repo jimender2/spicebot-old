@@ -8,7 +8,6 @@ def sayDadJoke(bot,trigger):
         bot.say(joke)
     else:
         bot.say('My humor module is broken.')
-        
 
 def getDadJoke():
     url = 'https://icanhazdadjoke.com'    
