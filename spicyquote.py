@@ -61,7 +61,7 @@ def getQuote(query):
     except:
         txt = "Invalid quote"
     
-    if len(quote) > 200:
+    if len(txt) > 200:
         quote = url
     else:
         quote = txt
