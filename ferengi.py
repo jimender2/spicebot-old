@@ -11,7 +11,7 @@ def ferengi(bot, trigger):
         myline=random.choice(lines)
     else:
         rulenumber = int(trigger.group(2))
-        htmlfile=urllib.urlopen(rulesurl)
+        htmlfile=urllib.urlopen(fra)
         lines=htmlfile.readlines()
         try:
             myline=lines[rulenumber-1]
