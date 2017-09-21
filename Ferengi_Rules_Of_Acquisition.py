@@ -3,6 +3,7 @@ import random
 import urllib
 
 fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
+rulenumber = int(trigger.group(2))
 
 @sopel.module.commands('ferengi')
 def ferengi(bot, trigger):
@@ -23,7 +24,6 @@ def randomfra():
 
 # rule number
 def specificrule():
-    rulenumber = int(trigger.group(2))
     htmlfile=urllib.urlopen(fra)
     lines=htmlfile.readlines()
     try:
