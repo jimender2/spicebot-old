@@ -7,7 +7,7 @@ def poop(bot, trigger):
     else:
         if trigger.group(2) = 'group':
             bot.say(trigger.nick + ', get your poop in a group.')
-        elif not trigger.group(2) == bot.nick"
+        elif not trigger.group(2) == bot.nick":
             if trigger.group(2) == 'all' or trigger.group(2) == 'everyone' or trigger.group(2) == 'everyones':
                 bot.say(trigger.nick + " poops on everyone's desk, one at a time!")
             else:
