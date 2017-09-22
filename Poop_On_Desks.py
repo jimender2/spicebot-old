@@ -4,7 +4,7 @@ import sopel.module
 def poop(bot, trigger):
     if not trigger.group(2):
         bot.say(trigger.nick + ' poops in the designated corner!')
-    elif not trigger.group(2) == bot.nick":
+    elif not trigger.group(2) == bot.nick:
         if trigger.group(2) = 'group':
             bot.say(trigger.nick + ', get your poop in a group.')
         elif trigger.group(2) == 'all' or trigger.group(2) == 'everyone' or trigger.group(2) == 'everyones':
