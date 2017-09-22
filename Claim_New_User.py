@@ -3,9 +3,9 @@ import sopel.module
 @sopel.module.commands('pee','claim','urinate')
 def pee(bot, trigger):
     if not trigger.group(2):
-        winner = "new user"
+        claimed = "new user"
     else:
-        winner = trigger.group(2).strip()
-    if not winner.lower() == bot.nick:
-        bot.say(trigger.nick + ' urinates on ' + winner + '!')
+        claimed = trigger.group(2).strip()
+    if not claimed == bot.nick:
+        bot.say(trigger.nick + ' urinates on ' + claimed + '!')
         bot.say('Claimed!')
