@@ -4,7 +4,7 @@ import sys
 from os.path import exists
 import fnmatch
 
-script_dir = os.path.dirname(__file__)
+dirpath = os.path.dirname(__file__)
 
 @sopel.module.commands('modulecount')
 def modulecount(bot,trigger):
