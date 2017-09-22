@@ -27,8 +27,8 @@ def getSWContests(bot):
                 title = titles[2].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
                 link = links[2].childNodes[0].nodeValue.split("?")[0]
-                bot.msg(channel, "A new Spiceworks Contest is available!")
-	        bot.msg(channel, "Title: " + title)
+                bot.msg(channel, "A new Spiceworks Contest is available!     Title: " + title)
+	        #bot.msg(channel, "Title: " + title)
 	        bot.msg(channel, "Link: " + link)
 
 @sopel.module.commands('swcontests','spicecontests')
