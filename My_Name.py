@@ -1,7 +1,11 @@
-from sopel import module
+import sopel.module
 
-botnick = bot.nick
+botnick = getbotnick()
 
+@sopel.module.commands(botnick)
 def name(bot,trigger):
     bot.say("That's my name. Don't wear it out!")
-devexcuse.commands = [botnick]
+
+def getbotnick(bot):
+    botnick = bot.nick
+    return botnick
