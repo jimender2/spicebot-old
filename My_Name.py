@@ -1,6 +1,6 @@
 import sopel.module
 
-botnick = getbotnick()
+botnick = getbotnick(bot)
 
 @sopel.module.commands(botnick)
 def name(bot,trigger):
