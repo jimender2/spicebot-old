@@ -6,7 +6,7 @@ def rules(bot, trigger):
         bot.say("Who/what are for suckers??")
     else:
         myline = trigger.group(2).strip()
-        if not myline.lower() == 'spicebot':
+        if not myline.lower() == bot.nick:
             if myline.endswith('s'):
                 bot.say(myline + ' are for suckers!!')
             else:
