@@ -6,10 +6,10 @@ import json
 def sayJoke(bot,trigger):
     joke = getJoke()
     if joke:
-        if trigger.group(2):
-            bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)
-        else:
+        if not trigger.group(2):
             bot.say(joke)
+        elif not trigger.group(2) == bot.nick:
+            bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
     else:
         bot.say('Please leave the mothers out of it.')
     
