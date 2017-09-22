@@ -6,6 +6,6 @@ def pee(bot, trigger):
         winner = "new user"
     else:
         winner = trigger.group(2).strip()
-    if not winner.lower() == 'spicebot':
+    if not winner.lower() == bot.nick:
         bot.say(trigger.nick + ' urinates on ' + winner + '!')
         bot.say('Claimed!')
