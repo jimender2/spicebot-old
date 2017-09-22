@@ -7,5 +7,4 @@ def pee(bot, trigger):
     else:
         claimed = trigger.group(2).strip()
     if not claimed == bot.nick:
-        bot.say(trigger.nick + ' urinates on ' + claimed + '!')
-        bot.say('Claimed!')
+        bot.say(trigger.nick + ' urinates on ' + claimed + '! Claimed!')
