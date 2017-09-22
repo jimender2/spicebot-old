@@ -4,5 +4,5 @@ import sopel.module
 def thump(bot, trigger):
     if not trigger.group(2):
         bot.say("Did you mean to thump somebody?")
-    else:
+    elif not trigger.group(2) == bot.nick:
         bot.action('thumps ' + trigger.group(2).strip() + ' on behalf of ' + trigger.nick)
