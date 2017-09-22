@@ -8,5 +8,5 @@ dirpath = os.path.dirname(__file__)
 
 @sopel.module.commands('modulecount')
 def modulecount(bot,trigger):
-    modulecount = len(fnmatch.filter(os.listdir(dirpath), '*.py'))
+    modulecount = str(len(fnmatch.filter(os.listdir(dirpath), '*.py')))
     bot.say('There are currently ' + modulecount +' custom modules installed.')
