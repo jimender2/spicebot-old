@@ -48,17 +48,17 @@ def manualCheck(bot,trigger):
             title = titles[2].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.say("A new Spiceworks Contest is available!")
-	    bot.say("Title: " + title)
+            bot.say("A new Spiceworks Contest is available!     Title: " + title)
+	    #bot.say("Title: " + title)
 	    bot.say("Link: " + link)
 	else:	    
 	    links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
-	    bot.say("No new contests are available at this time!")
-	    bot.say("Here is the link to the latest contest: " + link)
+	    bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
+	    #bot.say("Here is the link to the latest contest: " + link)
     else:
 	bot.say("Unable to reach the Spiceworks Contest Page.")
-    bot.say("Here is the link to the Contests Page:     https://community.spiceworks.com/fun/contests")
+    #bot.say("Here is the link to the Contests Page:     https://community.spiceworks.com/fun/contests")
 
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
