@@ -1,5 +1,4 @@
 import sopel.module
-from __future__ import print_function
 from sopel.module import rule, event, commands, example, OP
 from collections import deque
 
