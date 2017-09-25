@@ -32,5 +32,5 @@ def optestb(bot,trigger):
 
 @sopel.module.commands('optestc')
 def optestc(bot,trigger):
-    if trigger.group(4)
+    if trigger.group(4):
         bot.say('hello op')
