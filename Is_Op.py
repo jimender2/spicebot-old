@@ -1,4 +1,5 @@
 import sopel.module
+from sopel.module import OP
 
 @sopel.module.commands('isop')
 def optest(bot,trigger):
