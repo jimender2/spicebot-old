@@ -28,4 +28,4 @@ def getMembers(bot,trigger):
 @sopel.module.commands('optestb')
 def optestb(bot,trigger):
     for channel in bot.channels:
-        bot.say(ops)
+        bot.say(OP)
