@@ -1,5 +1,7 @@
 from sopel import module
 
+@sopel.module.rate(120)
+
 def matrix(bot, input):
     bot.say('You have two choices. .redpill Or .bluepill')
 matrix.commands = ['matrix']
