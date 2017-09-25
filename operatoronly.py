@@ -1,5 +1,6 @@
 import sopel.module
 from sopel.module import rule, event, commands, example, OP
+from sopel.tools.target import User, Channel
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
