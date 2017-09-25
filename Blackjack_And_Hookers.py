@@ -1,5 +1,6 @@
 import sopel.module
 
+@sopel.module.rate(120)
 @sopel.module.commands('myown')
 def bender(bot,trigger):
     if trigger.group(2):
