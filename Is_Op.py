@@ -7,7 +7,7 @@ def isop(bot,trigger):
     if not trigger.group(2):
         nick = trigger.nick
     else:
-        nick = trigger.group(2) + " "
+        nick = trigger.group(2)
     if bot.privileges[trigger.sender][nick] == OP:
         bot.say(nick + ' is an op.')        
     else: 
