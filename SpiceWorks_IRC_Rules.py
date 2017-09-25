@@ -3,6 +3,7 @@ import urllib
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
+@sopel.module.rate(120)
 @sopel.module.commands('rules','rule')
 def rules(bot, trigger):
     if not trigger.group(2):
