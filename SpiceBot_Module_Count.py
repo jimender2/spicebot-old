@@ -6,6 +6,7 @@ import fnmatch
 
 dirpath = os.path.dirname(__file__)
 
+@sopel.module.rate(120)
 @sopel.module.commands('modulecount')
 def modulecount(bot,trigger):
     modulecount = str(len(fnmatch.filter(os.listdir(dirpath), '*.py')))
