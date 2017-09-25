@@ -2,6 +2,7 @@ from sopel import module
 from random import random
 from random import randint
 
+@sopel.module.rate(120)
 def points(bot, trigger):
     whichtrig = trigger.group(1)    
     rando = randint(1, 666)
