@@ -10,7 +10,7 @@ def optest(bot,trigger):
         elif bot.privileges[trigger.sender][trigger.nick] < OP:
             bot.say(trigger.nick + ', you are not op.')
     else:
-        if trigger.group(2) in bot.channels[trigger.sender].users:
+        if trigger.group(2) in bot.channels:
             if bot.privileges[trigger.sender][trigger.group(2)] == OP:
                 bot.say(trigger.group(2) + ' is op.')
             elif bot.privileges[trigger.sender][trigger.group(2)] < OP:
