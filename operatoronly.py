@@ -5,5 +5,7 @@ from sopel.module import commands, example, OP
 def optest(bot,trigger):
     if str(trigger.nick) == str(OP):
         bot.say('you are op')
+    elif not str(trigger.nick) == str(OP):
+        bot.say('you are not op')
     else:
-        bot.say("you are not op")
+        bot.say("this does not work")
