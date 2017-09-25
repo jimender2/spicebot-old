@@ -5,7 +5,7 @@ from sopel.tools.target import User, Channel
 @sopel.module.commands('isop')
 def isop(bot,trigger):
     if not trigger.group(2):
-        nick = trigger.nick.strip()
+        nick = trigger.nick
     else:
         nick = trigger.group(2) + " "
     if bot.privileges[trigger.sender][nick] == OP:
