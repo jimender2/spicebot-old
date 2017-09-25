@@ -1,5 +1,6 @@
 import sopel.module
 
+@sopel.module.rate(120)
 @sopel.module.commands('trust')
 def trust(bot,trigger):
     if  not trigger.group(2):
