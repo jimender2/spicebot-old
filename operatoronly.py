@@ -1,4 +1,5 @@
 import sopel.module
+from sopel.module import commands, example, OP
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
