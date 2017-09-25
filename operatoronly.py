@@ -3,9 +3,9 @@ from sopel.module import rule, event, commands, example, OP
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
-    if trigger.nick == OP:
+    if bot.privileges[trigger.sender] == OP:
         bot.say('you are op')
-    elif not trigger.nick == OP:
+    elif not bot.privileges[trigger.sender] == OP:
         bot.say('you are not op')
     else:
         bot.say("this does not work")
