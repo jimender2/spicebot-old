@@ -2,6 +2,7 @@ import sopel.module
 import requests
 import json
 
+@sopel.module.rate(120)
 @sopel.module.commands('isitaholiday')
 def isitaholiday(bot,trigger):
     holiday = getholiday()
