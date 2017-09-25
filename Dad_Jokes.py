@@ -1,6 +1,7 @@
 import sopel.module
 import requests
 
+@sopel.module.rate(120)
 @sopel.module.commands('dad','dadjoke')
 def sayDadJoke(bot,trigger):
     joke = getDadJoke()
