@@ -6,10 +6,12 @@ from sopel.tools.target import User, Channel
 def isop(bot,trigger):
     if not trigger.group(2):
         nick = trigger.nick
+        bot.say(nick)
     else:
         nick = trigger.group(2)
+        bot.say(nick)
     if bot.privileges[trigger.sender][nick] == OP:
-        bot.say(nick + ' is an op.')
+        bot.say(nick + ' is an op.')        
     else: 
         bot.say(nick + ' is not an op.')
         #if bot.privileges[trigger.sender][trigger.nick] == OP:
