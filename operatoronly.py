@@ -29,3 +29,8 @@ def getMembers(bot,trigger):
 def optestb(bot,trigger):
     for channel in bot.channels:
         bot.say(str(OP))
+
+@sopel.module.commands('optestc')
+def optestc(bot,trigger):
+    if trigger.group(4)
+        bot.say('hello op')
