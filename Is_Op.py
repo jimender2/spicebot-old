@@ -1,5 +1,6 @@
 import sopel.module
-from sopel.module import OP, Channel
+from sopel.module import OP
+from sopel.tools.target import User, Channel
 
 @sopel.module.commands('isop')
 def optest(bot,trigger):
