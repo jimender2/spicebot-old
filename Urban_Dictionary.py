@@ -1,6 +1,7 @@
 import json
 import re
 import urllib
+import sopel.module
 from sopel import module
 
 @sopel.module.rate(120)
