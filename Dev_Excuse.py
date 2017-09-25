@@ -2,6 +2,7 @@ import urllib
 from xml.dom.minidom import parseString
 from sopel import module
 
+@sopel.module.rate(120)
 def devexcuse(bot, input):
     bot.say(parseString(
         urllib.urlopen('http://developerexcuses.com').read().replace('&', '')).
