@@ -1,5 +1,5 @@
 import sopel.module
-from sopel.module import bot.nick
+from sopel.module import nick
 
 @sopel.module.rate(120)
 @sopel.module.commands(bot.nick)
