@@ -1,8 +1,9 @@
-from sopel import module
+import sopel.module
 import datetime
 import sys
 
 @sopel.module.rate(120)
+@sopel.module.commands('monday','mondays','fuckmonday','fuckmondays','tuesday','tuesdays','fucktuesday','fucktuesdays','wednesday','wednesdays','fuckwednesday','fuckwednesdays','thursday','thursdays','fuckthursday','fuckthursdays','friday','fridays','fuckfriday','fuckfridays','saterday','saterdays','fucksaturday','fucksaturdays','sunday','sundays','fucksunday','fucksundays')
 def daybot(bot,trigger):
     whichtrig = trigger.group(1)
     
@@ -57,4 +58,3 @@ def daybot(bot,trigger):
             bot.say("Today is " + today + ", what about it?")
         else:
             bot.say(whichtrigday + ", what about it?")
-daybot.commands = ['monday','mondays','fuckmonday','fuckmondays','tuesday','tuesdays','fucktuesday','fucktuesdays','wednesday','wednesdays','fuckwednesday','fuckwednesdays','thursday','thursdays','fuckthursday','fuckthursdays','friday','fridays','fuckfriday','fuckfridays','saterday','saterdays','fucksaturday','fucksaturdays','sunday','sundays','fucksunday','fucksundays']
