@@ -5,6 +5,7 @@ from random import randint
 from pyparsing import anyOpenTag, anyCloseTag
 from xml.sax.saxutils import unescape as unescape
 
+@sopel.module.rate(120)
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
     query = str(trigger.group(2))
