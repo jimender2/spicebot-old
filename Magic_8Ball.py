@@ -1,6 +1,7 @@
 import sopel
 import random
 
+@sopel.module.rate(120)
 @sopel.module.commands('8ball')
 def ball(bot, trigger):
     bot.say("Let me dig deep into the waters of life, and find your answer")
