@@ -3,6 +3,7 @@ import requests
 from lxml import html
 from fake_useragent import UserAgent
 
+@sopel.module.rate(120)
 @sopel.module.commands('packt')
 def packt(bot, trigger):
     title = getPacktTitle()
