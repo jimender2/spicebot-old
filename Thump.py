@@ -1,5 +1,6 @@
 import sopel.module
 
+@sopel.module.rate(120)
 @sopel.module.commands('thump','thumps')
 def thump(bot, trigger):
     if not trigger.group(2):
