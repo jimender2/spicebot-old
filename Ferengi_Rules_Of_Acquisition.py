@@ -4,6 +4,7 @@ import urllib
 
 fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
 
+@sopel.module.rate(120)
 @sopel.module.commands('ferengi')
 def ferengi(bot, trigger):
     if not trigger.group(2):
