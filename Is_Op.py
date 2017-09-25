@@ -4,8 +4,6 @@ from sopel.module import OP
 @sopel.module.commands('isop')
 def optest(bot,trigger):
     if bot.privileges[trigger.sender][trigger.nick] == OP:
-        bot.say('you are op')
+        bot.say(trigger.nick + ', you are op.')
     elif bot.privileges[trigger.sender][trigger.nick] < OP:
-        bot.say('you are not op')
-    else:
-        bot.say("this does not work")
+        bot.say(trigger.nick + ', you are not op.')
