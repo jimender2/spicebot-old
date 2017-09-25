@@ -2,6 +2,7 @@ from sopel import module
 import datetime
 import sys
 
+@sopel.module.rate(120)
 def daybot(bot,trigger):
     whichtrig = trigger.group(1)
     
