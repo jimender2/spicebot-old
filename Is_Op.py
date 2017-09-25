@@ -2,7 +2,7 @@ import sopel.module
 from sopel.module import OP
 
 @sopel.module.commands('isop')
-def optest(bot,trigger):
+def optest(bot,trigger,channel):
     if not trigger.group(2):
         if bot.privileges[trigger.sender][trigger.nick] == OP:
             bot.say(trigger.nick + ', you are op.')
