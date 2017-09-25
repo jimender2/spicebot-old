@@ -2,6 +2,7 @@ from sopel import module
 import datetime
 import sys
 
+@sopel.module.rate(120)
 def fridaybot(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     fridaynumber = '4'
