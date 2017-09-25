@@ -9,9 +9,9 @@ def isop(bot,trigger):
     else:
         nick = trigger.group(2)
     if bot.privileges[trigger.sender][nick] == OP:
-        bot.say(trigger.nick + ', is an op.')
+        bot.say(nick + ' is an op.')
     else: 
-        bot.say(trigger.nick + ', is not an op.')
+        bot.say(nick + ' is not an op.')
         #if bot.privileges[trigger.sender][trigger.nick] == OP:
          #   bot.say(trigger.nick + ', you are op.')
         #elif bot.privileges[trigger.sender][trigger.nick] < OP:
