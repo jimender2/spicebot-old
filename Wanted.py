@@ -2,6 +2,7 @@ import sopel.module
 from random import random
 from random import randint
 
+@sopel.module.rate(120)
 @sopel.module.commands('wanted')
 def wanted(bot,trigger):
     rando = randint(2, 50)
