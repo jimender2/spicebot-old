@@ -1,8 +1,9 @@
-from sopel import module
+import sopel.module
 import datetime
 import sys
 
 @sopel.module.rate(120)
+@sopel.module.commands('humpday')
 def humpdaybot(bot,trigger):
     whatistoday = str(datetime.datetime.today().weekday())        
     wednesdaynumber = '2'
@@ -10,4 +11,3 @@ def humpdaybot(bot,trigger):
         bot.say("Today is Wednesday, AKA HUMPDAY!!!!")
     else:
         bot.say("Today is not humpday.")
-humpdaybot.commands = ['humpday']
