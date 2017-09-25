@@ -23,3 +23,9 @@ def getMembers(bot,trigger):
     #randno = randint(0,len(userlist))
     #randUser = userlist[randno]
     #bot.say('Here is a randomly picked user: ' + randUser)
+
+    
+@sopel.module.commands('optestb')
+def optestb(bot,trigger):
+    for channel in bot.channels:
+        bot.say(ops)
