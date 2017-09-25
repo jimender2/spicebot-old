@@ -4,9 +4,9 @@ from sopel.tools.target import User, Channel
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
-    if trigger.nick in bot.channels[trigger.sender].ops:
+    if trigger.nick.ops:
         bot.say('you are op')
-    elif trigger.nick not in bot.channels[trigger.sender].ops:
+    elif not trigger.nick.ops:
         bot.say('you are not op')
     else:
         bot.say("this does not work")
