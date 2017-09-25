@@ -3,9 +3,9 @@ from sopel.module import rule, event, commands, example, OP
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
-    if bot.privileges[trigger.sender] == OP:
+    if target.lower() in bot.privileges[channel.ops()]:
         bot.say('you are op')
-    elif not bot.privileges[trigger.sender] == OP:
+    elif target.lower() not in bot.privileges[channel.ops()]:
         bot.say('you are not op')
     else:
         bot.say("this does not work")
