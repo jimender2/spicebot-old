@@ -2,6 +2,7 @@ import sopel.module
 import requests
 import json
 
+@sopel.module.rate(120)
 @sopel.module.commands('urmom')
 def sayJoke(bot,trigger):
     joke = getJoke()
