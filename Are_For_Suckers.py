@@ -1,5 +1,6 @@
 import sopel.module
 
+@sopel.module.rate(120)
 @sopel.module.commands('sucker','suckers')
 def rules(bot, trigger):
     if not trigger.group(2):
