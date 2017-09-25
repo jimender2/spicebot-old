@@ -1,5 +1,6 @@
 import sopel.module
 
+@sopel.module.rate(120)
 @sopel.module.commands('asimov')
 def asimov(bot, trigger):
     bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
