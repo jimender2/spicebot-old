@@ -3,6 +3,8 @@ import re
 import urllib
 from sopel import module
 
+@sopel.module.rate(120)
+
 def format_defn(defn, num, max):
     lines = []
     pieces = re.split(r'\n+', defn['definition'])
