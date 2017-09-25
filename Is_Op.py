@@ -8,16 +8,10 @@ def isop(bot,trigger):
         nick = trigger.nick.lower()
     else:
         nick = trigger.group(2).lower()
-    if bot.privileges[trigger.sender][nick] == OP:
-        bot.say(nick + ' is an op.')        
-    else: 
-        bot.say(nick + ' is not an op.')
-        #if bot.privileges[trigger.sender][trigger.nick] == OP:
-         #   bot.say(trigger.nick + ', you are op.')
-        #elif bot.privileges[trigger.sender][trigger.nick] < OP:
-         #   bot.say(trigger.nick + ', you are not op.')
-    #else:
-       # if bot.privileges[trigger.sender][trigger.group(2)] == OP:
-        #    bot.say(trigger.group(2) + ' is op.')
-        #elif bot.privileges[trigger.sender][trigger.group(2)] < OP:
-         #   bot.say(trigger.group(2).strip() + ' is not op.')
+    try:    
+        if bot.privileges[trigger.sender][nick] == OP:
+            bot.say(nick + ' is an op.')
+        else: 
+            bot.say(nick + ' is not an op.')
+    except KeyError:
+        bot.say(nick + ' is not here right now!')
