@@ -4,9 +4,9 @@ from collections import deque
 
 @sopel.module.commands('optest')
 def optest(bot,trigger):
-    if trigger.isop:
+    if trigger.privileges == OP:
         bot.say('you are op')
-    elif not trigger.isop:
+    elif not trigger.privileges == OP:
         bot.say('you are not op')
     else:
         bot.say("this does not work")
