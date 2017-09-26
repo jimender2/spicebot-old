@@ -13,15 +13,15 @@ def packt(bot, trigger):
 
 @sopel.module.interval(60)
 def getpackt(bot):
-    now = datetime.datetime.now()
-    bot.say(now)
-    packttimea = now.replace(hour=2, minute=16, second=0, microsecond=0)
-    packttimeb = now.replace(hour=2, minute=17, second=0, microsecond=0)
     for channel in bot.channels:
-        if now > packttimea and now < packttimeb:
+        now = datetime.datetime.now()
+        bot.say(testing)
+        if now.hour == 14 and now.minute == 26:
             title = getPacktTitle()
             bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.say("Today's free book is: " + title)
+        else:
+            bot.say(now + ' is not time')
 
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
