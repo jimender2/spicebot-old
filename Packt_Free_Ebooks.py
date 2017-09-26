@@ -15,13 +15,13 @@ def packt(bot, trigger):
 def getpackt(bot):
     for channel in bot.channels:
         now = datetime.datetime.now()
-        bot.msg(channel, 'testing')
-        if now.hour == 14 and now.minute == 34:
+        bot.msg(channel, str(now.hour) + str(now.minute))
+        if now.hour == 14 and now.minute == 38:
             title = getPacktTitle()
             bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Today's free book is: " + str(title))
         else:
-            bot.msg(channel, ' is not time')
+            bot.msg(channel, ' it is not time')
 
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
