@@ -13,7 +13,7 @@ def thanks(bot,trigger):
     if gif:
         bot.say(gif)
     else:
-        bot.say('You're welcome!')
+        bot.say('You\'re welcome!')
 
 
 def yourewelcome():
