@@ -8,7 +8,8 @@ import datetime
 @sopel.module.commands('packt')
 def packt(bot, trigger):
     title = getPacktTitle()
-    bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
+    packttimediff = getpackttimediff()
+    bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning   Time Left:' + packttimediff + ' hours remaining')
     bot.say("Today's free book is: " + title)
 
 # new book is 7pm EDT, 11:00 PM UTC
@@ -16,8 +17,7 @@ def packt(bot, trigger):
 def getpackt(bot):
     for channel in bot.channels:
         now = datetime.datetime.now()
-        #if now.hour == 11 and now.minute == 05:
-        if now.hour == 15 and now.minute == 10:
+        if now.hour == 19 and now.minute == 05:
             title = getPacktTitle()
             bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Today's free book is: " + str(title))
@@ -39,10 +39,12 @@ def getPacktTitle():
                 title = 'Could not get Title. The status code was : ' + page.status_code
         return title
 
-#def packttimediff():
-    #now = datetime.datetime.now('UTC')
-    #packthour = '11'
-    #packtminute = '00'
-    #if now.hour < packthour:
-        #hourcompare = int(packthour) - int(now.hour)
-        #minutecompare = int(packtminute) - int(now.hour)
+def getpackttimediff():
+    now = datetime.datetime.now('UTC')
+    packthour = '11'
+    if now.hour < packthour:
+        hourcompare = int(packthour) - int(now.hour)
+    else:
+        hourcomparea = 24 - int(now.hour)
+        hourcompare = int(hourcomparea) + int(packthour)  
+    return packttimediff
