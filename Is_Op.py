@@ -22,5 +22,5 @@ def getpriv(bot,trigger):
         nick = trigger.nick.lower()
     else:
         nick = trigger.group(2).lower()
-    priv = bot.privileges[bot][nick]
+    priv = bot.privileges[trigger.sender][nick]
     bot.say(priv)
