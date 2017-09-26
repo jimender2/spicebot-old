@@ -17,7 +17,7 @@ def getpackt(bot):
     for channel in bot.channels:
         now = datetime.datetime.now('EDT')
         #if now.hour == 11 and now.minute == 05:
-        if now.hour == 15 and now.minute == 00:
+        if now.hour == 15 and now.minute == 07:
             title = getPacktTitle()
             bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Today's free book is: " + str(title))
@@ -38,3 +38,11 @@ def getPacktTitle():
         else:
                 title = 'Could not get Title. The status code was : ' + page.status_code
         return title
+
+#def packttimediff():
+    #now = datetime.datetime.now('UTC')
+    #packthour = '11'
+    #packtminute = '00'
+    #if now.hour < packthour:
+        #hourcompare = int(packthour) - int(now.hour)
+        #minutecompare = int(packtminute) - int(now.hour)
