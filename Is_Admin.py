@@ -15,3 +15,8 @@ def isadmin(bot,trigger):
             bot.say(nick + ' is not an admin.')
     except KeyError:
         bot.say(nick + ' is not here right now!')
+
+@sopel.module.commands('getpriv')
+def getpriv(bot,trigger):
+    for p in bot.privileges:
+        bot.say(c)
