@@ -10,5 +10,7 @@ def meraki(bot, trigger):
             bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
         if trigger.group(2) == 'ap':
             bot.say('AP     https://meraki.cisco.com/tc/freeap')
+        else:
+            bot.say('Please specify which product. Choices are MX , AP , or switch .')
     else:
         bot.say('Please specify which product. Choices are MX , AP , or switch .')
