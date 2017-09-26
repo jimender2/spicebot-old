@@ -19,4 +19,4 @@ def isadmin(bot,trigger):
 @sopel.module.commands('getpriv')
 def getpriv(bot,trigger):
     for p in bot.privileges:
-        bot.say(c)
+        bot.say(p)
