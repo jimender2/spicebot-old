@@ -17,10 +17,10 @@ def isop(bot,trigger):
         bot.say(nick + ' is not here right now!')
 
 @sopel.module.commands('getpriv')
-def getpriv(bot,trigger):
+def getpriv(bot,trigger,channel):
     if not trigger.group(2):
         nick = trigger.nick.lower()
     else:
         nick = trigger.group(2).lower()
     priv = bot.privileges[channel][nick]
-        
+    bot.say(priv)
