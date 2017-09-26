@@ -19,7 +19,7 @@ def points(bot, trigger):
 
 @sopel.module.rate(120)
 @sopel.module.commands('takepoints','takepants')
-def points(bot, trigger):   
+def takepoints(bot, trigger):   
     rando = randint(1, 666)
     if not trigger.group(2):
         winner = "Everybody"
