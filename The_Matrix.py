@@ -2,7 +2,7 @@ import sopel.module
 
 @sopel.module.rate(120)
 @sopel.module.commands('matrix') 
-def matrix(bot, input):
+def matrix(bot, trigger):
     if trigger.group(2):
         if trigger.group(2) == 'redpill':
             bot.say('You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.')
