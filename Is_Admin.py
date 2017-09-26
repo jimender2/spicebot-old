@@ -18,5 +18,5 @@ def isadmin(bot,trigger):
 
 @sopel.module.commands('getpriv')
 def getpriv(bot,trigger):
-    channel_privs = str(ot.privileges[trigger.sender])
+    channel_privs = str(bot.privileges[trigger.sender])
     bot.say(channel_privs)
