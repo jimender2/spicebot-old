@@ -1,5 +1,5 @@
 import sopel.module
-from sopel.module import ADMIN
+from sopel.module import admin
 from sopel.tools.target import User, Channel
 
 @sopel.module.commands('isadmin')
