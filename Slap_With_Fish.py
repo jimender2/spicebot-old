@@ -5,4 +5,4 @@ import sopel.module
 def slapwithfish(bot,trigger):
     if trigger.group(2):
         if not trigger.group(2) == bot.nick:
-            bot.say(trigger.nick + " slaps " + trigger.group(2) + " with a fish.")
+            bot.say(trigger.nick + " slaps " + trigger.group(2).strip() + " with a fish.")
