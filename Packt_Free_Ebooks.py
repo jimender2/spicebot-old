@@ -66,19 +66,19 @@ def getpackttimediff():
         hourcompare = str(hourcompare)
         minutecompare = str(60 - int(now.minute))
     
-    if hourcompare > 1:
-        hours = hourcompare + ' ' + 'hours'
+    if hourcompare == 1:
+        hours = hourcompare + ' ' + 'hour'
     elif hourcompare == 0:
         hours = ''
     else:
-        hours = hourcompare + ' ' + 'hour'   
+        hours = hourcompare + ' ' + 'hours'   
     
-    if minutecompare > 1:
-        minutes = minutecompare + ' ' + 'minutes'
+    if minutecompare == 1:
+        minutes = minutecompare + ' ' + 'minute'
     elif minutecompare == 0:
         minutes = ''
     else:
-        minutes = minutecompare + ' ' + 'minute'       
+        minutes = minutecompare + ' ' + 'minutes'       
     
     packttimedifffull = str(hours) + ' ' + str(minutes)
     packttimediff = str(packttimedifffull)
