@@ -4,6 +4,7 @@ from lxml import html
 from fake_useragent import UserAgent
 import time
 import datetime
+from datetime import datetime
 
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
