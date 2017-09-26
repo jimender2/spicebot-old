@@ -58,9 +58,15 @@ def getpackttimediff():
         hourcomparea = 24 - int(now.hour)
         packttimediff = int(hourcomparea) + int(packthour)
     
-    if int(now.minute) > 1:
-        packtminutediff = str(60 - int(now.minute))
-        packttimediff = str(int(packttimediff) - 1) + ' hours ' + packtminutediff + ' minutes.'
+    if int(now.minute) > 0:
+        packtminutediff = str(60 - int(now.minute)) + ' minutes'
+        packttimehourdiff = str(int(packttimediff) - 1)
+        if packttimehourdiff == '1'
+            packttimediff = str(packttimehourdiff) + ' hour ' + str(packtminutediff)
+        elif packttimehourdiff == '0':
+            packttimediff = packtminutediff
+        else:
+            packttimediff = str(int(packttimediff) - 1) + ' hours ' + str(packtminutediff)
     else:
         packttimediff = str(int(packttimediff)) + ' hours '
     return packttimediff
