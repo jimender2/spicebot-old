@@ -9,7 +9,6 @@ import datetime
 def packt(bot, trigger):
     title = getPacktTitle()
     packttimediff = getpackttimediff()
-    #bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
     bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 # new book is 23:00 UTC
@@ -20,7 +19,6 @@ def getpackt(bot):
         if now.hour == 23 and now.minute == 10:
             title = getPacktTitle()
             packttimediff = getpackttimediff()
-            #bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
