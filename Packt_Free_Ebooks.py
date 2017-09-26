@@ -53,7 +53,7 @@ def getpackttimediff():
     now = datetime.datetime.utcnow()
     packthour = str(23)
     
-    if now.hour < packthour:
+    if int(now.hour) < int(packthour):
         hourcompare = str(int(packthour) - int(now.hour))
     else:
         hourcompare = str(24)
