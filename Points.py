@@ -19,15 +19,14 @@ def points(bot, trigger):
 
 @sopel.module.rate(120)
 @sopel.module.commands('takepoints','takepants')
-def points(bot, trigger):
-    whichtrig = trigger.group(1)    
+def points(bot, trigger):   
     rando = randint(1, 666)
     if not trigger.group(2):
         winner = "Everybody"
     else:
         winner = trigger.group(2).strip()
-    randopoints = ('loses ' + str(rando) + ' ' + whichtrig)
+    randopoints = ('loses ' + str(rando) + ' points')
     if winner == trigger.nick:
-        bot.say('You can\'t take your own ' + whichtrig + ' away!')
+        bot.say('You can\'t take your own points away!')
     else:
-        bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
+        bot.say(winner + ' ' + randopoints)
