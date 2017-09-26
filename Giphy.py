@@ -15,9 +15,9 @@ def gif(bot,trigger):
         if gif:
             bot.say(gif)
         else:
-            bot.say('Hmm...Couldn't find a gif for that!')
+            bot.say('Hmm...Couldn\'t find a gif for that!')
     else:
-        bot.say('Tell me what you're looking for!')
+        bot.say('Tell me what you\'re looking for!')
 
 
 def getGif(query):
