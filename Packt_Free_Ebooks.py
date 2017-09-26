@@ -52,21 +52,34 @@ def getPacktTitle():
 def getpackttimediff():
     now = datetime.datetime.utcnow()
     packthour = '23'
+    
     if now.hour < packthour:
-        packttimediff = int(packthour) - int(now.hour)
+        hourcompare = int(packthour) - int(now.hour)
     else:
-        hourcomparea = 24 - int(now.hour)
-        packttimediff = int(hourcomparea) + int(packthour)
+        hourcomparea = str(24 - int(now.hour))
+        hourcompare = str(int(hourcomparea) + int(packthour))
     
     if int(now.minute) > 0:
-        packtminutediff = str(60 - int(now.minute)) + ' minutes'
-        packttimehourdiff = str(int(packttimediff) - 1)
-        if packttimehourdiff == '1':
-            packttimediff = str(packttimehourdiff) + ' hour ' + str(packtminutediff)
-        elif packttimehourdiff == '0':
-            packttimediff = packtminutediff
-        else:
-            packttimediff = str(int(packttimediff) - 1) + ' hours ' + str(packtminutediff)
+        hourcompare = str(int(hourcompare) - 1)
+        minutecompare = str(60 - int(now.minute))
     else:
-        packttimediff = str(int(packttimediff)) + ' hours '
+        hourcompare = str(hourcompare)
+        minutecompare = str(60 - int(now.minute))
+    
+    if hourcompare > 1:
+        hours = hourcompare + ' ' + 'hours'
+    elif hourcompare == 0:
+        hours = ''
+    else:
+        hours = hourcompare + ' ' + 'hour'   
+    
+    if minutecompare > 1:
+        minutes = minutecompare + ' ' + 'minutes'
+    elif minutecompare == 0:
+        minutes = ''
+    else:
+        minutes = minutecompare + ' ' + 'minute'       
+    
+    packttimedifffull = str(hours) + ' ' + str(minutes)
+    packttimediff = str(packttimedifffull)
     return packttimediff
