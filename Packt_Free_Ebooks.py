@@ -59,23 +59,23 @@ def getpackttimediff():
         hourcomparea = str(24 - int(now.hour))
         hourcompare = str(int(hourcomparea) + int(packthour))
     
-    if int(now.minute) > 0:
+    if int(now.minute) > '0':
         hourcompare = str(int(hourcompare) - 1)
         minutecompare = str(60 - int(now.minute))
     else:
         hourcompare = str(hourcompare)
         minutecompare = str(60 - int(now.minute))
     
-    if hourcompare == 1:
+    if hourcompare == '1':
         hours = hourcompare + ' ' + 'hour'
-    elif hourcompare == 0:
+    elif hourcompare == '0':
         hours = ''
     else:
         hours = hourcompare + ' ' + 'hours'   
     
-    if minutecompare == 1:
+    if minutecompare == '1':
         minutes = minutecompare + ' ' + 'minute'
-    elif minutecompare == 0:
+    elif minutecompare == '0':
         minutes = ''
     else:
         minutes = minutecompare + ' ' + 'minutes'       
