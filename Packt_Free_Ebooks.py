@@ -7,10 +7,14 @@ import datetime
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
 def packt(bot, trigger):
-    title = getPacktTitle()
     packttimediff = getpackttimediff()
-    bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-
+    if not trigger.group(2):
+        title = getPacktTitle()
+        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+    else:
+        if trigger.group(2) == time
+            bot.say('Time Left: ' + str(packttimediff))
+        
 # new book is 23:00 UTC
 @sopel.module.interval(60)
 def getpackt(bot):
