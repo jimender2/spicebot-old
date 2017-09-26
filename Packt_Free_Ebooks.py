@@ -12,7 +12,7 @@ def packt(bot, trigger):
         title = getPacktTitle()
         bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
     else:
-        if trigger.group(2) == time:
+        if trigger.group(2) == 'time':
             bot.say('Time Left: ' + str(packttimediff))
         else:
             bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
