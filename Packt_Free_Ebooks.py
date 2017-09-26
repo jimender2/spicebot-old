@@ -13,6 +13,8 @@ def packt(bot, trigger):
             bot.say('Time Left: ' + str(packttimediff))
         else:
             normalrun='true'
+    else:
+        normalrun='true'
     if normalrun:
         title = getPacktTitle()
         bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
