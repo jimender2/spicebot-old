@@ -16,8 +16,8 @@ def packt(bot, trigger):
 @sopel.module.interval(60)
 def getpackt(bot):
     for channel in bot.channels:
-        now = datetime.datetime.now()
-        if now.hour == 19 and now.minute == 10:
+        now = datetime.datetime.utcnow()
+        if now.hour == 23 and now.minute == 10:
             title = getPacktTitle()
             bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Today's free book is: " + str(title))
@@ -40,7 +40,7 @@ def getPacktTitle():
         return title
 
 def getpackttimediff():
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     packthour = '11'
     if now.hour < packthour:
         packttimediff = int(packthour) - int(now.hour)
