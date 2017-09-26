@@ -9,7 +9,7 @@ def isadmin(bot,trigger):
     else:
         nick = trigger.group(2).lower()
     try:    
-        if bot.privileges[trigger.sender][nick].admin:
+        if bot.privileges[trigger.sender][nick]:
             bot.say(nick + ' is an admin.')
         else: 
             bot.say(nick + ' is not an admin.')
@@ -18,5 +18,9 @@ def isadmin(bot,trigger):
 
 @sopel.module.commands('getpriv')
 def getpriv(bot,trigger):
-    channel_privs = str(bot.privileges[trigger.sender])
+    if not trigger.group(2):
+        nick = trigger.nick.lower()
+    else:
+        nick = trigger.group(2).lower()
+    channel_privs = str(bot.privileges[trigger.sender][nick])
     bot.say(channel_privs)
