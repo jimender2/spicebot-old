@@ -3,6 +3,7 @@ import requests
 from lxml import html
 from fake_useragent import UserAgent
 import time
+import datetime
 
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
@@ -16,7 +17,7 @@ def getpackt(bot):
     now = datetime.now()
     now_time = now.time()
     for channel in bot.channels:
-        if now_time == time(13,50):
+        if now_time == time(13,53):
             title = getPacktTitle()
             bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.say("Today's free book is: " + title)
