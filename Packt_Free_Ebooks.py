@@ -4,6 +4,19 @@ from lxml import html
 from fake_useragent import UserAgent
 import datetime
 
+# new book is 23:00 UTC
+packthour = str(23)
+packtminute = str(10)
+
+@sopel.module.interval(60)
+def getpackt(bot):
+    for channel in bot.channels:
+        now = datetime.datetime.utcnow()
+        if now.hour == int(packthour) and now.minute == int(packtminute):
+            title = getPacktTitle()
+            packttimediff = getpackttimediff()
+            bot.msg(channel, "Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
 def packt(bot, trigger):
@@ -21,16 +34,6 @@ def packt(bot, trigger):
             bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
     except UnboundLocalError:
         return
-
-# new book is 23:00 UTC
-@sopel.module.interval(60)
-def getpackt(bot):
-    for channel in bot.channels:
-        now = datetime.datetime.utcnow()
-        if now.hour == 23 and now.minute == 10:
-            title = getPacktTitle()
-            packttimediff = getpackttimediff()
-            bot.msg(channel, "Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
@@ -51,7 +54,6 @@ def getPacktTitle():
 
 def getpackttimediff():
     now = datetime.datetime.utcnow()
-    packthour = str(23)
     
     if int(now.hour) < int(packthour):
         hourcompare = str(int(packthour) - int(now.hour))
