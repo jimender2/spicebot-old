@@ -15,7 +15,7 @@ def packt(bot, trigger):
             return
     else:
         title = getPacktTitle()
-        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')')
+        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 # new book is 23:00 UTC
 @sopel.module.interval(60)
