@@ -51,13 +51,13 @@ def getPacktTitle():
 
 def getpackttimediff():
     now = datetime.datetime.utcnow()
-    packthour = '23'
+    packthour = str(23)
     
     if now.hour < packthour:
         hourcompare = int(packthour) - int(now.hour)
     else:
         hourcomparea = str(24 - int(now.hour))
-        hourcompare = str(int(hourcomparea) + 23)
+        hourcompare = str(int(hourcomparea) + int(packthour))
     
     if int(now.minute) > '0':
         hourcompare = str(int(hourcompare) - 1)
