@@ -17,7 +17,7 @@ def packt(bot, trigger):
 def getpackt(bot):
     for channel in bot.channels:
         now = datetime.datetime.now()
-        if now.hour == 19 and now.minute == 05:
+        if now.hour == 19 and now.minute == 10:
             title = getPacktTitle()
             bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.msg(channel, "Today's free book is: " + str(title))
