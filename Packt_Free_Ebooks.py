@@ -41,7 +41,7 @@ def getPacktTitle():
 
 def getpackttimediff():
     now = datetime.datetime.utcnow()
-    packthour = '11'
+    packthour = '23'
     if now.hour < packthour:
         packttimediff = int(packthour) - int(now.hour)
     else:
