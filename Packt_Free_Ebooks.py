@@ -43,8 +43,8 @@ def getpackttimediff():
     now = datetime.datetime.now('UTC')
     packthour = '11'
     if now.hour < packthour:
-        hourcompare = int(packthour) - int(now.hour)
+        packttimediff = int(packthour) - int(now.hour)
     else:
         hourcomparea = 24 - int(now.hour)
-        hourcompare = int(hourcomparea) + int(packthour)  
+        packttimediff = int(hourcomparea) + int(packthour)  
     return packttimediff
