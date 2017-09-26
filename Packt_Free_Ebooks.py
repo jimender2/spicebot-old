@@ -9,8 +9,8 @@ import datetime
 def packt(bot, trigger):
     title = getPacktTitle()
     packttimediff = getpackttimediff()
-    bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning ')
-    bot.say("Today's free book is: " + title + '     Time Left: ' + str(packttimediff))
+    #bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
+    bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 # new book is 23:00 UTC
 @sopel.module.interval(60)
@@ -19,8 +19,9 @@ def getpackt(bot):
         now = datetime.datetime.utcnow()
         if now.hour == 23 and now.minute == 10:
             title = getPacktTitle()
-            bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
-            bot.msg(channel, "Today's free book is: " + str(title))
+            packttimediff = getpackttimediff()
+            #bot.msg(channel, 'Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
+            bot.msg(channel, "Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
