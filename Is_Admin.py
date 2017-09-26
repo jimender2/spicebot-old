@@ -22,5 +22,6 @@ def getpriv(bot,trigger):
         nick = trigger.nick.lower()
     else:
         nick = trigger.group(2).lower()
-    channel_privs = str(bot.privileges[trigger.sender][nick])
-    bot.say(channel_privs)
+    channel_privs = bot.privileges[trigger.sender][nick]
+    allowed = channel_privs.get(nick, 0) >= level
+    bot.say(allowed)
