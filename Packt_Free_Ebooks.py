@@ -8,14 +8,14 @@ import datetime
 @sopel.module.commands('packt')
 def packt(bot, trigger):
     packttimediff = getpackttimediff()
-    if not trigger.group(2):
-        title = getPacktTitle()
-        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-    else:
+    if trigger.group(2):
         if trigger.group(2) == 'time':
             bot.say('Time Left: ' + str(packttimediff))
         else:
-            bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+            return
+    else:
+        title = getPacktTitle()
+        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')ng')
 
 # new book is 23:00 UTC
 @sopel.module.interval(60)
