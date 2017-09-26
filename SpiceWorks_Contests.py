@@ -28,7 +28,6 @@ def getSWContests(bot):
                 links = xmldoc.getElementsByTagName('link')
                 link = links[2].childNodes[0].nodeValue.split("?")[0]
                 bot.msg(channel, "A new Spiceworks Contest is available!     Title: " + title)
-	        #bot.msg(channel, "Title: " + title)
 	        bot.msg(channel, "Link: " + link)
 
 @sopel.module.rate(120)
@@ -50,16 +49,13 @@ def manualCheck(bot,trigger):
             links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
             bot.say("A new Spiceworks Contest is available!     Title: " + title)
-	    #bot.say("Title: " + title)
 	    bot.say("Link: " + link)
 	else:	    
 	    links = xmldoc.getElementsByTagName('link')
             link = links[2].childNodes[0].nodeValue.split("?")[0]
 	    bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
-	    #bot.say("Here is the link to the latest contest: " + link)
     else:
 	bot.say("Unable to reach the Spiceworks Contest Page.")
-    #bot.say("Here is the link to the Contests Page:     https://community.spiceworks.com/fun/contests")
 
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
@@ -68,8 +64,6 @@ def checkLastBuildDate(xmldoc):
     lastBuildXML = str(lastBuildXML)
 
     if exists(lastBuildFile):
-		#f = open(lastBuildFile, 'w+')
-		#lastBuildTxt = f.Read()
 		infile = open(lastBuildFile,'r')
 		lastBuildTxt = str(infile.readlines()[:1])
 		lastBuildTxt = lastBuildTxt.replace("'","")
@@ -78,8 +72,6 @@ def checkLastBuildDate(xmldoc):
 		infile.close()
 		if lastBuildXML.strip() != lastBuildTxt.strip():
 			newContest = True
-			#f.Write(lastBuildXML)
-			#f.Close()
 			outfile = open(lastBuildFile,'w')
 			outfile.write(lastBuildXML)
 			outfile.close()
