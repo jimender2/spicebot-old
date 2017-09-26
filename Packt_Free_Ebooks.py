@@ -19,6 +19,8 @@ def packt(bot, trigger):
         if normalrun:
             title = getPacktTitle()
             bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+    except UnboundLocalError:
+        return
 
 # new book is 23:00 UTC
 @sopel.module.interval(60)
