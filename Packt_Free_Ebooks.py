@@ -11,14 +11,14 @@ def packt(bot, trigger):
     if trigger.group(2):
         if trigger.group(2) == 'time':
             bot.say('Time Left: ' + str(packttimediff))
-            normalrun='false'
         else:
             normalrun='true'
     else:
         normalrun='true'
-    if normalrun == 'true':
-        title = getPacktTitle()
-        bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+    try:
+        if normalrun:
+            title = getPacktTitle()
+            bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 # new book is 23:00 UTC
 @sopel.module.interval(60)
