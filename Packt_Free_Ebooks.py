@@ -12,7 +12,7 @@ def packt(bot, trigger):
     bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning   Time Left: Less than ' + str(packttimediff) + ' hours remaining')
     bot.say("Today's free book is: " + title)
 
-# new book is 7pm EDT, 11:00 PM UTC
+# new book is 23:00 UTC
 @sopel.module.interval(60)
 def getpackt(bot):
     for channel in bot.channels:
