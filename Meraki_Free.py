@@ -14,5 +14,8 @@ def meraki(bot, trigger):
             normalrun='true'
     else:
         normalrun='true'
-    if normalrun:
-        bot.say('Please specify which product. Choices are MX , AP , or switch .')
+    try:
+        if normalrun:
+            bot.say('Please specify which product. Choices are MX , AP , or switch .')
+    except UnboundLocalError:
+        return
