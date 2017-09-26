@@ -9,7 +9,7 @@ import datetime
 def packt(bot, trigger):
     title = getPacktTitle()
     packttimediff = getpackttimediff()
-    bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning   Time Left:' + packttimediff + ' hours remaining')
+    bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning   Time Left:' + str(packttimediff) + ' hours remaining')
     bot.say("Today's free book is: " + title)
 
 # new book is 7pm EDT, 11:00 PM UTC
