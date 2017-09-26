@@ -21,5 +21,6 @@ def yourewelcome():
     url = 'http://api.giphy.com/v1/gifs/search?q=your+welcome&api_key=' + api + '&limit=100'
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(0,99)
-    gif = data['data'][randno]['embed_url']
+    id = data['data'][randno]['id']
+    gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     return gif
