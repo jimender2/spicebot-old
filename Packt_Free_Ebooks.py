@@ -52,5 +52,5 @@ def getpackttimediff():
         packtminutediff = str(60 - int(now.minute))
         packttimediff = str(int(packttimediff) - 1) + ' hours ' + packtminutediff + ' minutes.'
     else:
-        packttimediff = str(int(packttimediff) - 1) + ' hours '
+        packttimediff = str(int(packttimediff)) + ' hours '
     return packttimediff
