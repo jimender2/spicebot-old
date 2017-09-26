@@ -48,7 +48,8 @@ def getpackttimediff():
         hourcomparea = 24 - int(now.hour)
         packttimediff = int(hourcomparea) + int(packthour)
     
-    if int(now.minute) > 30:
-        packttimediff = str(int(packttimediff) - 1) + '.5'
+    if int(now.minute) > 1:
+        packtminutediff = str(60 - int(now.minute))
+        packttimediff = str(int(packttimediff) - 1) + ' hours ' + packtminutediff + ' minutes.'
     
     return packttimediff
