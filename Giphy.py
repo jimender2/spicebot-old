@@ -9,7 +9,7 @@ from random import randint
 @sopel.module.commands('gif','giphy')
 
 def gif(bot,trigger):
-    if query:
+    if trigger.group(2):
         query = trigger.group(2).replace(' ', '+')
         gif = getGif(query)
         if gif:
