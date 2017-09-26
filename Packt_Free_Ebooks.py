@@ -17,7 +17,7 @@ def getpackt(bot):
     now = datetime.now()
     now_time = now.time()
     for channel in bot.channels:
-        if now_time == time(13,53):
+        if now_time == time(14,00):
             title = getPacktTitle()
             bot.say('Packt Free Book (daily)     https://www.packtpub.com/packt/offers/free-learning')
             bot.say("Today's free book is: " + title)
