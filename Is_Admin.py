@@ -9,7 +9,7 @@ def isadmin(bot,trigger):
     else:
         nick = trigger.group(2).lower()
     try:    
-        if bot.privileges[trigger.sender][nick] == ADMIN:
+        if bot.privileges[trigger.admin][nick]:
             bot.say(nick + ' is an admin.')
         else: 
             bot.say(nick + ' is not an admin.')
