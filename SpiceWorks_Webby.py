@@ -51,7 +51,7 @@ def webbymanual(bot, trigger):
                         #bot.msg(channel, webbybonus)
 
 def getwebbymonth():
-    webbymonth = 'test'
+    webbymonth = 'Sept'
     return webbymonth
 
 def getwebbyday():
@@ -75,7 +75,7 @@ def getwebbytitle():
     return webbytitle
 
 def getwebbylink():
-    webbylink = 'test'
+    webbylink = 'https://goo.gl/SsAhv'
     return webbylink
 
 def getwebbybonus():
