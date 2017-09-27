@@ -2,7 +2,7 @@
 import requests
 from lxml import html
 
-@sopel.module.commands('packt')
+@sopel.module.commands('spicewebby')
 def webbymanual(bot, trigger):
     if not trigger.group(2):
         bot.say('stay tuned')
