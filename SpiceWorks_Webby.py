@@ -1,4 +1,4 @@
-#import sopel.module
+import sopel.module
 import requests
 from lxml import html
 
