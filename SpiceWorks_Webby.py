@@ -1,6 +1,7 @@
 import sopel.module
 import requests
 from lxml import html
+from time import strptime
 
 url = 'https://community.spiceworks.com/calendar'
 
@@ -35,20 +36,19 @@ def webbymanual(bot, trigger):
     except UnboundLocalError:
         return
 
-#@sopel.module.interval(60)
-#def webbyauto(bot):
-    #for channel in bot.channels:
-        #now = datetime.datetime.utcnow()
-        #!!!!!! webbymonth = getwebbymonth()
-            #!!!!!! webbydate = getwebbydate()
-            #!!!!!! if now.date = webbydate
-                #webbyhour = getwebbyhour()
-                #if now.hour == webbyhour:
-                    #if now.minute == '45'
-                        #webbytitle = getwebbytitle()
-                        #webbylink = getwebbylink()
-                        #webbybonus = getwebbybonus()
-                        #bot.msg(channel, webbybonus)
+@sopel.module.interval(60)
+def webbyauto(bot):
+    for channel in bot.channels:
+        now = datetime.datetime.utcnow()
+        webbymonth = getwebbymonth()
+        if int(webbymonth) == int(now.month):
+            webbyday = getwebbyday()
+            if int(webbyday) == int(now.day):
+                webbyhour= getwebbyhour()
+                if int(int(webbyhour) - 1) == int(now.hour):
+                    if int(now.minute) == '45'
+                        bot.msg(channel, str(webbytitle) + '     Link: ' + str(webbylink))
+                        bot.msg(channel, str(webbybonus))
 
 def getwebbymonth():
     tree = gettree()
