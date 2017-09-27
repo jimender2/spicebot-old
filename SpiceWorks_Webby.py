@@ -25,11 +25,11 @@ def webbymanual(bot, trigger):
                 normalrun='true'
         else:
             normalrun='true'
-        try:
-            if normalrun:
-                bot.say('stay tuned')
-        except UnboundLocalError:
-            return
+    try:
+        if normalrun:
+            bot.say('stay tuned')
+    except UnboundLocalError:
+        return
 
 #@sopel.module.interval(60)
 #def webbyauto(bot):
