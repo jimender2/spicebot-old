@@ -60,7 +60,7 @@ def getpackttimediff():
     else:
         hourcompare = str(packthour)
     
-    if int(now.minute) > '0':
+    if int(now.minute) != '0':
         hourcompare = str(int(hourcompare) - 1)
         minutecompare = str(60 - int(now.minute))
     else:
