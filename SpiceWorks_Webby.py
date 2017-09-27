@@ -50,7 +50,7 @@ def webbyauto(bot):
                         webbybonus = getwebbybonus()
                         webbytitle = getwebbytitle()
                         webbylink = getwebbylink()
-                        bot.msg(channel, str(webbytitle) + '     Link: ' + str(webbylink))
+                        bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
                         bot.msg(channel, str(webbybonus))
 
 def getwebbymonth():
