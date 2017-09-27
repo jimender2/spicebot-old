@@ -36,7 +36,7 @@ def webbymanual(bot, trigger):
     ## Parse The hour
     # return webbyhour
 
-def webbytext():
+def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
     for r in (("['", ""), ("']", "")):
