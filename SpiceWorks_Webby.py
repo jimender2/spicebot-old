@@ -22,7 +22,7 @@ def webbymanual(bot, trigger):
                 webbytime = str(webbymonth + ' ' + webbyday+ ' ' + webbyhour + ':00 UTC')
                 bot.say(webbytime)
             else:
-            normalrun='true'
+                normalrun='true'
     else:
         normalrun='true'
     try:
