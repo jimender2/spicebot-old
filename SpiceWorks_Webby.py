@@ -20,7 +20,8 @@ def webbymanual(bot, trigger):
             elif trigger.group(2) == 'time':
                 webbymonth = getwebbymonth()
                 webbyday = getwebbyday()
-                webbytime = str( + '' + )
+                webbyhour=
+                webbytime = str(webbymonth + ' ' + webbyday+ ' ' + webbyhour + ':00 UTC')
                 bot.say(webbytitle)
             else:
                 bot.say('stay tuned')
@@ -41,7 +42,8 @@ def webbymanual(bot, trigger):
                         #bot.msg(channel, webbybonus)
 
 def getwebbymonth():
-
+    webbymonth = 'test'
+    return webbymonth
 
 def getwebbyday():
     tree = gettree()
