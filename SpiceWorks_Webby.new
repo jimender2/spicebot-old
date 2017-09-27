@@ -1,10 +1,9 @@
 import requests
 from lxml import html
 
-def webbytest():
+def webbytext()
     url = 'https://community.spiceworks.com/calendar'
     page = requests.get(url,headers = None)
-
     tree= html.fromstring(page.content)
     text = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
     print str(text)
