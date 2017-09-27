@@ -20,7 +20,7 @@ def webbymanual(bot, trigger):
             elif trigger.group(2) == 'time':
                 webbymonth = getwebbymonth()
                 webbyday = getwebbyday()
-                webbyhour=
+                webbyhour= getwebbyhour()
                 webbytime = str(webbymonth + ' ' + webbyday+ ' ' + webbyhour + ':00 UTC')
                 bot.say(webbytitle)
             else:
