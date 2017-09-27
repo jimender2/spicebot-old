@@ -22,7 +22,7 @@ def webbymanual(bot, trigger):
                 webbyday = getwebbyday()
                 webbyhour= getwebbyhour()
                 webbytime = str(webbymonth + ' ' + webbyday+ ' ' + webbyhour + ':00 UTC')
-                bot.say(webbytitle)
+                bot.say(webbytime)
             else:
                 bot.say('stay tuned')
 
