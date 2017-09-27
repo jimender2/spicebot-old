@@ -10,6 +10,9 @@ def webbymanual(bot, trigger):
         if trigger.group(2) == 'bonus':
             webbybonus = getwebbybonus()
             bot.say(webbybonus)
+        elif trigger.group(2) == 'title':
+            webbytitle = getwebbytitle()
+            
         else:
             bot.say('stay tuned')
 
@@ -29,9 +32,17 @@ def webbymanual(bot, trigger):
     ## Parse The hour
     # return webbyhour
 
-#def getwebbytitle():
-    ## Parse the title
-    #return webbytitle
+def getwebbytitle():
+    url = 'https://community.spiceworks.com/calendar'
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        tree= html.fromstring(page.content)
+        webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
+        for r in (("['",""), ("']","")):
+            webbytitle = webbytitle.replace(*r)
+    if not webbytitle:
+        webbytitle = 'No Bonus Available'
+    return webbytitle
 
 #def getwebbylink():
     ## Parse the url out,,, don't need anything after ShowKey
