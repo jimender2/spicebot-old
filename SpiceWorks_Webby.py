@@ -17,6 +17,11 @@ def webbymanual(bot, trigger):
             elif trigger.group(2) == 'title':
                 webbytitle = getwebbytitle()
                 bot.say(webbytitle)
+            elif trigger.group(2) == 'time':
+                webbymonth = getwebbymonth()
+                webbyday = getwebbyday()
+                webbytime = str( + '' + )
+                bot.say(webbytitle)
             else:
                 bot.say('stay tuned')
 
@@ -24,17 +29,32 @@ def webbymanual(bot, trigger):
 #def webbyauto(bot):
     #for channel in bot.channels:
         #now = datetime.datetime.utcnow()
-        #webbyhour = getwebbyhour()
-        #if now.hour == webbyhour:
-            #if now.minute == '45'
-                #webbytitle = getwebbytitle()
-                #webbylink = getwebbylink()
-                #webbybonus = getwebbybonus()
-                #bot.msg(channel, webbybonus)
-            
-#def getwebbyhour():
-    ## Parse The hour
-    # return webbyhour
+        #!!!!!! webbymonth = getwebbymonth()
+            #!!!!!! webbydate = getwebbydate()
+            #!!!!!! if now.date = webbydate
+                #webbyhour = getwebbyhour()
+                #if now.hour == webbyhour:
+                    #if now.minute == '45'
+                        #webbytitle = getwebbytitle()
+                        #webbylink = getwebbylink()
+                        #webbybonus = getwebbybonus()
+                        #bot.msg(channel, webbybonus)
+
+def getwebbymonth():
+
+
+def getwebbyday():
+    tree = gettree()
+    webbyday = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
+    webbyday = str(str(webbyday.split(" ", 1)[1]).split(",", 1)[0])
+    return webbyday
+
+def getwebbyhour():
+    tree = gettree()
+    webbyhour = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
+    webbyhour = str(str(webbyhour.split("at  ", 1)[1]).split(":", 1)[0])
+    webbyhour = str(int(webbyhour) + 12)
+    return webbyhour
 
 def getwebbytitle():
     tree = gettree()
