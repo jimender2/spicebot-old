@@ -27,7 +27,6 @@ def webbymanual(bot, trigger):
             
 #def getwebbyhour():
     ## Parse The hour
-    # //*[@id="primary"]/div/ul/li[1]/div[2]/h4[2]/span
     # return webbyhour
 
 #def getwebbytitle():
@@ -45,7 +44,7 @@ def getwebbybonus():
         tree= html.fromstring(page.content)
         webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-        for r in (("\\r", ""), ("\\n", ""), ("]",""), ('"','')):
+        for r in (("\\r", ""), ("\\n", ""), ("]",""), ('"',''), (" '","")):
             webbybonus = webbybonus.replace(*r)
     if not webbybonus:
         webbybonus = 'No Bonus Available'
