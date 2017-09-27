@@ -46,7 +46,7 @@ def webbyauto(bot):
             if int(webbyday) == int(now.day):
                 webbyhour= getwebbyhour()
                 if int(int(webbyhour) - 1) == int(now.hour):
-                    if int(now.minute) == '45'
+                    if int(now.minute) == '45':
                         bot.msg(channel, str(webbytitle) + '     Link: ' + str(webbylink))
                         bot.msg(channel, str(webbybonus))
 
