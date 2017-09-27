@@ -38,7 +38,7 @@ def getwebbytitle():
     if page.status_code == 200:
         tree= html.fromstring(page.content)
         webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
-        for r in (("['",""), ("']","")):
+        for r in (("['", ""), ("']", "")):
             webbytitle = webbytitle.replace(*r)
     if not webbytitle:
         webbytitle = 'No Bonus Available'
