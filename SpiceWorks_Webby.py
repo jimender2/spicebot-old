@@ -7,7 +7,7 @@ def webbymanual(bot, trigger):
     if not trigger.group(2):
         bot.say('stay tuned')
     else:
-        if trigger.group(2) == 'bonus'
+        if trigger.group(2) == 'bonus':
             webbybonus = getwebbybonus()
             bot.say(webbybonus)
         else:
