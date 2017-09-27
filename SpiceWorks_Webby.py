@@ -51,7 +51,9 @@ def webbymanual(bot, trigger):
                         #bot.msg(channel, webbybonus)
 
 def getwebbymonth():
-    webbymonth = 'Sept'
+    tree = gettree()
+    webbymonth = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
+    webbymonth = str(webbymonth.split(" ", 1)[0])
     return webbymonth
 
 def getwebbyday():
