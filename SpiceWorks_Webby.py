@@ -16,6 +16,7 @@ def webbymanual(bot, trigger):
                 bot.say(webbybonus)
             elif trigger.group(2) == 'title':
                 webbytitle = getwebbytitle()
+                bot.say(webbytitle)
             else:
                 bot.say('stay tuned')
 
@@ -35,7 +36,7 @@ def webbymanual(bot, trigger):
     ## Parse The hour
     # return webbyhour
 
-def getwebbytitle():
+def webbytext():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
     for r in (("['", ""), ("']", "")):
