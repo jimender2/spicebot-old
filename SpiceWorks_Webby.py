@@ -27,7 +27,11 @@ def webbymanual(bot, trigger):
             normalrun='true'
     try:
         if normalrun:
-            bot.say('stay tuned')
+            webbybonus = getwebbybonus()
+            webbytitle = getwebbytitle()
+            webbylink = getwebbylink()
+            bot.say(webbytitle + '     Link: ' + webbylink)
+            bot.say(webbybonus)
     except UnboundLocalError:
         return
 
@@ -70,9 +74,9 @@ def getwebbytitle():
         webbytitle = webbytitle.replace(*r)
     return webbytitle
 
-#def getwebbylink():
-    ## Parse the url out,,, don't need anything after ShowKey
-    #return webbylink
+def getwebbylink():
+    webbylink = 'test'
+    return webbylink
 
 def getwebbybonus():
     tree = gettree()
