@@ -22,7 +22,8 @@ def gif(bot,trigger):
 
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q='+query+'&api_key=' + api + '&limit=500'
+    #url = 'http://api.giphy.com/v1/gifs/search?q='+query+'&api_key=' + api + '&limit=500'
+    url = 'http://api.giphy.com/v1/gifs/search?t='+query+'&api_key=' + api + '&limit=500'
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(0,499)
     try:
