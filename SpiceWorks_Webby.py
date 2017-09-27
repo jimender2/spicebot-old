@@ -36,22 +36,22 @@ def webbymanual(bot, trigger):
     except UnboundLocalError:
         return
 
-@sopel.module.interval(60)
-def webbyauto(bot):
-    for channel in bot.channels:
-        now = datetime.datetime.utcnow()
-        webbymonth = getwebbymonth()
-        if int(webbymonth) == int(now.month):
-            webbyday = getwebbyday()
-            if int(webbyday) == int(now.day):
-                webbyhour= getwebbyhour()
-                if int(int(webbyhour) - 1) == int(now.hour):
-                    if int(now.minute) == '45':
-                        webbybonus = getwebbybonus()
-                        webbytitle = getwebbytitle()
-                        webbylink = getwebbylink()
-                        bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                        bot.msg(channel, str(webbybonus))
+#@sopel.module.interval(60)
+#def webbyauto(bot):
+    #for channel in bot.channels:
+        #now = datetime.datetime.utcnow()
+        #webbymonth = getwebbymonth()
+        #if int(webbymonth) == int(now.month):
+            #webbyday = getwebbyday()
+            #if int(webbyday) == int(now.day):
+                #webbyhour= getwebbyhour()
+                #if int(int(webbyhour) - 1) == int(now.hour):
+                    #if int(now.minute) == '45':
+                        #webbybonus = getwebbybonus()
+                        #webbytitle = getwebbytitle()
+                        #webbylink = getwebbylink()
+                        #bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
+                        #bot.msg(channel, str(webbybonus))
 
 def getwebbymonth():
     tree = gettree()
