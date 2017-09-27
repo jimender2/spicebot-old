@@ -54,6 +54,8 @@ def getwebbymonth():
     tree = gettree()
     webbymonth = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
     webbymonth = str(webbymonth.split(" ", 1)[0])
+    webbymonth = webbymonth.replace("['","")
+    webbymonth = str(strptime(webbymonth,'%b').tm_mon)
     return webbymonth
 
 def getwebbyday():
