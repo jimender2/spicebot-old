@@ -53,7 +53,11 @@ def getwebbytitle():
     return webbytitle
 
 def getwebbylink():
-    webbylink = 'https://goo.gl/SsAhv'
+    tree = gettree()
+    webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
+    for r in (("['", ""), ("']", "")):
+        webbylink = webbylink.replace(*r)
+    webbylink = str(webbylink.split("&", 1)[0])
     return webbylink
 
 def getwebbybonus():
