@@ -116,7 +116,15 @@ def getwebbytimeuntil():
         timetilminutes = str(timetilminutes + ' minute ')
 
     timetilwebby = str(timetildays + timetilhours + timetilminutes)
-    webbytimeuntil = str(timetilwebby + 'Until')
+    if timetilwebby == '':
+        if now.minute >= '40':
+            timetilwebby = 'Ending Soon'
+        else:
+            timetilwebby = 'Currently Airing'
+    else:
+        timetilwebby = str(timetilwebby + 'Until')
+        
+    webbytimeuntil = str(timetilwebby)
     return webbytimeuntil
 
 def gettree():
