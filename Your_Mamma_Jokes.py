@@ -9,7 +9,7 @@ def sayJoke(bot,trigger):
     if joke:
         if not trigger.group(2):
             bot.say(joke)
-        elif not trigger.group(2) == bot.nick:
+        elif not trigger.group(2).strip() == bot.nick:
             bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
     else:
         bot.say('Please leave the mothers out of it.')
