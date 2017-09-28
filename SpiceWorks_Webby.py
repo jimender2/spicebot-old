@@ -87,12 +87,12 @@ def getwebbytimeuntil():
         else:
             timetilhours = str(24 - int(now.hour) + int(webbytime.hour))
 
-    if str(now.time) == '0':
+    if str(now.minute) == '0':
         timetilminutes = '0'
     else:
         if str(timetilhours) > '0':
             timetilhours = str(int(timetilhours) - 1)
-        timetilminutes = str(60 - int(now.hour))
+        timetilminutes = str(60 - int(now.minute))
 
     if timetildays == '0':
         timetildays = ''
