@@ -11,30 +11,29 @@ url = 'https://community.spiceworks.com/calendar'
 def webbymanual(bot, trigger):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
-        if trigger.group(2):
-            if trigger.group(2) == 'time':
-                webbytime = getwebbytime()
-                bot.say(str(webbytime.hour))
-            else:
-                normalrun='true'
-        else:
-            normalrun='true'
-    try:
-        if normalrun:
-            webbybonus = getwebbybonus()
-            webbytitle = getwebbytitle()
-            webbylink = getwebbylink()
-            bot.say(webbytitle + '     Link: ' + webbylink)
-            bot.say(webbybonus)
-    except UnboundLocalError:
-        return
+    now = datetime.datetime.utcnow()
+    webbytimeuntil = getwebbytimeuntil()
+    webbybonus = getwebbybonus()
+    webbytitle = getwebbytitle()
+    webbylink = getwebbylink()
+    bot.say(webbytitle + '     Link: ' + webbylink)
+    bot.say(webbybonus)
 
-#@sopel.module.interval(60)
-#def webbyauto(bot):
-    #for channel in bot.channels:
-        #now = datetime.datetime.utcnow()
-        #bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-        #bot.msg(channel, str(webbybonus))
+
+@sopel.module.interval(60)
+def webbyauto(bot):
+    for channel in bot.channels:
+        now = datetime.datetime.utcnow()
+        webbytime = getwebbytime()
+        if str(now.month) == str(webbytime.month):
+            if str(now.day) == str(webbytime.day):
+                if str(now.hour) == str(int(webbytime.hour) - 1):
+                    if now.minute == '45'
+                        webbybonus = getwebbybonus()
+                        webbytitle = getwebbytitle()
+                        webbylink = getwebbylink()
+                        bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
+                        bot.msg(channel, str(webbybonus))
 
 def getwebbytime():
     now = datetime.datetime.utcnow()
@@ -68,6 +67,41 @@ def getwebbybonus():
     for r in (("\\r", ""), ("\\n", ""), ("]",""), ('"',''), (" '","")):
         webbybonus = webbybonus.replace(*r)
     return webbybonus
+
+def getwebbytimeuntil():
+    now = datetime.datetime.utcnow()
+    webbytime = getwebbytime()
+    
+    if int(now.hour) < int(webbytime.hour):
+        hourcompare = str(int(webbytime.hour) - int(now.hour))
+    else:
+        hourcomparea = str(24 - int(now.hour))
+        hourcompare = str(int(webbytime.hour) + int(hourcomparea))
+    
+    if int(now.minute) != '0':
+        hourcompare = str(int(hourcompare) - 1)
+        minutecompare = str(60 - int(now.minute))
+    else:
+        hourcompare = str(hourcompare)
+        minutecompare = str(60 - int(now.minute))
+    
+    if hourcompare == '1':
+        hours = hourcompare + ' ' + 'hour'
+    elif hourcompare == '0':
+        hours = ''
+    else:
+        hours = hourcompare + ' ' + 'hours'   
+    
+    if minutecompare == '1':
+        minutes = minutecompare + ' ' + 'minute'
+    elif minutecompare == '0':
+        minutes = ''
+    else:
+        minutes = minutecompare + ' ' + 'minutes'       
+    
+    webbytimeuntilfull = str(hours) + ' ' + str(minutes)
+    webbytimeuntil = str(webbytimeuntilfull)
+    return webbytimeuntil
 
 def gettree():
     page = requests.get(url,headers = None)
