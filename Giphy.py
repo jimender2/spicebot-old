@@ -9,15 +9,19 @@ from random import randint
 @sopel.module.commands('gif','giphy')
 
 def gif(bot,trigger):
-    if trigger.group(2):
-        query = trigger.group(2).replace(' ', '+')
-        gif = getGif(query)
-        if gif:
-            bot.say(gif)
+    if trigger.nick == 'IT_Sean':
+        gif = 'https://media2.giphy.com/media/11aCNnhizTWfXW/giphy.gif'
+        bot.say(gif)
+    else:        
+        if trigger.group(2):
+            query = trigger.group(2).replace(' ', '+')
+            gif = getGif(query)
+            if gif:
+                bot.say(gif)
+            else:
+                bot.say('Hmm...Couldn\'t find a gif for that!')
         else:
-            bot.say('Hmm...Couldn\'t find a gif for that!')
-    else:
-        bot.say('Tell me what you\'re looking for!')
+            bot.say('Tell me what you\'re looking for!')
 
 
 def getGif(query):
