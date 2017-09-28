@@ -11,6 +11,8 @@ def points(bot, trigger):
         winner = "Everybody"
     else:
         winner = trigger.group(2).strip()
+        if trigger.group(2) == 'all':
+            winner = "Everybody"
     randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
     if winner == trigger.nick:
         bot.say('You can\'t give yourself ' + whichtrig + '!')
@@ -25,6 +27,8 @@ def takepoints(bot, trigger):
         winner = "Everybody"
     else:
         winner = trigger.group(2).strip()
+        if trigger.group(2) == 'all':
+            winner = "Everybody"
     randopoints = ('loses ' + str(rando) + ' points')
     if winner == trigger.nick:
         bot.say('You can\'t take your own points away!')
