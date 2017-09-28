@@ -71,40 +71,8 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    if int(now.day) == int(webbytime.day):
-        if int(now.hour) < int(webbytime.hour):
-            hourcompare = str(int(webbytime.hour) - int(now.hour))
-            if hourcompare != '0':
-                if int(now.minute) != '0':
-                    hourcompare = str(int(hourcompare) - 1)
-                    minutecompare = str(60 - int(now.minute))
-                else:
-                    hourcompare = str(hourcompare)
-                    minutecompare = str(60 - int(now.minute))
-            else:
-                hourcompare = str(hourcompare)
-                minutecompare = str(60 - int(now.minute))
-            if hourcompare == '1':
-                hours = hourcompare + ' ' + 'hour'
-            elif hourcompare == '0':
-                hours = ''
-            else:
-                hours = hourcompare + ' ' + 'hours'   
-            if minutecompare == '1':
-                minutes = minutecompare + ' ' + 'minute'
-            elif minutecompare == '0':
-                minutes = ''
-            else:
-                minutes = minutecompare + ' ' + 'minutes'
-            webbytimeuntilfull = str(str(hours) + ' ' + str(minutes) + ' Until')
-        else:
-            if str(now.minute) > '40':
-                webbytimeuntilfull = "Ending Soon"
-            else:
-                webbytimeuntilfull = "Currently Airing"
-    else:
-        webbytimeuntilfull = "Not Today"
-    webbytimeuntil = str(webbytimeuntilfull)
+    timecompare = str(webbytime - now)
+    webbytimeuntil = str(timecompare + ' Until')
     return webbytimeuntil
 
 def gettree():
