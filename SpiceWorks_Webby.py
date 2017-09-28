@@ -14,7 +14,7 @@ def webbymanual(bot, trigger):
         if trigger.group(2):
             if trigger.group(2) == 'time':
                 webbytime = getwebbytime()
-                bot.say(webbytime)
+                bot.say(str(webbytime))
             else:
                 normalrun='true'
         else:
