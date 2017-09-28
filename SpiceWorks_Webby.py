@@ -1,7 +1,9 @@
 import sopel.module
 import requests
 from lxml import html
+import datetime
 from time import strptime
+from dateutil import parser
 
 url = 'https://community.spiceworks.com/calendar'
 
