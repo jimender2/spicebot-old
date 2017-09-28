@@ -17,7 +17,7 @@ def webbymanual(bot, trigger):
         webbytitle = getwebbytitle()
         webbylink = getwebbylink()
         bot.say(webbytimeuntil + ' Until     Title: ' + webbytitle + '     Link: ' + webbylink)
-        bot.say(webbybonus)
+        bot.say('BONUS: ' + webbybonus)
 
 
 @sopel.module.interval(60)
