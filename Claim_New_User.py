@@ -7,7 +7,7 @@ def pee(bot, trigger):
         claimed = "new user"
     else:
         claimed = trigger.group(2).strip()
-    if not claimed == bot.nick:
+    if not claimed == bot.nick and not claimed == trigger.nick:
         if trigger.nick == 'IT_Sean':
             bot.say(trigger.nick + ' releases the contents of his bladder on ' + claimed + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
         else:
