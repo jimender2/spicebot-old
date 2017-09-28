@@ -38,14 +38,10 @@ def webbyauto(bot):
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
-    webbytime = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
+    webbytime = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span[@title]/@datetime'))
     for r in (("['", ""), ("']", "")):
         webbytime = webbytime.replace(*r)
-    webbyyear = str(str(str(webbytime.split(" ", 1)[1]).split(" ", 1)[1]).split(" ", 1)[0])
-    webbymonth = str(webbytime.split(" ", 1)[0]).replace("['","")
-    webbyday = str(webbytime.split(" ", 1)[1]).split(",", 1)[0]
-    webbyhour = str(webbytime.split("at  ", 1)[1]).split(":", 1)[0]
-    webbytime = str(webbymonth + ' ' + webbyday + ' ' + webbyyear + ' ' + webbyhour + ':00PM')
+    webbytime = str(webbytime.split("+", 1)[0])
     webbytime = parser.parse(webbytime)
     return webbytime
 
