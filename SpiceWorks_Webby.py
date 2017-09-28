@@ -94,7 +94,10 @@ def getwebbytimeuntil():
             minutes = minutecompare + ' ' + 'minutes'
         webbytimeuntilfull = str(str(hours) + ' ' + str(minutes) + ' Until')
     else:
-        webbytimeuntilfull = "Currently Airing"
+        if now.minute > '40':
+            webbytimeuntilfull = "Ending Soon"
+        else:
+            webbytimeuntilfull = "Currently Airing"
     webbytimeuntil = str(webbytimeuntilfull)
     return webbytimeuntil
 
