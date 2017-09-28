@@ -16,7 +16,7 @@ def webbymanual(bot, trigger):
         webbybonus = getwebbybonus()
         webbytitle = getwebbytitle()
         webbylink = getwebbylink()
-        bot.say(webbytimeuntil + 'Until     Title: 'webbytitle + '     Link: ' + webbylink)
+        bot.say(webbytimeuntil + 'Until     Title: ' + webbytitle + '     Link: ' + webbylink)
         bot.say(webbybonus)
 
 
