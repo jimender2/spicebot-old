@@ -13,10 +13,8 @@ def webbymanual(bot, trigger):
     if page.status_code == 200:
         if trigger.group(2):
             if trigger.group(2) == 'time':
-                faketime = '2017-09-28 00:09:30.427237'
-                bot.say(faketime.hour)
                 webbytime = getwebbytime()
-                bot.say(str(webbytime))
+                bot.say(str(webbytime.hour))
             else:
                 normalrun='true'
         else:
