@@ -10,7 +10,7 @@ def webbymanual(bot, trigger):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         if trigger.group(2):
-            elif trigger.group(2) == 'time':
+            if trigger.group(2) == 'time':
                 webbytime = getwebbytime()
                 bot.say(webbytime)
             else:
