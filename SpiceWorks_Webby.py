@@ -71,8 +71,52 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    timecompare = str(webbytime - now)
-    webbytimeuntil = str(timecompare + ' Until')
+    #timecompare = str(webbytime - now)
+    if str(webbytime.day) == str(now.day):
+        timetildays = '0'
+    else:
+        timetildays = str(int(webbytime.day) - int(now.day))
+
+    if str(webbytime.hour) == str(now.hour):
+        timetilhours = '0'
+    else:
+        if str(timetildays) > '0':
+            timetildays = str(int(timetildays) - 1)
+        if str(webbytime.hour) > str(now.hour):
+            timetilhours = str(int(webbytime.hour) - int(now.hour))
+        else:
+            timetilhours = str(24 - int(now.hour) + int(webbytime.hour))
+
+    if str(now.time) == '0':
+        timetilminutes = '0'
+    else:
+        if str(timetilhours) > '0':
+            timetilhours = str(int(timetilhours) - 1)
+        timetilminutes = str(60 - int(now.hour))
+
+    if timetildays == '0':
+        timetildays = ''
+    elif timetildays > '1':
+        timetildays = str(timetildays + ' days ')
+    else:
+        timetildays = str(timetildays + ' day ')
+
+    if timetilhours == '0':
+        timetilhours = ''
+    elif timetilhours > '1':
+        timetilhours = str(timetilhours + ' hours ')
+    else:
+        timetilhours = str(timetilhours + ' hour ')
+
+    if timetilminutes == '0':
+        timetilminutes = ''
+    elif timetilminutes > '1':
+        timetilminutes = str(timetilminutes + ' minutes ')
+    else:
+        timetilminutes = str(timetilminutes + ' minute ')
+
+    timetilwebby = str(timetildays + timetilhours + timetilminutes)
+    webbytimeuntil = str(timetilwebby + ' Until')
     return webbytimeuntil
 
 def gettree():
