@@ -117,10 +117,7 @@ def getwebbytimeuntil():
 
     timetilwebby = str(timetildays + timetilhours + timetilminutes)
     if timetilwebby == '':
-        if now.minute >= '40':
-            timetilwebby = 'Ending Soon'
-        else:
-            timetilwebby = 'Currently Airing'
+        timetilwebby = str(str(60 - int(now.minute)) + ' minutes remaining on')
     else:
         timetilwebby = str(timetilwebby + 'Until')
         
