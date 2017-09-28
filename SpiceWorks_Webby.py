@@ -116,7 +116,7 @@ def getwebbytimeuntil():
         timetilminutes = str(timetilminutes + ' minute ')
 
     timetilwebby = str(timetildays + timetilhours + timetilminutes)
-    webbytimeuntil = str(timetilwebby + ' Until')
+    webbytimeuntil = str(timetilwebby + 'Until')
     return webbytimeuntil
 
 def gettree():
