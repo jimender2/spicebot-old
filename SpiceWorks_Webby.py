@@ -16,7 +16,7 @@ def webbymanual(bot, trigger):
         webbybonus = getwebbybonus()
         webbytitle = getwebbytitle()
         webbylink = getwebbylink()
-        bot.say(webbytimeuntil + ' Until     Title: ' + webbytitle + '     Link: ' + webbylink)
+        bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
         bot.say('BONUS: ' + webbybonus)
 
 @sopel.module.interval(60)
@@ -91,7 +91,7 @@ def getwebbytimeuntil():
             minutes = ''
         else:
             minutes = minutecompare + ' ' + 'minutes'
-        webbytimeuntilfull = str(hours) + ' ' + str(minutes)
+        webbytimeuntilfull = str(str(hours) + ' ' + str(minutes) + ' Until')
     else:
         webbytimeuntilfull = "Currently Airing"
     webbytimeuntil = str(webbytimeuntilfull)
