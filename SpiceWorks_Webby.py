@@ -24,15 +24,13 @@ def webbyauto(bot):
     for channel in bot.channels:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
-        if str(now.month) == str(webbytime.month):
-            if str(now.day) == str(webbytime.day):
-                if str(now.hour) == str(int(webbytime.hour) - 1):
-                    if now.minute == '45':
-                        webbybonus = getwebbybonus()
-                        webbytitle = getwebbytitle()
-                        webbylink = getwebbylink()
-                        bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                        bot.msg(channel, str(webbybonus))
+        if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
+            if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
+                webbybonus = getwebbybonus()
+                webbytitle = getwebbytitle()
+                webbylink = getwebbylink()
+                bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
+                bot.msg(channel, str(webbybonus))
 
 def getwebbytime():
     now = datetime.datetime.utcnow()
