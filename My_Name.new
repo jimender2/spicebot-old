@@ -9,4 +9,4 @@ def botnickname(bot):
     botnickname = bot.nick
     return botnickname
 
-botnickname(bot)
+botnickname = botnickname(bot)
