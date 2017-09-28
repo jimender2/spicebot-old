@@ -80,10 +80,13 @@ def getwebbytimeuntil():
             else:
                 hourcompare = str(hourcompare)
                 minutecompare = str(60 - int(now.minute))
-            if hourcompare == '1':
-                hours = hourcompare + ' ' + 'hour'
-            elif hourcompare == '0':
-                hours = ''
+        else:
+            hourcompare = str(hourcompare)
+            minutecompare = str(60 - int(now.minute))
+        if hourcompare == '1':
+            hours = hourcompare + ' ' + 'hour'
+        elif hourcompare == '0':
+            hours = ''
         else:
             hours = hourcompare + ' ' + 'hours'   
         if minutecompare == '1':
