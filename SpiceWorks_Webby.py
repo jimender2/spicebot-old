@@ -10,17 +10,8 @@ def webbymanual(bot, trigger):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         if trigger.group(2):
-            if trigger.group(2) == 'bonus':
-                webbybonus = getwebbybonus()
-                bot.say(webbybonus)
-            elif trigger.group(2) == 'title':
-                webbytitle = getwebbytitle()
-                bot.say(webbytitle)
             elif trigger.group(2) == 'time':
-                webbymonth = getwebbymonth()
-                webbyday = getwebbyday()
-                webbyhour= getwebbyhour()
-                webbytime = str(webbymonth + ' ' + webbyday+ ' ' + webbyhour + ':00 UTC')
+                webbytime = getwebbytime()
                 bot.say(webbytime)
             else:
                 normalrun='true'
@@ -40,39 +31,21 @@ def webbymanual(bot, trigger):
 #def webbyauto(bot):
     #for channel in bot.channels:
         #now = datetime.datetime.utcnow()
-        #webbymonth = getwebbymonth()
-        #if int(webbymonth) == int(now.month):
-            #webbyday = getwebbyday()
-            #if int(webbyday) == int(now.day):
-                #webbyhour= getwebbyhour()
-                #if int(int(webbyhour) - 1) == int(now.hour):
-                    #if int(now.minute) == '45':
-                        #webbybonus = getwebbybonus()
-                        #webbytitle = getwebbytitle()
-                        #webbylink = getwebbylink()
-                        #bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                        #bot.msg(channel, str(webbybonus))
+        #bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
+        #bot.msg(channel, str(webbybonus))
 
-def getwebbymonth():
+def getwebbytime():
+    now = datetime.datetime.utcnow()
     tree = gettree()
-    webbymonth = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
-    webbymonth = str(webbymonth.split(" ", 1)[0])
-    webbymonth = webbymonth.replace("['","")
-    webbymonth = str(strptime(webbymonth,'%b').tm_mon)
-    return webbymonth
-
-def getwebbyday():
-    tree = gettree()
-    webbyday = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
-    webbyday = str(str(webbyday.split(" ", 1)[1]).split(",", 1)[0])
-    return webbyday
-
-def getwebbyhour():
-    tree = gettree()
-    webbyhour = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
-    webbyhour = str(str(webbyhour.split("at  ", 1)[1]).split(":", 1)[0])
-    webbyhour = str(int(webbyhour) + 12)
-    return webbyhour
+    webbytime = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span/text()'))
+    for r in (("['", ""), ("']", "")):
+        webbytime = webbytime.replace(*r)
+    webbyyear = str(str(str(webbytime.split(" ", 1)[1]).split(" ", 1)[1]).split(" ", 1)[0])
+    webbymonth = str(webbytime.split(" ", 1)[0]).replace("['","")
+    webbyday = str(webbytime.split(" ", 1)[1]).split(",", 1)[0]
+    webbyhour = str(webbytime.split("at  ", 1)[1]).split(":", 1)[0]
+    webbytime = str(webbymonth + ' ' + webbyday + ' ' + webbyyear + ' ' + webbyhour + ':00PM')
+    webbytime = parser.parse(webbytime)
 
 def getwebbytitle():
     tree = gettree()
