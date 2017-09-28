@@ -20,7 +20,7 @@ def points(bot, trigger):
         bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
 
 @sopel.module.rate(120)
-@sopel.module.commands('takepoints','takepants')
+@sopel.module.commands('takepoints','takepants','minuspants','minuspoints')
 def takepoints(bot, trigger):   
     rando = randint(1, 666)
     if not trigger.group(2):
