@@ -11,13 +11,13 @@ url = 'https://community.spiceworks.com/calendar'
 def webbymanual(bot, trigger):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
-    now = datetime.datetime.utcnow()
-    webbytimeuntil = getwebbytimeuntil()
-    webbybonus = getwebbybonus()
-    webbytitle = getwebbytitle()
-    webbylink = getwebbylink()
-    bot.say(webbytimeuntil + 'Until     Title: 'webbytitle + '     Link: ' + webbylink)
-    bot.say(webbybonus)
+        now = datetime.datetime.utcnow()
+        webbytimeuntil = getwebbytimeuntil()
+        webbybonus = getwebbybonus()
+        webbytitle = getwebbytitle()
+        webbylink = getwebbylink()
+        bot.say(webbytimeuntil + 'Until     Title: 'webbytitle + '     Link: ' + webbylink)
+        bot.say(webbybonus)
 
 
 @sopel.module.interval(60)
