@@ -28,7 +28,7 @@ def webbyauto(bot):
         if str(now.month) == str(webbytime.month):
             if str(now.day) == str(webbytime.day):
                 if str(now.hour) == str(int(webbytime.hour) - 1):
-                    if now.minute == '45'
+                    if now.minute == '45':
                         webbybonus = getwebbybonus()
                         webbytitle = getwebbytitle()
                         webbylink = getwebbylink()
