@@ -11,7 +11,7 @@ from random import randint
 def gif(bot,trigger):
     if trigger.nick == 'IT_Sean':
         gif = 'https://media2.giphy.com/media/11aCNnhizTWfXW/giphy.gif'
-        bot.say('IT_Sean, you\'re safe with me.' + gif)
+        bot.say('IT_Sean, you\'re safe with me. ' + gif)
     else:        
         if trigger.group(2):
             query = trigger.group(2).replace(' ', '+')
