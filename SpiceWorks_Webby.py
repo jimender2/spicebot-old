@@ -48,6 +48,7 @@ def getwebbytime():
     webbyhour = str(webbytime.split("at  ", 1)[1]).split(":", 1)[0]
     webbytime = str(webbymonth + ' ' + webbyday + ' ' + webbyyear + ' ' + webbyhour + ':00PM')
     webbytime = parser.parse(webbytime)
+    return webbytime
 
 def getwebbytitle():
     tree = gettree()
