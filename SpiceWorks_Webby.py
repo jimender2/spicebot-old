@@ -4,7 +4,7 @@ from lxml import html
 import datetime
 from time import strptime
 from dateutil import parser
-from dateutil.relativedelta import relativedelta
+import calendar
 
 url = 'https://community.spiceworks.com/calendar'
 
@@ -90,12 +90,11 @@ def getwebbytimeuntil():
     else:
         if str(timetilmonths) > '0':
             timetilmonths = str(int(timetilmonths) - 1)
-        if str(webbytime.day) > str(now.day):
+        if str(webbytime.day) > str(now.day) and str(now.month) == str(webbytime.month):
             timetildays = str(int(webbytime.day) - int(now.day))
         else:
-            daysthismonth = datetime(now.year,now.month,1)+relativedelta(months=1,days=-1)
-            #timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
-            timetildays = '555'
+            daysthismonth = calendar.monthrange(now.year, now.month)[1]
+            timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
 
     if str(webbytime.hour) == str(now.hour):
         timetilhours = '0'
