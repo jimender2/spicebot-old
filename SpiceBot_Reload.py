@@ -13,12 +13,12 @@ script_dirname = str(Path(filename).resolve().parent)
 @sopel.module.require_privmsg
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  if str(script_dirname).endswith('github'):
-    version = 'master'
-    service = 'spicebot'
-  elif str(script_dirname).endswith('githubdev'):
-    version = 'dev'
-    service = 'spicebotdev'
+    if str(script_dirname).endswith('github'):
+        version = 'master'
+        service = 'spicebot'
+    elif str(script_dirname).endswith('githubdev'):
+        version = 'dev'
+        service = 'spicebotdev'
     bot.say('Pulling From Github ' + version)
     os.system("sudo git -C " + script_dir + " pull")
     bot.say('Cleaning Directory.')
