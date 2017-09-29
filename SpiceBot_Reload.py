@@ -6,7 +6,7 @@ from inspect import currentframe, getframeinfo
 from pathlib import Path
 
 script_dir = os.path.dirname(__file__)
-service = os.path.dirname(__file__).split(os.getcwd())[1]
+service = os.path.split(os.getcwd())[1]
 
 @sopel.module.require_admin
 @sopel.module.require_privmsg
