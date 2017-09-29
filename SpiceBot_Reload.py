@@ -25,3 +25,5 @@ def spicebotreload(bot, trigger):
     os.system("sudo rm " + script_dir + "/*.pyc")
     bot.say('Restarting Service...')
     os.system("sudo service " + service + " restart")
+    bot.say(' ')
+    bot.say('If you see this, the service is hanging. Run Command Again.')
