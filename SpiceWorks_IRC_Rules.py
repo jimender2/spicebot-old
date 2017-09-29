@@ -10,18 +10,18 @@ def rules(bot, trigger):
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
         rulenumber = int(trigger.group(2))
-        if rulenumber == 0:
-            myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
-        elif rulenumber == 69:
-            myline='giggles'
-        elif rulenumber == 34:
-            myline='If it exists, there is porn of it.'
-        else:
-            htmlfile=urllib.urlopen(rulesurl)
-            lines=htmlfile.readlines()
-            try:
-                myline=lines[rulenumber-1]
-            except IndexError:
+        htmlfile=urllib.urlopen(rulesurl)
+        lines=htmlfile.readlines()
+        try:
+            myline=lines[rulenumber-1]
+        except IndexError:
+            if rulenumber == 0:
+                myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+            elif rulenumber == 69:
+                myline='giggles'
+            elif rulenumber == 34:
+                myline='If it exists, there is porn of it.'
+            else:
                 myline= 'That doesnt appear to be a rule number.'
     
     if myline == 'giggles':
