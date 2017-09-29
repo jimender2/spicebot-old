@@ -27,7 +27,7 @@ def rules(bot, trigger):
             else:
                 myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
         except IndexError or TypeError:
-            elif rulenumber == 69:
+            if rulenumber == 69:
                 myline='giggles'
             elif rulenumber == 34:
                 myline='If it exists, there is porn of it.'
