@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 from os.path import exists
 
 script_dir = os.path.dirname(__file__)
-rel_path = "swContestsLastBuild.txt"
+rel_path = "data/swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 
 @sopel.module.interval(60)
