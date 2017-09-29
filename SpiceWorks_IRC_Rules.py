@@ -15,7 +15,7 @@ def rules(bot, trigger):
             try:
                 rulenumber = w2n.word_to_num(str(rulenumber))
             except ValueError:
-                bot.say('That does not appear to be a vialid number.')
+                bot.say('That does not appear to be a valid number.')
         else:
             rulenumber = int(rulenumber)
         
