@@ -22,7 +22,7 @@ def rules(bot, trigger):
         htmlfile=urllib.urlopen(rulesurl)
         lines=htmlfile.readlines()
         try:
-            if rulenumber != '0':
+            if str(rulenumber) != '0':
                 myline=lines[rulenumber-1]
         except IndexError:
             if rulenumber == 0:
