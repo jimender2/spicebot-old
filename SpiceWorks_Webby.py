@@ -93,7 +93,7 @@ def getwebbytimeuntil():
         if str(webbytime.day) > str(now.day):
             timetildays = str(int(webbytime.day) - int(now.day))
         else:
-            daysthismonth = str(calendar.monthrange(str(now.year),str(now.month))[1])
+            daysthismonth = calendar.monthrange(now.year, now.month)[1]
             timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
 
     if str(webbytime.hour) == str(now.hour):
