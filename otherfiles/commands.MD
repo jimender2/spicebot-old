@@ -1,4 +1,7 @@
-## All Commands Start with a "." (period)
+## Notes:
+
+* Commands Start with a "." (period)
+* Commands are NOT case-sensative
 ________________________________________________
 
 # Default Sopel Commands
@@ -72,6 +75,121 @@ Note: pulls a dadjoke from https://icanhazdadjoke.com
 Commands: monday , mondays , fuckmonday , fuckmondays , tuesday , tuesdays , fucktuesday , fucktuesdays , wednesday , wednesdays , fuckwednesday , fuckwednesdays , thursday , thursdays , fuckthursday , fuckthursdays , friday , fridays , fuckfriday , fuckfridays , saterday , saterdays , fucksaturday , fucksaturdays , sunday , sundays , fucksunday , fucksundays
 
 Note: This is a work in progress. IDK what I want from it.
+
+### DEV_EXCUSE
+Commands: devexcuse
+
+Note: This pulls a "dev excuse" from http://developerexcuses.com
+
+### DIABEETUS
+Commands: diabeetus
+
+Example:
+* JohnSmith: .diabeetus
+* SpiceBot: Good morning. I'm Wilford Brimley and I'd like to talk to you about Diabeetus.
+
+Note: This selects from an array of options
+
+### DUEL
+Commands: 
+
+Example:
+* JohnSmith: .duel JakeSnake
+* SpiceBot: 
+
+### FERENGI_RULES_OF_ACQUISITION
+Commands: ferengi
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### GIPHY
+Commands: gif
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### HALP_NOT_HELP
+Commands: halp
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### HOMER_SIMPSON
+Commands: homer
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### HUMPDAY_WEDNESDAY
+Commands: humpday
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### I_SHOULD_BUY_A_BOAT
+Commands: boat
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### IM_SORRY_DAVE_BUT_I_CANNOT_HELP_YOU
+Commands: dave
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### IS_ADMIN
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### isadmin
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### IS_IT_A_HOLIDAY
+Commands: isitaholiday
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### IS_IT_FRIDAY_YET
+Commands: isitfriday
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### IS_OP
+Commands: isop
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### LAZY_SPICEBOT
+Commands: lazy
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+
+
 
 ### 
 Commands: 
