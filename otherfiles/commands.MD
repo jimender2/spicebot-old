@@ -4,8 +4,6 @@
 * Commands are NOT case-sensative
 ________________________________________________
 
-# Default Sopel Commands
-
 # Main Commands
 
 ### AIRBISCUIT
@@ -188,8 +186,338 @@ Example:
 * JohnSmith: .
 * SpiceBot: 
 
+### LEARN_TO_SPELL
+Note: These are just commonly misspelled commands
+
+* JohnSmith: .devescuse
+* SpiceBot: 
+
+### LETS_BE_FRIENDS
+Commands: 
+
+Example:
+* JohnSmith: .fuckyouspicebot
+* SpiceBot: 
+
+### LOGIC_BOMB
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### MAGIC_8BALL
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### 
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### MERAKI_FREE
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### MIC_DROP
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### NO_POLITICS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### NO_TIME
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### OPRAH
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### PACKT_FREE_EBOOKS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### PHISH
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### POINTS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### POOP_ON_DESKS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### PROMISCUOUS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### PYTHON_PYJOKES
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### RED_ALERT
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### RICKROLL
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### RIMSHOT
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### RUSSIAN_ROULETTE
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SLAP_WITH_FISH
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEBOT_ABUSE_WARNING
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEWORKS_CONTESTS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEWORKS_IRC_QUOTES
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEWORKS_IRC_RULES
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEWORKS_WEBBY
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SYSADMIN_TOOLS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### TAP
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### TECHSUPPORT
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### THANKS_SPICEBOT
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### THE_LEGEND_OF_ZELDA
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### THE_MATRIX
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### THUMP
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### TOILET_FLUSH
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### TRUST
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### WANTED
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### YOUR_MAMMA_JOKES
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
 
 
+# Default Sopel Commands
+
+* URBAN_DICTIONARY
+* ADMIN
+* ADMINCHANNEL
+* ANNOUNCE
+* CALC
+* CLOCK
+* CORETASKS
+* COUNTDOWN
+* CURRENCY
+* DICE
+* ETYMOLOGY
+* HELP
+* IP
+* IPYTHON
+* ISUP
+* LMGTFY
+* MEETBOT
+* MOVIE
+* RAND
+* RELOAD
+* REMIND
+* SAFETY
+* SEARCH
+* SEEN
+* SPELLCHECK
+* TELL
+* TLD
+* TRANSLATE
+* UNICODE_INFO
+* UNITS
+* UPTIME
+* URL
+* VERSION
+* WEATHER
+* WIKTIONARY
+# Admin/Owner Commands
+
+### SPICEBOT_DEBUG
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEBOT_GET_CHANNELS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+### SPICEBOT_GET_MEMBERS
+Commands: 
+
+Example:
+* JohnSmith: .
+* SpiceBot: 
+
+SPICEBOT_MODULE_COUNT
+
+SPICEBOT_MODULES
+
+SPICEBOT_RELOAD
+
+SPICEBOT_DBTEST
+
+SPICEBOT_PIP_INSTALL
+
+swcontestsreset
+
+# For Use with this list
 
 ### 
 Commands: 
@@ -199,27 +527,3 @@ Example:
 * SpiceBot: 
 
 * * SpiceBot 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Admin/Owner Commands
