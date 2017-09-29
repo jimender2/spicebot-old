@@ -83,3 +83,9 @@ def checkLastBuildDate(xmldoc):
 		outfile.close()
 		newContest = True
     return newContest
+
+@sopel.module.require_admin
+@sopel.module.commands('swcontestsreset','spiceconteststreset')
+def reset(bot,trigger):
+    bot.say('Removing Contests File...')
+    os.system("sudo rm " + abs_file_path)
