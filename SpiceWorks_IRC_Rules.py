@@ -24,9 +24,9 @@ def rules(bot, trigger):
         try:
             if str(rulenumber) != '0':
                 myline=lines[rulenumber-1]
-        except IndexError or TypeError or UnboundLocalError:
-            if rulenumber == 0:
+            else:
                 myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+        except IndexError or TypeError:
             elif rulenumber == 69:
                 myline='giggles'
             elif rulenumber == 34:
