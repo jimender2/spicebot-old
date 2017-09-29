@@ -117,7 +117,11 @@ def getwebbytimeuntil():
 
     timetilwebby = str(timetildays + timetilhours + timetilminutes)
     if timetilwebby == '':
-        timetilwebby = str(str(60 - int(now.minute)) + ' minutes remaining on')
+        timetilwebby = str(60 - int(now.minute))
+        if str(timetilwebby) == '60':
+            timetilwebby = '1 hour remaining'
+        else:
+            timetilwebby = str(timetilwebby + ' minutes remaining')
     else:
         timetilwebby = str(timetilwebby + 'Until')
         
