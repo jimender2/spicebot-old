@@ -12,7 +12,7 @@ def rules(bot, trigger):
     else:
         rulenumber = trigger.group(2)
         if not rulenumber.isdigit():
-            rulenumber = w2n.word_to_num(rulenumber)
+            rulenumber = w2n.word_to_num(str(rulenumber))
         else:
             rulenumber = int(rulenumber)
         
