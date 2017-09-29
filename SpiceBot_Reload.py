@@ -19,9 +19,9 @@ def spicebotreload(bot, trigger):
     elif str(script_dirname).endswith('githubdev'):
         version = 'dev'
         service = 'spicebotdev'
-    bot.say('Pulling From Github ' + version)
+    bot.say('Pulling From Github: ' + version + '...')
     os.system("sudo git -C " + script_dir + " pull")
-    bot.say('Cleaning Directory.')
+    bot.say('Cleaning Directory...')
     os.system("sudo rm " + script_dir + "/*.pyc")
-    bot.say('Restarting Service')
+    bot.say('Restarting Service...')
     os.system("sudo service " + service + " restart")
