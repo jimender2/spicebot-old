@@ -71,7 +71,6 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    #timecompare = str(webbytime - now)
     if str(webbytime.day) == str(now.day):
         timetildays = '0'
     else:
@@ -116,12 +115,7 @@ def getwebbytimeuntil():
         timetilminutes = str(timetilminutes + ' minute ')
 
     timetilwebby = str(timetildays + timetilhours + timetilminutes)
-    if timetilwebby == '':
-        timetilwebby = str(60 - int(now.minute))
-        timetilwebby = str(timetilwebby + ' minutes remaining')
-    else:
-        timetilwebby = str(timetilwebby + 'Until')
-        
+   
     webbytimeuntil = str(timetilwebby)
     return webbytimeuntil
 
