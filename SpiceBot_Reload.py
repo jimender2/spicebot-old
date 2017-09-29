@@ -25,4 +25,4 @@ def spicebotreload(bot, trigger):
   bot.say('Cleaning Directory.')
   os.system("sudo rm " + script_dir + "/*.pyc")
   bot.say('Restarting Service')
-  os.system("sudo service " service + " restart")
+  os.system("sudo service " + service + " restart")
