@@ -2,8 +2,6 @@ import sopel.module
 import os
 import sys
 from os.path import exists
-from inspect import currentframe, getframeinfo
-from pathlib import Path
 
 script_dir = os.path.dirname(__file__)
 
