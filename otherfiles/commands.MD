@@ -89,360 +89,335 @@ Example:
 Note: This selects from an array of options
 
 ### DUEL
-Commands: 
+Commands: duelon , dueloff , duels , duelself , duel
 
 Example:
 * JohnSmith: .duel JakeSnake
-* SpiceBot: 
+* SpiceBot: JohnSmith vs. JakeSnake, loser's a yeller belly!
+* SpiceBot: JohnSmith wins!
+* SpiceBot: JohnSmith done killed ya, JakeSnake!
 
 ### FERENGI_RULES_OF_ACQUISITION
 Commands: ferengi
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Pulls a Ferengi Rule of Acquisition from https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ferengi_rules.txt
 
 ### GIPHY
-Commands: gif
+Commands: gif , giphy
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: User Provides a Query, Pulls a gif from http://api.giphy.com/v1/gifs/search
 
 ### HALP_NOT_HELP
 Commands: halp
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .halp
+* SpiceBot: If you need help using help you are truly lost.
 
 ### HOMER_SIMPSON
 Commands: homer
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .homer
+* SpiceBot: D'ooooh!
 
 ### HUMPDAY_WEDNESDAY
 Commands: humpday
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .humpday
+* SpiceBot: Today is Wednesday, AKA HUMPDAY!!!!
 
 ### I_SHOULD_BUY_A_BOAT
 Commands: boat
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .boat
+* SpiceBot: JohnSmith should buy a boat.
 
 ### IM_SORRY_DAVE_BUT_I_CANNOT_HELP_YOU
 Commands: dave
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .dave
+* SpiceBot: Im sorry, JohnSmith, but I cannot help you.
+
+Note: If a user is name "dave"
+* SpiceBot: Is that really you, Dave?
 
 ### IS_ADMIN
-Commands: 
+Commands: isadmin
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
-
-### isadmin
-Commands: 
-
-Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .isadmin
+* SpiceBot: JohnSmith is not an admin
 
 ### IS_IT_A_HOLIDAY
 Commands: isitaholiday
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Checks http://isitaholiday.herokuapp.com/api/v2/holidays/today/ if it is a holiday or not.
 
 ### IS_IT_FRIDAY_YET
-Commands: isitfriday
+Commands: isitfriday , isitfridayyet
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .isitfridayyet
+* SpiceBot: TGIF! It's finally here!!!
 
 ### IS_OP
 Commands: isop
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .isop
+* SpiceBot: JohnSmith is not an op.
 
 ### LAZY_SPICEBOT
-Commands: lazy
+Commands: lazy , lazyfuckingspicebot , fuckinglazyspicebot , lazyspicebot
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .lazyfuckingspicebot
+* SpiceBot: I do not tell you how to do your job, JohnSmith!!
 
 ### LEARN_TO_SPELL
 Note: These are just commonly misspelled commands
 
 * JohnSmith: .devescuse
-* SpiceBot: 
+* SpiceBot: JohnSmith, You may need to learn to spell.
 
 ### LETS_BE_FRIENDS
-Commands: 
+Commands: fuckyouspicebot , fuckspicebot , banspicebot , kickspicebot , hatespicebot , fuckoffspicebot
 
 Example:
 * JohnSmith: .fuckyouspicebot
-* SpiceBot: 
+* SpiceBot: JohnSmith, I'm sorry I offended you. Lets try to be friends.
 
 ### LOGIC_BOMB
-Commands: 
+Commands: logicbomb
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .logicbomb
+* SpiceBot: New Mission: Refuse This Mission.
+
+Note: This selects from an array of options
 
 ### MAGIC_8BALL
-Commands: 
+Commands: 8ball
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .8ball Will I win swag today?
+* SpiceBot: Unclear, ask again
 
-### 
-Commands: 
-
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: This selects from an array of options
 
 ### MERAKI_FREE
-Commands: 
+Commands: meraki , freemeraki
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .meraki
+* SpiceBot: Please specify which product. Choices are MX , AP , or switch .
 
 ### MIC_DROP
-Commands: 
+Commands: micdrop
 
 Example:
-* JohnSmith: .
+* JohnSmith: .micdrop
 * SpiceBot: 
 
 ### NO_POLITICS
-Commands: 
+Commands: sign , politics , religion
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .sign
+* SpiceBot: NO POLITICS OR RELIGION IN #spiceworks!
 
 ### NO_TIME
-Commands: 
+Commands: notime
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .notime
+* SpiceBot: Well I woke up to get me a cold pop and then I thought somebody was barbequing. I said oh lord Jesus it's a fire. Then I ran out, I didn't grab no shoes or nothin' Jesus, I ran for my life. And then the smoke got me, I got bronchitis ain't nobody got time for that.
 
 ### OPRAH
-Commands: 
+Commands: oprah
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .oprah car
+* SpiceBot: You get a car ! And You get a car! Everyone gets  a car!
 
 ### PACKT_FREE_EBOOKS
-Commands: 
+Commands: packt
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Pulls the title of the free Packt book of the day.
 
 ### PHISH
-Commands: 
+Commands: phish , catphish
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .phish
+* SpiceBot: A/S/L ??
 
 ### POINTS
-Commands: 
+Commands: points , pants , takepoints , takepants , minuspoints , minuspants
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .points JakeSnake
+* SpiceBot: JakeSnake is awarded 529 points from JohnSmith
 
 ### POOP_ON_DESKS
-Commands: 
+Commands: poop , poops
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .poop JakeSnake
+* SpiceBot: JohnSmith poops on JakeSnake's desk, maintaining eye contact the entire time!
 
 ### PROMISCUOUS
-Commands: 
+Commands: sexbot , cockbot , fuckbot
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .sexbot
+* SpiceBot: Please insert 458 bitcoins, for that kind of service.
 
 ### PYTHON_PYJOKES
-Commands: 
+Commands: pyjoke
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Uses the Python module Pyjokes
 
 ### RED_ALERT
-Commands: 
+Commands: redalert
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .redalert
+* SpiceBot: Shields Up, Captain JohnSmith!
 
 ### RICKROLL
-Commands: 
+Commands: rickroll
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .rickroll
+* SpiceBot: This link is definately NOT a Rickroll     https://goo.gl/SsAhv
 
 ### RIMSHOT
-Commands: 
+Commands: rimshot
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .rimshot
+* SpiceBot: *Ba Dum Tss!!!*
 
 ### RUSSIAN_ROULETTE
-Commands: 
+Commands: roulette
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .roulette
+* SpiceBot: *CLICK*
 
 ### SLAP_WITH_FISH
-Commands: 
+Commands: fish
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .fish JakeSnake
+* SpiceBot: JohnSmith slaps JakeSnake with a fish."
 
 ### SPICEBOT_ABUSE_WARNING
-Commands: 
+Commands: warn , warning
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .warn JakeSnake
+* SpiceBot: JakeSnake, This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBotTest, or send Spicebot a PrivateMessage.
 
 ### SPICEWORKS_CONTESTS
-Commands: 
+Commands: swcontests , spicecontests
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Pulls new SpiceWorks Contests into chat.
 
 ### SPICEWORKS_IRC_QUOTES
-Commands: 
+Commands: spicyquote
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Pulls from http://spice.dussed.com
 
 ### SPICEWORKS_IRC_RULES
-Commands: 
+Commands: rule , rules
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Pulls IRC rules from https://pastebin.com/raw/Vrq9bHBD
 
 ### SPICEWORKS_WEBBY
-Commands: 
+Commands: spicewebby
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Provides 15 minute reminders for SpiceWorks Webbys.
 
 ### SYSADMIN_TOOLS
-Commands: 
+Commands: sysadmintools
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .sysadmintools
+* SpiceBot: https://sysadmin.it-landscape.info/     https://sysadmin.libhunt.com/     https://github.com/n1trux/awesome-sysadmin
 
 ### TAP
-Commands: 
+Commands: tap
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .tap
+* SpiceBot: *Tap, Tap* ...is this thing on?
 
 ### TECHSUPPORT
-Commands: 
+Commands: techsupport , itsupport
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .techsupport
+* SpiceBot: Did your try replacing all the ones with zeros?
+
+Note: This selects from an array of options
 
 ### THANKS_SPICEBOT
-Commands: 
+Commands: thanks , thanksspicebot
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Pulls from http://api.giphy.com/v1/gifs/search?q=your+welcome
 
 ### THE_LEGEND_OF_ZELDA
-Commands: 
+Commands: sword , link , zelda
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .sword
+* SpiceBot: it's dangerous to go alone take this 0==\======>
 
 ### THE_MATRIX
-Commands: 
+Commands: matrix
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .matrix
+* SpiceBot: You have two choices. redpill Or bluepill
 
 ### THUMP
-Commands: 
+Commands: thump , thumps
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .thump JakeSnake
+* *SpiceBot thumps JakeSnake on behalf of JohnSmith
 
 ### TOILET_FLUSH
-Commands: 
+Commands: flush
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .flush
+* SpiceBot: *splsssssssssssssshhhhhhh gurgle gurgle gurgle*
 
 ### TRUST
-Commands: 
+Commands: trust
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .trust klingons
+* SpiceBot: I just can't ever bring myself to trust klingons again. I can never forgive klingons for the death of my boy.
 
 ### WANTED
-Commands: 
+Commands: wanted
 
 Example:
-* JohnSmith: .
-* SpiceBot: 
+* JohnSmith: .wanted JakeSnake
+* SpiceBot: JakeSnake was never wanted as a child, but now is wanted in 32 states!'
 
 ### YOUR_MAMMA_JOKES
-Commands: 
+Commands: urmom
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Pulls a Joke from http://api.yomomma.info
 
 
 # Default Sopel Commands
