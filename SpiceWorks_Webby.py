@@ -94,7 +94,8 @@ def getwebbytimeuntil():
             timetildays = str(int(webbytime.day) - int(now.day))
         else:
             daysthismonth = datetime(now.year,now.month,1)+relativedelta(months=1,days=-1)
-            timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
+            #timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
+            timetildays = '555'
 
     if str(webbytime.hour) == str(now.hour):
         timetilhours = '0'
