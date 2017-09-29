@@ -457,40 +457,53 @@ Pulls a Joke from http://api.yomomma.info
 * VERSION
 * WEATHER
 * WIKTIONARY
+
 # Admin/Owner Commands
 
 ### SPICEBOT_DEBUG
 Commands: 
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note: Helps Admins see if the service status.
 
 ### SPICEBOT_GET_CHANNELS
 Commands: 
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note:___________________________ 
 
 ### SPICEBOT_GET_MEMBERS
 Commands: 
 
-Example:
-* JohnSmith: .
-* SpiceBot: 
+Note:___________________________
 
-SPICEBOT_MODULE_COUNT
+### SPICEBOT_MODULE_COUNT
+Commands: 
 
-SPICEBOT_MODULES
+Note:___________________________
 
-SPICEBOT_RELOAD
+### SPICEBOT_MODULES
+Commands: 
 
-SPICEBOT_DBTEST
+Note: Provides a URL for this repository.
 
-SPICEBOT_PIP_INSTALL
+### SPICEBOT_RELOAD
+Commands: 
 
-swcontestsreset
+Note: Updates modules from the correct branch on Github, and restarts the bot.
+
+### SPICEBOT_DBTEST
+Commands: 
+
+Note:___________________________
+
+### SPICEBOT_PIP_INSTALL
+Commands: 
+
+Note: Helps Admins install pip packages
+
+### swcontestsreset
+Commands: swcontestsreset
+
+Note: This is part of the Contests module, but helps admins reset the txt file.
 
 # For Use with this list
 
