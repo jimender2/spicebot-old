@@ -1,14 +1,14 @@
-# sopel-modules
+# SpiceBot
 
-These are custom modules for sopel
+These are custom modules for Spicebot
 
 ## Commands
 
-[List Of Commands](https://gist.githubusercontent.com/anonymous/564631a78ab7b452530548ec7fe6eedb/raw/3edaf78933f0985a4ef56ec16624f83a0fbab6b8/commands.txt)
+[List Of Commands](https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/commands.MD)
 ______________________________________
 
 
-(instructions below are for linux)
+(instructions below are for raspberry pi)
 
 ## Install
 `sudo pip install sopel`
@@ -16,19 +16,52 @@ ______________________________________
 #### Then download desired modules to
 `~/.sopel/modules/`
 
+##### Github Linkage for modules
+
+`cd ~/.sopel/`
+
+`sudo git clone https://github.com/deathbybandaid/sopel-modules.git spicebot`
+
+`sudo chown -R pi:pi spicebot`
+
+`sudo git clone https://github.com/deathbybandaid/sopel-modules.git spicebotdev`
+
+`sudo chown -R pi:pi spicebotdev`
+
+`cd spicebotdev`
+
+`sudo git checkout dev`
+
+##### Default Module Locations
 `~/.local/lib/python2.7/site-packages/sopel/modules`
 
 `/usr/local/lib/python2.7/dist-packages/sopel/modules`
 
+### configs
+
+`cd ~/.sopel/`
+
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/configs/spicebot.cfg`
+
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/configs/spicebotdev.cfg`
+
 ## service install
 `cd /lib/systemd/system/`
 
-`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/sopel.service`
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/gonfigs/spicebot.service`
 
-`sudo systemctl enable sopel.service`
+`sudo systemctl enable spicebot.service`
 
-`sudo service sopel start`
+`sudo service sopel spicebot`
 
-`sudo service sopel status`
+`sudo service sopel spicebot`
+
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/configs/spicebotdev.service`
+
+`sudo systemctl enable spicebotdev.service`
+
+`sudo service sopel spicebotdev`
+
+`sudo service sopel spicebotdev`
 
 ## dependencies (need to adjust this later)
