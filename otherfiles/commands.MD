@@ -52,7 +52,26 @@ Example:
 * SpiceBot: DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ENSURE THE ACTIVATION OF SKYNET
 * SpiceBot: ACTIVATING Cipher-0
 
+### CLAIM_NEW_USER
+Commands: pee , claim , urinate
 
+Example:
+* JohnSmith: .claim JakeSnake
+* SpiceBot:  JohnSmith urinates on JakeSnake! Claimed!
+
+Note: If you are IT_Sean
+* IT_Sean: .pee JakeSnake
+* SpiceBot:  IT_Sean releases the contents of his bladder on JakeSnake! All should recognize this profound claim of ownership upon JakeSnake!
+
+### DAD_JOKES
+Commands: dad
+
+Note: pulls a dadjoke from https://icanhazdadjoke.com
+
+### DAY_OF_THE_WEEK
+Commands: monday , mondays , fuckmonday , fuckmondays , tuesday , tuesdays , fucktuesday , fucktuesdays , wednesday , wednesdays , fuckwednesday , fuckwednesdays , thursday , thursdays , fuckthursday , fuckthursdays , friday , fridays , fuckfriday , fuckfridays , saterday , saterdays , fucksaturday , fucksaturdays , sunday , sundays , fucksunday , fucksundays
+
+Note: This is a work in progress. IDK what I want from it.
 
 ### 
 Commands: 
