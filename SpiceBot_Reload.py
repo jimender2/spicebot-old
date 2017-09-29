@@ -7,16 +7,16 @@ from pathlib import Path
 
 script_dir = os.path.dirname(__file__)
 filename = getframeinfo(currentframe()).filename
-script_dirname = str(str(Path(filename).resolve().parent).split("/", 1)[1]).split("/", 1)[1]
+script_dirname = str(Path(filename).resolve().parent)
 
 @sopel.module.require_admin
 @sopel.module.require_privmsg
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-  if str(script_dirname) == 'github':
+  if str(script_dirname).endswith('github'):
     version = 'master'
     service = 'spicebot'
-  elif str(script_dirname) == 'githubdev':
+  elif str(script_dirname).endswith('githubdev'):
     version = 'dev'
     service = 'spicebotdev'
   
