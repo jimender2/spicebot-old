@@ -10,9 +10,11 @@ def rules(bot, trigger):
     if not trigger.group(2):
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
-        rulenumber = int(trigger.group(2))
+        rulenumber = trigger.group(2)
         if not rulenumber.isdigit():
             rulenumber = w2n.word_to_num(rulenumber)
+        else:
+            rulenumber = int(rulenumber)
         
         htmlfile=urllib.urlopen(rulesurl)
         lines=htmlfile.readlines()
