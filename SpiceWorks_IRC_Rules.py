@@ -1,5 +1,6 @@
 import sopel.module
 import urllib
+from word2number import w2n
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
@@ -10,10 +11,14 @@ def rules(bot, trigger):
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
         rulenumber = int(trigger.group(2))
+        if not rulenumber.isdigit():
+            rulenumber = w2n.word_to_num(rulenumber)
+        
         htmlfile=urllib.urlopen(rulesurl)
         lines=htmlfile.readlines()
         try:
-            myline=lines[rulenumber-1]
+            if rulenumber != '0':
+                myline=lines[rulenumber-1]
         except IndexError:
             if rulenumber == 0:
                 myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
