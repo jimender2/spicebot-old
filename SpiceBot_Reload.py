@@ -11,7 +11,7 @@ script_dir = os.path.dirname(__file__)
 @sopel.module.require_privmsg
 @sopel.module.commands('spicebotreload')
 def spicebotreload(bot, trigger):
-    service = bot.nick.lower
+    service = bot.nick.lower()
     bot.say(service)
     bot.say('Pulling From Github...')
     os.system("sudo git -C " + script_dir + " pull")
