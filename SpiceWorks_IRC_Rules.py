@@ -14,7 +14,7 @@ def rules(bot, trigger):
         if not rulenumber.isdigit():
             try:
                 rulenumber = w2n.word_to_num(str(rulenumber))
-            except ValueError:
+            except ValueError or TypeError:
                 bot.say('That does not appear to be a valid number.')
         else:
             rulenumber = int(rulenumber)
