@@ -34,7 +34,7 @@ def rules(bot, trigger):
             else:
                 myline= 'That doesnt appear to be a rule number.'
     
-    if myline == 'giggles':
+        if myline == 'giggles':
             bot.action(myline)
-    else:
+        else:
             bot.say(myline)
