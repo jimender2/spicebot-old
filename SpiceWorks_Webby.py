@@ -83,10 +83,7 @@ def getwebbytimeuntil():
     else:
         if str(timetilyears) > '0':
             timetilyears = str(int(timetilyears) - 1)
-        if str(webbytime.month) > str(now.month) and str(now.year) == str(webbytime.year):
-            timetilmonths = str(int(webbytime.month) - int(now.month))
-        else:
-            timetilmonths = str(12 - int(now.month) + int(webbytime.month))
+        timetilmonths = str(int(webbytime.month) - int(now.month))
     
     if str(webbytime.day) == str(now.day):
         timetildays = '0'
