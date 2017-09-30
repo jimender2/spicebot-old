@@ -3,6 +3,9 @@ import requests
 from lxml import html
 from fake_useragent import UserAgent
 import datetime
+import arrow
+from datetime import datetime, timedelta
+import time
 
 # new book is 23:00 UTC
 packthour = str(23)
@@ -54,34 +57,14 @@ def getPacktTitle():
 
 def getpackttimediff():
     now = datetime.datetime.utcnow()
-    
     if int(now.hour) < int(packthour):
-        hourcompare = str(int(packthour) - int(now.hour))
+        packtnext = datetime(dtnow.year, dtnow.month, dtnow.day, packthour, packtminute, 0, 0)
     else:
-        hourcomparea = str(24 - int(now.hour))
-        hourcompare = str(int(packthour) + int(hourcomparea))
-    
-    if int(now.minute) != '0':
-        hourcompare = str(int(hourcompare) - 1)
-        minutecompare = str(60 - int(now.minute))
-    else:
-        hourcompare = str(hourcompare)
-        minutecompare = str(60 - int(now.minute))
-    
-    if hourcompare == '1':
-        hours = hourcompare + ' ' + 'hour'
-    elif hourcompare == '0':
-        hours = ''
-    else:
-        hours = hourcompare + ' ' + 'hours'   
-    
-    if minutecompare == '1':
-        minutes = minutecompare + ' ' + 'minute'
-    elif minutecompare == '0':
-        minutes = ''
-    else:
-        minutes = minutecompare + ' ' + 'minutes'       
-    
-    packttimedifffull = str(hours) + ' ' + str(minutes)
+        day = timedelta(days=1)
+        tomorrow = now + day
+        packtnext = datetime(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
+    a = arrow.get(now)
+    b = arrow.get(packtnext)
+    timecompare = (b.humanize(a, granularity='auto'))
     packttimediff = str(packttimedifffull)
     return packttimediff
