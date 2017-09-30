@@ -4,7 +4,6 @@ from lxml import html
 from fake_useragent import UserAgent
 import datetime
 import arrow
-from datetime import datetime, timedelta
 import time
 
 # new book is 23:00 UTC
