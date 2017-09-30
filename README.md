@@ -65,3 +65,11 @@ ______________________________________
 `sudo service sopel spicebotdev`
 
 ## dependencies (need to adjust this later)
+
+### arrow
+
+`sudo git clone https://github.com/crsmithdev/arrow.git`
+
+`cd arrow`
+
+`sudo pip install -e`
