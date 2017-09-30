@@ -69,5 +69,5 @@ def getpackttimediff():
     a = arrow.get(now)
     b = arrow.get(packtnext)
     timecompare = (b.humanize(a, granularity='auto'))
-    packttimediff = str(packttimedifffull)
+    packttimediff = str(timecompare)
     return packttimediff
