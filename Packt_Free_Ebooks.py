@@ -18,7 +18,7 @@ def getpackt(bot):
         if now.hour == int(packthour) and now.minute == int(packtminute):
             title = getPacktTitle()
             packttimediff = getpackttimediff()
-            bot.msg(channel, "Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+            bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
@@ -59,15 +59,15 @@ def getpackttimediff():
     now = datetime.datetime.utcnow()
     packtnext = None
     if now.hour < packthour:
-        packtnext = datetime.datetime(now.year, now.month, now.day, 23, 0, 0, 0)
+        packtnext = datetime.datetime(now.year, now.month, now.day, packthour, packtminute, 0, 0)
         #packtnext = datetime.(now.year, now.month, now.day, str(packthour), str(packtminute), 0, 0)
     else:
         day = timedelta(days=1)
         tomorrow = now + day
-        packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 0, 0, 0)
+        packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
         #packtnext = datetime.(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
     a = arrow.get(now)
     b = arrow.get(packtnext)
     timecompare = (b.humanize(a, granularity='auto'))
-    packttimediff = str(timecompare)
+    packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
