@@ -5,7 +5,6 @@ import datetime
 from time import strptime
 from dateutil import parser
 import calendar
-import arrow
 
 url = 'https://community.spiceworks.com/calendar'
 
