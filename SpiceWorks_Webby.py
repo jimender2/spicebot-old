@@ -72,7 +72,7 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    timecompare = str(webbytime - now).total_seconds()
+    timecompare = str(webbytime - now)
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
