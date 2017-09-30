@@ -59,12 +59,12 @@ def getpackttimediff():
     now = datetime.datetime.utcnow()
     packtnext = None
     if now.hour < packthour:
-        packtnext = datetime(now.year, now.month, now.day, 23, 0, 0, 0)
+        packtnext = datetime.datetime(now.year, now.month, now.day, 23, 0, 0, 0)
         #packtnext = datetime.(now.year, now.month, now.day, str(packthour), str(packtminute), 0, 0)
     else:
         day = timedelta(days=1)
         tomorrow = now + day
-        packtnext = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 0, 0, 0)
+        packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 0, 0, 0)
         #packtnext = datetime.(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
     a = arrow.get(now)
     b = arrow.get(packtnext)
