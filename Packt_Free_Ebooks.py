@@ -26,7 +26,7 @@ def packt(bot, trigger):
     packttimediff = getpackttimediff()
     if trigger.group(2):
         if trigger.group(2) == 'time':
-            bot.say('Time Left: ' + str(packttimediff))
+            bot.say(str(packttimediff))
         else:
             normalrun='true'
     else:
@@ -34,7 +34,7 @@ def packt(bot, trigger):
     try:
         if normalrun:
             title = getPacktTitle()
-            bot.say("Packt Free Book Today is: " + title + '     Time Left: ' + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+            bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
     except UnboundLocalError:
         return
 
