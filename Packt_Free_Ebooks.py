@@ -57,7 +57,7 @@ def getPacktTitle():
 def getpackttimediff():
     now = datetime.datetime.utcnow()
     if int(now.hour) < int(packthour):
-        packtnext = datetime(dtnow.year, dtnow.month, dtnow.day, packthour, packtminute, 0, 0)
+        packtnext = datetime(now.year, now.month, now.day, packthour, packtminute, 0, 0)
     else:
         day = timedelta(days=1)
         tomorrow = now + day
