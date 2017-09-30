@@ -72,85 +72,9 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    
-    if str(webbytime.year) == str(now.year):
-        timetilyears = '0'
-    else:
-        timetilyears = str(int(webbytime.year) - int(now.year))
-    
-    if str(webbytime.month) == str(now.month):
-        timetilmonths = '0'
-    else:
-        if str(timetilyears) > '0':
-            timetilyears = str(int(timetilyears) - 1)
-        timetilmonths = str(int(webbytime.month) - int(now.month))
-    
-    if str(webbytime.day) == str(now.day):
-        timetildays = '0'
-    else:
-        if str(timetilmonths) > '0':
-            timetilmonths = str(int(timetilmonths) - 1)
-        if str(webbytime.day) > str(now.day) and str(now.month) == str(webbytime.month):
-            timetildays = str(int(webbytime.day) - int(now.day))
-        else:
-            daysthismonth = calendar.monthrange(now.year, now.month)[1]
-            timetildays = str(int(daysthismonth) - int(now.day) + int(webbytime.day))
-
-    if str(webbytime.hour) == str(now.hour):
-        timetilhours = '0'
-    else:
-        if str(timetildays) > '0':
-            timetildays = str(int(timetildays) - 1)
-        if str(webbytime.hour) > str(now.hour):
-            timetilhours = str(int(webbytime.hour) - int(now.hour))
-        else:
-            timetilhours = str(24 - int(now.hour) + int(webbytime.hour))
-
-    if str(now.minute) == '0':
-        timetilminutes = '0'
-    else:
-        if str(timetilhours) > '0':
-            timetilhours = str(int(timetilhours) - 1)
-        timetilminutes = str(60 - int(now.minute))
-
-    if timetilyears == '0':
-        timetilyears = ''
-    elif timetilyears > '1':
-        timetilyears = str(timetilyears + ' years ')
-    else:
-        timetilyears = str(timetilyears + ' year ')
-        
-    if timetilmonths == '0':
-        timetilmonths = ''
-    elif timetilmonths > '1':
-        timetilmonths = str(timetilmonths + ' months ')
-    else:
-        timetilmonths = str(timetilmonths + ' month ')
-        
-    if timetildays == '0':
-        timetildays = ''
-    elif timetildays > '1':
-        timetildays = str(timetildays + ' days ')
-    else:
-        timetildays = str(timetildays + ' day ')
-
-    if timetilhours == '0':
-        timetilhours = ''
-    elif timetilhours > '1':
-        timetilhours = str(timetilhours + ' hours ')
-    else:
-        timetilhours = str(timetilhours + ' hour ')
-
-    if timetilminutes == '0':
-        timetilminutes = ''
-    elif timetilminutes > '1':
-        timetilminutes = str(timetilminutes + ' minutes ')
-    else:
-        timetilminutes = str(timetilminutes + ' minute ')
-
-    timetilwebby = str(timetilyears + timetilmonths + timetildays + timetilhours + timetilminutes)
-   
-    webbytimeuntil = str(timetilwebby)
+    timecompare = str(webbytime - now)
+    timecompare = timecompare.total_seconds()
+    webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
 def gettree():
