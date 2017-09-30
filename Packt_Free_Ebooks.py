@@ -59,7 +59,7 @@ def getpackttimediff():
     now = datetime.datetime.utcnow()
     dtnow = datetime.now()
     dt6 = None
-    if now.hour < packthour:
+    if dtnow.hour < packthour:
         dt6 = datetime(dtnow.year, dtnow.month, dtnow.day, 6, 0, 0, 0)
         #packtnext = datetime.(now.year, now.month, now.day, str(packthour), str(packtminute), 0, 0)
     else:
