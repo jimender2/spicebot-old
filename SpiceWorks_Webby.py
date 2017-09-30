@@ -73,7 +73,10 @@ def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
     timecompare = str(webbytime - now)
-    timecompare = datetime.datetime.strptime(str(timecompare), "%Y-%m-%d %H:%M:%S")
+    try:
+        timecompare = datetime.datetime.strptime(str(timecompare), "%Y years %m months %d days %H hours %M minutes %S seconds")
+    except ValueError:
+        timecompare = datetime.datetime.strptime(str(timecompare), "%m months %d days %H hours %M minutes %S seconds")
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
