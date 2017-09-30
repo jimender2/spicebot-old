@@ -5,6 +5,7 @@ import datetime
 from time import strptime
 from dateutil import parser
 import calendar
+import arrow
 
 url = 'https://community.spiceworks.com/calendar'
 
@@ -72,7 +73,10 @@ def getwebbybonus():
 def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    timecompare = str(webbytime - now)
+    a = arrow.get(now)
+    b = arrow.get(webbytime)
+    timecompare = (a.humanize(b))
+    #timecompare = str(webbytime - now)
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
