@@ -5,6 +5,7 @@ import datetime
 from time import strptime
 from dateutil import parser
 import calendar
+import arrow
 
 url = 'https://community.spiceworks.com/calendar'
 
@@ -73,6 +74,8 @@ def getwebbytimeuntil():
     now = datetime.datetime.utcnow()
     webbytime = getwebbytime()
     timecompare = str(webbytime - now)
+    #try:
+    timecompare = timecompare.strftime("%Y-%m-%d %H:%M:%S")
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
