@@ -75,7 +75,7 @@ def getwebbytimeuntil():
     webbytime = getwebbytime()
     a = arrow.get(now)
     b = arrow.get(webbytime)
-    timecompare = (b.humanize(a, granularity='minute'))
+    timecompare = (b.humanize(a, granularity='auto'))
     #'second'minute''hour''day''month''year'
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
