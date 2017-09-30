@@ -2,6 +2,7 @@ import sopel.module
 import requests
 from lxml import html
 from fake_useragent import UserAgent
+from datetime import datetime, timedelta
 import datetime
 import arrow
 import time
