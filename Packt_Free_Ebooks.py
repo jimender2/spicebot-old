@@ -57,14 +57,18 @@ def getPacktTitle():
 
 def getpackttimediff():
     now = datetime.datetime.utcnow()
+    dtnow = datetime.now()
+    dt6 = None
     if now.hour < packthour:
-        packtnext = datetime.datetime.(now.year, now.month, now.day, str(packthour), str(packtminute), 0, 0)
+        dt6 = datetime(dtnow.year, dtnow.month, dtnow.day, 6, 0, 0, 0)
+        #packtnext = datetime.(now.year, now.month, now.day, str(packthour), str(packtminute), 0, 0)
     else:
         day = timedelta(days=1)
-        tomorrow = now + day
-        packtnext = datetime.datetime.(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
+        tomorrow = dtnow + day
+        dt6 = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 6, 0, 0, 0)
+        #packtnext = datetime.(tomorrow.year, tomorrow.month, tomorrow.day, packthour, packtminute, 0, 0)
     a = arrow.get(now)
-    b = arrow.get(packtnext)
+    b = arrow.get(dt6)
     timecompare = (b.humanize(a, granularity='auto'))
     packttimediff = str(packttimedifffull)
     return packttimediff
