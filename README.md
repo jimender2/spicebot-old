@@ -52,17 +52,17 @@ ______________________________________
 
 `sudo systemctl enable spicebot.service`
 
-`sudo service sopel spicebot`
+`sudo service spicebot start`
 
-`sudo service sopel spicebot`
+`sudo service spicebot status`
 
 `sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/configs/spicebotdev.service`
 
 `sudo systemctl enable spicebotdev.service`
 
-`sudo service sopel spicebotdev`
+`sudo service spicebotdev start`
 
-`sudo service sopel spicebotdev`
+`sudo service spicebotdev status`
 
 ## dependencies (need to adjust this later)
 
