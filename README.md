@@ -68,6 +68,10 @@ ______________________________________
 
 ### arrow
 
+`sudo pip install git+https://github.com/crsmithdev/arrow.git`
+
+OR
+
 `sudo git clone https://github.com/crsmithdev/arrow.git`
 
 `cd arrow`
