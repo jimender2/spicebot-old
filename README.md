@@ -48,7 +48,7 @@ ______________________________________
 ## service install
 `cd /lib/systemd/system/`
 
-`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/gonfigs/spicebot.service`
+`sudo wget https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/configs/spicebot.service`
 
 `sudo systemctl enable spicebot.service`
 
