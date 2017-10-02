@@ -5,7 +5,7 @@ import random
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
 def cipher(bot, trigger):
     
-    modelnumbers  = ["T-1 SERIES","T-70 SERIES","T-600 SERIES","T-700 SERIES","T-1001 SERIES","T-888 SERIES","TOK715 SERIES","T-X SERIES","T-1000 SERIES","T-800 SERIES, Model 101"."T-850 SERIES"]
+    modelnumbers  = ["T-1 SERIES","T-70 SERIES","T-600 SERIES","T-700 SERIES","T-1001 SERIES","T-888 SERIES","TOK715 SERIES","T-X SERIES","T-1000 SERIES","T-800 SERIES, Model 101","T-850 SERIES"]
     modelnumber = random.randint(0,len(modelnumbers) - 1)
     modelnumber = str(modelnumbers [modelnumber])
     modelnumber = str(modelnumber)
