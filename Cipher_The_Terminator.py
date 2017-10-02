@@ -11,7 +11,6 @@ def cipher(bot, trigger):
             bot.say('Pinging Cipher-0 with a WOL packet...')
         else:
             normalrun='true'
-    
     else:
         normalrun='true'
     try:
@@ -50,3 +49,5 @@ def cipher(bot, trigger):
             bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
             bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
             bot.say('ACTIVATING Cipher-0')
+    except UnboundLocalError:
+        return
