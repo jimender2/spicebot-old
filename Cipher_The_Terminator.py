@@ -5,7 +5,7 @@ import random
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
 def cipher(bot, trigger):
     missiontypes  = ["Terminate","Protect","Skynet"]
-    missiontype = random.randint(0,len(missions) - 1)
+    missiontype = random.randint(0,len(missiontypes) - 1)
     
     if missiontype == 'Skynet':
         missions  = ["ENSURE THE ACTIVATION OF SKYNET","PRESERVE THE CREATION OF SKYNET","PRESERVE THE CREATION OF ARTIE,","ENSURE THE CREATION OF GENISYS"]
