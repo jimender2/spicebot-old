@@ -4,7 +4,13 @@ import random
 @sopel.module.rate(120)
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
 def cipher(bot, trigger):
-    missiontypes  = ["Terminate","Protect","Skynet"]
+    
+    modelnumbers  = ["T-1 SERIES","T-70 SERIES","T-600 SERIES","T-700 SERIES","T-1001 SERIES","T-888 SERIES","TOK715 SERIES","T-X SERIES","T-1000 SERIES","T-800 SERIES, Model 101"."T-850 SERIES"]
+    modelnumber = random.randint(0,len(modelnumbers) - 1)
+    modelnumber = str(modelnumbers [modelnumber])
+    modelnumber = str(modelnumber)
+    
+    missiontypes  = ["Terminate","Protect","Skynet","Spice"]
     missiontype = random.randint(0,len(missiontypes) - 1)
     missiontype = str(missiontypes [missiontype])
     mission = str(missiontype)
@@ -25,6 +31,11 @@ def cipher(bot, trigger):
         mission = random.randint(0,len(missions) - 1)
         mission = str(missions [mission])
         
-    bot.say('CYBORG TISSUE GENERATION 800 SERIES MODEL 101 SEQUENCE INITIATED')
+    elif missiontype == 'Spice':
+        missions  = ["Protect Technical Angel","INSTALL MOAR PATCHES"]
+        mission = random.randint(0,len(missions) - 1)
+        mission = str(missions [mission])
+        
+    bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
     bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
     bot.say('ACTIVATING Cipher-0')
