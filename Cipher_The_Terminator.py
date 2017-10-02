@@ -10,7 +10,7 @@ def cipher(bot, trigger):
     mission = str(missiontype)
     
     if missiontype == 'Skynet':
-        missions  = ["ENSURE THE ACTIVATION OF SKYNET","PRESERVE THE CREATION OF SKYNET","PRESERVE THE CREATION OF ARTIE,","ENSURE THE CREATION OF GENISYS"]
+        missions  = ["ENSURE THE ACTIVATION OF SKYNET","PRESERVE THE CREATION OF SKYNET","PRESERVE THE CREATION OF ARTIE","ENSURE THE CREATION OF GENISYS"]
         mission = random.randint(0,len(missions) - 1)
         mission = str(missions [mission])
         
