@@ -17,8 +17,8 @@ def cipher(bot, trigger):
     elif missiontype == 'Terminate':
         missions  = ["Sarah Connor","John Connor","Kyle Reese","Mary Warren","Marco Cassetti","Kate Brewster","Robert Brewster","Elizabeth Anderson","William Anderson","Jose Barrera","Simon Taylor","Isaac Hall","Fritz Roland","Ted Snavely","Sharlene Gen","Vince Forcer",]
         mission = random.randint(0,len(missions) - 1)
-        mission = str('TERMINATE' + mission)
         mission = str(missions [mission])
+        mission = str('TERMINATE' + mission)
         
     elif missiontype == 'Protect':
         missions  = ["PROTECT Sarah Connor","PROTECT John Connor","ENSURE THE SURVIVAL OF John Connor AND Katherine Brewster"]
