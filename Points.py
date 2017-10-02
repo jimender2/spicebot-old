@@ -45,6 +45,6 @@ def points(bot, trigger):
         if trigger.group(2) == 'all':
             winner = "Everybody"
         elif trigger.group(2) == trigger.nick:
-            winner = "Him/Her-self"
+            winner = "themself"
     else:
         bot.say(trigger.nick + ' buys a pint for ' + winner)
