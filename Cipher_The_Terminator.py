@@ -1,4 +1,5 @@
 import sopel.module
+import random
 
 @sopel.module.rate(120)
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
