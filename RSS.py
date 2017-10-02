@@ -15,8 +15,9 @@ import feedparser
 import hashlib
 import shlex
 import time
-import urllib.parse
-import urllib.request
+#import urllib.parse
+#import urllib.request
+import urllib
 
 LOGGER = get_logger(__name__)
 
