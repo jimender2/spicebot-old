@@ -45,5 +45,5 @@ def pints(bot, trigger):
         if trigger.group(2) == 'all':
             winner = "Everybody"
         elif trigger.group(2) == trigger.nick:
-            winner = "themself"
+            winner = "him/her-self"
     bot.say(trigger.nick + ' buys a pint for ' + winner)
