@@ -7,10 +7,9 @@ def ERMAHGERD(bot,trigger):
     if trigger.group(2):
         ernpert = trigger.group(2)
         spertitert = trernslert(ernpert)
-        bot.say(spertitert)
+        bot.say('ERMAHGERD, ' + str(spertitert))
     else:
         bot.say('Whert der yer wernt ter trernslert?')
-
 
 def trernslert(werds):
     terkerns = werds.split()
