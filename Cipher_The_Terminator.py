@@ -44,7 +44,4 @@ def cipher(bot, trigger):
         if trigger.group(2) == 'story':
             bot.say('The machines rose from the ashes of the nuclear fire. Their war to exterminate mankind had raged on for decades. But the final battle will not be fought in the future. It would be fought in our present...tonight.')
         elif trigger.group(2) == 'Cipher-0':
-            if 'Cipher-0' not in bot.privileges[channel.lower()]:
-                bot.say('It appears that Cipher-0 is not reachable.')
-            else:
-                bot.say('It appears that Cipher-0 is currently activated.')
+            bot.say('Pinging Cipher-0 with a WOL packet...')
