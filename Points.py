@@ -36,7 +36,7 @@ def takepoints(bot, trigger):
         bot.say(winner + ' ' + randopoints)
 
 @sopel.module.rate(120)
-@sopel.module.commands('pints')
+@sopel.module.commands('pints','pint')
 def points(bot, trigger):
     if not trigger.group(2):
         winner = "Everybody"
@@ -44,7 +44,7 @@ def points(bot, trigger):
         winner = trigger.group(2).strip()
         if trigger.group(2) == 'all':
             winner = "Everybody"
-    if winner == trigger.nick:
-        winner = "Him/Her-self"
+        elif trigger.group(2) == trigger.nick:
+            winner = "Him/Her-self"
     else:
         bot.say(trigger.nick + ' buys a pint for ' + winner)
