@@ -21,5 +21,5 @@ def cipher(bot, trigger):
         mission = random.randint(0,len(missions) - 1)
         
     bot.say('CYBORG TISSUE GENERATION 800 SERIES MODEL 101 SEQUENCE INITIATED')
-    bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(Mission))
+    bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
     bot.say('ACTIVATING Cipher-0')
