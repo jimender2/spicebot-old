@@ -3,6 +3,7 @@ from sopel import module, tools
 import random
 import os
 from os.path import exists
+from random import randint
 
 script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
