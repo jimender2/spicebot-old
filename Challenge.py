@@ -39,7 +39,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             winner = combatants.pop()
             loser = combatants.pop()
             bot.say(winner + " wins!")
-            bot.say(winner + " killed " + loser + " with a " + weapon)
+            bot.say(winner + " killed " + loser + " with " + weapon)
 
 @sopel.module.commands('challengeweapon')
 def addweapons(bot, trigger):
@@ -52,4 +52,8 @@ def addweapons(bot, trigger):
 def weaponofchoice():
     weapons = open(abs_file_path).read().splitlines()
     weapon =random.choice(weapons)
+    if weapon.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
+        weapon = str('an ' + weapon)
+    else:
+        weapon = str('a ' + weapon)
     return weapon
