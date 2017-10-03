@@ -48,9 +48,14 @@ def addweapons(bot, trigger):
         bot.say("what weapon would you like to add?")
     else:
         weaponnew = trigger.group(2)
-        with open(abs_file_path, "a") as myfile:
-            myfile.write("\n")
-            myfile.write(weaponnew)
+        if str(weaponnew) in open(abs_file_path).read():
+            bot.say(weaponnew + " is already in the weapons locker.")
+        else:
+            with open(abs_file_path, "a") as myfile:
+                myfile.write("\n")
+                myfile.write(weaponnew)
+        if str(weaponnew) in open(abs_file_path).read():
+            bot.say(weaponnew + " has been added to the weapons locker.")
 
 def weaponofchoice():
     checkweapons()
