@@ -44,7 +44,7 @@ def trernslert(werds):
             werd = str(werd + ' PERCERNT')
         
         if rerghtperernthersers == 'true':
-            werd = str(werd + '\)')
+            werd = str(werd + ')')
         
         er = er + ' ' + werd
     return er
