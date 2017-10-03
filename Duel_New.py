@@ -11,9 +11,9 @@ def duel(bot,trigger):
             bot.say("You can't duel yourself, you coward!")
         else:
             bot.say(trigger.nick + " versus " + trigger.group(2) + ", loser's a yeller belly!")
-            contestants  = ["trigger.nick" , "trigger.group(2)"]
+            contestants  = [trigger.nick , trigger.group(2)]
             winner = random.randint(0,len(contestants) - 1)
-            loser = str(int(winner) - 1)
+            loser = str(winner - 1)
             winner = str(contestants [winner])
             loser = str(contestants [loser])
             bot.say(winner + " wins!")
