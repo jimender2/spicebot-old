@@ -6,7 +6,7 @@ from os.path import exists
 
 script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
-weaponslocker = os.path.join(script_dir, rel_path)
+abs_file_path = os.path.join(script_dir, rel_path)
 
 ## Enforce challenges. if challenge is not accepted, don't duel
 ## assign XP points
@@ -54,13 +54,13 @@ def addweapons(bot, trigger):
         bot.say("what weapon would you like to add?")
     else:
         weaponnew = trigger.group(2)
-        if str(weaponnew) in open(weaponslocker).read():
+        if str(weaponnew) in open(abs_file_path).read():
             bot.say(weaponnew + " is already in the weapons locker.")
         else:
-            with open(weaponslocker, "a") as myfile:
+            with open(abs_file_path, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
-            if str(weaponnew) in open(weaponslocker).read():
+            if str(weaponnew) in open(abs_file_path).read():
                 bot.say(weaponnew + " has been added to the weapons locker.")
 
 @sopel.module.commands('weaponslockerdel')
@@ -70,8 +70,7 @@ def removeweapons():
         bot.say("what weapon would you like to remove?")
     else:
         weapondel = trigger.group(2)
-        if str(weapondel) in open(weaponslocker).read():
-            bot.say('tbd')
+        if str(weapondel) in open(abs_file_path).read():
             os.system('sudo sed -i "/' + weapondel + '/d ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
                 bot.say(weapondel + ' has been removed from the weapons locker.')
@@ -80,7 +79,7 @@ def removeweapons():
           
 def weaponofchoice():
     checkweapons()
-    weapons = open(weaponslocker).read().splitlines()
+    weapons = open(abs_file_path).read().splitlines()
     weapon =random.choice(weapons)
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
         weapon = str('an ' + weapon)
@@ -89,15 +88,15 @@ def weaponofchoice():
     return weapon
 
 def checkweapons():
-    if not exists(weaponslocker):
+    if not exists(abs_file_path):
         createweapons()
-    if os.stat(weaponslocker).st_size == 0:
+    if os.stat(abs_file_path).st_size == 0:
         createweapons()
      
 def createweapons():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
     for w in weapons:
-        with open(weaponslocker, "a") as myfile:
-            if os.stat(weaponslocker).st_size != 0:
+        with open(abs_file_path, "a") as myfile:
+            if os.stat(abs_file_path).st_size != 0:
                 myfile.write("\n")
             myfile.write(w)
