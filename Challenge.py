@@ -43,10 +43,10 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
 
 @sopel.module.commands('challengeweapon')
 def addweapons(bot, trigger):
-    if not trigger.group(3):
+    if not trigger.group(2):
         bot.say("what weapon would you like to add?")
     else:
-        weaponnew = trigger.group(3)
+        weaponnew = trigger.group(2)
         with open(abs_file_path, "a") as myfile:
             myfile.write(weaponnew)
 
