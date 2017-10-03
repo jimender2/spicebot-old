@@ -51,17 +51,17 @@ def weaponslocker(bot, trigger):
 def addweapons(bot, trigger):
     checkweapons()
     if not trigger.group(2):
-        bot.say("what weapon would you like to add?")
+        bot.say("What weapon would you like to add?")
     else:
         weaponnew = trigger.group(2)
         if str(weaponnew) in open(weaponslocker).read():
-            bot.say(weaponnew + " is already in the weapons locker.")
+            bot.say(str(weaponnew) + " is already in the weapons locker.")
         else:
             with open(weaponslocker, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
             if str(weaponnew) in open(weaponslocker).read():
-                bot.say(weaponnew + " has been added to the weapons locker.")
+                bot.say(str(weaponnew) + " has been added to the weapons locker.")
 
 @sopel.module.commands('weaponslockerdel')
 def removeweapons():
@@ -77,9 +77,9 @@ def removeweapons():
                     if line != weapondel+"\n":
                         f.write(line)
             if str(weapondel) not in open(weaponslocker).read():
-                bot.say(weapondel + ' has been removed from the weapons locker.')
+                bot.say(str(weapondel) + ' has been removed from the weapons locker.')
         else:
-            bot.say(weapondel + " is not in the weapons locker.")
+            bot.say(str(weapondel) + " is not in the weapons locker.")
           
 def weaponofchoice():
     checkweapons()
