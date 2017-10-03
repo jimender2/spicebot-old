@@ -55,13 +55,13 @@ def addweapons(bot, trigger):
     else:
         weaponnew = trigger.group(2)
         if str(weaponnew) in open(weaponslocker).read():
-            bot.say(str(weaponnew) + " is already in the weapons locker.")
+            bot.say(weaponnew + " is already in the weapons locker.")
         else:
             with open(weaponslocker, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
             if str(weaponnew) in open(weaponslocker).read():
-                bot.say(str(weaponnew) + " has been added to the weapons locker.")
+                bot.say(weaponnew + " has been added to the weapons locker.")
 
 @sopel.module.commands('weaponslockerdel')
 def removeweapons():
@@ -71,15 +71,11 @@ def removeweapons():
     else:
         weapondel = trigger.group(2)
         if str(weapondel) in open(weaponslocker).read():
-            bot.say('tbd')
-            with open(weaponslocker, "w") as myfile:
-                for line in myfile:
-                    if line != weapondel+"\n":
-                        f.write(line)
+            os.system('sudo sed -i "/' + weapondel + '/d ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
-                bot.say(str(weapondel) + ' has been removed from the weapons locker.')
+                bot.say(weapondel + ' has been removed from the weapons locker.')
         else:
-            bot.say(str(weapondel) + " is not in the weapons locker.")
+            bot.say(weapondel + " is not in the weapons locker.")
           
 def weaponofchoice():
     checkweapons()
