@@ -51,7 +51,7 @@ def weaponslocker(bot, trigger):
 def addweapons(bot, trigger):
     checkweapons()
     if not trigger.group(2):
-        bot.say("What weapon would you like to add?")
+        bot.say("what weapon would you like to add?")
     else:
         weaponnew = trigger.group(2)
         if str(weaponnew) in open(weaponslocker).read():
@@ -71,6 +71,7 @@ def removeweapons():
     else:
         weapondel = trigger.group(2)
         if str(weapondel) in open(weaponslocker).read():
+            bot.say('tbd')
             os.system('sudo sed -i "/' + weapondel + '/d ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
                 bot.say(weapondel + ' has been removed from the weapons locker.')
