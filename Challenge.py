@@ -43,6 +43,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
 
 @sopel.module.commands('challengeweapon')
 def addweapons(bot, trigger):
+    checkweapons()
     if not trigger.group(2):
         bot.say("what weapon would you like to add?")
     else:
@@ -51,10 +52,7 @@ def addweapons(bot, trigger):
             myfile.write(weaponnew)
 
 def weaponofchoice():
-    if not exists(abs_file_path):
-        createweapons()
-    if os.stat(abs_file_path).st_size == 0
-        createweapons()
+    checkweapons()
     weapons = open(abs_file_path).read().splitlines()
     weapon =random.choice(weapons)
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
@@ -63,6 +61,12 @@ def weaponofchoice():
         weapon = str('a ' + weapon)
     return weapon
 
+def checkweapons():
+    if not exists(abs_file_path):
+        createweapons()
+    if os.stat(abs_file_path).st_size == 0:
+        createweapons()
+     
 def createweapons():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
         for w in weapons:
