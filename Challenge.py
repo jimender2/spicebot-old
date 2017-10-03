@@ -72,5 +72,6 @@ def createweapons():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
     for w in weapons:
         with open(abs_file_path, "a") as myfile:
-            myfile.write("\n")
+            if os.stat(abs_file_path).st_size != 0:
+                myfile.write("\n")
             myfile.write(w)
