@@ -17,13 +17,13 @@ def trernslert(werds):
     er = ''
     for terk in terkerns:
         werd = ermergerd(terk)
-        if werd[0].isdigit():
-            werd = num2words(werd)
         er = er + ' ' + werd
     return er
     
 def ermergerd(w):
     w = w.strip().lower()
+    if w[0].isdigit():
+        w = num2words(w)
     derctshernerer = {'me':'meh','you':'u', 'are':'er', "you're":"yer", "i'm":"erm", "i've":"erv", "my":"mah", "the":"da", "omg":"ermahgerd"}
     if w in derctshernerer:
         return derctshernerer[w].upper()
