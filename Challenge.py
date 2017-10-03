@@ -41,7 +41,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " wins!")
             bot.say(winner + " killed " + loser + " with " + weapon)
 
-@sopel.module.commands('challengeweapon')
+@sopel.module.commands('challengeweaponadd')
 def addweapons(bot, trigger):
     checkweapons()
     if not trigger.group(2):
@@ -54,9 +54,21 @@ def addweapons(bot, trigger):
             with open(abs_file_path, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
-        if str(weaponnew) in open(abs_file_path).read():
-            bot.say(weaponnew + " has been added to the weapons locker.")
+            if str(weaponnew) in open(abs_file_path).read():
+                bot.say(weaponnew + " has been added to the weapons locker.")
 
+@sopel.module.commands('challengeweapondel')
+def removeweapons():
+    checkweapons()
+    if not trigger.group(2):
+        bot.say("what weapon would you like to remove?")
+    else:
+        weapondel = trigger.group(2)
+        if str(weapondel) in open(abs_file_path).read():
+            bot.say('tbd')
+        else:
+            bot.say(weapondel + " is not in the weapons locker.")
+          
 def weaponofchoice():
     checkweapons()
     weapons = open(abs_file_path).read().splitlines()
