@@ -11,7 +11,8 @@ def rules(bot, trigger):
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
         rulenumber = trigger.group(2)
-        if not rulenumber.isdigit():
+        #if not rulenumber.isdigit():
+        if not rulenumber[0].isdigit():
             try:
                 rulenumber = w2n.word_to_num(str(rulenumber))
             except ValueError or TypeError:
