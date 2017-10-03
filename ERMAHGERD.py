@@ -1,5 +1,6 @@
 import sopel.module
 import sys, re
+from word2number import w2n
 
 @sopel.module.rate(120)
 @sopel.module.commands('ERMAHGERD')
@@ -25,6 +26,8 @@ def ermergerd(w):
     if w in derctshernerer:
         return derctshernerer[w].upper()
     else:
+        if w[0].isdigit():
+            w = w2n.word_to_num(str(w))
         w = re.sub(r"[\.,/;:!@#$%^&*\?]+", '', w) # punctuation is hard. another day. 
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
