@@ -22,13 +22,13 @@ def trernslert(werds):
     
 def ermergerd(w):
     w = w.strip().lower()
-    if w[0].isdigit():
-        w = num2words(w)
     derctshernerer = {'me':'meh','you':'u', 'are':'er', "you're":"yer", "i'm":"erm", "i've":"erv", "my":"mah", "the":"da", "omg":"ermahgerd"}
     if w in derctshernerer:
         return derctshernerer[w].upper()
     else:
         w = re.sub(r"[\.,/;:!@#$%^&*\?]+", '', w) # punctuation is hard. another day. 
+        if w[0].isdigit():
+            w = num2words(w)
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
         er =  re.sub(pat, "er", w)
