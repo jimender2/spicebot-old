@@ -1,6 +1,12 @@
 import sopel
 from sopel import module, tools
 import random
+import os
+from os.path import exists
+
+script_dir = os.path.dirname(__file__)
+rel_path = "data/weapons.txt"
+abs_file_path = os.path.join(script_dir, rel_path)
 
 ## Enforce challenges. if challenge is not accepted, don't duel
  
@@ -35,10 +41,15 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " wins!")
             bot.say(winner + " killed " + loser + " with a " + weapon)
 
-        
-# this works, but would be cool if people could add weapons
+@sopel.module.commands('challengeweapon')
+def addweapons(bot, trigger):
+    if not trigger.group(3):
+        bot.say("what weapon would you like to add?")
+    else:
+        weaponnew = trigger.group(3)
+        os.system('sudo echo "' + weaponnew + '" | tee --append ' + abs_file_path + " pull")
+
 def weaponofchoice():
-    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
-    weapon = random.randint(0,len(weapons) - 1)
-    weapon = str(weapons [weapon])
+    weapons = open(abs_file_path).read().splitlines()
+    weapon =random.choice(weapons)
     return weapon
