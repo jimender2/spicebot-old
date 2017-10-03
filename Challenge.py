@@ -24,6 +24,8 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
             bot.say("If you want to duel yorself, please find a mirror!")
+        elif target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
         else:
             bot.say(instigator + " versus " + target)
             combatants = sorted([instigator, target])
@@ -37,6 +39,6 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
 
 def weaponofchoice():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
-    weapon = random.randint(0,len(modelnumbers) - 1)
+    weapon = random.randint(0,len(weapons) - 1)
     weapon = str(weapons [weapon])
     return weapon
