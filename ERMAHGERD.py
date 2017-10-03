@@ -16,7 +16,36 @@ def trernslert(werds):
     terkerns = werds.split()
     er = ''
     for terk in terkerns:
+
+        if terk.startswith('('):
+            terk = re.sub(r"[(]+", '', terk)
+            lerftperernthersers = 'true'
+        else:
+            lerftperernthersers = 'false'
+        
+        if terk.endswith(')'):
+            terk = re.sub(r"[(]+", '', terk)
+            rerghtperernthersers = 'true'
+        else:
+            rerghtperernthersers = 'false'
+            
+        if terk.endswith('%'):
+            terk = re.sub(r"[%]+", '', terk)
+            percernt = 'true'
+        else:
+            percernt = 'false'
+
         werd = ermergerd(terk)
+        
+        if lerftperernthersers == 'true':
+            werd = str('(' + werd)
+        
+        if percernt == 'true':
+            werd = str(werd + ' PERCERNT')
+        
+        if rerghtperernthersers == 'true':
+            werd = str(werd + ')')
+        
         er = er + ' ' + werd
     return er
     
@@ -26,7 +55,7 @@ def ermergerd(w):
     if w in derctshernerer:
         return derctshernerer[w].upper()
     else:
-        w = re.sub(r"[\.,/;:!@#$%^&*\?)(]+", '', w) # punctuation is hard. another day. 
+        w = re.sub(r"[\.,/;:!@#$%^&*\?)(]+", '', w)
         if w[0].isdigit():
             w = num2words(int(w))
         w = re.sub(r"tion", "shun", w)
