@@ -16,6 +16,7 @@ def duel_cmd(bot, trigger):
 
 def duel(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
+    weapon = weaponofchoice()
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
@@ -30,8 +31,12 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             winner = combatants.pop()
             loser = combatants.pop()
             bot.say(winner + " wins!")
-
+            bot.say(winner + " killed " + loser + " with a " + weapon)
 
         
 
-#def weaponofchoice():
+def weaponofchoice():
+    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
+    weapon = random.randint(0,len(modelnumbers) - 1)
+    weapon = str(modelnumbers [modelnumber])
+    return weapon
