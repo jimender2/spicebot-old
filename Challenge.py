@@ -60,6 +60,7 @@ def addweapons(bot, trigger):
             with open(weaponslocker, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
+                os.system('sudo sed -i "/^$/d" ' + weaponslocker)
             if str(weaponnew) in open(weaponslocker).read():
                 bot.say(weaponnew + " has been added to the weapons locker.")
 
@@ -71,7 +72,7 @@ def removeweapons(bot, trigger):
     else:
         weapondel = str(trigger.group(2))
         if str(weapondel) in open(weaponslocker).read():
-            os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d " ' + weaponslocker)
+            os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d" ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
                 bot.say(weapondel + ' has been removed from the weapons locker.')
         else:
