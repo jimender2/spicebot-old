@@ -5,15 +5,15 @@ import random
 @sopel.module.commands('challenge')
 def challenge(bot,trigger):
     if trigger.group(2):
-        bot.say(trigger.nick + " challenges " + trigger.group(2) + " to a duel.")
+        return duel(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
     else:
         bot.say(trigger.nick + ", Who did you want to duel?")
  
-@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
-@module.intent('ACTION')
-def duel_action(bot, trigger):
-    bot.say(trigger.group(1))
-    return duel(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
+#@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+#@module.intent('ACTION')
+#def duel_action(bot, trigger):
+#    bot.say(trigger.group(1))
+#    return duel(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
 
 @sopel.module.commands('duelnew')
 def duel_cmd(bot, trigger):
