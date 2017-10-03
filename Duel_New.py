@@ -11,6 +11,14 @@ def challenge(bot,trigger):
         
 @sopel.module.rate(560)
 @sopel.module.commands('duelnew')
+def duel_cmd(bot, trigger):
+    return duel(bot, trigger.sender, trigger.nick, trigger.group(3) or '', is_admin=trigger.admin)
+
+def duel(bot, channel, instigator, target, is_admin=False, warn_nonexistent=True):
+    target = tools.Identifier(target or '')
+    bot.say("target is: " + target)
+
+
 def duelworks(bot,trigger):
     if trigger.group():
         if trigger.group(2) == bot.nick:
