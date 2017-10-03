@@ -27,7 +27,7 @@ def ermergerd(w):
         return derctshernerer[w].upper()
     else:
         if w[0].isdigit():
-            w = w2n.word_to_num(str(w))
+            w = w2n.word_to_num(w)
         w = re.sub(r"[\.,/;:!@#$%^&*\?]+", '', w) # punctuation is hard. another day. 
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
