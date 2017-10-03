@@ -64,7 +64,7 @@ def addweapons(bot, trigger):
                 bot.say(weaponnew + " has been added to the weapons locker.")
 
 @sopel.module.commands('weaponslockerdel')
-def removeweapons():
+def removeweapons(bot, trigger):
     checkweapons()
     if not trigger.group(2):
         bot.say("what weapon would you like to remove?")
