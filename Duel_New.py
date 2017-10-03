@@ -6,6 +6,8 @@ import random
 def challenge(bot,trigger):
     if trigger.group(2):
         bot.say(trigger.nick + " challenges " + trigger.group(2) + " to a duel.")
+    else:
+        bot.say(trigger.nick + ", Who did you want to duel?")
         
 @sopel.module.rate(560)
 @sopel.module.commands('duelnew')
