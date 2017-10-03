@@ -24,7 +24,7 @@ def trernslert(werds):
             lerftperernthersers = 'false'
         
         if terk.endswith(')'):
-            terk = re.sub(r"[)]+", '', terk)
+            terk = re.sub(r"[\)]+", '', terk)
             rerghtperernthersers = 'true'
         else:
             rerghtperernthersers = 'false'
@@ -44,7 +44,7 @@ def trernslert(werds):
             werd = str(werd + ' PERCERNT')
         
         if rerghtperernthersers == 'true':
-            werd = str(werd + ')')
+            werd = str(werd + '\)')
         
         er = er + ' ' + werd
     return er
