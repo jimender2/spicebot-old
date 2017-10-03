@@ -43,6 +43,10 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " wins!")
             bot.say(winner + " killed " + loser + " with " + weapon)
 
+@sopel.module.commands('weaponslocker')
+def weaponslocker(bot, trigger):
+    bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+            
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
     checkweapons()
