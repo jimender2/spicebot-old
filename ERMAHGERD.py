@@ -55,7 +55,7 @@ def ermergerd(w):
     if w in derctshernerer:
         return derctshernerer[w].upper()
     else:
-        w = re.sub(r"[\.,/;:!@#$%^&*\?)(]+", '', w)
+        w = re.sub(r"[\.,/;:!@#$%^&*\?]+", '', w)
         if w[0].isdigit():
             w = num2words(int(w))
         w = re.sub(r"tion", "shun", w)
