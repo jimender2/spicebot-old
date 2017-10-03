@@ -47,7 +47,8 @@ def addweapons(bot, trigger):
         bot.say("what weapon would you like to add?")
     else:
         weaponnew = trigger.group(3)
-        os.system('sudo echo "' + weaponnew + '" | tee --append ' + abs_file_path)
+        with open(abs_file_path, "a") as myfile:
+            myfile.write(weaponnew)
 
 def weaponofchoice():
     if exists(abs_file_path):
