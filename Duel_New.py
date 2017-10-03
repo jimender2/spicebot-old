@@ -1,5 +1,5 @@
-import sopel.module
-import sopel.tools
+import sopel
+from sopel import module, tools
 import random
 
 @sopel.module.rate(120)
