@@ -3,6 +3,8 @@ from sopel import module, tools
 import random
 import os
 from os.path import exists
+import re
+import fileinput
 
 script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
@@ -73,6 +75,7 @@ def removeweapons():
         if str(weapondel) in open(weaponslocker).read():
             os.system('sudo sed -i "/' + weapondel + '/d ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
+                bot.say('not there')
                 #bot.say(weapondel + ' has been removed from the weapons locker.')
         else:
             bot.say(weapondel + " is not in the weapons locker.")
