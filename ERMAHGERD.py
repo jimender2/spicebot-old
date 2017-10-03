@@ -27,7 +27,7 @@ def ermergerd(w):
         return derctshernerer[w].upper()
     else:
         if w[0].isdigit():
-            w = num2words(w, 'type','ordinal')
+            w = num2words(str(w), 'sigfig',0)
         w = re.sub(r"[\.,/;:!@#$%^&*\?]+", '', w) # punctuation is hard. another day. 
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
