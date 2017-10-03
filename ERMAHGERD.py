@@ -23,7 +23,7 @@ def trernslert(werds):
         else:
             lerftperernthersers = 'false'
         
-        if terk.endswith(')'):
+        if terk.endswith('\)'):
             terk = re.sub(r"[\)]+", '', terk)
             rerghtperernthersers = 'true'
         else:
