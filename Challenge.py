@@ -51,16 +51,11 @@ def addweapons(bot, trigger):
             myfile.write(weaponnew)
 
 def weaponofchoice():
-    if exists(abs_file_path):
-        try:
-            weapons = open(abs_file_path).read().splitlines()
-            weapon =random.choice(weapons)
-        except IndexError:
-            weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
-            weapon = random.randint(0,len(modelnumbers) - 1)
-            weapon = str(weapons [weapon])
-    else:
-        weapon = 'gun'
+    if not exists(abs_file_path):
+        weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
+        for w in weapons:
+            with open(abs_file_path, "a") as myfile:
+                myfile.write(w)
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
         weapon = str('an ' + weapon)
     else:
