@@ -69,6 +69,6 @@ def checkweapons():
      
 def createweapons():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
-        for w in weapons:
-            with open(abs_file_path, "a") as myfile:
-                myfile.write(w)
+    for w in weapons:
+        with open(abs_file_path, "a") as myfile:
+        myfile.write(w)
