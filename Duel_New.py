@@ -11,7 +11,7 @@ def challenge(bot,trigger):
         
 @sopel.module.rate(560)
 @sopel.module.commands('duelnew')
-def duel(bot,trigger):
+def duelworks(bot,trigger):
     if trigger.group():
         if trigger.group(2) == bot.nick:
             bot.say("I refuse to duel with the yeller-bellied likes of you!")
