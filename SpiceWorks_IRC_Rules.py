@@ -13,10 +13,6 @@ def rules(bot, trigger):
         rulenumber = trigger.group(2)
         if not rulenumber[0].isdigit():
             rulenumber = w2n.word_to_num(str(rulenumber))
-            #try:
-                #rulenumber = w2n.word_to_num(str(rulenumber))
-            #except ValueError or TypeError:
-                #rulenumber = '0'
         else:
             rulenumber = int(rulenumber)
         
