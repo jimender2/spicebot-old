@@ -17,36 +17,29 @@ import random
 
 @sopel.module.commands('challenge')
 def duel_cmd(bot, trigger):
-    bot.say(str(bot))
     return duel(bot, trigger.sender, trigger.nick, trigger.group(3) or '', is_admin=trigger.admin)
 
 def duel(bot, channel, instigator, target, is_admin=False, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     if not target:
-        bot.say("Who did you want to duel?")
+        bot.say(instigator + ", Who did you want to duel?")
     else:
-        bot.say("instigator is: " + instigator)
-        bot.say("target is: " + target)
-
-
-def duelworks(bot,trigger):
-    if trigger.group():
-        if trigger.group(2) == bot.nick:
+        if target == bot.nick:
             bot.say("I refuse to duel with the yeller-bellied likes of you!")
-        elif trigger.group(2) == trigger.nick:
+        elif target == instigator:
             bot.say("You can't duel yourself, you coward!")
         else:
-            bot.say(trigger.nick + " versus " + trigger.group(2) + ", loser's a yeller belly!")
-            contestants  = [trigger.nick , trigger.group(2)]
+            bot.say(instigator + " versus " + target + ", loser's a yeller belly!")
+            contestants  = [instigator , target]
             winner = random.randint(0,len(contestants) - 1)
             winner = str(contestants [winner])
-            if winner == trigger.nick:
-                loser = trigger.group(2)
+            if winner == instigator:
+                loser = target
             else:
-                loser = trigger.nick
+                loser = instigator
             bot.say(winner + " wins!")
             bot.say(winner + " done killed ya, " + loser)
-    else:
-        bot.say(trigger.nick + ", Who did you want to duel?")
+
+        
 
 #def weaponofchoice():
