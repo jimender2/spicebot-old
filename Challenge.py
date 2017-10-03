@@ -9,21 +9,21 @@ script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
 weaponslocker = os.path.join(script_dir, rel_path)
 
-## Enforce challenges. if challenge is not accepted, don't duel
+## Enforce challenges. if challenge is not accepted, don't challenge
 ## assign XP points
 ## critical hits
 
 #@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 #@module.intent('ACTION')
-#def duel_action(bot, trigger):
+#def challenge_action(bot, trigger):
 #    bot.say(trigger.group(1))
-#    return duel(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
+#    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
 
 @sopel.module.commands('challenge')
-def duel_cmd(bot, trigger):
-    return duel(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+def challenge_cmd(bot, trigger):
+    return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
-def duel(bot, channel, instigator, target, warn_nonexistent=True):
+def challenge(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
@@ -31,7 +31,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
         if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
-            bot.say("If you want to duel yorself, please find a mirror!")
+            bot.say("If you want to challenge yorself, please find a mirror!")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         else:
@@ -112,3 +112,20 @@ def createweapons():
             if os.stat(weaponslocker).st_size != 0:
                 myfile.write("\n")
             myfile.write(w)
+
+def get_challenges(bot, nick):
+    wins = bot.db.get_nick_value(nick, 'challenge_wins') or 0
+    losses = bot.db.get_nick_value(nick, 'challenge_losses') or 0
+    return wins, losses
+
+@module.commands('challenges')
+def challenges(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    wins, losses = get_challenges(bot, target)
+    total = wins + losses
+    if not total:
+        bot.say("%s has no challenges record!" % target)
+        return module.NOLIMIT
+    streaks = format_streaks(bot, target)
+    win_rate = wins / total * 100
+    bot.say("%s has won %d out of %d challenges (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
