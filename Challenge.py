@@ -50,7 +50,7 @@ def addweapons(bot, trigger):
         os.system('sudo echo "' + weaponnew + '" | tee --append ' + abs_file_path)
 
 def weaponofchoice():
-    if exists(lastBuildFile):
+    if exists(abs_file_path):
         try:
             weapons = open(abs_file_path).read().splitlines()
             weapon =random.choice(weapons)
