@@ -15,8 +15,8 @@ def duel(bot,trigger):
             winner = random.randint(0,len(contestants) - 1)
             loser = str(winner - 1)
             winner = str(contestants [winner])
-            loser = str(contestants [loser])
+            #loser = str(contestants [loser])
             bot.say(winner + " wins!")
-            bot.say(winner + " done killed ya, " + loser)
+            #bot.say(winner + " done killed ya, " + loser)
     else:
         bot.say(trigger.nick + ", Who did you want to duel?")
