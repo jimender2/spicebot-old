@@ -47,9 +47,10 @@ def addweapons(bot, trigger):
         bot.say("what weapon would you like to add?")
     else:
         weaponnew = trigger.group(3)
-        os.system('sudo echo "' + weaponnew + '" | tee --append ' + abs_file_path + " pull")
+        os.system('sudo echo "' + weaponnew + '" | tee --append ' + abs_file_path)
 
 def weaponofchoice():
+    os.system('sudo touch ' + abs_file_path)
     weapons = open(abs_file_path).read().splitlines()
     weapon =random.choice(weapons)
     if weapon.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
