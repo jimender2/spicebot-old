@@ -52,12 +52,19 @@ def addweapons(bot, trigger):
 
 def weaponofchoice():
     if not exists(abs_file_path):
-        weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
-        for w in weapons:
-            with open(abs_file_path, "a") as myfile:
-                myfile.write(w)
+        createweapons()
+    if os.stat(abs_file_path).st_size == 0
+        createweapons()
+    weapons = open(abs_file_path).read().splitlines()
+    weapon =random.choice(weapons)
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
         weapon = str('an ' + weapon)
     else:
         weapon = str('a ' + weapon)
     return weapon
+
+def createweapons():
+    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
+        for w in weapons:
+            with open(abs_file_path, "a") as myfile:
+                myfile.write(w)
