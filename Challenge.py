@@ -76,7 +76,7 @@ def removeweapons(bot, trigger):
                     for line in myfile:
                         if line != weapondel+"\n":
                             f.write(line)
-            except ValueError:
+            except ValueError or IOError:
                 pass
             #os.system('sudo sed -i "/' + str(weapondel) + '/d ' + weaponslocker)
             if str(weapondel) not in open(weaponslocker).read():
