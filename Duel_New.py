@@ -18,6 +18,7 @@ def duel_cmd(bot, trigger):
 def duel(bot, channel, instigator, target, is_admin=False, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     bot.say("target is: " + target)
+    bot.say("instigator is: " + instigator)
 
 
 def duelworks(bot,trigger):
