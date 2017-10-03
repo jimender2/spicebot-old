@@ -34,6 +34,9 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say("If you want to duel yorself, please find a mirror!")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
+        elif target.lower() not in bot.privileges[channel.lower()]:
+            if warn_nonexistent:
+                bot.say("You can't duel people who don't exist!")
         else:
             bot.say(instigator + " versus " + target)
             combatants = sorted([instigator, target])
