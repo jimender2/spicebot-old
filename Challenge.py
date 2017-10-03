@@ -60,7 +60,6 @@ def addweapons(bot, trigger):
             with open(weaponslocker, "a") as myfile:
                 myfile.write("\n")
                 myfile.write(weaponnew)
-                os.system('sudo sed -i "/^$/d" ' + weaponslocker)
             if str(weaponnew) in open(weaponslocker).read():
                 bot.say(weaponnew + " has been added to the weapons locker.")
 
