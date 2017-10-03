@@ -12,9 +12,9 @@ import random
 
 @sopel.module.commands('challenge')
 def duel_cmd(bot, trigger):
-    return duel(bot, trigger.sender, trigger.nick, trigger.group(3) or '', is_admin=trigger.admin)
+    return duel(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
-def duel(bot, channel, instigator, target, is_admin=False, warn_nonexistent=True):
+def duel(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
@@ -35,4 +35,3 @@ def duel(bot, channel, instigator, target, is_admin=False, warn_nonexistent=True
         
 
 #def weaponofchoice():
-#def loserisa()"
