@@ -38,5 +38,5 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
 def weaponofchoice():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
     weapon = random.randint(0,len(modelnumbers) - 1)
-    weapon = str(modelnumbers [modelnumber])
+    weapon = str(weapons [weapon])
     return weapon
