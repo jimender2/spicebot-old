@@ -16,6 +16,12 @@ def trernslert(werds):
     terkerns = werds.split()
     er = ''
     for terk in terkerns:
+        
+        if terk.endswith(','):
+            terk = re.sub(r"[,]+", '', terk)
+            cermmer = 'true'
+        else:
+            cermmer = 'false'
 
         if terk.startswith('('):
             terk = re.sub(r"[(]+", '', terk)
@@ -45,6 +51,10 @@ def trernslert(werds):
         
         if rerghtperernthersers == 'true':
             werd = str(werd + ')')
+        
+        if cermmer == 'true':
+            werd = str(werd + ',')
+        cermmer
         
         er = er + ' ' + werd
     return er
