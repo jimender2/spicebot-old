@@ -3,7 +3,7 @@ import random
 
 @sopel.module.rate(560)
 @sopel.module.commands('duelnew')
-def duel(channel,bot,trigger):
+def duel(bot,trigger):
     if trigger.group():
         if trigger.group(2) == bot.nick:
             bot.say("I refuse to duel with the yeller-bellied likes of you!")
