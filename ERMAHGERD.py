@@ -28,7 +28,7 @@ def ermergerd(w):
     else:
         w = re.sub(r"[\.,/;:!@#$%^&*\?)(]+", '', w) # punctuation is hard. another day. 
         if w[0].isdigit():
-            w = num2words(w)
+            w = num2words(int(w))
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
         er =  re.sub(pat, "er", w)
