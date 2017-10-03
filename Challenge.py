@@ -36,7 +36,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " killed " + loser + " with a " + weapon)
 
         
-
+# this works, but would be cool if people could add weapons
 def weaponofchoice():
     weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
     weapon = random.randint(0,len(weapons) - 1)
