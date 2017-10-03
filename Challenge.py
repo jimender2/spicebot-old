@@ -43,7 +43,7 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " wins!")
             bot.say(winner + " killed " + loser + " with " + weapon)
 
-@sopel.module.commands('challengeweaponadd')
+@sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
     checkweapons()
     if not trigger.group(2):
@@ -59,7 +59,7 @@ def addweapons(bot, trigger):
             if str(weaponnew) in open(abs_file_path).read():
                 bot.say(weaponnew + " has been added to the weapons locker.")
 
-@sopel.module.commands('challengeweapondel')
+@sopel.module.commands('weaponslockerdel')
 def removeweapons():
     checkweapons()
     if not trigger.group(2):
