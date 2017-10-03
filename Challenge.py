@@ -24,7 +24,6 @@ def duel_cmd(bot, trigger):
 
 def duel(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
-    weapon = weaponofchoice()
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
@@ -35,14 +34,26 @@ def duel(bot, channel, instigator, target, warn_nonexistent=True):
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         else:
+            weapon = weaponofchoice()
+            damage = damagedone()
             bot.say(instigator + " versus " + target)
             combatants = sorted([instigator, target])
             random.shuffle(combatants)
             winner = combatants.pop()
             loser = combatants.pop()
             bot.say(winner + " wins!")
-            bot.say(winner + " killed " + loser + " with " + weapon)
+            bot.say(winner + " attacks " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
 
+def damagedone():
+    rando = randint(1, 100)
+    if int(rando) >= '90' and int(rando) < '99':
+        damage = '5'
+    elif int(rando) >= '99':
+        damage = '10'
+    else:
+        damage = '1'
+    return damage
+            
 @sopel.module.commands('weaponslocker')
 def weaponslockercmd(bot, trigger):
     bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
