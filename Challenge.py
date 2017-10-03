@@ -60,7 +60,7 @@ def weaponofchoice():
             weapon = str(weapons [weapon])
     else:
         weapon = 'gun'
-    if weapon.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
+    if weapon.startswith('a','e','i','o','u'):
         weapon = str('an ' + weapon)
     else:
         weapon = str('a ' + weapon)
