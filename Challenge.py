@@ -71,7 +71,11 @@ def removeweapons(bot, trigger):
     else:
         weapondel = str(trigger.group(2))
         if str(weapondel) in open(weaponslocker).read():
-            os.system('sudo sed -i "/' + str(weapondel) + '/d ' + weaponslocker)
+            with open(weaponslocker, "w") as myfile:
+                for line in myfile:
+                    if line != weapondel+"\n":
+                        f.write(line)
+            #os.system('sudo sed -i "/' + str(weapondel) + '/d ' + weaponslocker)
             if str(weapondel) in open(weaponslocker).read():
                 bot.say(weapondel + ' has been removed from the weapons locker.')
         else:
