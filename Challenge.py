@@ -75,7 +75,7 @@ def removeweapons():
             if str(weapondel) not in open(weaponslocker).read():
                 #bot.say(weapondel + ' has been removed from the weapons locker.')
         else:
-            #bot.say(weapondel + " is not in the weapons locker.")
+            bot.say(weapondel + " is not in the weapons locker.")
           
 def weaponofchoice():
     checkweapons()
