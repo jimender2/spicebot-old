@@ -294,5 +294,5 @@ def challenges(bot, trigger):
         stats = str(target + "'s stats:" + stats)
         bot.say(stats)
     else:
-        bot.say(target + ' has not stats.')
+        bot.say(target + ' has no stats.')
 
