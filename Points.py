@@ -1,6 +1,7 @@
 import sopel.module
 from random import random
 from random import randint
+from sopel import module, tools
 
 @sopel.module.rate(120)
 @sopel.module.commands('points')
