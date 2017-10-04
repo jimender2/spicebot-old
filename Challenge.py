@@ -46,6 +46,9 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
             bot.say(winner + " wins!")
+            ## Update wins/lose
+            update_wins(bot, winner)
+            update_losses(bot, winner)
             ## Update XP,,, XPearned = damagedone + 1
             XPearned = str(int(damage) + 1)
             update_xp(bot, winner, XPearned)
@@ -58,7 +61,7 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
 
 ###################
-## Select Winner ##
+## Winner / Loser ##
 ###################
 
 def getwinner(bot, instigator, target):
@@ -76,6 +79,22 @@ def getwinner(bot, instigator, target):
         loser = instigator
     return winner, loser
 
+def get_wins(bot, nick):
+    wins = bot.db.get_nick_value(nick, 'challenges_wins') or 0
+    return wins
+
+def update_wins(bot, nick):
+    wins = get_wins(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_wins', wins + 1)
+
+def get_losses(bot, nick):
+    losses = bot.db.get_nick_value(nick, 'challenges_losses') or 0
+    return losses
+
+def update_losses(bot, nick):
+    losses = get_losses(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
+    
 ############
 ## Health ##
 ############
@@ -115,8 +134,7 @@ def update_xp(bot, nick, damage):
     xp = get_xp(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_xp', xp + int(damage))
     currentxp = get_xp(bot, nick)
-    return xp
-
+    return currentxp
 
 #############
 ## Weapons ##
@@ -187,13 +205,19 @@ def weaponofchoice():
 @module.commands('challenges')
 def duels(bot, trigger):
     target = trigger.group(3) or trigger.nick
+    ## health
     health = get_health(bot, target)
-    xp = get_xp(bot, target)
     health = str(" Health = " + str(health) + ".")
+    ## XP
+    xp = get_xp(bot, target)
     xp = str(" XP = " + str(xp) + ".")
+    ## Wins
+    wins = get_wins(bot, target)
+    wins = str(" Wins = " + str(wins) + ".")
+    ## Losses
+    losses = get_losses(bot, target)
+    losses = str(" Losses = " + str(losses) + ".")
+    
+    
     bot.say(target + "'s stats:" + health + xp)
-
-
-
-
 
