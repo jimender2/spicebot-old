@@ -368,7 +368,7 @@ def challengeon(bot, trigger):
         else:
             bot.say('Challenges are already enabled for ' + target)
 
-
+@module.commands('challengeoff')
 def challengeoff(bot, trigger):
     target = trigger.group(3) or trigger.nick
     if not trigger.admin and target != trigger.nick:
