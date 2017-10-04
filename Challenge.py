@@ -427,7 +427,7 @@ def challenges(bot, trigger):
     time_since = time_since_challenge(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
-        addstat = str(" TIMEOUT=" + str(timediff) + " seconds.")
+        addstat = str(" TIMEOUT=" + str(timediff) + ".")
         stats = str(stats + addstat)
     ## Inventory
     howmanyhealthpotions = get_healthpotions(bot, target)
