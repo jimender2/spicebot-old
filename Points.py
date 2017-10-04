@@ -19,7 +19,7 @@ def points_cmd(bot, trigger):
 def points(bot, channel, instigator, target, giveortake, tofrom, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
-    randopoints = (instigator + str(giveortake) + str(rando) + ' points ' + str(tofrom) + ' ')    
+    randopoints = (instigator + str(giveortake) + str(rando) + ' points' + str(tofrom) + ' ')    
     if not target:
         for u in bot.channels[channel].users:
             bot.say(str(randopoints) + str(u))
