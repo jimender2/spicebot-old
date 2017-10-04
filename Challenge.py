@@ -44,7 +44,7 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             loser = combatants.pop()
             bot.say(winner + " wins!")
             bot.say(winner + " attacks " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
-
+            
 def damagedone():
     rando = randint(1, 100)
     if int(rando) >= '90' and int(rando) < '99':
@@ -113,19 +113,15 @@ def createweapons():
                 myfile.write("\n")
             myfile.write(w)
 
-def get_challenges(bot, nick):
-    wins = bot.db.get_nick_value(nick, 'challenge_wins') or 0
-    losses = bot.db.get_nick_value(nick, 'challenge_losses') or 0
-    return wins, losses
+def get_health(bot, nick):
+    health = bot.db.get_nick_value(nick, 'challenge_health') or 100
+    return health
 
-@module.commands('challenges')
+@module.commands('health')
 def challenges(bot, trigger):
     target = trigger.group(3) or trigger.nick
-    wins, losses = get_challenges(bot, target)
-    total = wins + losses
-    if not total:
-        bot.say("%s has no challenges record!" % target)
-        return module.NOLIMIT
-    streaks = format_streaks(bot, target)
-    win_rate = wins / total * 100
-    bot.say("%s has won %d out of %d challenges (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
+    health = get_health(bot, target)
+    if total == '100':
+        bot.say("%s has full health!" % target)
+    else:
+        bot.say("%s health is down to %s !!!" % target,health)
