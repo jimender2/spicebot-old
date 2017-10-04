@@ -73,7 +73,15 @@ def challenge(bot, channel, instigator, target):
             damage = damagedone()
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
-            bot.say(winner + " wins!")
+            ## Streaks
+            winner_loss_streak = get_loss_streak(bot, winner)
+            loser_win_streak = get_win_streak(bot, loser)
+            win_streak = get_win_streak(bot, winner)
+            streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
+            broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
+            broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
+            bot.say("%s wins%s!%s" % (winner, broken_streak, streak))
+            #bot.say(winner + " wins!")
             ## Update wins/lose
             update_wins(bot, winner)
             update_losses(bot, loser)
@@ -93,6 +101,7 @@ def challenge(bot, channel, instigator, target):
             now = time.time()
             update_time(bot, winner, now)
             update_time(bot, loser, now)
+
         
 ###################
 ## Winner / Loser ##
@@ -392,45 +401,42 @@ def challenges(bot, trigger):
     ## health
     health = get_health(bot, target)
     if health:
-        addstat = str(" Health = " + str(health) + ".")
+        addstat = str(" Health=" + str(health) + ".")
         stats = str(stats + addstat)
     ## XP
     xp = get_xp(bot, target)
     if xp:
-        addstat = str(" XP = " + str(xp) + ".")
+        addstat = str(" XP=" + str(xp) + ".")
         stats = str(stats + addstat)
-    ## Wins
+    ## Wins Losses
     wins = get_wins(bot, target)
     if wins:
-        addstat = str(" Wins = " + str(wins) + ".")
+        addstat = str(" Wins=" + str(wins) + ".")
         stats = str(stats + addstat)
     ## Losses
     losses = get_losses(bot, target)
     if losses:
-        addstat = str(" Losses = " + str(losses) + ".")
+        addstat = str(" Lost=" + str(losses) + ".")
         stats = str(stats + addstat)
     ## Respawns
     respawnamount = get_respawn(bot, target)
     if respawnamount:
-        addstat = str(" Respawns = " + str(respawnamount) + ".")
+        addstat = str(" Respawns=" + str(respawnamount) + ".")
         stats = str(stats + addstat)
     ## TIMEOUT
     time_since = time_since_challenge(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
-        addstat = str(" TIMEOUT = " + str(timediff) + " seconds.")
+        addstat = str(" TIMEOUT=" + str(timediff) + " seconds.")
         stats = str(stats + addstat)
     ## Inventory
     howmanyhealthpotions = get_healthpotions(bot, target)
     if howmanyhealthpotions:
-        addstat = str(" HealthPotions = " + str(howmanyhealthpotions) + ".")
+        addstat = str(" HealthPotions=" + str(howmanyhealthpotions) + ".")
         stats = str(stats + addstat)
     ## streaks
-    total = wins + losses
-    if total:
         streaks = format_streaks(bot, target)
-        win_rate = wins / total * 100
-        addstat = str(" %s has won %d out of %d duels (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
+        addstat = str(streaks)
         stats = str(stats + addstat)
     
     if stats != '':
