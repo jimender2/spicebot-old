@@ -40,12 +40,13 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
     rando = randint(1, 666)
     randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
     if not target:
+        bot.say(str(randopoints) + "everyone")
         for u in bot.channels[channel].users:
             target = u
-            bot.say(str(randopoints) + str(u))
             update_points(bot, target, rando, addminus)
     else:
         if target == 'all' or target == 'everybody' or target == 'everyone':
+            bot.say(str(randopoints) + "everyone")
             for u in bot.channels[channel].users:
                 target = u
                 update_points(bot, target, rando, addminus)
