@@ -48,7 +48,7 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             bot.say(winner + " wins!")
             ## Update wins/lose
             update_wins(bot, winner)
-            update_losses(bot, winner)
+            update_losses(bot, loser)
             ## Update XP,,, XPearned = damagedone + 1
             XPearned = str(int(damage) + 1)
             update_xp(bot, winner, XPearned)
