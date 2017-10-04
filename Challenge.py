@@ -24,7 +24,7 @@ def challenge_action(bot, trigger):
 ## Challenges ##
 ################
 
-@sopel.module.commands('challenge')
+@sopel.module.commands('challenge','duel')
 def challenge_cmd(bot, trigger):
     return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
@@ -289,7 +289,7 @@ def challengetimeclear(bot, trigger):
 ## Stats ##
 ###########
 
-@module.commands('challenges')
+@module.commands('challenges','duels')
 def challenges(bot, trigger):
     target = trigger.group(3) or trigger.nick
     stats = ''
@@ -362,7 +362,7 @@ def get_challengestatus(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
     return disenable
 
-@module.commands('challengeon')
+@module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
     target = trigger.group(3) or trigger.nick
     if not trigger.admin and target != trigger.nick:
@@ -375,7 +375,7 @@ def challengeon(bot, trigger):
         else:
             bot.say('Challenges are already enabled for ' + target)
 
-@module.commands('challengeoff')
+@module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
     target = trigger.group(3) or trigger.nick
     if not trigger.admin and target != trigger.nick:
