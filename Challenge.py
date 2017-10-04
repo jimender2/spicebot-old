@@ -236,7 +236,7 @@ def challengehealthpotiongive(bot, trigger):
 @module.commands('challengehealthpotiontake')
 def challengehealthpotiongive(bot, trigger):
     target = trigger.group(3) or trigger.nick
-    bot.db.set_nick_value(nick, 'challenges_healthpotions', '')
+    bot.db.set_nick_value(target, 'challenges_healthpotions', '')
     bot.say(target + ' now has no healthpotions.')
 
 #############
