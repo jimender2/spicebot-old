@@ -541,24 +541,20 @@ def format_streaks(bot, nick):
     return streaks
 
 def get_streak_type(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_streak_cur') or NONE
-
+    return bot.db.get_nick_value(nick, 'challenge_streak_cur') or ''
 
 def set_streak_type(bot, nick, t):
     if t not in [WINS, LOSSES]:
         raise ValueError("Cannot set unsupported streak type %s." % t)
     bot.db.set_nick_value(nick, 'challenge_streak_cur', t)
 
-
 def get_win_streak(bot, nick):
     return bot.db.get_nick_value(nick, 'challenge_wins_streak') or 0
-
 
 def set_win_streak(bot, nick, value):
     if value < 0:
         value = 0
     bot.db.set_nick_value(nick, 'challenge_wins_streak', value)
-
 
 def extend_win_streak(bot, nick):
     new_streak = get_win_streak(bot, nick) + 1
@@ -566,20 +562,16 @@ def extend_win_streak(bot, nick):
     if new_streak > get_best_win_streak(bot, nick):
         set_best_win_streak(bot, nick, new_streak)
 
-
 def reset_win_streak(bot, nick):
     set_win_streak(bot, nick, 0)
 
-
 def get_loss_streak(bot, nick):
     return bot.db.get_nick_value(nick, 'challenge_losses_streak') or 0
-
 
 def set_loss_streak(bot, nick, value):
     if value < 0:
         value = 0
     bot.db.set_nick_value(nick, 'challenge_losses_streak', value)
-
 
 def extend_loss_streak(bot, nick):
     new_streak = get_loss_streak(bot, nick) + 1
@@ -587,24 +579,19 @@ def extend_loss_streak(bot, nick):
     if new_streak > get_worst_loss_streak(bot, nick):
         set_worst_loss_streak(bot, nick, new_streak)
 
-
 def reset_loss_streak(bot, nick):
     set_loss_streak(bot, nick, 0)
 
-
 def get_best_win_streak(bot, nick):
     return bot.db.get_nick_value(nick, 'challenge_wins_streak_record') or 0
-
 
 def set_best_win_streak(bot, nick, value):
     if value < 0:
         value = 0
     bot.db.set_nick_value(nick, 'challenge_wins_streak_record', value)
 
-
 def get_worst_loss_streak(bot, nick):
     return bot.db.get_nick_value(nick, 'challenge_losses_streak_record') or 0
-
 
 def set_worst_loss_streak(bot, nick, value):
     if value < 0:
