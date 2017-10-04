@@ -16,8 +16,9 @@ TIMEOUT = 560
 
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 @module.intent('ACTION')
+@module.require_chanmsg
 def challenge_action(bot, trigger):
-    return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
 
 ################
 ## Challenges ##
