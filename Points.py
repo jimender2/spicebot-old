@@ -17,6 +17,14 @@ def points_cmd(bot, trigger):
         addminus = 'down'
     return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus)
     
+@sopel.module.commands('mypoints')
+def mypoints():
+    target = trigger.group(3) or trigger.nick
+    points = get_points(bot, target)
+    if not points:
+        bot.say(target + ' has no points history.')
+    else:
+        bot.say(target + ' has ' + points + ' points.')
     
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus):
     target = tools.Identifier(target or '')
@@ -50,10 +58,7 @@ def update_points(bot, target, rando, won=True):
         bot.db.set_nick_value(nick, 'points_points', points + rando)
     else:
         bot.db.set_nick_value(nick, 'points_points', points - rando)
-
-#def mypoints():
-    
-    
+        
 def get_points(bot, nick):
-    points = bot.db.get_nick_value(nick, 'points_points') or 300
+    points = bot.db.get_nick_value(nick, 'points_points') or 0
     return points
