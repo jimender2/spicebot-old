@@ -149,9 +149,6 @@ def update_health(bot, nick, damage):
     currenthealth = get_health(bot, nick)
     return currenthealth
 
-def respawn(bot, nick):
-    bot.db.set_nick_value(nick, 'challenges_health', 1000)
-
 def damagedone():
     rando = randint(1, 100)
     if rando >= 90:
@@ -174,7 +171,24 @@ def challengehealthclear(bot, trigger):
     if health:
         bot.db.set_nick_value(target, 'challenges_health', '1000')
     bot.say(target + "'s health has been cleared.")
+
+#############
+## Respawn ##
+#############
+
+def respawn(bot, nick):
+    bot.db.set_nick_value(nick, 'challenges_health', 1000)
     
+def get_respawn(bot, nick):
+    respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
+    return respawns
+
+def update_respawn(bot, nick, damage):
+    respawns = get_respawn(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
+    currentrespawns = get_respawn(bot, nick)
+    return currentrespawns
+
 ########
 ## XP ##
 ########
@@ -325,6 +339,11 @@ def challenges(bot, trigger):
     losses = get_losses(bot, target)
     if losses:
         addstat = str(" Losses = " + str(losses) + ".")
+        stats = str(stats + addstat)
+    ## Respawns
+    respawnamount = get_respawn(bot, target)
+    if respawnamount:
+        addstat = str(" Respawns = " + str(respawnamount) + ".")
         stats = str(stats + addstat)
     ## TIMEOUT
     time_since = time_since_challenge(bot, target)
