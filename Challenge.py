@@ -37,10 +37,24 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             weapon = weaponofchoice()
             damage = damagedone()
             bot.say(instigator + " versus " + target)
-            combatants = sorted([instigator, target])
-            random.shuffle(combatants)
-            winner = combatants.pop()
-            loser = combatants.pop()
+            instigatorxp = get_xp(bot, nick)
+            targetxp = get_xp(bot, nick)
+            if instigatorxp >= targetxp:
+                combatants = 'instigator, instigator, instigator, target, target'
+            else:
+                combatants = 'instigator, instigator, target, target, target'
+            combatants = sorted([combatants])
+            winner = random.randint(0,len(combatants) - 1)
+            winner = str(combatants [winner])
+            if winner == instigator:
+                loser = target
+            else:
+                loser = instigator
+            #combatants = sorted([instigator, target])
+            #random.shuffle(combatants)
+            #winner = combatants.pop()
+            #loser = combatants.pop()
+            
             bot.say(winner + " wins!")
             update_xp(bot, winner, damage)
             currenthealth = update_health(bot, loser, damage)
