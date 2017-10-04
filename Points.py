@@ -12,7 +12,7 @@ def points_cmd(bot, trigger):
 def points(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
-    randopoints = ('is awarded ' + str(rando) + ' points from' + instigator)
+    randopoints = ('is awarded ' + str(rando) + ' points from ' + instigator)
     if not target:
         for u in bot.channels[channel].users:
             bot.say('this will be: ' + str(u) + str(randopoints))
