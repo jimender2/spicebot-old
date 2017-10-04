@@ -10,13 +10,15 @@ def points_cmd(bot, trigger):
     if commandused == 'points':
         giveortake = ' gives '
         tofrom = ' to '
+        addminus = 'up'
     else:
         giveortake = ' takes '
         tofrom = ' from '
-    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom)
+        addminus = 'down'
+    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus)
     
     
-def points(bot, channel, instigator, target, giveortake, tofrom, warn_nonexistent=True):
+def points(bot, channel, instigator, target, giveortake, tofrom, addminus):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
     randopoints = (instigator + str(giveortake) + str(rando) + ' points' + str(tofrom) + ' ')    
