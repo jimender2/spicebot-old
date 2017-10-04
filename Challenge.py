@@ -117,8 +117,7 @@ def createweapons():
 @module.commands('chalenges')
 def duels(bot, trigger):
     target = trigger.group(3) or trigger.nick
-    health = get_duels(bot, target)
-    total = wins + losses
+    health = get_health(bot, target)
     bot.say(target + "'s health is at " + health)
     
 def get_health(bot, nick):
