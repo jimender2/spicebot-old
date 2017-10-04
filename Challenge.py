@@ -124,4 +124,7 @@ def challenges(bot, trigger):
     if health == '100':
         bot.say("%s has full health!" % target)
     else:
-        bot.say("%s health is down to %s !!!" % target,health)
+        bot.say(target + " health is down to " + health + "!!!")
+        
+        
+        
