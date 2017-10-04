@@ -250,6 +250,7 @@ def get_respawn(bot, nick):
 def update_respawn(bot, nick):
     respawns = get_respawn(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
+    bot.db.set_nick_value(target, 'challenges_health', '1000')
     currentrespawns = get_respawn(bot, nick)
     return currentrespawns
 
