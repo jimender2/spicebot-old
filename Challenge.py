@@ -238,26 +238,34 @@ def challenges(bot, trigger):
     stats = ''
     ## health
     health = get_health(bot, target)
-    addstat = str(" Health = " + str(health) + ".")
-    stats = str(stats + addstat)
+    if health:
+        addstat = str(" Health = " + str(health) + ".")
+        stats = str(stats + addstat)
     ## XP
     xp = get_xp(bot, target)
-    addstat = str(" XP = " + str(xp) + ".")
-    stats = str(stats + addstat)
+    if xp:
+        addstat = str(" XP = " + str(xp) + ".")
+        stats = str(stats + addstat)
     ## Wins
     wins = get_wins(bot, target)
-    addstat = str(" Wins = " + str(wins) + ".")
-    stats = str(stats + addstat)
+    if wins:
+        addstat = str(" Wins = " + str(wins) + ".")
+        stats = str(stats + addstat)
     ## Losses
-    losses = get_losses(bot, target)
-    addstat = str(" Losses = " + str(losses) + ".")
-    stats = str(stats + addstat)
+    if losses:
+        losses = get_losses(bot, target)
+        addstat = str(" Losses = " + str(losses) + ".")
+        stats = str(stats + addstat)
     ## TIMEOUT
     time_since = time_since_challenge(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
         addstat = str(" TIMEOUT = " + str(timediff) + " seconds.")
         stats = str(stats + addstat)
-    stats = str(target + "'s stats:" + stats)
-    bot.say(stats)
+    
+    if stats != '':
+        stats = str(target + "'s stats:" + stats)
+        bot.say(stats)
+    else:
+        bot.say(target + ' has not stats.')
 
