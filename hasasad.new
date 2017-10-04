@@ -1,0 +1,11 @@
+@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+@module.intent('ACTION')
+@module.require_chanmsg
+def duel_action(bot, trigger):
+    return duel(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
+    
+    
+    do that, but
+    
+    
+    DoubleD has a sad
