@@ -166,7 +166,7 @@ def challengehealthclear(bot, trigger):
     ## health
     health = get_health(bot, target)
     if health:
-        bot.db.set_nick_value(target, 'challenges_health', '')
+        bot.db.set_nick_value(target, 'challenges_health', '1000')
     bot.say(target + "'s health has been cleared.")
     
 ########
@@ -336,7 +336,7 @@ def challengetimeclear(bot, trigger):
     ## health
     health = get_health(bot, target)
     if health:
-        bot.db.set_nick_value(target, 'challenges_health', '')
+        bot.db.set_nick_value(target, 'challenges_health', '1000')
     ## XP
     xp = get_xp(bot, target)
     if xp:
