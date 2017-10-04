@@ -43,7 +43,7 @@ def challenge(bot, channel, instigator, target):
         if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
-            bot.say("If you want to challenge yorself, please find a mirror!")
+            bot.say("If you want to challenge yourself, please find a mirror!")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         elif instigatortime < TIMEOUT:
