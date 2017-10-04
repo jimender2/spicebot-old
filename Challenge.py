@@ -31,9 +31,8 @@ def challenge(bot, channel, instigator, target):
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
-        time_since = time_since_challenge(bot, channel, instigator)
+        time_since = time_since_challenge(bot, instigator)
         if time_since < TIMEOUT:
-            time_since = time_since_challenge(bot, channel, instigator)
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - time_since), instigator)
             return
         if target == bot.nick:
@@ -67,8 +66,6 @@ def challenge(bot, channel, instigator, target):
             ## Update Time of combat
             now = time.time()
             update_timewinner(bot, winner, now)
-            update_timewinner(bot, loser, now)
-            update_timewinner(bot, channel, now)
         
 ###################
 ## Winner / Loser ##
@@ -213,14 +210,8 @@ def weaponofchoice():
 
 def update_timewinner(bot, nick, now):
     bot.db.set_nick_value(nick, 'challenge_last', now)
-    
-def update_timeloser(bot, nick, now):
-    bot.db.set_nick_value(nick, 'challenge_last', now)
-    
-def update_timechannel(bot, channel, now):
-    bot.db.set_nick_value(channel, 'challenge_last', now)
 
-def time_since_challenge(bot, channel, nick, nick_only=False):
+def time_since_challenge(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenge_last') or 0
     return abs(now - last)
@@ -230,7 +221,7 @@ def time_since_challenge(bot, channel, nick, nick_only=False):
 ###########
 
 @module.commands('challenges')
-def duels(bot, trigger):
+def challenges(bot, trigger):
     target = trigger.group(3) or trigger.nick
     stats = ''
     ## health
