@@ -174,7 +174,7 @@ def randomhealthpotion():
 def usehealthpotion(bot, trigger):
     target = trigger.group(3) or trigger.nick
     healthpotions = get_healthpotions(bot, target)
-    if healthpotion:
+    if healthpotions:
         health = get_health(bot, target)
         if target == trigger.nick:
             bot.say(trigger.nick + ' uses health potion.')
