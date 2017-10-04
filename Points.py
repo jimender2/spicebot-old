@@ -24,7 +24,7 @@ def checkpoints(bot, trigger):
     if not points:
         bot.say(target + ' has no points history.')
     else:
-        bot.say(target + ' has ' + points + ' points.')
+        bot.say(target + ' has ' + str(points) + ' points.')
     
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus):
     target = tools.Identifier(target or '')
