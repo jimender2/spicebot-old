@@ -218,6 +218,6 @@ def duels(bot, trigger):
     losses = get_losses(bot, target)
     losses = str(" Losses = " + str(losses) + ".")
     
-    
-    bot.say(target + "'s stats:" + health + xp)
+    stats = str(target + "'s stats:" + health + xp + wins + losses)
+    bot.say(stats)
 
