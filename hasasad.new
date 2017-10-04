@@ -1,3 +1,7 @@
+import sopel
+from sopel import module, tools
+
+
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 @module.intent('ACTION')
 @module.require_chanmsg
