@@ -163,9 +163,9 @@ def duels(bot, trigger):
     target = trigger.group(3) or trigger.nick
     health = get_health(bot, target)
     xp = get_xp(bot, target)
-    health = str(target + "'s health is at " + str(health))
-    xp = str(target + "'s XP is at " + str(xp))
-    bot.say(health + xp)
+    health = str(" Health is at " + str(health) + ".")
+    xp = str(" XP is at " + str(xp) + ".")
+    bot.say(target + "'s stats:" + health + xp)
 
 
 
