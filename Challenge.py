@@ -220,8 +220,8 @@ def usehealthpotion(bot, trigger):
             bot.say(trigger.nick + ' uses health potion.')
         else:
             bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-        bot.db.set_nick_value(target, 'challenges_health', health + 100)
-        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', healthpotions - 1)
+        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
     else:
         bot.say('You do not have a healthpotion to use!')
 
