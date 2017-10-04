@@ -192,7 +192,7 @@ def loothealthpotions(bot, loser, winner):
     if loserhealthpotions:
         bot.db.set_nick_value(loser, 'challenges_healthpotions', '')
         winnerhealthpotions = get_healthpotions(bot, winner)
-        bot.db.set_nick_value(winner, 'challenges_healthpotions', winnerhealthpotions + loserhealthpotions)
+        bot.db.set_nick_value(winner, 'challenges_healthpotions', int(winnerhealthpotions) + int(loserhealthpotions))
             
 def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
@@ -200,7 +200,7 @@ def get_healthpotions(bot, nick):
 
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_healthpotions', str(int(healthpotions) + 1))
+    bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
 def randomhealthpotion():
     randomhealthchance = randint(1, 120)
@@ -231,6 +231,13 @@ def challengehealthpotiongive(bot, trigger):
     target = trigger.group(3) or trigger.nick
     addhealthpotion(bot, target)
     bot.say(target + ' now has a health potion.')
+    
+@sopel.module.require_admin
+@module.commands('challengehealthpotiontake')
+def challengehealthpotiongive(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    bot.db.set_nick_value(nick, 'challenges_healthpotions', ''))
+    bot.say(target + ' now has no healthpotions.')
 
 #############
 ## Respawn ##
