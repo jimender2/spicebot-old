@@ -36,9 +36,9 @@ def challenge(bot, channel, instigator, target):
         targettime = time_since_challenge(bot, target)
         if instigatortime < TIMEOUT:
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - instigatortime), instigator)
-        if targettime < TIMEOUT:
+        elif targettime < TIMEOUT:
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - targettime), instigator)
-        if target == bot.nick:
+        elif target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
             bot.say("If you want to challenge yorself, please find a mirror!")
