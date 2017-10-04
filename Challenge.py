@@ -9,6 +9,8 @@ script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
 weaponslocker = os.path.join(script_dir, rel_path)
 
+TIMEOUT = 600
+
 ## Enforce challenges. if challenge is not accepted, don't challenge
 ## silencer
 
@@ -26,11 +28,15 @@ weaponslocker = os.path.join(script_dir, rel_path)
 def challenge_cmd(bot, trigger):
     return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
-def challenge(bot, channel, instigator, target, warn_nonexistent=True):
+def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
+        if time_since < TIMEOUT:
+            time_since = time_since_challenge(bot, channel, instigator)
+            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - time_since), instigator)
+            return
         if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
@@ -59,7 +65,14 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
                 respawn(bot, loser)
             else:
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+            ## Update Time of combat
+            now = time.time()
+            update_timewinner(bot, winner, now)
+            update_timewinner(bot, loser, now)
 
+                
+                
+                
 ###################
 ## Winner / Loser ##
 ###################
@@ -197,6 +210,23 @@ def weaponofchoice():
         weapon = str('a ' + weapon)
     return weapon
 
+##########
+## Time ##
+##########
+
+def update_timewinner(bot, nick):
+    bot.db.set_nick_value(nick, 'challenge_last', now)
+    
+def update_timeloser(bot, nick):
+    bot.db.set_nick_value(nick, 'challenge_last', now)
+
+def time_since_challenge(bot, channel, nick, nick_only=False):
+    now = time.time()
+    if not nick_only and get_duel_chanwide(bot, channel):
+        last = bot.db.get_channel_value(channel, 'challenge_last') or 0
+    else:
+        last = bot.db.get_nick_value(nick, 'challenge_last') or 0
+    return abs(now - last)
 
 ###########
 ## Stats ##
@@ -205,19 +235,24 @@ def weaponofchoice():
 @module.commands('challenges')
 def duels(bot, trigger):
     target = trigger.group(3) or trigger.nick
+    stats = ''
     ## health
     health = get_health(bot, target)
-    health = str(" Health = " + str(health) + ".")
+    addstat = str(" Health = " + str(health) + ".")
+    stats = str(stats + addstat)
     ## XP
     xp = get_xp(bot, target)
-    xp = str(" XP = " + str(xp) + ".")
+    addstat = str(" XP = " + str(xp) + ".")
+    stats = str(stats + addstat)
     ## Wins
     wins = get_wins(bot, target)
-    wins = str(" Wins = " + str(wins) + ".")
+    addstat = str(" Wins = " + str(wins) + ".")
+    stats = str(stats + addstat)
     ## Losses
     losses = get_losses(bot, target)
-    losses = str(" Losses = " + str(losses) + ".")
+    addstat = str(" Losses = " + str(losses) + ".")
+    stats = str(stats + addstat)
     
-    stats = str(target + "'s stats:" + health + xp + wins + losses)
+    stats = str(target + "'s stats:" + stats)
     bot.say(stats)
 
