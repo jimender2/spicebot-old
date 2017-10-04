@@ -75,7 +75,7 @@ def challenge(bot, channel, instigator, target):
             currenthealth = update_health(bot, loser, damage)
             if currenthealth <= 0:
                 bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
-                respawn(bot, loser)
+                update_respawn(bot, loser)
             else:
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
@@ -175,11 +175,7 @@ def challengehealthclear(bot, trigger):
 #############
 ## Respawn ##
 #############
-
-def respawn(bot, nick):
-    bot.db.set_nick_value(nick, 'challenges_health', 1000)
-    update_respawn(bot, nick)
-    
+ 
 def get_respawn(bot, nick):
     respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
     return respawns
