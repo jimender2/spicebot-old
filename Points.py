@@ -7,7 +7,7 @@ from sopel import module, tools
 @sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints')
 def points_cmd(bot, trigger):
     commandused = trigger.group(1)
-    if commandused == 'points':
+    if commandused == 'points' or commandused == 'pants':
         giveortake = ' gives '
         tofrom = ' to '
         addminus = 'up'
