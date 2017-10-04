@@ -4,6 +4,7 @@ import random
 import os
 from os.path import exists
 from random import randint
+import time
 
 script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
