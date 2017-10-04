@@ -13,7 +13,7 @@ def points(bot, channel, instigator, target, whichtrig, warn_nonexistent=True):
     rando = randint(1, 666)
     randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' + instigator)
     if not target:
-        for u in bot.privileges[channel.lower()]:
+        for u in bot.channels[channel].users:
             bot.say(u)
 
     
