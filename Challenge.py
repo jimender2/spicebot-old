@@ -34,16 +34,16 @@ def challenge(bot, channel, instigator, target):
         ## Don't allow instigator to challenge if he has fought recently
         instigatortime = time_since_challenge(bot, instigator)
         targettime = time_since_challenge(bot, target)
-        if instigatortime < TIMEOUT:
-            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - instigatortime), instigator)
-        elif targettime < TIMEOUT:
-            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - targettime), instigator)
-        elif target == bot.nick:
+        if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
             bot.say("If you want to challenge yorself, please find a mirror!")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
+        elif instigatortime < TIMEOUT:
+            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - instigatortime), instigator)
+        elif targettime < TIMEOUT:
+            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - targettime), instigator)
         else:
             ## Announce
             bot.say(instigator + " versus " + target)
