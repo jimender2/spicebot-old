@@ -10,13 +10,15 @@ script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
 weaponslocker = os.path.join(script_dir, rel_path)
 
-TIMEOUT = 600
+TIMEOUT = 560
 
-#@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
-#@module.intent('ACTION')
-#def challenge_action(bot, trigger):
-#    bot.say(trigger.group(1))
-#    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
+## React to /me challenges
+
+@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+@module.intent('ACTION')
+def challenge_action(bot, trigger):
+    bot.say(trigger.group(1))
+    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
 
 ################
 ## Challenges ##
