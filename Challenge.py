@@ -204,7 +204,7 @@ def randomhealthpotion():
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
     target = trigger.group(3) or trigger.nick
-    healthpotions = get_healthpotions(bot, target)
+    healthpotions = get_healthpotions(bot, trigger.nick)
     if healthpotions:
         health = get_health(bot, target)
         if target == trigger.nick:
@@ -212,7 +212,7 @@ def usehealthpotion(bot, trigger):
         else:
             bot.say(trigger.nick + ' uses health potion on ' + target + ".")
         bot.db.set_nick_value(target, 'challenges_health', health + 100)
-        bot.db.set_nick_value(target, 'challenges_healthpotions', healthpotions - 1)
+        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', healthpotions - 1)
     else:
         bot.say('You do not have a healthpotion to use!')
 
