@@ -323,7 +323,7 @@ def challenges(bot, trigger):
 @sopel.module.require_admin
 #@sopel.module.require_privmsg
 @module.commands('challengeallstatsclear')
-def challengetimeclear(bot, trigger):
+def challengestatsclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## Wins
     wins = get_wins(bot, target)
