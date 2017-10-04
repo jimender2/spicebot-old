@@ -220,6 +220,11 @@ def time_since_challenge(bot, nick):
     last = bot.db.get_nick_value(nick, 'challenge_last') or 0
     return abs(now - last)
 
+@module.commands('challengetimeclear')
+def challengetimeclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    bot.db.set_nick_value(target, 'challenge_last', '')
+    
 ###########
 ## Stats ##
 ###########
