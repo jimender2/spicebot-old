@@ -234,7 +234,7 @@ def challengehealthpotiongive(bot, trigger):
     
 @sopel.module.require_admin
 @module.commands('challengehealthpotiontake')
-def challengehealthpotiongive(bot, trigger):
+def challengehealthpotiontake(bot, trigger):
     target = trigger.group(3) or trigger.nick
     bot.db.set_nick_value(target, 'challenges_healthpotions', '')
     bot.say(target + ' now has no healthpotions.')
