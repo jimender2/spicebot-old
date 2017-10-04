@@ -121,10 +121,7 @@ def duels(bot, trigger):
     bot.say(target + "'s health is at " + health)
     
 def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'health')
-    if not health:
-        bot.db.set_nick_value(nick, 'health', 100)
-        health = '100'
+    health = bot.db.get_nick_value(nick, 'health') or 100
     return health
 
 
