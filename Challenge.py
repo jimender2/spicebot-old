@@ -200,7 +200,7 @@ def get_healthpotions(bot, nick):
 
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_healthpotions', healthpotions + 1)
+    bot.db.set_nick_value(nick, 'challenges_healthpotions', str(int(healthpotions) + 1))
 
 def randomhealthpotion():
     randomhealthchance = randint(1, 120)
