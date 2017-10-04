@@ -296,3 +296,34 @@ def challenges(bot, trigger):
     else:
         bot.say(target + ' has no stats.')
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@module.commands('challengeallstatsclear')
+def challengetimeclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## Wins
+    wins = get_wins(bot, target)
+    if wins:
+        bot.db.set_nick_value(target, 'challenges_wins', '')
+    ## Losses
+    losses = get_losses(bot, target)
+    if losses:
+        bot.db.set_nick_value(target, 'challenges_losses', '')
+    ## health
+    health = get_health(bot, target)
+    if health:
+        bot.db.set_nick_value(target, 'challenges_health', '')
+    ## XP
+    xp = get_xp(bot, target)
+    if xp:
+        bot.db.set_nick_value(target, 'challenges_xp', '')
+    ## TIMEOUT
+    time_since = time_since_challenge(bot, target)
+    if time_since:
+        bot.db.set_nick_value(target, 'challenge_last', '')
+    
+    bot.say(target + "'s stats have been cleared.")
+    
+    
+    
+    
