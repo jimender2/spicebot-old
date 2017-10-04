@@ -18,7 +18,7 @@ def points_cmd(bot, trigger):
     return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus)
     
 @sopel.module.commands('checkpoints')
-def mypoints():
+def checkpoints(bot, trigger):
     target = trigger.group(3) or trigger.nick
     points = get_points(bot, target)
     if not points:
