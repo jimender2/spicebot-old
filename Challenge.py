@@ -287,7 +287,7 @@ def challengetimeclear(bot, trigger):
 
 @sopel.module.commands('challengetimeclearall')
 def challenge_timeall(bot, trigger):
-    return challengealltimeclear(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    return challengealltimeclear(bot, trigger.sender)
 
 def challengealltimeclear(bot, channel):
     for u in bot.channels[channel].users:
