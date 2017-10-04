@@ -81,14 +81,14 @@ def challenge(bot, channel, instigator, target):
             if currenthealth <= 0:
                 bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                 update_respawn(bot, loser)
+                ## Loot Corpse
+                stealhealthpotions = loothealthpotions(bot, loser, winner)
             else:
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
             now = time.time()
             update_time(bot, winner, now)
             update_time(bot, loser, now)
-            ## Loot Corpse
-            stealhealthpotions = loothealthpotions(bot, loser, winner)
         
 ###################
 ## Winner / Loser ##
@@ -190,9 +190,9 @@ def damagedone():
 def loothealthpotions(bot, loser, winner):
     loserhealthpotions = get_healthpotions(bot, loser)
     if loserhealthpotions:
-        bot.db.set_nick_value(loser, 'challenges_healthpotions', '0')
+        bot.db.set_nick_value(loser, 'challenges_healthpotions', '')
         winnerhealthpotions = get_healthpotions(bot, winner)
-        bot.db.set_nick_value(nick, 'challenges_healthpotions', winnerhealthpotions + loserhealthpotions)
+        bot.db.set_nick_value(winner, 'challenges_healthpotions', winnerhealthpotions + loserhealthpotions)
             
 def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
