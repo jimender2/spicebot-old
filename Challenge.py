@@ -59,6 +59,11 @@ def challenge(bot, channel, instigator, target):
         else:
             ## Announce
             bot.say(instigator + " versus " + target)
+            ## Random Health potion
+            healthpotion = randomhealthpotion()
+            if healthpotion == 'true':
+                bot.say(instigator + ' found a health potion worth 100 health. Use .challengehealthpotion to consume.')
+                addhealthpotion(bot, instigator)
             ## Weapon, damage done. 
             weapon = weaponofchoice()
             damage = damagedone()
@@ -141,13 +146,46 @@ def get_health(bot, nick):
     health = bot.db.get_nick_value(nick, 'challenges_health') or 0
     return health
 
+def get_healthpotions(bot, nick):
+    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
+    return health
+
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
     if not health:
-        respawn(bot, nick)
+        update_respawn(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', (int(health) - int(damage)))
     currenthealth = get_health(bot, nick)
     return currenthealth
+
+def addhealthpotion(bot, nick):
+    healthpotions = get_healthpotions(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_healthpotion', healthpotions + 1)
+
+def randomhealthpotion():
+    randomhealthchance = randint(1, 120)
+    if rando >= 90:
+        healthpotion = 'true'
+    else:
+        healthpotion = 'false'
+    return healthpotion
+
+@module.commands('challengehealthpotion')
+def usehealthpotion(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    health = get_health(bot, trigger)
+    if target == trigger.nick:
+        bot.say(trigger.nick + ' uses health potion.')
+    else:
+        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+    bot.db.set_nick_value(target, 'challenges_health', health + 100)
+
+@sopel.module.require_admin
+@module.commands('challengehealthpotiongive')
+def challengehealthpotiongive(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    addhealthpotion(bot, target)
+    bot.say(target + ' now has a health potion.')
 
 def damagedone():
     rando = randint(1, 100)
@@ -347,6 +385,11 @@ def challenges(bot, trigger):
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
         addstat = str(" TIMEOUT = " + str(timediff) + " seconds.")
+        stats = str(stats + addstat)
+    ## Inventory
+    howmanyhealthpotions = get_healthpotions(bot, target)
+    if howmanyhealthpotions:
+        addstat = str(" HealthPotions = " + str(howmanyhealthpotions) + ".")
         stats = str(stats + addstat)
     
     if stats != '':
