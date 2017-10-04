@@ -220,10 +220,13 @@ def time_since_challenge(bot, nick):
     last = bot.db.get_nick_value(nick, 'challenge_last') or 0
     return abs(now - last)
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
 @module.commands('challengetimeclear')
 def challengetimeclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
     bot.db.set_nick_value(target, 'challenge_last', '')
+    bot.say(target + "'s time has been cleared.")
     
 ###########
 ## Stats ##
