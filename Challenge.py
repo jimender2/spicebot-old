@@ -34,6 +34,10 @@ def challenge(bot, channel, instigator, target):
         ## Don't allow instigator to challenge if he has fought recently
         instigatortime = time_since_challenge(bot, instigator)
         targettime = time_since_challenge(bot, target)
+        ## People can opt out of playing
+        instigatordisenable = get_challengestatus(bot, instigator)
+        targetdisenable = get_challengestatus(bot, target)
+        ## Here We Go!
         if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
         elif target == instigator:
@@ -44,6 +48,10 @@ def challenge(bot, channel, instigator, target):
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - instigatortime), instigator)
         elif targettime < TIMEOUT:
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - targettime), instigator)
+        elif instigatordisenable:
+            bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
+        elif targetdisenable:
+            bot.say(instigator + ', It looks like ' target ' has disabled Challenges.')
         else:
             ## Announce
             bot.say(instigator + " versus " + target)
@@ -339,6 +347,40 @@ def challengetimeclear(bot, trigger):
     
     bot.say(target + "'s stats have been cleared.")
     
-    
-    
-    
+####################
+## Enable/Disable ##
+####################
+
+def get_challengestatus(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
+    return disenable
+
+@module.commands('challengeon')
+def challengeon(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    if not trigger.admin and target != trigger.nick:
+        bot.say("Only bot admins can mark other users as able to challenge.")
+    else:
+        disenable = get_challengestatus(bot, target)
+        if disenable:
+            bot.db.set_nick_value(target, 'challenges_disenable', '')
+            bot.say('Challenges has been enabled for ' + target)
+        else:
+            bot.say('Challenges are already enabled for ' + target)
+
+
+def challengeoff(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    if not trigger.admin and target != trigger.nick:
+        bot.say("Only bot admins can mark other users as not able to challenge.")
+    else:
+        disenable = get_challengestatus(bot, target)
+        if disenable:
+            bot.say('Challenges are already disabled for ' + target)
+        else:
+            bot.db.set_nick_value(target, 'challenges_disenable', 'true')
+            bot.say('Challenges has been disabled for ' + target)
+
+            
+            
+            
