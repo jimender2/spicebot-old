@@ -128,11 +128,11 @@ def createweapons():
                 myfile.write("\n")
             myfile.write(w)
 
-@module.commands('chalenges')
+@module.commands('challenges')
 def duels(bot, trigger):
     target = trigger.group(3) or trigger.nick
     health = get_health(bot, target)
-    bot.say(target + "'s health is at " + health)
+    bot.say(target + "'s health is at " + str(health))
     
 def get_health(bot, nick):
     health = bot.db.get_nick_value(nick, 'challenges_health') or 1000
