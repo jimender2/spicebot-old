@@ -4,7 +4,7 @@ from random import randint
 from sopel import module, tools
 
 @sopel.module.rate(120)
-@sopel.module.commands('points','takepoints')
+@sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints')
 def points_cmd(bot, trigger):
     commandused = trigger.group(1)
     if commandused == 'points':
@@ -15,21 +15,30 @@ def points_cmd(bot, trigger):
         giveortake = ' takes '
         tofrom = ' from '
         addminus = 'down'
-    return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus)
+    if commandused.endswith('points'):
+        pointstype = 'points'
+    else:
+        pointstype = 'pants'
+    return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
     
-@sopel.module.commands('checkpoints')
+@sopel.module.commands('checkpoints','checkpants')
 def checkpoints(bot, trigger):
+    commandused = trigger.group(1)
+    if commandused.endswith('points'):
+        pointstype = 'points'
+    else:
+        pointstype = 'pants'
     target = trigger.group(3) or trigger.nick
     points = get_points(bot, target)
     if not points:
-        bot.say(target + ' has no points history.')
+        bot.say(target + ' has no ' + pointstype + ' history.')
     else:
-        bot.say(target + ' has ' + str(points) + ' points.')
+        bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
     
-def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus):
+def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
-    randopoints = (instigator + str(giveortake) + str(rando) + ' points' + str(tofrom) + ' ')    
+    randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
     if not target:
         for u in bot.channels[channel].users:
             target = u
@@ -41,7 +50,7 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus):
                 target = u
                 update_points(bot, target, rando, addminus)
         if target == instigator:
-            bot.say('You can\'t adjust your own points!!')
+            bot.say('You can\'t adjust your own ' + pointstype + '!!')
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         else:
