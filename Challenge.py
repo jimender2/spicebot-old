@@ -37,8 +37,8 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             weapon = weaponofchoice()
             damage = damagedone()
             bot.say(instigator + " versus " + target)
-            instigatorxp = get_xp(bot, nick)
-            targetxp = get_xp(bot, nick)
+            instigatorxp = get_xp(bot, instigator)
+            targetxp = get_xp(bot, target)
             if instigatorxp >= targetxp:
                 combatants = 'instigator, instigator, instigator, target, target'
             else:
