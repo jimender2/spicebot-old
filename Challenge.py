@@ -113,15 +113,8 @@ def createweapons():
                 myfile.write("\n")
             myfile.write(w)
 
-def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'challenge_health') or 100
-    return health
 
-@module.commands('health')
-def challenges(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    health = get_health(bot, target)
-    bot.say(str(target) + " health is at " + str(health) + "!!!")
-        
-        
-        
+
+
+            
+            
