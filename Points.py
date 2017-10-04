@@ -8,7 +8,7 @@ def points_cmd(bot, trigger):
     return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
     
     
-def points(bot, channel, instigator, target, whichtrig, warn_nonexistent=True):
+def points(bot, channel, instigator, target, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
     randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' + instigator)
