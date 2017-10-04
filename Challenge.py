@@ -284,7 +284,18 @@ def challengetimeclear(bot, trigger):
     if time_since:
         bot.db.set_nick_value(target, 'challenge_last', '')
     bot.say(target + "'s time has been cleared.")
-    
+
+@sopel.module.commands('challengetimeclearall')
+def challenge_timeall(bot, trigger):
+    return challengealltimeclear(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+
+def challengealltimeclear(bot, channel):
+    for u in bot.channels[channel].users:
+            target = u
+            time_since = time_since_challenge(bot, target)
+            if time_since:
+                bot.db.set_nick_value(target, 'challenge_last', '')
+
 ###########
 ## Stats ##
 ###########
