@@ -160,7 +160,7 @@ def update_health(bot, nick, damage):
 
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_healthpotion', healthpotions + 1)
+    bot.db.set_nick_value(nick, 'challenges_healthpotions', healthpotions + 1)
 
 def randomhealthpotion():
     randomhealthchance = randint(1, 120)
@@ -181,6 +181,7 @@ def usehealthpotion(bot, trigger):
         else:
             bot.say(trigger.nick + ' uses health potion on ' + target + ".")
         bot.db.set_nick_value(target, 'challenges_health', health + 100)
+        bot.db.set_nick_value(target, 'challenges_healthpotions', healthpotions - 1)
     else:
         bot.say('You do not have a healthpotion to use!')
 
