@@ -55,9 +55,9 @@ def points_finished(bot, target, rando, addminus):
 def update_points(bot, target, rando, won=True):
     points = get_points(bot, nick)
     if won:
-        bot.db.set_nick_value(nick, 'points_points', points + rando)
+        bot.db.set_nick_value(nick, 'points_points', points + int(rando))
     else:
-        bot.db.set_nick_value(nick, 'points_points', points - rando)
+        bot.db.set_nick_value(nick, 'points_points', points - int(rando))
         
 def get_points(bot, nick):
     points = bot.db.get_nick_value(nick, 'points_points') or 0
