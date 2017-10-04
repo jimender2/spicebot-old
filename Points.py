@@ -4,20 +4,34 @@ from random import randint
 
 @sopel.module.rate(120)
 @sopel.module.commands('points','pants')
-def points(bot, trigger):
-    whichtrig = trigger.group(1)    
-    if not trigger.group(2):
-        loser = "Everybody"
-    else:
-        loser = trigger.group(2).strip()
-        if trigger.group(2) == 'all':
-            loser = "Everybody"
-    if loser == trigger.nick:
-        bot.say('You can\'t give yourself ' + whichtrig + '!')
-    else:
-        rando = randint(1, 666)
-        randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
-        bot.say(loser + ' ' + randopoints + ' ' + trigger.nick)
+def points_cmd(bot, trigger):
+    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', trigger.nick(1))
+    
+    
+def points(bot, channel, instigator, target, whichtrig, warn_nonexistent=True):
+    target = tools.Identifier(target or '')
+    rando = randint(1, 666)
+    randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' + instigator)
+    if not target:
+        for u in in bot.privileges[channel.lower()]:
+            bot.say(u)
+
+    
+
+    
+    
+    #if not trigger.group(2):
+    #    loser = "Everybody"
+    #else:
+    #    loser = trigger.group(2).strip()
+    #    if trigger.group(2) == 'all':
+    #        loser = "Everybody"
+    #if loser == trigger.nick:
+    #    bot.say('You can\'t give yourself ' + whichtrig + '!')
+    #else:
+    #    rando = randint(1, 666)
+    #    randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
+    #    bot.say(loser + ' ' + randopoints + ' ' + trigger.nick)
 
 @sopel.module.rate(120)
 @sopel.module.commands('takepoints','takepants','minuspants','minuspoints')
