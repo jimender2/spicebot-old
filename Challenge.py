@@ -152,12 +152,14 @@ def respawn(bot, nick):
 
 def damagedone():
     rando = randint(1, 100)
-    if int(rando) >= '75' and int(rando) < '90':
-        damage = '10'
-    elif int(rando) >= '90':
+    if rando >= 90:
         damage = '20'
-    else:
+    elif rando >= 75 and rando < 90:
+        damage = '10'
+    elif rando < 75:
         damage = '5'
+    else:
+        damage = '1'
     return damage
 
 @sopel.module.require_admin
