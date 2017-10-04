@@ -6,59 +6,30 @@ from sopel import module, tools
 @sopel.module.rate(120)
 @sopel.module.commands('points')
 def points_cmd(bot, trigger):
-    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    commandused = trigger.group(1)
+    if commandused == 'points':
+        giveortake = 'gives'
+        tofrom = 'to'
+    else:
+        giveortake = 'takes'
+        tofrom = 'from'
+    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom)
     
     
-def points(bot, channel, instigator, target, warn_nonexistent=True):
+def points(bot, channel, instigator, target, giveortake, tofrom, warn_nonexistent=True):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
-    randopoints = ('is awarded ' + str(rando) + ' points from ' + instigator)
+    randopoints = (instigator + str(giveortake) + str(rando) + ' points ' + str(tofrom) + ' ')    
     if not target:
         for u in bot.channels[channel].users:
-            bot.say('this will be: ' + str(u) + str(randopoints))
-
-    
-
-    
-    
-    #if not trigger.group(2):
-    #    loser = "Everybody"
-    #else:
-    #    loser = trigger.group(2).strip()
-    #    if trigger.group(2) == 'all':
-    #        loser = "Everybody"
-    #if loser == trigger.nick:
-    #    bot.say('You can\'t give yourself ' + whichtrig + '!')
-    #else:
-    #    rando = randint(1, 666)
-    #    randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
-    #    bot.say(loser + ' ' + randopoints + ' ' + trigger.nick)
-
-@sopel.module.rate(120)
-@sopel.module.commands('takepoints','takepants','minuspants','minuspoints')
-def takepoints(bot, trigger):   
-    if not trigger.group(2):
-        winner = "Everybody"
+            bot.say('this will be: ' + str(randopoints) + str(u))
     else:
-        winner = trigger.group(2).strip()
-        if trigger.group(2) == 'all':
-            winner = "Everybody"
-    if winner == trigger.nick:
-        bot.say('You can\'t take your own points away!')
-    else:
-        rando = randint(1, 666)
-        randopoints = ('loses ' + str(rando) + ' points')
-        bot.say(winner + ' ' + randopoints)
-
-@sopel.module.rate(120)
-@sopel.module.commands('pints','pint')
-def pints(bot, trigger):
-    if not trigger.group(2):
-        winner = "Everybody"
-    else:
-        winner = trigger.group(2).strip()
-        if trigger.group(2) == 'all':
-            winner = "Everybody"
-        elif trigger.group(2) == trigger.nick:
-            winner = "him/her-self"
-    bot.say(trigger.nick + ' buys a pint for ' + winner)
+        if target == 'all' or target == 'everybody' or target == 'everyone':
+            for u in bot.channels[channel].users:
+                bot.say('this will be: ' + str(randopoints) + str(u))
+        if target == instigator:
+            bot.say('You can\'t adjust your own points!!')
+        elif target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
+        else:
+            bot.say('this will be: ' + str(randopoints) + target)
