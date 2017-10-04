@@ -18,6 +18,10 @@ weaponslocker = os.path.join(script_dir, rel_path)
 #    bot.say(trigger.group(1))
 #    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1), is_admin=trigger.admin, warn_nonexistent=False)
 
+################
+## Challenges ##
+################
+
 @sopel.module.commands('challenge')
 def challenge_cmd(bot, trigger):
     return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
@@ -34,30 +38,44 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         else:
+            ## Announce
+            bot.say(instigator + " versus " + target)
+            ## Weapon, damage done. 
             weapon = weaponofchoice()
             damage = damagedone()
-            bot.say(instigator + " versus " + target)
-            instigatorxp = get_xp(bot, instigator)
-            targetxp = get_xp(bot, target)
-            if instigatorxp >= targetxp:
-                combatants = sorted([instigator, instigator, instigator, target, target])
-            else:
-                combatants = sorted([instigator, instigator, target, target, target])
-            random.shuffle(combatants)
-            winner = combatants.pop()
-            if winner == instigator:
-                loser = target
-            else:
-                loser = instigator
+            ## Select Winner
+            winner, loser = getwinner(bot, instigator, target)
             bot.say(winner + " wins!")
+            ## Update XP,,, XPearned = damagedone + 1
+            XPearned = str(int(damage) + 1)
             update_xp(bot, winner, damage)
+            ## Update health, If killed, respawn
             currenthealth = update_health(bot, loser, damage)
             if currenthealth <= 0:
                 bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                 respawn(bot, loser)
             else:
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
-            
+
+###################
+## Select Winner ##
+###################
+
+def getwinner(bot, instigator, target):
+    instigatorxp = get_xp(bot, instigator)
+    targetxp = get_xp(bot, target)
+    if instigatorxp >= targetxp:
+        combatants = sorted([instigator, instigator, instigator, target, target])
+    else:
+        combatants = sorted([instigator, instigator, target, target, target])
+    random.shuffle(combatants)
+    winner = combatants.pop()
+    if winner == instigator:
+        loser = target
+    else:
+        loser = instigator
+    return return winner, loser
+
 ############
 ## Health ##
 ############
