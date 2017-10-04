@@ -48,8 +48,10 @@ def challenge(bot, channel, instigator, target):
             bot.say("I'm not sure who that is.")
         elif instigatortime < TIMEOUT:
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
+            if targettime < TIMEOUT:
+            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif targettime < TIMEOUT:
-            bot.notice(target + "Next can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
         elif targetdisenable:
