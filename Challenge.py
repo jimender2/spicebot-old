@@ -74,7 +74,7 @@ def getwinner(bot, instigator, target):
         loser = target
     else:
         loser = instigator
-    return return winner, loser
+    return winner, loser
 
 ############
 ## Health ##
