@@ -3,9 +3,9 @@ from random import random
 from random import randint
 
 @sopel.module.rate(120)
-@sopel.module.commands('points','pants')
+@sopel.module.commands('points')
 def points_cmd(bot, trigger):
-    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', trigger.nick(1))
+    return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
     
     
 def points(bot, channel, instigator, target, whichtrig, warn_nonexistent=True):
