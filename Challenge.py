@@ -145,7 +145,7 @@ def update_health(bot, nick, damage):
     currenthealth = get_health(bot, nick)
     return currenthealth
 
-def respawn():
+def respawn(bot, nick):
     bot.db.set_nick_value(nick, 'challenges_health', 1000)
 
 def damagedone():
@@ -231,6 +231,7 @@ def createweapons():
             if os.stat(weaponslocker).st_size != 0:
                 myfile.write("\n")
             myfile.write(w)
+            
 @sopel.module.commands('weaponslockerdel')
 def removeweapons(bot, trigger):
     checkweapons()
