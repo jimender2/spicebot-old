@@ -65,7 +65,8 @@ def challenge(bot, channel, instigator, target):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
             now = time.time()
-            update_timewinner(bot, winner, now)
+            update_time(bot, winner, now)
+            update_time(bot, loser, now)
         
 ###################
 ## Winner / Loser ##
@@ -208,9 +209,9 @@ def weaponofchoice():
 ## Time ##
 ##########
 
-def update_timewinner(bot, nick, now):
+def update_time(bot, nick, now):
     bot.db.set_nick_value(nick, 'challenge_last', now)
-
+    
 def time_since_challenge(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenge_last') or 0
