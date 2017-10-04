@@ -178,12 +178,13 @@ def challengehealthclear(bot, trigger):
 
 def respawn(bot, nick):
     bot.db.set_nick_value(nick, 'challenges_health', 1000)
+    update_respawn(bot, nick)
     
 def get_respawn(bot, nick):
     respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
     return respawns
 
-def update_respawn(bot, nick, damage):
+def update_respawn(bot, nick):
     respawns = get_respawn(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
     currentrespawns = get_respawn(bot, nick)
