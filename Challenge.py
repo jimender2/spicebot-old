@@ -12,6 +12,10 @@ weaponslocker = os.path.join(script_dir, rel_path)
 
 TIMEOUT = 560
 
+WINS = 'win'
+LOSSES = 'lose'
+NONE = None
+
 ## React to /me challenges
 
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -541,7 +545,7 @@ def format_streaks(bot, nick):
     return streaks
 
 def get_streak_type(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_streak_cur') or ''
+    return bot.db.get_nick_value(nick, 'challenge_streak_cur') or NONE
 
 def set_streak_type(bot, nick, t):
     if t not in [WINS, LOSSES]:
