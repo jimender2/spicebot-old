@@ -285,6 +285,8 @@ def challengetimeclear(bot, trigger):
         bot.db.set_nick_value(target, 'challenge_last', '')
     bot.say(target + "'s time has been cleared.")
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
 @sopel.module.commands('challengetimeclearall')
 def challenge_timeall(bot, trigger):
     return challengealltimeclear(bot, trigger.sender)
