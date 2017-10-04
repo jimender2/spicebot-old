@@ -44,8 +44,21 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             winner = combatants.pop()
             loser = combatants.pop()
             bot.say(winner + " wins!")
-            bot.say(winner + " attacks " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
-            
+            currenthealth = update_health(bot, loser, damage)
+            if currenthealth <= 0:
+                bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+                respawn(bot, loser)
+            else:
+                bot.say(winner + " attacks " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+
+def respawn():
+    bot.db.set_nick_value(nick, 'challenges_health', 1000)
+
+def update_health(bot, nick, damage):
+    health = get_health(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_health', health - int(damage))
+    return currenthealth
+
 def damagedone():
     rando = randint(1, 100)
     if int(rando) >= '75' and int(rando) < '90':
@@ -121,7 +134,7 @@ def duels(bot, trigger):
     bot.say(target + "'s health is at " + health)
     
 def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'health') or 100
+    health = bot.db.get_nick_value(nick, 'challenges_health') or 1000
     return health
 
 
