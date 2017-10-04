@@ -51,7 +51,7 @@ def challenge(bot, channel, instigator, target):
         elif instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
         elif targetdisenable:
-            bot.say(instigator + ', It looks like ' target ' has disabled Challenges.')
+            bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
         else:
             ## Announce
             bot.say(instigator + " versus " + target)
