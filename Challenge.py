@@ -121,10 +121,7 @@ def get_health(bot, nick):
 def challenges(bot, trigger):
     target = trigger.group(3) or trigger.nick
     health = get_health(bot, target)
-    if int(health) == '100':
-        bot.say("%s has full health!" % target)
-    else:
-        bot.say(str(target) + " health is down to " + str(health) + "!!!")
+    bot.say(str(target) + " health is at " + str(health) + "!!!")
         
         
         
