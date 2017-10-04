@@ -78,11 +78,11 @@ def respawn():
 def damagedone():
     rando = randint(1, 100)
     if int(rando) >= '75' and int(rando) < '90':
-        damage = '5'
-    elif int(rando) >= '90':
         damage = '10'
+    elif int(rando) >= '90':
+        damage = '20'
     else:
-        damage = '1'
+        damage = '5'
     return damage
 
 ########
