@@ -211,13 +211,13 @@ def weaponofchoice():
 ## Time ##
 ##########
 
-def update_timewinner(bot, nick):
+def update_timewinner(bot, nick, now):
     bot.db.set_nick_value(nick, 'challenge_last', now)
     
-def update_timeloser(bot, nick):
+def update_timeloser(bot, nick, now):
     bot.db.set_nick_value(nick, 'challenge_last', now)
     
-def update_timechannel(bot, channel):
+def update_timechannel(bot, channel, now):
     bot.db.set_nick_value(channel, 'challenge_last', now)
 
 def time_since_challenge(bot, channel, nick, nick_only=False):
