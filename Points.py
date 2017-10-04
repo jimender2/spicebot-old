@@ -13,10 +13,10 @@ def points(bot, trigger):
         winner = trigger.group(2).strip()
         if trigger.group(2) == 'all':
             winner = "Everybody"
-    randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
     if winner == trigger.nick:
         bot.say('You can\'t give yourself ' + whichtrig + '!')
     else:
+        randopoints = ('is awarded ' + str(rando) + ' ' + whichtrig + ' from' )
         bot.say(winner + ' ' + randopoints + ' ' + trigger.nick)
 
 @sopel.module.rate(120)
@@ -29,10 +29,10 @@ def takepoints(bot, trigger):
         winner = trigger.group(2).strip()
         if trigger.group(2) == 'all':
             winner = "Everybody"
-    randopoints = ('loses ' + str(rando) + ' points')
     if winner == trigger.nick:
         bot.say('You can\'t take your own points away!')
     else:
+        randopoints = ('loses ' + str(rando) + ' points')
         bot.say(winner + ' ' + randopoints)
 
 @sopel.module.rate(120)
