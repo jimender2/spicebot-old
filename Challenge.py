@@ -69,10 +69,8 @@ def challenge(bot, channel, instigator, target):
             now = time.time()
             update_timewinner(bot, winner, now)
             update_timewinner(bot, loser, now)
-
-                
-                
-                
+            update_timewinner(bot, channel, now)
+        
 ###################
 ## Winner / Loser ##
 ###################
@@ -219,6 +217,9 @@ def update_timewinner(bot, nick):
     
 def update_timeloser(bot, nick):
     bot.db.set_nick_value(nick, 'challenge_last', now)
+    
+def update_timechannel(bot, channel):
+    bot.db.set_nick_value(channel, 'challenge_last', now)
 
 def time_since_challenge(bot, channel, nick, nick_only=False):
     now = time.time()
