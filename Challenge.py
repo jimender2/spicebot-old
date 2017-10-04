@@ -114,7 +114,19 @@ def createweapons():
                 myfile.write("\n")
             myfile.write(w)
 
-
+@module.commands('chalenges')
+def duels(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    health = get_duels(bot, target)
+    total = wins + losses
+    bot.say(target + "'s health is at " + health)
+    
+def get_health(bot, nick):
+    health = bot.db.get_nick_value(nick, 'health')
+    if not health:
+        bot.db.set_nick_value(nick, 'health', 100)
+        health = '100'
+    return health
 
 
             
