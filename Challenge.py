@@ -56,7 +56,7 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
                 bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                 respawn(bot, loser)
             else:
-                bot.say(winner + " attacks " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+                bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
 ############
 ## Health ##
