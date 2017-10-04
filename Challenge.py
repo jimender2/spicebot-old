@@ -252,8 +252,8 @@ def challenges(bot, trigger):
         addstat = str(" Wins = " + str(wins) + ".")
         stats = str(stats + addstat)
     ## Losses
+    losses = get_losses(bot, target)
     if losses:
-        losses = get_losses(bot, target)
         addstat = str(" Losses = " + str(losses) + ".")
         stats = str(stats + addstat)
     ## TIMEOUT
