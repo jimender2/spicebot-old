@@ -173,12 +173,16 @@ def randomhealthpotion():
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
     target = trigger.group(3) or trigger.nick
-    health = get_health(bot, trigger)
-    if target == trigger.nick:
-        bot.say(trigger.nick + ' uses health potion.')
+    healthpotions = get_healthpotions(bot, target)
+    if healthpotion:
+        health = get_health(bot, target)
+        if target == trigger.nick:
+            bot.say(trigger.nick + ' uses health potion.')
+        else:
+            bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+        bot.db.set_nick_value(target, 'challenges_health', health + 100)
     else:
-        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-    bot.db.set_nick_value(target, 'challenges_health', health + 100)
+        bot.say('You do not have a healthpotion to use!')
 
 @sopel.module.require_admin
 @module.commands('challengehealthpotiongive')
