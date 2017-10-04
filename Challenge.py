@@ -33,6 +33,7 @@ def challenge(bot, channel, instigator, target):
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
+        time_since = time_since_challenge(bot, channel, instigator)
         if time_since < TIMEOUT:
             time_since = time_since_challenge(bot, channel, instigator)
             bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - time_since), instigator)
@@ -253,7 +254,11 @@ def duels(bot, trigger):
     losses = get_losses(bot, target)
     addstat = str(" Losses = " + str(losses) + ".")
     stats = str(stats + addstat)
-    
+    ## TIMEOUT
+    time_since = time_since_challenge(bot, target)
+    if time_since < TIMEOUT:
+        addstat = str("TIMEOUT = " + str(TIMEOUT - time_since) + " seconds.")
+        stats = str(stats + addstat)
     stats = str(target + "'s stats:" + stats)
     bot.say(stats)
 
