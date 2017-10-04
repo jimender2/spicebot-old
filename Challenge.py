@@ -40,10 +40,9 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             instigatorxp = get_xp(bot, instigator)
             targetxp = get_xp(bot, target)
             if instigatorxp >= targetxp:
-                combatants = 'instigator, instigator, instigator, target, target'
+                combatants = sorted([instigator, instigator, instigator, target, target])
             else:
-                combatants = 'instigator, instigator, target, target, target'
-            combatants = sorted([combatants])
+                combatants = sorted([instigator, instigator, target, target, target])
             #combatants = sorted([instigator, target])
             random.shuffle(combatants)
             winner = combatants.pop()
