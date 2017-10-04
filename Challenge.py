@@ -48,9 +48,9 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             
 def damagedone():
     rando = randint(1, 100)
-    if int(rando) >= '90' and int(rando) < '99':
+    if int(rando) >= '75' and int(rando) < '90':
         damage = '5'
-    elif int(rando) >= '99':
+    elif int(rando) >= '90':
         damage = '10'
     else:
         damage = '1'
