@@ -43,11 +43,12 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
                 combatants = sorted([instigator, instigator, instigator, target, target])
             else:
                 combatants = sorted([instigator, instigator, target, target, target])
-            #combatants = sorted([instigator, target])
             random.shuffle(combatants)
             winner = combatants.pop()
-            loser = combatants.pop()
-            
+            if winner == instigator:
+                loser = target
+            else:
+                loser = instigator
             bot.say(winner + " wins!")
             update_xp(bot, winner, damage)
             currenthealth = update_health(bot, loser, damage)
