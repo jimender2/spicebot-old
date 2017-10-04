@@ -277,7 +277,7 @@ def challengetimeclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## TIMEOUT
     time_since = time_since_challenge(bot, target)
-    if time_since < TIMEOUT:
+    if time_since:
         bot.db.set_nick_value(target, 'challenge_last', '')
     bot.say(target + "'s time has been cleared.")
     
