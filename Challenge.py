@@ -169,7 +169,7 @@ def challengehealthclear(bot, trigger):
     ## health
     health = get_health(bot, target)
     if health:
-        bot.db.set_nick_value(target, 'challenges_health', '1000')
+        bot.db.set_nick_value(target, 'challenges_health', '1')
     bot.say(target + "'s health has been cleared.")
 
 #############
