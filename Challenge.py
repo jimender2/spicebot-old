@@ -148,7 +148,7 @@ def get_health(bot, nick):
 
 def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
-    return health
+    return healthpotions
 
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
