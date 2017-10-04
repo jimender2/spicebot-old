@@ -44,16 +44,10 @@ def challenge(bot, channel, instigator, target, warn_nonexistent=True):
             else:
                 combatants = 'instigator, instigator, target, target, target'
             combatants = sorted([combatants])
-            winner = random.randint(0,len(combatants) - 1)
-            winner = str(combatants [winner])
-            if winner == instigator:
-                loser = target
-            else:
-                loser = instigator
             #combatants = sorted([instigator, target])
-            #random.shuffle(combatants)
-            #winner = combatants.pop()
-            #loser = combatants.pop()
+            random.shuffle(combatants)
+            winner = combatants.pop()
+            loser = combatants.pop()
             
             bot.say(winner + " wins!")
             update_xp(bot, winner, damage)
