@@ -31,9 +31,14 @@ def challenge(bot, channel, instigator, target):
     if not target:
         bot.say(instigator + ", Who did you want to fight?")
     else:
-        time_since = time_since_challenge(bot, instigator)
-        if time_since < TIMEOUT:
-            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - time_since), instigator)
+        ## Don't allow instigator to challenge if he has fought recently
+        instigatortime = time_since_challenge(bot, instigator)
+        targettime = time_since_challenge(bot, target)
+        if instigatortime < TIMEOUT:
+            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - instigatortime), instigator)
+            return
+        if targettime < TIMEOUT:
+            bot.notice("Next challenge will be available in %d seconds." % (TIMEOUT - targettime), instigator)
             return
         if target == bot.nick:
             bot.say("I refuse to fight a biological entity!")
