@@ -8,11 +8,11 @@ from sopel import module, tools
 def points_cmd(bot, trigger):
     commandused = trigger.group(1)
     if commandused == 'points':
-        giveortake = 'gives'
-        tofrom = 'to'
+        giveortake = ' gives '
+        tofrom = ' to '
     else:
-        giveortake = 'takes'
-        tofrom = 'from'
+        giveortake = ' takes '
+        tofrom = ' from '
     return points(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom)
     
     
