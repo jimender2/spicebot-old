@@ -106,16 +106,27 @@ def update_losses(bot, nick):
     losses = get_losses(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
     
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@module.commands('challengewinslossclear')
+def challengewinslossclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    bot.db.set_nick_value(target, 'challenges_wins', '')
+    bot.db.set_nick_value(target, 'challenges_losses', '')
+    bot.say(target + "'s wins and losses have been cleared.")
+    
 ############
 ## Health ##
 ############
 
 def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'challenges_health') or 1000
+    health = bot.db.get_nick_value(nick, 'challenges_health') or 0
     return health
 
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
+    if not health:
+        respawn(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', health - int(damage))
     currenthealth = get_health(bot, nick)
     return currenthealth
@@ -133,6 +144,14 @@ def damagedone():
         damage = '5'
     return damage
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@module.commands('challengehealthclear')
+def challengehealthclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    bot.db.set_nick_value(target, 'challenges_health', '')
+    bot.say(target + "'s health has been cleared.")
+    
 ########
 ## XP ##
 ########
@@ -147,6 +166,14 @@ def update_xp(bot, nick, damage):
     currentxp = get_xp(bot, nick)
     return currentxp
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@module.commands('challengexpclear')
+def challengexpclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    bot.db.set_nick_value(target, 'challenges_xp', '')
+    bot.say(target + "'s XP has been cleared.")
+    
 #############
 ## Weapons ##
 #############
