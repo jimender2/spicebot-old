@@ -146,10 +146,6 @@ def get_health(bot, nick):
     health = bot.db.get_nick_value(nick, 'challenges_health') or 0
     return health
 
-def get_healthpotions(bot, nick):
-    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
-    return healthpotions
-
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
     if not health:
@@ -158,13 +154,48 @@ def update_health(bot, nick, damage):
     currenthealth = get_health(bot, nick)
     return currenthealth
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@module.commands('challengehealthclear')
+def challengehealthclear(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## health
+    health = get_health(bot, target)
+    if health:
+        bot.db.set_nick_value(target, 'challenges_health', '1')
+    bot.say(target + "'s health has been cleared.")
+
+#################
+## Damage Done ##
+#################
+
+def damagedone():
+    rando = randint(1, 100)
+    if rando >= 90:
+        damage = '20'
+    elif rando >= 75 and rando < 90:
+        damage = '10'
+    elif rando < 75:
+        damage = '5'
+    else:
+        damage = '1'
+    return damage
+
+####################
+## Health Potions ##
+####################
+
+def get_healthpotions(bot, nick):
+    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
+    return healthpotions
+
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', healthpotions + 1)
 
 def randomhealthpotion():
     randomhealthchance = randint(1, 120)
-    if rando >= 90:
+    if randomhealthchance >= 90:
         healthpotion = 'true'
     else:
         healthpotion = 'false'
@@ -191,29 +222,6 @@ def challengehealthpotiongive(bot, trigger):
     target = trigger.group(3) or trigger.nick
     addhealthpotion(bot, target)
     bot.say(target + ' now has a health potion.')
-
-def damagedone():
-    rando = randint(1, 100)
-    if rando >= 90:
-        damage = '20'
-    elif rando >= 75 and rando < 90:
-        damage = '10'
-    elif rando < 75:
-        damage = '5'
-    else:
-        damage = '1'
-    return damage
-
-@sopel.module.require_admin
-#@sopel.module.require_privmsg
-@module.commands('challengehealthclear')
-def challengehealthclear(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## health
-    health = get_health(bot, target)
-    if health:
-        bot.db.set_nick_value(target, 'challenges_health', '1')
-    bot.say(target + "'s health has been cleared.")
 
 #############
 ## Respawn ##
