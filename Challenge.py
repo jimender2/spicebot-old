@@ -222,10 +222,7 @@ def update_timechannel(bot, channel):
 
 def time_since_challenge(bot, channel, nick, nick_only=False):
     now = time.time()
-    if not nick_only and get_duel_chanwide(bot, channel):
-        last = bot.db.get_channel_value(channel, 'challenge_last') or 0
-    else:
-        last = bot.db.get_nick_value(nick, 'challenge_last') or 0
+    last = bot.db.get_nick_value(nick, 'challenge_last') or 0
     return abs(now - last)
 
 ###########
