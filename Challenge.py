@@ -245,7 +245,7 @@ def challenges(bot, trigger):
     time_since = time_since_challenge(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
-        addstat = str("TIMEOUT = " + str(timediff) + " seconds.")
+        addstat = str(" TIMEOUT = " + str(timediff) + " seconds.")
         stats = str(stats + addstat)
     stats = str(target + "'s stats:" + stats)
     bot.say(stats)
