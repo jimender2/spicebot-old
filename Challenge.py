@@ -57,7 +57,7 @@ def respawn():
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', health - int(damage))
-    currenthealth = get_health(bot, target)
+    currenthealth = get_health(bot, nick)
     return currenthealth
 
 def damagedone():
