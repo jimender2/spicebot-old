@@ -73,15 +73,7 @@ def challenge(bot, channel, instigator, target):
             damage = damagedone()
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
-            ## Streaks
-            winner_loss_streak = get_loss_streak(bot, winner)
-            loser_win_streak = get_win_streak(bot, loser)
-            win_streak = get_win_streak(bot, winner)
-            streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
-            broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
-            broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
-            bot.say("%s wins%s!%s" % (winner, broken_streak, streak))
-            #bot.say(winner + " wins!")
+            bot.say(winner + " wins!")
             ## Update wins/lose
             update_wins(bot, winner)
             update_losses(bot, loser)
@@ -408,7 +400,7 @@ def challenges(bot, trigger):
     if xp:
         addstat = str(" XP=" + str(xp) + ".")
         stats = str(stats + addstat)
-    ## Wins Losses
+    ## Wins
     wins = get_wins(bot, target)
     if wins:
         addstat = str(" Wins=" + str(wins) + ".")
@@ -433,10 +425,6 @@ def challenges(bot, trigger):
     howmanyhealthpotions = get_healthpotions(bot, target)
     if howmanyhealthpotions:
         addstat = str(" HealthPotions=" + str(howmanyhealthpotions) + ".")
-        stats = str(stats + addstat)
-    ## streaks
-        streaks = format_streaks(bot, target)
-        addstat = str(streaks)
         stats = str(stats + addstat)
     
     if stats != '':
@@ -511,101 +499,3 @@ def challengeoff(bot, trigger):
 ## streaks ##
 #############
 
-def format_streaks(bot, nick):
-    # this started as a mess, and it only got messier from there
-    streaks = ''
-
-    # current streak
-    streak_type = get_streak_type(bot, nick)
-    if streak_type == WINS:
-        streak_count = get_win_streak(bot, nick)
-        streak_preposition = 'and'
-        streak_type = 'win' if streak_count == 1 else 'wins'
-    elif streak_type == LOSSES:
-        streak_count = get_loss_streak(bot, nick)
-        streak_preposition = 'but'
-        streak_type = 'loss' if streak_count == 1 else 'losses'
-    else:
-        return 'but has no streaks recorded yet.'
-    if streak_count > 1:
-        streaks += '%s is riding a streak of %d %s.' % (streak_preposition, streak_count, streak_type)
-    elif streak_count == 1:
-        streaks += 'but can only hope %sto start a %s streak.' % (
-            'not ' if streak_type == 'loss' else '', 'winning' if streak_type == 'win' else 'losing')
-    else:
-        streaks += 'and has not achieved even a single %s? o_O' % streak_type
-        return streaks
-
-    # best/worst streaks
-    best_wins = get_best_win_streak(bot, nick)
-    worst_losses = get_worst_loss_streak(bot, nick)
-    if best_wins or worst_losses:
-        streaks += ' ('
-        if best_wins and worst_losses:
-            streaks += 'Best winning streak: %d; worst losing streak: %d.' % (best_wins, worst_losses)
-        elif best_wins and not worst_losses:
-            streaks += 'Best winning streak: %d.' % best_wins
-        elif not best_wins and worst_losses:
-            streaks += 'Worst losing streak: %d.' % worst_losses
-        streaks += ')'
-    return streaks
-
-def get_streak_type(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_streak_cur') or NONE
-
-def set_streak_type(bot, nick, t):
-    if t not in [WINS, LOSSES]:
-        raise ValueError("Cannot set unsupported streak type %s." % t)
-    bot.db.set_nick_value(nick, 'challenge_streak_cur', t)
-
-def get_win_streak(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_wins_streak') or 0
-
-def set_win_streak(bot, nick, value):
-    if value < 0:
-        value = 0
-    bot.db.set_nick_value(nick, 'challenge_wins_streak', value)
-
-def extend_win_streak(bot, nick):
-    new_streak = get_win_streak(bot, nick) + 1
-    set_win_streak(bot, nick, new_streak)
-    if new_streak > get_best_win_streak(bot, nick):
-        set_best_win_streak(bot, nick, new_streak)
-
-def reset_win_streak(bot, nick):
-    set_win_streak(bot, nick, 0)
-
-def get_loss_streak(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_losses_streak') or 0
-
-def set_loss_streak(bot, nick, value):
-    if value < 0:
-        value = 0
-    bot.db.set_nick_value(nick, 'challenge_losses_streak', value)
-
-def extend_loss_streak(bot, nick):
-    new_streak = get_loss_streak(bot, nick) + 1
-    set_loss_streak(bot, nick, new_streak)
-    if new_streak > get_worst_loss_streak(bot, nick):
-        set_worst_loss_streak(bot, nick, new_streak)
-
-def reset_loss_streak(bot, nick):
-    set_loss_streak(bot, nick, 0)
-
-def get_best_win_streak(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_wins_streak_record') or 0
-
-def set_best_win_streak(bot, nick, value):
-    if value < 0:
-        value = 0
-    bot.db.set_nick_value(nick, 'challenge_wins_streak_record', value)
-
-def get_worst_loss_streak(bot, nick):
-    return bot.db.get_nick_value(nick, 'challenge_losses_streak_record') or 0
-
-def set_worst_loss_streak(bot, nick, value):
-    if value < 0:
-        value = 0
-    bot.db.set_nick_value(nick, 'challenge_losses_streak_record', value)
-            
-            
