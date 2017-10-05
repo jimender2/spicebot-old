@@ -90,9 +90,9 @@ def challenge(bot, channel, instigator, target):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
             now = time.time()
-            bot.say(str(now))
+            losernow = (int(now) + 180)
             update_time(bot, winner, now)
-            update_time(bot, loser, now)
+            update_time(bot, loser, losernow)
        
 ###################
 ## Winner / Loser ##
