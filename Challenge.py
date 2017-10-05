@@ -154,7 +154,7 @@ def getwinner(bot, instigator, target):
         
     
     ## Compare
-    if instigatorfight > targetfight:
+    if int(instigatorfight) > int(targetfight):
         winner = instigator
     else:
         winner = target
