@@ -191,7 +191,7 @@ def damagedone(bot):
         damage = '10'    
     else:
         damage = '5'
-        bot.say('rando: ' + str(rando) + ' damage: ' + str(damage))
+    bot.say('rando: ' + str(rando) + ' damage: ' + str(damage))
     return damage
 
 ####################
