@@ -74,7 +74,7 @@ def challenge(bot, channel, instigator, target):
             update_wins(bot, winner)
             update_losses(bot, loser)
             ## Update XP,,, XPearned = damagedone + 1
-            XPearned = str(int(damage) + 1)
+            XPearned = '1'
             update_xp(bot, winner, XPearned)
             ## check if new player health not set
             update_spawn(bot, winner)
@@ -312,7 +312,21 @@ def challengexpclear(bot, trigger):
     if xp:
         bot.db.set_nick_value(target, 'challenges_xp', '')
     bot.say(target + "'s XP has been cleared.")
-    
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@sopel.module.commands('challengexpclearall')
+def challengexpclearall(bot, trigger):
+    return challengexpallclear(bot, trigger.sender)
+
+def challengexpallclear(bot, channel):
+    bot.say('resetting xp for the channel')
+    for u in bot.channels[channel].users:
+            target = u
+            xp = get_xp(bot, target)
+            if xp:
+                bot.db.set_nick_value(target, 'challenges_xp', '')
+                
 #############
 ## Weapons ##
 #############
