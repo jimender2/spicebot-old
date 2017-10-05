@@ -124,9 +124,13 @@ def getwinner(bot, instigator, target):
         instigatorfight = int(instigatorfight) + 1
     elif int(instigatorxp) < int(targetxp):
         targetfight = int(targetfight) + 1
+    elif int(instigatorxp) == int(targetxp):
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
     else:
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
+        bot.say('is broken')
     if bot.nick.endswith('dev'):
         bot.say('xp higher     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
