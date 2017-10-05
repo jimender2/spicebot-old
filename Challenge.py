@@ -536,7 +536,7 @@ def challengestatsallclearall(bot, channel):
             if healthpotions:
                 bot.db.set_nick_value(target, 'challenges_healthpotions', '')
             ## Respawns
-            respawns = get_respawn(bot, nick)
+            respawns = get_respawn(bot, target)
             if respawns:
                 bot.db.set_nick_value(target, 'challenges_respawns', '')
             ## XP
