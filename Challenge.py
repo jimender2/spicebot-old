@@ -116,9 +116,9 @@ def getwinner(bot, instigator, target):
         bot.say('aggressor     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     # XP difference
-    if instigatorxp > targetxp:
+    if int(instigatorxp) > int(targetxp):
         instigatorfight = int(instigatorfight) + 1
-    elif instigatorxp < targetxp:
+    elif int(instigatorxp) < int(targetxp):
         targetfight = int(targetfight) + 1
     else:
         instigatorfight = int(instigatorfight) + 1
