@@ -315,7 +315,7 @@ def checkweapons():
         createweapons()
      
 def createweapons():
-    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","roisserie chicken","steel-toed boot","stapler"]
+    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","rotisserie chicken","steel-toed boot","stapler"]
     for w in weapons:
         with open(weaponslocker, "a") as myfile:
             if os.stat(weaponslocker).st_size != 0:
