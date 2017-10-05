@@ -101,8 +101,12 @@ def challenge(bot, channel, instigator, target):
 def getwinner(bot, instigator, target):
     instigatorxp = get_xp(bot, instigator)
     targetxp = get_xp(bot, target)
-    if instigatorxp >= targetxp:
+    if instigatorxp = targetxp:
         combatants = sorted([instigator, instigator, instigator, target, target])
+    elif instigatorxp > targetxp:
+        combatants = sorted([instigator, instigator, instigator, instigator, target, target])
+    elif instigatorxp < targetxp:
+        combatants = sorted([instigator, instigator, instigator, target, target, target])
     else:
         combatants = sorted([instigator, instigator, target, target, target])
     random.shuffle(combatants)
