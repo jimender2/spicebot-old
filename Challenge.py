@@ -277,7 +277,7 @@ def challengerespawnallclear(bot, channel):
     bot.say('resetting respawns for the channel')
     for u in bot.channels[channel].users:
             target = u
-            respawns = get_respawn(bot, nick)
+            respawns = get_respawn(bot, target)
             if respawns:
                 bot.db.set_nick_value(target, 'challenges_respawns', '')
 
