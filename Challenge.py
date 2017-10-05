@@ -109,31 +109,31 @@ def getwinner(bot, instigator, target):
     targetfight = '1'
     
     # instigator gets 1 for surprise
-    instigatorfight = (instigatorfight + 1)
+    instigatorfight = int(instigatorfight) + 1
     
     # XP difference
     if instigatorxp > targetxp:
-        instigatorfight = (instigatorfight + 1)
+        instigatorfight = int(instigatorfight) + 1
     elif instigatorxp < targetxp:
-        targetfight = (targetfight + 1)
+        targetfight = int(targetfight) + 1
     else:
-        instigatorfight = (instigatorfight + 1)
-        targetfight = (targetfight + 1)
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
     
     ## Random Number
     flip = randint(0, 1)
     if (flip == 0):
-        instigatorfight = (instigatorfight + 1)
+        instigatorfight = int(instigatorfight) + 1
     else:
-        targetfight = (targetfight + 1)
+        targetfight = int(targetfight) + 1
     
     ## tie breaker
     if instigatorfight == targetfight:
         tiebreaker = randint(0, 1)
         if (tiebreaker == 0):
-            instigatorfight = (instigatorfight + 1)
+            instigatorfight = int(instigatorfight) + 1
         else:
-            targetfight = (targetfight + 1)
+            targetfight = int(targetfight) + 1
         
     
     ## Compare
