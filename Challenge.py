@@ -102,7 +102,11 @@ def challenge(bot, channel, instigator, target):
 
 def getwinner(bot, instigator, target):
     instigatorxp = get_xp(bot, instigator)
+    if not instigatorxp:
+        instigatorxp = '1'
     targetxp = get_xp(bot, target)
+    if not targetxp:
+        targetxp = '1'
     
     ## each person
     instigatorfight = '1'
