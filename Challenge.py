@@ -107,9 +107,13 @@ def getwinner(bot, instigator, target):
     ## each person
     instigatorfight = '1'
     targetfight = '1'
+    if bot.nick.endswith('dev'):
+        bot.say('instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     # instigator gets 1 for surprise
     instigatorfight = int(instigatorfight) + 1
+    if bot.nick.endswith('dev'):
+        bot.say('instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     # XP difference
     if instigatorxp > targetxp:
@@ -119,6 +123,8 @@ def getwinner(bot, instigator, target):
     else:
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
+    if bot.nick.endswith('dev'):
+        bot.say('instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     ## Random Number
     flip = randint(0, 1)
@@ -126,6 +132,8 @@ def getwinner(bot, instigator, target):
         instigatorfight = int(instigatorfight) + 1
     else:
         targetfight = int(targetfight) + 1
+    if bot.nick.endswith('dev'):
+        bot.say('instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     ## tie breaker
     if instigatorfight == targetfight:
@@ -134,6 +142,8 @@ def getwinner(bot, instigator, target):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
+        if bot.nick.endswith('dev'):
+            bot.say('instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
         
     
     ## Compare
