@@ -12,12 +12,7 @@ weaponslocker = os.path.join(script_dir, rel_path)
 
 TIMEOUT = 560
 
-WINS = 'win'
-LOSSES = 'lose'
-NONE = None
-
 ## React to /me challenges
-
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 @module.intent('ACTION')
 @module.require_chanmsg
