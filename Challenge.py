@@ -24,6 +24,7 @@ def challenge_action(bot, trigger):
 ################
 
 @sopel.module.commands('challenge','duel')
+@module.require_chanmsg
 def challenge_cmd(bot, trigger):
     return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
@@ -129,7 +130,7 @@ def update_losses(bot, nick):
     bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
     
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @module.commands('challengewinslossclear')
 def challengewinslossclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -160,7 +161,7 @@ def update_health(bot, nick, damage):
     return currenthealth
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @module.commands('challengehealthclear')
 def challengehealthclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -213,6 +214,7 @@ def randomhealthpotion():
         healthpotion = 'false'
     return healthpotion
 
+@module.require_chanmsg
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -229,6 +231,7 @@ def usehealthpotion(bot, trigger):
         bot.say('You do not have a healthpotion to use!')
 
 @sopel.module.require_admin
+@module.require_chanmsg
 @module.commands('challengehealthpotiongive')
 def challengehealthpotiongive(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -236,6 +239,7 @@ def challengehealthpotiongive(bot, trigger):
     bot.say(target + ' now has a health potion.')
     
 @sopel.module.require_admin
+@module.require_chanmsg
 @module.commands('challengehealthpotiontake')
 def challengehealthpotiontake(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -263,7 +267,7 @@ def update_spawn(bot, nick):
         bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @sopel.module.commands('challengerespawnclearall')
 def challengerespawnclearall(bot, trigger):
     return challengerespawnallclear(bot, trigger.sender)
@@ -291,7 +295,7 @@ def update_xp(bot, nick, damage):
     return currentxp
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @module.commands('challengexpclear')
 def challengexpclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -305,10 +309,12 @@ def challengexpclear(bot, trigger):
 ## Weapons ##
 #############
 
+@module.require_chanmsg
 @sopel.module.commands('weaponslocker')
 def weaponslockercmd(bot, trigger):
     bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
 
+@module.require_chanmsg
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
     checkweapons()
@@ -338,7 +344,8 @@ def createweapons():
             if os.stat(weaponslocker).st_size != 0:
                 myfile.write("\n")
             myfile.write(w)
-            
+
+@module.require_chanmsg
 @sopel.module.commands('weaponslockerdel')
 def removeweapons(bot, trigger):
     checkweapons()
@@ -376,7 +383,7 @@ def time_since_challenge(bot, nick):
     return abs(now - last)
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @module.commands('challengetimeclear')
 def challengetimeclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -387,7 +394,7 @@ def challengetimeclear(bot, trigger):
     bot.say(target + "'s time has been cleared.")
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @sopel.module.commands('challengetimeclearall')
 def challenge_timeall(bot, trigger):
     return challengealltimeclear(bot, trigger.sender)
@@ -403,6 +410,7 @@ def challengealltimeclear(bot, channel):
 ## Stats ##
 ###########
 
+@module.require_chanmsg
 @module.commands('challenges','duels')
 def challenges(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -451,7 +459,7 @@ def challenges(bot, trigger):
         bot.say(target + ' has no stats.')
 
 @sopel.module.require_admin
-#@sopel.module.require_privmsg
+@module.require_chanmsg
 @module.commands('challengeallstatsclear')
 def challengestatsclear(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -486,6 +494,7 @@ def get_challengestatus(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
     return disenable
 
+@module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
     target = trigger.group(3) or trigger.nick
@@ -499,6 +508,7 @@ def challengeon(bot, trigger):
         else:
             bot.say('Challenges are already enabled for ' + target)
 
+@module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
     target = trigger.group(3) or trigger.nick
