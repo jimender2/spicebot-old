@@ -402,6 +402,13 @@ def challengexpallclear(bot, channel):
 def weaponslockercmd(bot, trigger):
     bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
 
+@module.require_privmsg
+@sopel.module.commands('weaponslockerinv')
+def invweapons(bot, trigger):
+    with open (weaponslocker, "r") as myfile:
+        for line in myfile:
+            bot.say(str(line))
+    
 @module.require_chanmsg
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
