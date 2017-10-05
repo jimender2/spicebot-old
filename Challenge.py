@@ -111,13 +111,9 @@ def getwinner(bot, instigator, target):
     ## each person
     instigatorfight = '1'
     targetfight = '1'
-    if bot.nick.endswith('dev'):
-        bot.say('start     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     # instigator gets 1 for surprise
     instigatorfight = int(instigatorfight) + 1
-    if bot.nick.endswith('dev'):
-        bot.say('aggressor     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     # XP difference
     if int(instigatorxp) > int(targetxp):
@@ -130,8 +126,6 @@ def getwinner(bot, instigator, target):
     else:
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
-    if bot.nick.endswith('dev'):
-        bot.say('xp higher     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
     
     ## Random Number
     flip = randint(0, 1)
@@ -139,8 +133,6 @@ def getwinner(bot, instigator, target):
         instigatorfight = int(instigatorfight) + 1
     else:
         targetfight = int(targetfight) + 1
-    if bot.nick.endswith('dev'):
-        bot.say('random choice     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
 
     ## Dice Roll
     instigatorfightarray = []
@@ -155,8 +147,6 @@ def getwinner(bot, instigator, target):
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
-    if bot.nick.endswith('dev'):
-        bot.say('dice roll      ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
             
     ## tie breaker
     if instigatorfight == targetfight:
@@ -165,25 +155,13 @@ def getwinner(bot, instigator, target):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-        if bot.nick.endswith('dev'):
-            bot.say('tie breaker     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
 
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
     else:
         winner = target
-
-    #if instigatorxp == targetxp:
-    #    combatants = sorted([instigator, instigator, instigator, target, target])
-    #elif instigatorxp > targetxp:
-    #    combatants = sorted([instigator, instigator, instigator, instigator, target, target])
-    #elif instigatorxp < targetxp:
-    #    combatants = sorted([instigator, instigator, instigator, target, target, target])
-    #else:
-    #    combatants = sorted([instigator, instigator, target, target, target])
-    #random.shuffle(combatants)
-    #winner = combatants.pop()
+    ## LOSER IS NOT WINNER
     if winner == instigator:
         loser = target
     else:
