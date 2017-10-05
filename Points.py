@@ -59,11 +59,11 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
             update_points(bot, target, rando, addminus)
 
 def update_points(bot, nick, rando, addminus):
-    points = get_points(bot, nick)
+    pointsgotten = get_points(bot, nick)
     if addminus == 'up':
-        bot.db.set_nick_value(nick, 'points_points', points + rando)
+        bot.db.set_nick_value(nick, 'points_points', pointsgotten + int(rando)0
     elif addminus == 'down':
-        bot.db.set_nick_value(nick, 'points_points', points - rando)
+        bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando)0
     else:
         bot.say('fart knockers')
         
