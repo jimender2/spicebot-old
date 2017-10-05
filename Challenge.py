@@ -107,7 +107,7 @@ def challenge(bot, channel, instigator, target):
             channelnow = int(now) + int(channelnowmath)
             update_time(bot, instigator, now)
             update_time(bot, target, targetnow)
-            update_time(bot, channel, targetnow)
+            update_time(bot, channel, channelnow)
        
 ###################
 ## Winner / Loser ##
@@ -488,6 +488,7 @@ def challenge_timeall(bot, trigger):
     return challengealltimeclear(bot, trigger.sender)
 
 def challengealltimeclear(bot, channel):
+    bot.db.set_nick_value(channel, 'challenge_last', '')
     for u in bot.channels[channel].users:
             target = u
             time_since = time_since_challenge(bot, target)
