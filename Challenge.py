@@ -103,16 +103,55 @@ def challenge(bot, channel, instigator, target):
 def getwinner(bot, instigator, target):
     instigatorxp = get_xp(bot, instigator)
     targetxp = get_xp(bot, target)
-    if instigatorxp == targetxp:
-        combatants = sorted([instigator, instigator, instigator, target, target])
-    elif instigatorxp > targetxp:
-        combatants = sorted([instigator, instigator, instigator, instigator, target, target])
+    
+    ## each person
+    instigatorfight = '1'
+    targetfight = '1'
+    
+    # instigator gets 1 for surprise
+    instigatorfight = (instigatorfight + 1)
+    
+    # XP difference
+    if instigatorxp > targetxp:
+        instigatorfight = (instigatorfight + 1)
     elif instigatorxp < targetxp:
-        combatants = sorted([instigator, instigator, instigator, target, target, target])
+        targetfight = (targetfight + 1)
     else:
-        combatants = sorted([instigator, instigator, target, target, target])
-    random.shuffle(combatants)
-    winner = combatants.pop()
+        instigatorfight = (instigatorfight + 1)
+        targetfight = (targetfight + 1)
+    
+    ## Random Number
+    flip = randint(0, 1)
+    if (flip == 0):
+        instigatorfight = (instigatorfight + 1)
+    else:
+        targetfight = (targetfight + 1)
+    
+    ## tie breaker
+    if instigatorfight = targetfight:
+        tiebreaker = randint(0, 1)
+        if (tiebreaker == 0):
+            instigatorfight = (instigatorfight + 1)
+        else:
+            targetfight = (targetfight + 1)
+        
+    
+    ## Compare
+    if instigatorfight > targetfight:
+        winner = instigator
+    else:
+        winner = target
+
+    #if instigatorxp == targetxp:
+    #    combatants = sorted([instigator, instigator, instigator, target, target])
+    #elif instigatorxp > targetxp:
+    #    combatants = sorted([instigator, instigator, instigator, instigator, target, target])
+    #elif instigatorxp < targetxp:
+    #    combatants = sorted([instigator, instigator, instigator, target, target, target])
+    #else:
+    #    combatants = sorted([instigator, instigator, target, target, target])
+    #random.shuffle(combatants)
+    #winner = combatants.pop()
     if winner == instigator:
         loser = target
     else:
