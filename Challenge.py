@@ -80,6 +80,9 @@ def challenge(bot, channel, instigator, target):
             ## Update XP,,, XPearned = damagedone + 1
             XPearned = str(int(damage) + 1)
             update_xp(bot, winner, XPearned)
+            ## check if new player health not set
+            update_spawn(bot, winner)
+            update_spawn(bot, loser)
             ## Update health, If killed, respawn
             currenthealth = update_health(bot, loser, damage)
             if currenthealth <= 0:
@@ -258,6 +261,11 @@ def update_respawn(bot, nick):
     bot.db.set_nick_value(nick, 'challenges_health', '1000')
     currentrespawns = get_respawn(bot, nick)
     return currentrespawns
+
+def update_spawn(bot, nick):
+    health = get_health(bot, nick)
+    if not health:
+        bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
 ########
 ## XP ##
