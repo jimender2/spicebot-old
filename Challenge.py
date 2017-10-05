@@ -78,7 +78,7 @@ def challenge(bot, channel, instigator, target):
             damage = damagedone(bot)
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
-            bot.say(winner + " wins!")
+            #bot.say(winner + " wins!")
             ## Update wins/lose
             update_wins(bot, winner)
             update_losses(bot, loser)
