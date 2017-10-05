@@ -267,6 +267,20 @@ def update_spawn(bot, nick):
     if not health:
         bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
+@sopel.module.require_admin
+#@sopel.module.require_privmsg
+@sopel.module.commands('challengerespawnclearall')
+def challengerespawnclearall(bot, trigger):
+    return challengerespawnallclear(bot, trigger.sender)
+
+def challengerespawnallclear(bot, channel):
+    bot.say('resetting respawns for the channel')
+    for u in bot.channels[channel].users:
+            target = u
+            respawns = get_respawn(bot, nick)
+            if respawns:
+                bot.db.set_nick_value(target, 'challenges_respawns', '')
+
 ########
 ## XP ##
 ########
