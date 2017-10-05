@@ -182,15 +182,15 @@ def challengehealthclear(bot, trigger):
 def damagedone():
     rando = randint(1, 100)
     if rando >= 90:
-        damage = '50'
+        damage = '120'
     elif rando >= 75 and rando < 90:
-        damage = '20'
+        damage = '70'
     elif rando < 75 and rando > 10:
-        damage = '10'
+        damage = '40'
     elif rando > 1 and rando <= 10:
-        damage = '5'    
+        damage = '10'    
     else:
-        damage = '1'
+        damage = '5'
     return damage
 
 ####################
