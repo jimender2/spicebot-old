@@ -507,7 +507,51 @@ def challengestatsclear(bot, trigger):
         bot.db.set_nick_value(target, 'challenge_last', '')
     
     bot.say(target + "'s stats have been cleared.")
-    
+
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@sopel.module.commands('challengeallstatsclearall')
+def challengeallstatsclearall(bot, trigger):
+    return challengestatsallclearall(bot, trigger.sender)
+
+def challengestatsallclearall(bot, channel):
+    bot.say('resetting stats for the channel')
+    for u in bot.channels[channel].users:
+            target = u
+            ## Wins
+            wins = get_wins(bot, target)
+            if wins:
+                bot.db.set_nick_value(target, 'challenges_wins', '')
+            ## Losses
+            losses = get_losses(bot, target)
+            if losses:
+                bot.db.set_nick_value(target, 'challenges_losses', '')
+            ## health
+            health = get_health(bot, target)
+            if health:
+                bot.db.set_nick_value(target, 'challenges_health', '')
+            ## Potions
+            healthpotions = get_healthpotions(bot, target)
+            if healthpotions:
+                bot.db.set_nick_value(target, 'challenges_healthpotions', '')
+            ## Respawns
+            respawns = get_respawn(bot, nick)
+            if respawns:
+                bot.db.set_nick_value(target, 'challenges_respawns', '')
+            ## XP
+            xp = get_xp(bot, target)
+            if xp:
+                bot.db.set_nick_value(target, 'challenges_xp', '')
+            ## Timeout
+            time_since = time_since_challenge(bot, target)
+            if time_since:
+                bot.db.set_nick_value(target, 'challenge_last', '')
+            
+            
+    bot.say('stats for the channel have been reset')
+                
+                
 ####################
 ## Enable/Disable ##
 ####################
