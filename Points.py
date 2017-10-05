@@ -42,15 +42,15 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
     if not target:
         bot.say(str(randopoints) + "everyone")
         for u in bot.channels[channel].users:
-            target = u
-            update_points(bot, target, rando, addminus)
+            errrbody = u
+            update_points(bot, errrbody, rando, addminus)
     else:
         if target == 'all' or target == 'everybody' or target == 'everyone':
             bot.say(str(randopoints) + "everyone")
             for u in bot.channels[channel].users:
-                target = u
-                update_points(bot, target, rando, addminus)
-        if target == instigator:
+                errrbody = u
+                update_points(bot, target, errrbody, addminus)
+        elif target == instigator:
             bot.say('You can\'t adjust your own ' + pointstype + '!!')
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
