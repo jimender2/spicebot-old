@@ -10,7 +10,7 @@ script_dir = os.path.dirname(__file__)
 rel_path = "data/weapons.txt"
 weaponslocker = os.path.join(script_dir, rel_path)
 
-TIMEOUT = 560
+TIMEOUT = 300
 
 ## React to /me challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
