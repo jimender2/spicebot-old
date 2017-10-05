@@ -11,6 +11,7 @@ rel_path = "data/weapons.txt"
 weaponslocker = os.path.join(script_dir, rel_path)
 
 TIMEOUT = 180
+TIMEOUTB = 60
 
 ## React to /me challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -92,6 +93,8 @@ def challenge(bot, channel, instigator, target):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
             now = time.time()
+            targenowmath = int(TIMEOUT) - int(TIMEOUTB)
+            bot.say(targenowmath)
             targetnow = (int(now) + 120)
             update_time(bot, instigator, now)
             update_time(bot, target, targetnow)
