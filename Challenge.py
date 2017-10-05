@@ -12,6 +12,7 @@ weaponslocker = os.path.join(script_dir, rel_path)
 
 TIMEOUT = 180
 TIMEOUTB = 60
+TIMEOUTC = 30
 
 ## React to /me challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -37,6 +38,7 @@ def challenge(bot, channel, instigator, target):
         ## Don't allow instigator to challenge if he has fought recently
         instigatortime = time_since_challenge(bot, instigator)
         targettime = time_since_challenge(bot, target)
+        channeltime = time_since_challenge(bot, channel)
         ## People can opt out of playing
         instigatordisenable = get_challengestatus(bot, instigator)
         targetdisenable = get_challengestatus(bot, target)
@@ -51,8 +53,14 @@ def challenge(bot, channel, instigator, target):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+            if channeltime < TIMEOUT and not bot.nick.endswith('dev'):
+                bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+            if channeltime < TIMEOUT and not bot.nick.endswith('dev'):
+                bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+        elif channeltime < TIMEOUT and not bot.nick.endswith('dev'):
+            bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
         elif targetdisenable:
@@ -93,10 +101,13 @@ def challenge(bot, channel, instigator, target):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             ## Update Time of combat
             now = time.time()
-            targenowmath = int(TIMEOUT) - int(TIMEOUTB)
-            targetnow = int(now) + int(targenowmath)
+            targetnowmath = int(TIMEOUT) - int(TIMEOUTB)
+            channelnowmath = int(TIMEOUT) - int(TIMEOUTC)
+            targetnow = int(now) + int(targetnowmath)
+            channelnow = int(now) + int(channelnowmath)
             update_time(bot, instigator, now)
             update_time(bot, target, targetnow)
+            update_time(bot, channel, targetnow)
        
 ###################
 ## Winner / Loser ##
