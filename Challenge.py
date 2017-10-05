@@ -91,8 +91,8 @@ def challenge(bot, channel, instigator, target):
             ## Update Time of combat
             now = time.time()
             losernow = (int(now) + 180)
-            update_time(bot, winner, now)
-            update_time(bot, loser, losernow)
+            update_time(bot, instigator, now)
+            update_time(bot, target, losernow)
        
 ###################
 ## Winner / Loser ##
