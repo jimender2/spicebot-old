@@ -94,8 +94,7 @@ def challenge(bot, channel, instigator, target):
             ## Update Time of combat
             now = time.time()
             targenowmath = int(TIMEOUT) - int(TIMEOUTB)
-            bot.say(str(targenowmath))
-            targetnow = (int(now) + 120)
+            targetnow = int(now) + int(targenowmath)
             update_time(bot, instigator, now)
             update_time(bot, target, targetnow)
        
