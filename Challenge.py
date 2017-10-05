@@ -141,6 +141,20 @@ def getwinner(bot, instigator, target):
         targetfight = int(targetfight) + 1
     if bot.nick.endswith('dev'):
         bot.say('random choice     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
+
+    ## Dice Roll
+    instigatorfightarray = []
+    targetfightarray = []
+    while int(instigatorfight) != 0:
+        instigatorfightroll = diceroll()
+        instigatorfightarray.append(instigatorfightroll)
+        instigatorfight = int(instigatorfight) - 1
+    instigatorfight = max(instigatorfightarray)
+    while int(targetfight) != 0:
+        targetfightroll = diceroll()
+        targetfightarray.append(targetfightroll)
+        targetfight = int(targetfight) - 1
+    targetfight = max(targetfightarray)
     
     ## tie breaker
     if instigatorfight == targetfight:
@@ -151,8 +165,7 @@ def getwinner(bot, instigator, target):
             targetfight = int(targetfight) + 1
         if bot.nick.endswith('dev'):
             bot.say('tie breaker     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
-        
-    
+
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
@@ -205,7 +218,11 @@ def challengewinslossclear(bot, trigger):
     if losses:
         bot.db.set_nick_value(target, 'challenges_losses', '')
     bot.say(target + "'s wins and losses have been cleared.")
-    
+
+def diceroll():
+    diceroll = randint(0, 6)
+    return diceroll
+
 ############
 ## Health ##
 ############
