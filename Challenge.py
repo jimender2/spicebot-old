@@ -191,7 +191,7 @@ def damagedone(bot):
         damage = '10'    
     else:
         damage = '5'
-    if bot.nick.endswith('dev')
+    if bot.nick.endswith('dev'):
         bot.say('rando: ' + str(rando) + ' damage: ' + str(damage))
     return damage
 
