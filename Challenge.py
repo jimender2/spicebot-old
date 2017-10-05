@@ -156,7 +156,7 @@ def getwinner(bot, instigator, target):
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
     if bot.nick.endswith('dev'):
-        bot.say('tie breaker     ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
+        bot.say('dice roll      ' + 'instigatorfight: ' + str(instigatorfight) + ' targetfight: ' + str(targetfight))
             
     ## tie breaker
     if instigatorfight == targetfight:
