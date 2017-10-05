@@ -6,9 +6,9 @@ def meraki(bot, trigger):
     if trigger.group(2):
         if trigger.group(2) == 'mx':
             bot.say('MX     https://meraki.cisco.com/tc/freemx')
-        if trigger.group(2) == 'switch':
+        elif trigger.group(2) == 'switch':
             bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
-        if trigger.group(2) == 'ap':
+        elif trigger.group(2) == 'ap':
             bot.say('AP     https://meraki.cisco.com/tc/freeap')
         else:
             normalrun='true'
