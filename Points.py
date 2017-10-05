@@ -62,11 +62,10 @@ def update_points(bot, nick, rando, addminus):
     pointsgotten = get_points(bot, nick)
     if addminus == 'up':
         bot.db.set_nick_value(nick, 'points_points', pointsgotten + int(rando))
-    elif addminus == 'down':
-        bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando))
     else:
-        bot.say('fart knockers')
+        bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando))
+
         
 def get_points(bot, nick):
-    points = bot.db.get_nick_value(nick, 'points_points') or 0
+    points = bot.db.get_nick_value(nick, 'points_points') or 1
     return points
