@@ -66,7 +66,7 @@ def challenge(bot, channel, instigator, target):
                 addhealthpotion(bot, instigator)
             ## Weapon, damage done. 
             weapon = weaponofchoice()
-            damage = damagedone()
+            damage = damagedone(bot)
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
             bot.say(winner + " wins!")
@@ -179,7 +179,7 @@ def challengehealthclear(bot, trigger):
 ## Damage Done ##
 #################
 
-def damagedone():
+def damagedone(bot):
     rando = randint(1, 100)
     if rando >= 90:
         damage = '120'
@@ -191,6 +191,7 @@ def damagedone():
         damage = '10'    
     else:
         damage = '5'
+        bot.say('rando: ' + str(rando) + ' damage: ' + str(damage))
     return damage
 
 ####################
