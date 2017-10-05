@@ -1,3 +1,4 @@
+# coding=utf8
 import sopel.module
 
 @sopel.module.rate(120)
