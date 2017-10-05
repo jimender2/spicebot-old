@@ -74,8 +74,10 @@ def challenge(bot, channel, instigator, target):
             update_wins(bot, winner)
             update_losses(bot, loser)
             ## Update XP,,, XPearned = damagedone + 1
-            XPearned = '1'
-            update_xp(bot, winner, XPearned)
+            XPearnedwinner = '5'
+            XPearnedloser = '3'
+            update_xp(bot, winner, XPearnedwinner)
+            update_xp(bot, loser, XPearnedloser)
             ## check if new player health not set
             update_spawn(bot, winner)
             update_spawn(bot, loser)
