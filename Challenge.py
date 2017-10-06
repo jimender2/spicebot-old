@@ -212,7 +212,7 @@ def determineloottype(bot, instigator):
     loot_text = ''
     if loot == 'healthpotion':
         addhealthpotion(bot, instigator)
-        loot_text = ' worth 100 health. Use .challengehealthpotion to consume.'
+        loot_text = ': worth 100 health. Use .challengehealthpotion to consume.'
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
