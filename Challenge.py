@@ -674,7 +674,7 @@ def randominventory():
     return randominventoryfind
 
 def determineloottype():
-typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
+    typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
     loot = random.randint(0,len(typesofloot) - 1)
     if loot == 'healthpotion':
         addhealthpotion(bot, instigator)
