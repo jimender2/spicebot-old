@@ -554,7 +554,10 @@ def challengestatsadmin(bot, trigger):
                 gethowmany = get_wins(bot, target)
                 if gethowmany:
                     bot.say(wins)
-                    #bot.db.set_nick_value(target, 'challenges_respawns', '')
+                    bot.db.set_nick_value(target, databasecolumn, '')
+                    gethowmany = get_wins(bot, target)
+                    if gethowmany:
+                        bot.say(wins)
         else:
             target = trigger.group(3)
             bot.say('test')
