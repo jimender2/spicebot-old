@@ -69,7 +69,7 @@ def challenge(bot, channel, instigator, target):
             ## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
             if randominventoryfind == 'true':
-                loot, loot_text = determineloottype()
+                loot, loot_text = determineloottype(bot, instigator)
                 bot.say(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             ## Weapon, damage done. 
             weapon = weaponofchoice()
@@ -673,7 +673,7 @@ def randominventory():
         randominventoryfind = 'false'
     return randominventoryfind
 
-def determineloottype():
+def determineloottype(bot, instigator):
     typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
     loot = random.randint(0,len(typesofloot) - 1)
     loot = str(typesofloot [loot])
