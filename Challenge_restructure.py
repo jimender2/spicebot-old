@@ -534,6 +534,7 @@ def diceroll():
 @module.require_chanmsg
 @module.commands('challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime')
 def challengestatsadmin(bot, trigger):
+    channel = trigger.sender
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     scriptdef = str('get_' + commandtrimmed)
@@ -543,14 +544,25 @@ def challengestatsadmin(bot, trigger):
     else:
         if not trigger.group(3):
             target = trigger.nick
-            gethowmany = str(scriptdef)(bot, target)
+            gethowmany = get_wins(bot, target)
             if gethowmany:
                 bot.say(str(gethowmany))
         elif trigger.group(3) == 'all':
             bot.say('all')
+            for u in bot.channels[channel].users:
+                bot.say('name')
+                #target = u
+                #respawns = get_respawn(bot, target)
+                #if respawns:
+                    #bot.db.set_nick_value(target, 'challenges_respawns', '')
         else:
             target = trigger.group(3)
             bot.say('test')
+
+
+
+
+
 
 @sopel.module.require_admin
 @module.require_chanmsg
