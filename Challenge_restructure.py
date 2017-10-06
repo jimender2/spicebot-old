@@ -556,7 +556,7 @@ def challengestatsadmin(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminwins')
+@module.commands('challengestatsadminwinsa')
 def challengestatsadminwins(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## Wins
@@ -567,7 +567,7 @@ def challengestatsadminwins(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminlosses')
+@module.commands('challengestatsadminlossesa')
 def challengestatsadminlosses(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## Losses
@@ -578,7 +578,7 @@ def challengestatsadminlosses(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminhealth')
+@module.commands('challengestatsadminhealtha')
 def challengestatsadminhealth(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## health
@@ -589,7 +589,7 @@ def challengestatsadminhealth(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminhealthpotions')
+@module.commands('challengestatsadminhealthpotionsa')
 def challengestatsadminhealthpotions(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## health
@@ -600,7 +600,7 @@ def challengestatsadminhealthpotions(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminrespawns')
+@module.commands('challengestatsadminrespawnsa')
 def challengestatsadminrespawn(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## health
@@ -611,7 +611,7 @@ def challengestatsadminrespawn(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminxp')
+@module.commands('challengestatsadminxpa')
 def challengestatsadminxp(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## XP
@@ -622,7 +622,7 @@ def challengestatsadminxp(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadmintime')
+@module.commands('challengestatsadmintimea')
 def challengestatsadmintime(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## TIMEOUT
