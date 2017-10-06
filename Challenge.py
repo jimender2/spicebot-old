@@ -13,6 +13,7 @@ weaponslocker = os.path.join(moduledir, relativepath)
 TIMEOUT = 180
 TIMEOUTB = 60
 TIMEOUTC = 30
+ALLCHAN = 'entirechannel'
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -39,7 +40,7 @@ def challenge(bot, channel, instigator, target):
         ## Don't allow chat spamming
         instigatortime = get_time(bot, instigator)
         targettime = get_time(bot, target)
-####### add channel time
+        channeltime = get_time(bot, ALLCHAN)
         
         ## People can opt out of playing
         instigatordisenable = get_challengestatus(bot, instigator)
@@ -60,13 +61,18 @@ def challenge(bot, channel, instigator, target):
             bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
         
         ## Enforce Timeout, unless in dev-channel
-        elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
+        elif instigatortime < TIMEOUT:# and not bot.nick.endswith('dev'):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
+            if channeltime < TIMEOUT:
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+        elif targettime < TIMEOUT:# and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-####### add channel timeout
+            if channeltime < TIMEOUT:
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+        elif channeltime < TIMEOUT:# and not bot.nick.endswith('dev'):
+            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         
         ## If target and intigator pass the criteria above continue
         else:
@@ -117,9 +123,11 @@ def challenge(bot, channel, instigator, target):
             now = time.time()
             targetnowmath = int(TIMEOUT) - int(TIMEOUTB)
             targetnow = int(now) + int(targetnowmath)
+            channelnowmath = int(TIMEOUT) - int(TIMEOUTC)
+            channelnow = int(now) + int(channelnowmath)
             update_time(bot, instigator, now)
             update_time(bot, target, targetnow)
-############ add channel timeout
+            update_time(bot, ALLCHAN, channelnow)
 
 #############
 ## Opt Out ##
