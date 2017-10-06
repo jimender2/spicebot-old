@@ -537,14 +537,14 @@ def challengestatsadmin(bot, trigger):
     #target = trigger.group(3) or trigger.nick
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
-    #scriptdef = str('get_' + commandtrimmed)
-    #databasecolumn = str('challenge_' + commandtrimmed)
+    scriptdef = str('get_' + commandtrimmed)
+    databasecolumn = str('challenge_' + commandtrimmed)
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp,time')
     else:
          bot.say(str(commandtrimmed))
-         #bot.say(str(scriptdef))
-         #bot.say(str(databasecolumn))
+         bot.say(str(scriptdef))
+         bot.say(str(databasecolumn))
 
 @sopel.module.require_admin
 @module.require_chanmsg
