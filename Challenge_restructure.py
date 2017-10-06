@@ -537,7 +537,7 @@ def challengestatsadmin(bot, trigger):
     channel = trigger.sender
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
-    scriptdef = str('get_' + commandtrimmed)
+    scriptdef = str('get_' + commandtrimmed + '(bot,target)')
     databasecolumn = str('challenges_' + commandtrimmed)
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp,time')
@@ -548,16 +548,14 @@ def challengestatsadmin(bot, trigger):
             if gethowmany:
                 bot.say(str(gethowmany))
         elif trigger.group(3) == 'all':
-            bot.say('all')
+            bot.say('Resetting ' + str() + ' stat for all in channel.')
             for u in bot.channels[channel].users:
                 target = u
-                gethowmany = get_wins(bot, target)
+                #gethowmany = get_wins(bot, target)
+                gethowmany = scriptdef
                 if gethowmany:
-                    bot.say(str(gethowmany))
                     bot.db.set_nick_value(target, databasecolumn, '')
-                    gethowmany = get_wins(bot, target)
-                    if gethowmany:
-                        bot.say(str(gethowmany))
+
         else:
             target = trigger.group(3)
             bot.say('test')
