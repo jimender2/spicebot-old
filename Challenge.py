@@ -484,7 +484,7 @@ def createweapons():
 
 @module.require_chanmsg
 @module.commands('challengesa','duelsa')
-def challenges(bot, trigger):
+def challengesa(bot, trigger):
     channel = trigger.sender
     target = trigger.group(3) or trigger.nick
     if target.lower() not in bot.privileges[channel.lower()]:
