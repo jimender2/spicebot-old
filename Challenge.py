@@ -185,7 +185,7 @@ def get_time(bot, nick):
     time_since = get_timesince(bot, nick)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
-    return timediff
+    return timediff or 0
 
 #####################
 ## Spawn / ReSpawn ##
