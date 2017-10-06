@@ -171,6 +171,7 @@ def update_time(bot, nick):
     bot.db.set_nick_value(nick, 'challenges_time', now)
     
 def get_time(bot, nick):
+    now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_time') or 0
     return abs(now - last)
 
