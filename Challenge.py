@@ -497,7 +497,6 @@ def challengesa(bot, trigger):
             databasecolumn = str('challenges_' + x)
             gethowmany = scriptdef
             if gethowmany:
-                bot.say (str(gethowmany))
                 addstat = str(' ' + str(x) + "=" + str(gethowmany) + ".")
                 stats = str(stats + addstat)
         if stats != '':
@@ -584,6 +583,7 @@ def challengestatsadmin(bot, trigger):
                 scriptdef = str('get_' + x + '(bot,target)')
                 databasecolumn = str('challenges_' + x)
                 gethowmany = scriptdef
+                bot.say(str(gethowmany))
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
         elif trigger.group(3) == 'all':
