@@ -182,7 +182,7 @@ def get_timesince(bot, nick):
     return abs(now - last)
 
 def get_time(bot, nick):
-    time_since = get_timesince(bot, target)
+    time_since = get_timesince(bot, nick)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
     return timediff
