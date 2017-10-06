@@ -11,8 +11,6 @@ relativepath = "data/weapons.txt"
 weaponslocker = os.path.join(moduledir, relativepath)
 
 TIMEOUT = 180
-TIMEOUTB = 60
-TIMEOUTC = 30
 ALLCHAN = 'entirechannel'
 
 ## React to /me (ACTION) challenges
@@ -121,13 +119,9 @@ def challenge(bot, channel, instigator, target):
             
             ## Update Time Of Combat
             now = time.time()
-            targetnowmath = int(TIMEOUT) - int(TIMEOUTB)
-            targetnow = int(now) + int(targetnowmath)
-            channelnowmath = int(TIMEOUT) - int(TIMEOUTC)
-            channelnow = int(now) + int(channelnowmath)
             update_time(bot, instigator, now)
-            update_time(bot, target, targetnow)
-            update_time(bot, ALLCHAN, channelnow)
+            update_time(bot, target, now)
+            update_time(bot, ALLCHAN, now)
 
 #############
 ## Opt Out ##
@@ -588,7 +582,7 @@ def challengestatsadmin(bot, trigger):
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
         elif trigger.group(3) == 'all':
-            bot.say('Resetting ' + str() + ' stat for all in channel.')
+            bot.say('Resetting ' + str(commandtrimmed) + ' stat for all in channel.')
             for u in bot.channels[channel].users:
                 target = u
                 gethowmany = scriptdef
