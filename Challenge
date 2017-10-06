@@ -37,8 +37,8 @@ def challenge(bot, channel, instigator, target):
     else:
         
         ## Don't allow chat spamming
-        instigatortime = get_timesince(bot, instigator)
-        targettime = get_timesince(bot, target)
+        instigatortime = get_time(bot, instigator)
+        targettime = get_time(bot, target)
 ####### add channel time
         
         ## People can opt out of playing
@@ -167,7 +167,7 @@ def get_challengestatus(bot, nick):
 def update_time(bot, nick, now):
     bot.db.set_nick_value(nick, 'challenge_time', now)
     
-def get_timesince(bot, nick):
+def get_time(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenge_time') or 0
     return abs(now - last)
@@ -176,15 +176,15 @@ def get_timesince(bot, nick):
 ## Spawn / ReSpawn ##
 #####################
 
-def get_respawn(bot, nick):
+def get_respawns(bot, nick):
     respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
     return respawns
 
 def update_respawn(bot, nick):
-    respawns = get_respawn(bot, nick)
+    respawns = get_respawns(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
     bot.db.set_nick_value(nick, 'challenges_health', '1000')
-    currentrespawns = get_respawn(bot, nick)
+    currentrespawns = get_respawns(bot, nick)
     return currentrespawns
 
 def update_spawn(bot, nick):
@@ -496,12 +496,12 @@ def challenges(bot, trigger):
         addstat = str(" Lost=" + str(losses) + ".")
         stats = str(stats + addstat)
     ## Respawns
-    respawnamount = get_respawn(bot, target)
+    respawnamount = get_respawns(bot, target)
     if respawnamount:
         addstat = str(" Respawns=" + str(respawnamount) + ".")
         stats = str(stats + addstat)
     ## TIMEOUT
-    time_since = get_timesince(bot, target)
+    time_since = get_time(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
         addstat = str(" TIMEOUT=" + str(timediff) + ".")
@@ -544,100 +544,18 @@ def challengestatsadmin(bot, trigger):
     else:
         if not trigger.group(3):
             target = trigger.nick
-            gethowmany = get_wins(bot, target)
+            gethowmany = scriptdef
             if gethowmany:
-                bot.say(str(gethowmany))
+                bot.db.set_nick_value(target, databasecolumn, '')
         elif trigger.group(3) == 'all':
             bot.say('Resetting ' + str() + ' stat for all in channel.')
             for u in bot.channels[channel].users:
                 target = u
-                #gethowmany = get_wins(bot, target)
                 gethowmany = scriptdef
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
-
         else:
             target = trigger.group(3)
-            bot.say('test')
-
-
-
-
-
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminwinsa')
-def challengestatsadminwins(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## Wins
-    wins = get_wins(bot, target)
-    if wins:
-        bot.db.set_nick_value(target, 'challenges_wins', '')
-    bot.say(target + "'s wins have been cleared.")
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminlossesa')
-def challengestatsadminlosses(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## Losses
-    losses = get_losses(bot, target)
-    if losses:
-        bot.db.set_nick_value(target, 'challenges_losses', '')
-    bot.say(target + "'s and losses have been cleared.")
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminhealtha')
-def challengestatsadminhealth(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## health
-    health = get_health(bot, target)
-    if health:
-        bot.db.set_nick_value(target, 'challenges_health', '')
-    bot.say(target + "'s health has been cleared.")
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminhealthpotionsa')
-def challengestatsadminhealthpotions(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## health
-    healthpotions = get_healthpotions(bot, target)
-    if healthpotions:
-        bot.db.set_nick_value(target, 'challenges_healthpotions', '')
-    bot.say(target + ' now has no healthpotions.')
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminrespawnsa')
-def challengestatsadminrespawn(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## health
-    respawns = get_respawn(bot, target)
-    if respawns:
-        bot.db.set_nick_value(target, 'challenges_respawns', '')
-    bot.say(target + ' now has no healthpotions.')
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadminxpa')
-def challengestatsadminxp(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## XP
-    xp = get_xp(bot, target)
-    if xp:
-        bot.db.set_nick_value(target, 'challenges_xp', '')
-    bot.say(target + "'s XP has been cleared.")
-
-@sopel.module.require_admin
-@module.require_chanmsg
-@module.commands('challengestatsadmintimea')
-def challengestatsadmintime(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    ## TIMEOUT
-    time_since = get_timesince(bot, target)
-    if time_since:
-        bot.db.set_nick_value(target, 'challenge_time', '')
-    bot.say(target + "'s time has been cleared.")
+            gethowmany = scriptdef
+            if gethowmany:
+                bot.db.set_nick_value(target, databasecolumn, '')
