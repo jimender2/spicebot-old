@@ -501,7 +501,7 @@ def challenges(bot, trigger):
         addstat = str(" Respawns=" + str(respawnamount) + ".")
         stats = str(stats + addstat)
     ## TIMEOUT
-    time_since = time_since_challenge(bot, target)
+    time_since = get_timesince(bot, target)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
         addstat = str(" TIMEOUT=" + str(timediff) + ".")
@@ -613,7 +613,7 @@ def challengestatsadminxp(bot, trigger):
 def challengestatsadmintime(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## TIMEOUT
-    time_since = time_since_challenge(bot, target)
+    time_since = get_timesince(bot, target)
     if time_since:
         bot.db.set_nick_value(target, 'challenge_last', '')
     bot.say(target + "'s time has been cleared.")
