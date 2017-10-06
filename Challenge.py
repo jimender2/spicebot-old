@@ -544,6 +544,7 @@ def challengestatsadmin(bot, trigger):
     else:
         if not trigger.group(3):
             target = trigger.nick
+            bot.say('Resetting ' + str() + ' stat for ' + target)
             gethowmany = scriptdef
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
@@ -554,8 +555,10 @@ def challengestatsadmin(bot, trigger):
                 gethowmany = scriptdef
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
+            bot.say('Resetting of ' + str() + ' stat for all in channel is complete.')
         else:
             target = trigger.group(3)
+            bot.say('Resetting ' + str() + ' stat for ' + target)
             gethowmany = scriptdef
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
