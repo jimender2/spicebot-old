@@ -206,7 +206,7 @@ def update_respawn(bot, nick):
 
 def update_spawn(bot, nick):
     health = get_health(bot, nick)
-    if not health:
+    if not health or int(health) <= 0:
         bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
 ###############
