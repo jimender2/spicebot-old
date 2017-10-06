@@ -543,7 +543,7 @@ def challengestatsadmin(bot, trigger):
     else:
         if not trigger.group(3):
             target = trigger.nick
-            gethowmany = scriptdef(bot, target)
+            gethowmany = str(scriptdef)(bot, target)
             if gethowmany:
                 bot.say(str(gethowmany))
         elif trigger.group(3) == 'all':
