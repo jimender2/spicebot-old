@@ -492,10 +492,15 @@ def challengesa(bot, trigger):
     else:
         stats = ''
         challengestatsarray = ['health','xp','wins','losses','respawns','time','healthpotions']
+        definedfuctionarray = []
         for x in challengestatsarray:
-            scriptdef = str('get_' + x + '(bot,target)')
-            databasecolumn = str('challenges_' + x)
-            gethowmany = scriptdef
+            scriptdef = str('get_' + x)
+            definedfuctionarray.append(scriptdef)
+        for fnc in definedfuctionarray:
+            databasecolumn = str(fnc.split("get_", 1)[1])
+            databasecolumn = str('challenges_' + databasecolumn)
+            #databasecolumn = str('challenges_' + x)
+            gethowmany = fnc(bot,target)
             if gethowmany:
                 addstat = str(' ' + str(x) + "=" + str(gethowmany) + ".")
                 stats = str(stats + addstat)
