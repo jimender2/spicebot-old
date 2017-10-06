@@ -74,17 +74,52 @@ def challenge(bot, channel, instigator, target):
             ## Announce Combat
             bot.say(instigator + " versus " + target)
             
+            ## Check new player health, initial Spawn
+            update_spawn(bot, winner)
+            update_spawn(bot, loser)
+            
 ############## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
             if randominventoryfind == 'true':
                 loot, loot_text = determineloottype(bot, instigator)
                 bot.say(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-
             
+            ## Weapon Select
+            weapon = weaponofchoice()
+            
+            ## Damage Done
+            damage = damagedone(bot)
 
-
-
-
+            ## Select Winner
+            winner, loser = getwinner(bot, instigator, target)
+            
+            ## Update Wins and Losses
+            update_wins(bot, winner)
+            update_losses(bot, loser)
+            
+            ## Update XP points
+            XPearnedwinner = '5'
+            XPearnedloser = '3'
+            update_xp(bot, winner, XPearnedwinner)
+            update_xp(bot, loser, XPearnedloser)
+            
+            ## Update Health Of Loser, respawn, allow winner to loot
+            currenthealth = update_health(bot, loser, damage)
+            if currenthealth <= 0:
+                bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+                update_respawn(bot, loser)
+                ## Loot Corpse
+                lootcorpse(bot, loser, winner)
+            else:
+                bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+            
+            ## Update Time Of Combat
+            now = time.time()
+            targetnowmath = int(TIMEOUT) - int(TIMEOUTB)
+            targetnow = int(now) + int(targetnowmath)
+            update_time(bot, instigator, now)
+            update_time(bot, target, targetnow)
+############ add channel timeout
 
 #############
 ## Opt Out ##
@@ -125,17 +160,37 @@ def get_challengestatus(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
     return disenable
 
-
-
-
 ##########
 ## Time ##
 ##########
 
+def update_time(bot, nick, now):
+    bot.db.set_nick_value(nick, 'challenge_last', now)
+    
 def get_timesince(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenge_last') or 0
     return abs(now - last)
+
+#####################
+## Spawn / ReSpawn ##
+#####################
+
+def get_respawn(bot, nick):
+    respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
+    return respawns
+
+def update_respawn(bot, nick):
+    respawns = get_respawn(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
+    bot.db.set_nick_value(nick, 'challenges_health', '1000')
+    currentrespawns = get_respawn(bot, nick)
+    return currentrespawns
+
+def update_spawn(bot, nick):
+    health = get_health(bot, nick)
+    if not health:
+        bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
 ###############
 ## Inventory ##
@@ -160,6 +215,17 @@ def determineloottype(bot, instigator):
         loot_text = ' worth 100 health. Use .challengehealthpotion to consume.'
     return loot, loot_text
 
+def lootcorpse(bot, loser, winner):
+    loserhealthpotions = get_healthpotions(bot, loser)
+    if loserhealthpotions:
+        bot.db.set_nick_value(loser, 'challenges_healthpotions', '')
+        winnerhealthpotions = get_healthpotions(bot, winner)
+        bot.db.set_nick_value(winner, 'challenges_healthpotions', int(winnerhealthpotions) + int(loserhealthpotions))
+
+####################
+## Health Potions ##
+####################
+
 def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
     return healthpotions
@@ -168,7 +234,386 @@ def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
+@module.require_chanmsg
+@module.commands('challengehealthpotion')
+def usehealthpotion(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    healthpotions = get_healthpotions(bot, trigger.nick)
+    if healthpotions:
+        health = get_health(bot, target)
+        if target == trigger.nick:
+            bot.say(trigger.nick + ' uses health potion.')
+        else:
+            bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
+    else:
+        bot.say('You do not have a healthpotion to use!')
 
+######################
+## Weapon Selection ##
+######################
 
+def weaponofchoice():
+    checkweapons()
+    weapons = open(weaponslocker).read().splitlines()
+    weapon =random.choice(weapons)
+    if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
+        weapon = str('an ' + weapon)
+    else:
+        weapon = str('a ' + weapon)
+    return weapon
 
+#################
+## Damage Done ##
+#################
 
+def damagedone(bot):
+    rando = randint(1, 100)
+    if rando >= 90:
+        damage = '120'
+    elif rando >= 75 and rando < 90:
+        damage = '70'
+    elif rando < 75 and rando > 10:
+        damage = '40'
+    elif rando > 1 and rando <= 10:
+        damage = '10'    
+    else:
+        damage = '5'
+    return damage
+
+###################
+## Select Winner ##
+###################
+
+def getwinner(bot, instigator, target):
+    instigatorxp = get_xp(bot, instigator)
+    if not instigatorxp:
+        instigatorxp = '1'
+    targetxp = get_xp(bot, target)
+    if not targetxp:
+        targetxp = '1'
+    
+    ## each person
+    instigatorfight = '1'
+    targetfight = '1'
+    
+    # instigator gets 1 for surprise
+    instigatorfight = int(instigatorfight) + 1
+    
+    # XP difference
+    if int(instigatorxp) > int(targetxp):
+        instigatorfight = int(instigatorfight) + 1
+    elif int(instigatorxp) < int(targetxp):
+        targetfight = int(targetfight) + 1
+    elif int(instigatorxp) == int(targetxp):
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
+    else:
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
+    
+    ## Random Number
+    flip = randint(0, 1)
+    if (flip == 0):
+        instigatorfight = int(instigatorfight) + 1
+    else:
+        targetfight = int(targetfight) + 1
+
+    ## Dice Roll
+    instigatorfightarray = []
+    targetfightarray = []
+    while int(instigatorfight) != 0:
+        instigatorfightroll = diceroll()
+        instigatorfightarray.append(instigatorfightroll)
+        instigatorfight = int(instigatorfight) - 1
+    instigatorfight = max(instigatorfightarray)
+    while int(targetfight) != 0:
+        targetfightroll = diceroll()
+        targetfightarray.append(targetfightroll)
+        targetfight = int(targetfight) - 1
+    targetfight = max(targetfightarray)
+            
+    ## tie breaker
+    if instigatorfight == targetfight:
+        tiebreaker = randint(0, 1)
+        if (tiebreaker == 0):
+            instigatorfight = int(instigatorfight) + 1
+        else:
+            targetfight = int(targetfight) + 1
+
+    ## Compare
+    if int(instigatorfight) > int(targetfight):
+        winner = instigator
+    else:
+        winner = target
+    ## LOSER IS NOT WINNER
+    if winner == instigator:
+        loser = target
+    else:
+        loser = instigator
+    return winner, loser
+
+###############
+## ScoreCard ##
+###############
+
+def get_wins(bot, nick):
+    wins = bot.db.get_nick_value(nick, 'challenges_wins') or 0
+    return wins
+
+def update_wins(bot, nick):
+    wins = get_wins(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_wins', wins + 1)
+
+def get_losses(bot, nick):
+    losses = bot.db.get_nick_value(nick, 'challenges_losses') or 0
+    return losses
+
+def update_losses(bot, nick):
+    losses = get_losses(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
+
+###############
+## XP points ##
+###############
+
+def get_xp(bot, nick):
+    xp = bot.db.get_nick_value(nick, 'challenges_xp') or 0
+    return xp
+
+def update_xp(bot, nick, damage):
+    xp = get_xp(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_xp', xp + int(damage))
+    currentxp = get_xp(bot, nick)
+    return currentxp
+
+############
+## Health ##
+############
+
+def get_health(bot, nick):
+    health = bot.db.get_nick_value(nick, 'challenges_health') or 0
+    return health
+
+def update_health(bot, nick, damage):
+    health = get_health(bot, nick)
+    if not health:
+        update_respawn(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_health', (int(health) - int(damage)))
+    currenthealth = get_health(bot, nick)
+    return currenthealth
+
+####################
+## Weapons Locker ##
+####################
+
+@module.require_chanmsg
+@sopel.module.commands('weaponslocker')
+def weaponslockercmd(bot, trigger):
+    bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+
+#@module.require_privmsg
+#@sopel.module.commands('weaponslockerinv')
+#def invweapons(bot, trigger):
+#    with open (weaponslocker, "r") as myfile:
+#        for line in myfile:
+#            bot.say(str(line))
+
+@module.require_chanmsg
+@sopel.module.commands('weaponslockeradd')
+def addweapons(bot, trigger):
+    checkweapons()
+    if not trigger.group(2):
+        bot.say("what weapon would you like to add?")
+    else:
+        weaponnew = str(trigger.group(2))
+        if str(weaponnew) in open(weaponslocker).read():
+            bot.say(weaponnew + " is already in the weapons locker.")
+        else:
+            with open(weaponslocker, "a") as myfile:
+                myfile.write("\n")
+                myfile.write(weaponnew)
+            if str(weaponnew) in open(weaponslocker).read():
+                bot.say(weaponnew + " has been added to the weapons locker.")
+
+@module.require_chanmsg
+@sopel.module.commands('weaponslockerdel')
+def removeweapons(bot, trigger):
+    checkweapons()
+    if not trigger.group(2):
+        bot.say("what weapon would you like to remove?")
+    else:
+        weapondel = str(trigger.group(2))
+        if str(weapondel) in open(weaponslocker).read():
+            os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d" ' + weaponslocker)
+            if str(weapondel) not in open(weaponslocker).read():
+                bot.say(weapondel + ' has been removed from the weapons locker.')
+        else:
+            bot.say(weapondel + " is not in the weapons locker.")
+
+def checkweapons():
+    if not exists(weaponslocker):
+        createweapons()
+    if os.stat(weaponslocker).st_size == 0:
+        createweapons()
+
+def createweapons():
+    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","rotisserie chicken","steel-toed boot","stapler"]
+    for w in weapons:
+        with open(weaponslocker, "a") as myfile:
+            if os.stat(weaponslocker).st_size != 0:
+                myfile.write("\n")
+            myfile.write(w)
+
+###########
+## Stats ##
+###########
+
+@module.require_chanmsg
+@module.commands('challenges','duels')
+def challenges(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    stats = ''
+    ## health
+    health = get_health(bot, target)
+    if health:
+        addstat = str(" Health=" + str(health) + ".")
+        stats = str(stats + addstat)
+    ## XP
+    xp = get_xp(bot, target)
+    if xp:
+        addstat = str(" XP=" + str(xp) + ".")
+        stats = str(stats + addstat)
+    ## Wins
+    wins = get_wins(bot, target)
+    if wins:
+        addstat = str(" Wins=" + str(wins) + ".")
+        stats = str(stats + addstat)
+    ## Losses
+    losses = get_losses(bot, target)
+    if losses:
+        addstat = str(" Lost=" + str(losses) + ".")
+        stats = str(stats + addstat)
+    ## Respawns
+    respawnamount = get_respawn(bot, target)
+    if respawnamount:
+        addstat = str(" Respawns=" + str(respawnamount) + ".")
+        stats = str(stats + addstat)
+    ## TIMEOUT
+    time_since = time_since_challenge(bot, target)
+    if time_since < TIMEOUT:
+        timediff = int(TIMEOUT - time_since)
+        addstat = str(" TIMEOUT=" + str(timediff) + ".")
+        stats = str(stats + addstat)
+    ## Inventory
+    howmanyhealthpotions = get_healthpotions(bot, target)
+    if howmanyhealthpotions:
+        addstat = str(" HealthPotions=" + str(howmanyhealthpotions) + ".")
+        stats = str(stats + addstat)
+    
+    if stats != '':
+        stats = str(target + "'s stats:" + stats)
+        bot.say(stats)
+    else:
+        bot.say(target + ' has no stats.')
+
+###########
+## Tools ##
+###########
+
+def diceroll():
+    diceroll = randint(0, 6)
+    return diceroll
+
+#################
+## Stats Clear ##
+#################
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadmin','challengestatsadmintest')
+def challengestatsadmin(bot, trigger):
+    commandtrimmed = trigger.group(1)
+    commandtrimmed = str(commandtrimmed.split("challengestatsadmin: ", 1)[1])
+    if commandtrimmed == '':
+         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp')
+    else:
+         bot.say(str(commandtrimmed))
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminwins')
+def challengestatsadminwins(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## Wins
+    wins = get_wins(bot, target)
+    if wins:
+        bot.db.set_nick_value(target, 'challenges_wins', '')
+    bot.say(target + "'s wins have been cleared.")
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminlosses')
+def challengestatsadminlosses(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## Losses
+    losses = get_losses(bot, target)
+    if losses:
+        bot.db.set_nick_value(target, 'challenges_losses', '')
+    bot.say(target + "'s and losses have been cleared.")
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminhealth')
+def challengestatsadminhealth(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## health
+    health = get_health(bot, target)
+    if health:
+        bot.db.set_nick_value(target, 'challenges_health', '')
+    bot.say(target + "'s health has been cleared.")
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminhealthpotions')
+def challengestatsadminhealthpotions(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## health
+    healthpotions = get_healthpotions(bot, target)
+    if healthpotions:
+        bot.db.set_nick_value(target, 'challenges_healthpotions', '')
+    bot.say(target + ' now has no healthpotions.')
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminrespawn')
+def challengestatsadminrespawn(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## health
+    respawns = get_respawn(bot, target)
+    if respawns:
+        bot.db.set_nick_value(target, 'challenges_respawns', '')
+    bot.say(target + ' now has no healthpotions.')
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadminxp')
+def challengestatsadminxp(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## XP
+    xp = get_xp(bot, target)
+    if xp:
+        bot.db.set_nick_value(target, 'challenges_xp', '')
+    bot.say(target + "'s XP has been cleared.")
+
+@sopel.module.require_admin
+@module.require_chanmsg
+@module.commands('challengestatsadmintime')
+def challengestatsadmintime(bot, trigger):
+    target = trigger.group(3) or trigger.nick
+    ## TIMEOUT
+    time_since = time_since_challenge(bot, target)
+    if time_since:
+        bot.db.set_nick_value(target, 'challenge_last', '')
+    bot.say(target + "'s time has been cleared.")
