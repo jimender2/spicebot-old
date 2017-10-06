@@ -535,7 +535,7 @@ def diceroll():
 @module.commands('challengestatsadmin','challengestatsadmintest')
 def challengestatsadmin(bot, trigger):
     commandtrimmed = trigger.group(1)
-    commandtrimmed = str(commandtrimmed.split("challengestatsadmin: ", 0)[1])
+    commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp')
     else:
