@@ -60,17 +60,17 @@ def challenge(bot, channel, instigator, target):
             bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
         
         ## Enforce Timeout, unless in dev-channel
-        elif instigatortime < TIMEOUT:# and not bot.nick.endswith('dev'):
+        elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
             if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif targettime < TIMEOUT:# and not bot.nick.endswith('dev'):
+        elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
             if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif channeltime < TIMEOUTC:# and not bot.nick.endswith('dev'):
+        elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
             bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         
         ## If target and intigator pass the criteria above continue
