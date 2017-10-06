@@ -181,7 +181,7 @@ def get_timesince(bot, nick):
     last = bot.db.get_nick_value(nick, 'challenges_time') or 0
     return abs(now - last)
 
-def get_time(bot, nick):
+def get_timeout(bot, nick):
     time_since = get_timesince(bot, nick)
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
@@ -499,7 +499,7 @@ def challengesa(bot, trigger):
         bot.say("I'm not sure who that is.")
     else:
         stats = ''
-        challengestatsarray = ['health','xp','wins','losses','respawns','time','healthpotions']
+        challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
         for x in challengestatsarray:
             scriptdef = str('get_' + x + '(bot,target)')
             databasecolumn = str('challenges_' + x)
@@ -535,7 +535,7 @@ def challengestatsadmin(bot, trigger):
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time')
     elif commandtrimmed == 'all':
-        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','time']
+        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout']
         if not trigger.group(3):
             target = trigger.nick
             bot.say('Resetting all stats for ' + target + '.')
