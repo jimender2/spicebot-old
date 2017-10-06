@@ -550,10 +550,10 @@ def challengestatsadmin(bot, trigger):
         elif trigger.group(3) == 'all':
             bot.say('all')
             for u in bot.channels[channel].users:
-                bot.say('name')
-                #target = u
-                #respawns = get_respawn(bot, target)
-                #if respawns:
+                target = u
+                gethowmany = get_wins(bot, target)
+                if gethowmany:
+                    bot.say('wins')
                     #bot.db.set_nick_value(target, 'challenges_respawns', '')
         else:
             target = trigger.group(3)
