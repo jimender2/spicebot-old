@@ -553,7 +553,7 @@ def challengestatsadmin(bot, trigger):
                 target = u
                 gethowmany = get_wins(bot, target)
                 if gethowmany:
-                    bot.say('wins')
+                    bot.say(wins)
                     #bot.db.set_nick_value(target, 'challenges_respawns', '')
         else:
             target = trigger.group(3)
