@@ -63,7 +63,7 @@ def challenge(bot, channel, instigator, target):
         elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
-            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+                bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
 ####### add channel timeout
