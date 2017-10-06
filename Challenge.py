@@ -131,9 +131,12 @@ def challenge(bot, channel, instigator, target):
 @module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
+    channel = trigger.sender
     target = trigger.group(3) or trigger.nick
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users as able to challenge.")
+    elif target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
     else:
         disenable = get_challengestatus(bot, target)
         if disenable:
@@ -146,9 +149,12 @@ def challengeon(bot, trigger):
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
+    channel = trigger.sender
     target = trigger.group(3) or trigger.nick
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users as not able to challenge.")
+    elif target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
     else:
         disenable = get_challengestatus(bot, target)
         if disenable:
@@ -240,12 +246,15 @@ def addhealthpotion(bot, nick):
 @module.require_chanmsg
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
+    channel = trigger.sender
     target = trigger.group(3) or trigger.nick
     healthpotions = get_healthpotions(bot, trigger.nick)
     if healthpotions:
         health = get_health(bot, target)
         if target == trigger.nick:
             bot.say(trigger.nick + ' uses health potion.')
+        elif target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
         else:
             bot.say(trigger.nick + ' uses health potion on ' + target + ".")
         bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
@@ -476,50 +485,25 @@ def createweapons():
 @module.require_chanmsg
 @module.commands('challenges','duels')
 def challenges(bot, trigger):
+    channel = trigger.sender
     target = trigger.group(3) or trigger.nick
-    stats = ''
-    ## health
-    health = get_health(bot, target)
-    if health:
-        addstat = str(" Health=" + str(health) + ".")
-        stats = str(stats + addstat)
-    ## XP
-    xp = get_xp(bot, target)
-    if xp:
-        addstat = str(" XP=" + str(xp) + ".")
-        stats = str(stats + addstat)
-    ## Wins
-    wins = get_wins(bot, target)
-    if wins:
-        addstat = str(" Wins=" + str(wins) + ".")
-        stats = str(stats + addstat)
-    ## Losses
-    losses = get_losses(bot, target)
-    if losses:
-        addstat = str(" Lost=" + str(losses) + ".")
-        stats = str(stats + addstat)
-    ## Respawns
-    respawnamount = get_respawns(bot, target)
-    if respawnamount:
-        addstat = str(" Respawns=" + str(respawnamount) + ".")
-        stats = str(stats + addstat)
-    ## TIMEOUT
-    time_since = get_time(bot, target)
-    if time_since < TIMEOUT:
-        timediff = int(TIMEOUT - time_since)
-        addstat = str(" TIMEOUT=" + str(timediff) + ".")
-        stats = str(stats + addstat)
-    ## Inventory
-    howmanyhealthpotions = get_healthpotions(bot, target)
-    if howmanyhealthpotions:
-        addstat = str(" HealthPotions=" + str(howmanyhealthpotions) + ".")
-        stats = str(stats + addstat)
-    
-    if stats != '':
-        stats = str(target + "'s stats:" + stats)
-        bot.say(stats)
+    if target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
     else:
-        bot.say(target + ' has no stats.')
+        stats = ''
+        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','time']
+        for x in challengestatsarray:
+            scriptdef = str('get_' + x + '(bot,target)')
+            databasecolumn = str('challenges_' + x)
+            gethowmany = scriptdef
+                if gethowmany:
+                    addstat = str(' ' + str(x) + "=" + str(x) + ".")
+                    stats = str(stats + addstat)
+        if stats != '':
+            stats = str(target + "'s stats:" + stats)
+            bot.say(stats)
+        else:
+            bot.say('No stats found for ' + target)
 
 ###########
 ## Tools ##
