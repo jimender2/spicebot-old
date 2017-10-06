@@ -38,7 +38,6 @@ def challenge(bot, channel, instigator, target):
         ## Don't allow instigator to challenge if he has fought recently
         instigatortime = time_since_challenge(bot, instigator)
         targettime = time_since_challenge(bot, target)
-        channeltime = time_since_challenge(bot, channel)
         ## People can opt out of playing
         instigatordisenable = get_challengestatus(bot, instigator)
         targetdisenable = get_challengestatus(bot, target)
@@ -53,14 +52,8 @@ def challenge(bot, channel, instigator, target):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        #    if channeltime < TIMEOUT and not bot.nick.endswith('dev'):
-        #        bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        #    if channeltime < TIMEOUT and not bot.nick.endswith('dev'):
-        #        bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        #elif channeltime < TIMEOUT and not bot.nick.endswith('dev'):
-        #    bot.notice(str(channel) + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
         elif targetdisenable:
@@ -69,10 +62,15 @@ def challenge(bot, channel, instigator, target):
             ## Announce
             bot.say(instigator + " versus " + target)
             ## Random Health potion
-            healthpotion = randomhealthpotion()
-            if healthpotion == 'true':
-                bot.say(instigator + ' found a health potion worth 100 health. Use .challengehealthpotion to consume.')
-                addhealthpotion(bot, instigator)
+            #healthpotion = randomhealthpotion()
+            #if healthpotion == 'true':
+            #    bot.say(instigator + ' found a health potion worth 100 health. Use .challengehealthpotion to consume.')
+            #    addhealthpotion(bot, instigator)
+            ## Random Inventory gain,,,, right now just healthpotions
+            randominventoryfind = randominventory()
+            if randominventoryfind == 'true':
+                loot, loot_text = determineloottype()
+                bot.say(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             ## Weapon, damage done. 
             weapon = weaponofchoice()
             damage = damagedone(bot)
@@ -662,7 +660,24 @@ def challengeoff(bot, trigger):
             bot.db.set_nick_value(target, 'challenges_disenable', 'true')
             bot.say('Challenges has been disabled for ' + target)
 
-#############
-## streaks ##
-#############
+##################
+## supplemental ##
+##################
+
+## maybe add a dice roll later
+def randominventory():
+    randomfindchance = randint(1, 120)
+    if randomfindchance >= 90:
+        find = 'true'
+    else:
+        find = 'false'
+    return randominventoryfind
+
+def determineloottype():
+typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
+    loot = random.randint(0,len(typesofloot) - 1)
+    if loot == 'healthpotion':
+        addhealthpotion(bot, instigator)
+        loot_text = ' worth 100 health. Use .challengehealthpotion to consume.'
+    return loot, loot_text
 
