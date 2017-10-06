@@ -532,7 +532,7 @@ def diceroll():
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadmintime')
+@module.commands('challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadmintime','challengestatsadmintime')
 def challengestatsadmin(bot, trigger):
     #target = trigger.group(3) or trigger.nick
     commandtrimmed = trigger.group(1)
