@@ -534,7 +534,7 @@ def challengestatsadmin(bot, trigger):
             for x in challengestatsarray:
                 scriptdef = 'get_' + x + '(bot,target)'
                 databasecolumn = str('challenges_' + x)
-                gethowmany = scriptdef
+                gethowmany = eval(scriptdef)
                 bot.say(str(gethowmany))
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
