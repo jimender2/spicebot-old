@@ -532,19 +532,50 @@ def diceroll():
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime')
+@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime')
 def challengestatsadmin(bot, trigger):
     channel = trigger.sender
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
-    scriptdef = str('get_' + commandtrimmed + '(bot,target)')
-    databasecolumn = str('challenges_' + commandtrimmed)
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp,time')
-    else:
+    elif commandtrimmed == 'all':
+        challengestatsarray = [wins,losses,health,healthpotions,respawn,xp,time]
         if not trigger.group(3):
             target = trigger.nick
-            bot.say('Resetting ' + str() + ' stat for ' + target)
+            bot.say('Resetting all stats for ' + target + '.')
+            for x in challengestatsarray:
+                scriptdef = str('get_' + x + '(bot,target)')
+                databasecolumn = str('challenges_' + x)
+                gethowmany = scriptdef
+                if gethowmany:
+                    bot.db.set_nick_value(target, databasecolumn, '')
+        elif trigger.group(3) == 'all':
+            bot.say('Resetting all stats for Channel.')
+            for u in bot.channels[channel].users:
+                target = u
+                for x in challengestatsarray:
+                    scriptdef = str('get_' + x + '(bot,target)')
+                    databasecolumn = str('challenges_' + x)
+                    gethowmany = scriptdef
+                    if gethowmany:
+                        bot.db.set_nick_value(target, databasecolumn, '')
+            bot.say('Resetting of all stats for all in channel is complete.')
+        else:
+            target = trigger.group(3)
+            bot.say('Resetting all stats for ' + target + '.')
+            for x in challengestatsarray:
+                scriptdef = str('get_' + x + '(bot,target)')
+                databasecolumn = str('challenges_' + x)
+                gethowmany = scriptdef
+                if gethowmany:
+                    bot.db.set_nick_value(target, databasecolumn, '')
+    else:
+        scriptdef = str('get_' + commandtrimmed + '(bot,target)')
+        databasecolumn = str('challenges_' + commandtrimmed)
+        if not trigger.group(3):
+            target = trigger.nick
+            bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target + '.')
             gethowmany = scriptdef
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
@@ -555,10 +586,10 @@ def challengestatsadmin(bot, trigger):
                 gethowmany = scriptdef
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
-            bot.say('Resetting of ' + str() + ' stat for all in channel is complete.')
+            bot.say('Resetting of ' + str(commandtrimmed) + ' stat for all in channel is complete.')
         else:
             target = trigger.group(3)
-            bot.say('Resetting ' + str() + ' stat for ' + target)
+            bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target)
             gethowmany = scriptdef
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
