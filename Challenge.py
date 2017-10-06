@@ -37,9 +37,9 @@ def challenge(bot, channel, instigator, target):
     else:
         
         ## Don't allow chat spamming
-        instigatortime = get_time(bot, instigator)
-        targettime = get_time(bot, target)
-        channeltime = get_time(bot, ALLCHAN)
+        instigatortime = get_timesince(bot, instigator)
+        targettime = get_timesince(bot, target)
+        channeltime = get_timesince(bot, ALLCHAN)
         
         ## People can opt out of playing
         instigatordisenable = get_challengestatus(bot, instigator)
@@ -176,10 +176,16 @@ def update_time(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'challenges_time', now)
     
-def get_time(bot, nick):
+def get_timesince(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_time') or 0
     return abs(now - last)
+
+def get_time(bot, nick):
+    time_since = get_timesince(bot, target)
+    if time_since < TIMEOUT:
+        timediff = int(TIMEOUT - time_since)
+    return timediff
 
 #####################
 ## Spawn / ReSpawn ##
