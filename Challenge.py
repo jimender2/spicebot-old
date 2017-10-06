@@ -532,10 +532,9 @@ def challengestatsadmin(bot, trigger):
             target = trigger.nick
             bot.say('Resetting all stats for ' + target + '.')
             for x in challengestatsarray:
-                scriptdef = 'get_' + x + '(bot,target)'
+                scriptdef = str('get_' + x)
                 databasecolumn = str('challenges_' + x)
                 gethowmany = eval(scriptdef)
-                bot.say(str(gethowmany))
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
         elif trigger.group(3) == 'all':
@@ -543,9 +542,9 @@ def challengestatsadmin(bot, trigger):
             for u in bot.channels[channel].users:
                 target = u
                 for x in challengestatsarray:
-                    scriptdef = str('get_' + x + '(bot,target)')
+                    scriptdef = str('get_' + x)
                     databasecolumn = str('challenges_' + x)
-                    gethowmany = scriptdef
+                    gethowmany = eval(scriptdef)
                     if gethowmany:
                         bot.db.set_nick_value(target, databasecolumn, '')
             bot.say('Resetting of all stats for all in channel is complete.')
@@ -553,31 +552,31 @@ def challengestatsadmin(bot, trigger):
             target = trigger.group(3)
             bot.say('Resetting all stats for ' + target + '.')
             for x in challengestatsarray:
-                scriptdef = str('get_' + x + '(bot,target)')
+                scriptdef = str('get_' + x)
                 databasecolumn = str('challenges_' + x)
-                gethowmany = scriptdef
+                gethowmany = eval(scriptdef)
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
     else:
-        scriptdef = str('get_' + commandtrimmed + '(bot,target)')
+        scriptdef = str('get_' + commandtrimmed)
         databasecolumn = str('challenges_' + commandtrimmed)
         if not trigger.group(3):
             target = trigger.nick
             bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target + '.')
-            gethowmany = scriptdef
+            gethowmany = eval(scriptdef)
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
         elif trigger.group(3) == 'all':
             bot.say('Resetting ' + str(commandtrimmed) + ' stat for all in channel.')
             for u in bot.channels[channel].users:
                 target = u
-                gethowmany = scriptdef
+                gethowmany = eval(scriptdef)
                 if gethowmany:
                     bot.db.set_nick_value(target, databasecolumn, '')
             bot.say('Resetting of ' + str(commandtrimmed) + ' stat for all in channel is complete.')
         else:
             target = trigger.group(3)
             bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target)
-            gethowmany = scriptdef
+            gethowmany = eval(scriptdef)
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
