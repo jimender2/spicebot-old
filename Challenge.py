@@ -676,6 +676,7 @@ def randominventory():
 def determineloottype():
     typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
     loot = random.randint(0,len(typesofloot) - 1)
+    loot_text = ''
     if loot == 'healthpotion':
         addhealthpotion(bot, instigator)
         loot_text = ' worth 100 health. Use .challengehealthpotion to consume.'
