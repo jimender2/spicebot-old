@@ -495,7 +495,7 @@ def challengesa(bot, trigger):
         for x in challengestatsarray:
             scriptdef = str('get_' + x + '(bot,target)')
             databasecolumn = str('challenges_' + x)
-            gethowmany = scriptdef
+            gethowmany = eval(scriptdef)
             if gethowmany:
                 addstat = str(' ' + str(x) + "=" + str(gethowmany) + ".")
                 stats = str(stats + addstat)
