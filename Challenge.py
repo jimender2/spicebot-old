@@ -668,9 +668,9 @@ def challengeoff(bot, trigger):
 def randominventory():
     randomfindchance = randint(1, 120)
     if randomfindchance >= 90:
-        find = 'true'
+        randominventoryfind = 'true'
     else:
-        find = 'false'
+        randominventoryfind = 'false'
     return randominventoryfind
 
 def determineloottype():
