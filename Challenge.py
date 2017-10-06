@@ -580,7 +580,7 @@ def challengestatsadmin(bot, trigger):
             target = trigger.nick
             bot.say('Resetting all stats for ' + target + '.')
             for x in challengestatsarray:
-                scriptdef = str('get_' + x + '(bot,target)')
+                scriptdef = 'get_' + x + '(bot,target)'
                 databasecolumn = str('challenges_' + x)
                 gethowmany = scriptdef
                 bot.say(str(gethowmany))
