@@ -496,9 +496,9 @@ def challenges(bot, trigger):
             scriptdef = str('get_' + x + '(bot,target)')
             databasecolumn = str('challenges_' + x)
             gethowmany = scriptdef
-                if gethowmany:
-                    addstat = str(' ' + str(x) + "=" + str(x) + ".")
-                    stats = str(stats + addstat)
+            if gethowmany:
+                addstat = str(' ' + str(x) + "=" + str(x) + ".")
+                stats = str(stats + addstat)
         if stats != '':
             stats = str(target + "'s stats:" + stats)
             bot.say(stats)
