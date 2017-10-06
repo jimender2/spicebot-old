@@ -11,6 +11,7 @@ relativepath = "data/weapons.txt"
 weaponslocker = os.path.join(moduledir, relativepath)
 
 TIMEOUT = 180
+TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 
 ## React to /me (ACTION) challenges
@@ -63,13 +64,13 @@ def challenge(bot, channel, instigator, target):
             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
             if targettime < TIMEOUT:
                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-            if channeltime < TIMEOUT:
+            if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         elif targettime < TIMEOUT:# and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - channeltime), instigator)
-            if channeltime < TIMEOUT:
+            if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        elif channeltime < TIMEOUT:# and not bot.nick.endswith('dev'):
+        elif channeltime < TIMEOUTC:# and not bot.nick.endswith('dev'):
             bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
         
         ## If target and intigator pass the criteria above continue
@@ -118,10 +119,9 @@ def challenge(bot, channel, instigator, target):
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
             ## Update Time Of Combat
-            now = time.time()
-            update_time(bot, instigator, now)
-            update_time(bot, target, now)
-            update_time(bot, ALLCHAN, now)
+            update_time(bot, instigator)
+            update_time(bot, target)
+            update_time(bot, ALLCHAN)
 
 #############
 ## Opt Out ##
@@ -166,11 +166,11 @@ def get_challengestatus(bot, nick):
 ## Time ##
 ##########
 
-def update_time(bot, nick, now):
+def update_time(bot, nick):
+    now = time.time()
     bot.db.set_nick_value(nick, 'challenges_time', now)
     
 def get_time(bot, nick):
-    now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_time') or 0
     return abs(now - last)
 
