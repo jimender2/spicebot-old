@@ -483,7 +483,7 @@ def createweapons():
 ###########
 
 @module.require_chanmsg
-@module.commands('challengesa','duelsa')
+@module.commands('challenges','duels')
 def challengesa(bot, trigger):
     channel = trigger.sender
     target = trigger.group(3) or trigger.nick
@@ -504,55 +504,7 @@ def challengesa(bot, trigger):
             bot.say(stats)
         else:
             bot.say('No stats found for ' + target)
-
-@module.require_chanmsg
-@module.commands('challenges','duels')
-def challenges(bot, trigger):
-    target = trigger.group(3) or trigger.nick
-    stats = ''
-    ## health
-    health = get_health(bot, target)
-    if health:
-        addstat = str(" Health=" + str(health) + ".")
-        stats = str(stats + addstat)
-    ## XP
-    xp = get_xp(bot, target)
-    if xp:
-        addstat = str(" XP=" + str(xp) + ".")
-        stats = str(stats + addstat)
-    ## Wins
-    wins = get_wins(bot, target)
-    if wins:
-        addstat = str(" Wins=" + str(wins) + ".")
-        stats = str(stats + addstat)
-    ## Losses
-    losses = get_losses(bot, target)
-    if losses:
-        addstat = str(" Lost=" + str(losses) + ".")
-        stats = str(stats + addstat)
-    ## Respawns
-    respawnamount = get_respawns(bot, target)
-    if respawnamount:
-        addstat = str(" Respawns=" + str(respawnamount) + ".")
-        stats = str(stats + addstat)
-    ## TIMEOUT
-    time_since = get_time(bot, target)
-    if time_since < TIMEOUT:
-        timediff = int(TIMEOUT - time_since)
-        addstat = str(" TIMEOUT=" + str(timediff) + ".")
-        stats = str(stats + addstat)
-    ## Inventory
-    howmanyhealthpotions = get_healthpotions(bot, target)
-    if howmanyhealthpotions:
-        addstat = str(" HealthPotions=" + str(howmanyhealthpotions) + ".")
-        stats = str(stats + addstat)
-    
-    if stats != '':
-        stats = str(target + "'s stats:" + stats)
-        bot.say(stats)
-    else:
-        bot.say(target + ' has no stats.')
-            
+   
 ###########
 ## Tools ##
 ###########
