@@ -75,8 +75,8 @@ def challenge(bot, channel, instigator, target):
             bot.say(instigator + " versus " + target)
             
             ## Check new player health, initial Spawn
-            update_spawn(bot, winner)
-            update_spawn(bot, loser)
+            update_spawn(bot, instigator)
+            update_spawn(bot, target)
             
 ############## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
@@ -165,11 +165,11 @@ def get_challengestatus(bot, nick):
 ##########
 
 def update_time(bot, nick, now):
-    bot.db.set_nick_value(nick, 'challenge_last', now)
+    bot.db.set_nick_value(nick, 'challenge_time', now)
     
 def get_timesince(bot, nick):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'challenge_last') or 0
+    last = bot.db.get_nick_value(nick, 'challenge_time') or 0
     return abs(now - last)
 
 #####################
@@ -532,14 +532,27 @@ def diceroll():
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadmin','challengestatsadmintest')
+@module.commands('challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns')
 def challengestatsadmin(bot, trigger):
+    target = trigger.group(3) or trigger.nick
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
+    scriptdef = str('get_' + commandtrimmed)
+    databasecolumn = str('challenge_' + commandtrimmed)
     if commandtrimmed == '':
          bot.say('Repeat this command with: wins,losses,health,healthpotions,respawn,xp')
+    #elif commandtrimmed == 'wins':
+    #elif commandtrimmed == 'losses':
+    #elif commandtrimmed == 'losses':
+    #elif commandtrimmed == 'health':
+    #elif commandtrimmed == 'healthpotions':
+    #elif commandtrimmed == 'respawns':
+    #elif commandtrimmed == 'xp':
+    #elif commandtrimmed == 'time':
     else:
          bot.say(str(commandtrimmed))
+         bot.say(str(scriptdef))
+         bot.say(str(databasecolumn))
 
 @sopel.module.require_admin
 @module.require_chanmsg
@@ -587,7 +600,7 @@ def challengestatsadminhealthpotions(bot, trigger):
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminrespawn')
+@module.commands('challengestatsadminrespawns')
 def challengestatsadminrespawn(bot, trigger):
     target = trigger.group(3) or trigger.nick
     ## health
@@ -615,5 +628,5 @@ def challengestatsadmintime(bot, trigger):
     ## TIMEOUT
     time_since = get_timesince(bot, target)
     if time_since:
-        bot.db.set_nick_value(target, 'challenge_last', '')
+        bot.db.set_nick_value(target, 'challenge_time', '')
     bot.say(target + "'s time has been cleared.")
