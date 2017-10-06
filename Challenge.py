@@ -491,12 +491,13 @@ def challenges(bot, trigger):
         bot.say("I'm not sure who that is.")
     else:
         stats = ''
-        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','time']
+        challengestatsarray = ['health','xp','wins','losses','respawns','time','healthpotions']
         for x in challengestatsarray:
             scriptdef = str('get_' + x + '(bot,target)')
             databasecolumn = str('challenges_' + x)
             gethowmany = scriptdef
             if gethowmany:
+                bot.say (str(gethowmany))
                 addstat = str(' ' + str(x) + "=" + str(gethowmany) + ".")
                 stats = str(stats + addstat)
         if stats != '':
