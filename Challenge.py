@@ -165,11 +165,11 @@ def get_challengestatus(bot, nick):
 ##########
 
 def update_time(bot, nick, now):
-    bot.db.set_nick_value(nick, 'challenge_time', now)
+    bot.db.set_nick_value(nick, 'challenges_time', now)
     
 def get_time(bot, nick):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'challenge_time') or 0
+    last = bot.db.get_nick_value(nick, 'challenges_time') or 0
     return abs(now - last)
 
 #####################
