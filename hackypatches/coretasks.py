@@ -558,7 +558,10 @@ def blocks(bot, trigger):
     https://github.com/sopel-irc/sopel/wiki/Making-Sopel-ignore-people
 
     """
-     if not trigger.admin and bot.privileges[room][whotriggered] != OP:
+    whotriggered  = trigger.nick
+    for c in bot.channels:
+        room = c
+    if not trigger.admin and bot.privileges[room][whotriggered] != OP:
         bot.say('You are Not authorized for this feature.')
         return
 
