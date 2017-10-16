@@ -45,7 +45,7 @@ def challenge(bot, channel, instigator, target):
         ## Bot opt-out
         instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        if instigatorspicebotdisenable or targetspicebotdisenable:
+        if not instigatorspicebotdisenable or not targetspicebotdisenable:
             sys.exit()
         
         ## People can opt out of playing
