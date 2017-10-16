@@ -18,3 +18,19 @@ def simplereply(bot,trigger):
 
 # this will say:
 # deathbybandaid fights klingons at the bar
+
+
+#instigatordisenable = get_disenable(bot, instigator)
+#targetdisenable = get_disenable(bot, target)
+
+## Check Status of Opt In
+#def get_disenable(bot, nick):
+#    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+#    return disenable
+
+## Check Opt-in Status
+#        elif not instigatordisenable:
+#            bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
+#        elif not targetdisenable:
+#            bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
+        
