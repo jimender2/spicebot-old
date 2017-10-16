@@ -3,7 +3,7 @@ import sopel.module
 @sopel.module.rate(120)
 @sopel.module.commands('sucker','suckers')
 def rules(bot, trigger):
-    target = trigger.group(3) or trigger.nick
+    target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
         if not trigger.group(2):
