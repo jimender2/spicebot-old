@@ -140,7 +140,7 @@ def challengeon(bot, trigger):
     else:
         disenable = get_disenable(bot, target)
         if disenable:
-            bot.db.set_nick_value(target, 'challenges_disenable', '')
+            bot.db.set_nick_value(target, 'challenges_disenable', 'true')
             bot.say('Challenges has been enabled for ' + target)
         else:
             bot.say('Challenges are already enabled for ' + target)
@@ -160,7 +160,7 @@ def challengeoff(bot, trigger):
         if disenable:
             bot.say('Challenges are already disabled for ' + target)
         else:
-            bot.db.set_nick_value(target, 'challenges_disenable', 'true')
+            bot.db.set_nick_value(target, 'challenges_disenable', '')
             bot.say('Challenges has been disabled for ' + target)
 
 ## Check Status of Opt In
