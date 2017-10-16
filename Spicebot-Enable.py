@@ -12,7 +12,7 @@ def isshelistening(bot,trigger):
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
-    elif target = 'all' and commandtrimmed == 'off':
+    elif target == 'all' and commandtrimmed == 'off':
         for u in bot.channels[channel].users:
             target = u
             disenable = get_disenable(bot, target)
