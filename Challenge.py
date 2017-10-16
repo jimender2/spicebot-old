@@ -42,8 +42,8 @@ def challenge(bot, channel, instigator, target):
         channeltime = get_timesince(bot, ALLCHAN)
         
         ## People can opt out of playing
-        instigatordisenable = get_challengestatus(bot, instigator)
-        targetdisenable = get_challengestatus(bot, target)
+        instigatordisenable = get_disenable(bot, instigator)
+        targetdisenable = get_disenable(bot, target)
         
         ## Non-Duel Interactions
         if target == bot.nick:
@@ -54,9 +54,9 @@ def challenge(bot, channel, instigator, target):
             bot.say("I'm not sure who that is.")
         
         ## Check Opt-in Status
-        elif instigatordisenable:
+        elif not instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
-        elif targetdisenable:
+        elif not targetdisenable:
             bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
         
         ## Enforce Timeout, unless in dev-channel
@@ -138,7 +138,7 @@ def challengeon(bot, trigger):
     elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
     else:
-        disenable = get_challengestatus(bot, target)
+        disenable = get_disenable(bot, target)
         if disenable:
             bot.db.set_nick_value(target, 'challenges_disenable', '')
             bot.say('Challenges has been enabled for ' + target)
@@ -156,7 +156,7 @@ def challengeoff(bot, trigger):
     elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
     else:
-        disenable = get_challengestatus(bot, target)
+        disenable = get_disenable(bot, target)
         if disenable:
             bot.say('Challenges are already disabled for ' + target)
         else:
@@ -164,7 +164,7 @@ def challengeoff(bot, trigger):
             bot.say('Challenges has been disabled for ' + target)
 
 ## Check Status of Opt In
-def get_challengestatus(bot, nick):
+def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
     return disenable
 
@@ -527,15 +527,15 @@ def diceroll():
 
 @sopel.module.require_admin
 @module.require_chanmsg
-@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime')
+@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime','challengestatsadmindisenable')
 def challengestatsadmin(bot, trigger):
     channel = trigger.sender
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     if commandtrimmed == '':
-         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time')
+         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time','disenable')
     elif commandtrimmed == 'all':
-        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout']
+        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout'.'disenable']
         if not trigger.group(3):
             target = trigger.nick
             bot.say('Resetting all stats for ' + target + '.')
