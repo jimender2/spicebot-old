@@ -10,14 +10,14 @@ def isshelistening(bot,trigger):
     commandtrimmed = str(commandtrimmed.split("spicebot", 1)[1])
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
-    elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
     elif target == 'all' and commandtrimmed == 'off':
         for u in bot.channels[channel].users:
             target = u
             disenable = get_disenable(bot, target)
             if disenable:
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
     else:
         disenable = get_disenable(bot, target)
         if commandtrimmed == 'on':
