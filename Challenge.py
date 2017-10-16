@@ -139,7 +139,7 @@ def challengeon(bot, trigger):
             bot.say("I'm not sure who that is.")
     else:
         disenable = get_disenable(bot, target)
-        if disenable:
+        if not disenable:
             bot.db.set_nick_value(target, 'challenges_disenable', 'true')
             bot.say('Challenges has been enabled for ' + target)
         else:
@@ -157,7 +157,7 @@ def challengeoff(bot, trigger):
             bot.say("I'm not sure who that is.")
     else:
         disenable = get_disenable(bot, target)
-        if disenable:
+        if not disenable:
             bot.say('Challenges are already disabled for ' + target)
         else:
             bot.db.set_nick_value(target, 'challenges_disenable', '')
