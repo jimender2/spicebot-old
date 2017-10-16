@@ -533,7 +533,7 @@ def challengestatsadmin(bot, trigger):
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     if commandtrimmed == '':
-         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time','disenable')
+         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time,disenable')
     elif commandtrimmed == 'all':
         challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable']
         if not trigger.group(3):
