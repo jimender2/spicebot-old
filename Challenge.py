@@ -5,6 +5,7 @@ import os
 from os.path import exists
 from random import randint
 import time
+import sys
 
 moduledir = os.path.dirname(__file__)
 relativepath = "data/weapons.txt"
@@ -45,7 +46,7 @@ def challenge(bot, channel, instigator, target):
         instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
         if instigatorspicebotdisenable or targetspicebotdisenable:
-            break
+            sys.exit()
         
         ## People can opt out of playing
         instigatordisenable = get_disenable(bot, instigator)
