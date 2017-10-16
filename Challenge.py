@@ -54,9 +54,9 @@ def challenge(bot, channel, instigator, target):
             bot.say("I'm not sure who that is.")
         
         ## Check Opt-in Status
-        elif instigatordisenable:
+        elif not instigatordisenable:
             bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
-        elif targetdisenable:
+        elif not targetdisenable:
             bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
         
         ## Enforce Timeout, unless in dev-channel
