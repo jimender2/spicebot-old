@@ -1,4 +1,5 @@
 import sopel.module
+from sopel import module, tools
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
