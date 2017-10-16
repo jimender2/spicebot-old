@@ -41,6 +41,12 @@ def challenge(bot, channel, instigator, target):
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
         
+        ## Bot opt-out
+        instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
+        targetspicebotdisenable = get_spicebotdisenable(bot, target)
+        if instigatorspicebotdisenable or targetspicebotdisenable:
+            break
+        
         ## People can opt out of playing
         instigatordisenable = get_disenable(bot, instigator)
         targetdisenable = get_disenable(bot, target)
@@ -166,6 +172,11 @@ def challengeoff(bot, trigger):
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
+    return disenable
+
+## Check Status of Opt In
+def get_spicebotdisenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
 ##########
