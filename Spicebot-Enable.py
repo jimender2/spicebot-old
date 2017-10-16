@@ -6,24 +6,32 @@ from sopel import module, tools
 def isshelistening(bot,trigger):
     channel = trigger.sender
     target = trigger.group(3) or trigger.nick
+    commandtrimmed = trigger.group(1)
+    commandtrimmed = str(commandtrimmed.split("spicebot", 1)[1])
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
+    elif target = 'all' and commandtrimmed == 'off':
+        for u in bot.channels[channel].users:
+            target = u
+            disenable = get_disenable(bot, target)
+            if disenable:
+                bot.db.set_nick_value(target, 'spicebot_disenable', '')
     else:
-        commandtrimmed = trigger.group(1)
-        commandtrimmed = str(commandtrimmed.split("spicebot", 1)[1])
         disenable = get_disenable(bot, target)
-        if not disenable and commandtrimmed == 'on':
-            bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
-            bot.say(bot.nick + ' has been enabled for ' + target)
-        elif not disenable and commandtrimmed == 'off':
-            bot.say(bot.nick + ' is already disabled for ' + target)
-        elif disenable and commandtrimmed == 'on':
-            bot.say(bot.nick + ' is already enabled for ' + target)
-        elif disenable and commandtrimmed == 'off':
-            bot.db.set_nick_value(target, 'spicebot_disenable', '')
-            bot.say(bot.nick + ' has been disabled for ' + target)
+        if commandtrimmed == 'on':
+            if not disenable:
+                bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
+                bot.say(bot.nick + ' has been enabled for ' + target)
+            else:
+                bot.say(bot.nick + ' is already enabled for ' + target)
+        elif commandtrimmed == 'off':
+            if not disenable:
+                bot.say(bot.nick + ' is already disabled for ' + target)
+            else:
+                bot.db.set_nick_value(target, 'spicebot_disenable', '')
+                bot.say(bot.nick + ' has been disabled for ' + target)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
