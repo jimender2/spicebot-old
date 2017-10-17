@@ -65,15 +65,24 @@ def get_disenable(bot, nick):
 
 @sopel.module.interval(60)
 def autoblock(bot):
-    #if not bot.nick.endswith('dev'):
+    channel = "channel"
+    fingertime = get_timeout(bot, channel)
+    if not fingertime:
+        set_timeout(bot, channel)
+    elif fingertime > OPTTIMEOUT and not bot.nick.endswith('dev'):
+        set_timeout(bot, channel)
+        for c in bot.channels:
+            for u in room:
+                target = u
+                bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+    elif fingertime < OPTTIMEOUT and not bot.nick.endswith('dev'):
         for c in bot.channels:
             room = c
             for u in room:
                 target = u
                 userstotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-                if usertotal:
-                    if usertotal > toomanytimes:
-                        set_timeout(bot, target)
-                        set_disable(bot, target)
-                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                if usertotal > toomanytimes:
+                    set_timeout(bot, target)
+                    set_disable(bot, target)
+                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
 
