@@ -94,6 +94,9 @@ def autoblock(bot):
                 if int(usertotal) > int(TOOMANYTIMES):
                     set_timeout(bot, target)
                     set_disable(bot, target)
-                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    warn = get_warned(bot, target)
+                    bot.msg(channel, str(warn))
+                    if not warn:
+                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
