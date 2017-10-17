@@ -12,7 +12,6 @@ def isshelistening(bot,trigger):
     target = trigger.group(3) or trigger.nick
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("spicebot", 1)[1])
-    opt_time = get_timeout(bot, target)
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
     elif target == 'all' and commandtrimmed == 'off':
@@ -24,12 +23,13 @@ def isshelistening(bot,trigger):
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
         bot.say(bot.nick + ' disabled for all.')
     elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
-    elif opt_time < OPTTIMEOUT:
-            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+        bot.say("I'm not sure who that is.")     
     else:
         disenable = get_disenable(bot, target)
-        if commandtrimmed == 'on':
+        opttime = get_timeout(bot, target)
+        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+        elif commandtrimmed == 'on':
             if not disenable:
                 bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                 bot.say(bot.nick + ' has been enabled for ' + target)
@@ -57,10 +57,3 @@ def set_timeout(bot, nick):
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
-
-@module.require_chanmsg
-@module.require_admin
-@sopel.module.commands('spicebotona')
-def isshelisteninga(bot,trigger):
-    target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
