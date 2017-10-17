@@ -7,19 +7,22 @@ fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfil
 @sopel.module.rate(120)
 @sopel.module.commands('ferengi')
 def ferengi(bot, trigger):
-    if not trigger.group(2):
-        myline = randomfra()
-    else:
-        rulenumber = int(trigger.group(2))
-        htmlfile=urllib.urlopen(fra)
-        lines=htmlfile.readlines()
-        try:
-            myline = str(lines[rulenumber-1])
-        except IndexError:
-            myline = 'That doesnt appear to be a rule number.'
-        if not myline or myline == '\n':
-            myline = 'There is no cannonized rule tied to this number.'
-    bot.say(myline)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        if not trigger.group(2):
+            myline = randomfra()
+        else:
+            rulenumber = int(trigger.group(2))
+            htmlfile=urllib.urlopen(fra)
+            lines=htmlfile.readlines()
+            try:
+                myline = str(lines[rulenumber-1])
+            except IndexError:
+                myline = 'That doesnt appear to be a rule number.'
+            if not myline or myline == '\n':
+                myline = 'There is no cannonized rule tied to this number.'
+        bot.say(myline)
 
 # random rule
 def randomfra():
@@ -29,3 +32,8 @@ def randomfra():
     if not myline or myline == '\n':
         myline = randomfra()
     return myline
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
