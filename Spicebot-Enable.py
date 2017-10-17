@@ -87,3 +87,12 @@ def autoblock(bot):
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+
+@module.require_chanmsg
+@sopel.module.commands('spicebotcountzero')
+def discount(bot,trigger):
+    target = trigger.nick
+    bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+    
+    
+    
