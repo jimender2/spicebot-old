@@ -20,7 +20,10 @@ def fridaybot(bot,trigger):
                 bot.say("Unfortunately Friday is " + str(daysmath) + " day away. I'm sure we'll make it there!")
             else:
                 bot.say("Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
