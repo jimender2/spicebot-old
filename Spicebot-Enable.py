@@ -78,5 +78,5 @@ def autoblock(bot):
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
     
 def get_usertotal(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    return disenable
+    userstotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    return userstotal
