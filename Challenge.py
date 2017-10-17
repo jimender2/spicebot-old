@@ -20,7 +20,10 @@ ALLCHAN = 'entirechannel'
 @module.intent('ACTION')
 @module.require_chanmsg
 def challenge_action(bot, trigger):
-    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
 
 ####################
 ## Main Operation ##
@@ -29,7 +32,10 @@ def challenge_action(bot, trigger):
 @sopel.module.commands('challenge','duel')
 @module.require_chanmsg
 def challenge_cmd(bot, trigger):
-    return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
