@@ -67,25 +67,24 @@ def get_disenable(bot, nick):
 def autoblock(bot):
     for channel in bot.channels:
         fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 0
-        bot.msg(channel, 'time left in hour is ' + str(60 - int(fingertime)))
         if fingertime >= 60:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'resetting time and totals')
             for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
         elif fingertime < 60:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'scanning users')
             for u in bot.privileges[channel.lower()]:
                 target = u
-                bot.msg(channel, 'scanning user ' + target)
                 usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
-                bot.msg(channel, str(target) + ' has ' + str(usertotal))
                 if usertotal > TOOMANYTIMES:
-                    bot.msg(channel, str(target) + ' is a finger-er')
                     set_timeout(bot, target)
                     set_disable(bot, target)
-                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+                    if not warned:
+                        bot.db.set_nick_value(channel, 'spicebothour_warn', "true")
+                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    
+                    
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
 
 @module.require_chanmsg
