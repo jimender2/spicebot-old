@@ -27,7 +27,7 @@ def getitnews(bot):
                 title = titles[2].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
                 link = links[2].childNodes[0].nodeValue.split("?")[0]
-                bot.say("[iT News] " + title + '     Link: ' + link)
+                bot.msg(channel, "[iT News] " + title + '     Link: ' + link)
 
 @sopel.module.rate(120)
 @sopel.module.commands('itnews')
