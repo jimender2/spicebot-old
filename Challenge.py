@@ -21,13 +21,18 @@ OPTTIMEOUT = 3600
 @module.intent('ACTION')
 @module.require_chanmsg
 def challenge_action(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 ####################
 ## Main Operation ##
@@ -36,13 +41,18 @@ def challenge_action(bot, trigger):
 @sopel.module.commands('challenge','duel')
 @module.require_chanmsg
 def challenge_cmd(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
@@ -176,7 +186,11 @@ def challengeon(bot, trigger):
                 bot.say('Challenges are already enabled for ' + target)
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 ## Disable
 @module.require_chanmsg
@@ -205,7 +219,11 @@ def challengeoff(bot, trigger):
                 set_opttimeout(bot, target)
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -312,6 +330,7 @@ def addhealthpotion(bot, nick):
 @module.require_chanmsg
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
@@ -332,7 +351,11 @@ def usehealthpotion(bot, trigger):
             bot.say('You do not have a healthpotion to use!')
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 ######################
 ## Weapon Selection ##
@@ -495,17 +518,23 @@ def update_health(bot, nick, damage):
 @module.require_chanmsg
 @sopel.module.commands('weaponslocker')
 def weaponslockercmd(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 #@module.require_privmsg
 #@sopel.module.commands('weaponslockerinv')
 #def invweapons(bot, trigger):
+#    instigator = trigger.nick
 #    target = trigger.nick
 #    targetdisenable = get_spicebotdisenable(bot, target)
 #    if targetdisenable:
@@ -514,11 +543,16 @@ def weaponslockercmd(bot, trigger):
 #             bot.say(str(line))
 #    else:
 #        instigator = trigger.nick
-#        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+#        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+#        if not warned:
+#            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+#        else:
+#            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 @module.require_chanmsg
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
@@ -537,11 +571,16 @@ def addweapons(bot, trigger):
                     bot.say(weaponnew + " has been added to the weapons locker.")
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 @module.require_chanmsg
 @sopel.module.commands('weaponslockerdel')
 def removeweapons(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
@@ -558,7 +597,11 @@ def removeweapons(bot, trigger):
                 bot.say(weapondel + " is not in the weapons locker.")
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 def checkweapons():
     if not exists(weaponslocker):
@@ -581,6 +624,7 @@ def createweapons():
 @module.require_chanmsg
 @module.commands('challenges','duels')
 def challengesa(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
@@ -605,7 +649,11 @@ def challengesa(bot, trigger):
                 bot.say('No stats found for ' + target)
     else:
         instigator = trigger.nick
-        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+        if not warned:
+            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        else:
+            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         
 ###########
 ## Tools ##
@@ -682,3 +730,8 @@ def challengestatsadmin(bot, trigger):
             gethowmany = eval(scriptdef)
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
+
+                
+def update_usertotal(bot, nick):
+    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
