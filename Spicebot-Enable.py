@@ -69,7 +69,7 @@ def get_usertotal(bot, nick):
 
 def get_hourtime(bot, nick):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    last = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
     return abs(now - last)
 
 @sopel.module.interval(60)
@@ -104,4 +104,8 @@ def discount(bot,trigger):
     bot.db.set_nick_value(target, 'spicebot_usertotal', '')
     
     
-    
+@module.require_chanmsg
+@sopel.module.commands('spicebothourzero')
+def discount(bot,trigger):
+    for channel in bot.channels:
+        set_timeout(bot, channel)
