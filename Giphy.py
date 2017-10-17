@@ -24,7 +24,9 @@ def gif(bot,trigger):
                     bot.say('Hmm...Couldn\'t find a gif for that!')
             else:
                 bot.say('Tell me what you\'re looking for!')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
 
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
