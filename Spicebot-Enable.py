@@ -70,13 +70,10 @@ def autoblock(bot):
             room = c
             for u in room:
                 target = u
-                usertotal = spicebot_usertotal(bot, target)
+                userstotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
                 if usertotal:
                     if usertotal > toomanytimes:
                         set_timeout(bot, target)
                         set_disable(bot, target)
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
-    
-def get_usertotal(bot, nick):
-    userstotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    return userstotal
+
