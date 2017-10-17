@@ -78,7 +78,6 @@ def get_usertotal(bot, target):
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        bot.msg(channel, channel)
         fingertime = get_fingertime(bot, channel)
         if int(fingertime) >= 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
@@ -104,6 +103,6 @@ def autoblock(bot):
 @sopel.module.commands('spicebotremwarn')
 def isshelisteningtome(bot,trigger):
     target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
+    bot.db.set_nick_value(target, 'spicebothour_warn', '')
     
     
