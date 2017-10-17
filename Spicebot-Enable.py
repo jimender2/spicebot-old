@@ -96,12 +96,9 @@ def autoblock(bot):
                     if not warn:
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
+                else:
+                    bot.db.set_nick_value(target, 'spicebothour_warn', '')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
-
-@sopel.module.commands('spicebotremwarn')
-def isshelisteningtome(bot,trigger):
-    target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebot_usertotal', '')
     
 @sopel.module.commands('spicebottotal')
 def isshelisteningtome(bot,trigger):
