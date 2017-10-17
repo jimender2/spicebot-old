@@ -70,50 +70,26 @@ def get_warned(bot, nick):
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
+        bot.msg(channel, channel)
         fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 0
+        bot.msg(channel, target)
         if fingertime >= 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
+                bot.msg(channel, u)
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
                 bot.db.set_nick_value(target, 'spicebothour_warn', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
         elif fingertime < 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
+                bot.notice
                 target = u
                 usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
                 if usertotal > TOOMANYTIMES:
                     set_timeout(bot, target)
                     set_disable(bot, target)
-                    warned = get_warned(bot, target)
-                    if warned != 0:
-                        bot.msg(channel, 'warned is null for' + str(target))
-                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
-                    else:
-                        bot.msg(channel, 'fucker')
+                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
 
-@module.require_chanmsg
-@sopel.module.commands('spicebotcountzero')
-def discount(bot,trigger):
-    target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-    
-@module.require_chanmsg
-@sopel.module.commands('spicebotwarned')
-def discounter(bot,trigger):
-    target = trigger.nick
-    warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-    bot.say(str(target) + str(warned))
-    
-@module.require_chanmsg
-@sopel.module.commands('spicebothourzero')
-def discounted(bot,trigger):
-    for channel in bot.channels:
-        bot.db.set_nick_value(channel, 'spicebothour_time', '')
 
-@module.require_chanmsg
-@sopel.module.commands('spicebotforcewarn')
-def discounteder(bot,trigger):
-    target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
