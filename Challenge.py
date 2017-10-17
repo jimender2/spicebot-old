@@ -14,14 +14,16 @@ weaponslocker = os.path.join(moduledir, relativepath)
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
-OPTTIMEOUT = 3600
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 @module.intent('ACTION')
 @module.require_chanmsg
 def challenge_action(bot, trigger):
-    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
 
 ####################
 ## Main Operation ##
@@ -30,7 +32,10 @@ def challenge_action(bot, trigger):
 @sopel.module.commands('challenge','duel')
 @module.require_chanmsg
 def challenge_cmd(bot, trigger):
-    return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
@@ -38,14 +43,6 @@ def challenge(bot, channel, instigator, target):
         bot.say(instigator + ", Who did you want to fight?")
     else:
         
-         ## Bot opt-out
-        instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
-        targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        if not instigatorspicebotdisenable:
-            sys.exit()
-        if not targetspicebotdisenable:
-            sys.exit()
-            
         ## Don't allow chat spamming
         instigatortime = get_timesince(bot, instigator)
         targettime = get_timesince(bot, target)
@@ -141,7 +138,6 @@ def challenge(bot, channel, instigator, target):
 @module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
-    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
@@ -150,16 +146,12 @@ def challengeon(bot, trigger):
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
+                bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            opttime = get_opttimeout(bot, target)
-            if opt_time < OPTTIMEOUT:
-                bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
-            elif not disenable:
+            if not disenable:
                 bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                 bot.say('Challenges has been enabled for ' + target)
-                set_opttimeout(bot, target)
             else:
                 bot.say('Challenges are already enabled for ' + target)
 
@@ -167,7 +159,6 @@ def challengeon(bot, trigger):
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
-    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
@@ -176,18 +167,14 @@ def challengeoff(bot, trigger):
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
+                bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            opttime = get_opttimeout(bot, target)
-            if opt_time < OPTTIMEOUT:
-                bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
-            elif not disenable:
+            if not disenable:
                 bot.say('Challenges are already disabled for ' + target)
             else:
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
-                set_opttimeout(bot, target)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -220,15 +207,6 @@ def get_timeout(bot, nick):
         timediff = 0
     return timediff
 
-def get_opttimeout(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
-    return abs(now - last)
-
-def set_opttimeout(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'challengesopt_time', now)
-    
 #####################
 ## Spawn / ReSpawn ##
 #####################
@@ -548,28 +526,25 @@ def createweapons():
 @module.require_chanmsg
 @module.commands('challenges','duels')
 def challengesa(bot, trigger):
-    target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        channel = trigger.sender
-        target = trigger.group(3) or trigger.nick
-        if target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
+    channel = trigger.sender
+    target = trigger.group(3) or trigger.nick
+    if target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
+    else:
+        stats = ''
+        challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
+        for x in challengestatsarray:
+            scriptdef = str('get_' + x + '(bot,target)')
+            databasecolumn = str('challenges_' + x)
+            gethowmany = eval(scriptdef)
+            if gethowmany:
+                addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                stats = str(stats + addstat)
+        if stats != '':
+            stats = str(target + "'s stats:" + stats)
+            bot.say(stats)
         else:
-            stats = ''
-            challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
-            for x in challengestatsarray:
-                scriptdef = str('get_' + x + '(bot,target)')
-                databasecolumn = str('challenges_' + x)
-                gethowmany = eval(scriptdef)
-                if gethowmany:
-                    addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                    stats = str(stats + addstat)
-            if stats != '':
-                stats = str(target + "'s stats:" + stats)
-                bot.say(stats)
-            else:
-                bot.say('No stats found for ' + target)
+            bot.say('No stats found for ' + target)
    
 ###########
 ## Tools ##
