@@ -6,7 +6,7 @@ from random import randint
 @sopel.module.require_admin
 @sopel.module.commands('getchannels')
 def getChannels(bot,trigger):
-	instigator = trigger.nick
+    instigator = trigger.nick
     target = trigger.nick
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
