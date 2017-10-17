@@ -15,3 +15,6 @@ def pee(bot, trigger):
                 bot.say(trigger.nick + ' releases the contents of his bladder on ' + claimed + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
             else:
                 bot.say(trigger.nick + ' urinates on ' + claimed + '! Claimed!')
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
