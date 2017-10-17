@@ -13,7 +13,10 @@ def isitaholiday(bot,trigger):
             bot.say('Today is a holiday.')
         else:
             bot.say('Today is not a holiday.')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def getholiday():
     url = 'http://isitaholiday.herokuapp.com/api/v2/holidays/today/'
     page = requests.get(url)
