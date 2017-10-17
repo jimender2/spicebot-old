@@ -33,29 +33,32 @@ def getSWContests(bot):
 @sopel.module.rate(120)
 @sopel.module.commands('swcontests','spicecontests')
 def manualCheck(bot,trigger):
-    url = 'https://community.spiceworks.com/feed/forum/1550.rss'
-    ua = UserAgent()
-    header = {'User-Agent': str(ua.chrome)}
-    page = requests.get(url, headers=header)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+    	url = 'https://community.spiceworks.com/feed/forum/1550.rss'
+    	ua = UserAgent()
+    	header = {'User-Agent': str(ua.chrome)}
+    	page = requests.get(url, headers=header)
 
-    if page.status_code == 200:
-        xml = page.text
-        xml = xml.encode('ascii', 'ignore').decode('ascii')
-        xmldoc = minidom.parseString(xml)
-        newContest = checkLastBuildDate(xmldoc)
-        if newContest == True:
-            titles = xmldoc.getElementsByTagName('title')
-            title = titles[2].childNodes[0].nodeValue
-            links = xmldoc.getElementsByTagName('link')
-            link = links[2].childNodes[0].nodeValue.split("?")[0]
-            bot.say("A new Spiceworks Contest is available!     Title: " + title)
-	    bot.say("Link: " + link)
-	else:	    
-	    links = xmldoc.getElementsByTagName('link')
-            link = links[2].childNodes[0].nodeValue.split("?")[0]
-	    bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
-    else:
-	bot.say("Unable to reach the Spiceworks Contest Page.")
+    	if page.status_code == 200:
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+            newContest = checkLastBuildDate(xmldoc)
+            if newContest == True:
+                titles = xmldoc.getElementsByTagName('title')
+                title = titles[2].childNodes[0].nodeValue
+                links = xmldoc.getElementsByTagName('link')
+                link = links[2].childNodes[0].nodeValue.split("?")[0]
+                bot.say("A new Spiceworks Contest is available!     Title: " + title)
+	        bot.say("Link: " + link)
+	    else:	    
+	        links = xmldoc.getElementsByTagName('link')
+                link = links[2].childNodes[0].nodeValue.split("?")[0]
+	        bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
+        else:
+	    bot.say("Unable to reach the Spiceworks Contest Page.")
 
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
@@ -87,5 +90,13 @@ def checkLastBuildDate(xmldoc):
 @sopel.module.require_admin
 @sopel.module.commands('swcontestsreset','spiceconteststreset')
 def reset(bot,trigger):
-    bot.say('Removing Contests File...')
-    os.system("sudo rm " + abs_file_path)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+    	bot.say('Removing Contests File...')
+    	os.system("sudo rm " + abs_file_path)
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
