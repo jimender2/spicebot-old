@@ -109,4 +109,5 @@ def discounted(bot,trigger):
 @module.require_chanmsg
 @sopel.module.commands('spicebotforcewarn')
 def discounteder(bot,trigger):
+    target = trigger.nick
     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
