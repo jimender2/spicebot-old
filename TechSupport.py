@@ -10,7 +10,10 @@ def techsupport(bot, trigger):
         messages = ["YOU MUST CONSTRUCT ADDITIONAL PYLONS!","Have you tried flinging feces at it?","Have you tried chewing the cable?","Did you try turning it off and on again?","Did you try licking the mouse? Double-lick?","Did your try replacing all the ones with zeros?"]
         answer = random.randint(0,len(messages) - 1)
         bot.say(messages[answer]);
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
