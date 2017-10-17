@@ -3,7 +3,7 @@ from sopel import module, tools
 import time
 
 OPTTIMEOUT = 3600
-TOOMANYTIMES = 10
+TOOMANYTIMES = 15
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
