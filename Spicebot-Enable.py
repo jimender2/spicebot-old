@@ -56,3 +56,10 @@ def set_timeout(bot, nick):
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
+
+@module.require_chanmsg
+@module.require_admin
+@sopel.module.commands('spicebotona','spicebotoffa')
+def isshelistening(bot,trigger):
+    target = trigger.nick
+    bot.db.set_nick_value(target, 'spicebot_disenable', '')
