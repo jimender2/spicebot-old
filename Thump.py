@@ -10,7 +10,10 @@ def thump(bot, trigger):
             bot.say("Did you mean to thump somebody?")
         elif not trigger.group(2).strip() == bot.nick:
             bot.action('thumps ' + trigger.group(2).strip() + ' on behalf of ' + trigger.nick)
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
