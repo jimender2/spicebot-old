@@ -70,7 +70,7 @@ def get_usertotal(bot, nick):
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        fingertime = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
+        fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 0
         bot.msg(channel, 'time left in hour is ' + str(60 - int(fingertime)))
         if fingertime >= 60:# and not bot.nick.endswith('dev'):
             bot.msg(channel, 'resetting time and totals')
