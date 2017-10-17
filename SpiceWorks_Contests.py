@@ -59,7 +59,10 @@ def manualCheck(bot,trigger):
 	        bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
         else:
 	    bot.say("Unable to reach the Spiceworks Contest Page.")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+	
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
