@@ -8,6 +8,8 @@ def airbiscuit(bot,trigger):
     if targetdisenable:
         if target == trigger.nick:
             bot.say(trigger.nick + " floats an air biscuit.")
+    else:
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
