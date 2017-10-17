@@ -9,6 +9,7 @@ def airbiscuit(bot,trigger):
         if target == trigger.nick:
             bot.say(trigger.nick + " floats an air biscuit.")
     else:
+        instigator = trigger.nick
         bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
 
 ## Check Status of Opt In
