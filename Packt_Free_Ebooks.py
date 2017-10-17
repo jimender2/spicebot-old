@@ -23,20 +23,23 @@ def getpackt(bot):
 @sopel.module.rate(120)
 @sopel.module.commands('packt')
 def packt(bot, trigger):
-    packttimediff = getpackttimediff()
-    if trigger.group(2):
-        if trigger.group(2) == 'time':
-            bot.say(str(packttimediff))
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        packttimediff = getpackttimediff()
+        if trigger.group(2):
+            if trigger.group(2) == 'time':
+                bot.say(str(packttimediff))
+            else:
+                normalrun='true'
         else:
             normalrun='true'
-    else:
-        normalrun='true'
-    try:
-        if normalrun:
-            title = getPacktTitle()
-            bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-    except UnboundLocalError:
-        return
+        try:
+            if normalrun:
+                title = getPacktTitle()
+                bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+        except UnboundLocalError:
+            return
 
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
@@ -69,3 +72,8 @@ def getpackttimediff():
     timecompare = (b.humanize(a, granularity='auto'))
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
