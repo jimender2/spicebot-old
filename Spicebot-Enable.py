@@ -1,13 +1,18 @@
 import sopel.module
 from sopel import module, tools
+import time
+
+OPTTIMEOUT = 3600
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
 def isshelistening(bot,trigger):
+    instigator = trigger.nick
     channel = trigger.sender
     target = trigger.group(3) or trigger.nick
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("spicebot", 1)[1])
+    opt_time = get_timeout(bot, target)
     if not trigger.admin and target != trigger.nick:
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
     elif target == 'all' and commandtrimmed == 'off':
@@ -20,6 +25,8 @@ def isshelistening(bot,trigger):
         bot.say(bot.nick + ' disabled for all.')
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
+    elif opt_time < OPTTIMEOUT:
+            bot.notice(target + " can't challenge for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
     else:
         disenable = get_disenable(bot, target)
         if commandtrimmed == 'on':
@@ -34,7 +41,17 @@ def isshelistening(bot,trigger):
             else:
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
                 bot.say(bot.nick + ' has been disabled for ' + target)
+        set_timeout(bot, target)
 
+def get_timeout(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    return abs(now - last)
+
+def set_timeout(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+    
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
