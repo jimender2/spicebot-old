@@ -144,6 +144,7 @@ def challengeon(bot, trigger):
     if targetdisenable:
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
+        opt_time = get_spicetimeout(bot, target)
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
@@ -165,6 +166,7 @@ def challengeoff(bot, trigger):
     if targetdisenable:
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
+        opt_time = get_spicetimeout(bot, target)
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
@@ -176,6 +178,7 @@ def challengeoff(bot, trigger):
             else:
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
+        set_timeout(bot, target)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -208,6 +211,15 @@ def get_timeout(bot, nick):
         timediff = 0
     return timediff
 
+def get_spicetimeout(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    return abs(now - last)
+
+def set_timeout(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+    
 #####################
 ## Spawn / ReSpawn ##
 #####################
