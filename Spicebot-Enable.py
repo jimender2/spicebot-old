@@ -85,9 +85,11 @@ def autoblock(bot):
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     warned = get_warned(bot, target)
-                    if warned != 'true':
+                    if warned != 0:
                         bot.msg(channel, 'warned is null for' + str(target))
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    else:
+                        bot.msg(channel, 'fucker')
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
 
