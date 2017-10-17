@@ -15,52 +15,60 @@ def format_defn(defn, num, max):
     return lines
 
 def urban(bot, input):
-    baseurl = 'http://api.urbandictionary.com/v0/'
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        baseurl = 'http://api.urbandictionary.com/v0/'
 
-    if not input.group(2):
-        bot.say('Usage: .urban <word> [definition number]')
-        return
+        if not input.group(2):
+            bot.say('Usage: .urban <word> [definition number]')
+            return
 
-    input = input.group(2).strip()
-    words = input.split()
-    try:
-        num = int(words[-1])
-        input = ' '.join(words[:-1])
-    except ValueError:
-        num = 1
+        input = input.group(2).strip()
+        words = input.split()
+        try:
+            num = int(words[-1])
+            input = ' '.join(words[:-1])
+        except ValueError:
+            num = 1
 
-    if input == 'random':
-        url = baseurl + 'random'
-    else:
-        url = baseurl + 'define?term=' + input
+        if input == 'random':
+            url = baseurl + 'random'
+        else:
+            url = baseurl + 'define?term=' + input
 
-    try:
-        result = json.loads(urllib.urlopen(url).read())
-    except:
-        return
+        try:
+            result = json.loads(urllib.urlopen(url).read())
+        except:
+            return
 
-    if not result or "list" not in result:
-        return
+        if not result or "list" not in result:
+            return
 
-    idx = num - 1
-    max = len(result['list'])
-    try:
-        defn = result['list'][idx]
-    except IndexError:
-        bot.say('No definition %i of %i for %s' % (idx, max, input))
-        return
+        idx = num - 1
+        max = len(result['list'])
+        try:
+            defn = result['list'][idx]
+        except IndexError:
+            bot.say('No definition %i of %i for %s' % (idx, max, input))
+            return
 
-    lines = format_defn(defn, num, max)
-    for line in lines:
-        bot.say(line)
-urban.commands = ['urban']
+        lines = format_defn(defn, num, max)
+        for line in lines:
+            bot.say(line)
+    urban.commands = ['urban']
 
 
-if __name__ == '__main__':
-    import sys
+    if __name__ == '__main__':
+        import sys
 
-    class Sopel(object):
-        def say(self, msg):
-            print msg
+        class Sopel(object):
+            def say(self, msg):
+                print msg
 
-    urban(Sopel(), re.match('()(.*)', sys.argv[1]))
+        urban(Sopel(), re.match('()(.*)', sys.argv[1]))
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
