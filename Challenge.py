@@ -139,6 +139,7 @@ def challenge(bot, channel, instigator, target):
 @module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
@@ -148,7 +149,9 @@ def challengeon(bot, trigger):
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
-                bot.say("I'm not sure who that is.")
+            bot.say("I'm not sure who that is.")
+        elif opt_time < OPTTIMEOUT:
+            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
         else:
             disenable = get_disenable(bot, target)
             if not disenable:
@@ -156,11 +159,13 @@ def challengeon(bot, trigger):
                 bot.say('Challenges has been enabled for ' + target)
             else:
                 bot.say('Challenges are already enabled for ' + target)
+        set_timeout(bot, target)
 
 ## Disable
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
@@ -170,7 +175,9 @@ def challengeoff(bot, trigger):
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
-                bot.say("I'm not sure who that is.")
+            bot.say("I'm not sure who that is.")
+        elif opt_time < OPTTIMEOUT:
+            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
         else:
             disenable = get_disenable(bot, target)
             if not disenable:
