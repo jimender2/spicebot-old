@@ -153,7 +153,7 @@ def challengeon(bot, trigger):
             bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            opttime = get_timeout(bot, target)
+            opttime = get_opttimeout(bot, target)
             if opt_time < OPTTIMEOUT:
                 bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
             elif not disenable:
@@ -179,7 +179,7 @@ def challengeoff(bot, trigger):
             bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            opttime = get_timeout(bot, target)
+            opttime = get_opttimeout(bot, target)
             if opt_time < OPTTIMEOUT:
                 bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
             elif not disenable:
@@ -220,12 +220,12 @@ def get_timeout(bot, nick):
         timediff = 0
     return timediff
 
-def get_timeout(bot, nick):
+def get_opttimeout(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
     return abs(now - last)
 
-def set_timeout(bot, nick):
+def set_opttimeout(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'challengesopt_time', now)
     
