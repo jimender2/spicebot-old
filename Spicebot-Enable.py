@@ -71,6 +71,7 @@ def autoblock(bot):
             for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+                bot.db.set_nick_value(target, 'spicebothour_warn', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
         elif fingertime < 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
