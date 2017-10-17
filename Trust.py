@@ -10,7 +10,10 @@ def trust(bot,trigger):
             bot.say("Trust Doesn't Rust.")
         elif not trigger.group(2).strip() == bot.nick:
             bot.say("I just can't ever bring myself to trust " + trigger.group(2).strip() + " again. I can never forgive " + trigger.group(2).strip() + " for the death of my boy.")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
