@@ -21,10 +21,7 @@ OPTTIMEOUT = 3600
 @module.intent('ACTION')
 @module.require_chanmsg
 def challenge_action(bot, trigger):
-    target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
+    return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
 
 ####################
 ## Main Operation ##
@@ -33,10 +30,7 @@ def challenge_action(bot, trigger):
 @sopel.module.commands('challenge','duel')
 @module.require_chanmsg
 def challenge_cmd(bot, trigger):
-    target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
+    return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
@@ -44,6 +38,14 @@ def challenge(bot, channel, instigator, target):
         bot.say(instigator + ", Who did you want to fight?")
     else:
         
+         ## Bot opt-out
+        instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
+        targetspicebotdisenable = get_spicebotdisenable(bot, target)
+        if not instigatorspicebotdisenable:
+            sys.exit()
+        if not targetspicebotdisenable:
+            sys.exit()
+            
         ## Don't allow chat spamming
         instigatortime = get_timesince(bot, instigator)
         targettime = get_timesince(bot, target)
