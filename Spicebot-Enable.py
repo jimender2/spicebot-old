@@ -71,7 +71,7 @@ def get_hourtime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
     if not last:
-        bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+        bot.db.set_nick_value(nick, 'spicebothour_time', now)
         last = now
     return abs(now - last)
 
