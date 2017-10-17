@@ -154,7 +154,10 @@ def challengeon(bot, trigger):
             bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
         else:
             disenable = get_disenable(bot, target)
-            if not disenable:
+            opttime = get_timeout(bot, target)
+            if opt_time < OPTTIMEOUT:
+                bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            elif not disenable:
                 bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                 bot.say('Challenges has been enabled for ' + target)
                 set_timeout(bot, target)
@@ -176,11 +179,12 @@ def challengeoff(bot, trigger):
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-        elif opt_time < OPTTIMEOUT:
-            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
         else:
             disenable = get_disenable(bot, target)
-            if not disenable:
+            opttime = get_timeout(bot, target)
+            if opt_time < OPTTIMEOUT:
+                bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            elif not disenable:
                 bot.say('Challenges are already disabled for ' + target)
             else:
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
