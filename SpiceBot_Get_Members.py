@@ -6,12 +6,20 @@ from random import randint
 @sopel.module.require_admin
 @sopel.module.commands('getmembers')
 def getMembers(bot,trigger):
-    #users = str(bot.channels[trigger.sender].users)
-    #bot.say(users)
-    userlist = []
-    for u in bot.channels[trigger.sender].users:
-        bot.say(u)
-        userlist.append(u)
-    randno = randint(0,len(userlist))
-    randUser = userlist[randno]
-    bot.say('Here is a randomly picked user: ' + randUser)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        #users = str(bot.channels[trigger.sender].users)
+        #bot.say(users)
+        userlist = []
+        for u in bot.channels[trigger.sender].users:
+            bot.say(u)
+            userlist.append(u)
+        randno = randint(0,len(userlist))
+        randUser = userlist[randno]
+        bot.say('Here is a randomly picked user: ' + randUser)
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
