@@ -5,14 +5,17 @@ import json
 @sopel.module.rate(120)
 @sopel.module.commands('urmom')
 def sayJoke(bot,trigger):
-    joke = getJoke()
-    if joke:
-        if not trigger.group(2):
-            bot.say(joke)
-        elif not trigger.group(2).strip() == bot.nick:
-            bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
-    else:
-        bot.say('Please leave the mothers out of it.')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        joke = getJoke()
+        if joke:
+            if not trigger.group(2):
+                bot.say(joke)
+            elif not trigger.group(2).strip() == bot.nick:
+                bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
+        else:
+            bot.say('Please leave the mothers out of it.')
     
 
 def getJoke():
@@ -22,3 +25,8 @@ def getJoke():
     jsonjoke = json.loads(result)
     joke = jsonjoke['joke']
     return joke
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
