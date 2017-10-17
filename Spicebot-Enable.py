@@ -3,6 +3,7 @@ from sopel import module, tools
 import time
 
 OPTTIMEOUT = 3600
+toomanytimes = 10
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
@@ -52,8 +53,30 @@ def get_timeout(bot, nick):
 def set_timeout(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+
+def set_disable(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebot_disenable', '')
     
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
+
+@sopel.module.interval(60)
+def autoblock(bot):
+    #if not bot.nick.endswith('dev'):
+        for c in bot.channels:
+            room = c
+            for u in room:
+                target = u
+                usertotal = spicebot_usertotal(bot, target)
+                if usertotal:
+                    if usertotal > toomanytimes:
+                        set_timeout(bot, target)
+                        set_disable(bot, target)
+                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+    
+def get_usertotal(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     return disenable
