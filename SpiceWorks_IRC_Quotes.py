@@ -8,21 +8,21 @@ from xml.sax.saxutils import unescape as unescape
 @sopel.module.rate(120)
 @sopel.module.commands('spicyquote')
 def spicyQuote(bot,trigger):
-    query = str(trigger.group(2))
-    if query != "None":
-        quote = getQuote(query)
-        if 'Invalid quote' not in quote:
-            if 'http://spice.dussed.com' in quote:
-                bot.say('That is a long quote! Here is the link: ' + quote)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        query = str(trigger.group(2))
+        if query != "None":
+            quote = getQuote(query)
+            if 'Invalid quote' not in quote:
+                if 'http://spice.dussed.com' in quote:
+                    bot.say('That is a long quote! Here is the link: ' + quote)
+                else:
+                    bot.say(quote)
             else:
-                bot.say(quote)
+                bot.say('Could not find that quote!')
         else:
-            bot.say('Could not find that quote!')
-    else:
-        bot.say('Please provide a quote number and try again!')
-
-
-
+            bot.say('Please provide a quote number and try again!')
 
 def getQuote(query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
@@ -68,3 +68,7 @@ def getQuote(query):
         quote = txt
     return quote
 
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
