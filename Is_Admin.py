@@ -4,8 +4,16 @@ from sopel.tools.target import User, Channel
 
 @sopel.module.commands('isadmin')
 def isadmin(bot,trigger):
-    if not trigger.group(2):
-        if trigger.admin:
-            bot.say(trigger.nick + ' is an admin')
-        else:
-            bot.say(trigger.nick + ' is not an admin')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        if not trigger.group(2):
+            if trigger.admin:
+                bot.say(trigger.nick + ' is an admin')
+            else:
+                bot.say(trigger.nick + ' is not an admin')
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
