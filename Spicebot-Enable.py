@@ -26,7 +26,7 @@ def isshelistening(bot,trigger):
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
     elif opt_time < OPTTIMEOUT:
-            bot.notice(target + " can't challenge for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
     else:
         disenable = get_disenable(bot, target)
         if commandtrimmed == 'on':
