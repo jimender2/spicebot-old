@@ -3,7 +3,7 @@ from sopel import module, tools
 import time
 
 OPTTIMEOUT = 3600
-TOOMANYTIMES = 20
+TOOMANYTIMES = 10
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
@@ -79,13 +79,13 @@ def get_usertotal(bot, target):
 def autoblock(bot):
     for channel in bot.channels:
         fingertime = get_fingertime(bot, channel)
-        if int(fingertime) >= 60:# and not bot.nick.endswith('dev'):
+        if int(fingertime) >= 60 and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
                 bot.db.set_nick_value(target, 'spicebothour_warn', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
-        elif int(fingertime) < 60:# and not bot.nick.endswith('dev'):
+        elif int(fingertime) < 60 and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
                 target = u
                 usertotal = get_usertotal(bot, target)
