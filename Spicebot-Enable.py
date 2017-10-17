@@ -63,25 +63,34 @@ def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
+def get_usertotal(bot, nick):
+    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    return usertotal
+
+def get_hourtime(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    return abs(now - last)
+
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        fingertime = get_timeout(bot, channel)
+        fingertime = get_hourtime(bot, channel)
         bot.msg(channel, 'time left in hour is ' + str(fingertime))
         if not fingertime:
             fingertime = set_timeout(bot, channel)
             bot.msg(channel, 'setting hour to ' + str(fingertime))
-        elif fingertime > OPTTIMEOUT:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'finger bigger, resetting time, and user counts')
+        elif fingertime <= 0:# and not bot.nick.endswith('dev'):
+            bot.msg(channel, 'finger is zero or lower')
             set_timeout(bot, channel)
             for u in channel:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-        elif fingertime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'finger smaller')
+        elif fingertime > 0:# and not bot.nick.endswith('dev'):
+            bot.msg(channel, 'finger bigger than zero')
             for u in channel:
                 target = u
-                usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
+                usertotal = get_usertotal(bot, channel)
                 if usertotal > TOOMANYTIMES:
                     bot.msg(channel, str(target) + ' is a finger-er')
                     set_timeout(bot, target)
