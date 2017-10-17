@@ -67,35 +67,30 @@ def get_usertotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     return usertotal
 
-def get_hourtime(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
-    if not last:
-        bot.db.set_nick_value(nick, 'spicebothour_time', now)
-        last = now
-    return abs(now - last)
-
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        fingertime = get_hourtime(bot, channel)
-        bot.msg(channel, 'time left in hour is ' + str(fingertime))
-        if fingertime <= 0:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'finger is zero or lower')
-            set_timeout(bot, channel)
+        fingertime = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
+        bot.msg(channel, 'time left in hour is ' + str(60 - intfingertime)))
+        if fingertime >= 60:# and not bot.nick.endswith('dev'):
+            bot.msg(channel, 'resetting time and totals')
             for u in channel:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-        elif fingertime > 0:# and not bot.nick.endswith('dev'):
-            bot.msg(channel, 'finger bigger than zero')
+            bot.db.set_nick_value(channel, 'spicebothour_time', '')
+        elif fingertime < 60:# and not bot.nick.endswith('dev'):
+            bot.msg(channel, 'scanning users')
             for u in channel:
                 target = u
+                bot.msg(channel, 'scanning user ' + target)
                 usertotal = get_usertotal(bot, channel)
+                bot.msg(channel, str(target) + ' has ' + str(usertotal))
                 if usertotal > TOOMANYTIMES:
                     bot.msg(channel, str(target) + ' is a finger-er')
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+        bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
 
 @module.require_chanmsg
 @sopel.module.commands('spicebotcountzero')
@@ -108,4 +103,4 @@ def discount(bot,trigger):
 @sopel.module.commands('spicebothourzero')
 def discount(bot,trigger):
     for channel in bot.channels:
-        set_timeout(bot, channel)
+        bot.db.set_nick_value(channel, 'spicebothour_time', '')
