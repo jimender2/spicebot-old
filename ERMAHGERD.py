@@ -80,3 +80,8 @@ def ermergerd(w):
         er = er[0] + er[1:].replace('y', 'er')
         er = er.replace('rr', 'r')
         return er.upper()
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
