@@ -16,7 +16,9 @@ def sayJoke(bot,trigger):
                 bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
         else:
             bot.say('Please leave the mothers out of it.')
-    
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
 
 def getJoke():
     url = 'http://api.yomomma.info'
