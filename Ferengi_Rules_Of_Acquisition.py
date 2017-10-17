@@ -23,7 +23,10 @@ def ferengi(bot, trigger):
             if not myline or myline == '\n':
                 myline = 'There is no cannonized rule tied to this number.'
         bot.say(myline)
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 # random rule
 def randomfra():
     htmlfile=urllib.urlopen(fra)
