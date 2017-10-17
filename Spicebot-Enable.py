@@ -100,7 +100,7 @@ def autoblock(bot):
                     bot.db.set_nick_value(target, 'spicebothour_warn', '')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
     
-@sopel.module.commands('spicebottotal')
+@sopel.module.commands('spicebottotalusesthishour')
 def isshelisteningtome(bot,trigger):
     target = trigger.nick
     usertotal = get_usertotal(bot, target)
