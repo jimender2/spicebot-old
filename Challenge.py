@@ -146,37 +146,43 @@ def challenge(bot, channel, instigator, target):
 @module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
-    channel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    if not trigger.admin and target != trigger.nick:
-        bot.say("Only bot admins can mark other users as able to challenge.")
-    elif target.lower() not in bot.privileges[channel.lower()]:
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        channel = trigger.sender
+        target = trigger.group(3) or trigger.nick
+        if not trigger.admin and target != trigger.nick:
+            bot.say("Only bot admins can mark other users as able to challenge.")
+        elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-    else:
-        disenable = get_disenable(bot, target)
-        if not disenable:
-            bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-            bot.say('Challenges has been enabled for ' + target)
         else:
-            bot.say('Challenges are already enabled for ' + target)
+            disenable = get_disenable(bot, target)
+            if not disenable:
+                bot.db.set_nick_value(target, 'challenges_disenable', 'true')
+                bot.say('Challenges has been enabled for ' + target)
+            else:
+                bot.say('Challenges are already enabled for ' + target)
 
 ## Disable
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
-    channel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    if not trigger.admin and target != trigger.nick:
-        bot.say("Only bot admins can mark other users as not able to challenge.")
-    elif target.lower() not in bot.privileges[channel.lower()]:
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        channel = trigger.sender
+        target = trigger.group(3) or trigger.nick
+        if not trigger.admin and target != trigger.nick:
+            bot.say("Only bot admins can mark other users as not able to challenge.")
+        elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-    else:
-        disenable = get_disenable(bot, target)
-        if not disenable:
-            bot.say('Challenges are already disabled for ' + target)
         else:
-            bot.db.set_nick_value(target, 'challenges_disenable', '')
-            bot.say('Challenges has been disabled for ' + target)
+            disenable = get_disenable(bot, target)
+            if not disenable:
+                bot.say('Challenges are already disabled for ' + target)
+            else:
+                bot.db.set_nick_value(target, 'challenges_disenable', '')
+                bot.say('Challenges has been disabled for ' + target)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -274,21 +280,24 @@ def addhealthpotion(bot, nick):
 @module.require_chanmsg
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
-    channel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    healthpotions = get_healthpotions(bot, trigger.nick)
-    if healthpotions:
-        health = get_health(bot, target)
-        if target == trigger.nick:
-            bot.say(trigger.nick + ' uses health potion.')
-        elif target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        channel = trigger.sender
+        target = trigger.group(3) or trigger.nick
+        healthpotions = get_healthpotions(bot, trigger.nick)
+        if healthpotions:
+            health = get_health(bot, target)
+            if target == trigger.nick:
+                bot.say(trigger.nick + ' uses health potion.')
+            elif target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
+                bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+            bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+            bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
         else:
-            bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
-        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
-    else:
-        bot.say('You do not have a healthpotion to use!')
+            bot.say('You do not have a healthpotion to use!')
 
 ######################
 ## Weapon Selection ##
@@ -451,46 +460,58 @@ def update_health(bot, nick, damage):
 @module.require_chanmsg
 @sopel.module.commands('weaponslocker')
 def weaponslockercmd(bot, trigger):
-    bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
 
 #@module.require_privmsg
 #@sopel.module.commands('weaponslockerinv')
 #def invweapons(bot, trigger):
-#    with open (weaponslocker, "r") as myfile:
-#        for line in myfile:
-#            bot.say(str(line))
+#    target = trigger.nick
+#    targetdisenable = get_spicebotdisenable(bot, target)
+#    if targetdisenable:
+#     with open (weaponslocker, "r") as myfile:
+#         for line in myfile:
+#             bot.say(str(line))
 
 @module.require_chanmsg
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
-    checkweapons()
-    if not trigger.group(2):
-        bot.say("what weapon would you like to add?")
-    else:
-        weaponnew = str(trigger.group(2))
-        if str(weaponnew) in open(weaponslocker).read():
-            bot.say(weaponnew + " is already in the weapons locker.")
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        checkweapons()
+        if not trigger.group(2):
+            bot.say("what weapon would you like to add?")
         else:
-            with open(weaponslocker, "a") as myfile:
-                myfile.write("\n")
-                myfile.write(weaponnew)
+            weaponnew = str(trigger.group(2))
             if str(weaponnew) in open(weaponslocker).read():
-                bot.say(weaponnew + " has been added to the weapons locker.")
+                bot.say(weaponnew + " is already in the weapons locker.")
+            else:
+                with open(weaponslocker, "a") as myfile:
+                    myfile.write("\n")
+                    myfile.write(weaponnew)
+                if str(weaponnew) in open(weaponslocker).read():
+                    bot.say(weaponnew + " has been added to the weapons locker.")
 
 @module.require_chanmsg
 @sopel.module.commands('weaponslockerdel')
 def removeweapons(bot, trigger):
-    checkweapons()
-    if not trigger.group(2):
-        bot.say("what weapon would you like to remove?")
-    else:
-        weapondel = str(trigger.group(2))
-        if str(weapondel) in open(weaponslocker).read():
-            os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d" ' + weaponslocker)
-            if str(weapondel) not in open(weaponslocker).read():
-                bot.say(weapondel + ' has been removed from the weapons locker.')
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        checkweapons()
+        if not trigger.group(2):
+            bot.say("what weapon would you like to remove?")
         else:
-            bot.say(weapondel + " is not in the weapons locker.")
+            weapondel = str(trigger.group(2))
+            if str(weapondel) in open(weaponslocker).read():
+                os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d" ' + weaponslocker)
+                if str(weapondel) not in open(weaponslocker).read():
+                    bot.say(weapondel + ' has been removed from the weapons locker.')
+            else:
+                bot.say(weapondel + " is not in the weapons locker.")
 
 def checkweapons():
     if not exists(weaponslocker):
@@ -513,25 +534,28 @@ def createweapons():
 @module.require_chanmsg
 @module.commands('challenges','duels')
 def challengesa(bot, trigger):
-    channel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    if target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
-    else:
-        stats = ''
-        challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
-        for x in challengestatsarray:
-            scriptdef = str('get_' + x + '(bot,target)')
-            databasecolumn = str('challenges_' + x)
-            gethowmany = eval(scriptdef)
-            if gethowmany:
-                addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                stats = str(stats + addstat)
-        if stats != '':
-            stats = str(target + "'s stats:" + stats)
-            bot.say(stats)
+    target = trigger.nick
+    targetdisenable = get_spicebotdisenable(bot, target)
+    if targetdisenable:
+        channel = trigger.sender
+        target = trigger.group(3) or trigger.nick
+        if target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
         else:
-            bot.say('No stats found for ' + target)
+            stats = ''
+            challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
+            for x in challengestatsarray:
+                scriptdef = str('get_' + x + '(bot,target)')
+                databasecolumn = str('challenges_' + x)
+                gethowmany = eval(scriptdef)
+                if gethowmany:
+                    addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                    stats = str(stats + addstat)
+            if stats != '':
+                stats = str(target + "'s stats:" + stats)
+                bot.say(stats)
+            else:
+                bot.say('No stats found for ' + target)
    
 ###########
 ## Tools ##
