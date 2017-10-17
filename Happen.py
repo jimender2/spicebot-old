@@ -8,7 +8,10 @@ def happen(bot,trigger):
     if targetdisenable:
         if trigger.group(2):
             bot.say("Stop trying to make " + trigger.group(2) + " happen. It's not going to happen")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
