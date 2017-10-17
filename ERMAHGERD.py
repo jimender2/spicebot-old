@@ -5,12 +5,15 @@ from num2words import num2words
 @sopel.module.rate(120)
 @sopel.module.commands('ERMAHGERD')
 def ERMAHGERD(bot,trigger):
-    if trigger.group(2):
-        ernpert = trigger.group(2)
-        spertitert = trernslert(ernpert)
-        bot.say('ERMAHGERD,' + str(spertitert))
-    else:
-        bot.say('Whert der yer wernt ter trernslert?')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        if trigger.group(2):
+            ernpert = trigger.group(2)
+            spertitert = trernslert(ernpert)
+            bot.say('ERMAHGERD,' + str(spertitert))
+        else:
+            bot.say('Whert der yer wernt ter trernslert?')
 
 def trernslert(werds):
     terkerns = werds.split()
