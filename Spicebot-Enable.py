@@ -63,6 +63,10 @@ def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
+def get_warned(bot, nick):
+    warned = bot.db.get_nick_value(nick, 'spicebothour_warn') or 0
+    return warned
+
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
@@ -80,7 +84,7 @@ def autoblock(bot):
                 if usertotal > TOOMANYTIMES:
                     set_timeout(bot, target)
                     set_disable(bot, target)
-                    warned = bot.db.get_nick_value(target, 'spicebothour_warn')
+                    warned = get_warned(bot, target)
                     if not warned:
                         bot.msg(channel, 'warned is null for' + str(target))
                         bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
