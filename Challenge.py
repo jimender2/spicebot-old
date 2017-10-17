@@ -14,6 +14,7 @@ weaponslocker = os.path.join(moduledir, relativepath)
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
+OPTTIMEOUT = 3600
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -526,25 +527,28 @@ def createweapons():
 @module.require_chanmsg
 @module.commands('challenges','duels')
 def challengesa(bot, trigger):
-    channel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    if target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
-    else:
-        stats = ''
-        challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
-        for x in challengestatsarray:
-            scriptdef = str('get_' + x + '(bot,target)')
-            databasecolumn = str('challenges_' + x)
-            gethowmany = eval(scriptdef)
-            if gethowmany:
-                addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                stats = str(stats + addstat)
-        if stats != '':
-            stats = str(target + "'s stats:" + stats)
-            bot.say(stats)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        channel = trigger.sender
+        target = trigger.group(3) or trigger.nick
+        if target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm not sure who that is.")
         else:
-            bot.say('No stats found for ' + target)
+            stats = ''
+            challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
+            for x in challengestatsarray:
+                scriptdef = str('get_' + x + '(bot,target)')
+                databasecolumn = str('challenges_' + x)
+                gethowmany = eval(scriptdef)
+                if gethowmany:
+                    addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                    stats = str(stats + addstat)
+            if stats != '':
+                stats = str(target + "'s stats:" + stats)
+                bot.say(stats)
+            else:
+                bot.say('No stats found for ' + target)
    
 ###########
 ## Tools ##
