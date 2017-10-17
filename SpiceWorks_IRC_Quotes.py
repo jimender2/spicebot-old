@@ -23,7 +23,10 @@ def spicyQuote(bot,trigger):
                 bot.say('Could not find that quote!')
         else:
             bot.say('Please provide a quote number and try again!')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+	
 def getQuote(query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
