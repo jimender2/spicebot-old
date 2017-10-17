@@ -6,34 +6,40 @@ from sopel import module, tools
 @sopel.module.rate(120)
 @sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints')
 def points_cmd(bot, trigger):
-    commandused = trigger.group(1)
-    if commandused == 'points' or commandused == 'pants':
-        giveortake = ' gives '
-        tofrom = ' to '
-        addminus = 'up'
-    else:
-        giveortake = ' takes '
-        tofrom = ' from '
-        addminus = 'down'
-    if commandused.endswith('points'):
-        pointstype = 'points'
-    else:
-        pointstype = 'pants'
-    return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        commandused = trigger.group(1)
+        if commandused == 'points' or commandused == 'pants':
+            giveortake = ' gives '
+            tofrom = ' to '
+            addminus = 'up'
+        else:
+            giveortake = ' takes '
+            tofrom = ' from '
+            addminus = 'down'
+        if commandused.endswith('points'):
+            pointstype = 'points'
+        else:
+            pointstype = 'pants'
+        return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
     
 @sopel.module.commands('checkpoints','checkpants')
 def checkpoints(bot, trigger):
-    commandused = trigger.group(1)
-    if commandused.endswith('points'):
-        pointstype = 'points'
-    else:
-        pointstype = 'pants'
-    target = trigger.group(3) or trigger.nick
-    points = get_points(bot, target)
-    if not points:
-        bot.say(target + ' has no ' + pointstype + ' history.')
-    else:
-        bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        commandused = trigger.group(1)
+        if commandused.endswith('points'):
+            pointstype = 'points'
+        else:
+            pointstype = 'pants'
+        target = trigger.group(3) or trigger.nick
+        points = get_points(bot, target)
+        if not points:
+            bot.say(target + ' has no ' + pointstype + ' history.')
+        else:
+            bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
     
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
     target = tools.Identifier(target or '')
@@ -71,3 +77,8 @@ def update_points(bot, nick, rando, addminus):
 def get_points(bot, nick):
     points = bot.db.get_nick_value(nick, 'points_points') or 1
     return points
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
