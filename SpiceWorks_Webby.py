@@ -11,15 +11,18 @@ url = 'https://community.spiceworks.com/calendar'
 
 @sopel.module.commands('spicewebby')
 def webbymanual(bot, trigger):
-    page = requests.get(url,headers = None)
-    if page.status_code == 200:
-        now = datetime.datetime.utcnow()
-        webbytimeuntil = getwebbytimeuntil()
-        webbybonus = getwebbybonus()
-        webbytitle = getwebbytitle()
-        webbylink = getwebbylink()
-        bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-        bot.say('BONUS: ' + webbybonus)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        page = requests.get(url,headers = None)
+        if page.status_code == 200:
+            now = datetime.datetime.utcnow()
+            webbytimeuntil = getwebbytimeuntil()
+            webbybonus = getwebbybonus()
+            webbytitle = getwebbytitle()
+            webbylink = getwebbylink()
+            bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
+            bot.say('BONUS: ' + webbybonus)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
@@ -84,3 +87,8 @@ def gettree():
     page = requests.get(url,headers = None)
     tree= html.fromstring(page.content)
     return tree
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
