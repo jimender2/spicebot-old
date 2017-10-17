@@ -10,7 +10,10 @@ def sorry(bot, trigger):
         if "dave" in usernickname:
             bot.say("Is that really you, Dave?")
         bot.say('Im sorry, ' + trigger.nick + ', but I cannot help you.')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
