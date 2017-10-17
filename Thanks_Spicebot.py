@@ -16,7 +16,9 @@ def thanks(bot,trigger):
             bot.say(gif)
         else:
             bot.say('You\'re welcome!')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
 
 def yourewelcome():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
