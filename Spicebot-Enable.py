@@ -74,13 +74,13 @@ def autoblock(bot):
         bot.msg(channel, 'time left in hour is ' + str(60 - int(fingertime)))
         if fingertime >= 60:# and not bot.nick.endswith('dev'):
             bot.msg(channel, 'resetting time and totals')
-            for u in channel:
+            for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
         elif fingertime < 60:# and not bot.nick.endswith('dev'):
             bot.msg(channel, 'scanning users')
-            for u in channel:
+            for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.msg(channel, 'scanning user ' + target)
                 usertotal = get_usertotal(bot, channel)
