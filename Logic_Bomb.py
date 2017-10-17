@@ -11,7 +11,10 @@ def logicbomb(bot, trigger):
         answer = random.randint(0,len(messages) - 1)
         bot.say(messages[answer]);
         bot.say("I must... but I can't... But I must... This does not compute...")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
