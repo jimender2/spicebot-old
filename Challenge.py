@@ -147,6 +147,7 @@ def challenge(bot, channel, instigator, target):
 @module.require_chanmsg
 @module.commands('challengeon','duelon')
 def challengeon(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
@@ -172,6 +173,7 @@ def challengeon(bot, trigger):
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
 def challengeoff(bot, trigger):
+    instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
