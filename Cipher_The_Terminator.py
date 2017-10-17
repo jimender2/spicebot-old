@@ -54,3 +54,6 @@ def cipher(bot, trigger):
                 bot.say('ACTIVATING Cipher-0')
         except UnboundLocalError:
             return
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
