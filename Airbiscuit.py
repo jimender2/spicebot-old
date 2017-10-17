@@ -3,11 +3,11 @@ import sopel.module
 @sopel.module.rate(120)
 @sopel.module.commands('airbiscuit','float','floats')
 def airbiscuit(bot,trigger):
-    target = trigger.group(3) or trigger.nick
+    instigator = trigger.nick
+    target = trigger.nick
+    update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-        instigator = trigger.nick
-        update_usertotal(bot, target)
         if target == trigger.nick:
             bot.say(trigger.nick + " floats an air biscuit.")
     else:
