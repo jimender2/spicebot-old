@@ -33,6 +33,7 @@ def isshelistening(bot,trigger):
             if not disenable:
                 bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                 bot.say(bot.nick + ' has been enabled for ' + target)
+                set_timeout(bot, target)
             else:
                 bot.say(bot.nick + ' is already enabled for ' + target)
         elif commandtrimmed == 'off':
@@ -41,7 +42,7 @@ def isshelistening(bot,trigger):
             else:
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
                 bot.say(bot.nick + ' has been disabled for ' + target)
-        set_timeout(bot, target)
+                set_timeout(bot, target)
 
 def get_timeout(bot, nick):
     now = time.time()
