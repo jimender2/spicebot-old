@@ -67,11 +67,15 @@ def get_warned(bot, nick):
     warned = bot.db.get_nick_value(nick, 'spicebothour_warn') or 0
     return warned
 
+def get_fingertime(bot, channel):
+    fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 60
+    return fingertime
+
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
         bot.msg(channel, channel)
-        fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 0
+        fingertime = get_fingertime(bot, channel)
         bot.msg(channel, fingertime)
         if fingertime >= 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
