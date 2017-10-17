@@ -60,6 +60,6 @@ def get_disenable(bot, nick):
 @module.require_chanmsg
 @module.require_admin
 @sopel.module.commands('spicebotona','spicebotoffa')
-def isshelistening(bot,trigger):
+def isshelisteninga(bot,trigger):
     target = trigger.nick
     bot.db.set_nick_value(target, 'spicebot_disenable', '')
