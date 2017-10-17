@@ -4,7 +4,7 @@ from xml.dom.minidom import parseString
 
 @sopel.module.rate(120)
 @sopel.module.commands('devexcuse')
-def devexcuse(bot, input):
+def devexcuse(bot, trigger):
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
