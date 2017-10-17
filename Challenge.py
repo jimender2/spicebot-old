@@ -160,7 +160,7 @@ def challengeon(bot, trigger):
             disenable = get_disenable(bot, target)
             opttime = get_opttimeout(bot, target)
             if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
-                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
             elif not disenable:
                 bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                 bot.say('Challenges has been enabled for ' + target)
@@ -185,7 +185,7 @@ def challengeoff(bot, trigger):
             disenable = get_disenable(bot, target)
             opttime = get_opttimeout(bot, target)
             if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
-                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
             elif not disenable:
                 bot.say('Challenges are already disabled for ' + target)
             else:
