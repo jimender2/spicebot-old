@@ -63,10 +63,6 @@ def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
-def get_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    return usertotal
-
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
@@ -83,7 +79,7 @@ def autoblock(bot):
             for u in bot.privileges[channel.lower()]:
                 target = u
                 bot.msg(channel, 'scanning user ' + target)
-                usertotal = get_usertotal(bot, channel)
+                usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
                 bot.msg(channel, str(target) + ' has ' + str(usertotal))
                 if usertotal > TOOMANYTIMES:
                     bot.msg(channel, str(target) + ' is a finger-er')
