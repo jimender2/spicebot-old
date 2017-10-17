@@ -28,3 +28,8 @@ def pee(bot, trigger):
 def update_usertotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
