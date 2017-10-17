@@ -80,7 +80,7 @@ def autoblock(bot):
                 if usertotal > TOOMANYTIMES:
                     set_timeout(bot, target)
                     set_disable(bot, target)
-                    warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
+                    warned = bot.db.get_nick_value(target, 'spicebothour_warn')
                     if not warned:
                         bot.msg(channel, 'warned is null for' + str(target))
                         bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
