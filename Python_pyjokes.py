@@ -11,7 +11,10 @@ def pyjoke(bot, trigger):
         j1 = pyjokes.get_jokes(category='neutral')
         j2 = pyjokes.get_jokes(category='adult')
         bot.say(random.choice(j1 + j2))
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
