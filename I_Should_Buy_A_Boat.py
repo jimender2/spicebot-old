@@ -5,6 +5,7 @@ import sopel.module
 def shouldbuyaboat(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
+    update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
         bot.say(trigger.nick + " should buy a boat.")
