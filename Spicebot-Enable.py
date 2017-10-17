@@ -3,7 +3,7 @@ from sopel import module, tools
 import time
 
 OPTTIMEOUT = 3600
-toomanytimes = 10
+TOOMANYTIMES = 10
 
 @module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff')
@@ -81,7 +81,7 @@ def autoblock(bot):
             for u in room:
                 target = u
                 userstotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-                if usertotal > toomanytimes:
+                if usertotal > TOOMANYTIMES:
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
