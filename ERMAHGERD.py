@@ -14,7 +14,10 @@ def ERMAHGERD(bot,trigger):
             bot.say('ERMAHGERD,' + str(spertitert))
         else:
             bot.say('Whert der yer wernt ter trernslert?')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def trernslert(werds):
     terkerns = werds.split()
     er = ''
