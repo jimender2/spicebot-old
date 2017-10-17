@@ -70,6 +70,9 @@ def get_usertotal(bot, nick):
 def get_hourtime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebothour_time') or 0
+    if not last:
+        bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+        last = now
     return abs(now - last)
 
 @sopel.module.interval(60)
@@ -77,10 +80,7 @@ def autoblock(bot):
     for channel in bot.channels:
         fingertime = get_hourtime(bot, channel)
         bot.msg(channel, 'time left in hour is ' + str(fingertime))
-        if not fingertime:
-            fingertime = set_timeout(bot, channel)
-            bot.msg(channel, 'setting hour to ' + str(fingertime))
-        elif fingertime <= 0:# and not bot.nick.endswith('dev'):
+        if fingertime <= 0:# and not bot.nick.endswith('dev'):
             bot.msg(channel, 'finger is zero or lower')
             set_timeout(bot, channel)
             for u in channel:
