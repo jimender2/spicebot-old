@@ -21,5 +21,5 @@ def get_disenable(bot, nick):
 
 def update_usertotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.say(usertotal)
+    bot.say(str(usertotal))
     bot.db.set_nick_value(nick, 'spicebot_usertotal', userstotal + 1)
