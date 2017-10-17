@@ -93,9 +93,6 @@ def checkLastBuildDate(xmldoc):
 @sopel.module.require_admin
 @sopel.module.commands('itnewsreset')
 def reset(bot,trigger):
-    target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
     	bot.say('Removing Contests File...')
     	os.system("sudo rm " + abs_file_path)
 
