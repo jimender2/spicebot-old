@@ -25,7 +25,10 @@ def challenge_action(bot, trigger):
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ####################
 ## Main Operation ##
 ####################
@@ -37,7 +40,10 @@ def challenge_cmd(bot, trigger):
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
     if not target:
@@ -168,7 +174,10 @@ def challengeon(bot, trigger):
                 set_opttimeout(bot, target)
             else:
                 bot.say('Challenges are already enabled for ' + target)
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Disable
 @module.require_chanmsg
 @module.commands('challengeoff','dueloff')
@@ -194,7 +203,10 @@ def challengeoff(bot, trigger):
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
                 set_opttimeout(bot, target)
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
@@ -318,7 +330,10 @@ def usehealthpotion(bot, trigger):
             bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
         else:
             bot.say('You do not have a healthpotion to use!')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ######################
 ## Weapon Selection ##
 ######################
@@ -484,7 +499,10 @@ def weaponslockercmd(bot, trigger):
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 #@module.require_privmsg
 #@sopel.module.commands('weaponslockerinv')
 #def invweapons(bot, trigger):
@@ -494,7 +512,10 @@ def weaponslockercmd(bot, trigger):
 #     with open (weaponslocker, "r") as myfile:
 #         for line in myfile:
 #             bot.say(str(line))
-
+#    else:
+#        instigator = trigger.nick
+#        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 @module.require_chanmsg
 @sopel.module.commands('weaponslockeradd')
 def addweapons(bot, trigger):
@@ -514,7 +535,10 @@ def addweapons(bot, trigger):
                     myfile.write(weaponnew)
                 if str(weaponnew) in open(weaponslocker).read():
                     bot.say(weaponnew + " has been added to the weapons locker.")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 @module.require_chanmsg
 @sopel.module.commands('weaponslockerdel')
 def removeweapons(bot, trigger):
@@ -532,7 +556,10 @@ def removeweapons(bot, trigger):
                     bot.say(weapondel + ' has been removed from the weapons locker.')
             else:
                 bot.say(weapondel + " is not in the weapons locker.")
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def checkweapons():
     if not exists(weaponslocker):
         createweapons()
@@ -576,7 +603,10 @@ def challengesa(bot, trigger):
                 bot.say(stats)
             else:
                 bot.say('No stats found for ' + target)
-   
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 ###########
 ## Tools ##
 ###########
