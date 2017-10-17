@@ -220,12 +220,12 @@ def get_timeout(bot, nick):
 
 def get_spicetimeout(bot, nick):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
     return abs(now - last)
 
 def set_timeout(bot, nick):
     now = time.time()
-    bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+    bot.db.set_nick_value(nick, 'challengesopt_time', now)
     
 #####################
 ## Spawn / ReSpawn ##
