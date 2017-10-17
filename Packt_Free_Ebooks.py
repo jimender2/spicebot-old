@@ -40,7 +40,10 @@ def packt(bot, trigger):
                 bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
         except UnboundLocalError:
             return
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
 
