@@ -71,29 +71,29 @@ def get_fingertime(bot, channel):
     fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 60
     return fingertime
 
+def get_usertotal(bot, target):
+    usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
+    return usertotal
+
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
         bot.msg(channel, channel)
         fingertime = get_fingertime(bot, channel)
-        bot.msg(channel, str(fingertime))
         if int(fingertime) >= 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
-                bot.msg(channel, u + ' more')
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
                 bot.db.set_nick_value(target, 'spicebothour_warn', '')
             bot.db.set_nick_value(channel, 'spicebothour_time', '')
         elif int(fingertime) < 60:# and not bot.nick.endswith('dev'):
             for u in bot.privileges[channel.lower()]:
-                bot.msg(channel, u + ' less')
                 target = u
-                usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
+                usertotal = get_usertotal(bot, target)
+                bot.msg(channel, str(usertotal))
                 if int(usertotal) > int(TOOMANYTIMES):
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
-
-
