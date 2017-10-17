@@ -147,13 +147,10 @@ def challengeon(bot, trigger):
     if targetdisenable:
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
-        opt_time = get_spicetimeout(bot, target)
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-        elif opt_time < OPTTIMEOUT:
-            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
         else:
             disenable = get_disenable(bot, target)
             opttime = get_timeout(bot, target)
@@ -176,7 +173,6 @@ def challengeoff(bot, trigger):
     if targetdisenable:
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
-        opt_time = get_spicetimeout(bot, target)
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
@@ -224,7 +220,7 @@ def get_timeout(bot, nick):
         timediff = 0
     return timediff
 
-def get_spicetimeout(bot, nick):
+def get_timeout(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
     return abs(now - last)
