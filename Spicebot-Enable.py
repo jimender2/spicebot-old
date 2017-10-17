@@ -69,13 +69,13 @@ def autoblock(bot):
     fingertime = get_timeout(bot, channel)
     if not fingertime:
         set_timeout(bot, channel)
-    elif fingertime > OPTTIMEOUT and not bot.nick.endswith('dev'):
+    elif fingertime > OPTTIMEOUT:# and not bot.nick.endswith('dev'):
         set_timeout(bot, channel)
         for c in bot.channels:
             for u in room:
                 target = u
                 bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-    elif fingertime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+    elif fingertime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
         for c in bot.channels:
             room = c
             for u in room:
