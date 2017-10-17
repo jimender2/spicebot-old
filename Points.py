@@ -23,7 +23,10 @@ def points_cmd(bot, trigger):
         else:
             pointstype = 'pants'
         return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
-    
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 @sopel.module.commands('checkpoints','checkpants')
 def checkpoints(bot, trigger):
     target = trigger.nick
@@ -40,7 +43,10 @@ def checkpoints(bot, trigger):
             bot.say(target + ' has no ' + pointstype + ' history.')
         else:
             bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
-    
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
