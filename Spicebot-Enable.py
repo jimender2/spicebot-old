@@ -103,4 +103,8 @@ def isshelisteningtome(bot,trigger):
     target = trigger.nick
     bot.db.set_nick_value(target, 'spicebot_usertotal', '')
     
-    
+@sopel.module.commands('spicebottotal')
+def isshelisteningtome(bot,trigger):
+    target = trigger.nick
+    usertotal = get_usertotal(bot, target)
+    bot.say(str(usertotal))
