@@ -83,8 +83,6 @@ def autoblock(bot):
                     if not warned:
                         bot.db.set_nick_value(channel, 'spicebothour_warn', "true")
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
-                    
-                    
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
 
 @module.require_chanmsg
