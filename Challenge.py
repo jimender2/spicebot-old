@@ -14,6 +14,7 @@ weaponslocker = os.path.join(moduledir, relativepath)
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
+OPTTIMEOUT = 3600
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -157,9 +158,13 @@ def challengeon(bot, trigger):
             bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            if not disenable:
+            opttime = get_opttimeout(bot, target)
+            if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
+                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            elif not disenable:
                 bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                 bot.say('Challenges has been enabled for ' + target)
+                set_opttimeout(bot, target)
             else:
                 bot.say('Challenges are already enabled for ' + target)
 
@@ -178,11 +183,15 @@ def challengeoff(bot, trigger):
             bot.say("I'm not sure who that is.")
         else:
             disenable = get_disenable(bot, target)
-            if not disenable:
+            opttime = get_opttimeout(bot, target)
+            if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
+                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            elif not disenable:
                 bot.say('Challenges are already disabled for ' + target)
             else:
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
+                set_opttimeout(bot, target)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -215,6 +224,15 @@ def get_timeout(bot, nick):
         timediff = 0
     return timediff
 
+def get_opttimeout(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
+    return abs(now - last)
+
+def set_opttimeout(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'challengesopt_time', now)
+    
 #####################
 ## Spawn / ReSpawn ##
 #####################
