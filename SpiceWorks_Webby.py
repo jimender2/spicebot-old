@@ -23,7 +23,10 @@ def webbymanual(bot, trigger):
             webbylink = getwebbylink()
             bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
             bot.say('BONUS: ' + webbybonus)
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 @sopel.module.interval(60)
 def webbyauto(bot):
     page = requests.get(url,headers = None)
