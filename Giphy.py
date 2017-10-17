@@ -7,21 +7,23 @@ from random import randint
 
 @sopel.module.rate(120)
 @sopel.module.commands('gif','giphy')
-
 def gif(bot,trigger):
-    if trigger.nick == 'IT_Sean':
-        gif = 'https://media2.giphy.com/media/11aCNnhizTWfXW/giphy.gif'
-        bot.say('IT_Sean, you\'re safe with me. ' + gif)
-    else:        
-        if trigger.group(2):
-            query = trigger.group(2).replace(' ', '+')
-            gif = getGif(query)
-            if gif:
-                bot.say(gif)
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
+        if trigger.nick == 'IT_Sean':
+            gif = 'https://media2.giphy.com/media/11aCNnhizTWfXW/giphy.gif'
+            bot.say('IT_Sean, you\'re safe with me. ' + gif)
+        else:        
+            if trigger.group(2):
+                query = trigger.group(2).replace(' ', '+')
+                gif = getGif(query)
+                if gif:
+                    bot.say(gif)
+                else:
+                    bot.say('Hmm...Couldn\'t find a gif for that!')
             else:
-                bot.say('Hmm...Couldn\'t find a gif for that!')
-        else:
-            bot.say('Tell me what you\'re looking for!')
+                bot.say('Tell me what you\'re looking for!')
 
 
 def getGif(query):
@@ -35,3 +37,8 @@ def getGif(query):
     except IndexError:
         gif = ""
     return gif
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
