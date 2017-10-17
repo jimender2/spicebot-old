@@ -21,7 +21,7 @@ ALLCHAN = 'entirechannel'
 @module.require_chanmsg
 def challenge_action(bot, trigger):
     target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
+    targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
 
@@ -33,7 +33,7 @@ def challenge_action(bot, trigger):
 @module.require_chanmsg
 def challenge_cmd(bot, trigger):
     target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
+    targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
 
