@@ -80,6 +80,7 @@ def autoblock(bot):
         elif fingertime < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
             bot.msg(channel, 'finger smaller')
             for u in channel:
+                target = u
                 usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
                 if usertotal > TOOMANYTIMES:
                     bot.msg(channel, str(target) + ' is a finger-er')
