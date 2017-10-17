@@ -77,18 +77,18 @@ def checkLastBuildDate(xmldoc):
 		lastBuildTxt = lastBuildTxt.replace("]","")
 		infile.close()
 		if lastBuildXML.strip() != lastBuildTxt.strip():
-			newContest = True
+			newnews = True
 			outfile = open(lastBuildFile,'w')
 			outfile.write(lastBuildXML)
 			outfile.close()
 		else:
-			newContest = False
+			newnews = False
     else:		
 		outfile = open(lastBuildFile,'w')
 		outfile.write(lastBuildXML)
 		outfile.close()
-		newContest = True
-    return newContest
+		newnews = True
+    return newnews
 
 @sopel.module.require_admin
 @sopel.module.commands('itnewsreset')
