@@ -6,5 +6,13 @@ from random import randint
 @sopel.module.require_admin
 @sopel.module.commands('getchannels')
 def getChannels(bot,trigger):
+    target = trigger.nick
+    targetdisenable = get_disenable(bot, target)
+    if targetdisenable:
 	for c in bot.channels:
-		bot.say("You can find me in " + c)
+            bot.say("You can find me in " + c)
+
+## Check Status of Opt In
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
