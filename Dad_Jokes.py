@@ -12,7 +12,10 @@ def sayDadJoke(bot,trigger):
             bot.say(joke)
         else:
             bot.say('My humor module is broken.')
-
+    else:
+        instigator = trigger.nick
+        bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        
 def getDadJoke():
     url = 'https://icanhazdadjoke.com'    
     page = requests.get(url,headers = {'Accept':'text/plain'})
