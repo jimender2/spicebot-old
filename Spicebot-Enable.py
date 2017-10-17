@@ -89,12 +89,10 @@ def autoblock(bot):
             for u in bot.privileges[channel.lower()]:
                 target = u
                 usertotal = get_usertotal(bot, target)
-                bot.msg(channel, str(usertotal))
                 if int(usertotal) > int(TOOMANYTIMES):
                     set_timeout(bot, target)
                     set_disable(bot, target)
                     warn = get_warned(bot, target)
-                    bot.msg(channel, str(warn))
                     if not warn:
                         bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
@@ -103,6 +101,6 @@ def autoblock(bot):
 @sopel.module.commands('spicebotremwarn')
 def isshelisteningtome(bot,trigger):
     target = trigger.nick
-    bot.db.set_nick_value(target, 'spicebothour_warn', '')
+    bot.db.set_nick_value(target, 'spicebot_usertotal', '')
     
     
