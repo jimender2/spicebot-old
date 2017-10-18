@@ -51,7 +51,7 @@ def challenge_cmd(bot, trigger):
 def challenge(bot, channel, instigator, target):
     target = tools.Identifier(target or '')
     if not target:
-        bot.say(instigator + ", Who did you want to fight?")
+        bot.notice(instigator + ", Who did you want to fight?", instigator)
     else:
         
         ## Don't allow chat spamming
@@ -81,9 +81,9 @@ def challenge(bot, channel, instigator, target):
         
         ## Check Opt-in Status
         elif not instigatordisenable:
-            bot.say(instigator + ', It looks like you have disabled Challenges. Run .challengeon to re-enable.')
+            bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challengeon to re-enable.", instigator)
         elif not targetdisenable:
-            bot.say(instigator + ', It looks like ' + target + ' has disabled Challenges.')
+            bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
         
         ## Enforce Timeout, unless in dev-channel
         elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
@@ -165,7 +165,7 @@ def challengeoptchange(bot, trigger):
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
         if not trigger.admin and target != trigger.nick:
-            bot.say("Only bot admins can mark other users as not able to challenge.")
+            bot.notice(instigator + ', Only bot admins can mark other users as not able to challenge."', instigator)
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
         disenable = get_disenable(bot, target)
@@ -486,7 +486,6 @@ def update_health(bot, nick, damage):
 ## Weapons Locker ##
 ####################
 
-@module.require_chanmsg
 @sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
 def weaponslockercmd(bot, trigger):
     instigator = trigger.nick
