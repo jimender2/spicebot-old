@@ -14,8 +14,6 @@ messagestring = str("[" + feedname + "] ")
 trimmedname = feedname.replace(" ","").lower()
 maincommand = str(trimmedname)
 resetcommand = str(maincommand + 'reset')
-#resetcommand = str("'" + maincommand + 'reset' + "'")
-#maincommand = str("'" + maincommand + "'")
 lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
 
 ## user agent and header
