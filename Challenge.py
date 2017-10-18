@@ -546,7 +546,7 @@ def weaponslockercmd(bot, trigger):
                 #if weapon.endswith("\n"):
                     #bot.say(str(weapon)
                 #else:
-                    bot.say(str(weapon)
+                    #bot.say(str(weapon)
                     #weapon = str(weapon.split("\n", 0)[1])
                 #weaponslistnew.append(weapon)
             #for channel in bot.channels:
