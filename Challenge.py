@@ -523,7 +523,8 @@ def weaponslockercmd(bot, trigger):
             for weapon in weaponslist:
                 if weapon.endswith("\n"):
                     weaponslist.remove(weapon)
-                    weapon = weapon.replace("\n", '')
+                    #weapon = weapon.replace("\n", '')
+                    weapon = weapon.split("\n"
                     weaponslistnew.append(weapon)
                 else:
                     weaponslist.remove(weapon)
