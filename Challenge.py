@@ -364,7 +364,6 @@ def usehealthpotion(bot, trigger):
 def weaponofchoice():
     weaponslist = get_weaponslocker(bot)
     weapon =random.choice(weaponslist)
-    weapon = str('the ' + weapon)
     return weapon
 
 #################
