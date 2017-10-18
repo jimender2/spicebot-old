@@ -508,7 +508,8 @@ def weaponslockercmd(bot, trigger):
                 else:
                     weaponslist.remove(weapon)
                     weaponslistnew.append(weapon)
-            bot.db.set_nick_value(channel, 'weapons_locker', '')
+            for channel in bot.channels:
+                bot.db.set_nick_value(channel, 'weapons_locker', '')
             for weapon in weaponslistnew:
                 if weapon not in weaponslist:
                     weaponslist.append(weapon)
