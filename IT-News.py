@@ -11,7 +11,7 @@ alt_url = 'https://www.itnews.com.au'
 
 ## Based On Template
 messagestring = str("[" + feedname + "] ")
-trimmedname = feedname.replace(" ","").lower
+trimmedname = feedname.replace(" ","").lower()
 maincommand = str(trimmedname)
 resetcommand = str("'" + maincommand + 'reset' + "'")
 maincommand = str("'" + maincommand + "'")
