@@ -514,6 +514,18 @@ def update_health(bot, nick, damage):
 ## Weapons Locker ##
 ####################
 
+@module.require_admin
+@sopel.module.commands('weaponslockeraddold')
+def weaponslockercmd(bot, trigger):
+    with open (weaponslocker, "r") as myfile:
+        weaponslist = get_weaponslocker(bot)
+        for line in myfile:
+            weaponchange = str(line)
+            if weaponchange not in weaponslist:
+                weaponslist.append(weaponchange)
+                update_weaponslocker(bot, weaponslist)
+
+    
 @module.require_chanmsg
 @sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
 def weaponslockercmd(bot, trigger):
