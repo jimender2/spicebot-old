@@ -499,8 +499,14 @@ def weaponslockercmd(bot, trigger):
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
         elif commandtrimmed == 'inv' and trigger.admin:
             ## cleanup
-            weaponslist = weaponslist.replace("\n", '')
-            update_weaponslocker(bot, weaponslist)
+            for weapon in weaponslist:
+                if weapon.endswith("\n"):
+                    weaponslist.remove(weapon)
+                    weapon = weapon.replace("\n", '')
+                    weaponslist.append(weapon)
+                    update_weaponslocker(bot, weaponslist)
+            weaponslist = get_weaponslocker(bot)
+            weaponslist = str(weaponslist)
             #weaponslist = weaponslist.replace('[', '')
             #weaponslist = weaponslist.replace(']', '')
             #weaponslist = weaponslist.replace("u'", '')
