@@ -27,11 +27,10 @@ def checkfornew(bot, page):
     newContest = checkLastBuildDate(xmldoc)
     if newContest == True:
 	titles = xmldoc.getElementsByTagName('title')
-        title = titles[2].childNodes[0].nodeValue
+        title = titles[2].childNodes[0].nodeValue or 0
         links = xmldoc.getElementsByTagName('link')
-        link = links[2].childNodes[0].nodeValue.split("?")[0]
+        link = links[2].childNodes[0].nodeValue.split("?")[0] or 0
 	return title, link
-
 
 @sopel.module.rate(120)
 @sopel.module.commands('swcontests','spicecontests')
