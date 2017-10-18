@@ -600,19 +600,19 @@ def weaponslockercmd(bot, trigger):
         if commandtrimmed == 'add':
             if weaponchange in weaponslist:
                 bot.say(weaponchange + " is already in the weapons locker.")
-                rescan = False
+                rescan = 'False'
             else:
                 weaponslist.append(weaponchange)
                 update_weaponslocker(bot, weaponslist)
-                rescan = True
+                rescan = 'True'
         elif commandtrimmed == 'del':
             if weaponchange not in weaponslist:
                 bot.say(weaponchange + " is not in the weapons locker.")
-                rescan = False
+                rescan = 'False'
             else:
                 weaponslist.remove(weaponchange)
                 update_weaponslocker(bot, weaponslist)
-                rescan = True
+                rescan = 'True'
         if rescan == 'True':
             weaponslist = get_weaponslocker(bot)
             if weaponchange in weaponslist:
