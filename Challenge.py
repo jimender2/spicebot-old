@@ -525,19 +525,19 @@ def weaponslockercmd(bot, trigger):
                     bot.say(str(weapon)
                     #weapon = str(weapon.split("\n", 0)[1])
                 #weaponslistnew.append(weapon)
-            for channel in bot.channels:
-                bot.db.set_nick_value(channel, 'weapons_locker', '')
-            for weapon in weaponslistnew:
-                weaponslist = get_weaponslocker(bot)
-                if weapon not in weaponslist:
-                    weaponslist.append(weapon)
-            weaponslist = get_weaponslocker(bot)
-            weaponslist = str(weaponslist)
-            weaponslist = weaponslist.replace('[', '')
-            weaponslist = weaponslist.replace(']', '')
-            weaponslist = weaponslist.replace("u'", '')
-            weaponslist = weaponslist.replace("'", '')
-            bot.say(str(weaponslist))
+            #for channel in bot.channels:
+                #bot.db.set_nick_value(channel, 'weapons_locker', '')
+            #for weapon in weaponslistnew:
+                #weaponslist = get_weaponslocker(bot)
+                #if weapon not in weaponslist:
+                    #weaponslist.append(weapon)
+            #weaponslist = get_weaponslocker(bot)
+            #weaponslist = str(weaponslist)
+            #weaponslist = weaponslist.replace('[', '')
+            #weaponslist = weaponslist.replace(']', '')
+            #weaponslist = weaponslist.replace("u'", '')
+            #weaponslist = weaponslist.replace("'", '')
+            #bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
         else:
