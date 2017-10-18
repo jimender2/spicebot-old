@@ -1,99 +1,109 @@
 import sopel.module
 import requests
-import os
 from xml.dom import minidom
 from fake_useragent import UserAgent
-from os.path import exists
 
-script_dir = os.path.dirname(__file__)
-rel_path = "data/swContestsLastBuild.txt"
-abs_file_path = os.path.join(script_dir, rel_path)
+## If Following Template
+feedname = "Spiceworks Contests"
 url = 'https://community.spiceworks.com/feed/forum/1550.rss'
+alt_url = 'https://community.spiceworks.com/fun/contests'
+childnumber = 2
+## End Of Template
+
+## Based On Template
+messagestring = str("[" + feedname + "] ")
+trimmedname = feedname.replace(" ","").lower()
+maincommand = str(trimmedname)
+resetcommand = str(maincommand + 'reset')
+lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
+
+## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
-	
+
+## Automatic Run
 @sopel.module.interval(60)
-def getSWContests(bot):
+def autocheck(bot):
     for channel in bot.channels:
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             title, link = checkfornew(bot, page)
-            bot.msg(channel, "[Spiceworks Contest] " + title + ": " + link)
-
-def checkfornew(bot, page):
-    xml = page.text
-    xml = xml.encode('ascii', 'ignore').decode('ascii')
-    xmldoc = minidom.parseString(xml)
-    newContest = checkLastBuildDate(xmldoc)
-    if newContest == True:
-	titles = xmldoc.getElementsByTagName('title')
-        title = titles[2].childNodes[0].nodeValue
-        links = xmldoc.getElementsByTagName('link')
-        link = links[2].childNodes[0].nodeValue.split("?")[0]
-	return title, link
+	    if title and link:
+                bot.msg(channel, messagestring + title + ': ' + link)
 
 @sopel.module.rate(120)
-@sopel.module.commands('swcontests','spicecontests')
+@sopel.module.commands(maincommand)
 def manualCheck(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-    	page = requests.get(url, headers=header)
-    	if page.status_code == 200:
-	    try:
-	        title, link = checkfornew(bot, page)
-	    except TypeError:
-		title = "Contests Page"
-		link = "https://community.spiceworks.com/fun/contests"
-            bot.say("[Spiceworks Contest] " + title + ": " + link)
+	runprocess(bot)
     else:
-        instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
         if not warned:
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
 
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-	
-def checkLastBuildDate(xmldoc):
-    lastBuildFile = os.getcwd() + abs_file_path
+@sopel.module.require_admin
+@sopel.module.commands(resetcommand)
+def reset(bot,trigger):
+    for channel in bot.channels:
+    	bot.say('Resetting LastBuildTime...')
+    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
+
+def runprocess(bot):
+    page = requests.get(url, headers=header)
+    try:
+        title, link = checkfornew(bot, page)
+    except TypeError:
+        title = feedname
+        link = alt_url
+    bot.say(messagestring + title + ': ' + link)  
+		   
+def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
     lastBuildXML = str(lastBuildXML)
+    lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
+    if lastbuildcurrent:
+	if lastBuildXML.strip() == lastbuildcurrent.strip():
+	    newcontent = False
+        else:
+            newcontent = True
+    else:
+        newcontent = True
+    set_lastbuildcurrent(bot, lastBuildXML)
+    return newcontent
 
-    if exists(lastBuildFile):
-		infile = open(lastBuildFile,'r')
-		lastBuildTxt = str(infile.readlines()[:1])
-		lastBuildTxt = lastBuildTxt.replace("'","")
-		lastBuildTxt = lastBuildTxt.replace("[","")
-		lastBuildTxt = lastBuildTxt.replace("]","")
-		infile.close()
-		if lastBuildXML.strip() != lastBuildTxt.strip():
-			newContest = True
-			outfile = open(lastBuildFile,'w')
-			outfile.write(lastBuildXML)
-			outfile.close()
-		else:
-			newContest = False
-    else:		
-		outfile = open(lastBuildFile,'w')
-		outfile.write(lastBuildXML)
-		outfile.close()
-		newContest = True
-    return newContest
+def checkfornew(bot, page):
+    xml = page.text
+    xml = xml.encode('ascii', 'ignore').decode('ascii')
+    xmldoc = minidom.parseString(xml)
+    newcontent = checkLastBuildDate(bot, xmldoc)
+    if newcontent == True:
+	titles = xmldoc.getElementsByTagName('title')
+        title = titles[childnumber].childNodes[0].nodeValue
+        links = xmldoc.getElementsByTagName('link')
+        link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+        return title, link
 
-@sopel.module.require_admin
-@sopel.module.commands('swcontestsreset','spiceconteststreset')
-def reset(bot,trigger):
-    	bot.say('Removing Last Build File...')
-    	os.system("sudo rm " + abs_file_path)
+def get_lastbuildcurrent(bot, lastBuildXML):
+    for channel in bot.channels:
+        lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+    return lastbuildcurrent
+
+def set_lastbuildcurrent(bot, lastbuildcurrent):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
+
+def update_usertotal(bot, nick):
+    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
