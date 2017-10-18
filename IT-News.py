@@ -24,9 +24,9 @@ def getitnews(bot):
             newnews = checkLastBuildDate(xmldoc)
             if newnews == True:
                 titles = xmldoc.getElementsByTagName('title')
-                title = titles[2].childNodes[0].nodeValue
+                title = titles[1].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
-                link = links[2].childNodes[0].nodeValue.split("?")[0]
+                link = links[1].childNodes[0].nodeValue.split("?")[0]
                 bot.msg(channel, "[iT News] " + title + '     Link: ' + link)
 
 @sopel.module.rate(120)
@@ -47,9 +47,9 @@ def manualCheck(bot,trigger):
             xmldoc = minidom.parseString(xml)
             newnews = checkLastBuildDate(xmldoc)
             titles = xmldoc.getElementsByTagName('title')
-            title = titles[2].childNodes[0].nodeValue
+            title = titles[1].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
-            link = links[2].childNodes[0].nodeValue.split("?")[0]
+            link = links[1].childNodes[0].nodeValue.split("?")[0]
             bot.say("[iT News] " + title + '     Link: ' + link)
     else:
         instigator = trigger.nick
