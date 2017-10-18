@@ -93,7 +93,7 @@ def checkLastBuildDate(xmldoc):
 @sopel.module.require_admin
 @sopel.module.commands('itnewsreset')
 def reset(bot,trigger):
-    	bot.say('Removing Contests File...')
+    	bot.say('Removing Last Build File...')
     	os.system("sudo rm " + abs_file_path)
 
 ## Check Status of Opt In
