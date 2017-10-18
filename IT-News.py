@@ -13,8 +13,8 @@ alt_url = 'https://www.itnews.com.au'
 messagestring = str("[" + feedname + "] ")
 trimmedname = feedname.replace(" ","").lower
 maincommand = trimmedname
-resetcommand = trimmedname + 'reset'
-lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
+resetcommand = str(str(trimmedname) + 'reset')
+lastbuilddatabase = str(str(trimmedname) + '_lastbuildcurrent')
 
 ## user agent and header
 ua = UserAgent()
