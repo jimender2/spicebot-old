@@ -34,7 +34,6 @@ def autocheck(bot):
 @sopel.module.rate(120)
 @sopel.module.commands(maincommand)
 def manualCheck(bot,trigger):
-    bot.say(str(lastbuilddatabase))
     instigator = trigger.nick
     target = trigger.nick
     update_usertotal(bot, target)
