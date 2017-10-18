@@ -45,6 +45,7 @@ def checkfornew(bot, page):
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
     newnews = checkLastBuildDate(bot, xmldoc)
+    bot.say('newnews is ' + newnews)
     if newnews == True:
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[2].childNodes[0].nodeValue
