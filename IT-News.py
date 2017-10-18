@@ -62,15 +62,14 @@ def checkLastBuildDate(bot, xmldoc):
 	bot.say('offline is ' + lastbuildcurrent)
 	if lastBuildXML.strip() == lastbuildcurrent.strip():
             bot.say('equal')
-        if lastBuildXML.strip() != lastbuildcurrent.strip():
+	    newnews = False
+        else:
             newnews = True
-	else:
-            newnews = False
     else:
 	bot.say('lastBuildXML is empty')
         newnews = False
     set_lastbuildcurrent(bot, lastBuildXML)
-    bot.say('newnews is ' + newnews)
+    bot.say('newnews is ' + str(newnews))
     return newnews
 
 @sopel.module.require_admin
