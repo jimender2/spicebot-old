@@ -122,7 +122,7 @@ def challenge(bot, channel, instigator, target):
                 bot.say(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             
             ## Weapon Select
-            weapon = weaponofchoice()
+            weapon = weaponofchoice(bot)
             
             ## Damage Done
             damage = damagedone(bot)
