@@ -520,16 +520,15 @@ def update_health(bot, nick, damage):
 @sopel.module.commands('weaponslockeraddold')
 def weaponslockercmdold(bot, trigger):
     with open (weaponslocker, "r") as myfile:
+        bot.say('adding existing weapons')
         for line in myfile:
             weaponslist = get_weaponslocker(bot)
             weaponchange = str(line)
             if weaponchange not in weaponslist:
-                bot.say('adding ' + weaponchange)
                 weaponslist.append(weaponchange)
                 update_weaponslocker(bot, weaponslist)
                 weaponslist = get_weaponslocker(bot)
-                if weaponchange in weaponslist:
-                    bot.say(weaponchange + " has been added to the weapons locker.")
+        bot.say('old weapons added')
 
     
 @module.require_chanmsg
