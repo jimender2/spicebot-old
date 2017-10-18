@@ -44,7 +44,8 @@ def manualCheck(bot,trigger):
     	page = requests.get(url, headers=header)
     	if page.status_code == 200:
 	    title, link = checkfornew(bot, page)
-            bot.say("[Spiceworks Contest] " + title + ": " + link)
+	    if title and link:
+                bot.say("[Spiceworks Contest] " + title + ": " + link)
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
