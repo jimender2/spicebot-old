@@ -364,6 +364,10 @@ def usehealthpotion(bot, trigger):
 def weaponofchoice(bot):
     weaponslist = get_weaponslocker(bot)
     weapon =random.choice(weaponslist)
+    if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
+        weapon = str('an ' + weapon)
+    else:
+        weapon = str('a ' + weapon)
     return weapon
 
 #################
@@ -557,20 +561,6 @@ def weaponslockercmd(bot, trigger):
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-
-def checkweapons():
-    if not exists(weaponslocker):
-        createweapons()
-    if os.stat(weaponslocker).st_size == 0:
-        createweapons()
-
-def createweapons():
-    weapons  = ["waffle-iron","fish","knuckle-sandwich","sticky-note","blender","hammer","nailgun","rotisserie chicken","steel-toed boot","stapler"]
-    for w in weapons:
-        with open(weaponslocker, "a") as myfile:
-            if os.stat(weaponslocker).st_size != 0:
-                myfile.write("\n")
-            myfile.write(w)
 
 def get_weaponslocker(bot):
     for channel in bot.channels:
