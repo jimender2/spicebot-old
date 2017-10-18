@@ -5,9 +5,6 @@ from xml.dom import minidom
 from fake_useragent import UserAgent
 from os.path import exists
 
-script_dir = os.path.dirname(__file__)
-rel_path = "data/itnewslastbuild.txt"
-abs_file_path = os.path.join(script_dir, rel_path)
 url = 'https://www.itnews.com.au/RSS/rss.ashx'
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
@@ -47,7 +44,7 @@ def checkfornew(bot, page):
     xml = page.text
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
-    newContest = checkLastBuildDate(xmldoc)
+    newContest = checkLastBuildDate(bot, xmldoc)
     if newContest == True:
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[2].childNodes[0].nodeValue
@@ -55,38 +52,24 @@ def checkfornew(bot, page):
         link = links[2].childNodes[0].nodeValue.split("?")[0]
 	return title, link
 	
-def checkLastBuildDate(xmldoc):
-    lastBuildFile = os.getcwd() + abs_file_path
+def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
     lastBuildXML = str(lastBuildXML)
-
-    if exists(lastBuildFile):
-		infile = open(lastBuildFile,'r')
-		lastBuildTxt = str(infile.readlines()[:1])
-		lastBuildTxt = lastBuildTxt.replace("'","")
-		lastBuildTxt = lastBuildTxt.replace("[","")
-		lastBuildTxt = lastBuildTxt.replace("]","")
-		infile.close()
-		if lastBuildXML.strip() != lastBuildTxt.strip():
-			newnews = True
-			outfile = open(lastBuildFile,'w')
-			outfile.write(lastBuildXML)
-			outfile.close()
-		else:
-			newnews = False
-    else:		
-		outfile = open(lastBuildFile,'w')
-		outfile.write(lastBuildXML)
-		outfile.close()
-		newnews = True
+    lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
+    if lastbuildcurrent:
+	if lastBuildXML.strip() != lastbuildcurrenttxt.strip():
+        newnews = True
+    else:
+	newnews = False
+    set_lastbuildcurrent(bot, lastBuildXML)
     return newnews
 
 @sopel.module.require_admin
 @sopel.module.commands('itnewsreset')
 def reset(bot,trigger):
-    	bot.say('Removing Last Build File...')
-    	os.system("sudo rm " + abs_file_path)
+    	bot.say('Resetting LastBuildTime...')
+    	bot.db.set_nick_value(channel, 'itnews_lastbuildcurrent', '')
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -96,3 +79,13 @@ def get_disenable(bot, nick):
 def update_usertotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
+
+def get_lastbuildcurrent(bot, lastBuildXML):
+    for channel in bot.channels:
+        lastbuildcurrent = bot.db.get_nick_value(channel, 'itnews_lastbuildcurrent') or 0
+    return lastbuildcurrent
+
+def set_lastbuildcurrent(bot, lastbuildcurrent):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, 'itnews_lastbuildcurrent', lastbuildcurrent)
+
