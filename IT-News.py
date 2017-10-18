@@ -1,9 +1,7 @@
 import sopel.module
 import requests
-import os
 from xml.dom import minidom
 from fake_useragent import UserAgent
-from os.path import exists
 
 url = 'https://www.itnews.com.au/RSS/rss.ashx'
 ua = UserAgent()
