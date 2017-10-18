@@ -1,15 +1,9 @@
 import sopel
 from sopel import module, tools
 import random
-import os
-from os.path import exists
 from random import randint
 import time
 import sys
-
-moduledir = os.path.dirname(__file__)
-relativepath = "data/weapons.txt"
-weaponslocker = os.path.join(moduledir, relativepath)
 
 TIMEOUT = 180
 TIMEOUTC = 40
@@ -516,21 +510,6 @@ def update_health(bot, nick, damage):
 ## Weapons Locker ##
 ####################
 
-@module.require_admin
-@sopel.module.commands('weaponslockeraddold')
-def weaponslockercmdold(bot, trigger):
-    with open (weaponslocker, "r") as myfile:
-        bot.say('adding existing weapons')
-        for line in myfile:
-            weaponslist = get_weaponslocker(bot)
-            weaponchange = str(line)
-            if weaponchange not in weaponslist:
-                weaponslist.append(weaponchange)
-                update_weaponslocker(bot, weaponslist)
-                weaponslist = get_weaponslocker(bot)
-        bot.say('old weapons added')
-
-    
 @module.require_chanmsg
 @sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
 def weaponslockercmd(bot, trigger):
