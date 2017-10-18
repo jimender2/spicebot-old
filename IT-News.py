@@ -3,20 +3,34 @@ import requests
 from xml.dom import minidom
 from fake_useragent import UserAgent
 
+## If Following Template
+feedname = "iT News"
 url = 'https://www.itnews.com.au/RSS/rss.ashx'
+alt_url = 'https://www.itnews.com.au'
+## End Of Template
+
+## Based On Template
+messagestring = str("[" + feedname + "] ")
+trimmedname = feedname.replace(" ","").lower
+maincommand = str(trimmedname)
+resetcommand = str(trimmedname + 'reset')
+lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
+
+## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
+## Automatic Run
 @sopel.module.interval(60)
-def getitnews(bot):
+def autocheck(bot):
     for channel in bot.channels:
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             title, link = checkfornew(bot, page)
-            bot.msg(channel, "[iT News] " + title + ': ' + link)
+            bot.msg(channel, messagestring + title + ': ' + link)
 
 @sopel.module.rate(120)
-@sopel.module.commands('itnews')
+@sopel.module.commands(maincommand)
 def manualCheck(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
@@ -27,9 +41,9 @@ def manualCheck(bot,trigger):
 	try:
 	    title, link = checkfornew(bot, page)
 	except TypeError:
-	    title = "iT News"
-	    link = "https://www.itnews.com.au"
-        bot.say("[iT News] " + title + ': ' + link)  
+	    title = feedname
+	    link = alt_url
+        bot.say(messagestring + title + ': ' + link)  
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -42,8 +56,8 @@ def checkfornew(bot, page):
     xml = page.text
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
-    newnews = checkLastBuildDate(bot, xmldoc)
-    if newnews == True:
+    newcontent = checkLastBuildDate(bot, xmldoc)
+    if newcontent == True:
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[2].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
@@ -57,20 +71,20 @@ def checkLastBuildDate(bot, xmldoc):
     lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
     if lastbuildcurrent:
 	if lastBuildXML.strip() == lastbuildcurrent.strip():
-	    newnews = False
+	    newcontent = False
         else:
-            newnews = True
+            newcontent = True
     else:
-        newnews = True
+        newcontent = True
     set_lastbuildcurrent(bot, lastBuildXML)
-    return newnews
+    return newcontent
 
 @sopel.module.require_admin
-@sopel.module.commands('itnewsreset')
+@sopel.module.commands(resetcommand)
 def reset(bot,trigger):
     for channel in bot.channels:
     	bot.say('Resetting LastBuildTime...')
-    	bot.db.set_nick_value(channel, 'itnews_lastbuildcurrent', '')
+    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -83,10 +97,10 @@ def update_usertotal(bot, nick):
 
 def get_lastbuildcurrent(bot, lastBuildXML):
     for channel in bot.channels:
-        lastbuildcurrent = bot.db.get_nick_value(channel, 'itnews_lastbuildcurrent') or 0
+        lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
     return lastbuildcurrent
 
 def set_lastbuildcurrent(bot, lastbuildcurrent):
     for channel in bot.channels:
-        bot.db.set_nick_value(channel, 'itnews_lastbuildcurrent', lastbuildcurrent)
+        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
 
