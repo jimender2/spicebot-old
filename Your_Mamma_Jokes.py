@@ -37,8 +37,8 @@ def getJoke():
       result = page.content
       jsonjoke = json.loads(result)
       joke = jsonjoke['joke']
-    except ConnectionError:
-      joke = "yo mamma is a horrible human being."
+    except:
+      joke = "yo momma broke the interwebs."
     return joke
 
 ## Check Status of Opt In
