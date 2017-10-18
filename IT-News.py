@@ -13,21 +13,10 @@ url = 'https://www.itnews.com.au/RSS/rss.ashx'
 @sopel.module.interval(60)
 def getitnews(bot):
     for channel in bot.channels:
-        ua = UserAgent()
-        header = {'User-Agent': str(ua.chrome)}
         page = requests.get(url, headers=header)
-
-    	if page.status_code == 200:
-            xml = page.text
-            xml = xml.encode('ascii', 'ignore').decode('ascii')
-            xmldoc = minidom.parseString(xml)
-            newnews = checkLastBuildDate(xmldoc)
-            if newnews == True:
-                titles = xmldoc.getElementsByTagName('title')
-                title = titles[1].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName('link')
-                link = links[1].childNodes[0].nodeValue.split("?")[0]
-                bot.msg(channel, "[iT News] " + title + ': ' + link)
+        if page.status_code == 200:
+            title, link = checkfornew(bot, page)
+            bot.msg(channel, "[iT News] " + title + ': ' + link)
 
 @sopel.module.rate(120)
 @sopel.module.commands('itnews')
@@ -37,20 +26,13 @@ def manualCheck(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-    	ua = UserAgent()
-    	header = {'User-Agent': str(ua.chrome)}
     	page = requests.get(url, headers=header)
-
-    	if page.status_code == 200:
-            xml = page.text
-            xml = xml.encode('ascii', 'ignore').decode('ascii')
-            xmldoc = minidom.parseString(xml)
-            newnews = checkLastBuildDate(xmldoc)
-            titles = xmldoc.getElementsByTagName('title')
-            title = titles[1].childNodes[0].nodeValue
-            links = xmldoc.getElementsByTagName('link')
-            link = links[1].childNodes[0].nodeValue.split("?")[0]
-            bot.say("[iT News] " + title + ': ' + link)
+	try:
+	    title, link = checkfornew(bot, page)
+	except TypeError:
+	    title = "iT News"
+	    link = "https://www.itnews.com.au"
+        bot.say("[iT News] " + title + ': ' + link)  
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -59,9 +41,17 @@ def manualCheck(bot,trigger):
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
 
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
+def checkfornew(bot, page):
+    xml = page.text
+    xml = xml.encode('ascii', 'ignore').decode('ascii')
+    xmldoc = minidom.parseString(xml)
+    newContest = checkLastBuildDate(xmldoc)
+    if newContest == True:
+	titles = xmldoc.getElementsByTagName('title')
+        title = titles[2].childNodes[0].nodeValue
+        links = xmldoc.getElementsByTagName('link')
+        link = links[2].childNodes[0].nodeValue.split("?")[0]
+	return title, link
 	
 def checkLastBuildDate(xmldoc):
     lastBuildFile = os.getcwd() + abs_file_path
@@ -100,3 +90,7 @@ def reset(bot,trigger):
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
+
+def update_usertotal(bot, nick):
+    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
