@@ -9,6 +9,8 @@ script_dir = os.path.dirname(__file__)
 rel_path = "data/itnewslastbuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
 url = 'https://www.itnews.com.au/RSS/rss.ashx'
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
 
 @sopel.module.interval(60)
 def getitnews(bot):
