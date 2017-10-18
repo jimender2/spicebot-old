@@ -70,6 +70,7 @@ def checkLastBuildDate(bot, xmldoc):
 @sopel.module.require_admin
 @sopel.module.commands('itnewsreset')
 def reset(bot,trigger):
+    for channel in bot.channels:
     	bot.say('Resetting LastBuildTime...')
     	bot.db.set_nick_value(channel, 'itnews_lastbuildcurrent', '')
 
