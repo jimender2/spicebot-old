@@ -45,11 +45,9 @@ def manualCheck(bot,trigger):
 	    try:
 	        title, link = checkfornew(bot, page)
 	    except TypeError:
-		return
-	    if title and link:
-                bot.say("[Spiceworks Contest] " + title + ": " + link)
-	    else:
-		bot.say("Contests Page: https://community.spiceworks.com/fun/contests")
+		title = "Contests Page"
+		link = "https://community.spiceworks.com/fun/contests"
+            bot.say("[Spiceworks Contest] " + title + ": " + link)
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
