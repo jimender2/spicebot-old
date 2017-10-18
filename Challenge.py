@@ -519,11 +519,12 @@ def weaponslockercmd(bot, trigger):
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
         elif commandtrimmed == 'inv' and trigger.admin:
             bot.say('test')
-            ## cleanup
-            #weaponslistnew = []
-            #for weapon in weaponslist:
-                #if weapon.endswith("\n"):
-                    #bot.say(str(weapon)
+            weaponslistnew = []
+            for weapon in weaponslist:
+                if weapon.endswith("\n"):
+                    bot.say(str(weapon)
+                else:
+                    bot.say(str(weapon)
                     #weapon = str(weapon.split("\n", 0)[1])
                 #weaponslistnew.append(weapon)
             #for channel in bot.channels:
