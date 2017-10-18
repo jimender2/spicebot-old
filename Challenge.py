@@ -527,7 +527,8 @@ def weaponslockercmd(bot, trigger):
                     weaponslistnew.append(weapon)
                 else:
                     weaponslistnew.append(weapon)
-            bot.db.set_nick_value(channel, 'weapons_locker', '')
+            for channel in bot.channels:
+                bot.db.set_nick_value(channel, 'weapons_locker', '')
             for weapon in weaponslistnew:
                 weaponslist = get_weaponslocker(bot)
                 if weapon not in weaponslist:
