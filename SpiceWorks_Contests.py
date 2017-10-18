@@ -8,27 +8,30 @@ from os.path import exists
 script_dir = os.path.dirname(__file__)
 rel_path = "data/swContestsLastBuild.txt"
 abs_file_path = os.path.join(script_dir, rel_path)
-
+url = 'https://community.spiceworks.com/feed/forum/1550.rss'
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
+	
 @sopel.module.interval(60)
 def getSWContests(bot):
     for channel in bot.channels:
-        url = 'https://community.spiceworks.com/feed/forum/1550.rss'
-        ua = UserAgent()
-        header = {'User-Agent': str(ua.chrome)}
         page = requests.get(url, headers=header)
-
         if page.status_code == 200:
-            xml = page.text
-            xml = xml.encode('ascii', 'ignore').decode('ascii')
-            xmldoc = minidom.parseString(xml)
-            newContest = checkLastBuildDate(xmldoc)
-            if newContest == True:
-                titles = xmldoc.getElementsByTagName('title')
-                title = titles[2].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName('link')
-                link = links[2].childNodes[0].nodeValue.split("?")[0]
-                bot.msg(channel, "A new Spiceworks Contest is available!     Title: " + title)
-	        bot.msg(channel, "Link: " + link)
+            title, link = checkfornew(bot, page)
+            bot.msg(channel, "[Spiceworks Contest] " + title + ": " + link)
+
+def checkfornew(bot, page):
+    xml = page.text
+    xml = xml.encode('ascii', 'ignore').decode('ascii')
+    xmldoc = minidom.parseString(xml)
+    newContest = checkLastBuildDate(xmldoc)
+    if newContest == True:
+	titles = xmldoc.getElementsByTagName('title')
+        title = titles[2].childNodes[0].nodeValue
+        links = xmldoc.getElementsByTagName('link')
+        link = links[2].childNodes[0].nodeValue.split("?")[0]
+	return title, link
+
 
 @sopel.module.rate(120)
 @sopel.module.commands('swcontests','spicecontests')
@@ -38,29 +41,10 @@ def manualCheck(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-    	url = 'https://community.spiceworks.com/feed/forum/1550.rss'
-    	ua = UserAgent()
-    	header = {'User-Agent': str(ua.chrome)}
     	page = requests.get(url, headers=header)
-
     	if page.status_code == 200:
-            xml = page.text
-            xml = xml.encode('ascii', 'ignore').decode('ascii')
-            xmldoc = minidom.parseString(xml)
-            newContest = checkLastBuildDate(xmldoc)
-            if newContest == True:
-                titles = xmldoc.getElementsByTagName('title')
-                title = titles[2].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName('link')
-                link = links[2].childNodes[0].nodeValue.split("?")[0]
-                bot.say("A new Spiceworks Contest is available!     Title: " + title)
-	        bot.say("Link: " + link)
-	    else:	    
-	        links = xmldoc.getElementsByTagName('link')
-                link = links[2].childNodes[0].nodeValue.split("?")[0]
-	        bot.say("No new contests are available at this time!     Contests Page: https://community.spiceworks.com/fun/contests")
-        else:
-	    bot.say("Unable to reach the Spiceworks Contest Page.")
+	    title, link = checkfornew(bot, page)
+            bot.say("[Spiceworks Contest] " + title + ": " + link)
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -103,9 +87,6 @@ def checkLastBuildDate(xmldoc):
 @sopel.module.require_admin
 @sopel.module.commands('swcontestsreset','spiceconteststreset')
 def reset(bot,trigger):
-    target = trigger.nick
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
     	bot.say('Removing Last Build File...')
     	os.system("sudo rm " + abs_file_path)
 
