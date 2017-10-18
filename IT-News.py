@@ -32,7 +32,7 @@ def autocheck(bot):
             bot.msg(channel, messagestring + title + ': ' + link)
 
 @sopel.module.rate(120)
-@sopel.module.commands('itnews')
+@sopel.module.commands(maincommand)
 def manualCheck(bot,trigger):
     bot.say(str(lastbuilddatabase))
     instigator = trigger.nick
@@ -83,7 +83,7 @@ def checkLastBuildDate(bot, xmldoc):
     return newcontent
 
 @sopel.module.require_admin
-@sopel.module.commands('itnewsreset')
+@sopel.module.commands(resetcommand)
 def reset(bot,trigger):
     for channel in bot.channels:
     	bot.say('Resetting LastBuildTime...')
