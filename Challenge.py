@@ -362,13 +362,9 @@ def usehealthpotion(bot, trigger):
 ######################
 
 def weaponofchoice():
-    checkweapons()
-    weapons = open(weaponslocker).read().splitlines()
-    weapon =random.choice(weapons)
-    if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
-        weapon = str('an ' + weapon)
-    else:
-        weapon = str('a ' + weapon)
+    weaponslist = get_weaponslocker(bot)
+    weapon =random.choice(weaponslist)
+    weapon = str('the ' + weapon)
     return weapon
 
 #################
@@ -516,42 +512,45 @@ def update_health(bot, nick, damage):
 ####################
 
 @module.require_chanmsg
-@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel')
+@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
 def weaponslockercmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
-        checkweapons()
         commandtrimmed = trigger.group(1)
         commandtrimmed = str(commandtrimmed.split("weaponslocker", 1)[1])
+        weaponslist = get_weaponslocker(bot)
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-        elif commandtrimmed == 'inv':
-            with open (weaponslocker, "r") as myfile:
-                for line in myfile:
-                    bot.notice(str(line), instigator)
+        elif commandtrimmed == 'inv' and bot.nick.endswith('dev'):
+            bot.say(str(weaponslist))
+        elif not trigger.group(2):
+            bot.say("What weapon would you like to add/remove?")
         else:
-            if not trigger.group(2):
-                bot.say("What weapon would you like to add/remove?")
-            else:
-                weaponchange = str(trigger.group(2))
-                if commandtrimmed == 'add':
-                    if str(weaponchange) in open(weaponslocker).read():
-                        bot.say(weaponchange + " is already in the weapons locker.")
-                    else:
-                        with open(weaponslocker, "a") as myfile:
-                            myfile.write("\n")
-                            myfile.write(weaponchange)
-                        if str(weaponchange) in open(weaponslocker).read():
-                            bot.say(weaponchange + " has been added to the weapons locker.")
-                elif commandtrimmed == 'del':
-                    if str(weaponchange) not in open(weaponslocker).read():
-                        bot.say(weaponchange + " is not in the weapons locker.")
-                    else:
-                        os.system('sudo sed -i "/' + str(weaponchange) + '/d; /^$/d" ' + weaponslocker)
-                        if str(weaponchange) not in open(weaponslocker).read():
-                            bot.say(weaponchange + ' has been removed from the weapons locker.')
+            weaponchange = str(trigger.group(2))
+            if commandtrimmed == 'add':
+                if weaponchange in weaponslist:
+                    bot.say(weaponchange + " is already in the weapons locker.")
+                    rescan = 'False'
+                else:
+                    weaponslist.append(weaponchange)
+                    update_weaponslocker(bot, weaponslist)
+                    rescan = 'True'
+            elif commandtrimmed == 'del':
+                if weaponchange not in weaponslist:
+                    bot.say(weaponchange + " is not in the weapons locker.")
+                    rescan = 'False'
+                else:
+                    weaponslist.remove(weaponchange)
+                    update_weaponslocker(bot, weaponslist)
+                    rescan = 'True'
+            if rescan == 'True':
+                weaponslist = get_weaponslocker(bot)
+                if weaponchange in weaponslist:
+                    bot.say(weaponchange + " has been added to the weapons locker.")
+                else:
+                    bot.say(weaponchange + ' has been removed from the weapons locker.')
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -582,45 +581,7 @@ def get_weaponslocker(bot):
 def update_weaponslocker(bot, weaponslist):
     for channel in bot.channels:
         bot.db.set_nick_value(channel, 'weapons_locker', weaponslist)
-
-@module.require_chanmsg
-@sopel.module.commands('weaponslockertestadd','weaponslockertestdel','weaponslockertestinv')
-def weaponslockercmd(bot, trigger):
-    commandtrimmed = trigger.group(1)
-    commandtrimmed = str(commandtrimmed.split("weaponslockertest", 1)[1])
-    weaponslist = get_weaponslocker(bot)
-    if commandtrimmed == '':
-        bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-    elif commandtrimmed == 'inv' and bot.nick.endswith('dev'):
-        bot.say(str(weaponslist))
-    elif not trigger.group(2):
-        bot.say("What weapon would you like to add/remove?")
-    else:
-        weaponchange = str(trigger.group(2))
-        if commandtrimmed == 'add':
-            if weaponchange in weaponslist:
-                bot.say(weaponchange + " is already in the weapons locker.")
-                rescan = 'False'
-            else:
-                weaponslist.append(weaponchange)
-                update_weaponslocker(bot, weaponslist)
-                rescan = 'True'
-        elif commandtrimmed == 'del':
-            if weaponchange not in weaponslist:
-                bot.say(weaponchange + " is not in the weapons locker.")
-                rescan = 'False'
-            else:
-                weaponslist.remove(weaponchange)
-                update_weaponslocker(bot, weaponslist)
-                rescan = 'True'
-        if rescan == 'True':
-            weaponslist = get_weaponslocker(bot)
-            if weaponchange in weaponslist:
-                bot.say(weaponchange + " has been added to the weapons locker.")
-            else:
-                bot.say(weaponchange + ' has been removed from the weapons locker.')
-                
-
+        
 ###########
 ## Stats ##
 ###########
