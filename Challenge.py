@@ -543,8 +543,8 @@ def weaponslockercmd(bot, trigger):
                         with open(weaponslocker, "a") as myfile:
                             myfile.write("\n")
                             myfile.write(weaponchange)
-                    if str(weaponchange) in open(weaponslocker).read():
-                        bot.say(weaponchange + " has been added to the weapons locker.")
+                        if str(weaponchange) in open(weaponslocker).read():
+                            bot.say(weaponchange + " has been added to the weapons locker.")
                 elif commandtrimmed == 'del':
                     if str(weaponchange) not in open(weaponslocker).read():
                         bot.say(weaponchange + " is not in the weapons locker.")
