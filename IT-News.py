@@ -44,13 +44,13 @@ def checkfornew(bot, page):
     xml = page.text
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
-    newContest = checkLastBuildDate(bot, xmldoc)
-    if newContest == True:
+    newnews = checkLastBuildDate(bot, xmldoc)
+    if newnews == True:
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[2].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
         link = links[2].childNodes[0].nodeValue.split("?")[0]
-	return title, link
+        return title, link
 	
 def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
