@@ -58,7 +58,10 @@ def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = str(lastBuildXML)
     lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
     if lastbuildcurrent:
-        if lastBuildXML.strip() != lastbuildcurrent.strip():
+	lastBuildTxt = lastbuildcurrent.replace("'","")
+	lastBuildTxt = lastBuildTxt.replace("[","")
+	lastBuildTxt = lastBuildTxt.replace("]","")
+        if lastBuildXML.strip() != lastBuildTxt.strip():
             newnews = True
 	else:
             newnews = False
