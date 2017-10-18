@@ -50,7 +50,7 @@ def manualCheck(bot,trigger):
             title = titles[1].childNodes[0].nodeValue
             links = xmldoc.getElementsByTagName('link')
             link = links[1].childNodes[0].nodeValue.split("?")[0]
-            bot.say("[iT News] " + title + '     Link: ' + link)
+            bot.say("[iT News] " + title + ': ' + link)
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
