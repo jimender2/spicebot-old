@@ -524,7 +524,7 @@ def weaponslockercmd(bot, trigger):
                 if weapon.endswith("\n"):
                     bot.say(str(weapon))
                     #weapon = weapon.replace("\n", '')
-                    weapon = weapon.split("\n", 0)[0]
+                    weapon = weapon.split("\n")
                 weaponslistnew.append(weapon)
             for channel in bot.channels:
                 bot.db.set_nick_value(channel, 'weapons_locker', '')
