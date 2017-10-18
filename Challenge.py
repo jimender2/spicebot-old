@@ -497,7 +497,7 @@ def weaponslockercmd(bot, trigger):
         weaponslist = get_weaponslocker(bot)
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-        elif commandtrimmed == 'inv' and bot.nick.endswith('dev'):
+        elif commandtrimmed == 'inv' and trigger.admin:
             bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
