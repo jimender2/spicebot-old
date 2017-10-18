@@ -59,9 +59,9 @@ def checkfornew(bot, page):
     newcontent = checkLastBuildDate(bot, xmldoc)
     if newcontent == True:
 	titles = xmldoc.getElementsByTagName('title')
-        title = titles[2].childNodes[0].nodeValue
+        title = titles[1].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
-        link = links[2].childNodes[0].nodeValue.split("?")[0]
+        link = links[1].childNodes[0].nodeValue.split("?")[0]
         return title, link
 	
 def checkLastBuildDate(bot, xmldoc):
