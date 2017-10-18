@@ -32,10 +32,13 @@ def update_usertotal(bot, nick):
 
 def getJoke():
     url = 'http://api.yomomma.info'
-    page = requests.get(url)
-    result = page.content
-    jsonjoke = json.loads(result)
-    joke = jsonjoke['joke']
+    try:
+      page = requests.get(url)
+      result = page.content
+      jsonjoke = json.loads(result)
+      joke = jsonjoke['joke']
+    except ConnectionError:
+      joke = "yo mamma is a horrible human being."
     return joke
 
 ## Check Status of Opt In
