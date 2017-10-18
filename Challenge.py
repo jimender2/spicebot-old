@@ -516,59 +516,42 @@ def update_health(bot, nick, damage):
 ####################
 
 @module.require_chanmsg
-@sopel.module.commands('weaponslocker')
+@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel')
 def weaponslockercmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
-        bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-    else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
-#@module.require_privmsg
-#@sopel.module.commands('weaponslockerinv')
-#def invweapons(bot, trigger):
-#    instigator = trigger.nick
-#    target = trigger.nick
-#    targetdisenable = get_spicebotdisenable(bot, target)
-#    if targetdisenable:
-#     with open (weaponslocker, "r") as myfile:
-#         for line in myfile:
-#             bot.say(str(line))
-#    else:
-#        instigator = trigger.nick
-#        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-#        if not warned:
-#            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-#        else:
-#            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
-@module.require_chanmsg
-@sopel.module.commands('weaponslockeradd')
-def addweapons(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    targetdisenable = get_spicebotdisenable(bot, target)
-    if targetdisenable:
         checkweapons()
-        if not trigger.group(2):
-            bot.say("what weapon would you like to add?")
+        commandtrimmed = trigger.group(1)
+        commandtrimmed = str(commandtrimmed.split("weaponslocker", 1)[1])
+        if commandtrimmed == '':
+            bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+        elif commandtrimmed == 'inv':
+            with open (weaponslocker, "r") as myfile:
+                for line in myfile:
+                    bot.notice(str(line), instigator)
         else:
-            weaponnew = str(trigger.group(2))
-            if str(weaponnew) in open(weaponslocker).read():
-                bot.say(weaponnew + " is already in the weapons locker.")
+            if not trigger.group(2):
+                bot.say("What weapon would you like to add/remove?")
             else:
-                with open(weaponslocker, "a") as myfile:
-                    myfile.write("\n")
-                    myfile.write(weaponnew)
-                if str(weaponnew) in open(weaponslocker).read():
-                    bot.say(weaponnew + " has been added to the weapons locker.")
+                weaponchange = str(trigger.group(2))
+                if commandtrimmed == 'add':
+                    if str(weaponchange) in open(weaponslocker).read():
+                        bot.say(weaponchange + " is already in the weapons locker.")
+                    else:
+                        with open(weaponslocker, "a") as myfile:
+                            myfile.write("\n")
+                            myfile.write(weaponchange)
+                    if str(weaponchange) in open(weaponslocker).read():
+                        bot.say(weaponchange + " has been added to the weapons locker.")
+                elif commandtrimmed == 'del':
+                    if str(weaponchange) not in open(weaponslocker).read():
+                        bot.say(weaponchange + " is not in the weapons locker.")
+                    else:
+                        os.system('sudo sed -i "/' + str(weaponchange) + '/d; /^$/d" ' + weaponslocker)
+                        if str(weaponchange) not in open(weaponslocker).read():
+                            bot.say(weaponchange + ' has been removed from the weapons locker.')
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -576,33 +559,7 @@ def addweapons(bot, trigger):
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
-@module.require_chanmsg
-@sopel.module.commands('weaponslockerdel')
-def removeweapons(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    targetdisenable = get_spicebotdisenable(bot, target)
-    if targetdisenable:
-        checkweapons()
-        if not trigger.group(2):
-            bot.say("what weapon would you like to remove?")
-        else:
-            weapondel = str(trigger.group(2))
-            if str(weapondel) in open(weaponslocker).read():
-                os.system('sudo sed -i "/' + str(weapondel) + '/d; /^$/d" ' + weaponslocker)
-                if str(weapondel) not in open(weaponslocker).read():
-                    bot.say(weapondel + ' has been removed from the weapons locker.')
-            else:
-                bot.say(weapondel + " is not in the weapons locker.")
-    else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
+
 def checkweapons():
     if not exists(weaponslocker):
         createweapons()
