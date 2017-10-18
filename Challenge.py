@@ -498,6 +498,13 @@ def weaponslockercmd(bot, trigger):
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
         elif commandtrimmed == 'inv' and trigger.admin:
+            ## cleanup
+            weaponslist = weaponslist.replace("\n", '')
+            update_weaponslocker(bot, weaponslist)
+            #weaponslist = weaponslist.replace('[', '')
+            #weaponslist = weaponslist.replace(']', '')
+            #weaponslist = weaponslist.replace("u'", '')
+            #weaponslist = weaponslist.replace("\n", '')
             bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
