@@ -27,9 +27,9 @@ def checkfornew(bot, page):
     newContest = checkLastBuildDate(xmldoc)
     if newContest == True:
 	titles = xmldoc.getElementsByTagName('title')
-        title = titles[2].childNodes[0].nodeValue or 0
+        title = titles[2].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
-        link = links[2].childNodes[0].nodeValue.split("?")[0] or 0
+        link = links[2].childNodes[0].nodeValue.split("?")[0]
 	return title, link
 
 @sopel.module.rate(120)
@@ -42,7 +42,10 @@ def manualCheck(bot,trigger):
     if targetdisenable:
     	page = requests.get(url, headers=header)
     	if page.status_code == 200:
-	    title, link = checkfornew(bot, page)
+	    try:
+	        title, link = checkfornew(bot, page)
+	    except TypeError:
+		return
 	    if title and link:
                 bot.say("[Spiceworks Contest] " + title + ": " + link)
 	    else:
