@@ -520,7 +520,7 @@ def weaponslockercmdold(bot, trigger):
     with open (weaponslocker, "r") as myfile:
         for line in myfile:
             weaponslist = get_weaponslocker(bot)
-            weaponchange = sstr(line)
+            weaponchange = str(line)
             if weaponchange not in weaponslist:
                 bot.say('adding ' + weaponchange)
                 weaponslist.append(weaponchange)
