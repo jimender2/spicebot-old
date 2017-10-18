@@ -3,7 +3,7 @@ from sopel import module, tools
 import random
 from random import randint
 import time
-import sys
+import sys, re
 
 TIMEOUT = 180
 TIMEOUTC = 40
