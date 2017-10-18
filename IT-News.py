@@ -12,9 +12,9 @@ alt_url = 'https://www.itnews.com.au'
 ## Based On Template
 messagestring = str("[" + feedname + "] ")
 trimmedname = feedname.replace(" ","").lower
-maincommand = trimmedname
-resetcommand = str(str(trimmedname) + 'reset')
-lastbuilddatabase = str(str(trimmedname) + '_lastbuildcurrent')
+maincommand = str(trimmedname)
+resetcommand = str(maincommand + 'reset')
+lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
 
 ## user agent and header
 ua = UserAgent()
