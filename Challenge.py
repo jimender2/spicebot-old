@@ -155,62 +155,39 @@ def challenge(bot, channel, instigator, target):
 
 ## Enable
 @module.require_chanmsg
-@module.commands('challengeon','duelon')
-def challengeon(bot, trigger):
+@module.commands('challengeon','duelon','challengeoff','dueloff')
+def challengeoptchange(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
-        channel = trigger.sender
-        target = trigger.group(3) or trigger.nick
-        if not trigger.admin and target != trigger.nick:
-            bot.say("Only bot admins can mark other users as able to challenge.")
-        elif target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
-        else:
-            disenable = get_disenable(bot, target)
-            opttime = get_opttimeout(bot, target)
-            if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-            elif not disenable:
-                bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-                bot.say('Challenges has been enabled for ' + target)
-                set_opttimeout(bot, target)
-            else:
-                bot.say('Challenges are already enabled for ' + target)
-    else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
-## Disable
-@module.require_chanmsg
-@module.commands('challengeoff','dueloff')
-def challengeoff(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    targetdisenable = get_spicebotdisenable(bot, target)
-    if targetdisenable:
+        command = trigger.group(1)
+        if commandtrimmed == '':
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
         if not trigger.admin and target != trigger.nick:
             bot.say("Only bot admins can mark other users as not able to challenge.")
         elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-        else:
-            disenable = get_disenable(bot, target)
-            opttime = get_opttimeout(bot, target)
-            if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-            elif not disenable:
+        disenable = get_disenable(bot, target)
+        opttime = get_opttimeout(bot, target)
+        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+            bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
+        elif not disenable:
+            if command.endswith('on'):
+                bot.db.set_nick_value(target, 'challenges_disenable', 'true')
+                bot.say('Challenges has been enabled for ' + target)
+                set_opttimeout(bot, target)
+            elif command.endswith('off'):
                 bot.say('Challenges are already disabled for ' + target)
-            else:
+        else:
+            if command.endswith('on'):
+                bot.say('Challenges are already enabled for ' + target)
+            elif command.endswith('off'):
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
                 set_opttimeout(bot, target)
+            
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -218,7 +195,7 @@ def challengeoff(bot, trigger):
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
+
 ## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
