@@ -4,6 +4,12 @@ import random
 from random import randint
 import time
 import sys, re
+import os
+from os.path import exists
+
+moduledir = os.path.dirname(__file__)
+relativepath = "data/weapons.txt"
+weaponslocker = os.path.join(moduledir, relativepath)
 
 TIMEOUT = 180
 TIMEOUTC = 40
