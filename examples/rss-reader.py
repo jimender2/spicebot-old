@@ -7,6 +7,7 @@ from fake_useragent import UserAgent
 feedname = "iT News"
 url = 'https://www.itnews.com.au/RSS/rss.ashx'
 alt_url = 'https://www.itnews.com.au'
+childnumber = 1
 ## End Of Template
 
 ## Based On Template
@@ -26,7 +27,10 @@ def autocheck(bot):
     for channel in bot.channels:
         page = requests.get(url, headers=header)
         if page.status_code == 200:
-            title, link = checkfornew(bot, page)
+	    try:
+                title, link = checkfornew(bot, page)
+	    except TypeError:
+		return
 	    if title and link:
                 bot.msg(channel, messagestring + title + ': ' + link)
 
@@ -84,9 +88,9 @@ def checkfornew(bot, page):
     newcontent = checkLastBuildDate(bot, xmldoc)
     if newcontent == True:
 	titles = xmldoc.getElementsByTagName('title')
-        title = titles[1].childNodes[0].nodeValue
+        title = titles[childnumber].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
-        link = links[1].childNodes[0].nodeValue.split("?")[0]
+        link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
         return title, link
 
 def get_lastbuildcurrent(bot, lastBuildXML):
