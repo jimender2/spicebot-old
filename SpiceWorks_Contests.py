@@ -106,7 +106,7 @@ def reset(bot,trigger):
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-    	bot.say('Removing Contests File...')
+    	bot.say('Removing Last Build File...')
     	os.system("sudo rm " + abs_file_path)
 
 ## Check Status of Opt In
