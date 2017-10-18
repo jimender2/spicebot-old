@@ -56,16 +56,16 @@ def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
     lastBuildXML = str(lastBuildXML)
+    bot.say('lastBuildXML is ' + lastBuildXML)
     lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
     if lastbuildcurrent:
-	lastBuildTxt = lastbuildcurrent.replace("'","")
-	lastBuildTxt = lastBuildTxt.replace("[","")
-	lastBuildTxt = lastBuildTxt.replace("]","")
-        if lastBuildXML.strip() != lastBuildTxt.strip():
+	bot.say('lastbuildcurrent is ' + lastbuildcurrent)
+        if lastBuildXML.strip() != lastbuildcurrent.strip():
             newnews = True
 	else:
             newnews = False
     else:
+	bot.say('lastBuildXML is empty')
         newnews = False
     set_lastbuildcurrent(bot, lastBuildXML)
     return newnews
