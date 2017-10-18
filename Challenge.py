@@ -521,12 +521,10 @@ def weaponslockercmd(bot, trigger):
             ## cleanup
             weaponslistnew = []
             for weapon in weaponslist:
-                if weapon.endswith('\n'):
-                    #weapon = weapon.replace("\n", '')
-                    weapon = weapon.rstrip('\n')
-                    weaponslistnew.append(weapon)
-                else:
-                    weaponslistnew.append(weapon)
+                if weapon.endswith("\n"):
+                    weapon = weapon.replace("\n", '')
+                    #weapon = weapon.rstrip('\n')
+                weaponslistnew.append(weapon)
             for channel in bot.channels:
                 bot.db.set_nick_value(channel, 'weapons_locker', '')
             for weapon in weaponslistnew:
