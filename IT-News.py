@@ -45,7 +45,6 @@ def checkfornew(bot, page):
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
     newnews = checkLastBuildDate(bot, xmldoc)
-    bot.say('newnews is ' + newnews)
     if newnews == True:
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[2].childNodes[0].nodeValue
@@ -57,10 +56,12 @@ def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
     lastBuildXML = str(lastBuildXML)
-    bot.say('lastBuildXML is ' + lastBuildXML)
+    bot.say('on line is ' + lastBuildXML)
     lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML)
     if lastbuildcurrent:
-	bot.say('lastbuildcurrent is ' + lastbuildcurrent)
+	bot.say('offline is ' + lastbuildcurrent)
+	if lastBuildXML.strip() == lastbuildcurrent.strip():
+            bot.say('equal')
         if lastBuildXML.strip() != lastbuildcurrent.strip():
             newnews = True
 	else:
@@ -69,6 +70,7 @@ def checkLastBuildDate(bot, xmldoc):
 	bot.say('lastBuildXML is empty')
         newnews = False
     set_lastbuildcurrent(bot, lastBuildXML)
+    bot.say('newnews is ' + newnews)
     return newnews
 
 @sopel.module.require_admin
