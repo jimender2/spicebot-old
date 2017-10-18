@@ -162,7 +162,6 @@ def challengeoptchange(bot, trigger):
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         command = trigger.group(1)
-        if commandtrimmed == '':
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
         if not trigger.admin and target != trigger.nick:
