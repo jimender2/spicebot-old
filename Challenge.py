@@ -432,12 +432,12 @@ def getwinner(bot, instigator, target):
     targetfightarray = []
     while int(instigatorfight) != 0:
         instigatorfightroll = diceroll()
-        instigatorfightarray.append(instigatorfightroll)
+        instigatorfightarray = instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) != 0:
         targetfightroll = diceroll()
-        targetfightarray.append(targetfightroll)
+        targetfightarray = targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
             
@@ -573,6 +573,51 @@ def createweapons():
             if os.stat(weaponslocker).st_size != 0:
                 myfile.write("\n")
             myfile.write(w)
+
+def get_weaponslocker(bot):
+    for channel in bot.channels:
+        weaponslist = bot.db.get_nick_value(channel, 'weaponslocker') or []
+        return weaponslist
+
+#@module.require_chanmsg
+@sopel.module.commands('weaponslockertestadd','weaponslockertestdel')
+def weaponslockercmd(bot, trigger):
+    commandtrimmed = trigger.group(1)
+    commandtrimmed = str(commandtrimmed.split("weaponslockertest", 1)[1])
+    if commandtrimmed == '':
+        bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+    elif commandtrimmed == 'inv':
+        bot.say('tba')
+    elif not trigger.group(2):
+        bot.say("What weapon would you like to add/remove?")
+    else:
+        weaponchange = str(trigger.group(2))
+        weaponslist = get_weaponslocker(bot)
+        if commandtrimmed == 'add':
+            if weaponchange in weaponslist:
+                bot.say(weaponchange + " is already in the weapons locker.")
+                rescan = False
+            else:
+                weaponslist.append(weaponchange)
+                rescan = True
+        elif commandtrimmed == 'del':
+            if weaponchange not in weaponslist:
+                bot.say(weaponchange + " is not in the weapons locker.")
+                rescan = False
+            else:
+                
+                rescan = True
+        if rescan == 'True':
+            weaponslist = get_weaponslocker(bot)
+            if weaponchange in weaponslist:
+                bot.say(weaponchange + " has been added to the weapons locker.")
+            else:
+                bot.say(weaponchange + ' has been removed from the weapons locker.')
+                
+            
+            
+            
+            
 
 ###########
 ## Stats ##
