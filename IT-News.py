@@ -27,7 +27,8 @@ def autocheck(bot):
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             title, link = checkfornew(bot, page)
-            bot.msg(channel, messagestring + title + ': ' + link)
+	    if title and link:
+                bot.msg(channel, messagestring + title + ': ' + link)
 
 @sopel.module.rate(120)
 @sopel.module.commands(maincommand)
@@ -37,33 +38,30 @@ def manualCheck(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-    	page = requests.get(url, headers=header)
-	try:
-	    title, link = checkfornew(bot, page)
-	except TypeError:
-	    title = feedname
-	    link = alt_url
-        bot.say(messagestring + title + ': ' + link)  
+	runprocess(bot)
     else:
-        instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
         if not warned:
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
 
-def checkfornew(bot, page):
-    xml = page.text
-    xml = xml.encode('ascii', 'ignore').decode('ascii')
-    xmldoc = minidom.parseString(xml)
-    newcontent = checkLastBuildDate(bot, xmldoc)
-    if newcontent == True:
-	titles = xmldoc.getElementsByTagName('title')
-        title = titles[1].childNodes[0].nodeValue
-        links = xmldoc.getElementsByTagName('link')
-        link = links[1].childNodes[0].nodeValue.split("?")[0]
-        return title, link
-	
+@sopel.module.require_admin
+@sopel.module.commands(resetcommand)
+def reset(bot,trigger):
+    for channel in bot.channels:
+    	bot.say('Resetting LastBuildTime...')
+    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
+
+def runprocess(bot):
+    page = requests.get(url, headers=header)
+    try:
+        title, link = checkfornew(bot, page)
+    except TypeError:
+        title = feedname
+        link = alt_url
+    bot.say(messagestring + title + ': ' + link)  
+		   
 def checkLastBuildDate(bot, xmldoc):
     lastBuildXML = xmldoc.getElementsByTagName('pubDate')
     lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
@@ -79,12 +77,26 @@ def checkLastBuildDate(bot, xmldoc):
     set_lastbuildcurrent(bot, lastBuildXML)
     return newcontent
 
-@sopel.module.require_admin
-@sopel.module.commands(resetcommand)
-def reset(bot,trigger):
+def checkfornew(bot, page):
+    xml = page.text
+    xml = xml.encode('ascii', 'ignore').decode('ascii')
+    xmldoc = minidom.parseString(xml)
+    newcontent = checkLastBuildDate(bot, xmldoc)
+    if newcontent == True:
+	titles = xmldoc.getElementsByTagName('title')
+        title = titles[1].childNodes[0].nodeValue
+        links = xmldoc.getElementsByTagName('link')
+        link = links[1].childNodes[0].nodeValue.split("?")[0]
+        return title, link
+
+def get_lastbuildcurrent(bot, lastBuildXML):
     for channel in bot.channels:
-    	bot.say('Resetting LastBuildTime...')
-    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
+        lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+    return lastbuildcurrent
+
+def set_lastbuildcurrent(bot, lastbuildcurrent):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
 
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -95,12 +107,4 @@ def update_usertotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
 
-def get_lastbuildcurrent(bot, lastBuildXML):
-    for channel in bot.channels:
-        lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
-    return lastbuildcurrent
-
-def set_lastbuildcurrent(bot, lastbuildcurrent):
-    for channel in bot.channels:
-        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
 
