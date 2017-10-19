@@ -340,6 +340,7 @@ def usehealthpotion(bot, trigger):
 def weaponofchoice(bot):
     weaponslist = get_weaponslocker(bot)
     weapon =random.choice(weaponslist)
+    weapon = str(weapon)
     if not weapon:
         weapon = "fist"
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
@@ -493,6 +494,12 @@ def update_health(bot, nick, damage):
 ####################
 
 @module.require_admin
+@sopel.module.commands('weaponslockerflush')
+def weaponslockercmdflush(bot, trigger):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, 'weapons_locker', '')
+    
+@module.require_admin
 @sopel.module.commands('weaponslockeraddold')
 def weaponslockercmdold(bot, trigger):
     with open (weaponslocker, "r") as myfile:
@@ -525,7 +532,6 @@ def weaponslockercmd(bot, trigger):
                 weapon = weapon.replace("u'", '')
                 weapon = weapon.replace("', u", '')
                 weapon = weapon.replace('"]', '')
-                
                 #if weapon.endswith("\n"):
                     #bot.say(str(weapon))
                     ##weapon = weapon.replace('\\n', '')
