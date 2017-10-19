@@ -22,7 +22,7 @@ def webmd(bot, trigger):
             except IndexError:
                 result = "death"
             conclusion = str(target + condition + result)
-            bot.say(result)
+            bot.say(conclusion)
         elif not trigger.group(2):
             bot.say("What would you like to add/remove?")
         else:
