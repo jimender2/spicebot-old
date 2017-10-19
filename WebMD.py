@@ -14,7 +14,7 @@ def webmd(bot, trigger):
         webmd = get_webmd(bot)
         if commandtrimmed == '':
             target = trigger.group(3) or trigger.nick
-            responses  = ["has died from ","is being treated for","is recovering from"]
+            responses  = ["has died from","is being treated for","is recovering from"]
             reply = random.randint(0,len(responses) - 1)
             condition = str(responses [reply])
             try:
