@@ -520,15 +520,11 @@ def weaponslockercmd(bot, trigger):
         elif commandtrimmed == 'inv' and trigger.admin:
             weaponslistnew = []
             for weapon in weaponslist:
-                try:
-                    weapon = weapon.replace('[', '')
-                    weapon = weapon.replace("', u'']", '')
-                    if weapon.endswith("\n"):
-                        bot.say(str(weapon))
-                        weapon = weapon.replace('\\n', '')
-                        #weapon = weapon.split('\\n')
-                except AttributeError:
-                    bot.say('error ' + str(weapon))
+                bot.say(str(weapon))
+                #if weapon.endswith("\n"):
+                    #bot.say(str(weapon))
+                    ##weapon = weapon.replace('\\n', '')
+                    #weapon = weapon.split('\\n')
                 weaponslistnew.append(weapon)
             for channel in bot.channels:
                 bot.db.set_nick_value(channel, 'weapons_locker', '')
