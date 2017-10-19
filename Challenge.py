@@ -518,9 +518,10 @@ def weaponslockercmd(bot, trigger):
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
         elif commandtrimmed == 'inv' and trigger.admin:
-            ## cleanup
             weaponslistnew = []
             for weapon in weaponslist:
+                weapon = weapon.replace('[', '')
+                weapon = weapon.replace("', u'']", '')
                 try:
                     if weapon.endswith("\n"):
                         bot.say(str(weapon))
@@ -542,29 +543,6 @@ def weaponslockercmd(bot, trigger):
             weaponslist = weaponslist.replace("u'", '')
             weaponslist = weaponslist.replace("'", '')
             bot.say(str(weaponslist))
-        #elif commandtrimmed == 'inv' and trigger.admin:
-            #bot.say('test')
-            #weaponslistnew = []
-            #for weapon in weaponslist:
-                #if weapon.endswith("\n"):
-                    #bot.say(str(weapon)
-                #else:
-                    #bot.say(str(weapon)
-                    #weapon = str(weapon.split("\n", 0)[1])
-                #weaponslistnew.append(weapon)
-            #for channel in bot.channels:
-                #bot.db.set_nick_value(channel, 'weapons_locker', '')
-            #for weapon in weaponslistnew:
-                #weaponslist = get_weaponslocker(bot)
-                #if weapon not in weaponslist:
-                    #weaponslist.append(weapon)
-            #weaponslist = get_weaponslocker(bot)
-            #weaponslist = str(weaponslist)
-            #weaponslist = weaponslist.replace('[', '')
-            #weaponslist = weaponslist.replace(']', '')
-            #weaponslist = weaponslist.replace("u'", '')
-            #weaponslist = weaponslist.replace("'", '')
-            #bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
         else:
