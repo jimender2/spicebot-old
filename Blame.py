@@ -15,7 +15,7 @@ def webmd(bot, trigger):
             target = u
             disenable = get_spicebotdisenable(bot, target)
             if disenable:
-                if target not trigger.nick:
+                if target != instigator:
                     blametargetarray.append(target)
         try:
             whotoblame =random.choice(blametargetarray)
