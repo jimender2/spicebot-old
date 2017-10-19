@@ -59,3 +59,12 @@ def get_webmd(bot):
 def update_webmd(bot, webmd):
     for channel in bot.channels:
         bot.db.set_nick_value(channel, 'webmd_locker', webmd)
+
+def update_usertotal(bot, nick):
+    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
+
+## Check Status of Opt In
+def get_spicebotdisenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
