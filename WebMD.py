@@ -14,14 +14,14 @@ def webmd(bot, trigger):
         webmd = get_webmd(bot)
         if commandtrimmed == '':
             target = trigger.group(3) or trigger.nick
-            responses  = ["has died from","is being treated for","is recovering from"]
+            responses  = ["has died from ","is being treated for","is recovering from"]
             reply = random.randint(0,len(responses) - 1)
             condition = str(responses [reply])
             try:
                 result =random.choice(webmd)
             except IndexError:
                 result = "death"
-            conclusion = str(target + condition + result)
+            conclusion = str(target + condition + ' ' + result + '.')
             bot.say(conclusion)
         elif not trigger.group(2):
             bot.say("What would you like to add/remove?")
