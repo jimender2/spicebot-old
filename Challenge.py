@@ -339,10 +339,11 @@ def usehealthpotion(bot, trigger):
 
 def weaponofchoice(bot):
     weaponslist = get_weaponslocker(bot)
-    weapon =random.choice(weaponslist)
-    weapon = str(weapon)
-    if not weapon:
+    try:
+        weapon =random.choice(weaponslist)
+    except IndexError:
         weapon = "fist"
+    weapon = str(weapon)
     if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
         weapon = str('an ' + weapon)
     else:
