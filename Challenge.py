@@ -542,7 +542,7 @@ def weaponslockercmd(bot, trigger):
             weaponslist = weaponslist.replace('[', '')
             weaponslist = weaponslist.replace(']', '')
             weaponslist = weaponslist.replace("u'", '')
-            weaponslist = weaponslist.replace("u"', '')
+            weaponslist = weaponslist.replace('u"', '')
             weaponslist = weaponslist.replace("'", '')
             weaponslist = weaponslist.replace('"', '')
             bot.say(str(weaponslist))
