@@ -62,7 +62,7 @@ def runprocess(bot):
     try:
         title, link = checkfornew(bot, page)
     except TypeError:
-        title = feedname
+        title = ''
         link = alt_url
     bot.say(messagestring + title + ': ' + link)  
 		   
