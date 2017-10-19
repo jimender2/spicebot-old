@@ -35,8 +35,8 @@ def update_usertotal(bot, nick):
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
 
 ## Check Status of Opt In
-def get_spicebotdisenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+def get_disenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
     return disenable
         
             
