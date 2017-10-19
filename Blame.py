@@ -7,6 +7,7 @@ import random
 def webmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
+    channel = trigger.sender
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         blametargetarray = []
