@@ -529,7 +529,6 @@ def weaponslockercmd(bot, trigger):
         elif commandtrimmed == 'inv' and trigger.admin:
             weaponslistnew = []
             for weapon in weaponslist:
-                bot.say(str(weapon))
                 weapon = str(weapon)
                 weaponslistnew.append(weapon)
             for channel in bot.channels:
