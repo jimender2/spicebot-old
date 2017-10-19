@@ -344,7 +344,9 @@ def weaponofchoice(bot):
     except IndexError:
         weapon = "fist"
     weapon = str(weapon)
-    if weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
+    if weapon.startswith('a ') or weapon.startswith('an ') or weapon.startswith('the '):
+        weapon = str(weapon)
+    elif weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
         weapon = str('an ' + weapon)
     else:
         weapon = str('a ' + weapon)
@@ -493,15 +495,9 @@ def update_health(bot, nick, damage):
 ####################
 ## Weapons Locker ##
 ####################
-
+ 
 @module.require_admin
-@sopel.module.commands('weaponslockerflush')
-def weaponslockercmdflush(bot, trigger):
-    for channel in bot.channels:
-        bot.db.set_nick_value(channel, 'weapons_locker', '')
-    
-@module.require_admin
-@sopel.module.commands('weaponslockeraddold')
+@sopel.module.commands('weaponslockerimport')
 def weaponslockercmdold(bot, trigger):
     with open (weaponslocker, "r") as myfile:
         bot.say('adding existing weapons')
