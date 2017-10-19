@@ -2,6 +2,7 @@ import sopel
 from sopel import module, tools
 import random
 
+@sopel.module.rate(120)
 @sopel.module.commands('blame')
 @module.require_chanmsg
 def webmd(bot, trigger):
