@@ -9,6 +9,7 @@ def webmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
     channel = trigger.sender
+    update_usertotal(bot, target)
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         blametargetarray = []
