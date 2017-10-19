@@ -16,11 +16,11 @@ def webmd(bot, trigger):
             disenable = get_spicebotdisenable(bot, target)
             if not disenable:
                 blametargetarray.append(target)
-            try:
-                whotoblame =random.choice(blametargetarray)
-            except IndexError:
-                whotoblame = str(instigator + "'s mom")
-            bot.say("It's " + whotoblame + "'s fault.")
+        try:
+            whotoblame =random.choice(blametargetarray)
+        except IndexError:
+            whotoblame = str(instigator + "'s mom")
+        bot.say("It's " + whotoblame + "'s fault.")
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
