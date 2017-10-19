@@ -522,9 +522,9 @@ def weaponslockercmd(bot, trigger):
             weaponslistnew = []
             for weapon in weaponslist:
                 try:
-                    if weapon.endswith('\\n'):
+                    if weapon.endswith("\n"):
                         bot.say(str(weapon))
-                        weapon = weapon.replace('\\n', '')
+                        weapon = weapon.replace('\n', '')
                         #weapon = weapon.split('\\n')
                 except AttributeError:
                     return
