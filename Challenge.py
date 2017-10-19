@@ -527,7 +527,7 @@ def weaponslockercmd(bot, trigger):
                         weapon = weapon.replace('\n', '')
                         #weapon = weapon.split('\\n')
                 except AttributeError:
-                    return
+                    bot.say('error ' + str(weapon))
                 weaponslistnew.append(weapon)
             for channel in bot.channels:
                 bot.db.set_nick_value(channel, 'weapons_locker', '')
