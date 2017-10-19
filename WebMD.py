@@ -1,5 +1,6 @@
 import sopel
 from sopel import module, tools
+import random
 
 @sopel.module.commands('webmd','webmdadd','webmddel')
 @module.require_chanmsg
