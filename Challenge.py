@@ -23,6 +23,7 @@ OPTTIMEOUT = 3600
 def challenge_action(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
+    update_usertotal(bot, target)
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
@@ -43,6 +44,7 @@ def challenge_action(bot, trigger):
 def challenge_cmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
+    update_usertotal(bot, target)
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         return challenge(bot, trigger.sender, trigger.nick, trigger.group(3) or '')
