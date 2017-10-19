@@ -506,6 +506,7 @@ def weaponslockercmdold(bot, trigger):
     with open (weaponslocker, "r") as myfile:
         bot.say('adding existing weapons')
         for line in myfile:
+            line = line.strip()
             weaponslist = get_weaponslocker(bot)
             weaponchange = str(line)
             if weaponchange not in weaponslist:
@@ -530,7 +531,6 @@ def weaponslockercmd(bot, trigger):
             for weapon in weaponslist:
                 bot.say(str(weapon))
                 weapon = str(weapon)
-                #weapon = weapon.replace("\n", '')
                 weaponslistnew.append(weapon)
             for channel in bot.channels:
                 bot.db.set_nick_value(channel, 'weapons_locker', '')
