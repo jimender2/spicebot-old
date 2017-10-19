@@ -100,7 +100,6 @@ def autoblock(bot):
                     bot.db.set_nick_value(target, 'spicebothour_warn', '')
         bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
     
-@sopel.module.require_privmsg
 @sopel.module.commands('spicebottotalusesthishour')
 def isshelisteningtome(bot,trigger):
     target = trigger.group(3) or trigger.nick
