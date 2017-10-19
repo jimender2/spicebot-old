@@ -520,9 +520,9 @@ def weaponslockercmd(bot, trigger):
         elif commandtrimmed == 'inv' and trigger.admin:
             weaponslistnew = []
             for weapon in weaponslist:
-                weapon = weapon.replace('[', '')
-                weapon = weapon.replace("', u'']", '')
                 try:
+                    weapon = weapon.replace('[', '')
+                    weapon = weapon.replace("', u'']", '')
                     if weapon.endswith("\n"):
                         bot.say(str(weapon))
                         weapon = weapon.replace('\\n', '')
