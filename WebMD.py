@@ -8,6 +8,7 @@ import random
 def webmd(bot, trigger):
     instigator = trigger.nick
     target = trigger.nick
+    update_usertotal(bot, target)
     targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
         commandtrimmed = trigger.group(1)
