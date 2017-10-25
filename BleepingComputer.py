@@ -7,7 +7,7 @@ from fake_useragent import UserAgent
 feedname = "Bleeping Computer"
 url = 'https://www.bleepingcomputer.com/feed/'
 alt_url = 'https://www.bleepingcomputer.com/rss-feeds/'
-childnumber = 1
+childnumber = 2
 ## End Of Template
 
 ## Based On Template
@@ -88,7 +88,7 @@ def checkfornew(bot, page):
     newcontent = checkLastBuildDate(bot, xmldoc)
     if newcontent == True:
 	titles = xmldoc.getElementsByTagName('title')
-        title = titles[childnumber].childNodes[1].nodeValue
+        title = titles[childnumber].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
         link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
         return title, link
