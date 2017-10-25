@@ -7,7 +7,7 @@ from fake_useragent import UserAgent
 feedname = "Bleeping Computer"
 url = 'https://www.bleepingcomputer.com/feed/'
 alt_url = 'https://www.bleepingcomputer.com/rss-feeds/'
-childnumber = 2
+childnumber = 1
 ## End Of Template
 
 ## Based On Template
