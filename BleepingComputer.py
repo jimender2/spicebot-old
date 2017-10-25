@@ -8,6 +8,7 @@ feedname = "Bleeping Computer"
 url = 'https://www.bleepingcomputer.com/feed/'
 alt_url = 'https://www.bleepingcomputer.com/rss-feeds/'
 childnumber = 2
+childnumberb = 1
 ## End Of Template
 
 ## Based On Template
@@ -90,7 +91,7 @@ def checkfornew(bot, page):
 	titles = xmldoc.getElementsByTagName('title')
         title = titles[childnumber].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
-        link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+        link = links[childnumberb].childNodes[0].nodeValue.split("?")[0]
         return title, link
 
 def get_lastbuildcurrent(bot, lastBuildXML):
