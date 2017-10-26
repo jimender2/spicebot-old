@@ -29,7 +29,7 @@ def isshelistening(bot,trigger):
         disenable = get_disenable(bot, target)
         opttime = get_timeout(bot, target)
         if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opt_time), instigator)
+            bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
         elif commandtrimmed == 'on':
             if not disenable:
                 bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
