@@ -7,7 +7,7 @@ def check_disenable(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-        execute_main(bot, trigger)
+        #execute_main(bot, trigger)
         bot.say('good')
     else:
         instigator = trigger.nick
