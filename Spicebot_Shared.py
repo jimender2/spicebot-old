@@ -8,6 +8,7 @@ def check_disenable(bot,trigger):
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
         execute_main(bot, trigger)
+        bot.say('good')
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
