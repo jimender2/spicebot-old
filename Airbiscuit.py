@@ -1,5 +1,5 @@
 import sopel.module
-from Spicebot_Shared import *
+import SpicebotShared
 
 @sopel.module.rate(120)
 @sopel.module.commands('airbiscuit','float','floats')
