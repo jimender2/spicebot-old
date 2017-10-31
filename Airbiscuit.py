@@ -1,5 +1,5 @@
 import sopel.module
-from Spicebot_Shared import check_disenable, update_usertotal, get_disenable
+from Spicebot_Shared import *
 
 @sopel.module.rate(120)
 @sopel.module.commands('airbiscuit','float','floats')
