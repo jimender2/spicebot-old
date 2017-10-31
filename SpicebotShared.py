@@ -1,4 +1,5 @@
 ## Shared Functions
+import sopel.module
 
 ## Main Check
 def check_disenable(bot,trigger):
