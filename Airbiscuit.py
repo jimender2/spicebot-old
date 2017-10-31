@@ -11,5 +11,4 @@ def mainfunction(bot, trigger):
     check_disenable(bot, trigger)
     
 def execute_main(bot, trigger):
-    if target == trigger.nick:
-        bot.say(trigger.nick + " floats an air biscuit.")
+    bot.say(trigger.nick + " floats an air biscuit.")
