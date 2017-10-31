@@ -7,8 +7,8 @@ def check_disenable(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-        #execute_main(bot, trigger)
         bot.say('good')
+        return
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -16,6 +16,7 @@ def check_disenable(bot,trigger):
             bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
+        exit
 
 ## Update Number
 def update_usertotal(bot, nick):
