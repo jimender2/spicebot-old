@@ -8,7 +8,7 @@ from SpicebotShared import *
 @sopel.module.rate(120)
 @sopel.module.commands('airbiscuit','float','floats')
 def mainfunction(bot, trigger):
-    check_disenable(bot, target)
+    check_disenable(bot, trigger)
     
 def execute_main(bot, trigger):
     if target == trigger.nick:
