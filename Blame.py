@@ -16,6 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     blametargetarray = []
+    instigator = trigger.nick
     channel = trigger.sender
     for u in bot.channels[channel].users:
         target = u
