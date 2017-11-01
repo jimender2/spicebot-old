@@ -40,7 +40,7 @@ def execute_main(bot, trigger):
         whichtrigmood = 'salty'
     else:
         whichtrigmood = 'null'
-         whatistoday = str(datetime.datetime.today().weekday())
+        whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':
         today = "Monday"
     elif whatistoday == '1':
