@@ -1,33 +1,27 @@
 import sopel.module
 import sys, re
 from num2words import num2words
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 @sopel.module.rate(120)
 @sopel.module.commands('ERMAHGERD')
-def ERMAHGERD(bot,trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        if trigger.group(2):
-            ernpert = trigger.group(2)
-            spertitert = trernslert(ernpert)
-            bot.say('ERMAHGERD,' + str(spertitert))
-        else:
-            bot.say('Whert der yer wernt ter trernslert?')
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    if trigger.group(2):
+        ernpert = trigger.group(2)
+        spertitert = trernslert(ernpert)
+        bot.say('ERMAHGERD,' + str(spertitert))
     else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
+        bot.say('Whert der yer wernt ter trernslert?')
 
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-        
 def trernslert(werds):
     terkerns = werds.split()
     er = ''
@@ -96,8 +90,3 @@ def ermergerd(w):
         er = er[0] + er[1:].replace('y', 'er')
         er = er.replace('rr', 'r')
         return er.upper()
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
