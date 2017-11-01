@@ -56,3 +56,12 @@ def execute_main(bot, trigger):
                 bot.say(webmdchange + " has been added to the webmd locker.")
             else:
                 bot.say(webmdchange + ' has been removed from the webmd locker.')
+
+def get_webmd(bot):
+    for channel in bot.channels:
+        webmd = bot.db.get_nick_value(channel, 'webmd_locker') or []
+        return webmd
+        
+def update_webmd(bot, webmd):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, 'webmd_locker', webmd)
