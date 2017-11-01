@@ -6,37 +6,32 @@ from time import strptime
 from dateutil import parser
 import calendar
 import arrow
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 url = 'https://community.spiceworks.com/calendar'
 
+@sopel.module.rate(120)
 @sopel.module.commands('spicewebby')
-def webbymanual(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        page = requests.get(url,headers = None)
-        if page.status_code == 200:
-            now = datetime.datetime.utcnow()
-            webbytimeuntil = getwebbytimeuntil()
-            webbybonus = getwebbybonus()
-            webbytitle = getwebbytitle()
-            webbylink = getwebbylink()
-            bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-            bot.say('BONUS: ' + webbybonus)
-    else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        now = datetime.datetime.utcnow()
+        webbytimeuntil = getwebbytimeuntil()
+        webbybonus = getwebbybonus()
+        webbytitle = getwebbytitle()
+        webbylink = getwebbylink()
+        bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
+        bot.say('BONUS: ' + webbybonus)
 
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-        
 @sopel.module.interval(60)
 def webbyauto(bot):
     page = requests.get(url,headers = None)
@@ -92,7 +87,6 @@ def getwebbytimeuntil():
     a = arrow.get(now)
     b = arrow.get(webbytime)
     timecompare = (b.humanize(a, granularity='auto'))
-    #'second'minute''hour''day''month''year'
     webbytimeuntil = str(timecompare)
     return webbytimeuntil
 
@@ -100,8 +94,3 @@ def gettree():
     page = requests.get(url,headers = None)
     tree= html.fromstring(page.content)
     return tree
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
