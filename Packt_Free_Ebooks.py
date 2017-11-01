@@ -6,11 +6,39 @@ from datetime import datetime, timedelta
 import datetime
 import arrow
 import time
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 # new book is 23:00 UTC
 packthour = str(23)
 packtminute = str(10)
 
+@sopel.module.rate(120)
+@sopel.module.commands('packt')
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    packttimediff = getpackttimediff()
+    if trigger.group(2):
+        if trigger.group(2) == 'time':
+            bot.say(str(packttimediff))
+        else:
+            normalrun='true'
+    else:
+        normalrun='true'
+    try:
+        if normalrun:
+            title = getPacktTitle()
+            bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+    except UnboundLocalError:
+        return
+    
 @sopel.module.interval(60)
 def getpackt(bot):
     for channel in bot.channels:
@@ -20,40 +48,6 @@ def getpackt(bot):
             packttimediff = getpackttimediff()
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
-@sopel.module.rate(120)
-@sopel.module.commands('packt')
-def packt(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        packttimediff = getpackttimediff()
-        if trigger.group(2):
-            if trigger.group(2) == 'time':
-                bot.say(str(packttimediff))
-            else:
-                normalrun='true'
-        else:
-            normalrun='true'
-        try:
-            if normalrun:
-                title = getPacktTitle()
-                bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-        except UnboundLocalError:
-            return
-    else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-        
 def getPacktTitle():
         url = 'https://www.packtpub.com/packt/offers/free-learning'
 
@@ -85,8 +79,3 @@ def getpackttimediff():
     timecompare = (b.humanize(a, granularity='auto'))
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
