@@ -2,6 +2,11 @@ import sopel.module
 import requests
 from xml.dom import minidom
 from fake_useragent import UserAgent
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 ## If Following Template
 feedname = "iT News"
@@ -21,6 +26,23 @@ lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
+@sopel.module.rate(120)
+@sopel.module.commands(maincommand)
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    runprocess(bot)
+
+@sopel.module.require_admin
+@sopel.module.commands(resetcommand)
+def reset(bot,trigger):
+    for channel in bot.channels:
+    	bot.say('Resetting LastBuildTime...')
+    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
+
 ## Automatic Run
 @sopel.module.interval(60)
 def autocheck(bot):
@@ -33,29 +55,6 @@ def autocheck(bot):
 		return
 	    if title and link:
                 bot.msg(channel, messagestring + title + ': ' + link)
-
-@sopel.module.rate(120)
-@sopel.module.commands(maincommand)
-def manualCheck(bot,trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-	runprocess(bot)
-    else:
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-
-@sopel.module.require_admin
-@sopel.module.commands(resetcommand)
-def reset(bot,trigger):
-    for channel in bot.channels:
-    	bot.say('Resetting LastBuildTime...')
-    	bot.db.set_nick_value(channel, lastbuilddatabase, '')
 
 def runprocess(bot):
     page = requests.get(url, headers=header)
@@ -101,14 +100,3 @@ def get_lastbuildcurrent(bot, lastBuildXML):
 def set_lastbuildcurrent(bot, lastbuildcurrent):
     for channel in bot.channels:
         bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
-
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-
-
