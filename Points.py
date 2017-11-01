@@ -2,66 +2,43 @@ import sopel.module
 from random import random
 from random import randint
 from sopel import module, tools
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 @sopel.module.rate(120)
-@sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints')
-def points_cmd(bot, trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        commandused = trigger.group(1)
-        if commandused == 'points' or commandused == 'pants':
-            giveortake = ' gives '
-            tofrom = ' to '
-            addminus = 'up'
-        else:
-            giveortake = ' takes '
-            tofrom = ' from '
-            addminus = 'down'
-        if commandused.endswith('points'):
-            pointstype = 'points'
-        else:
-            pointstype = 'pants'
-        return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
+@sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints','checkpoints','checkpants')
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    commandused = trigger.group(1)
+    target = trigger.group(3) or trigger.nick
+    if commandused.endswith('points'):
+        pointstype = 'points'
     else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-        
-@sopel.module.commands('checkpoints','checkpants')
-def checkpoints(bot, trigger):
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        commandused = trigger.group(1)
-        if commandused.endswith('points'):
-            pointstype = 'points'
-        else:
-            pointstype = 'pants'
-        target = trigger.group(3) or trigger.nick
+        pointstype = 'pants'
+    if commandused.startswith('check'):
         points = get_points(bot, target)
         if not points:
             bot.say(target + ' has no ' + pointstype + ' history.')
         else:
             bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
     else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
+        if commandused.startswith('take') or commandused.startswith('minus'):
+            giveortake = ' takes '
+            tofrom = ' from '
+            addminus = 'down'
         else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
-        
+            giveortake = ' gives '
+            tofrom = ' to '
+            addminus = 'up'      
+        return pointstask(bot, trigger.sender, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
+
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
@@ -94,12 +71,6 @@ def update_points(bot, nick, rando, addminus):
     else:
         bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando))
 
-        
 def get_points(bot, nick):
     points = bot.db.get_nick_value(nick, 'points_points') or 1
     return points
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
