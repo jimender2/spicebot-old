@@ -16,6 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     blametargetarray = []
+    channel = trigger.sender
     for u in bot.channels[channel].users:
         target = u
         disenable = get_spicebotdisenable(bot, target)
