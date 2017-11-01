@@ -22,6 +22,7 @@ def execute_main(bot, trigger):
         bot.say('IT_Sean, you\'re safe with me. ' + gif)
     else:        
         if trigger.group(2):
+            bot.say(trigger.group(2))
             query = trigger.group(2).replace(' ', '%20')
             gif = getGif(query)
             if gif:
