@@ -1,8 +1,8 @@
 import sopel.module
-#import sys
-#import os
-#moduledir = os.path.dirname(__file__)
-#sys.path.append(moduledir)
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
 from SpicebotShared.py import *
 
 @sopel.module.rate(120)
