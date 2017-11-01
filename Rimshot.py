@@ -6,7 +6,7 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 @sopel.module.rate(120)
-@sopel.module.commands('airbiscuit','float','floats')
+@sopel.module.commands('rimshot')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
