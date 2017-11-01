@@ -8,8 +8,9 @@ from SpicebotShared import *
 @sopel.module.rate(120)
 @sopel.module.commands('airbiscuit','float','floats')
 def mainfunction(bot, trigger):
-    check_disenable(bot, trigger)
-    execute_main(bot, trigger)
+    enablestatus = check_disenable(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
     bot.say(trigger.nick + " floats an air biscuit.")
