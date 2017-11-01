@@ -4,39 +4,33 @@ from BeautifulSoup import BeautifulSoup
 from random import randint
 from pyparsing import anyOpenTag, anyCloseTag
 from xml.sax.saxutils import unescape as unescape
+import sys
+import os
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 @sopel.module.rate(120)
 @sopel.module.commands('spicyquote')
-def spicyQuote(bot,trigger):
-    instigator = trigger.nick
-    target = trigger.nick
-    update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
-    if targetdisenable:
-        query = str(trigger.group(2))
-        if query != "None":
-            quote = getQuote(query)
-            if 'Invalid quote' not in quote:
-                if 'http://spice.dussed.com' in quote:
-                    bot.say('That is a long quote! Here is the link: ' + quote)
-                else:
-                    bot.say(quote)
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+    query = str(trigger.group(2))
+    if query != "None":
+        quote = getQuote(query)
+        if 'Invalid quote' not in quote:
+            if 'http://spice.dussed.com' in quote:
+                bot.say('That is a long quote! Here is the link: ' + quote)
             else:
-                bot.say('Could not find that quote!')
+                bot.say(quote)
         else:
-            bot.say('Please provide a quote number and try again!')
+            bot.say('Could not find that quote!')
     else:
-        instigator = trigger.nick
-        warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
-        if not warned:
-            bot.notice(target + ", you have to run .spiceboton to allow her to listen to you.", instigator)
-        else:
-            bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
+        bot.say('Please provide a quote number and try again!')
 
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-	
 def getQuote(query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
@@ -80,8 +74,3 @@ def getQuote(query):
     else:
         quote = txt
     return quote
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
