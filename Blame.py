@@ -28,3 +28,7 @@ def execute_main(bot, trigger):
     except IndexError:
         whotoblame = str(instigator + "'s mom")
     bot.say("It's " + whotoblame + "'s fault.")
+
+def get_spicebotdisenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
