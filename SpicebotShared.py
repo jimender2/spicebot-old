@@ -2,7 +2,7 @@
 import sopel.module
 
 ## Main Check
-def check_disenable(bot,trigger):
+def spicebot_prerun(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
     update_usertotal(bot, target)
