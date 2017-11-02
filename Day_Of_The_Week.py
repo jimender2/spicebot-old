@@ -6,7 +6,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.rate(120)
 @sopel.module.commands('monday','mondays','fuckmonday','fuckmondays','tuesday','tuesdays','fucktuesday','fucktuesdays','wednesday','wednesdays','fuckwednesday','fuckwednesdays','thursday','thursdays','fuckthursday','fuckthursdays','friday','fridays','fuckfriday','fuckfridays','saterday','saterdays','fucksaturday','fucksaturdays','sunday','sundays','fucksunday','fucksundays')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
