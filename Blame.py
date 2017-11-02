@@ -15,20 +15,21 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    blametargetarray = []
-    instigator = trigger.nick
-    channel = trigger.sender
-    for u in bot.channels[channel].users:
-        target = u
-        disenable = get_spicebotdisenable(bot, target)
-        if disenable:
-            if target != instigator:
-                blametargetarray.append(target)
-    try:
-        whotoblame =random.choice(blametargetarray)
-    except IndexError:
-        whotoblame = str(instigator + "'s mom")
-    bot.say("It's " + whotoblame + "'s fault.")
+    if not trigger.group(2):
+        blametargetarray = []
+        instigator = trigger.nick
+        channel = trigger.sender
+        for u in bot.channels[channel].users:
+            target = u
+            disenable = get_spicebotdisenable(bot, target)
+            if disenable:
+                if target != instigator:
+                    blametargetarray.append(target)
+        try:
+            whotoblame =random.choice(blametargetarray)
+        except IndexError:
+            whotoblame = str(instigator + "'s mom")
+        bot.say("It's " + whotoblame + "'s fault.")
 
 def get_spicebotdisenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
