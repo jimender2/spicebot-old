@@ -2,8 +2,8 @@
 import sopel.module
 import time
 
-JOINTIMEOUT = 60
-LASTTIMEOUT = 60
+JOINTIMEOUT = 120
+LASTTIMEOUT = 120
 
 ## Main Check
 def spicebot_prerun(bot,trigger):
