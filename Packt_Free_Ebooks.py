@@ -16,7 +16,6 @@ from SpicebotShared import *
 packthour = str(23)
 packtminute = str(10)
 
-@sopel.module.rate(120)
 @sopel.module.commands('packt')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
