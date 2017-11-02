@@ -13,12 +13,10 @@ def spicebot_prerun(bot,trigger):
     if targetdisenable:
         jointime = get_jointime(bot, target)
         lasttime = get_lasttime(bot, target)
-        if jointime < JOINTIMEOUT:
+        if jointime < JOINTIMEOUT or lasttime < LASTTIMEOUT:
             enablestatus = 1
-            bot.notice(target + ", you need to wait " + str(jointime) + " seconds after joining the channel to use Spicebot.", instigator)
-        elif lasttime < LASTTIMEOUT:
-            enablestatus = 1
-            bot.notice(target + ", you need to wait " str(lasttime) + " seconds after you use Spicebot.", instigator)
+            message = str(target + ", you need to wait " + str(lasttime) + " seconds to use Spicebot.")
+            bot.notice(message, instigator)
         else:
             enablestatus = 0
     else:
