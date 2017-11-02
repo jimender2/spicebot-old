@@ -7,7 +7,6 @@ import time
 OPTTIMEOUT = 3600
 TOOMANYTIMES = 10
 
-@module.require_chanmsg
 @sopel.module.commands('spiceboton','spicebotoff','spicebottimereset')
 def isshelistening(bot,trigger):
     instigator = trigger.nick
