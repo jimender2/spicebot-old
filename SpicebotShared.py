@@ -1,5 +1,6 @@
 ## Shared Functions
 import sopel.module
+import time
 
 JOINTIMEOUT = 60
 
