@@ -152,6 +152,7 @@ def challenge(bot, channel, instigator, target):
 def challengeoptchange(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
+        instigator = trigger.nick
         command = trigger.group(1)
         channel = trigger.sender
         target = trigger.group(3) or trigger.nick
