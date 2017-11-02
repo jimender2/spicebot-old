@@ -1,6 +1,8 @@
 ## Shared Functions
 import sopel.module
 
+JOINTIMEOUT = 60
+
 ## Main Check
 def spicebot_prerun(bot,trigger):
     instigator = trigger.nick
@@ -8,7 +10,12 @@ def spicebot_prerun(bot,trigger):
     update_usertotal(bot, target)
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
-        enablestatus = 0
+        jointime = get_jointime(bot, target)
+        if jointime < JOINTIMEOUT:
+            enablestatus = 1
+            bot.notice(target + ", you need to wait a minute after joining the channel to use Spicebot.", instigator)
+        else:
+            enablestatus = 0
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -28,3 +35,8 @@ def update_usertotal(bot, nick):
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
+
+def get_jointime(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
+    return abs(now - last)
