@@ -48,3 +48,8 @@ def get_lasttime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
     return abs(now - last)
+
+def get_jointime(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
+    return abs(now - last)
