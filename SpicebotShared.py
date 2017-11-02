@@ -30,12 +30,13 @@ def spicebot_prerun(bot,trigger):
     update_usernick(bot, target)
     return enablestatus
 
-
 def update_usernick(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
     now = time.time()
-    bot.db.set_nick_value(nick, 'spicebotlast_time', now)
+    lasttime = get_lasttime(bot, target)
+    if not lasttime:
+        bot.db.set_nick_value(nick, 'spicebotlast_time', now)
     
 ## Check Status of Opt In
 def get_disenable(bot, nick):
