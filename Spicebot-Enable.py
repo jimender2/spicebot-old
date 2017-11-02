@@ -49,7 +49,7 @@ def isshelistening(bot,trigger):
         elif commandtrimmed == 'timereset' and trigger.admin:
             reset_timeout(bot, target)
             
-@event('JOIN','PART','QUIT','NICK')
+@event('JOIN','PART','QUIT')
 @rule('.*')
 def greeting(bot, trigger):
     target = trigger.nick
