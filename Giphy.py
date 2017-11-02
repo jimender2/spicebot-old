@@ -9,7 +9,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.rate(120)
 @sopel.module.commands('gif','giphy')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
