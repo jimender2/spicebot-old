@@ -45,7 +45,7 @@ def isshelistening(bot,trigger):
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
                 bot.say(bot.nick + ' has been disabled for ' + target)
                 set_timeout(bot, target)
-        elif commandtrimmed == 'timereset' and instigator in trigger.admin:
+        elif commandtrimmed == 'timereset' and trigger.admin:
             reset_timeout(bot, target)
             
 
