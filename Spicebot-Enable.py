@@ -6,7 +6,7 @@ OPTTIMEOUT = 3600
 TOOMANYTIMES = 10
 
 @module.require_chanmsg
-@sopel.module.commands('spiceboton','spicebotoff')
+@sopel.module.commands('spiceboton','spicebotoff','spicebottimereset')
 def isshelistening(bot,trigger):
     instigator = trigger.nick
     channel = trigger.sender
@@ -44,6 +44,9 @@ def isshelistening(bot,trigger):
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
                 bot.say(bot.nick + ' has been disabled for ' + target)
                 set_timeout(bot, target)
+        elif commandtrimmed == 'timereset' and instigator == trigger.admin:
+            reset_timeout(bot, target)
+            
 
 def get_timeout(bot, nick):
     now = time.time()
@@ -53,6 +56,10 @@ def get_timeout(bot, nick):
 def set_timeout(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotopt_time', now)
+    
+def reset_timeout(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotopt_time', '')
 
 def set_disable(bot, nick):
     now = time.time()
