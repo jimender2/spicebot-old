@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     target = trigger.group(3) or trigger.nick    
-    if target == trigger.admin:
+    if target in trigger.admin:
         bot.say(target + ' is an admin')
     else:
         bot.say(target + ' is not an admin')
