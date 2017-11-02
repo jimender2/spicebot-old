@@ -1,5 +1,6 @@
 import sopel.module
 from sopel import module, tools
+from sopel.module import ADMIN
 import time
 
 OPTTIMEOUT = 3600
@@ -28,7 +29,7 @@ def isshelistening(bot,trigger):
     else:
         disenable = get_disenable(bot, target)
         opttime = get_timeout(bot, target)
-        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
             bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
         elif commandtrimmed == 'on':
             if not disenable:
@@ -44,7 +45,7 @@ def isshelistening(bot,trigger):
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
                 bot.say(bot.nick + ' has been disabled for ' + target)
                 set_timeout(bot, target)
-        elif commandtrimmed == 'timereset' and instigator == trigger.admin:
+        elif commandtrimmed == 'timereset' and instigator in trigger.admin:
             reset_timeout(bot, target)
             
 
