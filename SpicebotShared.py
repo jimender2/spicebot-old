@@ -44,7 +44,7 @@ def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
-def get_jointime(bot, nick):
+def get_lasttime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
     return abs(now - last)
