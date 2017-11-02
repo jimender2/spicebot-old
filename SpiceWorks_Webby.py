@@ -14,7 +14,6 @@ from SpicebotShared import *
 
 url = 'https://community.spiceworks.com/calendar'
 
-@sopel.module.rate(120)
 @sopel.module.commands('spicewebby')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
