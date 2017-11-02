@@ -53,10 +53,9 @@ def isshelistening(bot,trigger):
 @rule('.*')
 def greeting(bot, trigger):
     target = trigger.nick
-    if target not bot.nick:
-        jointime = get_jointime(bot, target)
-        if not jointime:
-            set_jointime(bot, target)
+    jointime = get_jointime(bot, target)
+    if not jointime:
+        set_jointime(bot, target)
 
 def get_jointime(bot, nick):
     now = time.time()
