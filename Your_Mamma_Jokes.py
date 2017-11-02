@@ -22,3 +22,14 @@ def execute_main(bot, trigger):
             bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
     else:
         bot.say('Please leave the mothers out of it.')
+
+def getJoke():
+    url = 'http://api.yomomma.info'
+    try:
+      page = requests.get(url)
+      result = page.content
+      jsonjoke = json.loads(result)
+      joke = jsonjoke['joke']
+    except:
+      joke = "yo momma broke the interwebs."
+    return joke
