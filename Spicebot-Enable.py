@@ -1,6 +1,7 @@
 import sopel.module
 from sopel import module, tools
 from sopel.module import ADMIN
+from sopel.module import event, rule
 import time
 
 OPTTIMEOUT = 3600
@@ -48,7 +49,24 @@ def isshelistening(bot,trigger):
         elif commandtrimmed == 'timereset' and trigger.admin:
             reset_timeout(bot, target)
             
+@event('JOIN')
+@rule('.*')
+def greeting(bot, trigger):
+    target = trigger.nick
+    if target not bot.nick:
+        jointime = get_jointime(bot, target)
+        if not jointime:
+            set_jointime(bot, target)
 
+def get_jointime(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
+    return abs(now - last)
+
+def set_jointime(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotjoin_time', now)
+    
 def get_timeout(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
