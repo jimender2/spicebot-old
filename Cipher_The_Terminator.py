@@ -6,7 +6,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.rate(120)
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
@@ -17,7 +16,7 @@ def execute_main(bot, trigger):
     if trigger.group(2):
         if trigger.group(2) == 'story':
             bot.say('The machines rose from the ashes of the nuclear fire. Their war to exterminate mankind had raged on for decades. But the final battle will not be fought in the future. It would be fought in our present...tonight.')
-        elif trigger.group(2) == 'Cipher-0':
+        elif trigger.group(2)strip() == 'Cipher-0':
             bot.say('Pinging Cipher-0 with a WOL packet...')
         else:
             normalrun='true'
