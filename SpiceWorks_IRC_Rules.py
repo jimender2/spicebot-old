@@ -9,7 +9,6 @@ from SpicebotShared import *
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
-@sopel.module.rate(120)
 @sopel.module.commands('rules','rule')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
