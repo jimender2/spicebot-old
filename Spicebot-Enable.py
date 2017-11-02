@@ -59,7 +59,6 @@ def set_timeout(bot, nick):
     bot.db.set_nick_value(nick, 'spicebotopt_time', now)
     
 def reset_timeout(bot, nick):
-    now = time.time()
     bot.db.set_nick_value(nick, 'spicebotopt_time', '')
 
 def set_disable(bot, nick):
