@@ -68,7 +68,7 @@ def get_jointime(bot, nick):
 def set_jointime(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotjoin_time', now)
-    bot.say('setting to ' + now)
+    bot.say('setting to ' + str(now))
     
 def get_timeout(bot, nick):
     now = time.time()
