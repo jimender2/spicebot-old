@@ -9,6 +9,8 @@ TOOMANYTIMES = 10
 
 @sopel.module.commands('spiceboton','spicebotoff','spicebottimereset')
 def isshelistening(bot,trigger):
+    for c in bot.channels:
+        room = c
     instigator = trigger.nick
     channel = trigger.sender
     target = trigger.group(3) or trigger.nick
@@ -18,13 +20,13 @@ def isshelistening(bot,trigger):
         bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
     elif target == 'all' and commandtrimmed == 'off':
         bot.say('Disabling ' + bot.nick + ' for all.')
-        for u in bot.channels[channel].users:
+        for u in bot.channels[room].users:
             target = u
             disenable = get_disenable(bot, target)
             if disenable:
                 bot.db.set_nick_value(target, 'spicebot_disenable', '')
         bot.say(bot.nick + ' disabled for all.')
-    elif target.lower() not in bot.privileges[channel.lower()]:
+    elif target.lower() not in bot.privileges[room.lower()]:
         bot.say("I'm not sure who that is.")     
     else:
         disenable = get_disenable(bot, target)
