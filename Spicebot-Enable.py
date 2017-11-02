@@ -59,9 +59,8 @@ def greeting(bot, trigger):
         set_jointime(bot, target)
 
 def get_jointime(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
-    return abs(now - last)
+    jointime = bot.db.get_nick_value(nick, 'spicebotjoin_time')
+    return jointime or 0
 
 def set_jointime(bot, nick):
     now = time.time()
