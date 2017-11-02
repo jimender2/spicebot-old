@@ -5,7 +5,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.rate(120)
 @sopel.module.commands('owner','botowner')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
