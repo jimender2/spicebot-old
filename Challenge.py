@@ -162,7 +162,7 @@ def challengeoptchange(bot, trigger):
             bot.say("I'm not sure who that is.")
         disenable = get_disenable(bot, target)
         opttime = get_opttimeout(bot, target)
-        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
             bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
         elif not disenable:
             if command.endswith('on'):
@@ -178,6 +178,8 @@ def challengeoptchange(bot, trigger):
                 bot.db.set_nick_value(target, 'challenges_disenable', '')
                 bot.say('Challenges has been disabled for ' + target)
                 set_opttimeout(bot, target)
+            elif commandtrimmed == 'timereset' and trigger.admin:
+                reset_opttimeout(bot, target)
             
 ## Check Status of Opt In
 def get_disenable(bot, nick):
@@ -218,6 +220,9 @@ def get_opttimeout(bot, nick):
 def set_opttimeout(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'challengesopt_time', now)
+    
+def reset_opttimeout(bot, nick):
+    bot.db.set_nick_value(nick, 'challengesopt_time', '')
     
 #####################
 ## Spawn / ReSpawn ##
