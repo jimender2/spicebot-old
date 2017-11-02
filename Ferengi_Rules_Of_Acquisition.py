@@ -9,7 +9,6 @@ from SpicebotShared import *
 
 fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
 
-@sopel.module.rate(120)
 @sopel.module.commands('ferengi')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
