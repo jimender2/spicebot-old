@@ -53,13 +53,9 @@ def isshelistening(bot,trigger):
 @rule('.*')
 def greeting(bot, trigger):
     target = trigger.nick
-    bot.say(target + " joined")
     jointime = get_jointime(bot, target)
     if not jointime:
-        bot.say('no jointime')
         set_jointime(bot, target)
-    else:
-        bot.say('jointime is ' + str(jointime))
 
 def get_jointime(bot, nick):
     jointime = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
@@ -68,7 +64,6 @@ def get_jointime(bot, nick):
 def set_jointime(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotjoin_time', now)
-    bot.say('setting to ' + str(now))
     
 def get_timeout(bot, nick):
     now = time.time()
