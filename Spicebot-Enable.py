@@ -28,7 +28,7 @@ def isshelistening(bot,trigger):
     else:
         disenable = get_disenable(bot, target)
         opttime = get_timeout(bot, target)
-        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and instigator != trigger.admin:
+        if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
         elif commandtrimmed == 'on':
             if not disenable:
