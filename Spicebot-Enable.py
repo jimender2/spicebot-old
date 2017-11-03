@@ -133,6 +133,7 @@ def isshelisteningtome(bot,trigger):
 
 @sopel.module.commands('spicebottimeleft')
 def canshelistening(bot,trigger):
+    instigator = trigger.nick
     target = trigger.nick
     lasttime = get_lasttime(bot, target)
     if lasttime < LASTTIMEOUT and not trigger.sender:
