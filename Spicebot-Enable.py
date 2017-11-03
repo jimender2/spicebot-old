@@ -80,7 +80,7 @@ def autoblock(bot):
                 set_timeout(bot, target)
                 set_disable(bot, target)
                 warn = get_warned(bot, target)
-                if not warn:
+                if not warn and not bot.nick.endswith('dev'):
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
 
