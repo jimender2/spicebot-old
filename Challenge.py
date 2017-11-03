@@ -154,7 +154,6 @@ def challengeoptchange(bot, trigger):
             channel = c
         instigator = trigger.nick
         command = trigger.group(1)
-        channel = trigger.sender
         target = trigger.group(3) or trigger.nick
         if not trigger.admin and target != trigger.nick:
             bot.notice(instigator + ', Only bot admins can mark other users as not able to challenge."', instigator)
