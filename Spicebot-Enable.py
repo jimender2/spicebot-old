@@ -9,7 +9,7 @@ FINGERTIMEOUT = 1800
 TOOMANYTIMES = 10
 LASTTIMEOUT = 60
 
-@sopel.module.commands('spiceboton','spicebotoff','spicebottimereset','spicebotwarnreset')
+@sopel.module.commands('spiceboton','spicebotoff','spicebottimereset','spicebotwarnreset','spicebotcountreset')
 def isshelistening(bot,trigger):
     for c in bot.channels:
         room = c
@@ -53,6 +53,8 @@ def isshelistening(bot,trigger):
             reset_timeout(bot, target)
         elif commandtrimmed == 'warnreset' and trigger.admin:
             reset_warn(bot, target)
+        elif commandtrimmed == 'countreset' and trigger.admin:
+            reset_count(bot, target)
             
 @event('JOIN','PART','QUIT','NICK')
 @rule('.*')
@@ -130,6 +132,9 @@ def reset_timeout(bot, nick):
 
 def reset_warn(bot, nick):
     bot.db.set_nick_value(nick, 'spicebothour_warn', '')
+    
+def reset_count(bot, nick):
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', '')
     
 def set_disable(bot, nick):
     now = time.time()
