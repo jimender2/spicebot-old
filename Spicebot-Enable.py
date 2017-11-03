@@ -80,7 +80,7 @@ def autoblock(bot):
             target = u
             usertotal = get_usertotal(bot, target)
             bot.msg(channel, str(target) + ' has ' + str(usertotal) + ' uses')
-            if int(usertotal) > int(TOOMANYTIMES):
+            if usertotal > TOOMANYTIMES:
                 bot.msg(channel, str(target) + ' has exceeded max uses this hour')
                 set_timeout(bot, target)
                 set_disable(bot, target)
