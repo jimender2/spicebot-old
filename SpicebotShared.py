@@ -40,7 +40,7 @@ def spicebot_prerun(bot,trigger):
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         enablestatus = 1
-    if inchannel.startswith("#"):
+    if inchannel.startswith("#") and not bot.nick.endswith('dev'):
         update_usernicktotal(bot, target)
         update_usernicktime(bot, target)
     return enablestatus
