@@ -146,11 +146,12 @@ def challenge(bot, channel, instigator, target):
 #############
 
 ## Enable
-@module.require_chanmsg
 @module.commands('challengeon','duelon','challengeoff','dueloff')
 def challengeoptchange(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
+        for c in bot.channels:
+            channel = c
         instigator = trigger.nick
         command = trigger.group(1)
         channel = trigger.sender
@@ -285,12 +286,12 @@ def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
-@module.require_chanmsg
 @module.commands('challengehealthpotion')
 def usehealthpotion(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        channel = trigger.sender
+        for c in bot.channels:
+            channel = c
         target = trigger.group(3) or trigger.nick
         healthpotions = get_healthpotions(bot, trigger.nick)
         if healthpotions:
@@ -468,23 +469,8 @@ def update_health(bot, nick, damage):
 ####################
 ## Weapons Locker ##
 ####################
- 
-#module.require_admin
-#sopel.module.commands('weaponslockerimport')
-#ef weaponslockercmdold(bot, trigger):
-#   with open (weaponslocker, "r") as myfile:
-#       bot.say('adding existing weapons')
-#       for line in myfile:
-#           line = line.strip()
-#           weaponslist = get_weaponslocker(bot)
-#            weaponchange = str(line)
-#            if weaponchange not in weaponslist:
-#                weaponslist.append(weaponchange)
-#                update_weaponslocker(bot, weaponslist)
-#                weaponslist = get_weaponslocker(bot)
-#        bot.say('old weapons added')
     
-@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
+@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel')
 def weaponslockercmd(bot, trigger):
     instigator = trigger.nick
     enablestatus = spicebot_prerun(bot, trigger)
@@ -494,26 +480,6 @@ def weaponslockercmd(bot, trigger):
         weaponslist = get_weaponslocker(bot, instigator)
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
-        elif commandtrimmed == 'inv' and trigger.admin:
-            weaponslistnew = []
-            for weapon in weaponslist:
-                weapon = str(weapon)
-                weaponslistnew.append(weapon)
-            for channel in bot.channels:
-                bot.db.set_nick_value(channel, 'weapons_locker', '')
-            for weapon in weaponslistnew:
-                if weapon not in weaponslist:
-                    weaponslist.append(weapon)
-            update_weaponslocker(bot, instigator, weaponslist)
-            weaponslist = get_weaponslocker(bot, instigator)
-            weaponslist = str(weaponslist)
-            weaponslist = weaponslist.replace('[', '')
-            weaponslist = weaponslist.replace(']', '')
-            weaponslist = weaponslist.replace("u'", '')
-            weaponslist = weaponslist.replace('u"', '')
-            weaponslist = weaponslist.replace("'", '')
-            weaponslist = weaponslist.replace('"', '')
-            bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
         else:
@@ -554,12 +520,12 @@ def update_weaponslocker(bot, nick, weaponslist):
 ## Stats ##
 ###########
 
-@module.require_chanmsg
 @module.commands('challenges','duels')
 def challengesa(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        channel = trigger.sender
+        for c in bot.channels:
+            channel = c
         target = trigger.group(3) or trigger.nick
         if target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
@@ -592,10 +558,10 @@ def diceroll():
 #################
 
 @sopel.module.require_admin
-@module.require_chanmsg
 @module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime','challengestatsadmindisenable')
 def challengestatsadmin(bot, trigger):
-    channel = trigger.sender
+    for c in bot.channels:
+            channel = c
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     if commandtrimmed == '':
