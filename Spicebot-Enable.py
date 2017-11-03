@@ -76,11 +76,11 @@ def autoblock(bot):
         for u in bot.privileges[channel.lower()]:
             target = u
             usertotal = get_usertotal(bot, target)
-            if usertotal > TOOMANYTIMES:
+            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
                 set_timeout(bot, target)
                 set_disable(bot, target)
                 warn = get_warned(bot, target)
-                if not warn and not bot.nick.endswith('dev'):
+                if not warn:
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
 
