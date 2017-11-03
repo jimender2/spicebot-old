@@ -15,5 +15,6 @@ def execute_main(bot, trigger):
     if trigger.group(2):
         password = trigger.group(2).strip()
         amountofletters = len(password)
-        mystring = ' ' * amountofletters
+        mystring = "*" * amountofletters
+        
         bot.say("Your password is: " + str(mystring))
