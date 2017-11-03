@@ -6,6 +6,7 @@ import time
 
 OPTTIMEOUT = 3600
 TOOMANYTIMES = 10
+LASTTIMEOUT = 120
 
 @sopel.module.commands('spiceboton','spicebotoff','spicebottimereset')
 def isshelistening(bot,trigger):
@@ -129,3 +130,19 @@ def isshelisteningtome(bot,trigger):
     target = trigger.group(3) or trigger.nick
     usertotal = get_usertotal(bot, target)
     bot.say(str(usertotal))
+
+@sopel.module.commands('spicebottimeleft')
+def canshelistening(bot,trigger):
+    lasttime = get_lasttime(bot, target)
+    if lasttime < LASTTIMEOUT and not trigger.sender:
+        lasttimemath = int(LASTTIMEOUT - lasttime)
+        message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
+    else:
+        message = str(target + ", you should be able to use SpiceBot")
+    bot.notice(message, instigator)
+    
+def get_lasttime(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
+    return abs(now - last)
+    
