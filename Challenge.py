@@ -504,7 +504,7 @@ def weaponslockercmd(bot, trigger):
             for weapon in weaponslistnew:
                 if weapon not in weaponslist:
                     weaponslist.append(weapon)
-            update_weaponslocker(instigator, weaponslist)
+            update_weaponslocker(bot, instigator, weaponslist)
             weaponslist = get_weaponslocker(bot, instigator)
             weaponslist = str(weaponslist)
             weaponslist = weaponslist.replace('[', '')
@@ -524,7 +524,7 @@ def weaponslockercmd(bot, trigger):
                     rescan = 'False'
                 else:
                     weaponslist.append(weaponchange)
-                    update_weaponslocker(instigator, weaponslist)
+                    update_weaponslocker(bot, instigator, weaponslist)
                     rescan = 'True'
             elif commandtrimmed == 'del':
                 if weaponchange not in weaponslist:
@@ -532,7 +532,7 @@ def weaponslockercmd(bot, trigger):
                     rescan = 'False'
                 else:
                     weaponslist.remove(weaponchange)
-                    update_weaponslocker(instigator, weaponslist)
+                    update_weaponslocker(bot, instigator, weaponslist)
                     rescan = 'True'
             if rescan == 'True':
                 weaponslist = get_weaponslocker(bot, instigator)
@@ -546,7 +546,7 @@ def get_weaponslocker(bot, nick):
         weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
         return weaponslist
 
-def update_weaponslocker(nick, weaponslist):
+def update_weaponslocker(bot, nick, weaponslist):
     for channel in bot.channels:
         bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
         
