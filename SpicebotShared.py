@@ -34,12 +34,16 @@ def spicebot_prerun(bot,trigger):
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         enablestatus = 1
-    update_usernick(bot, target)
+    update_usernicktotal(bot, target)
+    if inchannel.startswith("#"):
+        update_usernicktime(bot, target)
     return enablestatus
 
-def update_usernick(bot, nick):
+def update_usernicktotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
+    
+def update_usernicktime(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotlast_time', now)
     
