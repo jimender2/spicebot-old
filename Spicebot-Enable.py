@@ -5,6 +5,7 @@ from sopel.module import event, rule
 import time
 
 OPTTIMEOUT = 3600
+FINGERTIMEOUT = 3600
 TOOMANYTIMES = 10
 LASTTIMEOUT = 120
 
@@ -83,7 +84,6 @@ def set_disable(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebot_disenable', '')
     
-## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
@@ -92,44 +92,51 @@ def get_warned(bot, nick):
     warned = bot.db.get_nick_value(nick, 'spicebothour_warn') or 0
     return warned
 
-def get_fingertime(bot, channel):
-    fingertime = bot.db.get_nick_value(channel, 'spicebothour_time') or 60
-    return fingertime
-
 def get_usertotal(bot, target):
     usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
     return usertotal
 
+@sopel.module.interval(3600)
+def autoblockhour(bot):
+    for channel in bot.channels:
+        now = time.time()
+        bot.say('setting hour start for ' + str(channel) + ' for ' + str(now))
+        bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            bot.say('cleaning total for' + str(target))
+            bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+            bot.db.set_nick_value(target, 'spicebothour_warn', '')
+
+def get_spicebothourstart(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebothourstart_time') or 0
+    return abs(now - last)
+
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        fingertime = get_fingertime(bot, channel)
-        if int(fingertime) >= 60:
-            for u in bot.privileges[channel.lower()]:
-                target = u
-                bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-                bot.db.set_nick_value(target, 'spicebothour_warn', '')
-            bot.db.set_nick_value(channel, 'spicebothour_time', '')
-        elif int(fingertime) < 60:
-            for u in bot.privileges[channel.lower()]:
-                target = u
-                usertotal = get_usertotal(bot, target)
-                if int(usertotal) > int(TOOMANYTIMES):
-                    set_timeout(bot, target)
-                    set_disable(bot, target)
-                    warn = get_warned(bot, target)
-                    if not warn:
-                        bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+        bot.say('scanning ' + str(channel) + ' for autoblock')
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            usertotal = get_usertotal(bot, target)
+            bot.say(str(target) + ' has ' + str(usertotal) + ' uses')
+            if int(usertotal) > int(TOOMANYTIMES):
+                bot.say(str(target) + ' has exceeded max uses this hour')
+                set_timeout(bot, target)
+                set_disable(bot, target)
+                warn = get_warned(bot, target)
+                if not warn:
+                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
-                else:
-                    bot.db.set_nick_value(target, 'spicebothour_warn', '')
-        bot.db.set_nick_value(channel, 'spicebothour_time', fingertime + 1)
-    
+
 @sopel.module.commands('spicebottotalusesthishour')
 def isshelisteningtome(bot,trigger):
-    target = trigger.group(3) or trigger.nick
-    usertotal = get_usertotal(bot, target)
-    bot.say(str(usertotal))
+    inchannel = trigger.sender
+    if not inchannel.startswith("#"):
+        target = trigger.group(3) or trigger.nick
+        usertotal = get_usertotal(bot, target)
+        bot.say(str(usertotal))
 
 @sopel.module.commands('spicebottimeleft')
 def canshelistening(bot,trigger):
