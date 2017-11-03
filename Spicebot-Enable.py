@@ -64,24 +64,19 @@ def greeting(bot, trigger):
 def autoblockhour(bot):
     for channel in bot.channels:
         now = time.time()
-        bot.msg(channel, 'setting hour start for ' + str(channel) + ' for ' + str(now))
         bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
         for u in bot.privileges[channel.lower()]:
             target = u
-            bot.msg(channel, 'cleaning total for' + str(target))
             bot.db.set_nick_value(target, 'spicebot_usertotal', '')
             bot.db.set_nick_value(target, 'spicebothour_warn', '')
 
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        bot.msg(channel, 'scanning ' + str(channel) + ' for autoblock')
         for u in bot.privileges[channel.lower()]:
             target = u
             usertotal = get_usertotal(bot, target)
-            bot.msg(channel, str(target) + ' has ' + str(usertotal) + ' uses')
             if usertotal > TOOMANYTIMES:
-                bot.msg(channel, str(target) + ' has exceeded max uses this hour')
                 set_timeout(bot, target)
                 set_disable(bot, target)
                 warn = get_warned(bot, target)
