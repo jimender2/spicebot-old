@@ -8,6 +8,7 @@ LASTTIMEOUT = 120
 ## Main Check
 def spicebot_prerun(bot,trigger):
     inchannel = trigger.sender
+    bot.say(str(inchannel))
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
