@@ -136,7 +136,7 @@ def canshelistening(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
     lasttime = get_lasttime(bot, target)
-    if lasttime < LASTTIMEOUT and not trigger.sender:
+    if lasttime < LASTTIMEOUT:
         lasttimemath = int(LASTTIMEOUT - lasttime)
         message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
     else:
