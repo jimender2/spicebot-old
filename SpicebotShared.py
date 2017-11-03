@@ -2,8 +2,8 @@
 import sopel.module
 import time
 
-JOINTIMEOUT = 120
-LASTTIMEOUT = 120
+JOINTIMEOUT = 60
+LASTTIMEOUT = 60
 TOOMANYTIMES = 10
 
 ## Main Check
