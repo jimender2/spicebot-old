@@ -4,8 +4,8 @@ from sopel.module import ADMIN
 from sopel.module import event, rule
 import time
 
-OPTTIMEOUT = 3600
-FINGERTIMEOUT = 3600
+OPTTIMEOUT = 1800
+FINGERTIMEOUT = 1800
 TOOMANYTIMES = 10
 LASTTIMEOUT = 120
 
