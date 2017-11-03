@@ -88,7 +88,29 @@ def autoblock(bot):
                 if not warn:
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
-                    
+
+@sopel.module.commands('spicebottotalusesthishour')
+def isshelisteningtome(bot,trigger):
+    inchannel = trigger.sender
+    if not inchannel.startswith("#"):
+        target = trigger.group(3) or trigger.nick
+        usertotal = get_usertotal(bot, target)
+        bot.say(str(usertotal))
+
+@sopel.module.commands('spicebottimeleft')
+def canshelistening(bot,trigger):
+    inchannel = trigger.sender
+    instigator = trigger.nick
+    target = trigger.nick
+    lasttime = get_lasttime(bot, target)
+    if not inchannel.startswith("#"):
+        if lasttime < LASTTIMEOUT:
+            lasttimemath = int(LASTTIMEOUT - lasttime)
+            message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
+        else:
+            message = str(target + ", you should be able to use SpiceBot")
+        bot.notice(message, instigator)
+        
 def get_jointime(bot, nick):
     jointime = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
     return jointime
@@ -125,39 +147,12 @@ def get_usertotal(bot, target):
     usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
     return usertotal
 
-
-
 def get_spicebothourstart(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebothourstart_time') or 0
     return abs(now - last)
 
-
-
-@sopel.module.commands('spicebottotalusesthishour')
-def isshelisteningtome(bot,trigger):
-    inchannel = trigger.sender
-    if not inchannel.startswith("#"):
-        target = trigger.group(3) or trigger.nick
-        usertotal = get_usertotal(bot, target)
-        bot.say(str(usertotal))
-
-@sopel.module.commands('spicebottimeleft')
-def canshelistening(bot,trigger):
-    inchannel = trigger.sender
-    instigator = trigger.nick
-    target = trigger.nick
-    lasttime = get_lasttime(bot, target)
-    if not inchannel.startswith("#"):
-        if lasttime < LASTTIMEOUT:
-            lasttimemath = int(LASTTIMEOUT - lasttime)
-            message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
-        else:
-            message = str(target + ", you should be able to use SpiceBot")
-        bot.notice(message, instigator)
-    
 def get_lasttime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
     return abs(now - last)
-    
