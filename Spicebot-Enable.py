@@ -133,15 +133,17 @@ def isshelisteningtome(bot,trigger):
 
 @sopel.module.commands('spicebottimeleft')
 def canshelistening(bot,trigger):
+    inchannel = trigger.sender
     instigator = trigger.nick
     target = trigger.nick
     lasttime = get_lasttime(bot, target)
-    if lasttime < LASTTIMEOUT:
-        lasttimemath = int(LASTTIMEOUT - lasttime)
-        message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
-    else:
-        message = str(target + ", you should be able to use SpiceBot")
-    bot.notice(message, instigator)
+    if inchannel.startswith("#"):
+        if lasttime < LASTTIMEOUT:
+            lasttimemath = int(LASTTIMEOUT - lasttime)
+            message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
+        else:
+            message = str(target + ", you should be able to use SpiceBot")
+        bot.notice(message, instigator)
     
 def get_lasttime(bot, nick):
     now = time.time()
