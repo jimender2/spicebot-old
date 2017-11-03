@@ -8,19 +8,18 @@ LASTTIMEOUT = 120
 ## Main Check
 def spicebot_prerun(bot,trigger):
     inchannel = trigger.sender
-    bot.say(str(inchannel))
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
         jointime = get_jointime(bot, target)
         lasttime = get_lasttime(bot, target)
-        if jointime < JOINTIMEOUT:# and not bot.nick.endswith('dev'):
+        if jointime < JOINTIMEOUT and inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
             enablestatus = 1
             jointimemath = int(JOINTIMEOUT - jointime)
             message = str(target + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
             bot.notice(message, instigator)
-        elif lasttime < LASTTIMEOUT:# and not bot.nick.endswith('dev'):
+        elif lasttime < LASTTIMEOUT and inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
             enablestatus = 1
             lasttimemath = int(LASTTIMEOUT - lasttime)
             message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
