@@ -4,6 +4,7 @@ import time
 
 JOINTIMEOUT = 120
 LASTTIMEOUT = 120
+TOOMANYTIMES = 10
 
 ## Main Check
 def spicebot_prerun(bot,trigger):
@@ -12,9 +13,14 @@ def spicebot_prerun(bot,trigger):
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
     if targetdisenable:
+        usertotal = get_usertotal(bot, target)
         jointime = get_jointime(bot, target)
         lasttime = get_lasttime(bot, target)
-        if jointime < JOINTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
+        if usertotal > TOOMANYTIMES and inchannel.startswith("#") and not bot.nick.endswith('dev'):
+            enablestatus = 1
+            message = str(target + ", you must have used Spicebot more than 10 times this past hour.")
+            bot.notice(message, instigator)
+        elif jointime < JOINTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             enablestatus = 1
             jointimemath = int(JOINTIMEOUT - jointime)
             message = str(target + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
@@ -47,7 +53,6 @@ def update_usernicktime(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotlast_time', now)
     
-## Check Status of Opt In
 def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
@@ -61,3 +66,7 @@ def get_jointime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
     return abs(now - last)
+
+def get_usertotal(bot, target):
+    usertotal = bot.db.get_nick_value(target, 'spicebot_usertotal') or 0
+    return usertotal
