@@ -14,4 +14,4 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     if trigger.group(2):
         item = trigger.group(2).strip()
-        bot.say("Only those peope who risk " + str(item) + " too far, ever find out how far they can " + str(item) + "!")
+        bot.say("Only those people who risk " + str(item) + " too far, ever find out how far they can " + str(item) + "!")
