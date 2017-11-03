@@ -7,7 +7,7 @@ import time
 OPTTIMEOUT = 1800
 FINGERTIMEOUT = 1800
 TOOMANYTIMES = 10
-LASTTIMEOUT = 120
+LASTTIMEOUT = 60
 
 @sopel.module.commands('spiceboton','spicebotoff','spicebottimereset')
 def isshelistening(bot,trigger):
