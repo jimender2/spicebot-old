@@ -47,10 +47,7 @@ def spicebot_prerun(bot,trigger):
 
 def update_usernicktotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.say(nick + ' has ' + str(usertotal) + ' uses')
     bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.say(nick + ' now has ' + str(usertotal) + ' uses')
     
 def update_usernicktime(bot, nick):
     now = time.time()
