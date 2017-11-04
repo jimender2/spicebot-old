@@ -31,7 +31,7 @@ def spicebot_prerun(bot,trigger):
     lasttime = get_lasttime(bot, instigator)
     
     ## Has The user already been warned?
-    warned = bot.db.get_nick_value(instigator, 'spicebothour_warn') or 0
+    warned = get_userwarned(bot, instigator)
     
     ## Check user has spicebotenabled
     if not instigatorbotstatus and not warned:
@@ -53,17 +53,17 @@ def spicebot_prerun(bot,trigger):
         lasttimemath = int(LASTTIMEOUT - lasttime)
         message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
     
-    ## if user passes above checks, we'll run the module
+    ## if user passes ALL above checks, we'll run the module
     else:
         enablestatus = 0
         message = ''
     
     ## Update user total
-    if inchannel.startswith("#"):
+    if botchannel.startswith("#"):
         update_usernicktotal(bot, instigator)
     
     ## Update user's last use timestamp
-    if inchannel.startswith("#") and not bot.nick.endswith('dev'):
+    if botchannel.startswith("#") and not bot.nick.endswith('dev'):
         update_usernicktime(bot, instigator)
     
     ## message, if any
@@ -78,8 +78,8 @@ def spicebot_prerun(bot,trigger):
 
 ## Name of channel
 def bot_channelname(bot, trigger):
-    inchannel = trigger.sender
-    return inchannel
+    botchannel = trigger.sender
+    return botchannel
 
 ## Instigator
 def trigger_instigator(bot, trigger):
@@ -107,6 +107,11 @@ def get_lasttime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
     return abs(now - last)
+
+## User warned or not
+def get_userwarned(bot, instigator):
+    warned = bot.db.get_nick_value(instigator, 'spicebothour_warn') or 0
+    return warned
 
 ## Update user total
 def update_usernicktotal(bot, nick):
