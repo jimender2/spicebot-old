@@ -13,4 +13,4 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     if trigger.group(2):
-        bot.say(bot.nick + " points at " + trigger.group(2) + " and laughs.")
+        bot.say(bot.nick + " points at " + trigger.group(2).strip() + " and laughs.")
