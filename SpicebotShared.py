@@ -23,16 +23,16 @@ def spicebot_prerun(bot,trigger):
         lasttime = get_lasttime(bot, target)
         
         ## Make sure the user hasn't overdone the bot in the past hour
-        if usertotal > TOOMANYTIMES and inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
+        if usertotal > TOOMANYTIMES and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             message = str(target + ", you must have used Spicebot more than 10 times this past hour.")
         
         ## Make sure the user hasn't just entered the room
-        elif jointime < JOINTIMEOUT and inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
+        elif jointime < JOINTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             jointimemath = int(JOINTIMEOUT - jointime)
             message = str(target + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
             
         ## Make users wait between uses
-        elif lasttime < LASTTIMEOUT and inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
+        elif lasttime < LASTTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             lasttimemath = int(LASTTIMEOUT - lasttime)
             message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
             
@@ -44,7 +44,7 @@ def spicebot_prerun(bot,trigger):
         ## Update user
         if inchannel.startswith("#"):
             update_usernicktotal(bot, target)
-        if inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
+        if inchannel.startswith("#") and not bot.nick.endswith('dev'):
             update_usernicktime(bot, target)
         
     ## If spicebot is not enabled, we don't run the module
