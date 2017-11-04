@@ -16,14 +16,14 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     if not trigger.group(2):
         blametargetarray = []
-        instigator = trigger.nick
+        instigator = trigger_instigator(bot, trigger)
         for c in bot.channels:
             channel = c
         for u in bot.channels[channel].users:
             target = u
             disenable = get_disenable(bot, target)
             if disenable:
-                if target != instigator or target != bot.nick:
+                if target not instigator or target not bot.nick:
                     blametargetarray.append(target)
         try:
             whotoblame =random.choice(blametargetarray)
