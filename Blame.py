@@ -17,19 +17,16 @@ def execute_main(bot, trigger):
     if not trigger.group(2):
         blametargetarray = []
         instigator = trigger.nick
-        channel = trigger.sender
+        for c in bot.channels:
+            room = c
         for u in bot.channels[channel].users:
             target = u
-            disenable = get_spicebotdisenable(bot, target)
+            disenable = get_disenable(bot, target)
             if disenable:
-                if target != instigator:
+                if target != instigator or target != bot.nick:
                     blametargetarray.append(target)
         try:
             whotoblame =random.choice(blametargetarray)
         except IndexError:
             whotoblame = str(instigator + "'s mom")
         bot.say("It's " + whotoblame + "'s fault.")
-
-def get_spicebotdisenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
