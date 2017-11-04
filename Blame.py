@@ -18,7 +18,7 @@ def execute_main(bot, trigger):
         blametargetarray = []
         instigator = trigger.nick
         for c in bot.channels:
-            room = c
+            channel = c
         for u in bot.channels[channel].users:
             target = u
             disenable = get_disenable(bot, target)
