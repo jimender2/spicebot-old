@@ -6,32 +6,50 @@ JOINTIMEOUT = 60
 LASTTIMEOUT = 60
 TOOMANYTIMES = 10
 
-## Main Check
+## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
     inchannel = trigger.sender
     instigator = trigger.nick
     target = trigger.nick
     targetdisenable = get_disenable(bot, target)
+    
+    ## Check user has spicebotenabled
     if targetdisenable:
         usertotal = get_usertotal(bot, target)
         jointime = get_jointime(bot, target)
         lasttime = get_lasttime(bot, target)
+        
+        ## Make sure the user hasn't overdone the bot in the past hour
         if usertotal > TOOMANYTIMES and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             enablestatus = 1
             message = str(target + ", you must have used Spicebot more than 10 times this past hour.")
             bot.notice(message, instigator)
+        
+        ## Make sure the user hasn't just entered the room
         elif jointime < JOINTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             enablestatus = 1
             jointimemath = int(JOINTIMEOUT - jointime)
             message = str(target + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
             bot.notice(message, instigator)
+            
+        ## Make users wait between uses
         elif lasttime < LASTTIMEOUT and inchannel.startswith("#") and not bot.nick.endswith('dev'):
             enablestatus = 1
             lasttimemath = int(LASTTIMEOUT - lasttime)
             message = str(target + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
             bot.notice(message, instigator)
+            
+        ## if user passes above checks, we'll run the module
         else:
             enablestatus = 0
+            
+        ## Update user
+        if inchannel.startswith("#"):
+            update_usernicktotal(bot, target)
+        if inchannel.startswith("#") and not bot.nick.endswith('dev'):
+            update_usernicktime(bot, target)
+            
+    ## If spicebot is not enabled, we don't run the module
     else:
         instigator = trigger.nick
         warned = bot.db.get_nick_value(target, 'spicebothour_warn') or 0
@@ -40,9 +58,6 @@ def spicebot_prerun(bot,trigger):
         else:
             bot.notice(target + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.", instigator)
         enablestatus = 1
-    update_usernicktotal(bot, target)
-    if inchannel.startswith("#") and not bot.nick.endswith('dev'):
-        update_usernicktime(bot, target)
     return enablestatus
 
 def update_usernicktotal(bot, nick):
