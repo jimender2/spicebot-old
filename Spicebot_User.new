@@ -26,5 +26,3 @@ def spicebotreloadadmin(bot, trigger):
             bot.say(bot.config.core.owner)
         elif commandused == 'github':
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
-            
-            
