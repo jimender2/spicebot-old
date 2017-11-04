@@ -5,7 +5,7 @@ from os.path import exists
 
 script_dir = os.path.dirname(__file__)
 
-@sopel.module.commands('spicebot')
+@sopel.module.commands('spicebotuser')
 def spicebotreloadadmin(bot, trigger):
     for c in bot.channels:
         channel = c
