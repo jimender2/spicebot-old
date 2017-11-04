@@ -14,4 +14,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     if trigger.group(2):
         item = trigger.group(2).strip()
+        if not item.endswith('ing'):
+            item = str(item + "ing")
         bot.say("Only those people who risk " + str(item) + " too far, ever find out how far they can " + str(item) + "!")
