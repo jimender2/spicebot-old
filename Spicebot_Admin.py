@@ -11,7 +11,7 @@ log_file_path = os.path.join(script_dir, log_path)
 @sopel.module.require_admin
 @sopel.module.require_privmsg
 @sopel.module.commands('spicebotadmin')
-def spicebotreloadadmin(bot, trigger):
+def spicebotadmin(bot, trigger):
     for c in bot.channels:
         channel = c
     options = str("update, restart, debug, pipinstall")
