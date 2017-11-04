@@ -41,7 +41,7 @@ def spicebotreloadadmin(bot, trigger):
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
         elif commandused.startswith('pipinstall'):
-            pippackage = re.sub('pipinstall ', '', commandused)
+            pippackage = commandused.replace('pipinstall ','')
             if pippackage = '':
                 bot.say("You must specify a pip package")
             else:
