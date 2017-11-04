@@ -44,7 +44,7 @@ def spicebot_prerun(bot,trigger):
         ## Update user
         if inchannel.startswith("#"):
             update_usernicktotal(bot, target)
-        if inchannel.startswith("#") and not bot.nick.endswith('dev'):
+        if inchannel.startswith("#"):# and not bot.nick.endswith('dev'):
             update_usernicktime(bot, target)
         
     ## If spicebot is not enabled, we don't run the module
