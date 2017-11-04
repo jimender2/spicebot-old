@@ -1,6 +1,7 @@
 import sopel.module
 import os
 import sys
+import fnmatch
 from os.path import exists
 
 script_dir = os.path.dirname(__file__)
@@ -19,7 +20,7 @@ def spicebotuser(bot, trigger):
         elif commandused == 'channel':
             bot.say("You can find me in " + channel)
         elif commandused == 'modulecount':
-            modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
+            modulecount = str(len(fnmatch.filter(os.listdir(script_dir), '*.py')))
             bot.say('There are currently ' + modulecount +' custom modules installed.')
         elif commandused == 'owner':
             bot.say(bot.config.core.owner)
