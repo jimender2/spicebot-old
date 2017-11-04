@@ -21,7 +21,7 @@ def spicebotreloadadmin(bot, trigger):
     else:
         commandused = trigger.group(2)
         if commandused == 'update':
-            bot.msg(channel, trigger.nick + " Commanded me to update from Github and restart. Be Back Soon!")
+            bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
             restart(bot, trigger)
         elif commandused == 'restart':
