@@ -11,7 +11,7 @@ script_dir = os.path.dirname(__file__)
 def spicebotreload(bot, trigger):
     service = bot.nick.lower()
     for channel in bot.channels:
-        bot.msg(channel, "Updating from Github and Restarting. Be Back Soon!")
+        bot.msg(channel, trigger.nick + " Commanded me to update from Github and restart. Be Back Soon!")
     bot.say('Pulling From Github...')
     os.system("sudo git -C " + script_dir + " pull")
     bot.say('Cleaning Directory...')
