@@ -49,7 +49,6 @@ def spicebotreloadadmin(bot, trigger):
                 os.system("sudo pip install " + pippackage)
                 bot.say('Possibly done installing ' + pippackage)
 
-
 def restart(bot, trigger, service):
     bot.say('Restarting Service...')
     os.system("sudo service " + str(service) + " restart")
