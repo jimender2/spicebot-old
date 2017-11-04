@@ -83,7 +83,7 @@ def bot_channelname(bot, trigger):
 
 ## Instigator
 def trigger_instigator(bot, trigger):
-    instigator = trigger.sender
+    instigator = trigger.nick
     return instigator
 
 ## Users Bot Status
