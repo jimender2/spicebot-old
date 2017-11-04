@@ -42,13 +42,12 @@ def spicebotreloadadmin(bot, trigger):
             os.system("sudo rm " + log_file_path)
         elif commandused.startswith('pipinstall'):
             pippackage = commandused.replace('pipinstall','').strip()
-            bot.say(str(pippackage))
-            #if pippackage = '':
-            #    bot.say("You must specify a pip package")
-            #else:
-            #    bot.say("attempting to install " + pippackage)
-            #    os.system("sudo pip install " + pippackage)
-            #    bot.say('Possibly done installing' + pippackage)
+            if pippackage = '':
+                bot.say("You must specify a pip package")
+            else:
+                bot.say("attempting to install " + pippackage)
+                os.system("sudo pip install " + pippackage)
+                bot.say('Possibly done installing' + pippackage)
 
 
 def restart(bot, trigger, service):
