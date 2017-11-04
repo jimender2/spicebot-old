@@ -1,6 +1,7 @@
 import sopel.module
 import os
 import sys
+import re
 from os.path import exists
 
 script_dir = os.path.dirname(__file__)
@@ -40,7 +41,7 @@ def spicebotreloadadmin(bot, trigger):
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
         elif commandused.startswith('pipinstall'):
-            pippackage = commandused.replace('pipinstall ', ''))
+            pippackage = re.sub('pipinstall^', '', commandused)
             if pippackage = '':
                 bot.say("You must specify a pip package")
             else:
