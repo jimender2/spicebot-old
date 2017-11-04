@@ -3,11 +3,17 @@ import os
 import sys
 import fnmatch
 from os.path import exists
-
-script_dir = os.path.dirname(__file__)
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
 
 @sopel.module.commands('spicebot')
-def spicebotuser(bot, trigger):
+def mainfunction(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
     for c in bot.channels:
         channel = c
     options = str("warn, channel, modulecount, owner, github")
@@ -20,7 +26,7 @@ def spicebotuser(bot, trigger):
         elif commandused == 'channel':
             bot.say("You can find me in " + channel)
         elif commandused == 'modulecount':
-            modulecount = str(len(fnmatch.filter(os.listdir(script_dir), '*.py')))
+            modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
             bot.say('There are currently ' + modulecount +' custom modules installed.')
         elif commandused == 'owner':
             bot.say(bot.config.core.owner)
