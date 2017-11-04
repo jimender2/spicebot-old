@@ -12,8 +12,7 @@ def spicebotreloadadmin(bot, trigger):
     options = str("warn, channel, modulecount, owner, github")
     service = bot.nick.lower()
     if not trigger.group(2):
-        bot.say("Which Command Do You want To run?")
-        bot.say("Options Are: " + options)
+        bot.say("That's my name. Don't wear it out!")
     else:
         commandused = trigger.group(2)
         if commandused == 'warn':
