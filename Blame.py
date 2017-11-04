@@ -23,7 +23,7 @@ def execute_main(bot, trigger):
             target = u
             disenable = get_disenable(bot, target)
             if disenable:
-                if target not instigator or target not bot.nick:
+                if target != instigator or target != bot.nick:
                     blametargetarray.append(target)
         try:
             whotoblame =random.choice(blametargetarray)
