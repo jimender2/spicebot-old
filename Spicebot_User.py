@@ -130,14 +130,14 @@ def execute_main(bot, trigger):
                 opttime = get_timeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                elif commandtrimmed == 'on':
+                elif commandused.startswith('on'):
                     if not disenable:
                         bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                         bot.say(bot.nick + ' has been enabled for ' + target)
                         set_timeout(bot, target)
                     else:
                         bot.say(bot.nick + ' is already enabled for ' + target)
-                elif commandtrimmed == 'off':
+                elif commandused.startswith('off'):
                     if not disenable:
                         bot.say(bot.nick + ' is already disabled for ' + target)
                     else:
@@ -146,17 +146,17 @@ def execute_main(bot, trigger):
                         set_timeout(bot, target)
                 
         ## Resets
-        elif commandtrimmed == 'timereset' and trigger.admin:
+        elif commandused == 'timereset' and trigger.admin:
             target = commandused.replace('timereset','').strip()
             if target == '':
                 target = trigger.nick
             reset_timeout(bot, target)
-        elif commandtrimmed == 'warnreset' and trigger.admin:
+        elif commandused == 'warnreset' and trigger.admin:
             target = commandused.replace('warnreset','').strip()
             if target == '':
                 target = trigger.nick
             reset_warn(bot, target)
-        elif commandtrimmed == 'countreset' and trigger.admin:
+        elif commandused == 'countreset' and trigger.admin:
             target = commandused.replace('countreset','').strip()
             if target == '':
                 target = trigger.nick
