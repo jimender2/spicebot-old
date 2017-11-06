@@ -69,7 +69,8 @@ def getPacktTitle():
         return title
 
 def getpackttimediff():
-    now = datetime.datetime.utcnow()
+    #now = datetime.datetime.utcnow()
+    now = datetime.now(tz)
     packtnext = None
     if now.hour < packthour:
         packtnext = datetime.datetime(now.year, now.month, now.day, int(packthour), int(packtminute), 0, 0)
