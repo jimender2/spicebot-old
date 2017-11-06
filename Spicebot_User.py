@@ -27,24 +27,38 @@ def execute_main(bot, trigger):
     inchannel = trigger.sender
     for c in bot.channels:
         channel = c
-    options = str("options, warn, channel, modulecount, owner, github, timeout, usage")
+    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
         commandused = trigger.group(2)
+        
+        ## give options
         if commandused == 'options':
             bot.say(str(options))
+            
+        ## Warn
         if commandused == 'warn':
             bot.msg(channel, "This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBotTest, or send Spicebot a PrivateMessage.")
+        
+        ## Channel
         elif commandused == 'channel':
             bot.say("You can find me in " + channel)
+        
+        ## how many custom modules
         elif commandused == 'modulecount':
             modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
             bot.say('There are currently ' + modulecount +' custom modules installed.')
+        
+        ## Bot Owner
         elif commandused == 'owner':
             bot.say(bot.config.core.owner)
+        
+        ## link to github repo
         elif commandused == 'github':
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
+        
+        ## How long does a user have to wait to use a command
         elif commandused.startswith('timeout') and not inchannel.startswith("#"):
             target = commandused.replace('timeout','').strip()
             if target == '':
@@ -59,6 +73,8 @@ def execute_main(bot, trigger):
             else:
                 message = str(target + ", you can't check other's timeouts.")
             bot.notice(message, instigator)
+        
+        ## How many times in the past hour has the user used the bot
         elif commandused.startswith('usage') and not inchannel.startswith("#"):
             target = commandused.replace('usage','').strip()
             if target == '':
@@ -70,6 +86,17 @@ def execute_main(bot, trigger):
                 message = str(target + ", you can't check other's usage.")
             bot.notice(message, instigator)
             
+        ## Enable/Disable status
+        elif commandused.startswith('status') and not inchannel.startswith("#"):
+            target = commandused.replace('status','').strip()
+            if target == '':
+                target = trigger.nick
+            disenable = get_disenable(bot, target)
+            if disenable:
+                message = str(target + " has SpiceBot enabled")
+            else:
+                message = str(target + " does not have SpiceBot ensabled")
+            bot.notice(message, instigator)
 
 ## Functions
 
