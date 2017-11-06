@@ -13,7 +13,7 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 # new book is 24:00 UTC
-packthour = str(24)
+packthour = str(0)
 packtminute = str(10)
 
 @sopel.module.commands('packt')
