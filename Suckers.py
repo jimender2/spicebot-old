@@ -17,6 +17,10 @@ def execute_main(bot, trigger):
     else:
         myline = trigger.group(2).strip()
         if not myline.lower() == bot.nick:
+            if myline.endswith('ing'):
+                myline = str(myline + " is")
             if not myline.endswith('s'):
-                myline = str(myline + "s")
-            bot.say(myline + ' are for suckers!!')
+                myline = str(myline + "s are")
+            else:
+                myline = str(myline + " are")
+            bot.say(myline + ' for suckers!!')
