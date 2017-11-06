@@ -469,9 +469,10 @@ def update_health(bot, nick, damage):
 ## Weapons Locker ##
 ####################
     
-@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel')
+@sopel.module.commands('weaponslocker','weaponslockeradd','weaponslockerdel','weaponslockerinv')
 def weaponslockercmd(bot, trigger):
     instigator = trigger.nick
+    inchannel = trigger.sender
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
         commandtrimmed = trigger.group(1)
@@ -479,6 +480,26 @@ def weaponslockercmd(bot, trigger):
         weaponslist = get_weaponslocker(bot, instigator)
         if commandtrimmed == '':
             bot.say('Use weaponslockeradd or weaponslockerdel to adjust Locker Inventory.')
+        elif commandtrimmed == 'inv' and not inchannel.startswith("#"):
+            weaponslistnew = []
+            for weapon in weaponslist:
+                weapon = str(weapon)
+                weaponslistnew.append(weapon)
+            for channel in bot.channels:
+                bot.db.set_nick_value(channel, 'weapons_locker', '')
+            for weapon in weaponslistnew:
+                if weapon not in weaponslist:
+                    weaponslist.append(weapon)
+            update_weaponslocker(bot, weaponslist)
+            weaponslist = get_weaponslocker(bot)
+            weaponslist = str(weaponslist)
+            weaponslist = weaponslist.replace('[', '')
+            weaponslist = weaponslist.replace(']', '')
+            weaponslist = weaponslist.replace("u'", '')
+            weaponslist = weaponslist.replace('u"', '')
+            weaponslist = weaponslist.replace("'", '')
+            weaponslist = weaponslist.replace('"', '')
+            bot.say(str(weaponslist))
         elif not trigger.group(2):
             bot.say("What weapon would you like to add/remove?")
         else:
