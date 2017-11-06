@@ -1,6 +1,13 @@
 ## Shared Functions
 import sopel.module
+from sopel import module, tools
+from sopel.module import ADMIN
+from sopel.module import event, rule
 import time
+import os
+import sys
+import fnmatch
+from os.path import exists
 
 JOINTIMEOUT = 60
 LASTTIMEOUT = 60
