@@ -491,7 +491,7 @@ def weaponslockercmd(bot, trigger):
                 if weapon not in weaponslist:
                     weaponslist.append(weapon)
             update_weaponslocker(bot, instigator, weaponslist)
-            weaponslist = get_weaponslocker(bot)
+            weaponslist = get_weaponslocker(bot, instigator)
             weaponslist = str(weaponslist)
             weaponslist = weaponslist.replace('[', '')
             weaponslist = weaponslist.replace(']', '')
