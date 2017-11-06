@@ -14,8 +14,8 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-# new book is Midnight GMT
-tz = timezone('GMT')
+# new book is Midnight GMT/BST
+tz = timezone('Europe/London')
 packthour = str(0)
 packtminute = str(10)
 
