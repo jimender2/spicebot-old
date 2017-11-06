@@ -11,6 +11,11 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
+OPTTIMEOUT = 1800
+FINGERTIMEOUT = 1800
+TOOMANYTIMES = 10
+LASTTIMEOUT = 60
+
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
