@@ -47,9 +47,9 @@ def execute_main(bot, trigger):
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
         elif commandused.startswith('timeout') and not inchannel.startswith("#"):
             target = commandused.replace('timeout','').strip()
-            bot.say(str(target))
             if target == '':
                 target = trigger.nick
+            bot.say(str(target))
             if target != trigger.nick and trigger.admin:
                 lasttime = get_lasttime(bot, target)
                 if lasttime < LASTTIMEOUT:
