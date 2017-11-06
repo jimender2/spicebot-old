@@ -72,6 +72,38 @@ def spicebot_prerun(bot,trigger):
     ## Send Status Forward
     return enablestatus
 
+## Auto Mod
+## Auto Mod
+@event('JOIN','PART','QUIT','NICK')
+@rule('.*')
+def greeting(bot, trigger):
+    target = trigger.nick
+    set_jointime(bot, target)
+
+@sopel.module.interval(3600)
+def autoblockhour(bot):
+    for channel in bot.channels:
+        now = time.time()
+        bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+            bot.db.set_nick_value(target, 'spicebothour_warn', '')
+
+@sopel.module.interval(60)
+def autoblock(bot):
+    for channel in bot.channels:
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            usertotal = get_usertotal(bot, target)
+            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
+                set_timeout(bot, target)
+                set_disable(bot, target)
+                warn = get_warned(bot, target)
+                if not warn:
+                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
+
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
@@ -91,17 +123,28 @@ def get_disenable(bot, nick):
     disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
     return disenable
 
+def set_disable(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebot_disenable', '')
+    
 ## User Total
 def get_usertotal(bot, instigator):
     usertotal = bot.db.get_nick_value(instigator, 'spicebot_usertotal') or 0
     return usertotal
 
+def reset_count(bot, nick):
+    bot.db.set_nick_value(nick, 'spicebot_usertotal', '')
+    
 ## Join Time
 def get_jointime(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
     return abs(now - last)
 
+def set_jointime(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotjoin_time', now)
+    
 ## Last Usage
 def get_lasttime(bot, nick):
     now = time.time()
@@ -113,6 +156,9 @@ def get_userwarned(bot, instigator):
     warned = bot.db.get_nick_value(instigator, 'spicebothour_warn') or 0
     return warned
 
+def reset_warn(bot, nick):
+    bot.db.set_nick_value(nick, 'spicebothour_warn', '')
+    
 ## Update user total
 def update_usernicktotal(bot, nick):
     usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
@@ -122,4 +168,22 @@ def update_usernicktotal(bot, nick):
 def update_usernicktime(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'spicebotlast_time', now)
+
+## timeout
+def get_timeout(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
+    return abs(now - last)
+
+def set_timeout(bot, nick):
+    now = time.time()
+    bot.db.set_nick_value(nick, 'spicebotopt_time', now)
     
+def reset_timeout(bot, nick):
+    bot.db.set_nick_value(nick, 'spicebotopt_time', '')
+    
+## hour reset
+def get_spicebothourstart(bot, nick):
+    now = time.time()
+    last = bot.db.get_nick_value(nick, 'spicebothourstart_time') or 0
+    return abs(now - last)
