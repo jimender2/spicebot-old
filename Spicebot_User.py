@@ -15,6 +15,7 @@ OPTTIMEOUT = 1800
 FINGERTIMEOUT = 1800
 TOOMANYTIMES = 10
 LASTTIMEOUT = 60
+LASTTIMEOUTHOUR = 3600
 
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
@@ -180,6 +181,10 @@ def execute_main(bot, trigger):
 def greeting(bot, trigger):
     target = trigger.nick
     set_jointime(bot, target)
+    lasttime = get_lasttime(bot, target)
+    if not lasttime or lasttime < LASTTIMEOUTHOUR:
+        bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+        bot.db.set_nick_value(target, 'spicebothour_warn', '')
 
 @sopel.module.interval(3600)
 def autoblockhour(bot):
