@@ -79,37 +79,7 @@ def spicebot_prerun(bot,trigger):
     ## Send Status Forward
     return enablestatus
 
-## Auto Mod
-## Auto Mod
-@event('JOIN','PART','QUIT','NICK')
-@rule('.*')
-def greeting(bot, trigger):
-    target = trigger.nick
-    set_jointime(bot, target)
 
-@sopel.module.interval(3600)
-def autoblockhour(bot):
-    for channel in bot.channels:
-        now = time.time()
-        bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
-        for u in bot.privileges[channel.lower()]:
-            target = u
-            bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-            bot.db.set_nick_value(target, 'spicebothour_warn', '')
-
-@sopel.module.interval(60)
-def autoblock(bot):
-    for channel in bot.channels:
-        for u in bot.privileges[channel.lower()]:
-            target = u
-            usertotal = get_usertotal(bot, target)
-            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-                set_timeout(bot, target)
-                set_disable(bot, target)
-                warn = get_warned(bot, target)
-                if not warn:
-                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
-                    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
 
 #####################################################################################################################################
 ## Below This Line are Shared Functions
