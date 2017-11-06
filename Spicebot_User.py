@@ -18,11 +18,14 @@ LASTTIMEOUT = 60
 
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
     commandused = trigger.group(2)
-    if not enablestatus or commandused.startswith('on') or commandused.startswith('off'):
+    if commandused.startswith('on') or commandused.startswith('off'):
         execute_main(bot, trigger)
-    
+    else:
+        enablestatus = spicebot_prerun(bot, trigger)
+        if not enablestatus:
+            execute_main(bot, trigger)
+
 def execute_main(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
