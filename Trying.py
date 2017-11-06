@@ -14,7 +14,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     if trigger.group(2):
         phrase = trigger.group(2).strip()
-        if not phrase.startswith('to'):
+        if phrase.startswith('to'):
             parta = phrase
         else:
             parta = str("to" + phrase)
