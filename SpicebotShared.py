@@ -35,7 +35,7 @@ def spicebot_prerun(bot,trigger):
     
     ## Check user has spicebotenabled
     if not instigatorbotstatus and not warned:
-        message = str(instigator + ", you have to run .spiceboton to allow her to listen to you.")
+        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you.")
     elif not instigatorbotstatus and warned:
         message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.")
     
