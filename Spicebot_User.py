@@ -154,16 +154,19 @@ def execute_main(bot, trigger):
             target = commandused.replace('timereset','').strip()
             if target == '':
                 target = trigger.nick
+            bot.say('resetting timeout for ' + target)
             reset_timeout(bot, target)
         elif commandused == 'warnreset' and trigger.admin:
             target = commandused.replace('warnreset','').strip()
             if target == '':
                 target = trigger.nick
+            bot.say('resetting warning for ' + target)
             reset_warn(bot, target)
         elif commandused == 'countreset' and trigger.admin:
             target = commandused.replace('countreset','').strip()
             if target == '':
                 target = trigger.nick
+            bot.say('resetting count for ' + target)
             reset_count(bot, target)
 
 ## Auto Mod
