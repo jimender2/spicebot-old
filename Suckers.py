@@ -19,7 +19,7 @@ def execute_main(bot, trigger):
         if not myline.lower() == bot.nick:
             if myline.endswith('ing'):
                 myline = str(myline + " is")
-            if not myline.endswith('s'):
+            elif not myline.endswith('s'):
                 myline = str(myline + "s are")
             else:
                 myline = str(myline + " are")
