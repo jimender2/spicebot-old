@@ -16,7 +16,9 @@ def execute_main(bot, trigger):
         phrase = trigger.group(2).strip()
         if phrase.startswith('to'):
             parta = phrase
+            partb = commandused.replace('to','').strip()
         else:
             parta = str("to " + phrase)
-        statement = str("Are you trying " + parta + "? 'Cuz that's how you " + trigger.group(2) + "!!!")
+            partb = phrase
+        statement = str("Are you trying " + parta + "? 'Cuz that's how you " + partb + "!!!")
         bot.say(statement)
