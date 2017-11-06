@@ -49,8 +49,7 @@ def execute_main(bot, trigger):
             target = commandused.replace('timeout','').strip()
             if target == '':
                 target = trigger.nick
-            bot.say(str(target))
-            if target == trigger.nick and trigger.admin:
+            if target == instigator or trigger.admin:
                 lasttime = get_lasttime(bot, target)
                 if lasttime < LASTTIMEOUT:
                     lasttimemath = int(LASTTIMEOUT - lasttime)
