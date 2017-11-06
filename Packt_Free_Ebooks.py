@@ -8,11 +8,14 @@ import arrow
 import time
 import sys
 import os
+from datetime import datetime
+from pytz import timezone
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-# new book is 24:00 UTC
+# new book is Midnight GMT
+tz = timezone('GMT')
 packthour = str(0)
 packtminute = str(10)
 
@@ -41,7 +44,8 @@ def execute_main(bot, trigger):
 @sopel.module.interval(60)
 def getpackt(bot):
     for channel in bot.channels:
-        now = datetime.datetime.utcnow()
+        #now = datetime.datetime.utcnow()
+        now = datetime.now(tz)
         if now.hour == int(packthour) and now.minute == int(packtminute):
             title = getPacktTitle()
             packttimediff = getpackttimediff()
