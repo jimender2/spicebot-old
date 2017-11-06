@@ -1,4 +1,8 @@
 import sopel.module
+from sopel import module, tools
+from sopel.module import ADMIN
+from sopel.module import event, rule
+import time
 import os
 import sys
 import fnmatch
@@ -6,6 +10,7 @@ from os.path import exists
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
+
 
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
