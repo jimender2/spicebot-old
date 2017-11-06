@@ -12,8 +12,8 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-# new book is 23:00 UTC
-packthour = str(23)
+# new book is 24:00 UTC
+packthour = str(24)
 packtminute = str(10)
 
 @sopel.module.commands('packt')
