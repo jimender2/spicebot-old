@@ -58,9 +58,9 @@ def spicebot_prerun(bot,trigger):
         enablestatus = 0
         message = ''
     
-    ## Update user total
-    if botchannel.startswith("#"):
-        update_usernicktotal(bot, instigator)
+        ## Update user total
+        if botchannel.startswith("#"):
+            update_usernicktotal(bot, instigator)
     
     ## Update user's last use timestamp
     if botchannel.startswith("#") and not bot.nick.endswith('dev'):
