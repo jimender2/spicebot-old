@@ -102,6 +102,26 @@ def execute_main(bot, trigger):
                 message = str(target + " does not have SpiceBot enabled")
             bot.notice(message, instigator)
         
+        ## Resets
+        elif commandused.startswith('timereset') and trigger.admin:
+            target = commandused.replace('timereset','').strip()
+            if target == '':
+                target = trigger.nick
+            bot.say('resetting timeout for ' + target)
+            reset_timeout(bot, target)
+        elif commandused.startswith('warnreset') and trigger.admin:
+            target = commandused.replace('warnreset','').strip()
+            if target == '':
+                target = trigger.nick
+            bot.say('resetting warning for ' + target)
+            reset_warn(bot, target)
+        elif commandused.startswith('countreset') and trigger.admin:
+            target = commandused.replace('countreset','').strip()
+            if target == '':
+                target = trigger.nick
+            bot.say('resetting count for ' + target)
+            reset_count(bot, target)
+            
         ## On/Off
         elif commandused.startswith('on') or commandused.startswith('off'):
             if commandused.startswith('on'):
@@ -148,26 +168,6 @@ def execute_main(bot, trigger):
                         bot.db.set_nick_value(target, 'spicebot_disenable', '')
                         bot.say(bot.nick + ' has been disabled for ' + target)
                         set_timeout(bot, target)
-                
-        ## Resets
-        elif commandused == 'timereset' and trigger.admin:
-            target = commandused.replace('timereset','').strip()
-            if target == '':
-                target = trigger.nick
-            bot.say('resetting timeout for ' + target)
-            reset_timeout(bot, target)
-        elif commandused == 'warnreset' and trigger.admin:
-            target = commandused.replace('warnreset','').strip()
-            if target == '':
-                target = trigger.nick
-            bot.say('resetting warning for ' + target)
-            reset_warn(bot, target)
-        elif commandused == 'countreset' and trigger.admin:
-            target = commandused.replace('countreset','').strip()
-            if target == '':
-                target = trigger.nick
-            bot.say('resetting count for ' + target)
-            reset_count(bot, target)
 
 ## Auto Mod
 
