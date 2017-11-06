@@ -16,7 +16,7 @@ def execute_main(bot, trigger):
         phrase = trigger.group(2).strip()
         if phrase.startswith('to'):
             parta = phrase
-            partb = commandused.replace('to','').strip()
+            partb = phrase.replace('to','').strip()
         else:
             parta = str("to " + phrase)
             partb = phrase
