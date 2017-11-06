@@ -11,7 +11,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
@@ -19,6 +18,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
+    instigator = trigger.nick
     inchannel = trigger.sender
     for c in bot.channels:
         channel = c
