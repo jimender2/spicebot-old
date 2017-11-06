@@ -27,7 +27,7 @@ def execute_main(bot, trigger):
     inchannel = trigger.sender
     for c in bot.channels:
         channel = c
-    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status")
+    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status, on/off")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
@@ -95,8 +95,106 @@ def execute_main(bot, trigger):
             if disenable:
                 message = str(target + " has SpiceBot enabled")
             else:
-                message = str(target + " does not have SpiceBot ensabled")
+                message = str(target + " does not have SpiceBot enabled")
             bot.notice(message, instigator)
+        
+        ## On/Off
+        elif commandused.startswith('on') or commandused.startswith('off'):
+            if commandused.startswith('on'):
+                target = commandused.replace('on','').strip()
+                statuschange = 'enabl'
+            else:
+                target = commandused.replace('off','').strip()
+                statuschange = 'disabl'
+            if target == '':
+                target = trigger.nick
+            if target == 'all':
+                if trigger.admin:
+                    bot.say(statuschange + 'ing ' + bot.nick + ' for all.')
+                    for u in bot.channels[channel].users:
+                        target = u
+                        disenable = get_disenable(bot, target)
+                        if statuschange == 'enabl':
+                            bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
+                        else:
+                            bot.db.set_nick_value(target, 'spicebot_disenable', '')
+                    bot.say(bot.nick + ' ' + statuschange + 'ed for all.')
+                else:
+                    bot.say('Only Admin can Change Statuses for all.')
+            elif target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            elif not trigger.admin and target != trigger.nick:
+                bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
+            else:
+                disenable = get_disenable(bot, target)
+                opttime = get_timeout(bot, target)
+                if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
+                    bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
+                elif commandtrimmed == 'on':
+                    if not disenable:
+                        bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
+                        bot.say(bot.nick + ' has been enabled for ' + target)
+                        set_timeout(bot, target)
+                    else:
+                        bot.say(bot.nick + ' is already enabled for ' + target)
+                elif commandtrimmed == 'off':
+                    if not disenable:
+                        bot.say(bot.nick + ' is already disabled for ' + target)
+                    else:
+                        bot.db.set_nick_value(target, 'spicebot_disenable', '')
+                        bot.say(bot.nick + ' has been disabled for ' + target)
+                        set_timeout(bot, target)
+                
+        ## Resets
+        elif commandtrimmed == 'timereset' and trigger.admin:
+            target = commandused.replace('timereset','').strip()
+            if target == '':
+                target = trigger.nick
+            reset_timeout(bot, target)
+        elif commandtrimmed == 'warnreset' and trigger.admin:
+            target = commandused.replace('warnreset','').strip()
+            if target == '':
+                target = trigger.nick
+            reset_warn(bot, target)
+        elif commandtrimmed == 'countreset' and trigger.admin:
+            target = commandused.replace('countreset','').strip()
+            if target == '':
+                target = trigger.nick
+            reset_count(bot, target)
+
+## Auto Mod
+
+@event('JOIN','PART','QUIT','NICK')
+@rule('.*')
+def greeting(bot, trigger):
+    target = trigger.nick
+    jointime = get_jointime(bot, target)
+    if not jointime:
+        set_jointime(bot, target)
+
+@sopel.module.interval(3600)
+def autoblockhour(bot):
+    for channel in bot.channels:
+        now = time.time()
+        bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+            bot.db.set_nick_value(target, 'spicebothour_warn', '')
+
+@sopel.module.interval(60)
+def autoblock(bot):
+    for channel in bot.channels:
+        for u in bot.privileges[channel.lower()]:
+            target = u
+            usertotal = get_usertotal(bot, target)
+            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
+                set_timeout(bot, target)
+                set_disable(bot, target)
+                warn = get_warned(bot, target)
+                if not warn:
+                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
 
 ## Functions
 
