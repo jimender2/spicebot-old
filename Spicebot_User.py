@@ -59,7 +59,16 @@ def execute_main(bot, trigger):
             else:
                 message = str(target + ", you can't check other's timeouts.")
             bot.notice(message, instigator)
-        
+        elif commandused.startswith('usage') and not inchannel.startswith("#"):
+            target = commandused.replace('usage','').strip()
+            if target == '':
+                target = trigger.nick
+            if target == instigator or trigger.admin:
+                usertotal = get_usertotal(bot, target)
+                message = str(target + " has used " + str(usertotal) + " commands this hour.")
+            else:
+                message = str(target + ", you can't check other's usage.")
+            bot.notice(message, instigator)
             
 
 ## Functions
