@@ -41,7 +41,7 @@ def challenge_cmd(bot, trigger):
         return mainfunction(bot, trigger)
         
 def mainfunction(bot, trigger):
-    options = str("on/off, stats, healthpotion, weaponslocker")
+    options = str("on/off, stats, poisonpotion, healthpotion, weaponslocker")
     instigator = trigger.nick
     inchannel = trigger.sender
     for c in bot.channels:
@@ -109,7 +109,7 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 stats = ''
-                challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions']
+                challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions','poisonpotions']
                 for x in challengestatsarray:
                     scriptdef = str('get_' + x + '(bot,target)')
                     databasecolumn = str('challenges_' + x)
@@ -209,6 +209,29 @@ def mainfunction(bot, trigger):
                     bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
             else:
                 bot.say('You do not have a healthpotion to use!')
+                
+        ## poisonpotion
+        elif commandused.startswith('poisonpotion'):
+            target = commandused.replace('poisonpotion','').strip()
+            if target == '':
+                target = trigger.nick
+            poisonpotions = get_poisonpotions(bot, trigger.nick)
+            if poisonpotions:
+                health = get_health(bot, target)
+                if target == trigger.nick:
+                    bot.say(trigger.nick + ' uses poisonpotion.')
+                    usepotion = 1
+                elif target.lower() not in bot.privileges[channel.lower()]:
+                    bot.say("I'm not sure who that is.")
+                    usepotion = 0
+                else:
+                    bot.say(trigger.nick + ' uses poisonpotion on ' + target + ".")
+                    usepotion = 1
+                if usepotion == 1:
+                    bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
+                    bot.db.set_nick_value(trigger.nick, 'challenges_poisonpotions', int(poisonpotions) - 1)
+            else:
+                bot.say('You do not have a poisonpotion to use!')
                 
         ## Combat
         else:
@@ -505,8 +528,10 @@ def determineloottype(bot, instigator):
     loot_text = ''
     if loot == 'healthpotion':
         addhealthpotion(bot, instigator)
-        #loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
-        loot_text = ''
+        loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
+    if loot == 'poisonpotion':
+        addhealthpotion(bot, instigator)
+        loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
@@ -528,6 +553,18 @@ def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
+####################
+## poison Potions ##
+####################
+
+def get_poisonpotions(bot, nick):
+    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
+    return healthpotions
+
+def addpoisonpotion(bot, nick):
+    poisonpotions = get_poisonpotions(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_poisonpotions', int(poisonpotions) + 1)
+    
 ######################
 ## Weapon Selection ##
 ######################
