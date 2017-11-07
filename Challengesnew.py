@@ -126,21 +126,9 @@ def mainfunction(bot, trigger):
         elif commandused.startswith('weaponslocker'):
             weaponslist = get_weaponslocker(bot, instigator)
             commandstripped = commandused.replace('weaponslocker','').strip()
-            if commandstripped.startswith('add'):
-                commandtrimmed = 'add'
-                weaponchange = commandstripped.replace('add','').strip()
-            elif commandstripped.startswith('del'):
-                commandtrimmed = 'del'
-                weaponchange = commandstripped.replace('del','').strip()
-            elif commandstripped.startswith('inv'):
-                commandtrimmed = 'inv'
-                weaponchange = ''
-            else:
-                commandtrimmed = ''
-                weaponchange = ''
             if commandstripped == '':
                 bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-            elif commandtrimmed == 'inv' and not inchannel.startswith("#"):
+            elif commandstripped.startswith('inv') and not inchannel.startswith("#"):
                 weaponslistnew = []
                 for weapon in weaponslist:
                     weapon = str(weapon)
@@ -163,6 +151,15 @@ def mainfunction(bot, trigger):
             elif weaponchange == '':
                 bot.say("What weapon would you like to add/remove?")
             else:
+                if commandstripped.startswith('add'):
+                    commandtrimmed = 'add'
+                    weaponchange = commandstripped.replace('add','').strip()
+                elif commandstripped.startswith('del'):
+                    commandtrimmed = 'del'
+                    weaponchange = commandstripped.replace('del','').strip()
+                else:
+                    commandtrimmed = ''
+                    weaponchange = ''
                 if commandtrimmed == 'add':
                     if weaponchange in weaponslist:
                         bot.say(weaponchange + " is already in your weapons locker.")
