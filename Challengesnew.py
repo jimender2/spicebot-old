@@ -42,6 +42,7 @@ def challenge_cmd(bot, trigger):
         
 def mainfunction(bot, trigger):
     options = str("on/off, stats, healthpotion, weaponslocker")
+    instigator = trigger.nick
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
