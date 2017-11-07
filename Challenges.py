@@ -328,18 +328,20 @@ def challenge(bot, channel, instigator, target):
 ############## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
             if randominventoryfind == 'true':
+                lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                 if winner == instigator:
                     loot, loot_text = determineloottype(bot, winner)
-                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
+                    lootwinnermsgb = ''
                 else:
                     loot, loot_text = determineloottype(bot, loser)
-                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to " + winner)
+                    lootwinnermsgb = str(winner + " gains the " + str(loot))
             else:
                 lootwinnermsg = ''
+                lootwinnermsgb = ''
             
             ## On Screen Text
             bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
-            bot.say(str(winnermsg))
+            bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
             
             ## Update Time Of Combat
             update_time(bot, instigator)
