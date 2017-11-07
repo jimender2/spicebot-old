@@ -95,7 +95,7 @@ def challenge(bot, channel, instigator, target):
         else:
         
             ## Announce Combat
-            bot.say(instigator + " versus " + target)
+            announcecombatmsg = str(instigator + " versus " + target)
             
             ## Check new player health, initial Spawn
             update_spawn(bot, instigator)
@@ -123,12 +123,12 @@ def challenge(bot, channel, instigator, target):
             ## Update Health Of Loser, respawn, allow winner to loot
             currenthealth = update_health(bot, loser, damage)
             if currenthealth <= 0:
-                bot.say(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+                winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                 update_respawn(bot, loser)
                 ## Loot Corpse
                 lootcorpse(bot, loser, winner)
             else:
-                bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+                winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
 ############## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
@@ -139,8 +139,14 @@ def challenge(bot, channel, instigator, target):
                 else:
                     loot, loot_text = determineloottype(bot, loser)
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to " + winner)
-                bot.say(str(lootwinnermsg))
-                
+            else:
+                lootwinnermsg = ''
+            
+            ## On Screen Text
+            bot.say(str(announcecombatmsg) + '\n' + str(winnermsg) + '\n' + str(lootwinnermsg))
+            #bot.say(str(winnermsg))
+            #bot.say(str(lootwinnermsg))
+            
             ## Update Time Of Combat
             update_time(bot, instigator)
             update_time(bot, target)
