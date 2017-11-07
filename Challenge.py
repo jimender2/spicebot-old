@@ -143,7 +143,7 @@ def challenge(bot, channel, instigator, target):
                 lootwinnermsg = ''
             
             ## On Screen Text
-            bot.say(str(announcecombatmsg) + '\n' + str(winnermsg) + '\n' + str(lootwinnermsg))
+            bot.say(str(announcecombatmsg + '\n') + str(winnermsg + '\n') + str(lootwinnermsg))
             #bot.say(str(winnermsg))
             #bot.say(str(lootwinnermsg))
             
