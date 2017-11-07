@@ -161,7 +161,7 @@ def mainfunction(bot, trigger):
                 if weaponchange == '':
                     bot.say("What weapon would you like to add/remove?")
                 else:
-                    elif commandtrimmed == 'add':
+                    if commandtrimmed == 'add':
                         if weaponchange in weaponslist:
                             bot.say(weaponchange + " is already in your weapons locker.")
                             rescan = 'False'
