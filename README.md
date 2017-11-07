@@ -97,3 +97,7 @@ OR
 `pip install word2number`
 
 `sudo apt-get install python-dateutil`
+
+`pip install irc`
+
+`pip install setuptools`
