@@ -79,3 +79,21 @@ OR
 `sudo pip install -r requirements.txt`
 
 `sudo pip install -e`
+
+## other deps
+
+`pip install IPython`
+
+`pip install BeautifulSoup`
+
+`pip install num2words`
+
+`pip install lxml`
+
+`pip install fake_useragent`
+
+`pip install pyparsing`
+
+`pip install word2number`
+
+`sudo apt-get install python-dateutil`
