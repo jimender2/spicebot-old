@@ -158,7 +158,7 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
                 bot.say(str(weaponslist))
-            elif weaponchange != '':
+            elif weaponchange == '':
                 bot.say("What weapon would you like to add/remove?")
             else:
                 if commandtrimmed == 'add':
