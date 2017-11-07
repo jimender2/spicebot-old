@@ -38,7 +38,7 @@ def challenge_action(bot, trigger):
 def challenge_cmd(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        return challenge(bot, trigger)
+        return mainfunction(bot, trigger)
         
 def mainfunction(bot, trigger):
     options = str("on/off, stats, healthpotion, weaponslocker")
