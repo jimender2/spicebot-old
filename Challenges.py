@@ -558,8 +558,8 @@ def addhealthpotion(bot, nick):
 ####################
 
 def get_poisonpotions(bot, nick):
-    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
-    return healthpotions
+    posionpotions = bot.db.get_nick_value(nick, 'challenges_poisonpotions') or 0
+    return posionpotions
 
 def addpoisonpotion(bot, nick):
     poisonpotions = get_poisonpotions(bot, nick)
