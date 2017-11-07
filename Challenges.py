@@ -522,7 +522,7 @@ def randominventory():
     return randominventoryfind
 
 def determineloottype(bot, instigator):
-    typesofloot  = ["healthpotion","healthpotion","healthpotion","healthpotion","healthpotion"]
+    typesofloot  = ["healthpotion","poisonpotion","healthpotion","poisonpotion","healthpotion","poisonpotion","healthpotion"]
     loot = random.randint(0,len(typesofloot) - 1)
     loot = str(typesofloot [loot])
     loot_text = ''
@@ -530,16 +530,21 @@ def determineloottype(bot, instigator):
         addhealthpotion(bot, instigator)
         loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
     if loot == 'poisonpotion':
-        addhealthpotion(bot, instigator)
+        addpoisonpotion(bot, instigator)
         loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
     loserhealthpotions = get_healthpotions(bot, loser)
+    loserpoisonpotions = get_poisonpotions(bot, loser)
     if loserhealthpotions:
         bot.db.set_nick_value(loser, 'challenges_healthpotions', '')
         winnerhealthpotions = get_healthpotions(bot, winner)
         bot.db.set_nick_value(winner, 'challenges_healthpotions', int(winnerhealthpotions) + int(loserhealthpotions))
+    if loserpoisonpotions:
+        bot.db.set_nick_value(loser, 'challenges_poisonpotions', '')
+        winnerpoisonpotions = get_poisonpotions(bot, winner)
+        bot.db.set_nick_value(winner, 'challenges_poisonpotions', int(winnerpoisonpotions) + int(loserpoisonpotions))
         
 ####################
 ## Health Potions ##
