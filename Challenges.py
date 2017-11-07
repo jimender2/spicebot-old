@@ -328,13 +328,13 @@ def challenge(bot, channel, instigator, target):
 ############## Random Inventory gain,,,, right now just healthpotions
             randominventoryfind = randominventory()
             if randominventoryfind == 'true':
-                lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                 if winner == instigator:
                     loot, loot_text = determineloottype(bot, winner)
                     lootwinnermsgb = ''
                 else:
                     loot, loot_text = determineloottype(bot, loser)
                     lootwinnermsgb = str(winner + " gains the " + str(loot))
+                lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             else:
                 lootwinnermsg = ''
                 lootwinnermsgb = ''
