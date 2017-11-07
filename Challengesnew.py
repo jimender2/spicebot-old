@@ -35,7 +35,6 @@ def challenge_action(bot, trigger):
 ####################
 
 @sopel.module.commands('challenge','duel')
-@module.require_chanmsg
 def challenge_cmd(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
@@ -130,7 +129,7 @@ def mainfunction(bot, trigger):
             commandstripped = commandused.replace('weaponslocker','').strip()
             if commandstripped == '':
                 bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-            elif commandstripped == 'inv':# and not inchannel.startswith("#"):
+            elif commandstripped == 'inv' and not inchannel.startswith("#"):
                 bot.say('works')
                 weaponslistnew = []
                 for weapon in weaponslist:
@@ -213,7 +212,10 @@ def mainfunction(bot, trigger):
         ## Combat
         else:
             target = trigger.group(3)
-            return challenge(bot, channel, instigator, target)
+            if not inchannel.startswith("#"):
+                bot.say('Duels must be in channel')
+            else:
+                return challenge(bot, channel, instigator, target)
 
 ####################
 ## Main Operation ##
