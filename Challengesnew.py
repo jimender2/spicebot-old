@@ -149,6 +149,8 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
                 bot.say(str(weaponslist))
+            elif commandstripped == 'inv' and inchannel.startswith("#"):
+                bot.say('Inventory can only be viewed in privmsg.')
             else:
                 if commandstripped.startswith('add'):
                     commandtrimmed = 'add'
