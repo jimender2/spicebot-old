@@ -27,7 +27,8 @@ OPTTIMEOUT = 3600
 def challenge_action(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
+        target = trigger.group(3)
+        return challenge(bot, trigger.sender, trigger.nick, trigger.group(3))
 
 ####################
 ## Main Operation ##
@@ -208,7 +209,8 @@ def mainfunction(bot, trigger):
                 
         ## Combat
         else:
-            return challenge(bot, trigger.sender, trigger.nick, trigger.group(1))
+            target = trigger.group(3)
+            return challenge(bot, channel, instigator, target)
 
 ####################
 ## Main Operation ##
