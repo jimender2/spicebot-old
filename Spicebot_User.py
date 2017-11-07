@@ -131,10 +131,12 @@ def execute_main(bot, trigger):
         ## On/Off
         elif commandused.startswith('on') or commandused.startswith('off'):
             if commandused.startswith('on'):
-                target = commandused.replace('on','').strip()
+                target = str(commandused.split("on", 1)[1]).strip()
+                #target = commandused.replace('on','').strip()
                 statuschange = 'enabl'
             else:
-                target = commandused.replace('off','').strip()
+                #target = commandused.replace('off','').strip()
+                target = str(commandused.split("off", 1)[1]).strip()
                 statuschange = 'disabl'
             if target == '':
                 target = trigger.nick
