@@ -251,7 +251,7 @@ def challenge(bot, channel, instigator, target):
         
         ## Check Opt-in Status
         elif not instigatordisenable:
-            bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challengeon to re-enable.", instigator)
+            bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
         elif not targetdisenable:
             bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
         
@@ -486,7 +486,8 @@ def determineloottype(bot, instigator):
     loot_text = ''
     if loot == 'healthpotion':
         addhealthpotion(bot, instigator)
-        loot_text = ': worth 100 health. Use .challengehealthpotion to consume.'
+        #loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
+        loot_text = ''
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
