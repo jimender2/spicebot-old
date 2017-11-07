@@ -143,9 +143,8 @@ def challenge(bot, channel, instigator, target):
                 lootwinnermsg = ''
             
             ## On Screen Text
-            bot.say(str(announcecombatmsg))
+            bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
             bot.say(str(winnermsg))
-            bot.say(str(lootwinnermsg))
             
             ## Update Time Of Combat
             update_time(bot, instigator)
