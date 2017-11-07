@@ -138,7 +138,7 @@ def challenge(bot, channel, instigator, target):
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                 else:
                     loot, loot_text = determineloottype(bot, loser)
-                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to" + winner)
+                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to " + winner)
                 bot.say(str(lootwinnermsg))
                 
             ## Update Time Of Combat
