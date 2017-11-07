@@ -399,9 +399,9 @@ def challengestatsadmin(bot, trigger):
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
     if commandtrimmed == '':
-         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time,disenable')
+         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time,disenable,poisonpotions')
     elif commandtrimmed == 'all':
-        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable']
+        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions']
         if not trigger.group(3):
             target = trigger.nick
             bot.say('Resetting all stats for ' + target + '.')
