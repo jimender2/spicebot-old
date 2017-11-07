@@ -242,7 +242,7 @@ def mainfunction(bot, trigger):
                 return challenge(bot, channel, instigator, target)
 
 ## Health Regeneration
-@sopel.module.interval(1800)
+@sopel.module.interval(60)
 def healthregen(bot):
     for channel in bot.channels:
         bot.msg(channel, channel)
@@ -250,7 +250,7 @@ def healthregen(bot):
             target = u
             bot.msg(channel, target)
             targetdisenable = get_disenable(bot, target)
-            if instigatordisenable:
+            if targetdisenable:
                 bot.msg(channel, "enabled")
                 health = get_health(bot, target)
                 if health < 500:
