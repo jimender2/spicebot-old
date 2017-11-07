@@ -213,7 +213,7 @@ def mainfunction(bot, trigger):
                     else:
                         usepotion = 0
                 if usepotion == 1:
-                    if not inchannel.startswith("#"):
+                    if not inchannel.startswith("#") and not trigger.nick:
                         bot.notice(instigator + " used a healthpotion on you", target)
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
                     bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
@@ -242,7 +242,7 @@ def mainfunction(bot, trigger):
                     else:
                         usepotion = 0
                 if usepotion == 1:
-                    if not inchannel.startswith("#"):
+                    if not inchannel.startswith("#") and not trigger.nick:
                         bot.notice(instigator + " used a poisonpotion on you", target)
                     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
                     bot.db.set_nick_value(trigger.nick, 'challenges_poisonpotions', int(poisonpotions) - 1)
