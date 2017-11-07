@@ -123,18 +123,18 @@ def mainfunction(bot, trigger):
                 
         ## Weaponslocker
         elif commandused.startswith('weaponslocker'):
-            commandstrippeda = commandused.replace('weaponslocker','').strip()
-            if commandstrippeda.startswith('add'):
-                commandstripped = 'add'
+            commandstripped = commandused.replace('weaponslocker','').strip()
+            if commandstripped.startswith('add'):
+                commandtrimmed = 'add'
                 weaponchange = commandstrippeda.replace('add','').strip()
-            elif commandstrippeda.startswith('del'):
-                commandstripped = 'del'
+            elif commandstripped.startswith('del'):
+                commandtrimmed = 'del'
                 weaponchange = commandstrippeda.replace('del','').strip()
-            elif commandstrippeda.startswith('inv'):
-                commandstripped = 'inv'
+            elif commandstripped.startswith('inv'):
+                commandtrimmed = 'inv'
                 weaponchange = ''
             else:
-                commandstripped = ''
+                commandtrimmed = ''
                 weaponchange = ''
             if commandstripped == '':
                 bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
