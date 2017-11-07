@@ -225,7 +225,7 @@ def healthregen(bot):
         for u in bot.privileges[channel.lower()]:
             target = u
             targetdisenable = get_disenable(bot, target)
-            elif instigatordisenable:
+            if instigatordisenable:
                 health = get_health(bot, target)
                 if health < 500:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
