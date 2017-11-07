@@ -126,10 +126,10 @@ def mainfunction(bot, trigger):
             commandstripped = commandused.replace('weaponslocker','').strip()
             if commandstripped.startswith('add'):
                 commandtrimmed = 'add'
-                weaponchange = commandstrippeda.replace('add','').strip()
+                weaponchange = commandstripped.replace('add','').strip()
             elif commandstripped.startswith('del'):
                 commandtrimmed = 'del'
-                weaponchange = commandstrippeda.replace('del','').strip()
+                weaponchange = commandstripped.replace('del','').strip()
             elif commandstripped.startswith('inv'):
                 commandtrimmed = 'inv'
                 weaponchange = ''
