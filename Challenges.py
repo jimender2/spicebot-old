@@ -27,9 +27,13 @@ OPTTIMEOUT = 3600
 def challenge_action(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
+        inchannel = trigger.sender
         target = trigger.group(3)
-        return challenge(bot, trigger.sender, trigger.nick, trigger.group(3))
-
+        if not inchannel.startswith("#"):
+            bot.say('Duels must be in channel')
+        else:
+            return challenge(bot, trigger.sender, trigger.nick, trigger.group(3))
+        
 ####################
 ## Main Operation ##
 ####################
