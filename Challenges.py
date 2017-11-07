@@ -256,6 +256,8 @@ def healthregen(bot):
                 if health < 500:
                     bot.msg(channel, str(health) + " add")
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
+                    health = get_health(bot, target)
+                    bot.msg(channel, str(health) + " after")
                 else:
                     bot.msg(channel, str(health) + " not add")
             else:
