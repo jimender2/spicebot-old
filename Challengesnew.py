@@ -148,8 +148,6 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
                 bot.say(str(weaponslist))
-            elif weaponchange == '':
-                bot.say("What weapon would you like to add/remove?")
             else:
                 if commandstripped.startswith('add'):
                     commandtrimmed = 'add'
@@ -160,28 +158,31 @@ def mainfunction(bot, trigger):
                 else:
                     commandtrimmed = ''
                     weaponchange = ''
-                if commandtrimmed == 'add':
-                    if weaponchange in weaponslist:
-                        bot.say(weaponchange + " is already in your weapons locker.")
-                        rescan = 'False'
-                    else:
-                        weaponslist.append(weaponchange)
-                        update_weaponslocker(bot, instigator, weaponslist)
-                        rescan = 'True'
-                elif commandtrimmed == 'del':
-                    if weaponchange not in weaponslist:
-                        bot.say(weaponchange + " is not in your weapons locker.")
-                        rescan = 'False'
-                    else:
-                        weaponslist.remove(weaponchange)
-                        update_weaponslocker(bot, instigator, weaponslist)
-                        rescan = 'True'
-                if rescan == 'True':
-                    weaponslist = get_weaponslocker(bot, instigator)
-                    if weaponchange in weaponslist:
-                        bot.say(weaponchange + " has been added to your weapons locker.")
-                    else:
-                        bot.say(weaponchange + ' has been removed from your weapons locker.')
+                if weaponchange == '':
+                    bot.say("What weapon would you like to add/remove?")
+                else:
+                    elif commandtrimmed == 'add':
+                        if weaponchange in weaponslist:
+                            bot.say(weaponchange + " is already in your weapons locker.")
+                            rescan = 'False'
+                        else:
+                            weaponslist.append(weaponchange)
+                            update_weaponslocker(bot, instigator, weaponslist)
+                            rescan = 'True'
+                    elif commandtrimmed == 'del':
+                        if weaponchange not in weaponslist:
+                            bot.say(weaponchange + " is not in your weapons locker.")
+                            rescan = 'False'
+                        else:
+                            weaponslist.remove(weaponchange)
+                            update_weaponslocker(bot, instigator, weaponslist)
+                            rescan = 'True'
+                    if rescan == 'True':
+                        weaponslist = get_weaponslocker(bot, instigator)
+                        if weaponchange in weaponslist:
+                            bot.say(weaponchange + " has been added to your weapons locker.")
+                        else:
+                            bot.say(weaponchange + ' has been removed from your weapons locker.')
             
         ## healthpotion
         elif commandused.startswith('healthpotion'):
