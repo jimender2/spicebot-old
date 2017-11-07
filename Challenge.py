@@ -100,19 +100,13 @@ def challenge(bot, channel, instigator, target):
             ## Check new player health, initial Spawn
             update_spawn(bot, instigator)
             update_spawn(bot, target)
-            
-############## Random Inventory gain,,,, right now just healthpotions
-            randominventoryfind = randominventory()
-            if randominventoryfind == 'true':
-                loot, loot_text = determineloottype(bot, instigator)
-                bot.say(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-            
+
             ## Damage Done
             damage = damagedone(bot)
 
             ## Select Winner
             winner, loser = getwinner(bot, instigator, target)
-            
+
             ## Weapon Select
             weapon = weaponofchoice(bot, winner)
             
@@ -136,6 +130,17 @@ def challenge(bot, channel, instigator, target):
             else:
                 bot.say(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
+############## Random Inventory gain,,,, right now just healthpotions
+            randominventoryfind = randominventory()
+            if randominventoryfind == 'true':
+                if winner == instigator:
+                    loot, loot_text = determineloottype(bot, winner)
+                    lootwinnermsg = 
+                else:
+                    loot, loot_text = determineloottype(bot, loser)
+                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to" + winner)
+                bot.say(str(lootwinnermsg))
+                
             ## Update Time Of Combat
             update_time(bot, instigator)
             update_time(bot, target)
