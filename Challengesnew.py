@@ -130,7 +130,6 @@ def mainfunction(bot, trigger):
             if commandstripped == '':
                 bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
             elif commandstripped == 'inv' and not inchannel.startswith("#"):
-                bot.say('works')
                 weaponslistnew = []
                 for weapon in weaponslist:
                     weapon = str(weapon)
