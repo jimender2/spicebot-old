@@ -123,6 +123,7 @@ def mainfunction(bot, trigger):
                 
         ## Weaponslocker
         elif commandused.startswith('weaponslocker'):
+            weaponslist = get_weaponslocker(bot, instigator)
             commandstripped = commandused.replace('weaponslocker','').strip()
             if commandstripped.startswith('add'):
                 commandtrimmed = 'add'
