@@ -135,7 +135,7 @@ def challenge(bot, channel, instigator, target):
             if randominventoryfind == 'true':
                 if winner == instigator:
                     loot, loot_text = determineloottype(bot, winner)
-                    lootwinnermsg = 
+                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                 else:
                     loot, loot_text = determineloottype(bot, loser)
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text) + ", but lost it to" + winner)
