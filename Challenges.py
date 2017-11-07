@@ -245,13 +245,22 @@ def mainfunction(bot, trigger):
 @sopel.module.interval(1800)
 def healthregen(bot):
     for channel in bot.channels:
+        bot.msg(channel, channel)
         for u in bot.privileges[channel.lower()]:
             target = u
+            bot.msg(channel, target)
             targetdisenable = get_disenable(bot, target)
             if instigatordisenable:
+                bot.msg(channel, "enabled")
                 health = get_health(bot, target)
                 if health < 500:
+                    bot.msg(channel, str(health) + " add")
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
+                else:
+                    bot.msg(channel, str(health) + " not add")
+            else:
+                bot.msg(channel, "disabled")
+            bot.msg(channel, " ")
 
             
 ####################
