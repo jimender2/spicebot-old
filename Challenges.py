@@ -202,8 +202,12 @@ def mainfunction(bot, trigger):
                     bot.say("I'm not sure who that is.")
                     usepotion = 0
                 else:
-                    bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-                    usepotion = 1
+                    targetdisenable = get_disenable(bot, target)
+                    if targetdisenable:
+                        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+                        usepotion = 1
+                    else:
+                        usepotion = 0
                 if usepotion == 1:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
                     bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
@@ -225,8 +229,12 @@ def mainfunction(bot, trigger):
                     bot.say("I'm not sure who that is.")
                     usepotion = 0
                 else:
-                    bot.say(trigger.nick + ' uses poisonpotion on ' + target + ".")
-                    usepotion = 1
+                    targetdisenable = get_disenable(bot, target)
+                    if targetdisenable:
+                        bot.say(trigger.nick + ' uses poisonpotion on ' + target + ".")
+                        usepotion = 1
+                    else:
+                        usepotion = 0
                 if usepotion == 1:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
                     bot.db.set_nick_value(trigger.nick, 'challenges_poisonpotions', int(poisonpotions) - 1)
