@@ -60,7 +60,7 @@ def getwebbytime():
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
-    for r in (("['", ""), ("']", "")):
+    for r in (("u2019", "'"), ("u'", ""), ("['", ""), ("']", "")):
         webbytitle = webbytitle.replace(*r)
     return webbytitle
 
