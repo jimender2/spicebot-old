@@ -16,6 +16,7 @@ def spicebotadmin(bot, trigger):
         channel = c
     options = str("update, restart, debug, pipinstall")
     service = bot.nick.lower()
+    bot.say(service)
     if not trigger.group(2):
         bot.say("Which Command Do You want To run?")
         bot.say("Options Are: " + options)
