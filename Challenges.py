@@ -121,7 +121,19 @@ def mainfunction(bot, trigger):
                     bot.say(stats)
                 else:
                     bot.say('No stats found for ' + target)
-                
+        
+        ## Enable/Disable status
+        elif commandused.startswith('status') and not inchannel.startswith("#"):
+            target = commandused.replace('status','').strip()
+            if target == '':
+                target = trigger.nick
+            disenable = get_disenable(bot, target)
+            if disenable:
+                message = str(target + " has Challenges enabled")
+            else:
+                message = str(target + " does not have Challenges enabled")
+            bot.notice(message, instigator)
+            
         ## Weaponslocker
         elif commandused.startswith('weaponslocker'):
             weaponslist = get_weaponslocker(bot, instigator)
