@@ -62,16 +62,16 @@ def execute_main(bot, trigger):
                 target = trigger.nick
             target = target.lower()
             try:
-                if bot.privileges[channel][nick] == OP:
-                    bot.say(nick + ' is an op.')
+                if bot.privileges[channel][target] == OP:
+                    bot.say(target + ' is an op.')
                 else:
-                    bot.say(nick + ' is not an op.')
+                    bot.say(target + ' is not an op.')
             except KeyError:
-                bot.say(nick + ' is not here right now!')
+                bot.say(target + ' is not here right now!')
             
         ## Is Admin
         elif commandused == 'isadmin':
-            target = commandused.replace('isop','').strip()
+            target = commandused.replace('isadmin','').strip()
             if target == '':
                 target = trigger.nick
                 if trigger.admin:
