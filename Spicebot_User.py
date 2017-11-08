@@ -2,6 +2,8 @@ import sopel.module
 from sopel import module, tools
 from sopel.module import ADMIN
 from sopel.module import event, rule
+from sopel.module import OP
+from sopel.tools.target import User, Channel
 import time
 import os
 import sys
