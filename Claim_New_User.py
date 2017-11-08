@@ -13,6 +13,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     instigator = trigger.nick
+    inchannel = trigger.sender
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
