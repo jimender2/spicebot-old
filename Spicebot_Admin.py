@@ -52,6 +52,8 @@ def spicebotadmin(bot, trigger):
 def restart(bot, trigger, service):
     bot.say('Restarting Service...')
     os.system("sudo service " + str(service) + " restart")
+    bot.say('If you see this, the service is hanging. Making another attempt.')
+    os.system("sudo service " + str(service) + " restart")
     bot.say('If you see this, the service is hanging. Run Command Again.')
 
 def update(bot, trigger):
