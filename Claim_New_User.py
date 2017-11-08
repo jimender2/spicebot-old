@@ -31,4 +31,4 @@ def execute_main(bot, trigger):
             message = str(instigator + ' urinates on ' + target + '! Claimed!')
         bot.say(message, target)
         if target != instigator and not inchannel.startswith("#"):
-                bot.notice(message, target)
+            bot.notice(message, target)
