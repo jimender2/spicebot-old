@@ -37,7 +37,7 @@ def execute_main(bot, trigger):
     inchannel = trigger.sender
     for c in bot.channels:
         channel = c
-    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status, on/off")
+    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status, on/off, isadmin, isop")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
@@ -55,6 +55,30 @@ def execute_main(bot, trigger):
         elif commandused == 'channel':
             bot.say("You can find me in " + channel)
         
+        ## Is OP
+        elif commandused == 'isop':
+            if not trigger.group(2):
+                nick = trigger.nick.lower()
+            else:
+                nick = trigger.group(2).lower()
+            try:
+                if bot.privileges[channel][nick] == OP:
+                    bot.say(nick + ' is an op.')
+                else:
+                    bot.say(nick + ' is not an op.')
+            except KeyError:
+                bot.say(nick + ' is not here right now!')
+            
+        ## Is Admin
+        elif commandused == 'isadmin':
+            if not trigger.group(2):
+                if trigger.admin:
+                    bot.say(trigger.nick + ' is an admin')
+                else:
+                    bot.say(trigger.nick + ' is not an admin')
+            else:
+                bot.say('This feature does not work yet')
+            
         ## how many custom modules
         elif commandused == 'modulecount':
             modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
