@@ -454,27 +454,6 @@ def challengestatsadmin(bot, trigger):
             gethowmany = eval(scriptdef)
             if gethowmany:
                 bot.db.set_nick_value(target, databasecolumn, '')
-
-#@event('JOIN')
-#@rule('.*')
-#def greeting(bot, trigger):
-#    now = time.time()
-#    target = trigger.nick
-#    challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions']
-#    botnick = bot.nick
-#    roomcleantime = bot.db.get_nick_value(botnick, 'challenges_statsclean') or 0
-#    if not roomcleantime:
-#        bot.db.set_nick_value(nick, 'challenges_statsclean', now)
-#        roomcleantime = now
-#    cleanroommath = abs(now - roomcleantime)
-#    if cleanroommath > 30:
-#        for x in challengestatsarray:
-#            scriptdef = str('get_' + x)
-#            databasecolumn = str('challenges_' + x)
-#            gethowmany = eval(scriptdef)
-#            if gethowmany:
-#                bot.db.set_nick_value(target, databasecolumn, '')
-#        bot.notice(target + ", due to recent updates, duel stats were reset." + str(options), target)
         
 ## Functions######################################################################################################################
 
