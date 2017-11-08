@@ -366,7 +366,7 @@ def challenge(bot, channel, instigator, target):
                     loot, loot_text = determineloottype(bot, winner)
                     lootwinnermsgb = ''
                 else:
-                    loot, loot_text = determineloottype(bot, loser)
+                    loot, loot_text = determineloottype(bot, winner)
                     lootwinnermsgb = str(winner + " gains the " + str(loot))
                 lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             else:
