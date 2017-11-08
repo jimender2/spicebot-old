@@ -41,6 +41,7 @@ def execute_main(bot, trigger):
         return pointstask(bot, channel, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
 
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
+    inchannel = trigger.sender
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
     randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
@@ -64,7 +65,6 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
             if target != instigator and not inchannel.startswith("#"):
                 bot.notice(str(randopoints) + target, instigator)
             
-
 def channelpoints(bot, instigator, channel, rando, addminus):
     for u in bot.channels[channel].users:
         errrbody = u
