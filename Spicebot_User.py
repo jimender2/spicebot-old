@@ -43,7 +43,7 @@ def execute_main(bot, trigger):
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
-        commandused = trigger.group(2)
+        commandused = trigger.group(3)
         
         ## give options
         if commandused == 'options':
