@@ -44,7 +44,7 @@ def howlonguntilfriday(whatistoday):
             daystilfriday = "Unfortunately Friday is " + str(daysmath) + " day away. I'm sure we'll make it there!"
         else:
             daystilfriday = "Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!"
-
+    return daystilfriday
     
 def whatdayofweeknow():
     whatistoday = str(datetime.datetime.today().weekday())
