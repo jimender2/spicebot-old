@@ -61,7 +61,7 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
         else:
             bot.say(str(randopoints) + target)
             update_points(bot, target, rando, addminus)
-            if target != trigger.nick and not inchannel.startswith("#"):
+            if target != instigator and not inchannel.startswith("#"):
                 bot.notice(str(randopoints) + target, instigator)
             
 
