@@ -101,3 +101,5 @@ OR
 `pip install irc`
 
 `pip install setuptools`
+
+`sudo apt-get install python-git`
