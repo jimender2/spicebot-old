@@ -359,7 +359,7 @@ def challenge(bot, channel, instigator, target):
             else:
                 winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
-############## Random Inventory gain,,,, right now just healthpotions
+            ## Random Inventory gain
             randominventoryfind = randominventory()
             if randominventoryfind == 'true':
                 if winner == instigator:
