@@ -29,6 +29,6 @@ def execute_main(bot, trigger):
             message = str(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
         else:
             message = str(instigator + ' urinates on ' + target + '! Claimed!')
-        bot.say(message, target)
+        bot.say(message)
         if target != instigator and not inchannel.startswith("#"):
             bot.notice(message, target)
