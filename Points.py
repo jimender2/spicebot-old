@@ -63,7 +63,7 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
             bot.say(str(randopoints) + target)
             update_points(bot, target, rando, addminus)
             if target != instigator and not inchannel.startswith("#"):
-                bot.notice(str(randopoints) + target, instigator)
+                bot.notice(str(randopoints) + target, target)
             
 def channelpoints(bot, instigator, channel, rando, addminus):
     for u in bot.channels[channel].users:
