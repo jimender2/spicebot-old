@@ -47,7 +47,7 @@ def howlonguntilfriday(whatistoday):
 
     
 def whatdayofweeknow():
-    whatdayofweek = str(datetime.datetime.today().weekday())
+    whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':
         whatdayofweek = "Monday"
     elif whatistoday == '1':
