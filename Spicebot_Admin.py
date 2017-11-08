@@ -61,6 +61,5 @@ def update(bot, trigger):
     bot.say('Pulling From Github...')
     g = git.cmd.Git(script_dir)
     g.pull()
-    #os.system("sudo git -C " + script_dir + " pull")
     bot.say('Cleaning Directory...')
     os.system("sudo rm " + script_dir + "/*.pyc")
