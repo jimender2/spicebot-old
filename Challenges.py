@@ -60,12 +60,10 @@ def mainfunction(bot, trigger):
             if commandused.startswith('on'):
                 commandtrimmed = 'on'
                 target = str(commandused.split("on", 1)[1]).strip()
-                #target = commandused.replace('on','').strip()
                 statuschange = 'enabl'
             elif commandused.startswith('off'):
                 commandtrimmed = 'off'
                 target = str(commandused.split("off", 1)[1]).strip()
-                #target = commandused.replace('off','').strip()
                 statuschange = 'disabl'
             if target == '':
                 target = trigger.nick
