@@ -8,8 +8,6 @@ These are custom modules for Spicebot
 ______________________________________
 
 
-(instructions below are for raspberry pi)
-
 ## Install
 `sudo pip install sopel`
 
@@ -22,15 +20,15 @@ ______________________________________
 
 `sudo git clone https://github.com/deathbybandaid/sopel-modules.git spicebot`
 
-`sudo chown -R pi:pi spicebot`
-
 `sudo git clone https://github.com/deathbybandaid/sopel-modules.git spicebotdev`
-
-`sudo chown -R pi:pi spicebotdev`
 
 `cd spicebotdev`
 
 `sudo git checkout dev`
+
+`cd ~`
+
+`sudo chown -R sopel:sudo .sopel/`
 
 ##### Default Module Locations
 `~/.local/lib/python2.7/site-packages/sopel/modules`
