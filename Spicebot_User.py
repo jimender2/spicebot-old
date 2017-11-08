@@ -59,11 +59,11 @@ def execute_main(bot, trigger):
         
         ## Is OP
         elif commandused == 'isop':
-            target = commandused.replace('isop','').strip()
+            target = str(commandused.split("isop", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
-            target = target.lower()
             try:
+                target = target.lower()
                 if bot.privileges[channel][target] == OP:
                     bot.say(target + ' is an op.')
                 else:
@@ -73,7 +73,7 @@ def execute_main(bot, trigger):
             
         ## Is Admin
         elif commandused == 'isadmin':
-            target = commandused.replace('isadmin','').strip()
+            target = str(commandused.split("isadmin", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
                 if trigger.admin:
