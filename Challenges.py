@@ -387,7 +387,7 @@ def challenge(bot, channel, instigator, target):
 #################
 
 @sopel.module.require_admin
-@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime','challengestatsadmindisenable')
+@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime','challengestatsadmindisenable','challengestatsadminpoisonpotions')
 def challengestatsadmin(bot, trigger):
     for c in bot.channels:
             channel = c
