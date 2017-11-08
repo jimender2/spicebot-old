@@ -729,7 +729,7 @@ def update_xp(bot, nick, damage):
 ############
 
 def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'challenges_health') or 0
+    health = bot.db.get_nick_value(nick, 'challenges_health') or 1000
     return health
 
 def update_health(bot, nick, damage):
