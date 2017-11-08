@@ -24,7 +24,7 @@ def execute_main(bot, trigger):
         bot.say("You can't claim yourself!")
     elif target.lower() not in bot.privileges[channel.lower()] or target == "new user":
             bot.say("I'm not sure who that is.")
-    if not target == bot.nick and not target == instigator:
+    elif not target == bot.nick and not target == instigator:
         if trigger.nick == 'IT_Sean':
             message = str(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
         else:
