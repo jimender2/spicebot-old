@@ -12,9 +12,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-relativepath = "data/weapons.txt"
-weaponslocker = os.path.join(moduledir, relativepath)
-
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
