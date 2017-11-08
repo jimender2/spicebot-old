@@ -16,18 +16,18 @@ def execute_main(bot, trigger):
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
-        claimed = "new user"
+        target = "new user"
     else:
-        claimed = trigger.group(2).strip()
+        target = trigger.group(2).strip()
     if target == instigator:
         bot.say("You can't claim yourself!")
     elif target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm not sure who that is.")
-    if not claimed == bot.nick and not claimed == trigger.nick:
+    if not target == bot.nick and not target == instigator:
         if trigger.nick == 'IT_Sean':
-            message = str(trigger.nick + ' releases the contents of his bladder on ' + claimed + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
+            message = str(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
         else:
-            message = str(trigger.nick + ' urinates on ' + claimed + '! Claimed!')
+            message = str(instigator + ' urinates on ' + target + '! Claimed!')
         bot.say(message, target)
         if target != instigator and not inchannel.startswith("#"):
                 bot.notice(message, target)
