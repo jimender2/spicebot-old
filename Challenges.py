@@ -281,12 +281,7 @@ def challenge(bot, channel, instigator, target):
         channeltime = get_timesince(bot, ALLCHAN)
         
         ## Bot opt-out
-        instigatorspicebotdisenable = get_spicebotdisenable(bot, instigator)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        if not instigatorspicebotdisenable:
-            sys.exit()
-        if not targetspicebotdisenable:
-            sys.exit()
         
         ## People can opt out of playing
         instigatordisenable = get_disenable(bot, instigator)
@@ -301,6 +296,8 @@ def challenge(bot, channel, instigator, target):
             bot.say("I'm not sure who that is.")
         
         ## Check Opt-in Status
+        elif not targetspicebotdisenable:
+            bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
         elif not instigatordisenable:
             bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
         elif not targetdisenable:
