@@ -57,6 +57,19 @@ def execute_main(bot, trigger):
         elif commandused == 'channel':
             bot.say("You can find me in " + channel)
         
+        ## how many custom modules
+        elif commandused == 'modulecount':
+            modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
+            bot.say('There are currently ' + modulecount +' custom modules installed.')
+        
+        ## Bot Owner
+        elif commandused == 'owner':
+            bot.say(bot.config.core.owner)
+        
+        ## link to github repo
+        elif commandused == 'github':
+            bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
+            
         ## Is OP
         elif commandused.startswith('isop'):
             target = str(commandused.split("isop", 1)[1]).strip()
@@ -84,19 +97,6 @@ def execute_main(bot, trigger):
                     bot.say(target + ' is an admin')
                 else:
                     bot.say(target + ' is not an admin')
-            
-        ## how many custom modules
-        elif commandused == 'modulecount':
-            modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
-            bot.say('There are currently ' + modulecount +' custom modules installed.')
-        
-        ## Bot Owner
-        elif commandused == 'owner':
-            bot.say(bot.config.core.owner)
-        
-        ## link to github repo
-        elif commandused == 'github':
-            bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
         
         ## How long does a user have to wait to use a command
         elif commandused.startswith('timeout') and not inchannel.startswith("#"):
