@@ -49,8 +49,11 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
         channelpoints(bot, instigator, channel, rando, addminus)
     else:
         if target == 'all' or target == 'everybody' or target == 'everyone':
-            bot.say(str(randopoints) + "everyone")
-            channelpoints(bot, instigator, channel, rando, addminus)
+            if not inchannel.startswith("#"):
+                bot.say('you must be in the room to give everyone points')
+            else:
+                bot.say(str(randopoints) + "everyone")
+                channelpoints(bot, instigator, channel, rando, addminus)
         elif target == instigator:
             bot.say('You can\'t adjust your own ' + pointstype + '!!')
         elif target.lower() not in bot.privileges[channel.lower()]:
@@ -58,6 +61,9 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
         else:
             bot.say(str(randopoints) + target)
             update_points(bot, target, rando, addminus)
+            if target != trigger.nick and not inchannel.startswith("#"):
+                bot.notice(str(randopoints) + target, instigator)
+            
 
 def channelpoints(bot, instigator, channel, rando, addminus):
     for u in bot.channels[channel].users:
