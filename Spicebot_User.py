@@ -57,10 +57,10 @@ def execute_main(bot, trigger):
         
         ## Is OP
         elif commandused == 'isop':
-            if not trigger.group(2):
-                nick = trigger.nick.lower()
-            else:
-                nick = trigger.group(2).lower()
+            target = commandused.replace('isop','').strip()
+            if target == '':
+                target = trigger.nick
+            target = target.lower()
             try:
                 if bot.privileges[channel][nick] == OP:
                     bot.say(nick + ' is an op.')
@@ -71,11 +71,13 @@ def execute_main(bot, trigger):
             
         ## Is Admin
         elif commandused == 'isadmin':
-            if not trigger.group(2):
+            target = commandused.replace('isop','').strip()
+            if target == '':
+                target = trigger.nick
                 if trigger.admin:
-                    bot.say(trigger.nick + ' is an admin')
+                    bot.say(target + ' is an admin')
                 else:
-                    bot.say(trigger.nick + ' is not an admin')
+                    bot.say(target + ' is not an admin')
             else:
                 bot.say('This feature does not work yet')
             
