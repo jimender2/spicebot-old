@@ -62,26 +62,28 @@ def execute_main(bot, trigger):
             target = str(commandused.split("isop", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
-            try:
-                target = target.lower()
+            elif target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
                 if bot.privileges[channel][target] == OP:
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
-            except KeyError:
-                bot.say(target + ' is not here right now!')
             
         ## Is Admin
         elif commandused == 'isadmin':
             target = str(commandused.split("isadmin", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
-                if trigger.admin:
+            elif target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
+                if target != trigger.nick:
+                    bot.say("Work in progress.")
+                elif trigger.admin:
                     bot.say(target + ' is an admin')
                 else:
                     bot.say(target + ' is not an admin')
-            else:
-                bot.say('This feature does not work yet')
             
         ## how many custom modules
         elif commandused == 'modulecount':
