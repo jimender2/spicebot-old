@@ -18,6 +18,7 @@ def execute_main(bot, trigger):
     for c in bot.channels:
         channel = c
     commandused = trigger.group(1)
+    inchannel = trigger.sender
     target = trigger.group(3) or trigger.nick
     if commandused.endswith('points'):
         pointstype = 'points'
@@ -38,10 +39,9 @@ def execute_main(bot, trigger):
             giveortake = ' gives '
             tofrom = ' to '
             addminus = 'up'      
-        return pointstask(bot, channel, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype)
+        return pointstask(bot, channel, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype, inchannel)
 
-def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype):
-    inchannel = trigger.sender
+def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
     target = tools.Identifier(target or '')
     rando = randint(1, 666)
     randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
