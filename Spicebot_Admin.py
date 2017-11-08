@@ -3,6 +3,7 @@ import os
 import sys
 import re
 from os.path import exists
+import git 
 
 script_dir = os.path.dirname(__file__)
 log_path = "data/templog.txt"
@@ -58,6 +59,8 @@ def restart(bot, trigger, service):
 
 def update(bot, trigger):
     bot.say('Pulling From Github...')
-    os.system("sudo git -C " + script_dir + " pull")
+    g = git.cmd.Git(script_dir)
+    g.pull()
+    #os.system("sudo git -C " + script_dir + " pull")
     bot.say('Cleaning Directory...')
     os.system("sudo rm " + script_dir + "/*.pyc")
