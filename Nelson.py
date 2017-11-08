@@ -26,4 +26,4 @@ def execute_main(bot, trigger):
             message = str(bot.nick + " points at " + target + " and laughs.")
             bot.say(message)
             if target != instigator and not inchannel.startswith("#"):
-                bot.notice(instigator + "instructed " + message, target)
+                bot.notice(instigator + " instructed " + message, target)
