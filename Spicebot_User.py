@@ -43,7 +43,7 @@ def execute_main(bot, trigger):
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
-        commandused = trigger.group(3)
+        commandused = trigger.group(2).strip()
         
         ## give options
         if commandused == 'options':
@@ -58,7 +58,7 @@ def execute_main(bot, trigger):
             bot.say("You can find me in " + channel)
         
         ## Is OP
-        elif commandused == 'isop':
+        elif commandused.startswith('isop'):
             target = str(commandused.split("isop", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
@@ -71,7 +71,7 @@ def execute_main(bot, trigger):
                     bot.say(target + ' is not an op.')
             
         ## Is Admin
-        elif commandused == 'isadmin':
+        elif commandused.startswith('isadmin'):
             target = str(commandused.split("isadmin", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
