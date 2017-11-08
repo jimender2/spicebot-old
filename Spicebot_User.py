@@ -62,7 +62,7 @@ def execute_main(bot, trigger):
             target = str(commandused.split("isop", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
-            elif target.lower() not in bot.privileges[channel.lower()]:
+            if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
                 if bot.privileges[channel][target] == OP:
@@ -75,7 +75,7 @@ def execute_main(bot, trigger):
             target = str(commandused.split("isadmin", 1)[1]).strip()
             if target == '':
                 target = trigger.nick
-            elif target.lower() not in bot.privileges[channel.lower()]:
+            if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
                 if target != trigger.nick:
