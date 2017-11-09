@@ -95,9 +95,10 @@ def execute_main(bot, trigger):
             if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target != instigator:
-                    bot.say("Work in progress.")
-                elif trigger.admin:
+                #if target != instigator:
+                #    bot.say("Work in progress.")
+                #elif trigger.admin:
+                if target.admin:
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
