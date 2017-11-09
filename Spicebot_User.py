@@ -21,10 +21,13 @@ LASTTIMEOUTHOUR = 3600
 
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
+    inchannel = trigger.sender
     if trigger.group(2):
         allowedcommandsarray = ['on','off']
         commandused = trigger.group(3)
         if commandused in allowedcommandsarray:
+            execute_main(bot, trigger)
+        elif not inchannel.startswith("#"):
             execute_main(bot, trigger)
         else:
             enablestatus = spicebot_prerun(bot, trigger)
@@ -44,7 +47,7 @@ def execute_main(bot, trigger):
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
-        commandused = trigger.group(2).strip()
+        commandused = trigger.group(3)
         
         ## give options
         if commandused == 'options':
@@ -72,11 +75,11 @@ def execute_main(bot, trigger):
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
             
         ## Is OP
-        elif commandused.startswith('isop'):
-            target = str(commandused.split("isop", 1)[1]).strip()
-            if target == '':
+        elif commandused == 'isop':
+            target = trigger.group(4)
+            if not target:
                 target = trigger.nick
-            if target.lower() not in bot.privileges[channel.lower()]:
+            if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
                 if bot.privileges[channel][target] == OP:
