@@ -145,13 +145,9 @@ def execute_main(bot, trigger):
             
         ## On/Off
         elif commandused == 'on' or commandused == 'off':
-            if commandused == 'on':
-                statuschange = 'enabl'
-            else:
-                statuschange = 'disabl'
             if target == 'all':
                 if trigger.admin:
-                    bot.say(statuschange + 'ing ' + bot.nick + ' for all.')
+                    bot.say("Turning " + bot.nick +  commandused + ' for all.')
                     for u in bot.channels[channel.lower()].users:
                         target = u
                         disenable = get_disenable(bot, target)
@@ -159,7 +155,7 @@ def execute_main(bot, trigger):
                             bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                         else:
                             bot.db.set_nick_value(target, 'spicebot_disenable', '')
-                    bot.say(bot.nick + ' ' + statuschange + 'ed for all.')
+                    bot.say(bot.nick + ' turned ' + commandused + ' for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
             elif target.lower() not in bot.privileges[channel.lower()]:
@@ -171,20 +167,22 @@ def execute_main(bot, trigger):
                 opttime = get_timeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                elif commandused == 'on':
-                    if not disenable:
+                if not disenable:
+                    if commandused == 'on':
                         bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
-                        bot.say(bot.nick + ' has been enabled for ' + target)
+                        adjustment = 'now'
                         set_timeout(bot, target)
                     else:
-                        bot.say(bot.nick + ' is already enabled for ' + target)
-                elif commandused == 'off':
-                    if not disenable:
-                        bot.say(bot.nick + ' is already disabled for ' + target)
+                        adjustment = 'already'
+                else:
+                    if commandused == 'on':
+                        adjustment = 'already'
                     else:
                         bot.db.set_nick_value(target, 'spicebot_disenable', '')
-                        bot.say(bot.nick + ' has been disabled for ' + target)
+                        adjustment = 'now'
                         set_timeout(bot, target)
+                message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
+                bot.say(message)
 
 ## Auto Mod
 @event('JOIN','PART','QUIT','NICK')
