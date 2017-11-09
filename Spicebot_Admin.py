@@ -21,7 +21,7 @@ def spicebotadmin(bot, trigger):
         bot.say("Which Command Do You want To run?")
         bot.say("Options Are: " + options)
     else:
-        commandused = trigger.group(2)
+        commandused = trigger.group(3)
         if commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
@@ -41,9 +41,9 @@ def spicebotadmin(bot, trigger):
                 bot.say('Log File Not Updated.')
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
-        elif commandused.startswith('pipinstall'):
-            pippackage = commandused.replace('pipinstall','').strip()
-            if pippackage == '':
+        elif commandused == 'pipinstall':
+            pippackage = trigger.group(4)
+            if not pippackage:
                 bot.say("You must specify a pip package")
             else:
                 bot.say("attempting to install " + pippackage)
@@ -54,8 +54,6 @@ def restart(bot, trigger, service):
     bot.say('Restarting Service...')
     os.system("sudo service " + str(service) + " restart")
     bot.say('If you see this, the service is hanging. Making another attempt.')
-    os.system("sudo service " + str(service) + " restart")
-    bot.say('If you see this, the service is hanging. Run Command Again.')
 
 def update(bot, trigger):
     bot.say('Pulling From Github...')
