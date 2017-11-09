@@ -50,6 +50,7 @@ def mainfunction(bot, trigger):
     if not trigger.group(2):
         bot.notice(instigator + ", Who did you want to challenge? Other Options are: " + str(options), instigator)
     else:
+        fullcommandused = trigger.group(2)
         commandused = trigger.group(3)
         target = trigger.group(4)
         if not target:
@@ -152,7 +153,7 @@ def mainfunction(bot, trigger):
             elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
                 bot.say('Inventory can only be viewed in privmsg.')
             else:
-                weaponchange = str(commandused.split(adjustmentdirection, 1)[1]).strip()
+                weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
                 if not weaponchange:
                     bot.say("What weapon would you like to add/remove?")
                 else:
