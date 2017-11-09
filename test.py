@@ -10,12 +10,14 @@ from SpicebotShared import *
 @sopel.module.commands('test')
 def mainfunction(bot, trigger):
     args = trigger.args[1]
+    zero = trigger.group(0)
     one = trigger.group(1)
     two = trigger.group(2)
     three = trigger.group(3)
     four = trigger.group(4)
     five = trigger.group(5)
     bot.say("args = " + str(args))
+    bot.say("zero = " + str(zero))
     bot.say("one = " + str(one))
     bot.say("two = " + str(two))
     bot.say("three = " + str(three))
