@@ -88,19 +88,19 @@ def execute_main(bot, trigger):
                     bot.say(target + ' is not an op.')
             
         ## Is Admin
-        elif commandused.startswith('isadmin'):
-            target = str(commandused.split("isadmin", 1)[1]).strip()
-            if target == '':
+        elif commandused == 'isadmin':
+            target = trigger.group(4)
+            if not target:
                 target = trigger.nick
-            if target.lower() not in bot.privileges[channel.lower()]:
+            if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target != trigger.nick:
+                if target != instigator:
                     bot.say("Work in progress.")
                 elif trigger.admin:
-                    bot.say(target + ' is an admin')
+                    bot.say(target + ' is a bot admin.')
                 else:
-                    bot.say(target + ' is not an admin')
+                    bot.say(target + ' is not a bot admin.')
         
         ## How long does a user have to wait to use a command
         elif commandused.startswith('timeout') and not inchannel.startswith("#"):
