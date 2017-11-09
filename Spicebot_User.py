@@ -79,17 +79,17 @@ def execute_main(bot, trigger):
             
         ## Is OP
         elif commandused == 'isop':
-            if target not in bot.privileges[channel]:
+            if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if bot.privileges[channel][target] == OP:
+                if bot.privileges[channel.lower()][target] == OP:
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
             
         ## Is Admin
         elif commandused == 'isadmin':
-            if target not in bot.privileges[channel]:
+            if target not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
                 if target != instigator:
@@ -101,7 +101,7 @@ def execute_main(bot, trigger):
         
         ## How long does a user have to wait to use a command
         elif commandused == 'timeout'and not inchannel.startswith("#"):
-            if target not in bot.privileges[channel]:
+            if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif target == instigator or trigger.admin:
                 lasttime = get_lasttime(bot, target)
@@ -152,7 +152,7 @@ def execute_main(bot, trigger):
             if target == 'all':
                 if trigger.admin:
                     bot.say(statuschange + 'ing ' + bot.nick + ' for all.')
-                    for u in bot.channels[channel].users:
+                    for u in bot.channels[channel.lower()].users:
                         target = u
                         disenable = get_disenable(bot, target)
                         if commandused == 'on':
@@ -162,7 +162,7 @@ def execute_main(bot, trigger):
                     bot.say(bot.nick + ' ' + statuschange + 'ed for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
-            elif target not in bot.privileges[channel]:
+            elif target not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif not trigger.admin and target != instigator:
                 bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
@@ -202,7 +202,7 @@ def autoblockhour(bot):
     for channel in bot.channels:
         now = time.time()
         bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
-        for u in bot.privileges[channel]:
+        for u in bot.privileges[channel.lower()]:
             target = u
             bot.db.set_nick_value(target, 'spicebot_usertotal', '')
             bot.db.set_nick_value(target, 'spicebothour_warn', '')
@@ -210,7 +210,7 @@ def autoblockhour(bot):
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        for u in bot.privileges[channel]:
+        for u in bot.privileges[channel.lower()]:
             target = u
             usertotal = get_usertotal(bot, target)
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
