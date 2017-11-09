@@ -95,20 +95,21 @@ def execute_main(bot, trigger):
             if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
-                #if target != instigator:
-                #    bot.say("Work in progress.")
-                #elif trigger.admin:
-                if target.admin:
+                if target != instigator:
+                    bot.say("Work in progress.")
+                elif trigger.admin:
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
         
         ## How long does a user have to wait to use a command
-        elif commandused.startswith('timeout') and not inchannel.startswith("#"):
-            target = commandused.replace('timeout','').strip()
-            if target == '':
+        elif commandused == 'timeout'and not inchannel.startswith("#"):
+            target = trigger.group(4)
+            if not target:
                 target = trigger.nick
-            if target == instigator or trigger.admin:
+            if target not in bot.privileges[channel]:
+                bot.say("I'm not sure who that is.")
+            elif target == instigator or trigger.admin:
                 lasttime = get_lasttime(bot, target)
                 if lasttime < LASTTIMEOUT:
                     lasttimemath = int(LASTTIMEOUT - lasttime)
@@ -120,9 +121,9 @@ def execute_main(bot, trigger):
             bot.notice(message, instigator)
         
         ## How many times in the past hour has the user used the bot
-        elif commandused.startswith('usage') and not inchannel.startswith("#"):
-            target = commandused.replace('usage','').strip()
-            if target == '':
+        elif commandused == 'usage'and not inchannel.startswith("#"):
+            target = trigger.group(4)
+            if not target:
                 target = trigger.nick
             if target == instigator or trigger.admin:
                 usertotal = get_usertotal(bot, target)
@@ -132,8 +133,10 @@ def execute_main(bot, trigger):
             bot.notice(message, instigator)
             
         ## Enable/Disable status
-        elif commandused.startswith('status') and not inchannel.startswith("#"):
-            target = commandused.replace('status','').strip()
+        elif commandused == 'status'and not inchannel.startswith("#"):
+            target = trigger.group(4)
+            if not target:
+                target = trigger.nick
             if target == '':
                 target = trigger.nick
             disenable = get_disenable(bot, target)
