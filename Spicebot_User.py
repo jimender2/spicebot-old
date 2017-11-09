@@ -41,6 +41,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
+    target = trigger.group(4)
+    if not target:
+        target = trigger.nick
     for c in bot.channels:
         channel = c
     options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status, on/off, isadmin, isop")
@@ -76,9 +79,6 @@ def execute_main(bot, trigger):
             
         ## Is OP
         elif commandused == 'isop':
-            target = trigger.group(4)
-            if not target:
-                target = trigger.nick
             if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
@@ -89,9 +89,6 @@ def execute_main(bot, trigger):
             
         ## Is Admin
         elif commandused == 'isadmin':
-            target = trigger.group(4)
-            if not target:
-                target = trigger.nick
             if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             else:
@@ -104,9 +101,6 @@ def execute_main(bot, trigger):
         
         ## How long does a user have to wait to use a command
         elif commandused == 'timeout'and not inchannel.startswith("#"):
-            target = trigger.group(4)
-            if not target:
-                target = trigger.nick
             if target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
             elif target == instigator or trigger.admin:
@@ -122,9 +116,6 @@ def execute_main(bot, trigger):
         
         ## How many times in the past hour has the user used the bot
         elif commandused == 'usage'and not inchannel.startswith("#"):
-            target = trigger.group(4)
-            if not target:
-                target = trigger.nick
             if target == instigator or trigger.admin:
                 usertotal = get_usertotal(bot, target)
                 message = str(target + " has used " + str(usertotal) + " commands this hour.")
@@ -134,11 +125,6 @@ def execute_main(bot, trigger):
             
         ## Enable/Disable status
         elif commandused == 'status'and not inchannel.startswith("#"):
-            target = trigger.group(4)
-            if not target:
-                target = trigger.nick
-            if target == '':
-                target = trigger.nick
             disenable = get_disenable(bot, target)
             if disenable:
                 message = str(target + " has SpiceBot enabled")
@@ -147,67 +133,52 @@ def execute_main(bot, trigger):
             bot.notice(message, instigator)
         
         ## Resets
-        elif commandused.startswith('timereset') and trigger.admin:
-            target = commandused.replace('timereset','').strip()
-            if target == '':
-                target = trigger.nick
+        elif commandused == 'timereset' and trigger.admin:
             bot.say('resetting timeout for ' + target)
             reset_timeout(bot, target)
-        elif commandused.startswith('warnreset') and trigger.admin:
-            target = commandused.replace('warnreset','').strip()
-            if target == '':
-                target = trigger.nick
+        elif commandused == 'warnreset' and trigger.admin:
             bot.say('resetting warning for ' + target)
             reset_warn(bot, target)
-        elif commandused.startswith('countreset') and trigger.admin:
-            target = commandused.replace('countreset','').strip()
-            if target == '':
-                target = trigger.nick
+        elif commandused == 'countreset' and trigger.admin:
             bot.say('resetting count for ' + target)
             reset_count(bot, target)
             
         ## On/Off
-        elif commandused.startswith('on') or commandused.startswith('off'):
-            if commandused.startswith('on'):
-                target = str(commandused.split("on", 1)[1]).strip()
-                #target = commandused.replace('on','').strip()
+        elif commandused == 'on' or commandused == 'off':
+            if commandused == 'on':
                 statuschange = 'enabl'
             else:
-                #target = commandused.replace('off','').strip()
-                target = str(commandused.split("off", 1)[1]).strip()
                 statuschange = 'disabl'
-            if target == '':
-                target = trigger.nick
             if target == 'all':
                 if trigger.admin:
                     bot.say(statuschange + 'ing ' + bot.nick + ' for all.')
                     for u in bot.channels[channel].users:
                         target = u
                         disenable = get_disenable(bot, target)
-                        if statuschange == 'enabl':
+                        if commandused == 'on':
                             bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                         else:
                             bot.db.set_nick_value(target, 'spicebot_disenable', '')
                     bot.say(bot.nick + ' ' + statuschange + 'ed for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
-            elif target.lower() not in bot.privileges[channel.lower()]:
+            elif target not in bot.privileges[channel]:
                 bot.say("I'm not sure who that is.")
-            elif not trigger.admin and target != trigger.nick:
+            elif not trigger.admin and target != instigator:
                 bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
             else:
                 disenable = get_disenable(bot, target)
                 opttime = get_timeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                elif commandused.startswith('on'):
+                elif commandused == 'on':
                     if not disenable:
                         bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                         bot.say(bot.nick + ' has been enabled for ' + target)
                         set_timeout(bot, target)
                     else:
                         bot.say(bot.nick + ' is already enabled for ' + target)
-                elif commandused.startswith('off'):
+                elif commandused == 'off':
                     if not disenable:
                         bot.say(bot.nick + ' is already disabled for ' + target)
                     else:
@@ -231,7 +202,7 @@ def autoblockhour(bot):
     for channel in bot.channels:
         now = time.time()
         bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
-        for u in bot.privileges[channel.lower()]:
+        for u in bot.privileges[channel]:
             target = u
             bot.db.set_nick_value(target, 'spicebot_usertotal', '')
             bot.db.set_nick_value(target, 'spicebothour_warn', '')
@@ -239,7 +210,7 @@ def autoblockhour(bot):
 @sopel.module.interval(60)
 def autoblock(bot):
     for channel in bot.channels:
-        for u in bot.privileges[channel.lower()]:
+        for u in bot.privileges[channel]:
             target = u
             usertotal = get_usertotal(bot, target)
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
