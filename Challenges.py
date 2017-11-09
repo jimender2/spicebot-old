@@ -95,10 +95,7 @@ def mainfunction(bot, trigger):
                 bot.say(message)
         
         ## Stats
-        elif commandused.startswith('stats'):
-            target = commandused.replace('stats','').strip()
-            if target == '':
-                target = trigger.nick
+        elif commandused == 'stats':
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
@@ -118,10 +115,7 @@ def mainfunction(bot, trigger):
                     bot.say('No stats found for ' + target)
         
         ## Enable/Disable status
-        elif commandused.startswith('status') and not inchannel.startswith("#"):
-            target = commandused.replace('status','').strip()
-            if target == '':
-                target = trigger.nick
+        elif commandused == 'status' and not inchannel.startswith("#"):
             disenable = get_disenable(bot, target)
             if disenable:
                 message = str(target + " has Challenges enabled")
@@ -130,12 +124,12 @@ def mainfunction(bot, trigger):
             bot.notice(message, instigator)
             
         ## Weaponslocker
-        elif commandused.startswith('weaponslocker'):
+        elif commandused == 'weaponslocker':
             weaponslist = get_weaponslocker(bot, instigator)
-            commandstripped = commandused.replace('weaponslocker','').strip()
-            if commandstripped == '':
+            adjustmentdirection = trigger.group(4)
+            if not adjustmentdirection:
                 bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-            elif commandstripped == 'inv' and not inchannel.startswith("#"):
+            elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
                 weaponslistnew = []
                 for weapon in weaponslist:
                     weapon = str(weapon)
@@ -155,22 +149,14 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
                 bot.say(str(weaponslist))
-            elif commandstripped == 'inv' and inchannel.startswith("#"):
+            elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
                 bot.say('Inventory can only be viewed in privmsg.')
             else:
-                if commandstripped.startswith('add'):
-                    commandtrimmed = 'add'
-                    weaponchange = commandstripped.replace('add','').strip()
-                elif commandstripped.startswith('del'):
-                    commandtrimmed = 'del'
-                    weaponchange = commandstripped.replace('del','').strip()
-                else:
-                    commandtrimmed = ''
-                    weaponchange = ''
-                if weaponchange == '':
+                weaponchange = str(commandused.split(adjustmentdirection, 1)[1]).strip()
+                if not weaponchange:
                     bot.say("What weapon would you like to add/remove?")
                 else:
-                    if commandtrimmed == 'add':
+                    if adjustmentdirection == 'add':
                         if weaponchange in weaponslist:
                             bot.say(weaponchange + " is already in your weapons locker.")
                             rescan = 'False'
@@ -178,7 +164,7 @@ def mainfunction(bot, trigger):
                             weaponslist.append(weaponchange)
                             update_weaponslocker(bot, instigator, weaponslist)
                             rescan = 'True'
-                    elif commandtrimmed == 'del':
+                    elif adjustmentdirection == 'del':
                         if weaponchange not in weaponslist:
                             bot.say(weaponchange + " is not in your weapons locker.")
                             rescan = 'False'
