@@ -50,31 +50,24 @@ def mainfunction(bot, trigger):
     if not trigger.group(2):
         bot.notice(instigator + ", Who did you want to challenge? Other Options are: " + str(options), instigator)
     else:
-        commandused = trigger.group(2)
+        commandused = trigger.group(3)
+        target = trigger.group(4)
+        if not target:
+            target = trigger.nick
 
         ## On/off
-        if commandused.startswith('on') or commandused.startswith('off'):
-            if commandused.startswith('on'):
-                commandtrimmed = 'on'
-                target = str(commandused.split("on", 1)[1]).strip()
-                statuschange = 'enabl'
-            elif commandused.startswith('off'):
-                commandtrimmed = 'off'
-                target = str(commandused.split("off", 1)[1]).strip()
-                statuschange = 'disabl'
-            if target == '':
-                target = trigger.nick
+        if commandused == 'on' or commandused == 'off':
             if target == 'all':
                 if trigger.admin:
-                    bot.say(statuschange + 'ing Challenges for all.')
+                    bot.say("Turning Challenges " +  commandused + ' for all.')
                     for u in bot.channels[channel].users:
                         target = u
                         disenable = get_disenable(bot, target)
-                        if statuschange == 'enabl':
+                        if commandused == 'on':
                             bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                         else:
                             bot.db.set_nick_value(target, 'challenges_disenable', '')
-                    bot.say('Challenges ' + statuschange + 'ed for all.')
+                    bot.say('Challenges turned ' + commandused + ' for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
             elif target.lower() not in bot.privileges[channel.lower()]:
@@ -84,20 +77,22 @@ def mainfunction(bot, trigger):
                 opttime = get_opttimeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                elif not disenable:
-                    if commandtrimmed == 'on':
+                if not disenable:
+                    if commandused == 'on':
                         bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-                        bot.say('Challenges has been enabled for ' + target)
+                        adjustment = 'now'
                         set_opttimeout(bot, target)
-                    elif commandtrimmed == 'off':
-                        bot.say('Challenges are already disabled for ' + target)
+                    else:
+                        adjustment = 'already'
                 else:
-                    if commandtrimmed == 'on':
-                        bot.say('Challenges are already enabled for ' + target)
-                    elif commandtrimmed == 'off':
+                    if commandused == 'on':
+                        adjustment = 'already'
+                    else:
                         bot.db.set_nick_value(target, 'challenges_disenable', '')
-                        bot.say('Challenges has been disabled for ' + target)
+                        adjustment = 'now'
                         set_opttimeout(bot, target)
+                message = str('Challenges is ' + adjustment + ' ' + commandused + ' for '  + target)
+                bot.say(message)
         
         ## Stats
         elif commandused.startswith('stats'):
