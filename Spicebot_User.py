@@ -162,7 +162,7 @@ def execute_main(bot, trigger):
                     bot.say(bot.nick + ' ' + statuschange + 'ed for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
-            elif target not in bot.privileges[channel.lower()]:
+            elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif not trigger.admin and target != instigator:
                 bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
