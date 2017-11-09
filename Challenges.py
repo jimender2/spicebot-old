@@ -157,28 +157,21 @@ def mainfunction(bot, trigger):
                 if not weaponchange:
                     bot.say("What weapon would you like to add/remove?")
                 else:
-                    if adjustmentdirection == 'add':
-                        if weaponchange in weaponslist:
-                            bot.say(weaponchange + " is already in your weapons locker.")
-                            rescan = 'False'
-                        else:
-                            weaponslist.append(weaponchange)
-                            update_weaponslocker(bot, instigator, weaponslist)
-                            rescan = 'True'
-                    elif adjustmentdirection == 'del':
-                        if weaponchange not in weaponslist:
-                            bot.say(weaponchange + " is not in your weapons locker.")
-                            rescan = 'False'
+                    if weaponchange in weaponslist:
+                        if adjustmentdirection == 'add':
+                            weaponlockerstatus = 'already'
                         else:
                             weaponslist.remove(weaponchange)
                             update_weaponslocker(bot, instigator, weaponslist)
-                            rescan = 'True'
-                    if rescan == 'True':
-                        weaponslist = get_weaponslocker(bot, instigator)
-                        if weaponchange in weaponslist:
-                            bot.say(weaponchange + " has been added to your weapons locker.")
+                            weaponlockerstatus = 'no longer'
+                    else:
+                        if adjustmentdirection == 'add':
+                            weaponslist.append(weaponchange)
+                            update_weaponslocker(bot, instigator, weaponslist)
+                            weaponlockerstatus = 'now'
                         else:
-                            bot.say(weaponchange + ' has been removed from your weapons locker.')
+                            weaponlockerstatus = 'already not'
+                    message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
             
         ## healthpotion
         elif commandused.startswith('healthpotion'):
