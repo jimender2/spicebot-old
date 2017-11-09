@@ -172,6 +172,7 @@ def mainfunction(bot, trigger):
                         else:
                             weaponlockerstatus = 'already not'
                     message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
+                    bot.say(message)
             
         ## healthpotion
         elif commandused.startswith('healthpotion'):
