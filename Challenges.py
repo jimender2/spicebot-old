@@ -175,11 +175,9 @@ def mainfunction(bot, trigger):
                     bot.say(message)
             
         ## healthpotion
-        elif commandused.startswith('healthpotion'):
-            target = commandused.replace('healthpotion','').strip()
-            if target == '':
-                target = trigger.nick
-            healthpotions = get_healthpotions(bot, trigger.nick)
+        elif commandused == 'healthpotion':
+            usepotion = 0
+            healthpotions = get_healthpotions(bot, instigator)
             if healthpotions:
                 health = get_health(bot, target)
                 if target == trigger.nick:
@@ -187,14 +185,11 @@ def mainfunction(bot, trigger):
                     usepotion = 1
                 elif target.lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm not sure who that is.")
-                    usepotion = 0
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
                         bot.say(trigger.nick + ' uses health potion on ' + target + ".")
                         usepotion = 1
-                    else:
-                        usepotion = 0
                 if usepotion == 1:
                     if not inchannel.startswith("#") and not trigger.nick:
                         bot.notice(instigator + " used a healthpotion on you", target)
@@ -204,11 +199,9 @@ def mainfunction(bot, trigger):
                 bot.say('You do not have a healthpotion to use!')
                 
         ## poisonpotion
-        elif commandused.startswith('poisonpotion'):
-            target = commandused.replace('poisonpotion','').strip()
-            if target == '':
-                target = trigger.nick
-            poisonpotions = get_poisonpotions(bot, trigger.nick)
+        elif commandused == 'poisonpotion':
+            usepotion = 0
+            poisonpotions = get_poisonpotions(bot, instigator)
             if poisonpotions:
                 health = get_health(bot, target)
                 if target == trigger.nick:
@@ -216,14 +209,11 @@ def mainfunction(bot, trigger):
                     usepotion = 1
                 elif target.lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm not sure who that is.")
-                    usepotion = 0
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
                         bot.say(trigger.nick + ' uses poisonpotion on ' + target + ".")
                         usepotion = 1
-                    else:
-                        usepotion = 0
                 if usepotion == 1:
                     if not inchannel.startswith("#") and not trigger.nick:
                         bot.notice(instigator + " used a poisonpotion on you", target)
