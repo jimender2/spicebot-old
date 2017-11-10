@@ -648,7 +648,10 @@ def get_winlossratio(bot,target):
     wins = get_wins(bot, target)
     losses = get_losses(bot, target)
     winlosstotal = abs(wins + losses)
-    winlossratio = float(wins)/winlosstotal
+    if winlosstotal != 0:
+        winlossratio = float(wins)/winlosstotal
+    else:
+        winlossratio = 0
     return winlossratio
 ###############
 ## XP points ##
