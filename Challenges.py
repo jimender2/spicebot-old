@@ -195,33 +195,30 @@ def mainfunction(bot, trigger):
             
         ## Loot Items usage
         elif commandused in lootitemsarray:
-            #uselootitem = 0
-            bot.say(str(commandused))
-            scriptdef = str('get_' + commandused + '(bot,target)')
-            bot.say(str(scriptdef))
+            uselootitem = 0
+            scriptdef = str('get_' + commandused + '(bot,instigator)')
             gethowmany = eval(scriptdef)
-            bot.say(str(gethowmany))
-            #healthpotions = get_healthpotions(bot, instigator)
-            #if healthpotions:
-            #    health = get_health(bot, target)
-            #    if target == trigger.nick:
-            #        bot.say(trigger.nick + ' uses health potion.')
-            #        uselootitem = 1
-            #    elif target.lower() not in bot.privileges[channel.lower()]:
-            #        bot.say("I'm not sure who that is.")
-            #    else:
-            #        targetdisenable = get_disenable(bot, target)
-            #        if targetdisenable:
-            #            bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-            #            uselootitem = 1
-            #    if uselootitem == 1:
-            #        if not inchannel.startswith("#") and not trigger.nick:
-            #            bot.notice(instigator + " used a healthpotion on you", target)
-            #        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
-            #        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
-            #else:
-            #    bot.say('You do not have a healthpotion to use!')
-                
+            if gethowmany:
+                scriptdef = str('use_' + commandused + '(bot, instigator, target)')
+                if target == trigger.nick:
+                    bot.say(trigger.nick + ' uses ' + commandused + '.')
+                    uselootitem = 1
+                elif target.lower() not in bot.privileges[channel.lower()]:
+                    bot.say("I'm not sure who that is.")
+                else:
+                    targetdisenable = get_disenable(bot, target)
+                    if targetdisenable:
+                        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+                        if not inchannel.startswith("#"):
+                            bot.notice(instigator + " used a " + commandused + " on you", target)
+                        uselootitem = 1
+                    else:
+                        bot.say(target + " does not have Challenges enabled")
+                if uselootitem == 1:
+                    eval(scriptdef)
+            else:
+                bot.say('You do not have a ' +  commandused + ' to use!')
+    
         ## Combat
         else:
             instigatortime = get_timesince(bot, instigator)
@@ -519,6 +516,13 @@ def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
     return healthpotions
 
+def use_healthpotions(bot, instigator, target):
+    health = get_health(bot, target)
+    healthpotions = get_healthpotions(bot, instigator)
+    bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+    bot.db.set_nick_value(instigator, 'challenges_healthpotions', int(healthpotions) - 1)
+    
+
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
@@ -531,6 +535,12 @@ def get_poisonpotions(bot, nick):
     posionpotions = bot.db.get_nick_value(nick, 'challenges_poisonpotions') or 0
     return posionpotions
 
+def use_poisonpotions(bot, instigator, target):
+    health = get_health(bot, target)
+    posionpotions = get_poisonpotions(bot, instigator)
+    bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
+    bot.db.set_nick_value(instigator, 'challenges_poisonpotions', int(posionpotions) - 1)
+    
 def addpoisonpotion(bot, nick):
     poisonpotions = get_poisonpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_poisonpotions', int(poisonpotions) + 1)
