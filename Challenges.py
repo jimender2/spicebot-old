@@ -474,16 +474,15 @@ def determineloottype(bot, nick):
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
-    loserhealthpotions = get_healthpotions(bot, loser)
-    loserpoisonpotions = get_poisonpotions(bot, loser)
-    if loserhealthpotions:
-        bot.db.set_nick_value(loser, 'challenges_healthpotions', '')
-        winnerhealthpotions = get_healthpotions(bot, winner)
-        bot.db.set_nick_value(winner, 'challenges_healthpotions', int(winnerhealthpotions) + int(loserhealthpotions))
-    if loserpoisonpotions:
-        bot.db.set_nick_value(loser, 'challenges_poisonpotions', '')
-        winnerpoisonpotions = get_poisonpotions(bot, winner)
-        bot.db.set_nick_value(winner, 'challenges_poisonpotions', int(winnerpoisonpotions) + int(loserpoisonpotions))
+    for x in lootitemsarray:
+        scriptdef = str('get_' + x + '(bot,loser)')
+        databasecolumn = str('challenges_' + x)
+        gethowmany = eval(scriptdef)
+        if gethowmany:
+            bot.db.set_nick_value(loser, databasecolumn, '')
+            scriptdefb = str('get_' + x + '(bot,winner)')
+            gethowmanyb = eval(scriptdefb)
+            bot.db.set_nick_value(winner, databasecolumn, int(gethowmany) + int(gethowmanyb))
         
 ####################
 ## Health Potions ##
