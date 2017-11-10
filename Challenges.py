@@ -466,10 +466,10 @@ def determineloottype(bot, nick):
     loot_text = ''
     if loot == 'healthpotion':
         addhealthpotion(bot, nick)
-        loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
+        loot_text = ': worth 100 health. Use .challenge healthpotions to consume.'
     if loot == 'poisonpotion':
         addpoisonpotion(bot, nick)
-        loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
+        loot_text = ': worth -50 health. Use .challenge poisonpotions to consume.'
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
