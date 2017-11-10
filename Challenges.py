@@ -190,7 +190,7 @@ def mainfunction(bot, trigger):
                         if winlossratio > currentleadernumber:
                             currentleader = target
                             currentleadernumber = winlossratio
-            leaderboardscript = str("The Current Leader is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
+            leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
             
         ## healthpotion
