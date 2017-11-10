@@ -120,7 +120,7 @@ def mainfunction(bot, trigger):
                 bot.say("Attempting to reset " + commandtrimmed + " stat for " + target + ".")
             if not commandtrimmed:
                 bot.say(optionsstring)
-            elif target.lower() not in bot.privileges[channel.lower()] or target != 'all':
+            elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
                 for x in challengestatsadminarray:
@@ -370,74 +370,6 @@ def healthregen(bot):
                 if health < 500:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
                     health = get_health(bot, target)
-
-#################
-## Stats Clear ##
-#################
-
-@sopel.module.require_admin
-@module.commands('challengestatsadminall','challengestatsadmin','challengestatsadminwins','challengestatsadminlosses','challengestatsadminhealth','challengestatsadminhealthpotions','challengestatsadminrespawns','challengestatsadminxp','challengestatsadmintime','challengestatsadmindisenable','challengestatsadminpoisonpotions')
-def challengestatsadmin(bot, trigger):
-    for c in bot.channels:
-            channel = c
-    commandtrimmed = trigger.group(1)
-    commandtrimmed = str(commandtrimmed.split("challengestatsadmin", 1)[1])
-    if commandtrimmed == '':
-         bot.say('Repeat this command with: wins,losses,health,healthpotions,respawns,xp,time,disenable,poisonpotions')
-    elif commandtrimmed == 'all':
-        challengestatsarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions']
-        if not trigger.group(3):
-            target = trigger.nick
-            bot.say('Resetting all stats for ' + target + '.')
-            for x in challengestatsarray:
-                scriptdef = str('get_' + x)
-                databasecolumn = str('challenges_' + x)
-                gethowmany = eval(scriptdef)
-                if gethowmany:
-                    bot.db.set_nick_value(target, databasecolumn, '')
-        elif trigger.group(3) == 'all':
-            bot.say('Resetting all stats for Channel.')
-            for u in bot.channels[channel].users:
-                target = u
-                for x in challengestatsarray:
-                    scriptdef = str('get_' + x)
-                    databasecolumn = str('challenges_' + x)
-                    gethowmany = eval(scriptdef)
-                    if gethowmany:
-                        bot.db.set_nick_value(target, databasecolumn, '')
-            bot.say('Resetting of all stats for all in channel is complete.')
-        else:
-            target = trigger.group(3)
-            bot.say('Resetting all stats for ' + target + '.')
-            for x in challengestatsarray:
-                scriptdef = str('get_' + x)
-                databasecolumn = str('challenges_' + x)
-                gethowmany = eval(scriptdef)
-                if gethowmany:
-                    bot.db.set_nick_value(target, databasecolumn, '')
-    else:
-        scriptdef = str('get_' + commandtrimmed)
-        databasecolumn = str('challenges_' + commandtrimmed)
-        if not trigger.group(3):
-            target = trigger.nick
-            bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target + '.')
-            gethowmany = eval(scriptdef)
-            if gethowmany:
-                bot.db.set_nick_value(target, databasecolumn, '')
-        elif trigger.group(3) == 'all':
-            bot.say('Resetting ' + str(commandtrimmed) + ' stat for all in channel.')
-            for u in bot.channels[channel].users:
-                target = u
-                gethowmany = eval(scriptdef)
-                if gethowmany:
-                    bot.db.set_nick_value(target, databasecolumn, '')
-            bot.say('Resetting of ' + str(commandtrimmed) + ' stat for all in channel is complete.')
-        else:
-            target = trigger.group(3)
-            bot.say('Resetting ' + str(commandtrimmed) + ' stat for ' + target)
-            gethowmany = eval(scriptdef)
-            if gethowmany:
-                bot.db.set_nick_value(target, databasecolumn, '')
         
 ## Functions######################################################################################################################
 
