@@ -262,7 +262,7 @@ def mainfunction(bot, trigger):
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
-            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+            #targetspicebotdisenable = get_spicebotdisenable(bot, target)
             instigatordisenable = get_disenable(bot, instigator)
             targetdisenable = get_disenable(bot, target)
             target = trigger.group(3)
@@ -276,8 +276,8 @@ def mainfunction(bot, trigger):
                 bot.say("If you are feeling self-destructive, there are places you can call.")
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
-            elif not targetspicebotdisenable:
-                bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
+            #elif not targetspicebotdisenable:
+            #    bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
             elif not instigatordisenable:
                 bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
             elif not targetdisenable:
