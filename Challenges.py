@@ -699,7 +699,7 @@ def update_losses(bot, nick):
     losses = get_losses(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
 
-def get_winlossratio(bot,target)
+def get_winlossratio(bot,target):
     wins = get_wins(bot, target)
     losses = get_losses(bot, target)
     winlosstotal = abs(wins + losses)
