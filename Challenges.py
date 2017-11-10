@@ -197,7 +197,7 @@ def mainfunction(bot, trigger):
         elif commandused in lootitemsarray:
             #uselootitem = 0
             bot.say(str(commandused))
-            scriptdef = str('get_' + commandused)
+            scriptdef = str('get_' + x + '(bot,target)')
             bot.say(str(scriptdef))
             gethowmany = eval(scriptdef)
             bot.say(str(gethowmany))
