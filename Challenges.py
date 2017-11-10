@@ -313,7 +313,9 @@ def mainfunction(bot, trigger):
                 winner, loser = getwinner(bot, instigator, target)
 
                 ## Weapon Select
-                weapon = weaponofchoice(bot, winner)
+                weapon = str(fullcommandused.split(target, 1)[1]).strip()
+                if not weapon:
+                    weapon = weaponofchoice(bot, winner)
            
                 ## Update Wins and Losses
                 update_wins(bot, winner)
