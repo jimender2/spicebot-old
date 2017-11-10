@@ -19,21 +19,10 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotions, healthpotions, weaponslocker")
 lootitemsarray = ['healthpotions','poisonpotions']
+challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions']
+challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','timeout']
 
-## React to /me (ACTION) challenges
-@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
-@module.intent('ACTION')
-@module.require_chanmsg
-def challenge_action(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        inchannel = trigger.sender
-        target = trigger.group(3)
-        if not inchannel.startswith("#"):
-            bot.say('Duels must be in channel')
-        else:
-            return challenge(bot, trigger.sender, trigger.nick, trigger.group(3))
-        
+
 ####################
 ## Main Operation ##
 ####################
@@ -106,7 +95,6 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 stats = ''
-                challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','timeout']
                 for x in challengestatsarray:
                     scriptdef = str('get_' + x + '(bot,target)')
                     gethowmany = eval(scriptdef)
@@ -119,8 +107,58 @@ def mainfunction(bot, trigger):
                 else:
                     bot.say('No stats found for ' + target)
         
+        ## Stats statsadmin
+        elif commandused == 'statsadmin' and trigger.admin:
+            commandtrimmed = trigger.group(4)
+            target = trigger.group(5)
+            optionsstring = str("Repeat this command with: ")
+            for x in challengestatsadminarray:
+                optionsstring = str(optionsstring + x + ",")
+            if not target:
+                target = instigator
+            if commandtrimmed and target:
+                bot.say("Attempting to reset " + commandtrimmed + " stat for " + target + ".")
+            if not commandtrimmed:
+                bot.say(optionsstring)
+            elif target.lower() not in bot.privileges[channel.lower()] or target != 'all':
+                bot.say("I'm not sure who that is.")
+            elif commandtrimmed == 'all' and target != 'all':
+                for x in challengestatsadminarray:
+                    scriptdef = str('get_' + x + '(bot,target)')
+                    databasecolumn = str('challenges_' + x)
+                    gethowmany = eval(scriptdef)
+                    if gethowmany:
+                        bot.db.set_nick_value(target, databasecolumn, '')
+            elif commandtrimmed == 'all' and target == 'all':
+                for u in bot.channels[channel].users:
+                    target = u
+                    for x in challengestatsarray:
+                        scriptdef = str('get_' + x)
+                        databasecolumn = str('challenges_' + x)
+                        gethowmany = eval(scriptdef)
+                        if gethowmany:
+                            bot.db.set_nick_value(target, databasecolumn, '')
+            else:
+                scriptdef = str('get_' + commandtrimmed + '(bot,target)')
+                scriptdef = str('get_' + commandtrimmed)
+                databasecolumn = str('challenges_' + commandtrimmed)
+                if target == 'all':
+                    for u in bot.channels[channel].users:
+                        gethowmany = eval(scriptdef)
+                        if gethowmany:
+                            bot.db.set_nick_value(target, databasecolumn, '')
+                else:
+                    gethowmany = eval(scriptdef)
+                    if gethowmany:
+                        bot.db.set_nick_value(target, databasecolumn, '')
+            if commandtrimmed and target:
+                bot.say("Stat Reset command completed.")
+                        
+        elif commandused == 'statsadmin' and not trigger.admin:        
+            bot.say('You must be an admin to reset stats.')
+            
         ## Enable/Disable status
-        elif commandused == 'status' and not inchannel.startswith("#"):
+        elif commandused == 'status':
             disenable = get_disenable(bot, target)
             if disenable:
                 message = str(target + " has Challenges enabled")
