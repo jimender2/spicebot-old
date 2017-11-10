@@ -221,6 +221,9 @@ def mainfunction(bot, trigger):
             konami = get_konami(bot, instigator)
             if not konami:
                 set_konami(bot, instigator)
+                bot.notice(instigator + " you have found the cheatcode easter egg!!!", target)
+            else:
+                bot.notice(instigator + " you can only cheat once.", target)
         
         ## Leaderboard
         elif commandused == 'leader':
