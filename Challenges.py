@@ -742,7 +742,6 @@ def set_konami(bot, nick):
     health = get_health(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', int(health) + 600)
     bot.db.set_nick_value(nick, 'challenges_konami', 'used')
-    return konami
 
 
 
