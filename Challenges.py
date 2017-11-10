@@ -19,9 +19,8 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotions, healthpotions, weaponslocker")
 lootitemsarray = ['healthpotions','poisonpotions']
-challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions']
-challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','timeout']
-
+challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions','lastfought']
+challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','lastfought','timeout']
 
 ####################
 ## Main Operation ##
@@ -260,8 +259,8 @@ def mainfunction(bot, trigger):
         ## Combat
         else:
             target = trigger.group(3)
-            bot.say(target)
             instigatortime = get_timesince(bot, instigator)
+            lastfought = get_lastfought(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
             targetspicebotdisenable = get_spicebotdisenable(bot, target)
@@ -276,6 +275,8 @@ def mainfunction(bot, trigger):
                 bot.say("I refuse to fight a biological entity!")
             elif target == instigator:
                 bot.say("If you are feeling self-destructive, there are places you can call.")
+            elif target == lastfought:
+                bot.say("You may not fight the same person twice in a row.")
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif not targetspicebotdisenable:
@@ -328,6 +329,10 @@ def mainfunction(bot, trigger):
                 XPearnedloser = '3'
                 update_xp(bot, winner, XPearnedwinner)
                 update_xp(bot, loser, XPearnedloser)
+                
+                ## Update last fought
+                set_lastfought(bot, instigator, target)
+                set_lastfought(bot, target, instigator)
             
                 ## Update Health Of Loser, respawn, allow winner to loot
                 currenthealth = update_health(bot, loser, damage)
@@ -699,7 +704,18 @@ def get_weaponslocker(bot, nick):
 def update_weaponslocker(bot, nick, weaponslist):
     for channel in bot.channels:
         bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
-        
+
+###################
+## Last Opponent ##
+###################
+
+def get_lastopponent(bot, nick):
+    bot.db.get_nick_value(nick, 'challenges_lastfought') or 0
+    return lastfought
+
+def set_lastfought(bot, nicka, nickb):
+    bot.db.set_nick_value(nicka, 'challenges_lastfought', nickb)
+    
 ###########
 ## Tools ##
 ###########
