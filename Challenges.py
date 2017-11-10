@@ -20,7 +20,7 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotions, healthpotions, weaponslocker")
 lootitemsarray = ['healthpotions','poisonpotions']
-challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions','lastfought']
+challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions','lastfought','konami']
 challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','lastfought','timeout']
 
 ####################
@@ -215,7 +215,13 @@ def mainfunction(bot, trigger):
                             weaponlockerstatus = 'already not'
                     message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
                     bot.say(message)
-                
+        
+        ## Konami
+        elif commandused == 'upupdowndownleftrightleftrightba':
+            konami = get_konami(bot, instigator)
+            if not konami:
+                set_konami(bot, instigator)
+            
         ## Leaderboard
         elif commandused == 'leader':
             currentleader = ''
@@ -723,3 +729,16 @@ def set_lastfought(bot, nicka, nickb):
 def diceroll():
     diceroll = randint(0, 6)
     return diceroll
+
+def get_konami(bot, nick):
+    konami = bot.db.get_nick_value(nick, 'challenges_konami') or 0
+    return konami
+
+def set_konami(bot, nick):
+    health = get_health(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_health', int(health) + 600)
+    bot.db.set_nick_value(nick, 'challenges_konami', 'used')
+    return konami
+
+
+
