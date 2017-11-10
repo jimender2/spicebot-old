@@ -184,7 +184,8 @@ def mainfunction(bot, trigger):
                 if not disenable:
                     wins = get_wins(bot, target)
                     losses = get_losses(bot, target)
-                    winlossratio = abs(wins / losses)
+                    winlosstotal = abs(wins + losses)
+                    winlossratio = abs(wins / winlosstotal)
                     if winlossratio > currentleadernumber:
                         currentleader = target
                         currentleadernumber = winlossratio
