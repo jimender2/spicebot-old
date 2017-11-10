@@ -346,18 +346,14 @@ def mainfunction(bot, trigger):
             
                 ## Random Inventory gain
                 lootwinnermsg = ''
+                lootwinnermsgb = ''
                 randominventoryfind = randominventory()
                 if randominventoryfind == 'true':
-                    if winner == instigator:
-                        loot, loot_text = determineloottype(bot, winner)
-                        lootwinnermsgb = ''
-                    else:
-                        loot, loot_text = determineloottype(bot, winner)
+                    loot, loot_text = determineloottype(bot, winner)
+                    lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
+                    if winner == target:
                         lootwinnermsgb = str(winner + " gains the " + str(loot))
-                        lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-                else:
-                    lootwinnermsg = ''
-                    lootwinnermsgb = ''
+                        
                     
                 ## On Screen Text
                 bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
