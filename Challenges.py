@@ -180,12 +180,17 @@ def mainfunction(bot, trigger):
             currentleadernumber = 0
             for u in bot.channels[channel].users:
                 target = u
+                bot.say('scanning ' + target)
                 disenable = get_disenable(bot, target)
                 if disenable:
+                    bot.say('enabled is ' + target)
                     wins = get_wins(bot, target)
                     if wins:
+                        bot.say('has wins ' + target + str(wins))
                         losses = get_losses(bot, target)
+                        bot.say('losses ' + target + str(losses))
                         winlosstotal = abs(wins + losses)
+                        bot.say('total ' + target + str(winlosstotal))
                         winlossratio = abs(wins / winlosstotal)
                         if winlossratio > currentleadernumber:
                             currentleader = target
