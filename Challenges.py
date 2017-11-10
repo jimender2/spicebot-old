@@ -345,6 +345,7 @@ def mainfunction(bot, trigger):
                     winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
                 ## Random Inventory gain
+                lootwinnermsg = ''
                 randominventoryfind = randominventory()
                 if randominventoryfind == 'true':
                     if winner == instigator:
