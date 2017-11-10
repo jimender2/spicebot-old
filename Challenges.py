@@ -12,10 +12,13 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
+## Configurables #############
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
+maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, weaponslocker")
+lootitemsarray = ['healthpotion','poisonpotion']
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -42,13 +45,12 @@ def challenge_cmd(bot, trigger):
         return mainfunction(bot, trigger)
         
 def mainfunction(bot, trigger):
-    options = str("on/off, stats, poisonpotion, healthpotion, weaponslocker")
     instigator = trigger.nick
     inchannel = trigger.sender
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
-        bot.notice(instigator + ", Who did you want to challenge? Other Options are: " + str(options), instigator)
+        bot.notice(instigator + ", Who did you want to challenge? Other Options are: " + str(maincommandoptions), instigator)
     else:
         fullcommandused = trigger.group(2)
         commandused = trigger.group(3)
@@ -192,22 +194,24 @@ def mainfunction(bot, trigger):
             bot.say(leaderboardscript)
             
         ## healthpotion
-        elif commandused == 'healthpotion':
-            usepotion = 0
-            healthpotions = get_healthpotions(bot, instigator)
+        elif commandused in lootitemsarray:
+            uselootitem = 0
+            scriptdef = str('get_' + commandused)
+            gethowmany = eval(scriptdef)
+            #healthpotions = get_healthpotions(bot, instigator)
             if healthpotions:
                 health = get_health(bot, target)
                 if target == trigger.nick:
                     bot.say(trigger.nick + ' uses health potion.')
-                    usepotion = 1
+                    uselootitem = 1
                 elif target.lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm not sure who that is.")
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
                         bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-                        usepotion = 1
-                if usepotion == 1:
+                        uselootitem = 1
+                if uselootitem == 1:
                     if not inchannel.startswith("#") and not trigger.nick:
                         bot.notice(instigator + " used a healthpotion on you", target)
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
@@ -215,32 +219,14 @@ def mainfunction(bot, trigger):
             else:
                 bot.say('You do not have a healthpotion to use!')
                 
-        ## poisonpotion
-        elif commandused == 'poisonpotion':
-            usepotion = 0
-            poisonpotions = get_poisonpotions(bot, instigator)
-            if poisonpotions:
-                health = get_health(bot, target)
-                if target == trigger.nick:
-                    bot.say(trigger.nick + ' uses poisonpotion.')
-                    usepotion = 1
-                elif target.lower() not in bot.privileges[channel.lower()]:
-                    bot.say("I'm not sure who that is.")
-                else:
-                    targetdisenable = get_disenable(bot, target)
-                    if targetdisenable:
-                        bot.say(trigger.nick + ' uses poisonpotion on ' + target + ".")
-                        usepotion = 1
-                if usepotion == 1:
-                    if not inchannel.startswith("#") and not trigger.nick:
-                        bot.notice(instigator + " used a poisonpotion on you", target)
-                    bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
-                    bot.db.set_nick_value(trigger.nick, 'challenges_poisonpotions', int(poisonpotions) - 1)
-            else:
-                bot.say('You do not have a poisonpotion to use!')
-                
         ## Combat
         else:
+            instigatortime = get_timesince(bot, instigator)
+            targettime = get_timesince(bot, target)
+            channeltime = get_timesince(bot, ALLCHAN)
+            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+            instigatordisenable = get_disenable(bot, instigator)
+            targetdisenable = get_disenable(bot, target)
             target = trigger.group(3)
             if not inchannel.startswith("#"):
                 bot.say('Duels must be in channel')
@@ -252,8 +238,87 @@ def mainfunction(bot, trigger):
                 bot.say("If you are feeling self-destructive, there are places you can call.")
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
+            elif not targetspicebotdisenable:
+                bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
+            elif not instigatordisenable:
+                bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
+            elif not targetdisenable:
+                bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
+            elif not instigatordisenable:
+                bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
+            elif not targetdisenable:
+                bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
+            elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
+                bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
+                if targettime < TIMEOUT:
+                    bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+                if channeltime < TIMEOUTC:
+                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+            elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
+                bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+                if channeltime < TIMEOUTC:
+                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+            elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
             else:
-                return challenge(bot, channel, instigator, target)
+                ## Announce Combat
+                announcecombatmsg = str(instigator + " versus " + target)
+       
+                ## Check new player health, initial Spawn
+                update_spawn(bot, instigator)
+                update_spawn(bot, target)
+
+                ## Damage Done
+                damage = damagedone(bot)
+
+                ## Select Winner
+                winner, loser = getwinner(bot, instigator, target)
+
+                ## Weapon Select
+                weapon = weaponofchoice(bot, winner)
+           
+                ## Update Wins and Losses
+                update_wins(bot, winner)
+                update_losses(bot, loser)
+            
+                ## Update XP points
+                XPearnedwinner = '5'
+                XPearnedloser = '3'
+                update_xp(bot, winner, XPearnedwinner)
+                update_xp(bot, loser, XPearnedloser)
+            
+                ## Update Health Of Loser, respawn, allow winner to loot
+                currenthealth = update_health(bot, loser, damage)
+                if currenthealth <= 0:
+                    winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+                    update_respawn(bot, loser)
+                    ## Loot Corpse
+                    lootcorpse(bot, loser, winner)
+                else:
+                    winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+            
+                ## Random Inventory gain
+                randominventoryfind = randominventory()
+                if randominventoryfind == 'true':
+                    if winner == instigator:
+                        loot, loot_text = determineloottype(bot, winner)
+                        lootwinnermsgb = ''
+                    else:
+                        loot, loot_text = determineloottype(bot, winner)
+                        lootwinnermsgb = str(winner + " gains the " + str(loot))
+                        lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
+                else:
+                    lootwinnermsg = ''
+                    lootwinnermsgb = ''
+                    
+                ## On Screen Text
+                bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
+                bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
+        
+                ## Update Time Of Combat
+                update_time(bot, instigator)
+                update_time(bot, target)
+                update_time(bot, ALLCHAN)
 
 ## Health Regeneration
 @sopel.module.interval(1800)
@@ -267,109 +332,7 @@ def healthregen(bot):
                 if health < 500:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
                     health = get_health(bot, target)
-     
-####################
-## Main Operation ##
-####################
 
-def challenge(bot, channel, instigator, target):
-    
-    ## Don't allow chat spamming
-    instigatortime = get_timesince(bot, instigator)
-    targettime = get_timesince(bot, target)
-    channeltime = get_timesince(bot, ALLCHAN)
-        
-    ## Bot opt-out
-    targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        
-    ## People can opt out of playing
-    instigatordisenable = get_disenable(bot, instigator)
-    targetdisenable = get_disenable(bot, target)
-        
-    ## Check Opt-in Status
-    if not targetspicebotdisenable:
-        bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
-    elif not instigatordisenable:
-        bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
-    elif not targetdisenable:
-        bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
-        
-    ## Enforce Timeout, unless in dev-channel
-    elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
-        bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
-        if targettime < TIMEOUT:
-            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        if channeltime < TIMEOUTC:
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-    elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
-        bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        if channeltime < TIMEOUTC:
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-    elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-        bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        
-    ## If target and intigator pass the criteria above continue
-    else:
-    
-        ## Announce Combat
-        announcecombatmsg = str(instigator + " versus " + target)
-        
-        ## Check new player health, initial Spawn
-        update_spawn(bot, instigator)
-        update_spawn(bot, target)
-
-        ## Damage Done
-        damage = damagedone(bot)
-
-        ## Select Winner
-        winner, loser = getwinner(bot, instigator, target)
-
-        ## Weapon Select
-        weapon = weaponofchoice(bot, winner)
-           
-        ## Update Wins and Losses
-        update_wins(bot, winner)
-        update_losses(bot, loser)
-            
-        ## Update XP points
-        XPearnedwinner = '5'
-        XPearnedloser = '3'
-        update_xp(bot, winner, XPearnedwinner)
-        update_xp(bot, loser, XPearnedloser)
-            
-        ## Update Health Of Loser, respawn, allow winner to loot
-        currenthealth = update_health(bot, loser, damage)
-        if currenthealth <= 0:
-            winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
-            update_respawn(bot, loser)
-            ## Loot Corpse
-            lootcorpse(bot, loser, winner)
-        else:
-            winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
-            
-        ## Random Inventory gain
-        randominventoryfind = randominventory()
-        if randominventoryfind == 'true':
-            if winner == instigator:
-                loot, loot_text = determineloottype(bot, winner)
-                lootwinnermsgb = ''
-            else:
-                loot, loot_text = determineloottype(bot, winner)
-                lootwinnermsgb = str(winner + " gains the " + str(loot))
-                lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-        else:
-            lootwinnermsg = ''
-            lootwinnermsgb = ''
-            
-        ## On Screen Text
-        bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
-        bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
-            
-        ## Update Time Of Combat
-        update_time(bot, instigator)
-        update_time(bot, target)
-        update_time(bot, ALLCHAN)
-            
 #################
 ## Stats Clear ##
 #################
