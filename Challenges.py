@@ -274,8 +274,8 @@ def mainfunction(bot, trigger):
                 bot.say("I refuse to fight a biological entity!")
             elif target == instigator:
                 bot.say("If you are feeling self-destructive, there are places you can call.")
-            elif target == lastfought and not inchannel.startswith("#"):
-                bot.say("You may not fight the same person twice in a row.")
+            elif target == lastfought and not bot.nick.endswith('dev'):
+                bot.notice(instigator + " "You may not fight the same person twice in a row.", instigator)
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif not targetspicebotdisenable:
