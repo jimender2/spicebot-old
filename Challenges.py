@@ -316,7 +316,7 @@ def mainfunction(bot, trigger):
 
                 ## Weapon Select
                 weapon = str(fullcommandused.split(target, 1)[1]).strip()
-                if not weapon:
+                if not weapon or winner != instigator:
                     weapon = weaponofchoice(bot, winner)
                 weapon = weaponformatter(bot, weapon)
            
