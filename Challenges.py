@@ -101,7 +101,7 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 stats = ''
-                challengestatsarray = ['health','xp','wins', 'winlossratio','losses','respawns','healthpotions','poisonpotions','timeout']
+                challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','timeout']
                 for x in challengestatsarray:
                     scriptdef = str('get_' + x + '(bot,target)')
                     gethowmany = eval(scriptdef)
