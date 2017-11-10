@@ -540,9 +540,8 @@ def weaponofchoice(bot, nick):
     if weaponslist == []:
         weapon = "fist"
     else:
-        weapon = random.randint(0,len(weaponslist) - 1)
-    weapon = str(weapon)
-    bot.say(str(weapon))
+        weaponselected = random.randint(0,len(weaponslist) - 1)
+        loot = str(weaponslist [weaponselected])
     return weapon
 
 def weaponformatter(bot, weapon):
