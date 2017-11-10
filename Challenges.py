@@ -101,10 +101,9 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 stats = ''
-                challengestatsarray = ['health','xp','wins','losses','respawns','timeout','healthpotions','poisonpotions']
+                challengestatsarray = ['health','xp','wins', 'winlossratio','losses','respawns','healthpotions','poisonpotions','timeout']
                 for x in challengestatsarray:
                     scriptdef = str('get_' + x + '(bot,target)')
-                    databasecolumn = str('challenges_' + x)
                     gethowmany = eval(scriptdef)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
@@ -182,10 +181,7 @@ def mainfunction(bot, trigger):
                 target = u
                 disenable = get_disenable(bot, target)
                 if disenable:
-                    wins = get_wins(bot, target)
-                    losses = get_losses(bot, target)
-                    winlosstotal = abs(wins + losses)
-                    winlossratio = float(wins)/winlosstotal
+                    winlossratio = get_winlossratio(bot,target)
                     if winlossratio > currentleadernumber:
                         currentleader = target
                         currentleadernumber = winlossratio
@@ -703,6 +699,12 @@ def update_losses(bot, nick):
     losses = get_losses(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
 
+def get_winlossratio(bot,target)
+    wins = get_wins(bot, target)
+    losses = get_losses(bot, target)
+    winlosstotal = abs(wins + losses)
+    winlossratio = float(wins)/winlosstotal
+    return winlossratio
 ###############
 ## XP points ##
 ###############
