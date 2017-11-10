@@ -266,7 +266,6 @@ def mainfunction(bot, trigger):
             targetspicebotdisenable = get_spicebotdisenable(bot, target)
             instigatordisenable = get_disenable(bot, instigator)
             targetdisenable = get_disenable(bot, target)
-            target = trigger.group(3)
             if not inchannel.startswith("#"):
                 bot.say('Duels must be in channel')
             elif not target:
