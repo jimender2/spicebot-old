@@ -709,7 +709,7 @@ def update_weaponslocker(bot, nick, weaponslist):
 ## Last Opponent ##
 ###################
 
-def get_lastopponent(bot, nick):
+def get_lastfought(bot, nick):
     bot.db.get_nick_value(nick, 'challenges_lastfought') or 0
     return lastfought
 
