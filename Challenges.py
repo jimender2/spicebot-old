@@ -183,13 +183,12 @@ def mainfunction(bot, trigger):
                 disenable = get_disenable(bot, target)
                 if disenable:
                     wins = get_wins(bot, target)
-                    if wins:
-                        losses = get_losses(bot, target)
-                        winlosstotal = abs(wins + losses)
-                        winlossratio = float(wins)/winlosstotal
-                        if winlossratio > currentleadernumber:
-                            currentleader = target
-                            currentleadernumber = winlossratio
+                    losses = get_losses(bot, target)
+                    winlosstotal = abs(wins + losses)
+                    winlossratio = float(wins)/winlosstotal
+                    if winlossratio > currentleadernumber:
+                        currentleader = target
+                        currentleadernumber = winlossratio
             leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
             
