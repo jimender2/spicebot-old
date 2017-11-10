@@ -193,31 +193,34 @@ def mainfunction(bot, trigger):
             leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
             
-        ## healthpotion
+        ## Loot Items usage
         elif commandused in lootitemsarray:
-            uselootitem = 0
+            #uselootitem = 0
+            bot.say(str(commandused))
             scriptdef = str('get_' + commandused)
+            bot.say(str(scriptdef))
             gethowmany = eval(scriptdef)
+            bot.say(str(gethowmany))
             #healthpotions = get_healthpotions(bot, instigator)
-            if healthpotions:
-                health = get_health(bot, target)
-                if target == trigger.nick:
-                    bot.say(trigger.nick + ' uses health potion.')
-                    uselootitem = 1
-                elif target.lower() not in bot.privileges[channel.lower()]:
-                    bot.say("I'm not sure who that is.")
-                else:
-                    targetdisenable = get_disenable(bot, target)
-                    if targetdisenable:
-                        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
-                        uselootitem = 1
-                if uselootitem == 1:
-                    if not inchannel.startswith("#") and not trigger.nick:
-                        bot.notice(instigator + " used a healthpotion on you", target)
-                    bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
-                    bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
-            else:
-                bot.say('You do not have a healthpotion to use!')
+            #if healthpotions:
+            #    health = get_health(bot, target)
+            #    if target == trigger.nick:
+            #        bot.say(trigger.nick + ' uses health potion.')
+            #        uselootitem = 1
+            #    elif target.lower() not in bot.privileges[channel.lower()]:
+            #        bot.say("I'm not sure who that is.")
+            #    else:
+            #        targetdisenable = get_disenable(bot, target)
+            #        if targetdisenable:
+            #            bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+            #            uselootitem = 1
+            #    if uselootitem == 1:
+            #        if not inchannel.startswith("#") and not trigger.nick:
+            #            bot.notice(instigator + " used a healthpotion on you", target)
+            #        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+            #        bot.db.set_nick_value(trigger.nick, 'challenges_healthpotions', int(healthpotions) - 1)
+            #else:
+            #    bot.say('You do not have a healthpotion to use!')
                 
         ## Combat
         else:
