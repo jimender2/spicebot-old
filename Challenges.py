@@ -192,7 +192,7 @@ def mainfunction(bot, trigger):
                         bot.say('losses ' + str(losses))
                         winlosstotal = abs(wins + losses)
                         bot.say('total ' + str(winlosstotal))
-                        winlossratio = (wins / winlosstotal)
+                        winlossratio = float(wins)/winlosstotal
                         bot.say('winlossratio is ' + str(winlossratio))
                         if winlossratio > currentleadernumber:
                             bot.say("greater")
