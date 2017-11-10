@@ -504,13 +504,12 @@ def use_healthpotions(bot, instigator, target):
     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
     bot.db.set_nick_value(instigator, 'challenges_healthpotions', int(healthpotions) - 1)
     
-
 def addhealthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
 ####################
-## poison Potions ##
+## Poison Potions ##
 ####################
 
 def get_poisonpotions(bot, nick):
@@ -533,11 +532,10 @@ def addpoisonpotion(bot, nick):
 
 def weaponofchoice(bot, nick):
     weaponslist = get_weaponslocker(bot, nick)
-    try:
-        weapon =random.choice(weaponslist)
-    except IndexError:
+    if weaponslist == []:
         weapon = "fist"
-    weapon = str(weapon)
+    else:
+        weapon =random.choice(weaponslist)  
     return weapon
 
 def weaponformatter(bot, weapon):
