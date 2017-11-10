@@ -17,8 +17,8 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, weaponslocker")
-lootitemsarray = ['healthpotion','poisonpotion']
+maincommandoptions = str("on/off, stats, poisonpotions, healthpotions, weaponslocker")
+lootitemsarray = ['healthpotions','poisonpotions']
 
 ## React to /me (ACTION) challenges
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
