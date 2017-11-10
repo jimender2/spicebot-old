@@ -181,7 +181,7 @@ def mainfunction(bot, trigger):
             for u in bot.channels[channel].users:
                 target = u
                 disenable = get_disenable(bot, target)
-                if not disenable:
+                if disenable:
                     wins = get_wins(bot, target)
                     if wins:
                         losses = get_losses(bot, target)
