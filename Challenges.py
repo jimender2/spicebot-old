@@ -260,6 +260,7 @@ def mainfunction(bot, trigger):
         ## Combat
         else:
             target = trigger.group(4)
+            bot.say(target)
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
