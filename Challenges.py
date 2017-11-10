@@ -466,17 +466,12 @@ def randominventory():
         randominventoryfind = 'false'
     return randominventoryfind
 
-def determineloottype(bot, nick):
-    typesofloot  = ["healthpotion","poisonpotion","healthpotion","poisonpotion","healthpotion","poisonpotion","healthpotion"]
-    loot = random.randint(0,len(typesofloot) - 1)
-    loot = str(typesofloot [loot])
-    loot_text = ''
-    if loot == 'healthpotion':
-        addhealthpotion(bot, nick)
-        loot_text = ': worth 100 health. Use .challenge healthpotions to consume.'
-    if loot == 'poisonpotion':
-        addpoisonpotion(bot, nick)
-        loot_text = ': worth -50 health. Use .challenge poisonpotions to consume.'
+def determineloottype(bot, nick): 
+    loot = random.randint(0,len(lootitemsarray) - 1)
+    loot = str(lootitemsarray [loot])
+    loot_text = str('get_' + loot + '_text')
+    scriptdefinv = str('add_' + x + '(bot,nick)')
+    eval(scriptdefinv)
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
@@ -498,13 +493,17 @@ def get_healthpotions(bot, nick):
     healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
     return healthpotions
 
+def get_healthpotions_text():
+    loot_text = ': worth 100 health. Use .challenge healthpotions to consume.'
+    return loot_text
+
 def use_healthpotions(bot, instigator, target):
     health = get_health(bot, target)
     healthpotions = get_healthpotions(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
     bot.db.set_nick_value(instigator, 'challenges_healthpotions', int(healthpotions) - 1)
     
-def addhealthpotion(bot, nick):
+def add_healthpotion(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
@@ -516,13 +515,17 @@ def get_poisonpotions(bot, nick):
     posionpotions = bot.db.get_nick_value(nick, 'challenges_poisonpotions') or 0
     return posionpotions
 
+def get_poisonpotions_text():
+    loot_text = ': worth -50 health. Use .challenge poisonpotions to consume.'
+    return loot_text
+
 def use_poisonpotions(bot, instigator, target):
     health = get_health(bot, target)
     posionpotions = get_poisonpotions(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
     bot.db.set_nick_value(instigator, 'challenges_poisonpotions', int(posionpotions) - 1)
     
-def addpoisonpotion(bot, nick):
+def add_poisonpotion(bot, nick):
     poisonpotions = get_poisonpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_poisonpotions', int(poisonpotions) + 1)
     
