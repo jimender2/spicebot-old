@@ -541,7 +541,7 @@ def weaponofchoice(bot, nick):
         weapon = "fist"
     else:
         weaponselected = random.randint(0,len(weaponslist) - 1)
-        loot = str(weaponslist [weaponselected])
+        weapon = str(weaponslist [weaponselected])
     return weapon
 
 def weaponformatter(bot, weapon):
