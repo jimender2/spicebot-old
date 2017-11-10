@@ -469,9 +469,12 @@ def randominventory():
 def determineloottype(bot, nick): 
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
-    loot_text = str('get_' + loot + '_text')
+    scriptdefinvtype = str('get_' + loot + '_text')
+    loot_text = eval(scriptdefinvtype)
     scriptdefinv = str('add_' + loot + '(bot,nick)')
     eval(scriptdefinv)
+    if loot.endswith('s'):
+        loot = loot.split()[-1]
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
