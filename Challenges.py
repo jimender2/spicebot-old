@@ -173,6 +173,23 @@ def mainfunction(bot, trigger):
                             weaponlockerstatus = 'already not'
                     message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
                     bot.say(message)
+                
+        ## Leaderboard
+        elif commandused == 'leader':
+            currentleader = ''
+            currentleadernumber = 0
+            for u in bot.channels[channel].users:
+                target = u
+                disenable = get_disenable(bot, target)
+                if not disenable:
+                    wins = get_wins(bot, target)
+                    losses = get_losses(bot, target)
+                    winlossratio = abs(wins / losses)
+                    if winlossratio > currentleadernumber:
+                        currentleader = target
+                        currentleadernumber = winlossratio
+            leaderboardscript = str("The Current Leader is: " + currentleader + " with a ratio of: " + currentleadernumber)
+            bot.say(leaderboardscript)
             
         ## healthpotion
         elif commandused == 'healthpotion':
