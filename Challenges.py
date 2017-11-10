@@ -179,22 +179,28 @@ def mainfunction(bot, trigger):
             currentleader = ''
             currentleadernumber = 0
             for u in bot.channels[channel].users:
+                bot.say('current leader is ' + str(currentleader) + " with score of " + str(currentleadernumber))
                 target = u
                 bot.say('scanning ' + target)
                 disenable = get_disenable(bot, target)
                 if disenable:
-                    bot.say('enabled is ' + target)
+                    bot.say('enabled')
                     wins = get_wins(bot, target)
                     if wins:
-                        bot.say('has wins ' + target + str(wins))
+                        bot.say('has wins ' + str(wins))
                         losses = get_losses(bot, target)
-                        bot.say('losses ' + target + str(losses))
+                        bot.say('losses ' + str(losses))
                         winlosstotal = abs(wins + losses)
-                        bot.say('total ' + target + str(winlosstotal))
+                        bot.say('total ' + str(winlosstotal))
                         winlossratio = abs(wins / winlosstotal)
+                        bot.say('winlossratio is ' + str(winlossratio))
                         if winlossratio > currentleadernumber:
+                            bot.say("greater")
                             currentleader = target
                             currentleadernumber = winlossratio
+                        else:
+                            bot.say("not greater")
+                bot.say("   ")
             leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
             
