@@ -259,10 +259,11 @@ def mainfunction(bot, trigger):
     
         ## Combat
         else:
+            target = trigger.group(4)
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
-            #targetspicebotdisenable = get_spicebotdisenable(bot, target)
+            targetspicebotdisenable = get_spicebotdisenable(bot, target)
             instigatordisenable = get_disenable(bot, instigator)
             targetdisenable = get_disenable(bot, target)
             target = trigger.group(3)
