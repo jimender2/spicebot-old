@@ -319,6 +319,7 @@ def mainfunction(bot, trigger):
                 weapon = str(fullcommandused.split(target, 1)[1]).strip()
                 if not weapon:
                     weapon = weaponofchoice(bot, winner)
+                weapon = weaponformatter(bot, weapon)
            
                 ## Update Wins and Losses
                 update_wins(bot, winner)
@@ -535,6 +536,9 @@ def weaponofchoice(bot, nick):
     except IndexError:
         weapon = "fist"
     weapon = str(weapon)
+    return weapon
+
+def weaponformatter(bot, weapon):
     if weapon.startswith('a ') or weapon.startswith('an ') or weapon.startswith('the '):
         weapon = str(weapon)
     elif weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
