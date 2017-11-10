@@ -470,7 +470,7 @@ def determineloottype(bot, nick):
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
     loot_text = str('get_' + loot + '_text')
-    scriptdefinv = str('add_' + x + '(bot,nick)')
+    scriptdefinv = str('add_' + loot + '(bot,nick)')
     eval(scriptdefinv)
     return loot, loot_text
 
@@ -503,7 +503,7 @@ def use_healthpotions(bot, instigator, target):
     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
     bot.db.set_nick_value(instigator, 'challenges_healthpotions', int(healthpotions) - 1)
     
-def add_healthpotion(bot, nick):
+def add_healthpotions(bot, nick):
     healthpotions = get_healthpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
 
@@ -525,7 +525,7 @@ def use_poisonpotions(bot, instigator, target):
     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
     bot.db.set_nick_value(instigator, 'challenges_poisonpotions', int(posionpotions) - 1)
     
-def add_poisonpotion(bot, nick):
+def add_poisonpotions(bot, nick):
     poisonpotions = get_poisonpotions(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_poisonpotions', int(poisonpotions) + 1)
     
