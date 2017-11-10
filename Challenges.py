@@ -360,8 +360,7 @@ def mainfunction(bot, trigger):
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                     if winner == target:
                         lootwinnermsgb = str(winner + " gains the " + str(loot))
-                        
-                    
+                               
                 ## On Screen Text
                 bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
                 bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
@@ -474,7 +473,7 @@ def determineloottype(bot, nick):
     scriptdefinv = str('add_' + loot + '(bot,nick)')
     eval(scriptdefinv)
     if loot.endswith('s'):
-        loot = loot.split()[-1]
+        loot = loot[:-1]
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
