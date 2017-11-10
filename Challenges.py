@@ -221,12 +221,6 @@ def mainfunction(bot, trigger):
             konami = get_konami(bot, instigator)
             if not konami:
                 set_konami(bot, instigator)
-       
-        ## Konami 2
-        elif commandused == 'tempcheat':
-            if trigger.admin:
-                bot.db.set_nick_value(target, 'challenges_healthpotions', '42')
-                bot.db.set_nick_value(target, 'challenges_health', '50')
         
         ## Leaderboard
         elif commandused == 'leader':
