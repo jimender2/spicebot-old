@@ -272,7 +272,7 @@ def mainfunction(bot, trigger):
             lastfought = get_lastfought(bot, instigator)
             if target == 'random':
                 randomtargetarray = []
-                for u in bot.channels[channel].users:
+                for u in bot.privileges[channel.lower()]:
                     target = u
                     targetdisenable = get_disenable(bot, target)
                     targettime = get_timesince(bot, target)
