@@ -23,10 +23,11 @@ def execute_main(bot, trigger):
         responses  = ["has died from","is being treated for","is recovering from"]
         reply = random.randint(0,len(responses) - 1)
         condition = str(responses [reply])
-        try:
-            result =random.choice(webmd)
-        except IndexError:
+        if webmd = []:
             result = "death"
+        else:
+            resultselected = random.randint(0,len(webmd) - 1)
+            result = str(webmd [resultselected])
         conclusion = str(target + ' ' + condition + ' ' + result + '.')
         bot.say(conclusion)
     elif not trigger.group(2):
