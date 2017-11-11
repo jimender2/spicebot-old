@@ -615,10 +615,10 @@ def getwinner(bot, instigator, target):
     ## each person
     instigatorfight = '1'
     targetfight = '1'
-    
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)
     # instigator gets 1 for surprise
     instigatorfight = int(instigatorfight) + 1
-    
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)
     # XP difference
     if int(instigatorxp) > int(targetxp):
         instigatorfight = int(instigatorfight) + 1
@@ -630,13 +630,14 @@ def getwinner(bot, instigator, target):
     else:
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
-    
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)
     ## Random Number
     flip = randint(0, 1)
     if (flip == 0):
         instigatorfight = int(instigatorfight) + 1
     else:
         targetfight = int(targetfight) + 1
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)
 
     ## Dice Roll
     instigatorfightarray = []
@@ -645,13 +646,15 @@ def getwinner(bot, instigator, target):
         instigatorfightroll = diceroll()
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
+        bot.say('instigator roll: ' + instigatorfightroll)
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
         targetfightroll = diceroll()
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
+        bot.say('target roll: ' + targetfightroll)
     targetfight = max(targetfightarray)
-            
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)    
     ## tie breaker
     if instigatorfight == targetfight:
         tiebreaker = randint(0, 1)
@@ -659,7 +662,7 @@ def getwinner(bot, instigator, target):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-
+    bot.say('instigator: ' + instigatorfight + '     target: ' + targetfight)
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
