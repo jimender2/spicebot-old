@@ -269,6 +269,7 @@ def mainfunction(bot, trigger):
         ## Combat
         else:
             target = trigger.group(3)
+            targetsplit = trigger.group(3)
             lastfought = get_lastfought(bot, instigator)
             if target == 'random':
                 randomtargetarray = []
@@ -342,7 +343,7 @@ def mainfunction(bot, trigger):
                 winner, loser = getwinner(bot, instigator, target)
 
                 ## Weapon Select
-                weapon = str(fullcommandused.split(target, 1)[1]).strip()
+                weapon = str(fullcommandused.split(targetsplit, 1)[1]).strip()
                 if not weapon or winner == target:
                     weapon = weaponofchoice(bot, winner)
                 weapon = weaponformatter(bot, weapon)
