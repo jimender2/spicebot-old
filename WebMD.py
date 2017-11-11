@@ -23,7 +23,7 @@ def execute_main(bot, trigger):
         responses  = ["has died from","is being treated for","is recovering from"]
         reply = random.randint(0,len(responses) - 1)
         condition = str(responses [reply])
-        if webmd = []:
+        if webmd == []:
             result = "death"
         else:
             resultselected = random.randint(0,len(webmd) - 1)
