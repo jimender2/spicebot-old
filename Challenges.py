@@ -278,7 +278,7 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel].users:
                     target = u
                     if target != instigator and target != bot.nick:
-                        if target != lastfought and not bot.nick.endswith('dev'):
+                        if target != lastfought or not bot.nick.endswith('dev'):
                             targetdisenable = get_disenable(bot, target)
                             targettime = get_timesince(bot, target)
                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
