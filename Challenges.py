@@ -46,7 +46,7 @@ def mainfunction(bot, trigger):
         target = trigger.group(4)
         if not target:
             target = trigger.nick
-
+            
         ## On/off
         if commandused == 'on' or commandused == 'off':
             if target == 'all':
@@ -268,9 +268,23 @@ def mainfunction(bot, trigger):
     
         ## Combat
         else:
-            target = trigger.group(3)
-            instigatortime = get_timesince(bot, instigator)
             lastfought = get_lastfought(bot, instigator)
+            if commandused == 'random':
+                randomtargetarray = []
+                for u in bot.channels[channel].users:
+                    target = u
+                    disenable = get_disenable(bot, target)
+                    if disenable:
+                        if target != instigator and target != bot.nick and target != lastfought:
+                            randomtargetarray.append(target)
+                if randomtargetarray == []:
+                    target = 'randomfailed'
+                else:
+                    randomselected = random.randint(0,len(randomtargetarray) - 1)
+                    target = str(randomtargetarray [randomselected])
+            else:
+                target = trigger.group(3)
+            instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
             targetspicebotdisenable = get_spicebotdisenable(bot, target)
@@ -280,6 +294,8 @@ def mainfunction(bot, trigger):
                 bot.say('Duels must be in channel')
             elif not target:
                 bot.notice(instigator + ", Who did you want to fight?", instigator)
+            elif target == 'randomfailed':
+                bot.notice(instigator + ", Random Selector Failed.", instigator)
             elif target == bot.nick:
                 bot.say("I refuse to fight a biological entity!")
             elif target == instigator:
