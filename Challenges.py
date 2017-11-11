@@ -279,11 +279,11 @@ def mainfunction(bot, trigger):
                     targetspicebotdisenable = get_spicebotdisenable(bot, target)
                     if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable and target != instigator and target != bot.nick and target != lastfought:
                         randomtargetarray.append(target)
-                        if randomtargetarray == []:
-                            target = 'randomfailed'
-                        else:
-                            randomselected = random.randint(0,len(randomtargetarray) - 1)
-                            target = str(randomtargetarray [randomselected])  
+                if randomtargetarray == []:
+                    target = 'randomfailed'
+                else:
+                    randomselected = random.randint(0,len(randomtargetarray) - 1)
+                    target = str(randomtargetarray [randomselected])
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
