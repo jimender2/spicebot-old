@@ -25,8 +25,9 @@ def execute_main(bot, trigger):
             if disenable:
                 if target != instigator or target != bot.nick:
                     blametargetarray.append(target)
-        try:
-            whotoblame =random.choice(blametargetarray)
-        except IndexError:
-            whotoblame = str(instigator + "'s mom")
+        if blametargetarray == []:
+            result = str(instigator + "'s mom")
+        else:
+            blameselected = random.randint(0,len(blametargetarray) - 1)
+            whotoblame = str(blametargetarray [blameselected])
         bot.say("It's " + whotoblame + "'s fault.")
