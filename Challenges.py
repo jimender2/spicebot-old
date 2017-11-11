@@ -279,7 +279,7 @@ def mainfunction(bot, trigger):
                     target = u
                     if target != instigator and target != bot.nick and target != lastfought:
                         targetdisenable = get_disenable(bot, target)
-                        targettime = get_timeout(bot, target)
+                        targettime = get_timesince(bot, target)
                         targetspicebotdisenable = get_spicebotdisenable(bot, target)
                         targetspicebotdisenable = get_spicebotdisenable(bot, target)
                         if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable:
@@ -289,9 +289,9 @@ def mainfunction(bot, trigger):
                 else:
                     randomselected = random.randint(0,len(randomtargetarray) - 1)
                     target = str(randomtargetarray [randomselected])
-            instigatortime = get_timeout(bot, instigator)
-            targettime = get_timeout(bot, target)
-            channeltime = get_timeout(bot, ALLCHAN)
+            instigatortime = get_timesince(bot, instigator)
+            targettime = get_timesince(bot, target)
+            channeltime = get_timesince(bot, ALLCHAN)
             targetspicebotdisenable = get_spicebotdisenable(bot, target)
             instigatordisenable = get_disenable(bot, instigator)
             targetdisenable = get_disenable(bot, target)
@@ -431,10 +431,18 @@ def update_time(bot, nick):
     now = time.time()
     bot.db.set_nick_value(nick, 'challenges_timeout', now)
     
-def get_timeout(bot, nick):
+def get_timesince(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
     return abs(now - last)
+
+def get_timeout(bot, nick):
+    time_since = get_timesince(bot, nick)
+    if time_since < TIMEOUT:
+        timediff = int(TIMEOUT - time_since)
+    else:
+        timediff = 0
+    return timediff
 
 def get_opttimeout(bot, nick):
     now = time.time()
@@ -758,6 +766,5 @@ def set_konami(bot, nick):
     health = get_health(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', int(health) + 600)
     bot.db.set_nick_value(nick, 'challenges_konami', 'used')
-
 
 
