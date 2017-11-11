@@ -271,18 +271,17 @@ def mainfunction(bot, trigger):
             target = trigger.group(3)
             targetsplit = trigger.group(3)
             lastfought = get_lastfought(bot, instigator)
-            if not lastfought:
-                lastfought = 'emptyvalue'
             if target == 'random':
                 randomtargetarray = []
                 for u in bot.channels[channel].users:
                     target = u
-                    targetdisenable = get_disenable(bot, target)
-                    targettime = get_timesince(bot, target)
-                    targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                    targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                    if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable and target != instigator and target != bot.nick and target != lastfought:
-                        randomtargetarray.append(target)
+                    if target != instigator and target != bot.nick and target != lastfought:
+                        targetdisenable = get_disenable(bot, target)
+                        targettime = get_timesince(bot, target)
+                        targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                        targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                        if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable:
+                            randomtargetarray.append(target)
                 if randomtargetarray == []:
                     target = 'randomfailed'
                 else:
@@ -743,7 +742,7 @@ def update_weaponslocker(bot, nick, weaponslist):
 ###################
 
 def get_lastfought(bot, nick):
-    lastfought = bot.db.get_nick_value(nick, 'challenges_lastfought') or 0
+    lastfought = bot.db.get_nick_value(nick, 'challenges_lastfought') or nick
     return lastfought
 
 def set_lastfought(bot, nicka, nickb):
