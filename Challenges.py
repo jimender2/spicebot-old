@@ -272,7 +272,7 @@ def mainfunction(bot, trigger):
             lastfought = get_lastfought(bot, instigator)
             if target == 'random':
                 randomtargetarray = []
-                for u in bot.privileges[channel.lower()]:
+                for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_disenable(bot, target)
                     targettime = get_timesince(bot, target)
@@ -302,8 +302,8 @@ def mainfunction(bot, trigger):
                 bot.say("If you are feeling self-destructive, there are places you can call.")
             elif target == lastfought and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
-            elif target.lower() not in bot.privileges[channel.lower()]:
-                bot.say("I'm not sure who that is.")
+            #elif target.lower() not in bot.privileges[channel.lower()]:
+            #    bot.say("I'm not sure who that is.")
             elif not targetspicebotdisenable:
                 bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
             elif not instigatordisenable:
