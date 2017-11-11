@@ -429,11 +429,11 @@ def get_spicebotdisenable(bot, nick):
 
 def update_time(bot, nick):
     now = time.time()
-    bot.db.set_nick_value(nick, 'challenges_time', now)
+    bot.db.set_nick_value(nick, 'challenges_timeout', now)
     
 def get_timeout(bot, nick):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'challenges_time') or 0
+    last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
     return abs(now - last)
 
 def get_opttimeout(bot, nick):
