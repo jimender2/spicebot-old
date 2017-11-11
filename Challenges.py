@@ -615,10 +615,10 @@ def getwinner(bot, instigator, target):
     ## each person
     instigatorfight = '1'
     targetfight = '1'
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))
+
     # instigator gets 1 for surprise
     instigatorfight = int(instigatorfight) + 1
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))
+
     # XP difference
     if int(instigatorxp) > int(targetxp):
         instigatorfight = int(instigatorfight) + 1
@@ -630,20 +630,13 @@ def getwinner(bot, instigator, target):
     else:
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))
+        
     ## Random Number
     flip = randint(0, 1)
     if (flip == 0):
         instigatorfight = int(instigatorfight) + 1
     else:
         targetfight = int(targetfight) + 1
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))
-
-    ## Dice Roll 6 sided
-    instigatorfightroll = diceroll()
-    targetfightroll = diceroll()
-    instigatorfight = int(instigatorfight + instigatorfightroll)
-    targetfight = int(targetfight + targetfightroll)
     
     ## Dice Roll 20 sided
     instigatorfightarray = []
@@ -652,15 +645,13 @@ def getwinner(bot, instigator, target):
         instigatorfightroll = dicerollb()
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
-        bot.say('instigator roll: ' + str(instigatorfightroll))
-    instigatorfight = int(instigatorfight + max(instigatorfightarray))
+    instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
         targetfightroll = dicerollb()
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
-        bot.say('target roll: ' + str(targetfightroll))
-    targetfight = int(targetfight + max(targetfightarray))
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))    
+    targetfight = max(targetfightarray)
+ 
     ## tie breaker
     if instigatorfight == targetfight:
         tiebreaker = randint(0, 1)
@@ -668,12 +659,13 @@ def getwinner(bot, instigator, target):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-    bot.say('instigator: ' + str(instigatorfight) + '     target: ' + str(targetfight))
+            
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
     else:
         winner = target
+        
     ## LOSER IS NOT WINNER
     if winner == instigator:
         loser = target
