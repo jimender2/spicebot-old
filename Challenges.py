@@ -268,24 +268,22 @@ def mainfunction(bot, trigger):
     
         ## Combat
         else:
+            target = trigger.group(3)
             lastfought = get_lastfought(bot, instigator)
-            if commandused == 'random':
+            if target == 'random':
                 randomtargetarray = []
                 for u in bot.channels[channel].users:
                     target = u
-                    disenable = get_disenable(bot, target)
-                    if disenable:
-                        if target != instigator and target != bot.nick and target != lastfought:
-                            bot.say('target is ' + str(target))
-                            randomtargetarray.append(target)
-                if randomtargetarray == []:
-                    target = 'randomfailed'
-                else:
-                    randomselected = random.randint(0,len(randomtargetarray) - 1)
-                    target = str(randomtargetarray [randomselected])
-            else:
-                target = trigger.group(3)
-            bot.say(str(target))
+                    targetdisenable = get_disenable(bot, target)
+                    targettime = get_timesince(bot, target)
+                    targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                    if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable and target != instigator and target != bot.nick and target != lastfought:
+                        randomtargetarray.append(target)
+                        if randomtargetarray == []:
+                            target = 'randomfailed'
+                        else:
+                            randomselected = random.randint(0,len(randomtargetarray) - 1)
+                            target = str(randomtargetarray [randomselected])  
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
