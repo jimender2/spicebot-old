@@ -284,6 +284,7 @@ def mainfunction(bot, trigger):
                     target = str(randomtargetarray [randomselected])
             else:
                 target = trigger.group(3)
+            bot.say(str(target))
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
