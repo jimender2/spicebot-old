@@ -272,6 +272,8 @@ def mainfunction(bot, trigger):
             targetsplit = trigger.group(3)
             lastfought = get_lastfought(bot, instigator)
             if target == 'random':
+                if not lastfought:
+                    lastfought = instigator
                 randomtargetarray = []
                 for u in bot.channels[channel].users:
                     target = u
@@ -742,7 +744,7 @@ def update_weaponslocker(bot, nick, weaponslist):
 ###################
 
 def get_lastfought(bot, nick):
-    lastfought = bot.db.get_nick_value(nick, 'challenges_lastfought') or nick
+    lastfought = bot.db.get_nick_value(nick, 'challenges_lastfought') or 0
     return lastfought
 
 def set_lastfought(bot, nicka, nickb):
