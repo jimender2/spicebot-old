@@ -272,8 +272,9 @@ def mainfunction(bot, trigger):
             lastfought = get_lastfought(bot, instigator)
             if target == 'random':
                 randomtargetarray = []
-                #for u in bot.channels[channel].users:
-                    #target = u
+                for u in bot.channels[channel].users:
+                    target = u
+                    randomtargetarray.append(target)
                     #targetdisenable = get_disenable(bot, target)
                     #targettime = get_timesince(bot, target)
                     #targetspicebotdisenable = get_spicebotdisenable(bot, target)
