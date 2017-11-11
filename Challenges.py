@@ -335,9 +335,13 @@ def mainfunction(bot, trigger):
                 ## Announce Combat
                 announcecombatmsg = str(instigator + " versus " + target)
        
-                ## Check new player health, initial Spawn
-                update_spawn(bot, instigator)
-                update_spawn(bot, target)
+                ## Check new player health
+                instigatorhealth = get_health(bot, instigator)
+                if not instigatorhealth:
+                    fresh_health(bot, instigator)
+                targethealth = get_health(bot, target)
+                if not targethealth:
+                    fresh_health(bot, target)
 
                 ## Damage Done
                 damage = damagedone(bot)
@@ -696,6 +700,7 @@ def get_winlossratio(bot,target):
     else:
         winlossratio = 0
     return winlossratio
+
 ###############
 ## XP points ##
 ###############
@@ -715,8 +720,11 @@ def update_xp(bot, nick, XPearned):
 ############
 
 def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'challenges_health') or 1000
+    health = bot.db.get_nick_value(nick, 'challenges_health') or 0
     return health
+
+def fresh_health(bot, nick):
+    bot.db.set_nick_value(nick, 'challenges_health', '1000')
 
 def update_health(bot, nick, damage):
     health = get_health(bot, nick)
