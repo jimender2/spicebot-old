@@ -23,7 +23,7 @@ def execute_main(bot, trigger):
             target = u
             disenable = get_disenable(bot, target)
             if disenable:
-                if target != instigator or target != bot.nick:
+                if target != instigator and target != bot.nick:
                     blametargetarray.append(target)
         if blametargetarray == []:
             result = str(instigator + "'s mom")
