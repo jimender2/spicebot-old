@@ -18,10 +18,10 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-maincommandoptions = str("on/off, stats, poisonpotions, healthpotions, weaponslocker")
-lootitemsarray = ['healthpotions','poisonpotions']
-challengestatsadminarray = ['wins','losses','health','healthpotions','respawns','xp','timeout','disenable','poisonpotions','lastfought','konami']
-challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotions','poisonpotions','lastfought','timeout']
+maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, weaponslocker")
+lootitemsarray = ['healthpotion','poisonpotion']
+challengestatsadminarray = ['wins','losses','health','healthpotion','respawns','xp','timeout','disenable','poisonpotion','lastfought','konami']
+challengestatsarray = ['health','xp','wins','losses','winlossratio','respawns','healthpotion','poisonpotion','lastfought','timeout']
 
 ####################
 ## Main Operation ##
@@ -520,45 +520,45 @@ def lootcorpse(bot, loser, winner):
 ## Health Potions ##
 ####################
 
-def get_healthpotions(bot, nick):
-    healthpotions = bot.db.get_nick_value(nick, 'challenges_healthpotions') or 0
-    return healthpotions
+def get_healthpotion(bot, nick):
+    healthpotion = bot.db.get_nick_value(nick, 'challenges_healthpotion') or 0
+    return healthpotion
 
-def get_healthpotions_text():
-    loot_text = ': worth 100 health. Use .challenge healthpotions to consume.'
+def get_healthpotion_text():
+    loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
     return loot_text
 
-def use_healthpotions(bot, instigator, target):
+def use_healthpotion(bot, instigator, target):
     health = get_health(bot, target)
-    healthpotions = get_healthpotions(bot, instigator)
+    healthpotion = get_healthpotion(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
-    bot.db.set_nick_value(instigator, 'challenges_healthpotions', int(healthpotions) - 1)
+    bot.db.set_nick_value(instigator, 'challenges_healthpotion', int(healthpotion) - 1)
     
-def add_healthpotions(bot, nick):
-    healthpotions = get_healthpotions(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_healthpotions', int(healthpotions) + 1)
+def add_healthpotion(bot, nick):
+    healthpotion = get_healthpotion(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_healthpotion', int(healthpotion) + 1)
 
 ####################
 ## Poison Potions ##
 ####################
 
-def get_poisonpotions(bot, nick):
-    posionpotions = bot.db.get_nick_value(nick, 'challenges_poisonpotions') or 0
+def get_poisonpotion(bot, nick):
+    posionpotions = bot.db.get_nick_value(nick, 'challenges_poisonpotion') or 0
     return posionpotions
 
-def get_poisonpotions_text():
-    loot_text = ': worth -50 health. Use .challenge poisonpotions to consume.'
+def get_poisonpotion_text():
+    loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
     return loot_text
 
-def use_poisonpotions(bot, instigator, target):
+def use_poisonpotion(bot, instigator, target):
     health = get_health(bot, target)
-    posionpotions = get_poisonpotions(bot, instigator)
+    posionpotions = get_poisonpotion(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
-    bot.db.set_nick_value(instigator, 'challenges_poisonpotions', int(posionpotions) - 1)
+    bot.db.set_nick_value(instigator, 'challenges_poisonpotion', int(posionpotions) - 1)
     
-def add_poisonpotions(bot, nick):
-    poisonpotions = get_poisonpotions(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_poisonpotions', int(poisonpotions) + 1)
+def add_poisonpotion(bot, nick):
+    poisonpotion = get_poisonpotion(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_poisonpotion', int(poisonpotion) + 1)
     
 ######################
 ## Weapon Selection ##
