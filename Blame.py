@@ -25,8 +25,8 @@ def execute_main(bot, trigger):
             if disenable:
                 if target != instigator and target != bot.nick:
                     blametargetarray.append(target)
-        if blametargetarray:
-            result = str(instigator + "'s mom")
+        if blametargetarray == []:
+            whotoblame = str(instigator + "'s mom")
         else:
             blameselected = random.randint(0,len(blametargetarray) - 1)
             whotoblame = str(blametargetarray [blameselected])
