@@ -640,12 +640,12 @@ def getwinner(bot, instigator, target):
     ## Dice Roll
     instigatorfightarray = []
     targetfightarray = []
-    while int(instigatorfight) != 0:
+    while int(instigatorfight) > 0:
         instigatorfightroll = diceroll()
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
-    while int(targetfight) != 0:
+    while int(targetfight) > 0:
         targetfightroll = diceroll()
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
