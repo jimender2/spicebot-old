@@ -276,6 +276,7 @@ def mainfunction(bot, trigger):
                     disenable = get_disenable(bot, target)
                     if disenable:
                         if target != instigator and target != bot.nick and target != lastfought:
+                            bot.say('target is ' + target)
                             randomtargetarray.append(target)
                 if randomtargetarray == []:
                     target = 'randomfailed'
