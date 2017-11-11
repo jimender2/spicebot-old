@@ -277,13 +277,14 @@ def mainfunction(bot, trigger):
                 randomtargetarray = []
                 for u in bot.channels[channel].users:
                     target = u
-                    if target != instigator and target != bot.nick and target != lastfought:
-                        targetdisenable = get_disenable(bot, target)
-                        targettime = get_timesince(bot, target)
-                        targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                        targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                        if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable:
-                            randomtargetarray.append(target)
+                    if target != instigator and target != bot.nick:
+                        if target != lastfought and not bot.nick.endswith('dev'):
+                            targetdisenable = get_disenable(bot, target)
+                            targettime = get_timesince(bot, target)
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable:
+                                randomtargetarray.append(target)
                 if randomtargetarray == []:
                     target = 'randomfailed'
                 else:
