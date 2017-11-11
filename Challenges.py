@@ -283,7 +283,7 @@ def mainfunction(bot, trigger):
                             targettime = get_timesince(bot, target)
                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable:
+                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
                                 randomtargetarray.append(target)
                 if randomtargetarray == []:
                     target = 'randomfailed'
