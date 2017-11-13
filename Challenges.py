@@ -435,9 +435,9 @@ def mainfunction(bot, trigger):
                     winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                     update_respawn(bot, loser)
                     respawn_mana(bot, loser)
+                    update_kills(bot, winner)
                     ## Loot Corpse
                     lootcorpse(bot, loser, winner)
-                    update_kills(bot, winner)
                 else:
                     winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
