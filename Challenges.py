@@ -159,10 +159,11 @@ def mainfunction(bot, trigger):
                     if not newvalue:
                         bot.say("I need a value.")
                     else:
+                        newvaluedb = str("'" + newvalue + "'")
                         bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
                         if statset in challengestatsadminarray:
                             databasecolumn = str('challenges_' + statset)
-                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                            bot.db.set_nick_value(target, databasecolumn, newvaluedb)
                         bot.say(target + "'s " + str(statset) + " now  equals " str(newvalue))
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
