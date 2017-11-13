@@ -151,12 +151,19 @@ def mainfunction(bot, trigger):
                     bot.say(' you must select a stat')
                 else:
                     target = trigger.group(6)
-                    bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
                     if not target:
                         target = trigger.nick
-                    if statset in challengestatsadminarray:
-                        databasecolumn = str('challenges_' + statset)
-                        bot.db.set_nick_value(target, databasecolumn, '')
+                    if target.lower() not in bot.privileges[channel.lower()]:
+                        bot.say("I'm not sure who that is.")
+                    newvalue = trigger.group(7)
+                    if not newvalue:
+                        bot.say("I need a value.")
+                    else:
+                        bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
+                        if statset in challengestatsadminarray:
+                            databasecolumn = str('challenges_' + statset)
+                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                        bot.say(target + "'s " + str(statset) + " now  equals " str(newvalue))
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
@@ -189,8 +196,8 @@ def mainfunction(bot, trigger):
                         gethowmany = eval(scriptdef)
                         if gethowmany:
                             bot.db.set_nick_value(target, databasecolumn, '')
-            if commandtrimmed and target:
-                bot.say("Stat (Re)set command completed.")
+            if commandtrimmed and target and commandtrimmed != 'set':
+                bot.say("Stat Reset command completed.")
                         
         elif commandused == 'statsadmin' and not trigger.admin:        
             bot.say('You must be an admin to reset stats.')
