@@ -118,4 +118,6 @@ You must have 250 mana to use this garaunteed win attack. Damage is randomized. 
 
 * mysterypotion: With unknown effects! Use `.duel mysterypotion` to consume.
 
+* timepotion: worth 180 seconds of timeout. Use `.challenge timepotion` to consume 
+
 Potions can either be used on yourself, or on others.
