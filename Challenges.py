@@ -147,24 +147,29 @@ def mainfunction(bot, trigger):
                 bot.say(optionsstring)
             elif commandtrimmed == 'set':
                 statset = trigger.group(5)
+                bot.say("stat is " + str(statset))
                 if not statset:
                     bot.say(' you must select a stat')
+                elif statset not in challengestatsadminarray:
+                    bot.say(' you must select a real stat')
                 else:
                     target = trigger.group(6)
                     if not target:
                         target = trigger.nick
+                    bot.say(str(target))
                     if target.lower() not in bot.privileges[channel.lower()]:
                         bot.say("I'm not sure who that is.")
-                    newvalue = trigger.group(7)
-                    if not newvalue:
-                        bot.say("I need a value.")
                     else:
-                        newvaluedb = str("'" + newvalue + "'")
-                        bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
-                        if statset in challengestatsadminarray:
-                            databasecolumn = str('challenges_' + statset)
-                            bot.db.set_nick_value(target, databasecolumn, newvaluedb)
-                        bot.say(target + "'s " + str(statset) + " now  equals " + str(newvalue))
+                        newvalue = trigger.group(7)
+                        if not newvalue:
+                            bot.say("I need a value.")
+                        else:
+                            newvaluedb = str("'" + newvalue + "'")
+                            bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
+                            if statset in challengestatsadminarray:
+                                databasecolumn = str('challenges_' + statset)
+                                bot.db.set_nick_value(target, databasecolumn, newvaluedb)
+                            bot.say(target + "'s " + str(statset) + " now  equals " + str(newvalue))
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
