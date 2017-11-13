@@ -166,7 +166,7 @@ def mainfunction(bot, trigger):
                             if statset in challengestatsadminarray:
                                 databasecolumn = str('challenges_' + statset)
                                 bot.db.set_nick_value(target, databasecolumn, newvalue)
-                            bot.say(target + "'s " + str(statset) + " now  equals " + str(newvalue))
+                            bot.say(target + "'s " + str(statset) + " now equals " + str(newvalue))
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
@@ -202,7 +202,7 @@ def mainfunction(bot, trigger):
                 bot.say("Stat Reset command completed.")
                         
         elif commandused == 'statsadmin' and not trigger.admin:        
-            bot.say('You must be an admin to reset stats.')
+            bot.say('You must be an admin to set stats.')
             
         ## Enable/Disable status
         elif commandused == 'status':
