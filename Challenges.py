@@ -157,6 +157,7 @@ def mainfunction(bot, trigger):
                         bot.say("I'm not sure who that is.")
                     else:
                         newvalue = str(fullcommandused.split(target, 1)[1]).strip()
+                        newvalue = int(newvalue)
                         if not newvalue:
                             bot.say("I need a value.")
                         else:
