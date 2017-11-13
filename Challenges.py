@@ -18,9 +18,8 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker, magicattack")
-lootitemsarray = ['healthpotion','poisonpotion','manapotion']
-challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+lootitemsarray = ['healthpotion','poisonpotion','manapotion','mysterypotion']
+challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
 ####################
@@ -651,6 +650,31 @@ def add_manapotion(bot, nick):
     manapotion = get_manapotion(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_manapotion', int(manapotion) + 1)
     
+#####################
+## Mystery Potions ##
+#####################
+
+def get_mysterypotion(bot, nick):
+    mysterypotion = bot.db.get_nick_value(nick, 'challenges_mysterypotion') or 0
+    return mysterypotion
+
+def get_mysterypotion_text():
+    loot_text = ': Use .challenge mysterypotion to consume.'
+    return loot_text
+
+def use_mysterypotion(bot, instigator, target):
+    mysterypotion = get_mysterypotion(bot, instigator)
+    bot.db.set_nick_value(instigator, 'challenges_manapotion', int(mysterypotion) - 1)
+    mysterysarray = lootitemsarray.remove('mysterypotion')
+    loot = random.randint(0,len(mysterysarray) - 1)
+    loot = str(mysterysarray [loot])
+    bot.say('The mysterypotion is a ' + str(loot) + '!!')
+    scriptdefuse = str('use_' + loot + '(bot,target)')
+    
+def add_mysterypotion(bot, nick):
+    mysterypotion = get_mysterypotion(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_mysterypotion', int(mysterypotion) + 1)
+    
 ######################
 ## Weapon Selection ##
 ######################
@@ -729,16 +753,16 @@ def getwinner(bot, instigator, target):
     else:
         targetfight = int(targetfight) + 1
     
-    ## Dice Roll 20 sided
+    ## Dice Roll
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
-        instigatorfightroll = dicerollb()
+        instigatorfightroll = diceroll()
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
-        targetfightroll = dicerollb()
+        targetfightroll = diceroll()
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
@@ -878,10 +902,6 @@ def set_lastfought(bot, nicka, nickb):
 ###########
 
 def diceroll():
-    diceroll = randint(0, 6)
-    return diceroll
-
-def dicerollb():
     diceroll = randint(0, 20)
     return diceroll
 
