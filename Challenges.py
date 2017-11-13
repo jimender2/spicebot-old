@@ -255,7 +255,7 @@ def mainfunction(bot, trigger):
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
-                        bot.say(trigger.nick + ' uses health potion on ' + target + ".")
+                        bot.say(trigger.nick + ' uses ' + commandused + ' on ' + target + ".")
                         if not inchannel.startswith("#"):
                             bot.notice(instigator + " used a " + commandused + " on you", target)
                         uselootitem = 1
