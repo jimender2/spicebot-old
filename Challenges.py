@@ -21,7 +21,7 @@ OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker, magicattack")
 lootitemsarray = ['healthpotion','poisonpotion','manapotion']
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','lastfought','backpackitems','timeout']
+challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','backpackitems','lastfought','timeout']
 
 ####################
 ## Main Operation ##
