@@ -1,4 +1,3 @@
-# coding=utf8
 import sopel.module
 import sopel
 from sopel import module, tools
