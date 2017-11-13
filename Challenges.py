@@ -164,7 +164,7 @@ def mainfunction(bot, trigger):
                         if statset in challengestatsadminarray:
                             databasecolumn = str('challenges_' + statset)
                             bot.db.set_nick_value(target, databasecolumn, newvaluedb)
-                        bot.say(target + "'s " + str(statset) + " now  equals " str(newvalue))
+                        bot.say(target + "'s " + str(statset) + " now  equals " + str(newvalue))
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
