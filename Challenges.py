@@ -141,10 +141,19 @@ def mainfunction(bot, trigger):
                 optionsstring = str(optionsstring + x + ",")
             if not target:
                 target = instigator
-            if commandtrimmed and target:
+            if commandtrimmed and target and commandtrimmed != 'set':
                 bot.say("Attempting to reset " + commandtrimmed + " stat for " + target + ".")
             if not commandtrimmed:
                 bot.say(optionsstring)
+            elif commandtrimmed == 'set':
+                statset = trigger.group(5)
+                target = trigger.group(6)
+                bot.say("Attempting to set " + statset + " stat for " + target + ".")
+                if not target:
+                    target = trigger.nick
+                if statset in challengestatsadminarray:
+                    databasecolumn = str('challenges_' + statset)
+                    bot.db.set_nick_value(target, databasecolumn, '')
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
@@ -164,20 +173,21 @@ def mainfunction(bot, trigger):
                         if gethowmany:
                             bot.db.set_nick_value(target, databasecolumn, '')
             else:
-                scriptdef = str('get_' + commandtrimmed + '(bot,target)')
-                scriptdef = str('get_' + commandtrimmed)
-                databasecolumn = str('challenges_' + commandtrimmed)
-                if target == 'all':
-                    for u in bot.channels[channel].users:
+                if commandtrimmed in challengestatsadminarray:
+                    scriptdef = str('get_' + commandtrimmed + '(bot,target)')
+                    scriptdef = str('get_' + commandtrimmed)
+                    databasecolumn = str('challenges_' + commandtrimmed)
+                    if target == 'all':
+                        for u in bot.channels[channel].users:
+                            gethowmany = eval(scriptdef)
+                            if gethowmany:
+                                bot.db.set_nick_value(target, databasecolumn, '')
+                    else:
                         gethowmany = eval(scriptdef)
                         if gethowmany:
                             bot.db.set_nick_value(target, databasecolumn, '')
-                else:
-                    gethowmany = eval(scriptdef)
-                    if gethowmany:
-                        bot.db.set_nick_value(target, databasecolumn, '')
             if commandtrimmed and target:
-                bot.say("Stat Reset command completed.")
+                bot.say("Stat (Re)set command completed.")
                         
         elif commandused == 'statsadmin' and not trigger.admin:        
             bot.say('You must be an admin to reset stats.')
