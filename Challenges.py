@@ -836,7 +836,7 @@ def get_xp(bot, nick):
 
 def update_xp(bot, nick, XPearned):
     xp = get_xp(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_xp', xp + int(XPearned))
+    bot.db.set_nick_value(nick, 'challenges_xp', int(xp) + int(XPearned))
     currentxp = get_xp(bot, nick)
     return currentxp
 
