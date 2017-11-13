@@ -20,8 +20,8 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker, magicattack")
 lootitemsarray = ['healthpotion','poisonpotion','manapotion']
-challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','backpackitems','lastfought','timeout']
+challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
 ####################
 ## Main Operation ##
@@ -415,6 +415,7 @@ def mainfunction(bot, trigger):
                     update_respawn(bot, loser)
                     ## Loot Corpse
                     lootcorpse(bot, loser, winner)
+                    update_kills(bot, winner)
                 else:
                     winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
             
@@ -748,6 +749,14 @@ def getwinner(bot, instigator, target):
 def get_wins(bot, nick):
     wins = bot.db.get_nick_value(nick, 'challenges_wins') or 0
     return wins
+
+def get_kills(bot, nick):
+    kills = bot.db.get_nick_value(nick, 'challenges_kills') or 0
+    return wins
+
+def update_kills(bot, nick):
+    kills = get_kills(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_kills', kills + 1)
 
 def update_wins(bot, nick):
     wins = get_wins(bot, nick)
