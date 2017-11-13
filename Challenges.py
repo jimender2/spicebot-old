@@ -130,7 +130,7 @@ def mainfunction(bot, trigger):
                     stats = str(target + "'s backpack:" + stats)
                     bot.say(stats)
                 else:
-                    bot.say('No stats found for ' + target)
+                    bot.say('No backpack items found for ' + target)
                     
         ## Stats statsadmin
         elif commandused == 'statsadmin' and trigger.admin:
