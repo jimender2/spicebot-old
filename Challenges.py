@@ -93,7 +93,7 @@ def mainfunction(bot, trigger):
         ## Stats
         elif commandused == 'stats':
             disenable = get_disenable(bot, target)
-            if not disenable:
+            if not disenable and target != instigator:
                 bot.say(target + " does not have Challenges enabled")
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
