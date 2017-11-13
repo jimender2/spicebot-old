@@ -17,8 +17,8 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-lootitemsarray = ['healthpotion','poisonpotion','manapotion','mysterypotion']
-challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+lootitemsarray = ['healthpotion','poisonpotion','manapotion','mysterypotion','timepotion']
+challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
 ####################
@@ -652,6 +652,28 @@ def use_manapotion(bot, instigator, target):
 def add_manapotion(bot, nick):
     manapotion = get_manapotion(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_manapotion', int(manapotion) + 1)
+    
+##################
+## Mana Potions ##
+##################
+
+def get_timepotion(bot, nick):
+    timepotion = bot.db.get_nick_value(nick, 'challenges_timepotion') or 0
+    return timepotion
+
+def get_timepotion_text():
+    loot_text = ': worth ' + str(TIMEOUT) + ' seconds of timeout. Use .challenge timepotion to consume.'
+    return loot_text
+
+def use_timepotion(bot, instigator, target):
+    timepotion = get_timepotion(bot, instigator)
+    bot.db.set_nick_value(instigator, 'challenges_timepotion', int(timepotion) - 1)
+    now = time.time()
+    bot.db.set_nick_value(target, 'challenges_timeout', now)
+    
+def add_timepotion(bot, nick):
+    timepotion = get_timepotion(bot, nick)
+    bot.db.set_nick_value(nick, 'challenges_timepotion', int(timepotion) + 1)
     
 #####################
 ## Mystery Potions ##
