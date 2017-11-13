@@ -668,7 +668,7 @@ def use_mysterypotion(bot, instigator, target):
     loot = str(lootitemsarray [loot])
     if loot != 'mysterypotion':
         bot.say('The mysterypotion is a ' + str(loot) + '!!')
-        scriptdefuse = str('use_' + loot + '(bot,target)')
+        scriptdefuse = str('use_' + loot + '(bot, instigator, target)')
         eval(scriptdefuse)
     else:
         bot.say('Looks like the Potion was just water after all.')
