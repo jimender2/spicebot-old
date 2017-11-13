@@ -17,7 +17,7 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-lootitemsarray = ['healthpotion','poisonpotion','manapotion','mysterypotion','timepotion']
+lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
