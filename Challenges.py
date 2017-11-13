@@ -433,6 +433,7 @@ def mainfunction(bot, trigger):
                 if currenthealth <= 0:
                     winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
                     update_respawn(bot, loser)
+                    respawn_mana(bot, loser)
                     ## Loot Corpse
                     lootcorpse(bot, loser, winner)
                     update_kills(bot, winner)
@@ -539,7 +540,10 @@ def update_spawn(bot, nick):
     health = get_health(bot, nick)
     if not health or int(health) <= 0:
         bot.db.set_nick_value(nick, 'challenges_health', '1000')
-        
+     
+def respawn_mana(bot, nick):
+    bot.db.set_nick_value(nick, 'challenges_mana', '')
+    
 ###############
 ## Inventory ##
 ###############
