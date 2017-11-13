@@ -663,12 +663,13 @@ def get_mysterypotion_text():
 
 def use_mysterypotion(bot, instigator, target):
     mysterypotion = get_mysterypotion(bot, instigator)
-    bot.db.set_nick_value(instigator, 'challenges_manapotion', int(mysterypotion) - 1)
+    bot.db.set_nick_value(instigator, 'challenges_mysterypotion', int(mysterypotion) - 1)
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
     if loot != 'mysterypotion':
         bot.say('The mysterypotion is a ' + str(loot) + '!!')
         scriptdefuse = str('use_' + loot + '(bot,target)')
+        eval(scriptdefuse)
     else:
         bot.say('Looks like the Potion was just water after all.')
     
