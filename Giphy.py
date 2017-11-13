@@ -22,6 +22,7 @@ def execute_main(bot, trigger):
     else:        
         if trigger.group(2):
             query = trigger.group(2).replace(' ', '%20')
+            query = str(query)
             gif = getGif(query)
             if gif:
                 bot.say(gif)
@@ -32,9 +33,9 @@ def execute_main(bot, trigger):
             
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q='+query+'&api_key=' + api + '&limit=500&rating=r'    
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=20&rating=r'    
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,499)
+    randno = randint(0,19)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
