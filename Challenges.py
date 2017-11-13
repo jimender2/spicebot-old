@@ -549,7 +549,7 @@ def get_backpackitems(bot, target):
     for x in lootitemsarray:
         scriptdef = str('get_' + x + '(bot,target)')
         gethowmany = eval(scriptdef)
-        totalbackpack = int(int(totalbackpack + int(gethowmany))
+        totalbackpack = int(totalbackpack + gethowmany)
     return totalbackpack
 
 ## maybe add a dice roll later
