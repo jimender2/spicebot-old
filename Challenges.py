@@ -659,7 +659,7 @@ def get_mysterypotion(bot, nick):
     return mysterypotion
 
 def get_mysterypotion_text():
-    loot_text = ': Use .challenge mysterypotion to consume.'
+    loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
     return loot_text
 
 def use_mysterypotion(bot, instigator, target):
