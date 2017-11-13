@@ -33,7 +33,8 @@ def execute_main(bot, trigger):
             
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=20&rating=r'    
+    limit = 50
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + limit + '&rating=r'    
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(0,19)
     try:
