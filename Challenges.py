@@ -21,7 +21,7 @@ OPTTIMEOUT = 3600
 maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker, magicattack")
 lootitemsarray = ['healthpotion','poisonpotion','manapotion']
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','healthpotion','poisonpotion','manapotion','lastfought','timeout']
+challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','lastfought','backpackitems','timeout']
 
 ####################
 ## Main Operation ##
@@ -107,6 +107,27 @@ def mainfunction(bot, trigger):
                 else:
                     bot.say('No stats found for ' + target)
         
+        ## backpack
+        elif commandused == 'backpack':
+            disenable = get_disenable(bot, target)
+            if not disenable:
+                bot.say(target + " does not have Challenges enabled")
+            elif target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
+                stats = ''
+                for x in lootitemsarray:
+                    scriptdef = str('get_' + x + '(bot,target)')
+                    gethowmany = eval(scriptdef)
+                    if gethowmany:
+                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                        stats = str(stats + addstat)
+                if stats != '':
+                    stats = str(target + "'s stats:" + stats)
+                    bot.say(stats)
+                else:
+                    bot.say('No stats found for ' + target)
+                    
         ## Stats statsadmin
         elif commandused == 'statsadmin' and trigger.admin:
             commandtrimmed = trigger.group(4)
@@ -497,6 +518,14 @@ def update_spawn(bot, nick):
 ###############
 ## Inventory ##
 ###############
+
+def get_backpackitems(bot, nick):
+    totalbackpack = 0
+    for x in lootitemsarray:
+        scriptdef = str('get_' + x + '(bot,target)')
+        gethowmany = eval(scriptdef)
+        totalbackpack = int(totalbackpack + gethowmany)
+    return backpackitems
 
 ## maybe add a dice roll later
 def randominventory():
