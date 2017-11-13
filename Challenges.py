@@ -18,7 +18,7 @@ TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 3600
-maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker")
+maincommandoptions = str("on/off, stats, poisonpotion, healthpotion, manapotion, weaponslocker, magicattack")
 lootitemsarray = ['healthpotion','poisonpotion','manapotion']
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','respawns','xp','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','healthpotion','poisonpotion','manapotion','lastfought','timeout']
@@ -221,9 +221,9 @@ def mainfunction(bot, trigger):
             konami = get_konami(bot, instigator)
             if not konami:
                 set_konami(bot, instigator)
-                bot.notice(instigator + " you have found the cheatcode easter egg!!!", target)
+                bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
             else:
-                bot.notice(instigator + " you can only cheat once.", target)
+                bot.notice(instigator + " you can only cheat once.", instigator)
         
         ## Leaderboard
         elif commandused == 'leader':
@@ -239,7 +239,20 @@ def mainfunction(bot, trigger):
                         currentleadernumber = winlossratio
             leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
-            
+        
+        ## Magic Attack
+        elif commandused == 'magicattack':
+            mana = get_mana(bot, instigator)
+            if not mana:
+                bot.notice(instigator + " you don't have any mana.", instigator)
+            elif mana < 250:
+                manamath = int(250 - mana)
+                bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+            else:
+                damage = damagedone(bot)
+                bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
+                use_magicattack(bot, instigator, target, damage)
+        
         ## Loot Items usage
         elif commandused in lootitemsarray:
             uselootitem = 0
@@ -758,13 +771,19 @@ def update_health(bot, nick, damage):
     currenthealth = get_health(bot, nick)
     return currenthealth
 
-############
-## Health ##
-############
+##########
+## Mana ##
+##########
 
 def get_mana(bot, nick):
     mana = bot.db.get_nick_value(nick, 'challenges_mana') or 0
-    return health
+    return mana
+
+def use_magicattack(bot, instigator, target, damage):
+    mana = bot.db.get_nick_value(instigator, 'challenges_mana')
+    bot.db.set_nick_value(instigator, 'challenges_mana', (int(mana) - 250))
+    health = get_health(bot, target)
+    bot.db.set_nick_value(target, 'challenges_health', (int(health) - int(damage)))
 
 ####################
 ## Weapons Locker ##
