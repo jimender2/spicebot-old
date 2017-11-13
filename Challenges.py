@@ -84,7 +84,7 @@ def mainfunction(bot, trigger):
                 message = str('Challenges is ' + adjustment + ' ' + commandused + ' for '  + target)
                 bot.say(message)
         
-        ## Stats
+        ## Docs
         elif commandused == 'docs':
             bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
         
