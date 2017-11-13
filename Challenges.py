@@ -147,13 +147,16 @@ def mainfunction(bot, trigger):
                 bot.say(optionsstring)
             elif commandtrimmed == 'set':
                 statset = trigger.group(5)
-                target = trigger.group(6)
-                bot.say("Attempting to set " + statset + " stat for " + target + ".")
-                if not target:
-                    target = trigger.nick
-                if statset in challengestatsadminarray:
-                    databasecolumn = str('challenges_' + statset)
-                    bot.db.set_nick_value(target, databasecolumn, '')
+                if not statset:
+                    bot.say(' you must select a stat')
+                else:
+                    target = trigger.group(6)
+                    bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
+                    if not target:
+                        target = trigger.nick
+                    if statset in challengestatsadminarray:
+                        databasecolumn = str('challenges_' + statset)
+                        bot.db.set_nick_value(target, databasecolumn, '')
             elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed == 'all' and target != 'all':
