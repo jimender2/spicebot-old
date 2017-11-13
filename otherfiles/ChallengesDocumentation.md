@@ -110,12 +110,12 @@ You must have 250 mana to use this garaunteed win attack. Damage is randomized. 
 
 ## Potions
 
-There are three types of potions:
-
 * healthpotion: worth 100 health. Use `.duel healthpotion` to consume.
 
 * poisonpotion: worth -50 health. Use `.duel poisonpotion` to consume.
 
 * manapotion: worth 100 mana. Use `.duel manapotion` to consume.
+
+* mysterypotion: With unknown effects! Use `.duel mysterypotion` to consume.
 
 Potions can either be used on yourself, or on others.
