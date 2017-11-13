@@ -39,7 +39,7 @@ def mainfunction(bot, trigger):
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
-        bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ChallengesDocumentation.md", instigator)
+        bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", instigator)
     else:
         fullcommandused = trigger.group(2)
         commandused = trigger.group(3)
@@ -88,7 +88,7 @@ def mainfunction(bot, trigger):
         
         ## Stats
         elif commandused == 'docs':
-            bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ChallengesDocumentation.md")
+            bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
         
         ## Stats
         elif commandused == 'stats':
