@@ -2,9 +2,10 @@
 
 Terminology for this documentation:
 
-* Instigator (person who initiated the duel)
+* Instigator (person who initiated the duel command)
 
 * Target (target of the duel command)
+
 ** If not a target, the target equals instigator
 
 ## Timeouts
