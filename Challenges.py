@@ -87,6 +87,10 @@ def mainfunction(bot, trigger):
                 bot.say(message)
         
         ## Stats
+        elif commandused == 'docs':
+            bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ChallengesDocumentation.md")
+        
+        ## Stats
         elif commandused == 'stats':
             disenable = get_disenable(bot, target)
             if not disenable:
