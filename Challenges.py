@@ -123,7 +123,7 @@ def mainfunction(bot, trigger):
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
                 if stats != '':
-                    stats = str(target + "'s stats:" + stats)
+                    stats = str(target + "'s backpack:" + stats)
                     bot.say(stats)
                 else:
                     bot.say('No stats found for ' + target)
@@ -519,7 +519,7 @@ def update_spawn(bot, nick):
 ## Inventory ##
 ###############
 
-def get_backpackitems(bot, nick):
+def get_backpackitems(bot, target):
     totalbackpack = 0
     for x in lootitemsarray:
         scriptdef = str('get_' + x + '(bot,target)')
