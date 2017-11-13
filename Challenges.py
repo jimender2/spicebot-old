@@ -153,7 +153,9 @@ def mainfunction(bot, trigger):
                     bot.say(' you must select a real stat')
                 else:
                     target = trigger.group(6)
-                    if target.lower() not in bot.privileges[channel.lower()]:
+                    if not target:
+                        bot.say('you must specify target')
+                    elif target.lower() not in bot.privileges[channel.lower()]:
                         bot.say("I'm not sure who that is.")
                     else:
                         newvalue = str(fullcommandused.split(target, 1)[1]).strip()
