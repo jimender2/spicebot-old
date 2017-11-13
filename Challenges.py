@@ -601,6 +601,9 @@ def get_healthpotion_text():
     return loot_text
 
 def use_healthpotion(bot, instigator, target, inchannel):
+    targethealth = get_health(bot, target)
+    if not targethealth:
+        fresh_health(bot, target)
     health = get_health(bot, target)
     healthpotion = get_healthpotion(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
@@ -623,6 +626,9 @@ def get_poisonpotion_text():
     return loot_text
 
 def use_poisonpotion(bot, instigator, target, inchannel):
+    targethealth = get_health(bot, target)
+    if not targethealth:
+        fresh_health(bot, target)
     health = get_health(bot, target)
     posionpotion = get_poisonpotion(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
