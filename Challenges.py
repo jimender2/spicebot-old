@@ -752,7 +752,7 @@ def get_wins(bot, nick):
 
 def get_kills(bot, nick):
     kills = bot.db.get_nick_value(nick, 'challenges_kills') or 0
-    return wins
+    return kills
 
 def update_kills(bot, nick):
     kills = get_kills(bot, nick)
