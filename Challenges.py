@@ -697,7 +697,10 @@ def use_mysterypotion(bot, instigator, target):
         scriptdefuse = str('use_' + loot + '(bot, instigator, target)')
         eval(scriptdefuse)
     else:
-        bot.say('Looks like the Potion was just water after all.')
+        nulllootitemsarray = ['water','vinegar','mud']
+        nullloot = random.randint(0,len(nulllootitemsarray) - 1)
+        nullloot = str(nulllootitemsarray [nullloot])
+        bot.say('Looks like the Potion was just ' + str(nullloot) + ' after all.')
     
 def add_mysterypotion(bot, nick):
     mysterypotion = get_mysterypotion(bot, nick)
