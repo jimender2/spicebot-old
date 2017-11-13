@@ -39,7 +39,7 @@ def mainfunction(bot, trigger):
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
-        bot.notice(instigator + ", Who did you want to challenge? Other Options are: " + str(maincommandoptions), instigator)
+        bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ChallengesDocumentation.md", instigator)
     else:
         fullcommandused = trigger.group(2)
         commandused = trigger.group(3)
