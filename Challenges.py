@@ -525,7 +525,7 @@ def get_backpackitems(bot, target):
         scriptdef = str('get_' + x + '(bot,target)')
         gethowmany = eval(scriptdef)
         totalbackpack = int(totalbackpack + gethowmany)
-    return backpackitems
+    return totalbackpack
 
 ## maybe add a dice roll later
 def randominventory():
