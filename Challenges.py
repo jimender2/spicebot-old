@@ -186,7 +186,6 @@ def mainfunction(bot, trigger):
             else:
                 if commandtrimmed in challengestatsadminarray:
                     scriptdef = str('get_' + commandtrimmed + '(bot,target)')
-                    scriptdef = str('get_' + commandtrimmed)
                     databasecolumn = str('challenges_' + commandtrimmed)
                     if target == 'all':
                         for u in bot.channels[channel].users:
