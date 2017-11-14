@@ -295,7 +295,7 @@ def mainfunction(bot, trigger):
                 manamath = int(250 - mana)
                 bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
             else:
-                damage = damagedone(bot)
+                damage = 200
                 bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
                 use_magicattack(bot, instigator, target, damage)
         
