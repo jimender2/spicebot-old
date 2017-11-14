@@ -301,7 +301,7 @@ def mainfunction(bot, trigger):
                     damage = 200
                     use_magicattack(bot, instigator, target, damage)
                     targethealth = get_health(bot, target)
-                    if currenthealth <= 0:
+                    if targethealth <= 0:
                         bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
                         update_respawn(bot, loser)
                         respawn_mana(bot, loser)
