@@ -675,8 +675,7 @@ def get_timepotion_text():
 def use_timepotion(bot, instigator, target, inchannel):
     timepotion = get_timepotion(bot, instigator)
     bot.db.set_nick_value(instigator, 'challenges_timepotion', int(timepotion) - 1)
-    now = time.time()
-    bot.db.set_nick_value(target, 'challenges_timeout', now)
+    bot.db.set_nick_value(target, 'challenges_timeout', '')
     
 def add_timepotion(bot, nick):
     timepotion = get_timepotion(bot, nick)
