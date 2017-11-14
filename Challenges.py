@@ -701,6 +701,8 @@ def use_mysterypotion(bot, instigator, target, inchannel):
     loot = str(lootitemsarray [loot])
     if loot != 'mysterypotion':
         bot.say('The mysterypotion is a ' + str(loot) + '!!')
+        scriptdefadd = str('add_' + loot + '(bot, instigator)')
+        eval(scriptdefadd)
         scriptdefuse = str('use_' + loot + '(bot, instigator, target, inchannel)')
         eval(scriptdefuse)
         lootusemsg = str("a " + loot)
