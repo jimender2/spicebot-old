@@ -648,6 +648,15 @@ def use_poisonpotion(bot, instigator, target, inchannel):
     posionpotion = get_poisonpotion(bot, instigator)
     bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
     bot.db.set_nick_value(instigator, 'challenges_poisonpotion', int(posionpotion) - 1)
+    targethealth = get_health(bot, target)
+    if targethealth <= 0:
+        update_respawn(bot, target)
+        respawn_mana(bot, target)
+        update_kills(bot, instigator)
+        lootcorpse(bot, target, instigator)
+        bot.say(instigator + " killed " + target + " with a poisonpotion!")
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + " used a poisonpotion on you that killed you", target)
     
 def add_poisonpotion(bot, nick):
     poisonpotion = get_poisonpotion(bot, nick)
