@@ -306,7 +306,7 @@ def mainfunction(bot, trigger):
                         update_respawn(bot, target)
                         respawn_mana(bot, target)
                         update_kills(bot, instigator)
-                        lootcorpse(bot, loser, instigator)
+                        lootcorpse(bot, target, instigator)
                         if not inchannel.startswith("#"):
                             bot.notice(instigator + " used a magicattack on you that killed you", target)
                     else:
