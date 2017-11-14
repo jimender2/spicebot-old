@@ -302,17 +302,17 @@ def mainfunction(bot, trigger):
                     use_magicattack(bot, instigator, target, damage)
                     targethealth = get_health(bot, target)
                     if targethealth <= 0:
-                        bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
+                        bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
                         update_respawn(bot, loser)
                         respawn_mana(bot, loser)
                         update_kills(bot, instigator)
                         lootcorpse(bot, loser, instigator)
                         if not inchannel.startswith("#"):
-                            bot.notice(instigator + " used a magicattack on you", target)
-                    else:
-                        bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
-                        if not inchannel.startswith("#"):
                             bot.notice(instigator + " used a magicattack on you that killed you", target)
+                    else:
+                        bot.say(instigator + " used a magicattack on you")
+                        if not inchannel.startswith("#"):
+                            bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.', target)
         
         ## Loot Items usage
         elif commandused in lootitemsarray:
