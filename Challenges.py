@@ -303,8 +303,8 @@ def mainfunction(bot, trigger):
                     targethealth = get_health(bot, target)
                     if targethealth <= 0:
                         bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
-                        update_respawn(bot, loser)
-                        respawn_mana(bot, loser)
+                        update_respawn(bot, target)
+                        respawn_mana(bot, target)
                         update_kills(bot, instigator)
                         lootcorpse(bot, loser, instigator)
                         if not inchannel.startswith("#"):
