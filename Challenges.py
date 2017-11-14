@@ -310,9 +310,9 @@ def mainfunction(bot, trigger):
                         if not inchannel.startswith("#"):
                             bot.notice(instigator + " used a magicattack on you that killed you", target)
                     else:
-                        bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
+                        bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.')
                         if not inchannel.startswith("#"):
-                            bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.', target)
+                            bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.', target)
         
         ## Loot Items usage
         elif commandused in lootitemsarray:
