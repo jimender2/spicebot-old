@@ -295,9 +295,24 @@ def mainfunction(bot, trigger):
                 manamath = int(250 - mana)
                 bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
             else:
-                damage = 200
-                bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
-                use_magicattack(bot, instigator, target, damage)
+                if target.lower() not in bot.privileges[channel.lower()]:
+                    bot.say("I'm not sure who that is.")
+                else:
+                    damage = 200
+                    use_magicattack(bot, instigator, target, damage)
+                    targethealth = get_health(bot, target)
+                    if currenthealth <= 0:
+                        bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + damage + ' damage.')
+                        update_respawn(bot, loser)
+                        respawn_mana(bot, loser)
+                        update_kills(bot, instigator)
+                        lootcorpse(bot, loser, instigator)
+                        if not inchannel.startswith("#"):
+                            bot.notice(instigator + " used a magicattack on you", target)
+                    else:
+                        bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
+                        if not inchannel.startswith("#"):
+                            bot.notice(instigator + " used a magicattack on you that killed you", target)
         
         ## Loot Items usage
         elif commandused in lootitemsarray:
