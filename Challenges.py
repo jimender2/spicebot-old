@@ -514,7 +514,7 @@ def update_time(bot, nick):
 def get_timesince(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
-    return abs(now - last)
+    return abs(now - int(last))
 
 def get_timeout(bot, nick):
     time_since = get_timesince(bot, nick)
