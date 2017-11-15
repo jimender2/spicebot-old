@@ -496,6 +496,7 @@ def mainfunction(bot, trigger):
                 randominventoryfind = randominventory()
                 if randominventoryfind == 'true':
                     loot, loot_text = determineloottype(bot, winner)
+                    add_lootitem(bot, nick, winner)
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                     if winner == target:
                         lootwinnermsgb = str(winner + " gains the " + str(loot))
@@ -617,28 +618,17 @@ def randominventory():
 def determineloottype(bot, nick): 
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
-    scriptdefinvtype = str('get_' + loot + '_text' + '()')
-    loot_text = eval(scriptdefinvtype)
-    scriptdefinv = str('add_' + loot + '(bot,nick)')
-    eval(scriptdefinv)
-    if loot.endswith('s'):
-        loot = loot[:-1]
+    loot_text = get_lootitem_text(bot, nick, loot)
     return loot, loot_text
 
 def lootcorpse(bot, loser, winner):
     for x in lootitemsarray:
-        scriptdef = str('get_' + x + '(bot,loser)')
+        gethowmany = get_lootitem(bot, loser, loottype)
         databasecolumn = str('challenges_' + x)
-        gethowmany = eval(scriptdef)
         if gethowmany:
             bot.db.set_nick_value(loser, databasecolumn, '')
-            scriptdefb = str('get_' + x + '(bot,winner)')
-            gethowmanyb = eval(scriptdefb)
+            gethowmanyb = get_lootitem(bot, winner, loottype)
             bot.db.set_nick_value(winner, databasecolumn, int(gethowmany) + int(gethowmanyb))
-            
-##############
-##  Potions ##
-##############
 
 def get_lootitem(bot, nick, loottype):
     databasecolumn = str('challenges_' + loottype)
@@ -684,10 +674,8 @@ def use_lootitem(bot, instigator, target, inchannel, loottype):
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
         if loot != 'mysterypotion':
-            bot.say('The mysterypotion is a ' + str(loot) + '!!')
-            scriptdefadd = str('add_lootitem' + '(bot, instigator, loot)')
-            eval(scriptdefadd)
-            scriptdefuse = str('use_lootitem' + '(bot, instigator, target, inchannel, loot)')
+            add_lootitem(bot, instigator, loot)
+            use_lootitem(bot, instigator, target, inchannel, loot)
             lootusemsg = str("a " + loot)
         else:
             nulllootitemsarray = ['water','vinegar','mud']
