@@ -480,6 +480,13 @@ def healthregen(bot):
         
 ## Functions######################################################################################################################
 
+## Database
+def get_database_value(bot, nick, databasekey):
+    databasecolumn = str('challenges_' + loottype)
+    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return database_value
+    
+
 #############
 ## Opt Out ##
 #############
