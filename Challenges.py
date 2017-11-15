@@ -357,26 +357,24 @@ def mainfunction(bot, trigger):
         ## Loot Items usage
         elif commandused in lootitemsarray:
             uselootitem = 0
-            scriptdef = str('get_' + commandused + '(bot,instigator)')
-            gethowmany = eval(scriptdef)
+            gethowmany = get_lootitem(bot, instigator, commandused)
             if gethowmany:
-                scriptdef = str('use_' + commandused + '(bot, instigator, target, inchannel)')
-                if target == trigger.nick:
-                    bot.say(trigger.nick + ' uses ' + commandused + '.')
+                if target == instigator:
+                    bot.say(instigator + ' uses ' + commandused + '.')
                     uselootitem = 1
                 elif target.lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm not sure who that is.")
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
-                        bot.say(trigger.nick + ' uses ' + commandused + ' on ' + target + ".")
+                        bot.say(instigator + ' uses ' + commandused + ' on ' + target + ".")
                         if not inchannel.startswith("#") and target != instigator:
                             bot.notice(instigator + " used a " + commandused + " on you", target)
                         uselootitem = 1
                     else:
                         bot.say(target + " does not have Challenges enabled")
                 if uselootitem == 1:
-                    eval(scriptdef)
+                    use_lootitem(bot, instigator, target, inchannel, commandused)
             else:
                 bot.say('You do not have a ' +  commandused + ' to use!')
     
