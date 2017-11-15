@@ -34,26 +34,27 @@ def challenge_cmd(bot, trigger):
 def mainfunction(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
+    fullcommandused = trigger.group(2)
+    commandortarget = trigger.group(3)
     now = time.time()
     opttime = get_database_value(bot, instigator, 'opttime')
     if not opttime:
         set_database_value(bot, instigator, 'opttime', now)
-    
+    validcommandarray = ['docs','help','on','off','stats','backpack','statsadmin','weaponslocker','leader','closetodeath','magic','upupdowndownleftrightleftrightba']
     for c in bot.channels:
         channel = c
-    if not trigger.group(2):
+    if not commandortarget:
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", instigator)
-    else:
-        fullcommandused = trigger.group(2)
+    elif commandortarget in validcommandarray or commandortarget in lootitemsarray:
         commandused = trigger.group(3)
         target = trigger.group(4)
         if not target:
-            target = trigger.nick
-            
+            target = instigator
+        
         ## Docs
         elif commandused == 'docs' or commandused == 'help':
             bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
-            
+        
         ## On/off
         if commandused == 'on' or commandused == 'off':
             disenablevalue = ''
@@ -81,10 +82,10 @@ def mainfunction(bot, trigger):
                     set_database_value(bot, target, 'disenable', disenablevalue)
                     set_database_value(bot, target, 'opttime', now)
                     bot.say("Challenges should be " +  commandused + ' for ' + target + '.')
-        
+                    
         ## Stats
         elif commandused == 'stats':
-            disenable = get_disenable(bot, target)
+            disenable = get_database_value(bot, target, 'disenable')
             if not disenable and target != instigator:
                 bot.say(target + " does not have Challenges enabled")
             elif target.lower() not in bot.privileges[channel.lower()]:
@@ -326,9 +327,9 @@ def mainfunction(bot, trigger):
                     use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
             else:
                 bot.say('You do not have a ' +  commandused + ' to use!')
-    
+        
+    else:
         ## Combat
-        else:
             target = trigger.group(3)
             targetsplit = trigger.group(3)
             lastfought = get_lastfought(bot, instigator)
