@@ -18,7 +18,7 @@ def spicebot_prerun(bot,trigger):
     
     ## used to circumvent
     commandused = trigger.group(1)
-    bot.say(commandused)
+    allowedcommandsarray = ['duel','challenge']
     
     ## Get Name Of Channel
     botchannel = bot_channelname(bot, trigger)
@@ -60,7 +60,7 @@ def spicebot_prerun(bot,trigger):
         message = str(instigator + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
     
     ## Make users wait between uses
-    elif instigatorbotstatus and lasttime < LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
+    elif instigatorbotstatus and lasttime < LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
         lasttimemath = int(LASTTIMEOUT - lasttime)
         message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
     
