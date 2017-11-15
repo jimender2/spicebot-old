@@ -156,8 +156,14 @@ def mainfunction(bot, trigger):
                             databasecolumn = str('challenges_' + statset)
                             bot.db.set_nick_value(target, databasecolumn, newvalue)
                 else:
-                    databasecolumn = str('challenges_' + statset)
-                    bot.db.set_nick_value(target, databasecolumn, newvalue)
+                    if statset == 'all':
+                        for x in challengestatsadminarray:
+                            statset = x
+                            databasecolumn = str('challenges_' + statset)
+                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                    else:
+                        databasecolumn = str('challenges_' + statset)
+                        bot.db.set_nick_value(target, databasecolumn, newvalue)
                 bot.say('Possibly done.')
             
         ## Enable/Disable status
