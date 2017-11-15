@@ -65,6 +65,8 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 disenable = get_database_value(bot, target, 'disenable')
+                health = get_database_value(bot, target, 'health')
+                bot.say(str(health))
                 bot.say(str(disenable))
                 disenable = get_disenable(bot, target)
                 bot.say(str(disenable))
