@@ -158,6 +158,7 @@ def mainfunction(bot, trigger):
                 else:
                     databasecolumn = str('challenges_' + statset)
                     bot.db.set_nick_value(target, databasecolumn, newvalue)
+                bot.say('Possibly done.')
             
         ## Enable/Disable status
         elif commandused == 'status':
