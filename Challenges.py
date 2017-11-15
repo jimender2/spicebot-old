@@ -147,6 +147,7 @@ def mainfunction(bot, trigger):
                 if target == 'everyone':
                     for u in bot.channels[channel].users:
                         target = u
+                        bot.say(target)
                         if statset == 'all':
                             for x in challengestatsadminarray:
                                 statset = x
