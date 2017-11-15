@@ -65,7 +65,8 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 disenable = get_database_value(bot, target, 'disenable')
-                #disenable = get_disenable(bot, target)
+                bot.say(str(disenable))
+                disenable = get_disenable(bot, target)
                 bot.say(str(disenable))
                 opttime = get_opttimeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
