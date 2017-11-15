@@ -119,7 +119,7 @@ def mainfunction(bot, trigger):
             else:
                 stats = ''
                 for x in lootitemsarray:
-                    gethowmany = get_lootitem(bot, nick, x)
+                    gethowmany = get_lootitem(bot, target, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
