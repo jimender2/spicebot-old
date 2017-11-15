@@ -45,21 +45,23 @@ def mainfunction(bot, trigger):
         if not target:
             target = trigger.nick
             
+        ## Docs
+        elif commandused == 'docs' or commandused == 'help':
+            bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
+            
         ## On/off
         if commandused == 'on' or commandused == 'off':
-            if target == 'all':
-                if trigger.admin:
-                    bot.say("Turning Challenges " +  commandused + ' for all.')
-                    for u in bot.channels[channel].users:
-                        target = u
-                        disenable = get_disenable(bot, target)
-                        if commandused == 'on':
-                            bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-                        else:
-                            bot.db.set_nick_value(target, 'challenges_disenable', '')
-                    bot.say('Challenges turned ' + commandused + ' for all.')
-                else:
-                    bot.say('Only Admin can Change Statuses for all.')
+            bot.say("Attempting to turn challenges " +  commandused + ' for ' + target + '.')
+            if target == 'all' and trigger.admin:
+                for u in bot.channels[channel].users:
+                    target = u
+                    disenable = get_disenable(bot, target)
+                    if commandused == 'on':
+                        bot.db.set_nick_value(target, 'challenges_disenable', 'true')
+                    else:
+                        bot.db.set_nick_value(target, 'challenges_disenable', '')
+            elif target == 'all' and not trigger.admin:
+                bot.say('Only Admin can Change Statuses for all.')
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
@@ -67,7 +69,7 @@ def mainfunction(bot, trigger):
                 opttime = get_opttimeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                if not disenable:
+                elif not disenable:
                     if commandused == 'on':
                         bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                         adjustment = 'now'
@@ -81,12 +83,7 @@ def mainfunction(bot, trigger):
                         bot.db.set_nick_value(target, 'challenges_disenable', '')
                         adjustment = 'now'
                         set_opttimeout(bot, target)
-                message = str('Challenges is ' + adjustment + ' ' + commandused + ' for '  + target)
-                bot.say(message)
-        
-        ## Docs
-        elif commandused == 'docs':
-            bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
+            bot.say("Challenges should now be " +  commandused + ' for ' + target + '.')
         
         ## Stats
         elif commandused == 'stats':
@@ -131,76 +128,35 @@ def mainfunction(bot, trigger):
                     
         ## Stats statsadmin
         elif commandused == 'statsadmin' and trigger.admin:
-            commandtrimmed = trigger.group(4)
-            target = trigger.group(5)
-            optionsstring = str("Repeat this command with: ")
-            for x in challengestatsadminarray:
-                optionsstring = str(optionsstring + x + ",")
-            if not target:
-                target = instigator
-            if commandtrimmed and target and commandtrimmed != 'set':
-                bot.say("Attempting to reset " + commandtrimmed + " stat for " + target + ".")
-            if not commandtrimmed:
-                bot.say(optionsstring)
-            elif commandtrimmed == 'set':
-                statset = trigger.group(5)
-                if not statset:
-                    bot.say(' you must select a stat')
-                elif statset not in challengestatsadminarray:
-                    bot.say(' you must select a real stat')
-                else:
-                    target = trigger.group(6)
-                    if not target:
-                        bot.say('you must specify target')
-                    elif target.lower() not in bot.privileges[channel.lower()]:
-                        bot.say("I'm not sure who that is.")
-                    else:
-                        newvalue = str(fullcommandused.split(target, 1)[1]).strip()
-                        newvalue = int(newvalue)
-                        if not newvalue:
-                            bot.say("I need a value.")
-                        else:
-                            bot.say("Attempting to set " + str(statset) + " stat for " + target + ".")
-                            if statset in challengestatsadminarray:
-                                databasecolumn = str('challenges_' + statset)
-                                bot.db.set_nick_value(target, databasecolumn, newvalue)
-                            bot.say(target + "'s " + str(statset) + " now equals " + str(newvalue))
-            elif target.lower() not in bot.privileges[channel.lower()] and target != 'all':
+            target = trigger.group(4)
+            statsadminarray = ['set','reset']
+            commandtrimmed = trigger.group(5)
+            statset = trigger.group(6)
+            newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
+            if target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
-            elif commandtrimmed == 'all' and target != 'all':
-                for x in challengestatsadminarray:
-                    scriptdef = str('get_' + x + '(bot,target)')
-                    databasecolumn = str('challenges_' + x)
-                    gethowmany = eval(scriptdef)
-                    if gethowmany:
-                        bot.db.set_nick_value(target, databasecolumn, '')
-            elif commandtrimmed == 'all' and target == 'all':
-                for u in bot.channels[channel].users:
-                    target = u
-                    for x in challengestatsarray:
-                        scriptdef = str('get_' + x)
-                        databasecolumn = str('challenges_' + x)
-                        gethowmany = eval(scriptdef)
-                        if gethowmany:
-                            bot.db.set_nick_value(target, databasecolumn, '')
+            elif commandtrimmed not in statsadminarray:
+                bot.say("A correct command use is .duel statsadmin target set/reset stat")
+            elif statset not in challengestatsadminarray and statset != 'all':
+                bot.say("A correct command use is .duel statsadmin target set/reset stat")
+            elif commandtrimmed == 'set' and not newvalue:
+                bot.say("A correct command use is .duel statsadmin target set stat value")
             else:
-                if commandtrimmed in challengestatsadminarray:
-                    scriptdef = str('get_' + commandtrimmed + '(bot,target)')
-                    databasecolumn = str('challenges_' + commandtrimmed)
-                    if target == 'all':
-                        for u in bot.channels[channel].users:
-                            gethowmany = eval(scriptdef)
-                            if gethowmany:
-                                bot.db.set_nick_value(target, databasecolumn, '')
-                    else:
-                        gethowmany = eval(scriptdef)
-                        if gethowmany:
-                            bot.db.set_nick_value(target, databasecolumn, '')
-            if commandtrimmed and target and commandtrimmed != 'set':
-                bot.say("Stat Reset command completed.")
-                        
-        elif commandused == 'statsadmin' and not trigger.admin:        
-            bot.say('You must be an admin to set stats.')
+                if not newvalue:
+                    newvalue = ''
+                if target == 'all':
+                    for u in bot.channels[channel].users:
+                        target = u
+                        if statset == 'all':
+                            for x in challengestatsadminarray:
+                                databasecolumn = str('challenges_' + x)
+                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                        else:
+                            databasecolumn = str('challenges_' + statset)
+                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                else:
+                    databasecolumn = str('challenges_' + statset)
+                    bot.db.set_nick_value(target, databasecolumn, newvalue)
             
         ## Enable/Disable status
         elif commandused == 'status':
