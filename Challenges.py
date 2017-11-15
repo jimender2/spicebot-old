@@ -318,7 +318,6 @@ def mainfunction(bot, trigger):
                         targethealthstart = get_health(bot, target)
                         use_magicattack(bot, instigator, target, damage)
                         targethealth = get_health(bot, target)
-                        healthmath = int(targethealth - targethealthstart)
                         if targethealth <= 0:
                             update_respawn(bot, target)
                             respawn_mana(bot, target)
@@ -327,6 +326,7 @@ def mainfunction(bot, trigger):
                             magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                             magicnotice = str(instigator + " used a magic on you that killed you")
                         elif magicusage == 'health':
+                            healthmath = int(targethealth - targethealthstart)
                             magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
                             magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
                         else:
