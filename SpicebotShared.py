@@ -16,6 +16,10 @@ TOOMANYTIMES = 10
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
     
+    ## used to circumvent
+    commandused = trigger.group(1)
+    bot.say(commandused)
+    
     ## Get Name Of Channel
     botchannel = bot_channelname(bot, trigger)
     
