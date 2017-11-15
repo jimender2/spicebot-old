@@ -287,32 +287,45 @@ def mainfunction(bot, trigger):
             bot.say(leaderboardscript)
         
         ## Magic Attack
-        elif commandused == 'magicattack':
-            mana = get_mana(bot, instigator)
-            if not mana:
-                bot.notice(instigator + " you don't have any mana.", instigator)
-            elif mana < 250:
-                manamath = int(250 - mana)
-                bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+        elif commandused == 'magic':
+            magicoptions = ['attack','instakill']
+            magicusage = trigger.group(4)
+            if magicusage not in magicoptions:
+                bot.say('Magic uses include: attack, instakill, health')
             else:
-                if target.lower() not in bot.privileges[channel.lower()]:
-                    bot.say("I'm not sure who that is.")
-                else:
+                target = trigger.group(5)
+                if not target:
+                    target = trigger.nick
+                mana = get_mana(bot, instigator)
+                if magicusage == 'attack':
+                    manarequired = 250
                     damage = 200
-                    use_magicattack(bot, instigator, target, damage)
-                    targethealth = get_health(bot, target)
-                    if targethealth <= 0:
-                        bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
-                        update_respawn(bot, target)
-                        respawn_mana(bot, target)
-                        update_kills(bot, instigator)
-                        lootcorpse(bot, target, instigator)
-                        if not inchannel.startswith("#"):
-                            bot.notice(instigator + " used a magicattack on you that killed you", target)
+                elif magicusage == 'instakill':
+                    manarequired = 1000
+                    damage = 99999
+                if not mana:
+                    bot.notice(instigator + " you don't have any mana.", instigator)
+                elif mana < manarequired:
+                    manamath = int(manarequired - mana)
+                    bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+                else:
+                    if target.lower() not in bot.privileges[channel.lower()]:
+                        bot.say("I'm not sure who that is.")
                     else:
-                        bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.')
-                        if not inchannel.startswith("#"):
-                            bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.', target)
+                        use_magicattack(bot, instigator, target, damage)
+                        targethealth = get_health(bot, target)
+                        if targethealth <= 0:
+                            bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
+                            update_respawn(bot, target)
+                            respawn_mana(bot, target)
+                            update_kills(bot, instigator)
+                            lootcorpse(bot, target, instigator)
+                            if not inchannel.startswith("#"):
+                                bot.notice(instigator + " used a magicattack on you that killed you", target)
+                        else:
+                            bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.')
+                            if not inchannel.startswith("#"):
+                                bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.', target)
         
         ## Loot Items usage
         elif commandused in lootitemsarray:
@@ -980,5 +993,4 @@ def set_konami(bot, nick):
     health = get_health(bot, nick)
     bot.db.set_nick_value(nick, 'challenges_health', int(health) + 600)
     bot.db.set_nick_value(nick, 'challenges_konami', 'used')
-
 
