@@ -294,7 +294,7 @@ def mainfunction(bot, trigger):
                 target = u
                 disenable = get_disenable(bot, target)
                 if disenable:
-                    health = get_winlossratio(bot,target)
+                    health = get_health(bot,target)
                     if health < currentleadernumber:
                         currentleader = target
                         currentleadernumber = health
