@@ -35,6 +35,10 @@ def mainfunction(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
     now = time.time()
+    opttime = get_database_value(bot, instigator, 'opttime')
+    if not opttime:
+        set_database_value(bot, instigator, 'opttime', now)
+    
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
@@ -67,8 +71,7 @@ def mainfunction(bot, trigger):
             else:
                 disenable = get_database_value(bot, target, 'disenable')
                 opttime = get_database_value(bot, target, 'opttime')
-                if opttime:
-                    opttime = abs(now - opttime)
+                opttime = abs(now - opttime)
                 if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
@@ -487,8 +490,11 @@ def get_database_value(bot, nick, databasekey):
     databasecolumn = str('challenges_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
-    
 
+def set_database_value(bot, nick, databasekey, value):
+    databasecolumn = str('challenges_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
+    
 #############
 ## Opt Out ##
 #############
