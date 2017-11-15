@@ -674,9 +674,9 @@ def weaponofchoice(bot, nick):
     return weapon
 
 def weaponformatter(bot, weapon):
-    if weapon.startswith('a ') or weapon.startswith('an ') or weapon.startswith('the '):
+    if weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
         weapon = str(weapon)
-    elif weapon.startswith('a') or weapon.startswith('e') or weapon.startswith('i') or weapon.startswith('o') or weapon.startswith('u'):
+    elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
         weapon = str('an ' + weapon)
     else:
         weapon = str('a ' + weapon)
