@@ -132,16 +132,15 @@ def mainfunction(bot, trigger):
             statsadminarray = ['set','reset']
             commandtrimmed = trigger.group(5)
             statset = trigger.group(6)
-            newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
             if target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed not in statsadminarray:
                 bot.say("A correct command use is .duel statsadmin target set/reset stat")
             elif statset not in challengestatsadminarray and statset != 'all':
                 bot.say("A correct command use is .duel statsadmin target set/reset stat")
-            elif commandtrimmed == 'set' and not newvalue:
-                bot.say("A correct command use is .duel statsadmin target set stat value")
             else:
+                statsetsplit = str(commandtrimmed + statset)
+                newvalue = str(fullcommandused.split(statsetsplit, 1)[1]).strip()
                 if not newvalue:
                     newvalue = ''
                 if target == 'all':
