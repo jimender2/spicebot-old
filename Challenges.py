@@ -166,15 +166,6 @@ def mainfunction(bot, trigger):
                         bot.db.set_nick_value(target, databasecolumn, newvalue)
                 bot.say('Possibly done.')
             
-        ## Enable/Disable status
-        elif commandused == 'status':
-            disenable = get_disenable(bot, target)
-            if disenable:
-                message = str(target + " has Challenges enabled")
-            else:
-                message = str(target + " does not have Challenges enabled")
-            bot.notice(message, instigator)
-            
         ## Weaponslocker
         elif commandused == 'weaponslocker':
             weaponslist = get_weaponslocker(bot, instigator)
@@ -186,9 +177,10 @@ def mainfunction(bot, trigger):
                 for weapon in weaponslist:
                     weapon = str(weapon)
                     weaponslistnew.append(weapon)
-                for channel in bot.channels:
-                    bot.db.set_nick_value(channel, 'weapons_locker', '')
+                weaponslist = []
+                update_weaponslocker(bot, instigator, weaponslist)
                 for weapon in weaponslistnew:
+                    weaponslist = get_weaponslocker(bot, instigator)
                     if weapon not in weaponslist:
                         weaponslist.append(weapon)
                 update_weaponslocker(bot, instigator, weaponslist)
