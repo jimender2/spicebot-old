@@ -288,7 +288,7 @@ def mainfunction(bot, trigger):
         
         ## Magic Attack
         elif commandused == 'magic':
-            magicoptions = ['attack','instakill']
+            magicoptions = ['attack','instakill','health']
             magicusage = trigger.group(4)
             if magicusage not in magicoptions:
                 bot.say('Magic uses include: attack, instakill, health')
@@ -300,6 +300,9 @@ def mainfunction(bot, trigger):
                 if magicusage == 'attack':
                     manarequired = 250
                     damage = 200
+                elif magicusage == 'health':
+                    manarequired = 200
+                    damage = -200
                 elif magicusage == 'instakill':
                     manarequired = 1000
                     damage = 99999
