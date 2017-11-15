@@ -76,7 +76,7 @@ def mainfunction(bot, trigger):
                     bot.notice(target + " already has duels on.", instigator)
                 elif not disenable and commandused == 'off':
                     bot.notice(target + " already has duels off.", instigator)
-                elif opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
+                elif opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
                     if commandused == 'on':
