@@ -133,7 +133,6 @@ def mainfunction(bot, trigger):
             commandtrimmed = trigger.group(5)
             statset = trigger.group(6)
             newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
-            newvalue = int(newvalue)
             if target.lower() not in bot.privileges[channel.lower()] and target != 'all':
                 bot.say("I'm not sure who that is.")
             elif commandtrimmed not in statsadminarray:
