@@ -237,7 +237,11 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace('u"', '')
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
-                bot.say(str(weaponslist))
+                chunks = weaponslist.split()
+                per_line = 28
+                for i in range(0, len(chunks), per_line):
+                    weaponline = " ".join(chunks[i:i + per_line])
+                    bot.say(str(weaponline))
             elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
                 bot.say('Inventory can only be viewed in privmsg.')
             else:
