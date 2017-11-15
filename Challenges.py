@@ -238,7 +238,7 @@ def mainfunction(bot, trigger):
                 weaponslist = weaponslist.replace("'", '')
                 weaponslist = weaponslist.replace('"', '')
                 chunks = weaponslist.split()
-                per_line = 28
+                per_line = 15
                 for i in range(0, len(chunks), per_line):
                     weaponline = " ".join(chunks[i:i + per_line])
                     bot.say(str(weaponline))
