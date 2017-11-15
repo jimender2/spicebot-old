@@ -496,7 +496,7 @@ def mainfunction(bot, trigger):
                 randominventoryfind = randominventory()
                 if randominventoryfind == 'true':
                     loot, loot_text = determineloottype(bot, winner)
-                    add_lootitem(bot, nick, winner)
+                    add_lootitem(bot, winner, loot)
                     lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
                     if winner == target:
                         lootwinnermsgb = str(winner + " gains the " + str(loot))
