@@ -315,6 +315,7 @@ def mainfunction(bot, trigger):
                     if target.lower() not in bot.privileges[channel.lower()]:
                         bot.say("I'm not sure who that is.")
                     else:
+                        targethealthstart = get_health(bot, target)
                         use_magicattack(bot, instigator, target, damage)
                         targethealth = get_health(bot, target)
                         if targethealth <= 0:
