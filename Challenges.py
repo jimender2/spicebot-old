@@ -334,7 +334,8 @@ def mainfunction(bot, trigger):
                     else:
                         bot.say(target + " does not have Challenges enabled")
                 if uselootitem == 1:
-                    use_lootitem(bot, instigator, target, inchannel, commandused)
+                    saymsg = 'true'
+                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
             else:
                 bot.say('You do not have a ' +  commandused + ' to use!')
     
@@ -626,7 +627,7 @@ def get_lootitem_text(bot, nick, loottype):
         loot_text = str(loot_text + " Use .challenge " + str(loottype) + " to consume.")
     return loot_text
         
-def use_lootitem(bot, instigator, target, inchannel, loottype):
+def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     targethealth = get_health(bot, target)
     if not targethealth:
         fresh_health(bot, target)
@@ -652,7 +653,9 @@ def use_lootitem(bot, instigator, target, inchannel, loottype):
         loot = str(lootitemsarray [loot])
         if loot != 'mysterypotion':
             add_lootitem(bot, instigator, loot)
-            use_lootitem(bot, instigator, target, inchannel, loot)
+            saymsg = 'false'
+            use_lootitem(bot, instigator, target, inchannel, loot, saymsg)
+            saymsg = 'true'
             lootusemsg = str("a " + loot)
         else:
             nulllootitemsarray = ['water','vinegar','mud']
@@ -670,9 +673,10 @@ def use_lootitem(bot, instigator, target, inchannel, loottype):
         respawn_mana(bot, target)
         update_kills(bot, instigator)
         lootcorpse(bot, target, instigator)
-    bot.say(str(mainlootusemessage))
-    if not inchannel.startswith("#") and target != instigator:
-        bot.notice(str(mainlootusemessage), target)
+    if saymsg == 'true':
+        bot.say(str(mainlootusemessage))
+        if not inchannel.startswith("#") and target != instigator:
+            bot.notice(str(mainlootusemessage), target)
     
 def add_lootitem(bot, nick, loottype):
     lootitem = get_lootitem(bot, nick, loottype)
