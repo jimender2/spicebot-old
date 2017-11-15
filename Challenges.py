@@ -289,7 +289,7 @@ def mainfunction(bot, trigger):
         ## Close to death
         elif commandused == 'closetodeath':
             currentleader = ''
-            currentleadernumber = 0
+            currentleadernumber = 9999999999
             for u in bot.channels[channel].users:
                 target = u
                 disenable = get_disenable(bot, target)
