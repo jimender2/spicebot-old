@@ -285,6 +285,21 @@ def mainfunction(bot, trigger):
                         currentleadernumber = winlossratio
             leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
             bot.say(leaderboardscript)
+            
+        ## Close to death
+        elif commandused == 'closetodeath':
+            currentleader = ''
+            currentleadernumber = 0
+            for u in bot.channels[channel].users:
+                target = u
+                disenable = get_disenable(bot, target)
+                if disenable:
+                    health = get_winlossratio(bot,target)
+                    if health < currentleadernumber:
+                        currentleader = target
+                        currentleadernumber = health
+            leaderboardscript = str("The Current person close to death in the room is: " + str(currentleader) + " with health at: " + str(currentleadernumber))
+            bot.say(leaderboardscript)
         
         ## Magic Attack
         elif commandused == 'magic':
