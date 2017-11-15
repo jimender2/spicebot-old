@@ -177,10 +177,9 @@ def mainfunction(bot, trigger):
                 for weapon in weaponslist:
                     weapon = str(weapon)
                     weaponslistnew.append(weapon)
-                weaponslist = []
-                update_weaponslocker(bot, instigator, weaponslist)
+                for channel in bot.channels:
+                    bot.db.set_nick_value(channel, 'weapons_locker', '')
                 for weapon in weaponslistnew:
-                    weaponslist = get_weaponslocker(bot, instigator)
                     if weapon not in weaponslist:
                         weaponslist.append(weapon)
                 update_weaponslocker(bot, instigator, weaponslist)
