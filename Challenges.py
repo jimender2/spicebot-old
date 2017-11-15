@@ -601,8 +601,7 @@ def respawn_mana(bot, nick):
 def get_backpackitems(bot, target):
     totalbackpack = 0
     for x in lootitemsarray:
-        scriptdef = str('get_' + x + '(bot,target)')
-        gethowmany = eval(scriptdef)
+        gethowmany = get_lootitem(bot, target, x)
         totalbackpack = int(int(totalbackpack) + int(gethowmany))
     return totalbackpack
 
