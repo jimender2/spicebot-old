@@ -149,7 +149,8 @@ def mainfunction(bot, trigger):
                         target = u
                         if statset == 'all':
                             for x in challengestatsadminarray:
-                                databasecolumn = str('challenges_' + x)
+                                statset = x
+                                databasecolumn = str('challenges_' + statset)
                                 bot.db.set_nick_value(target, databasecolumn, newvalue)
                         else:
                             databasecolumn = str('challenges_' + statset)
