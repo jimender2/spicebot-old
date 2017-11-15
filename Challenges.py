@@ -623,7 +623,7 @@ def determineloottype(bot, nick):
 
 def lootcorpse(bot, loser, winner):
     for x in lootitemsarray:
-        gethowmany = get_lootitem(bot, loser, loottype)
+        gethowmany = get_lootitem(bot, loser, x)
         databasecolumn = str('challenges_' + x)
         if gethowmany:
             bot.db.set_nick_value(loser, databasecolumn, '')
@@ -636,10 +636,9 @@ def get_lootitem(bot, nick, loottype):
     return lootitem
 
 def get_lootitem_text(bot, nick, loottype):
-    bot.say(loottype)
     if loottype == 'healthpotion':
         loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
-    elif loottype == 'posionpotion':
+    elif loottype == 'poisonpotion':
         loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
     elif loottype == 'manapotion':
         loot_text = ': worth 100 mana. Use .challenge manapotion to consume.'
