@@ -637,17 +637,19 @@ def get_lootitem(bot, nick, loottype):
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
-        loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
+        loot_text = ': worth 100 health.'
     elif loottype == 'poisonpotion':
-        loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
+        loot_text = ': worth -50 health.'
     elif loottype == 'manapotion':
-        loot_text = ': worth 100 mana. Use .challenge manapotion to consume.'
+        loot_text = ': worth 100 mana.'
     elif loottype == 'timepotion':
-        loot_text = ': worth up to ' + str(TIMEOUT) + ' seconds of timeout. Use .challenge timepotion to consume.'
+        loot_text = ': worth up to ' + str(TIMEOUT) + ' seconds of timeout.'
     elif loottype == 'mysterypotion':
         loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
     else:
         loot_text = ''
+    if loot_text != '':
+        loot_text = str(loot_text + " Use .challenge " + str(loottype) + "to consume.")
     return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype):
