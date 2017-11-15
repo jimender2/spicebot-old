@@ -636,6 +636,7 @@ def get_lootitem(bot, nick, loottype):
     return lootitem
 
 def get_lootitem_text(bot, nick, loottype):
+    bot.say(loottype)
     if loottype == 'healthpotion':
         loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
     elif loottype == 'posionpotion':
