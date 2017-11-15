@@ -72,7 +72,11 @@ def mainfunction(bot, trigger):
                 disenable = get_database_value(bot, target, 'disenable')
                 opttime = get_database_value(bot, target, 'opttime')
                 opttime = abs(now - opttime)
-                if not disenable and opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
+                if disenable and commandused == 'on':
+                    bot.notice(target + " already has duels on.", instigator)
+                elif not disenable and commandused == 'off':
+                    bot.notice(target + " already has duels off.", instigator)
+                elif opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
                     if commandused == 'on':
