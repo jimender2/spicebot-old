@@ -315,20 +315,26 @@ def mainfunction(bot, trigger):
                     if target.lower() not in bot.privileges[channel.lower()]:
                         bot.say("I'm not sure who that is.")
                     else:
+                        targethealthstart = get_health(bot, target)
                         use_magicattack(bot, instigator, target, damage)
                         targethealth = get_health(bot, target)
                         if targethealth <= 0:
-                            bot.say(instigator + ' uses magicattack on ' + target + ', killing ' + target)
                             update_respawn(bot, target)
                             respawn_mana(bot, target)
                             update_kills(bot, instigator)
                             lootcorpse(bot, target, instigator)
-                            if not inchannel.startswith("#"):
-                                bot.notice(instigator + " used a magicattack on you that killed you", target)
+                            magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
+                            magicnotice = str(instigator + " used a magic on you that killed you")
+                        elif targethealth > targethealthstart:
+                            healthmath = int(targethealth - targethealthstart)
+                            magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by' + str(healthmath))
+                            magicnotice = str(instigator + " used a magic on you that increased health by" + str(healthmath))
                         else:
-                            bot.say(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.')
-                            if not inchannel.startswith("#"):
-                                bot.notice(instigator + ' uses magicattack on ' + target + ', dealing ' + str(damage) + ' damage.', target)
+                            magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
+                            magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
+                        bot.say(str(magicsay))
+                        if not inchannel.startswith("#") and target != instigator:
+                            bot.notice(str(magicnotice), target)
         
         ## Loot Items usage
         elif commandused in lootitemsarray:
