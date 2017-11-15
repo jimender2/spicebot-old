@@ -326,7 +326,7 @@ def mainfunction(bot, trigger):
                             magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                             magicnotice = str(instigator + " used a magic on you that killed you")
                         elif magicusage == 'health':
-                            healthmath = int(targethealth - targethealthstart)
+                            healthmath = int(int(targethealth) - int(targethealthstart))
                             magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
                             magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
                         else:
