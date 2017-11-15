@@ -482,7 +482,7 @@ def healthregen(bot):
 
 ## Database
 def get_database_value(bot, nick, databasekey):
-    databasecolumn = str('challenges_' + loottype)
+    databasecolumn = str('challenges_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
     
