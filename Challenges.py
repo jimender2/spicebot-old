@@ -627,7 +627,7 @@ def lootcorpse(bot, loser, winner):
         databasecolumn = str('challenges_' + x)
         if gethowmany:
             bot.db.set_nick_value(loser, databasecolumn, '')
-            gethowmanyb = get_lootitem(bot, winner, loottype)
+            gethowmanyb = get_lootitem(bot, winner, x)
             bot.db.set_nick_value(winner, databasecolumn, int(gethowmany) + int(gethowmanyb))
 
 def get_lootitem(bot, nick, loottype):
