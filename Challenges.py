@@ -56,15 +56,14 @@ def mainfunction(bot, trigger):
             
         ## On/off
         if commandused == 'on' or commandused == 'off':
-            bot.say("Attempting to turn challenges " +  commandused + ' for ' + target + '.')
-            if target == 'all' and trigger.admin:
+            disenablevalue = ''
+            if commandused == 'on':
+                disenablevalue = 1
+            if target == 'everyone' and trigger.admin:
                 for u in bot.channels[channel].users:
                     target = u
-                    if commandused == 'on':
-                        bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-                    else:
-                        bot.db.set_nick_value(target, 'challenges_disenable', '')
-            elif target == 'all' and not trigger.admin:
+                    set_database_value(bot, target, 'disenable', disenablevalue)
+            elif target == 'everyone' and not trigger.admin:
                 bot.say('Only Admin can Change Statuses for all.')
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
@@ -78,21 +77,10 @@ def mainfunction(bot, trigger):
                     bot.notice(target + " already has duels off.", instigator)
                 elif opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                elif not disenable:
-                    if commandused == 'on':
-                        bot.db.set_nick_value(target, 'challenges_disenable', 'true')
-                        adjustment = 'now'
-                        set_opttimeout(bot, target)
-                    else:
-                        adjustment = 'already'
-                else:
-                    if commandused == 'on':
-                        adjustment = 'already'
-                    else:
-                        bot.db.set_nick_value(target, 'challenges_disenable', '')
-                        adjustment = 'now'
-                        set_opttimeout(bot, target)
-            bot.say("Challenges should now be " +  commandused + ' for ' + target + '.')
+                elif commandused == 'on' or commandused == 'off':
+                    set_database_value(bot, target, 'disenable', disenablevalue)
+                    set_database_value(bot, target, 'opttime', now)
+                    bot.say("Challenges should be " +  commandused + ' for ' + target + '.')
         
         ## Stats
         elif commandused == 'stats':
