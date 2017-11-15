@@ -55,7 +55,6 @@ def mainfunction(bot, trigger):
             if target == 'all' and trigger.admin:
                 for u in bot.channels[channel].users:
                     target = u
-                    disenable = get_disenable(bot, target)
                     if commandused == 'on':
                         bot.db.set_nick_value(target, 'challenges_disenable', 'true')
                     else:
@@ -65,9 +64,10 @@ def mainfunction(bot, trigger):
             elif target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                disenable = get_disenable(bot, target)
+                disenable = get_database_value(bot, target, 'disenable')
+                #disenable = get_disenable(bot, target)
                 opttime = get_opttimeout(bot, target)
-                if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
+                if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
                     if commandused == 'on':
