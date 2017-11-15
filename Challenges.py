@@ -119,8 +119,7 @@ def mainfunction(bot, trigger):
             else:
                 stats = ''
                 for x in lootitemsarray:
-                    scriptdef = str('get_' + x + '(bot,target)')
-                    gethowmany = eval(scriptdef)
+                    gethowmany = get_lootitem(bot, nick, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
@@ -643,145 +642,80 @@ def lootcorpse(bot, loser, winner):
             scriptdefb = str('get_' + x + '(bot,winner)')
             gethowmanyb = eval(scriptdefb)
             bot.db.set_nick_value(winner, databasecolumn, int(gethowmany) + int(gethowmanyb))
+            
+##############
+##  Potions ##
+##############
+
+def get_lootitem(bot, nick, loottype):
+    databasecolumn = str('challenges_' + loottype)
+    lootitem = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return lootitem
+
+def get_lootitem_text(bot, nick, loottype):
+    if loottype == 'healthpotion':
+        loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
+    elif loottype == 'posionpotion':
+        loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
+    elif loottype == 'manapotion':
+        loot_text = ': worth 100 mana. Use .challenge manapotion to consume.'
+    elif loottype == 'timepotion':
+        loot_text = ': worth up to ' + str(TIMEOUT) + ' seconds of timeout. Use .challenge timepotion to consume.'
+    elif loottype == 'mysterypotion':
+        loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
+    else:
+        loot_text = ''
         
-####################
-## Health Potions ##
-####################
-
-def get_healthpotion(bot, nick):
-    healthpotion = bot.db.get_nick_value(nick, 'challenges_healthpotion') or 0
-    return healthpotion
-
-def get_healthpotion_text():
-    loot_text = ': worth 100 health. Use .challenge healthpotion to consume.'
-    return loot_text
-
-def use_healthpotion(bot, instigator, target, inchannel):
+def use_lootitem(bot, instigator, target, inchannel, loottype):
     targethealth = get_health(bot, target)
     if not targethealth:
         fresh_health(bot, target)
     health = get_health(bot, target)
-    healthpotion = get_healthpotion(bot, instigator)
-    bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
-    bot.db.set_nick_value(instigator, 'challenges_healthpotion', int(healthpotion) - 1)
-    
-def add_healthpotion(bot, nick):
-    healthpotion = get_healthpotion(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_healthpotion', int(healthpotion) + 1)
-
-####################
-## Poison Potions ##
-####################
-
-def get_poisonpotion(bot, nick):
-    posionpotion = bot.db.get_nick_value(nick, 'challenges_poisonpotion') or 0
-    return posionpotion
-
-def get_poisonpotion_text():
-    loot_text = ': worth -50 health. Use .challenge poisonpotion to consume.'
-    return loot_text
-
-def use_poisonpotion(bot, instigator, target, inchannel):
-    targethealth = get_health(bot, target)
-    if not targethealth:
-        fresh_health(bot, target)
-    health = get_health(bot, target)
-    posionpotion = get_poisonpotion(bot, instigator)
-    bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
-    bot.db.set_nick_value(instigator, 'challenges_poisonpotion', int(posionpotion) - 1)
+    mana = get_mana(bot, target)
+    lootitem = get_lootitem(bot, instigator, loottype)
+    databasecolumn = str('challenges_' + loottype)
+    bot.db.set_nick_value(instigator, databasecolumn, int(lootitem) - 1)
+    if loottype == 'healthpotion':
+        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+    elif loottype == 'posionpotion':
+        bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
+    elif loottype == 'manapotion':
+        bot.db.set_nick_value(target, 'challenges_mana', int(mana) + 100)
+    elif loottype == 'timepotion':
+        bot.db.set_nick_value(target, 'challenges_timeout', '')
+    elif loottype == 'mysterypotion':
+        loot = random.randint(0,len(lootitemsarray) - 1)
+        loot = str(lootitemsarray [loot])
+        if loot != 'mysterypotion':
+            bot.say('The mysterypotion is a ' + str(loot) + '!!')
+            scriptdefadd = str('add_lootitem' + '(bot, instigator, loot)')
+            eval(scriptdefadd)
+            scriptdefuse = str('use_lootitem' + '(bot, instigator, target, inchannel, loot)')
+            lootusemsg = str("a " + loot)
+        else:
+            nulllootitemsarray = ['water','vinegar','mud']
+            nullloot = random.randint(0,len(nulllootitemsarray) - 1)
+            nullloot = str(nulllootitemsarray [nullloot])
+            bot.say('Looks like the Potion was just ' + str(nullloot) + ' after all.')
+            lootusemsg = str("Just " + nullloot)
+            if not inchannel.startswith("#") and target != instigator:
+                bot.notice(instigator + " used a mysterypotion on you. It was " + str(lootusemsg), target)
+    else:
+        loot_text = ''
     targethealth = get_health(bot, target)
     if targethealth <= 0:
         update_respawn(bot, target)
         respawn_mana(bot, target)
         update_kills(bot, instigator)
         lootcorpse(bot, target, instigator)
-        bot.say(instigator + " killed " + target + " with a poisonpotion!")
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + " used a poisonpotion on you that killed you", target)
+        bot.say(instigator + " killed " + target + " with a " +  loottype + "!")
+        if not inchannel.startswith("#") and target != instigator:
+            bot.notice(instigator + " used a " + loottype + " on you that killed you", target)
     
-def add_poisonpotion(bot, nick):
-    poisonpotion = get_poisonpotion(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_poisonpotion', int(poisonpotion) + 1)
-    
-##################
-## Mana Potions ##
-##################
-
-def get_manapotion(bot, nick):
-    manapotion = bot.db.get_nick_value(nick, 'challenges_manapotion') or 0
-    return manapotion
-
-def get_manapotion_text():
-    loot_text = ': worth 100 mana. Use .challenge manapotion to consume.'
-    return loot_text
-
-def use_manapotion(bot, instigator, target, inchannel):
-    mana = get_mana(bot, target)
-    manapotion = get_manapotion(bot, instigator)
-    bot.db.set_nick_value(target, 'challenges_mana', int(mana) + 100)
-    bot.db.set_nick_value(instigator, 'challenges_manapotion', int(manapotion) - 1)
-    
-def add_manapotion(bot, nick):
-    manapotion = get_manapotion(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_manapotion', int(manapotion) + 1)
-    
-##################
-## Mana Potions ##
-##################
-
-def get_timepotion(bot, nick):
-    timepotion = bot.db.get_nick_value(nick, 'challenges_timepotion') or 0
-    return timepotion
-
-def get_timepotion_text():
-    loot_text = ': worth ' + str(TIMEOUT) + ' seconds of timeout. Use .challenge timepotion to consume.'
-    return loot_text
-
-def use_timepotion(bot, instigator, target, inchannel):
-    timepotion = get_timepotion(bot, instigator)
-    bot.db.set_nick_value(instigator, 'challenges_timepotion', int(timepotion) - 1)
-    bot.db.set_nick_value(target, 'challenges_timeout', '')
-    
-def add_timepotion(bot, nick):
-    timepotion = get_timepotion(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_timepotion', int(timepotion) + 1)
-    
-#####################
-## Mystery Potions ##
-#####################
-
-def get_mysterypotion(bot, nick):
-    mysterypotion = bot.db.get_nick_value(nick, 'challenges_mysterypotion') or 0
-    return mysterypotion
-
-def get_mysterypotion_text():
-    loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
-    return loot_text
-
-def use_mysterypotion(bot, instigator, target, inchannel):
-    mysterypotion = get_mysterypotion(bot, instigator)
-    bot.db.set_nick_value(instigator, 'challenges_mysterypotion', int(mysterypotion) - 1)
-    loot = random.randint(0,len(lootitemsarray) - 1)
-    loot = str(lootitemsarray [loot])
-    if loot != 'mysterypotion':
-        bot.say('The mysterypotion is a ' + str(loot) + '!!')
-        scriptdefadd = str('add_' + loot + '(bot, instigator)')
-        eval(scriptdefadd)
-        scriptdefuse = str('use_' + loot + '(bot, instigator, target, inchannel)')
-        eval(scriptdefuse)
-        lootusemsg = str("a " + loot)
-    else:
-        nulllootitemsarray = ['water','vinegar','mud']
-        nullloot = random.randint(0,len(nulllootitemsarray) - 1)
-        nullloot = str(nulllootitemsarray [nullloot])
-        bot.say('Looks like the Potion was just ' + str(nullloot) + ' after all.')
-        lootusemsg = str("Just " + nullloot)
-    if not inchannel.startswith("#"):
-        bot.notice(instigator + " used a mysterypotion on you. It was " + str(lootusemsg), target)
-    
-def add_mysterypotion(bot, nick):
-    mysterypotion = get_mysterypotion(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_mysterypotion', int(mysterypotion) + 1)
+def add_lootitem(bot, nick, loottype):
+    lootitem = get_lootitem(bot, nick, loottype)
+    databasecolumn = str('challenges_' + loottype)
+    bot.db.set_nick_value(nick, databasecolumn, int(lootitem) + 1)
     
 ######################
 ## Weapon Selection ##
