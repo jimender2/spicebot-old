@@ -147,10 +147,10 @@ def mainfunction(bot, trigger):
                 if target == 'everyone':
                     for u in bot.channels[channel].users:
                         target = u
-                        bot.say(target)
                         if statset == 'all':
                             for x in challengestatsadminarray:
                                 statset = x
+                                bot.say(target + statset + str(newvalue))
                                 databasecolumn = str('challenges_' + statset)
                                 bot.db.set_nick_value(target, databasecolumn, newvalue)
                         else:
