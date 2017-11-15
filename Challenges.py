@@ -645,11 +645,11 @@ def get_lootitem_text(bot, nick, loottype):
     elif loottype == 'timepotion':
         loot_text = ': worth up to ' + str(TIMEOUT) + ' seconds of timeout.'
     elif loottype == 'mysterypotion':
-        loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
+        loot_text = ': With unknown effects!'
     else:
         loot_text = ''
     if loot_text != '':
-        loot_text = str(loot_text + " Use .challenge " + str(loottype) + "to consume.")
+        loot_text = str(loot_text + " Use .challenge " + str(loottype) + " to consume.")
     return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype):
