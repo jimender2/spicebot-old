@@ -360,16 +360,12 @@ def mainfunction(bot, trigger):
             gethowmany = get_lootitem(bot, instigator, commandused)
             if gethowmany:
                 if target == instigator:
-                    bot.say(instigator + ' uses ' + commandused + '.')
                     uselootitem = 1
                 elif target.lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm not sure who that is.")
                 else:
                     targetdisenable = get_disenable(bot, target)
                     if targetdisenable:
-                        bot.say(instigator + ' uses ' + commandused + ' on ' + target + ".")
-                        if not inchannel.startswith("#") and target != instigator:
-                            bot.notice(instigator + " used a " + commandused + " on you", target)
                         uselootitem = 1
                     else:
                         bot.say(target + " does not have Challenges enabled")
@@ -673,6 +669,10 @@ def use_lootitem(bot, instigator, target, inchannel, loottype):
     lootitem = get_lootitem(bot, instigator, loottype)
     databasecolumn = str('challenges_' + loottype)
     bot.db.set_nick_value(instigator, databasecolumn, int(lootitem) - 1)
+    if target == instigator:
+        mainlootusemessage = str(instigator + ' uses ' + loottype + '.')
+    else:
+        mainlootusemessage = str(instigator + ' uses ' + loottype + ' on ' + target + ". ")
     if loottype == 'healthpotion':
         bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
     elif loottype == 'posionpotion':
@@ -696,19 +696,19 @@ def use_lootitem(bot, instigator, target, inchannel, loottype):
             nullloot = str(nulllootitemsarray [nullloot])
             bot.say('Looks like the Potion was just ' + str(nullloot) + ' after all.')
             lootusemsg = str("Just " + nullloot)
-            if not inchannel.startswith("#") and target != instigator:
-                bot.notice(instigator + " used a mysterypotion on you. It was " + str(lootusemsg), target)
+        mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg) + '. ')
     else:
-        loot_text = ''
+        mainlootusemessage = str(mainlootusemessage + '')
     targethealth = get_health(bot, target)
     if targethealth <= 0:
+        mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
         update_respawn(bot, target)
         respawn_mana(bot, target)
         update_kills(bot, instigator)
         lootcorpse(bot, target, instigator)
-        bot.say(instigator + " killed " + target + " with a " +  loottype + "!")
-        if not inchannel.startswith("#") and target != instigator:
-            bot.notice(instigator + " used a " + loottype + " on you that killed you", target)
+    bot.say(str(mainlootusemessage))
+    if not inchannel.startswith("#") and target != instigator:
+        bot.notice(str(mainlootusemessage), target)
     
 def add_lootitem(bot, nick, loottype):
     lootitem = get_lootitem(bot, nick, loottype)
