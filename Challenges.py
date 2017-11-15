@@ -813,11 +813,14 @@ def update_losses(bot, nick):
 def get_winlossratio(bot,target):
     wins = get_wins(bot, target)
     losses = get_losses(bot, target)
-    winlosstotal = abs(wins + losses)
-    if winlosstotal != 0:
-        winlossratio = float(wins)/winlosstotal
-    else:
+    if not wins and if not losses:
         winlossratio = 0
+    else:
+        winlosstotal = abs(wins + losses)
+        if winlosstotal != 0:
+            winlossratio = float(wins)/winlosstotal
+        else:
+            winlossratio = 0
     return winlossratio
 
 ###############
