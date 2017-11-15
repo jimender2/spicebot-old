@@ -34,6 +34,7 @@ def challenge_cmd(bot, trigger):
 def mainfunction(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
+    now = time.time()
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
@@ -65,12 +66,9 @@ def mainfunction(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 disenable = get_database_value(bot, target, 'disenable')
-                health = get_database_value(bot, target, 'health')
-                bot.say(str(health))
-                bot.say(str(disenable))
-                disenable = get_disenable(bot, target)
-                bot.say(str(disenable))
-                opttime = get_opttimeout(bot, target)
+                opttime = get_database_value(bot, target, 'opttime')
+                opttime = abs(now - opttime)
+                bot.say(str(opttime))
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
