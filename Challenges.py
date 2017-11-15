@@ -66,8 +66,9 @@ def mainfunction(bot, trigger):
             else:
                 disenable = get_database_value(bot, target, 'disenable')
                 #disenable = get_disenable(bot, target)
+                bot.say(str(disenable))
                 opttime = get_opttimeout(bot, target)
-                if opttime < OPTTIMEOUT:# and not bot.nick.endswith('dev') and not trigger.admin:
+                if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 elif not disenable:
                     if commandused == 'on':
