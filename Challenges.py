@@ -648,6 +648,7 @@ def get_lootitem_text(bot, nick, loottype):
         loot_text = ': With unknown effects! Use .challenge mysterypotion to consume.'
     else:
         loot_text = ''
+    return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype):
     targethealth = get_health(bot, target)
