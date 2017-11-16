@@ -125,7 +125,7 @@ def execute_main(bot, trigger):
             
         ## Enable/Disable status
         elif commandused == 'status'and not inchannel.startswith("#"):
-            disenable = get_disenable(bot, target)
+            disenable = get_spicebotdisenable(bot, target)
             if disenable:
                 message = str(target + " has SpiceBot enabled")
             else:
@@ -150,7 +150,7 @@ def execute_main(bot, trigger):
                     bot.say("Turning " + bot.nick +  commandused + ' for all.')
                     for u in bot.channels[channel.lower()].users:
                         target = u
-                        disenable = get_disenable(bot, target)
+                        disenable = get_spicebotdisenable(bot, target)
                         if commandused == 'on':
                             bot.db.set_nick_value(target, 'spicebot_disenable', 'true')
                         else:
@@ -163,7 +163,7 @@ def execute_main(bot, trigger):
             elif not trigger.admin and target != instigator:
                 bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
             else:
-                disenable = get_disenable(bot, target)
+                disenable = get_spicebotdisenable(bot, target)
                 opttime = get_timeout(bot, target)
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
