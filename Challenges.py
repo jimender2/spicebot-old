@@ -445,7 +445,7 @@ def getreadytorumble(bot, trigger, instigator, target):
         ## Loot Corpse
         lootcorpse(bot, loser, winner)
     else:
-        winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + damage + ' damage.')
+        winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + str(damage) + ' damage.')
             
     ## Random Inventory gain
     lootwinnermsg = ''
