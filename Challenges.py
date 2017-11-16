@@ -396,6 +396,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## Vars
     fullcommandused = trigger.group(2)
     targetsplit = trigger.group(3)
+    now = time.time()
     
     ## Announce Combat
     announcecombatmsg = str(instigator + " versus " + target)
