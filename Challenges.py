@@ -121,7 +121,7 @@ def mainfunction(bot, trigger):
                     bot.notice(instigator + ", It looks like " + target + " can't enable/disable challenges for " + str(targetopttimemath) + " seconds.", instigator)
                 else:
                     if targetdisenable and commandused == 'on':
-                        bot.notice(instigator + ", It looks like " + target + " already has duels o.", instigator)
+                        bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
                     elif not targetdisenable and commandused == 'off':
                         bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
                     else:
