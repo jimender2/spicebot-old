@@ -437,6 +437,7 @@ def getreadytorumble(bot, trigger, instigator, target):
             
     ## Update Health Of Loser, respawn, allow winner to loot
     adjust_database_value(bot, loser, 'health', damage)
+    damage = abs(damage)
     currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
