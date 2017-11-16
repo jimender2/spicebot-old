@@ -41,7 +41,7 @@ def mainfunction(bot, trigger):
     if not opttime:
         set_database_value(bot, instigator, 'opttime', now)
     validcommandarray = ['docs','help','on','off','stats','backpack','statsadmin','weaponslocker','leader','closetodeath','magic','upupdowndownleftrightleftrightba']
-    privilegedarray = ['on','off','statsadmin']
+    privilegedarray = ['on','off']
     for c in bot.channels:
         channel = c
     if not commandortarget:
@@ -56,6 +56,8 @@ def mainfunction(bot, trigger):
         if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray:
             bot.notice("That person does not appear to be in the room right now.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
+            bot.notice("This is an admin only function.", instigator)
+        elif commandused == 'statsadmin' and not trigger.admin:
             bot.notice("This is an admin only function.", instigator)
         elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off':
             bot.say(target + " does not have Challenges enabled")
@@ -119,8 +121,6 @@ def mainfunction(bot, trigger):
                     bot.say('No backpack items found for ' + target)
                     
             ## Stats statsadmin
-            elif commandused == 'statsadmin' and not trigger.admin:
-                bot.notice("This is an admin only function.", instigator)
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
                 commandtrimmed = trigger.group(5)
