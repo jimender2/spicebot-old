@@ -57,7 +57,7 @@ def mainfunction(bot, trigger):
             bot.notice("That person does not appear to be in the room right now.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice("This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator:
+        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off':
             bot.say(target + " does not have Challenges enabled")
         else:
             
