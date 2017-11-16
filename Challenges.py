@@ -393,7 +393,7 @@ def mainfunction(bot, trigger):
         else:
             return getreadytorumble(bot, trigger, instigator, target)
         
-def getreadytorumble(bot, trigger):
+def getreadytorumble(bot, trigger, instigator, target):
     ## Announce Combat
     announcecombatmsg = str(instigator + " versus " + target)
        
