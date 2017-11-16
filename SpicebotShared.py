@@ -94,15 +94,15 @@ def bot_channelname(bot, trigger):
     botchannel = trigger.sender
     return botchannel
 
+## Check Status of Opt In
+def get_spicebotdisenable(bot, nick):
+    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    return disenable
+
 ## Instigator
 def trigger_instigator(bot, trigger):
     instigator = trigger.nick
     return instigator
-
-## Users Bot Status
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
 
 def set_disable(bot, nick):
     now = time.time()
