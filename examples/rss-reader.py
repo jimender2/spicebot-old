@@ -40,7 +40,7 @@ def manualCheck(bot,trigger):
     instigator = trigger.nick
     target = trigger.nick
     update_usertotal(bot, target)
-    targetdisenable = get_disenable(bot, target)
+    targetdisenable = get_spicebotdisenable(bot, target)
     if targetdisenable:
 	runprocess(bot)
     else:
@@ -101,12 +101,3 @@ def get_lastbuildcurrent(bot, lastBuildXML):
 def set_lastbuildcurrent(bot, lastbuildcurrent):
     for channel in bot.channels:
         bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
-
-def update_usertotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
