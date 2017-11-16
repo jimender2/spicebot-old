@@ -394,6 +394,9 @@ def mainfunction(bot, trigger):
             return getreadytorumble(bot, trigger, instigator, target)
         
 def getreadytorumble(bot, trigger, instigator, target):
+    ## Vars
+    fullcommandused = trigger.group(2)
+    
     ## Announce Combat
     announcecombatmsg = str(instigator + " versus " + target)
        
