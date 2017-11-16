@@ -570,6 +570,7 @@ def get_lootitem_text(bot, nick, loottype):
     return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
+    bot.say(loottype)
     targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
