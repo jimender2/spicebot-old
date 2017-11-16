@@ -551,7 +551,7 @@ def lootcorpse(bot, loser, winner):
         gethowmany = get_database_value(bot, loser, x)
         if gethowmany:
             set_database_value(bot, loser, x, '')
-            gethowmanyb = get_database_value(bot, winer, x)
+            gethowmanyb = get_database_value(bot, winner, x)
             set_database_value(bot, target, x, int(gethowmany) + int(gethowmanyb))
 
 def get_lootitem_text(bot, nick, loottype):
