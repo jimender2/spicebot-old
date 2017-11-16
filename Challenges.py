@@ -573,23 +573,22 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
-    health = get_database_value(bot, target, 'health')
+        health = get_database_value(bot, target, 'health')
     gethowmany = get_database_value(bot, target, 'mana')
-    lootitem = get_database_value(bot, instigator, loottype)
-    databasecolumn = str('challenges_' + loottype)
-    bot.db.set_nick_value(instigator, databasecolumn, int(lootitem) - 1)
+    adjust_database_value(bot, instigator, loottype, -1)
+    mana = get_database_value(bot, target, 'mana')
     if target == instigator:
         mainlootusemessage = str(instigator + ' uses ' + loottype + '.')
     else:
         mainlootusemessage = str(instigator + ' uses ' + loottype + ' on ' + target + ". ")
     if loottype == 'healthpotion':
-        bot.db.set_nick_value(target, 'challenges_health', int(health) + 100)
+        adjust_database_value(bot, target, 'health', '100')
     elif loottype == 'posionpotion':
-        bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
+        adjust_database_value(bot, target, 'health', '-50')
     elif loottype == 'manapotion':
-        bot.db.set_nick_value(target, 'challenges_mana', int(mana) + 100)
+        adjust_database_value(bot, target, 'mana', '100')
     elif loottype == 'timepotion':
-        bot.db.set_nick_value(target, 'challenges_timeout', '')
+        adjust_database_value(bot, target, 'timeout', '')
     elif loottype == 'mysterypotion':
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
