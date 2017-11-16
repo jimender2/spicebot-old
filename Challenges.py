@@ -611,7 +611,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
         update_respawn(bot, target)
         set_database_value(bot, target, 'mana', '')
-        adjust_database_value(bot, instigator, 'killsl, '1')
+        adjust_database_value(bot, instigator, 'kills', '1')
         lootcorpse(bot, target, instigator)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
