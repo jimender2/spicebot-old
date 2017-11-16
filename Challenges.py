@@ -83,23 +83,8 @@ def mainfunction(bot, trigger):
              targetopttimemath = (OPTTIMEOUT - opttime)
              lastfought = get_lastfought(bot, instigator)
 
-            ## bot.notice(instigator + ", ", instigator)
-            
-            ## Random Dueling
-            if commandused == 'random':
-                if not lastfought:
-                    lastfought = instigator
-                randomtargetarray = []
-                for u in bot.channels[channel].users:
-                    target = u
-                    if target != instigator and target != bot.nick:
-                        if target != lastfought or bot.nick.endswith('dev'):
-                            targetdisenable = get_disenable(bot, target)
-                            targettime = get_timesince(bot, target)
-                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                randomtargetarray.append(target)
+
+                                
                 if randomtargetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
@@ -110,7 +95,28 @@ def mainfunction(bot, trigger):
             ## Docs
             if commandused == 'docs' or commandused == 'help':
                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
-    
+            
+            ## Random Dueling
+            elif commandused == 'random':
+                if not lastfought:
+                    lastfought = instigator
+                randomtargetarray = []
+                for u in bot.channels[channel].users:
+                    target = u
+                    if target != instigator and target != bot.nick:
+                        if target != lastfought or bot.nick.endswith('dev'):
+                            targetdisenable = get_disenable(bot, target)
+                            targettime = get_timesince(bot, target)
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
+                                randomtargetarray.append(target)
+                if randomtargetarray == []:
+                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                else:
+                    randomselected = random.randint(0,len(randomtargetarray) - 1)
+                    target = str(randomtargetarray [randomselected])
+                    return getreadytorumble(bot, trigger, instigator, target)
+
             ## On/off
             elif commandused == 'on' or commandused == 'off':
                 disenablevalue = ''
@@ -394,7 +400,7 @@ def mainfunction(bot, trigger):
             elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         else:
-            return getreadytorumble(bot, trigger)
+            return getreadytorumble(bot, trigger, instigator, target)
         
 def getreadytorumble(bot, trigger):
     ## Announce Combat
