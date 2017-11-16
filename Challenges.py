@@ -515,7 +515,7 @@ def get_timesince(bot, nick):
 #####################
 
 def update_respawn(bot, nick):
-    respawns = get_database_value(bot, nick, 'respawns')
+    respawns = int(get_database_value(bot, nick, 'respawns'))
     bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
     bot.db.set_nick_value(nick, 'challenges_health', '1000')
     currentrespawns = get_database_value(bot, nick, 'respawns')
