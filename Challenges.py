@@ -133,7 +133,7 @@ def mainfunction(bot, trigger):
             elif commandused == 'stats':
                 stats = ''
                 for x in challengestatsarray:
-                    if x == 'winlossratio' or x == 'backpackitems':
+                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout':
                         scriptdef = str('get_' + x + '(bot,target)')
                         gethowmany = eval(scriptdef)
                     else:
@@ -510,6 +510,14 @@ def get_timesince(bot, nick):
     last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
     return abs(now - int(last))
     
+def get_timeout(bot, nick):
+    time_since = get_timesince(bot, nick)
+    if time_since < TIMEOUT:
+        timediff = int(TIMEOUT - time_since)
+    else:
+        timediff = 0
+    return timediff
+
 #####################
 ## Spawn / ReSpawn ##
 #####################
