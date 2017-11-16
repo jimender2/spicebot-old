@@ -78,10 +78,10 @@ def mainfunction(bot, trigger):
             
         ## and, continue
         else:
-             targetopttime = get_database_value(bot, target, 'opttime')
-             targetopttime = abs(now - targetopttime)
-             targetopttimemath = (OPTTIMEOUT - opttime)
-             lastfought = get_lastfought(bot, instigator)
+            targetopttime = get_database_value(bot, target, 'opttime')
+            targetopttime = abs(now - targetopttime)
+            targetopttimemath = (OPTTIMEOUT - opttime)
+            lastfought = get_lastfought(bot, instigator)
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
