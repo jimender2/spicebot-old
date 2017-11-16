@@ -801,11 +801,11 @@ def get_kills(bot, nick):
 
 def update_kills(bot, nick):
     kills = get_kills(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_kills', kills + 1)
+    bot.db.set_nick_value(nick, 'challenges_kills', int(kills) + 1)
 
 def update_wins(bot, nick):
     wins = get_wins(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_wins', wins + 1)
+    bot.db.set_nick_value(nick, 'challenges_wins', int(wins) + 1)
 
 def get_losses(bot, nick):
     losses = bot.db.get_nick_value(nick, 'challenges_losses') or 0
@@ -813,7 +813,7 @@ def get_losses(bot, nick):
 
 def update_losses(bot, nick):
     losses = get_losses(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_losses', losses + 1)
+    bot.db.set_nick_value(nick, 'challenges_losses', int(losses) + 1)
 
 def get_winlossratio(bot,target):
     wins = get_wins(bot, target)
