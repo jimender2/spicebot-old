@@ -357,7 +357,6 @@ def mainfunction(bot, trigger):
     else:
         lastfought = get_lastfought(bot, instigator)
         target = trigger.group(3)
-        targetsplit = trigger.group(3)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
         instigatordisenable = get_disenable(bot, instigator)
         targetdisenable = get_disenable(bot, target)
@@ -396,6 +395,7 @@ def mainfunction(bot, trigger):
 def getreadytorumble(bot, trigger, instigator, target):
     ## Vars
     fullcommandused = trigger.group(2)
+    targetsplit = trigger.group(3)
     
     ## Announce Combat
     announcecombatmsg = str(instigator + " versus " + target)
