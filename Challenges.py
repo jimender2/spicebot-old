@@ -82,15 +82,6 @@ def mainfunction(bot, trigger):
              targetopttime = abs(now - targetopttime)
              targetopttimemath = (OPTTIMEOUT - opttime)
              lastfought = get_lastfought(bot, instigator)
-
-
-                                
-                if randomtargetarray == []:
-                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                else:
-                    randomselected = random.randint(0,len(randomtargetarray) - 1)
-                    target = str(randomtargetarray [randomselected])
-                    return getreadytorumble(bot, trigger)
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
