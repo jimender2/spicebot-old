@@ -80,8 +80,8 @@ def mainfunction(bot, trigger):
         else:
             targetopttime = get_database_value(bot, target, 'opttime')
             targetopttime = abs(now - targetopttime)
-            targetopttimemath = (OPTTIMEOUT - opttime)
-            lastfought = get_lastfought(bot, instigator)
+            targetopttimemath = (OPTTIMEOUT - targetopttime)
+            lastfought = get_database_value(bot, instigator, 'lastfought')
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
@@ -117,7 +117,7 @@ def mainfunction(bot, trigger):
                     for u in bot.channels[channel].users:
                         target = u
                         set_database_value(bot, target, 'disenable', disenablevalue)
-                elif opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ", It looks like " + target + " can't enable/disable challenges for " + str(targetopttimemath) + " seconds.", instigator)
                 else:
                     if targetdisenable and commandused == 'on':
@@ -221,7 +221,7 @@ def mainfunction(bot, trigger):
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if disenable:
-                        health = get_health(bot,target)
+                        health = get_database_value(bot, target, 'health')
                         if health < currentleadernumber:
                             currentleader = target
                             currentleadernumber = health
@@ -243,7 +243,6 @@ def mainfunction(bot, trigger):
                 konami = get_database_value(bot, target, 'konami')
                 if not konami:
                     set_database_value(bot, instigator, 'konami', 1)
-                    set_konami(bot, instigator)
                     bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
                 else:
                     bot.notice(instigator + " you can only cheat once.", instigator)
@@ -312,16 +311,16 @@ def mainfunction(bot, trigger):
                     target = trigger.group(5)
                     if not target:
                         target = trigger.nick
-                    mana = get_mana(bot, instigator)
+                    mana = get_database_value(bot, instigator, 'mana')
                     if magicusage == 'attack':
-                        manarequired = 250
-                        damage = 200
-                    elif magicusage == 'health':
-                        manarequired = 200
+                        manarequired = -250
                         damage = -200
+                    elif magicusage == 'health':
+                        manarequired = -200
+                        damage = 200
                     elif magicusage == 'instakill':
-                        manarequired = 1000
-                        damage = 99999
+                        manarequired = -1000
+                        damage = -99999
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif mana < manarequired:
@@ -331,13 +330,14 @@ def mainfunction(bot, trigger):
                         if target.lower() not in bot.privileges[channel.lower()]:
                             bot.say("I'm not sure who that is.")
                         else:
-                            targethealthstart = get_health(bot, target)
-                            use_magicattack(bot, instigator, target, damage)
-                            targethealth = get_health(bot, target)
+                            targethealthstart = get_database_value(bot, target, 'health')
+                            adjust_database_value(bot, instigator, 'mana', manarequired)
+                            adjust_database_value(bot, target, 'health', damage)
+                            targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 update_respawn(bot, target)
-                                respawn_mana(bot, target)
-                                update_kills(bot, instigator)
+                                set_database_value(bot, target, 'opttime', now)
+                                adjust_database_value(bot, instigator, 'kills', '1')
                                 lootcorpse(bot, target, instigator)
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
@@ -355,7 +355,7 @@ def mainfunction(bot, trigger):
             else:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
     else:
-        lastfought = get_lastfought(bot, instigator)
+        lastfought = get_database_value(bot, instigator, 'lastfought')
         target = trigger.group(3)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
         instigatordisenable = get_database_value(bot, instigator, 'disenable')
@@ -401,12 +401,12 @@ def getreadytorumble(bot, trigger, instigator, target):
     announcecombatmsg = str(instigator + " versus " + target)
        
     ## Check new player health
-    instigatorhealth = get_health(bot, instigator)
+    instigatorhealth = get_database_value(bot, instigator, 'health')
     if not instigatorhealth:
-        fresh_health(bot, instigator)
-    targethealth = get_health(bot, target)
+        set_database_value(bot, instigator, 'health', '1000')
+    targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
-        fresh_health(bot, target)
+        set_database_value(bot, target, 'health', '1000')
 
     ## Damage Done
     damage = damagedone(bot)
@@ -421,26 +421,27 @@ def getreadytorumble(bot, trigger, instigator, target):
     weapon = weaponformatter(bot, weapon)
            
     ## Update Wins and Losses
-    update_wins(bot, winner)
-    update_losses(bot, loser)
+    adjust_database_value(bot, winner, 'wins', '1')
+    adjust_database_value(bot, loser, 'losses', '1')
             
     ## Update XP points
     XPearnedwinner = '5'
     XPearnedloser = '3'
-    update_xp(bot, winner, XPearnedwinner)
-    update_xp(bot, loser, XPearnedloser)
+    adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+    adjust_database_value(bot, loser, 'xp', XPearnedloser)
                 
     ## Update last fought
-    set_lastfought(bot, instigator, target)
-    set_lastfought(bot, target, instigator)
+    set_database_value(bot, instigator, 'lastfought', target)
+    set_database_value(bot, target, 'lastfought', instigator)
             
     ## Update Health Of Loser, respawn, allow winner to loot
-    currenthealth = update_health(bot, loser, damage)
+    adjust_database_value(bot, loser, 'health', damage)
+    currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
         update_respawn(bot, loser)
-        respawn_mana(bot, loser)
-        update_kills(bot, winner)
+        set_database_value(bot, loser, 'mana', '')
+        adjust_database_value(bot, winner, 'kills', '1')
         ## Loot Corpse
         lootcorpse(bot, loser, winner)
     else:
@@ -451,8 +452,9 @@ def getreadytorumble(bot, trigger, instigator, target):
     lootwinnermsgb = ''
     randominventoryfind = randominventory()
     if randominventoryfind == 'true':
-        loot, loot_text = determineloottype(bot, winner)
-        add_lootitem(bot, winner, loot)
+        loot = determineloottype(bot, winner)
+        loot_text = get_lootitem_text(bot, winner, loot)
+        adjust_database_value(bot, winner, loot, '1')
         lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
         if winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
@@ -462,9 +464,9 @@ def getreadytorumble(bot, trigger, instigator, target):
     bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
         
     ## Update Time Of Combat
-    update_time(bot, instigator)
-    update_time(bot, target)
-    update_time(bot, ALLCHAN)
+    set_database_value(bot, instigator, 'timeout', now)
+    set_database_value(bot, target, 'timeout', now)
+    set_database_value(bot, ALLCHAN, 'timeout', now)
 
 ## Health Regeneration
 @sopel.module.interval(1800)
@@ -474,10 +476,9 @@ def healthregen(bot):
             target = u
             targetdisenable = get_database_value(bot, target, 'disenable')
             if targetdisenable:
-                health = get_health(bot, target)
+                health = get_database_value(bot, target, 'health')
                 if health < 500:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
-                    health = get_health(bot, target)
         
 ## Functions######################################################################################################################
 
@@ -490,62 +491,31 @@ def get_database_value(bot, nick, databasekey):
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
-
+    
+def adjust_database_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey)
+    databasecolumn = str('challenges_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    
 ##########
 ## Time ##
 ##########
-
-def update_time(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'challenges_timeout', now)
     
 def get_timesince(bot, nick):
     now = time.time()
     last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
     return abs(now - int(last))
-
-def get_timeout(bot, nick):
-    time_since = get_timesince(bot, nick)
-    if time_since < TIMEOUT:
-        timediff = int(TIMEOUT - time_since)
-    else:
-        timediff = 0
-    return timediff
-
-def get_opttimeout(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'challengesopt_time') or 0
-    return abs(now - last)
-
-def set_opttimeout(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'challengesopt_time', now)
-    
-def reset_opttimeout(bot, nick):
-    bot.db.set_nick_value(nick, 'challengesopt_time', '')
     
 #####################
 ## Spawn / ReSpawn ##
 #####################
 
-def get_respawns(bot, nick):
-    respawns = bot.db.get_nick_value(nick, 'challenges_respawns') or 0
-    return respawns
-
 def update_respawn(bot, nick):
-    respawns = get_respawns(bot, nick)
+    respawns = get_database_value(bot, nick, 'respawns')
     bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
     bot.db.set_nick_value(nick, 'challenges_health', '1000')
-    currentrespawns = get_respawns(bot, nick)
+    currentrespawns = get_database_value(bot, nick, 'respawns')
     return currentrespawns
-
-def update_spawn(bot, nick):
-    health = get_health(bot, nick)
-    if not health or int(health) <= 0:
-        bot.db.set_nick_value(nick, 'challenges_health', '1000')
-     
-def respawn_mana(bot, nick):
-    bot.db.set_nick_value(nick, 'challenges_mana', '')
     
 ###############
 ## Inventory ##
@@ -554,7 +524,7 @@ def respawn_mana(bot, nick):
 def get_backpackitems(bot, target):
     totalbackpack = 0
     for x in lootitemsarray:
-        gethowmany = get_lootitem(bot, target, x)
+        gethowmany = get_database_value(bot, target, x)
         totalbackpack = int(int(totalbackpack) + int(gethowmany))
     return totalbackpack
 
@@ -570,22 +540,15 @@ def randominventory():
 def determineloottype(bot, nick): 
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
-    loot_text = get_lootitem_text(bot, nick, loot)
-    return loot, loot_text
+    return loot
 
 def lootcorpse(bot, loser, winner):
     for x in lootitemsarray:
-        gethowmany = get_lootitem(bot, loser, x)
-        databasecolumn = str('challenges_' + x)
+        gethowmany = get_database_value(bot, loser, x)
         if gethowmany:
-            bot.db.set_nick_value(loser, databasecolumn, '')
-            gethowmanyb = get_lootitem(bot, winner, x)
-            bot.db.set_nick_value(winner, databasecolumn, int(gethowmany) + int(gethowmanyb))
-
-def get_lootitem(bot, nick, loottype):
-    databasecolumn = str('challenges_' + loottype)
-    lootitem = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return lootitem
+            set_database_value(bot, target, x, '')
+            gethowmanyb = get_database_value(bot, winer, x)
+            set_database_value(bot, target, x, int(gethowmany) + int(gethowmanyb))
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
@@ -605,12 +568,12 @@ def get_lootitem_text(bot, nick, loottype):
     return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
-    targethealth = get_health(bot, target)
+    health = get_database_value(bot, target, 'health')
     if not targethealth:
-        fresh_health(bot, target)
-    health = get_health(bot, target)
-    mana = get_mana(bot, target)
-    lootitem = get_lootitem(bot, instigator, loottype)
+        set_database_value(bot, target, 'health', '1000')
+    health = get_database_value(bot, target, 'health')
+    gethowmany = get_database_value(bot, target, 'mana')
+    lootitem = get_database_value(bot, instigator, loottype)
     databasecolumn = str('challenges_' + loottype)
     bot.db.set_nick_value(instigator, databasecolumn, int(lootitem) - 1)
     if target == instigator:
@@ -629,7 +592,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
         if loot != 'mysterypotion':
-            add_lootitem(bot, instigator, loot)
+            adjust_database_value(bot, instigator, loot, '1')
             saymsg = 'false'
             use_lootitem(bot, instigator, target, inchannel, loot, saymsg)
             saymsg = 'true'
@@ -643,22 +606,17 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg) + '. ')
     else:
         mainlootusemessage = str(mainlootusemessage + '')
-    targethealth = get_health(bot, target)
+    health = get_database_value(bot, target, 'health')
     if targethealth <= 0:
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
         update_respawn(bot, target)
-        respawn_mana(bot, target)
-        update_kills(bot, instigator)
+        set_database_value(bot, target, 'mana', '')
+        adjust_database_value(bot, instigator, 'killsl, '1')
         lootcorpse(bot, target, instigator)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
         if not inchannel.startswith("#") and target != instigator:
             bot.notice(str(mainlootusemessage), target)
-    
-def add_lootitem(bot, nick, loottype):
-    lootitem = get_lootitem(bot, nick, loottype)
-    databasecolumn = str('challenges_' + loottype)
-    bot.db.set_nick_value(nick, databasecolumn, int(lootitem) + 1)
     
 ######################
 ## Weapon Selection ##
@@ -689,15 +647,15 @@ def weaponformatter(bot, weapon):
 def damagedone(bot):
     rando = randint(1, 100)
     if rando >= 90:
-        damage = '120'
+        damage = -120
     elif rando >= 75 and rando < 90:
-        damage = '70'
+        damage = -70
     elif rando < 75 and rando > 10:
-        damage = '40'
+        damage = -40
     elif rando > 1 and rando <= 10:
-        damage = '10'    
+        damage = -10 
     else:
-        damage = '5'
+        damage = -5
     return damage
 
 ###################
@@ -705,10 +663,10 @@ def damagedone(bot):
 ###################
 
 def getwinner(bot, instigator, target):
-    instigatorxp = get_xp(bot, instigator)
+    instigatorxp = get_database_value(bot, instigator, 'xp')
     if not instigatorxp:
         instigatorxp = '1'
-    targetxp = get_xp(bot, target)
+    targetxp = get_database_value(bot, target, 'xp')
     if not targetxp:
         targetxp = '1'
     
@@ -777,34 +735,10 @@ def getwinner(bot, instigator, target):
 ## ScoreCard ##
 ###############
 
-def get_wins(bot, nick):
-    wins = bot.db.get_nick_value(nick, 'challenges_wins') or 0
-    return wins
-
-def get_kills(bot, nick):
-    kills = bot.db.get_nick_value(nick, 'challenges_kills') or 0
-    return kills
-
-def update_kills(bot, nick):
-    kills = get_kills(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_kills', int(kills) + 1)
-
-def update_wins(bot, nick):
-    wins = get_wins(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_wins', int(wins) + 1)
-
-def get_losses(bot, nick):
-    losses = bot.db.get_nick_value(nick, 'challenges_losses') or 0
-    return losses
-
-def update_losses(bot, nick):
-    losses = get_losses(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_losses', int(losses) + 1)
-
 def get_winlossratio(bot,target):
-    wins = get_wins(bot, target)
+    wins = get_database_value(bot, target, 'wins')
     wins = int(wins)
-    losses = get_losses(bot, target)
+    losses = get_database_value(bot, target, 'losses')
     losses = int(losses)
     if not wins and not losses:
         winlossratio = 0
@@ -815,53 +749,6 @@ def get_winlossratio(bot,target):
         else:
             winlossratio = 0
     return winlossratio
-
-###############
-## XP points ##
-###############
-
-def get_xp(bot, nick):
-    xp = bot.db.get_nick_value(nick, 'challenges_xp') or 0
-    return xp
-
-def update_xp(bot, nick, XPearned):
-    xp = get_xp(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_xp', int(xp) + int(XPearned))
-    currentxp = get_xp(bot, nick)
-    return currentxp
-
-############
-## Health ##
-############
-
-def get_health(bot, nick):
-    health = bot.db.get_nick_value(nick, 'challenges_health') or 0
-    return health
-
-def fresh_health(bot, nick):
-    bot.db.set_nick_value(nick, 'challenges_health', '1000')
-
-def update_health(bot, nick, damage):
-    health = get_health(bot, nick)
-    if not health:
-        update_respawn(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_health', (int(health) - int(damage)))
-    currenthealth = get_health(bot, nick)
-    return currenthealth
-
-##########
-## Mana ##
-##########
-
-def get_mana(bot, nick):
-    mana = bot.db.get_nick_value(nick, 'challenges_mana') or 0
-    return mana
-
-def use_magicattack(bot, instigator, target, damage):
-    mana = bot.db.get_nick_value(instigator, 'challenges_mana')
-    bot.db.set_nick_value(instigator, 'challenges_mana', (int(mana) - 250))
-    health = get_health(bot, target)
-    bot.db.set_nick_value(target, 'challenges_health', (int(health) - int(damage)))
 
 ####################
 ## Weapons Locker ##
@@ -876,17 +763,6 @@ def update_weaponslocker(bot, nick, weaponslist):
     for channel in bot.channels:
         bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
 
-###################
-## Last Opponent ##
-###################
-
-def get_lastfought(bot, nick):
-    lastfought = bot.db.get_nick_value(nick, 'challenges_lastfought') or 0
-    return lastfought
-
-def set_lastfought(bot, nicka, nickb):
-    bot.db.set_nick_value(nicka, 'challenges_lastfought', nickb)
-    
 ###########
 ## Tools ##
 ###########
@@ -894,12 +770,3 @@ def set_lastfought(bot, nicka, nickb):
 def diceroll():
     diceroll = randint(0, 20)
     return diceroll
-
-def get_konami(bot, nick):
-    konami = bot.db.get_nick_value(nick, 'challenges_konami') or 0
-    return konami
-
-def set_konami(bot, nick):
-    health = get_health(bot, nick)
-    bot.db.set_nick_value(nick, 'challenges_health', int(health) + 600)
-    bot.db.set_nick_value(nick, 'challenges_konami', 'used')
