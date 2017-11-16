@@ -222,6 +222,7 @@ def mainfunction(bot, trigger):
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if targetdisenable:
                         health = get_database_value(bot, target, 'health')
+                        health = int(health)
                         if health < currentleadernumber:
                             currentleader = target
                             currentleadernumber = health
