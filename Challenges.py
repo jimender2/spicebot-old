@@ -119,7 +119,9 @@ def mainfunction(bot, trigger):
                     bot.say('No backpack items found for ' + target)
                     
             ## Stats statsadmin
-            elif commandused == 'statsadmin':
+            elif commandused == 'statsadmin' and not trigger.admin:
+                bot.notice("This is an admin only function.", instigator)
+            elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
                 commandtrimmed = trigger.group(5)
                 statset = trigger.group(6)
