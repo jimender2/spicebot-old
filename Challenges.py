@@ -220,7 +220,7 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
-                    if disenable:
+                    if targetdisenable:
                         health = get_database_value(bot, target, 'health')
                         if health < currentleadernumber:
                             currentleader = target
