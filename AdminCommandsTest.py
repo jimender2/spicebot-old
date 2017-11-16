@@ -10,8 +10,7 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
-    args1 = trigger.args[1]
-    args2 = trigger.args[2]
+    args = trigger.args[1]
     zero = trigger.group(0)
     one = trigger.group(1)
     two = trigger.group(2)
@@ -21,7 +20,6 @@ def mainfunction(bot, trigger):
     six = trigger.group(6)
     seven = trigger.group(7)
     bot.say("args1 = " + str(args1))
-    bot.say("args2 = " + str(args2))
     bot.say("zero = " + str(zero))
     bot.say("one = " + str(one))
     bot.say("two = " + str(two))
