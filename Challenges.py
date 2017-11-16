@@ -550,7 +550,7 @@ def lootcorpse(bot, loser, winner):
     for x in lootitemsarray:
         gethowmany = get_database_value(bot, loser, x)
         if gethowmany:
-            set_database_value(bot, target, x, '')
+            set_database_value(bot, loser, x, '')
             gethowmanyb = get_database_value(bot, winer, x)
             set_database_value(bot, target, x, int(gethowmany) + int(gethowmanyb))
 
