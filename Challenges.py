@@ -53,7 +53,7 @@ def mainfunction(bot, trigger):
             target = instigator
         targetdisenable = get_database_value(bot, target, 'disenable')
         nontargetarray = ['everyone','add','del','inv']
-        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray:
+        if target.lower() not in bot.privileges[channel.lower()] or target not in nontargetarray:
             bot.notice("That person does not appear to be in the room right now.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice("This is an admin only function.", instigator)
