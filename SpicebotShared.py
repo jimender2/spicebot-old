@@ -27,7 +27,7 @@ def spicebot_prerun(bot,trigger):
     instigator = trigger_instigator(bot, trigger)
     
     ## User's Bot Status
-    instigatorbotstatus = get_disenable(bot, instigator)
+    instigatorbotstatus = get_spicebotdisenable(bot, instigator)
     
     ## Enable Status default is 1 = don't run
     enablestatus = 1
