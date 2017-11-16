@@ -96,7 +96,7 @@ def mainfunction(bot, trigger):
                     target = u
                     if target != instigator and target != bot.nick:
                         if target != lastfought or bot.nick.endswith('dev'):
-                            targetdisenable = get_disenable(bot, target)
+                            targetdisenable = get_database_value(bot, target, 'disenable')
                             targettime = get_timesince(bot, target)
                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
                             if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
@@ -204,8 +204,8 @@ def mainfunction(bot, trigger):
                 currentleadernumber = 0
                 for u in bot.channels[channel].users:
                     target = u
-                    disenable = get_disenable(bot, target)
-                    if disenable:
+                    targetdisenable = get_database_value(bot, target, 'disenable')
+                    if targetdisenable:
                         winlossratio = get_winlossratio(bot,target)
                         if winlossratio > currentleadernumber:
                             currentleader = target
@@ -219,7 +219,7 @@ def mainfunction(bot, trigger):
                 currentleadernumber = 9999999999
                 for u in bot.channels[channel].users:
                     target = u
-                    disenable = get_disenable(bot, target)
+                    targetdisenable = get_database_value(bot, target, 'disenable')
                     if disenable:
                         health = get_health(bot,target)
                         if health < currentleadernumber:
@@ -358,8 +358,8 @@ def mainfunction(bot, trigger):
         lastfought = get_lastfought(bot, instigator)
         target = trigger.group(3)
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        instigatordisenable = get_disenable(bot, instigator)
-        targetdisenable = get_disenable(bot, target)
+        instigatordisenable = get_database_value(bot, instigator, 'disenable')
+        targetdisenable = get_database_value(bot, target, 'disenable')
         instigatortime = get_timesince(bot, instigator)
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
@@ -472,7 +472,7 @@ def healthregen(bot):
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
             target = u
-            targetdisenable = get_disenable(bot, target)
+            targetdisenable = get_database_value(bot, target, 'disenable')
             if targetdisenable:
                 health = get_health(bot, target)
                 if health < 500:
@@ -490,20 +490,6 @@ def get_database_value(bot, nick, databasekey):
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
-    
-#############
-## Opt Out ##
-#############
-
-## Check Status of Opt In
-def get_disenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'challenges_disenable') or 0
-    return disenable
-
-## Check Status of Opt In
-def get_spicebotdisenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
-    return disenable
 
 ##########
 ## Time ##
