@@ -589,7 +589,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     elif loottype == 'manapotion':
         adjust_database_value(bot, target, 'mana', '100')
     elif loottype == 'timepotion':
-        adjust_database_value(bot, target, 'timeout', '')
+        set_database_value(bot, target, 'timeout', '')
     elif loottype == 'mysterypotion':
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
