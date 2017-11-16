@@ -30,4 +30,4 @@ def execute_main(bot, trigger):
         else:
             blameselected = random.randint(0,len(blametargetarray) - 1)
             whotoblame = str(blametargetarray [blameselected])
-        bot.say("whotoblame + "' died. The odds were never in their favor.")
+        bot.say(whotoblame + " died. The odds were never in their favor.")
