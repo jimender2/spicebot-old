@@ -153,8 +153,8 @@ def mainfunction(bot, trigger):
             
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                adjustmentdirection = trigger.group(4)
                 weaponslist = get_weaponslocker(bot, instigator)
+                adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
@@ -193,12 +193,12 @@ def mainfunction(bot, trigger):
                                 weaponlockerstatus = 'already'
                             else:
                                 weaponslist.remove(weaponchange)
-                                update_weaponslocker(bot, target, weaponslist)
+                                update_weaponslocker(bot, instigator, weaponslist)
                                 weaponlockerstatus = 'no longer'
                         else:
                             if adjustmentdirection == 'add':
                                 weaponslist.append(weaponchange)
-                                update_weaponslocker(bot, target, weaponslist)
+                                update_weaponslocker(bot, instigator, weaponslist)
                                 weaponlockerstatus = 'now'
                             else:
                                 weaponlockerstatus = 'already not'
