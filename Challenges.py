@@ -38,7 +38,6 @@ def mainfunction(bot, trigger):
     opttime = get_database_value(bot, instigator, 'opttime')
     if not opttime:
         set_database_value(bot, instigator, 'opttime', now)
-    
     for c in bot.channels:
         channel = c
     if not trigger.group(2):
@@ -51,11 +50,11 @@ def mainfunction(bot, trigger):
             target = trigger.nick
             
         ## Docs
-        elif commandused == 'docs' or commandused == 'help':
+        if commandused == 'docs' or commandused == 'help':
             bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
             
         ## On/off
-        if commandused == 'on' or commandused == 'off':
+        elif commandused == 'on' or commandused == 'off':
             disenablevalue = ''
             if commandused == 'on':
                 disenablevalue = 1
