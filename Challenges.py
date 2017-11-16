@@ -85,316 +85,316 @@ def mainfunction(bot, trigger):
 
             ## bot.notice(instigator + ", ", instigator)
             
-             ## Random Dueling
-              if commandused == 'random':
-                 if not lastfought:
-                     lastfought = instigator
-                 randomtargetarray = []
-                 for u in bot.channels[channel].users:
-                     target = u
-                     if target != instigator and target != bot.nick:
-                         if target != lastfought or bot.nick.endswith('dev'):
-                             targetdisenable = get_disenable(bot, target)
-                             targettime = get_timesince(bot, target)
-                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                             targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                             if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                 randomtargetarray.append(target)
-                 if randomtargetarray == []:
-                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                 else:
-                     randomselected = random.randint(0,len(randomtargetarray) - 1)
-                     target = str(randomtargetarray [randomselected])
-                     return getreadytorumble(bot, trigger)
+            ## Random Dueling
+            if commandused == 'random':
+                if not lastfought:
+                    lastfought = instigator
+                randomtargetarray = []
+                for u in bot.channels[channel].users:
+                    target = u
+                    if target != instigator and target != bot.nick:
+                        if target != lastfought or bot.nick.endswith('dev'):
+                            targetdisenable = get_disenable(bot, target)
+                            targettime = get_timesince(bot, target)
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
+                                randomtargetarray.append(target)
+                if randomtargetarray == []:
+                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                else:
+                    randomselected = random.randint(0,len(randomtargetarray) - 1)
+                    target = str(randomtargetarray [randomselected])
+                    return getreadytorumble(bot, trigger)
                     
-             ## Docs
-             elif commandused == 'docs' or commandused == 'help':
-                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
+            ## Docs
+            if commandused == 'docs' or commandused == 'help':
+                bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
     
-             ## On/off
-             elif commandused == 'on' or commandused == 'off':
-                 disenablevalue = ''
-                 if commandused == 'on':
-                     disenablevalue = 1
-                 if target == 'everyone':
-                     for u in bot.channels[channel].users:
-                         target = u
-                         set_database_value(bot, target, 'disenable', disenablevalue)
-                 elif opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                     bot.notice(instigator + ", It looks like " + target + " can't enable/disable challenges for " + str(targetopttimemath) + " seconds.", instigator)
-                 else:
-                     if targetdisenable and commandused == 'on':
-                         bot.notice(instigator + ", It looks like " + target + " already has duels o.", instigator)
-                     elif not targetdisenable and commandused == 'off':
-                         bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
-                     else:
-                         set_database_value(bot, target, 'disenable', disenablevalue)
-                         set_database_value(bot, target, 'opttime', now)
-                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
- 
-             ## Stats
-             elif commandused == 'stats':
-                 stats = ''
-                 for x in challengestatsarray:
-                     if x == 'winlossratio' or x == 'backpackitems':
-                         scriptdef = str('get_' + x + '(bot,target)')
-                         gethowmany = eval(scriptdef)
-                     else:
-                         gethowmany = get_database_value(bot, target, x)
-                     if gethowmany:
-                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                         stats = str(stats + addstat)
-                 if stats != '':
-                     stats = str(target + "'s stats:" + stats)
-                     bot.notice(stats, instigator)
-                 else:
-                     bot.notice(instigator + ", It looks like " + target + " has no stats.", instigator)
+            ## On/off
+            elif commandused == 'on' or commandused == 'off':
+                disenablevalue = ''
+                if commandused == 'on':
+                    disenablevalue = 1
+                if target == 'everyone':
+                    for u in bot.channels[channel].users:
+                        target = u
+                        set_database_value(bot, target, 'disenable', disenablevalue)
+                elif opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(instigator + ", It looks like " + target + " can't enable/disable challenges for " + str(targetopttimemath) + " seconds.", instigator)
+                else:
+                    if targetdisenable and commandused == 'on':
+                        bot.notice(instigator + ", It looks like " + target + " already has duels o.", instigator)
+                    elif not targetdisenable and commandused == 'off':
+                        bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+                    else:
+                        set_database_value(bot, target, 'disenable', disenablevalue)
+                        set_database_value(bot, target, 'opttime', now)
+                        bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
 
-             ## Backpack
-             elif commandused == 'backpack':
-                 backpack = ''
-                 for x in lootitemsarray:
-                     gethowmany = get_database_value(bot, target, x)
-                     if gethowmany:
-                         addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
-                         backpack = str(backpack + addbackpack)
-                 if backpack != '':
-                     backpack = str(target + "'s backpack:" + backpack)
-                     bot.notice(backpack, instigator)
-                 else:
-                     bot.notice(instigator + ", It looks like " + target + " has no backpack items.", instigator)
- 
-             ## Stats Admin
-             elif commandused == 'statsadmin' and trigger.admin:
-                 statsadminarray = ['set','reset']
-                 commandtrimmed = trigger.group(5)
-                 statset = trigger.group(6)
-                 newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
-                 if commandtrimmed not in statsadminarray:
-                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                 elif statset not in challengestatsadminarray and statset != 'all':
-                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                 elif commandtrimmed == 'set' and not newvalue:
-                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                 else:
-                     if not newvalue:
-                         newvalue = ''
-                     if target == 'everyone':
-                         for u in bot.channels[channel].users:
-                             etarget = u
-                             if statset == 'all':
-                                 for x in challengestatsadminarray:
-                                     estatset = x
-                                     databasecolumn = str('challenges_' + estatset)
-                                     bot.db.set_nick_value(etarget, databasecolumn, newvalue)
-                             else:
-                                 databasecolumn = str('challenges_' + statset)
-                                 bot.db.set_nick_value(target, databasecolumn, newvalue)
-                     else:
-                         if statset == 'all':
-                             for x in challengestatsadminarray:
-                                 statset = x
-                                 databasecolumn = str('challenges_' + statset)
-                                 bot.db.set_nick_value(target, databasecolumn, newvalue)
-                         else:
-                             databasecolumn = str('challenges_' + statset)
-                             bot.db.set_nick_value(target, databasecolumn, newvalue)
-                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
- 
-             ## Leaderboard
-             elif commandused == 'leader':
-                 currentleader = ''
-                 currentleadernumber = 0
-                 for u in bot.channels[channel].users:
-                     target = u
-                     disenable = get_disenable(bot, target)
-                     if disenable:
-                         winlossratio = get_winlossratio(bot,target)
-                         if winlossratio > currentleadernumber:
-                             currentleader = target
-                             currentleadernumber = winlossratio
-                 leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
-                 bot.say(leaderboardscript)
-             
-             ## Close to death
-             elif commandused == 'closetodeath':
-                 currentleader = ''
-                 currentleadernumber = 9999999999
-                 for u in bot.channels[channel].users:
-                     target = u
-                     disenable = get_disenable(bot, target)
-                     if disenable:
-                         health = get_health(bot,target)
-                         if health < currentleadernumber:
-                             currentleader = target
-                             currentleadernumber = health
-                 leaderboardscript = str("The Current person close to death in the room is: " + str(currentleader) + " with health at: " + str(currentleadernumber))
-                 bot.say(leaderboardscript)
+            ## Stats
+            elif commandused == 'stats':
+                stats = ''
+                for x in challengestatsarray:
+                    if x == 'winlossratio' or x == 'backpackitems':
+                        scriptdef = str('get_' + x + '(bot,target)')
+                        gethowmany = eval(scriptdef)
+                    else:
+                        gethowmany = get_database_value(bot, target, x)
+                    if gethowmany:
+                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                        stats = str(stats + addstat)
+                if stats != '':
+                    stats = str(target + "'s stats:" + stats)
+                    bot.notice(stats, instigator)
+                else:
+                    bot.notice(instigator + ", It looks like " + target + " has no stats.", instigator)
+
+            ## Backpack
+            elif commandused == 'backpack':
+                backpack = ''
+                for x in lootitemsarray:
+                    gethowmany = get_database_value(bot, target, x)
+                    if gethowmany:
+                        addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
+                        backpack = str(backpack + addbackpack)
+                if backpack != '':
+                    backpack = str(target + "'s backpack:" + backpack)
+                    bot.notice(backpack, instigator)
+                else:
+                    bot.notice(instigator + ", It looks like " + target + " has no backpack items.", instigator)
+
+            ## Stats Admin
+            elif commandused == 'statsadmin' and trigger.admin:
+                statsadminarray = ['set','reset']
+                commandtrimmed = trigger.group(5)
+                statset = trigger.group(6)
+                newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
+                if commandtrimmed not in statsadminarray:
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
+                elif statset not in challengestatsadminarray and statset != 'all':
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
+                elif commandtrimmed == 'set' and not newvalue:
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
+                else:
+                    if not newvalue:
+                        newvalue = ''
+                    if target == 'everyone':
+                        for u in bot.channels[channel].users:
+                            etarget = u
+                            if statset == 'all':
+                                for x in challengestatsadminarray:
+                                    estatset = x
+                                    databasecolumn = str('challenges_' + estatset)
+                                    bot.db.set_nick_value(etarget, databasecolumn, newvalue)
+                            else:
+                                databasecolumn = str('challenges_' + statset)
+                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                    else:
+                        if statset == 'all':
+                            for x in challengestatsadminarray:
+                                statset = x
+                                databasecolumn = str('challenges_' + statset)
+                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                        else:
+                            databasecolumn = str('challenges_' + statset)
+                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+
+            ## Leaderboard
+            elif commandused == 'leader':
+                currentleader = ''
+                currentleadernumber = 0
+                for u in bot.channels[channel].users:
+                    target = u
+                    disenable = get_disenable(bot, target)
+                    if disenable:
+                        winlossratio = get_winlossratio(bot,target)
+                        if winlossratio > currentleadernumber:
+                            currentleader = target
+                            currentleadernumber = winlossratio
+                leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
+                bot.say(leaderboardscript)
+            
+            ## Close to death
+            elif commandused == 'closetodeath':
+                currentleader = ''
+                currentleadernumber = 9999999999
+                for u in bot.channels[channel].users:
+                    target = u
+                    disenable = get_disenable(bot, target)
+                    if disenable:
+                        health = get_health(bot,target)
+                        if health < currentleadernumber:
+                            currentleader = target
+                            currentleadernumber = health
+                leaderboardscript = str("The Current person close to death in the room is: " + str(currentleader) + " with health at: " + str(currentleadernumber))
+                bot.say(leaderboardscript)
                     
-             ## Loot Items usage
-             elif commandused in lootitemsarray:
-                 uselootitem = 0
-                 gethowmany = get_database_value(bot, instigator, commandused)
-                 if gethowmany:
-                     saymsg = 'true'
-                     use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
-                 else:
-                     bot.notice(instigator + ", You do not have a " +  commandused + " to use!", instigator)
-          
-             ## Konami
-             elif commandused == 'upupdowndownleftrightleftrightba':
-                 konami = get_database_value(bot, target, 'konami')
-                 if not konami:
-                     set_database_value(bot, instigator, 'konami', 1)
-                     set_konami(bot, instigator)
-                     bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-                 else:
-                     bot.notice(instigator + " you can only cheat once.", instigator)
-                 
-             ## Weaponslocker
-             elif commandused == 'weaponslocker':
-                 weaponslist = get_weaponslocker(bot, instigator)
-                 adjustmentdirection = trigger.group(4)
-                 if not adjustmentdirection:
-                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                 elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
-                     weaponslistnew = []
-                     for weapon in weaponslist:
-                         weapon = str(weapon)
-                         weaponslistnew.append(weapon)
-                     for channel in bot.channels:
-                         bot.db.set_nick_value(channel, 'weapons_locker', '')
-                     for weapon in weaponslistnew:
-                         if weapon not in weaponslist:
-                             weaponslist.append(weapon)
-                     update_weaponslocker(bot, instigator, weaponslist)
-                     weaponslist = get_weaponslocker(bot, instigator)
-                     weaponslist = str(weaponslist)
-                     weaponslist = weaponslist.replace('[', '')
-                     weaponslist = weaponslist.replace(']', '')
-                     weaponslist = weaponslist.replace("u'", '')
-                     weaponslist = weaponslist.replace('u"', '')
-                     weaponslist = weaponslist.replace("'", '')
-                     weaponslist = weaponslist.replace('"', '')
-                     chunks = weaponslist.split()
-                     per_line = 15
-                     for i in range(0, len(chunks), per_line):
-                         weaponline = " ".join(chunks[i:i + per_line])
-                         bot.say(str(weaponline))
-                 elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
-                     bot.say('Inventory can only be viewed in privmsg.')
-                 else:
-                     weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
-                     if not weaponchange:
-                         bot.say("What weapon would you like to add/remove?")
-                     else:
-                         if weaponchange in weaponslist:
-                             if adjustmentdirection == 'add':
-                                 weaponlockerstatus = 'already'
-                             else:
-                                 weaponslist.remove(weaponchange)
-                                 update_weaponslocker(bot, instigator, weaponslist)
-                                 weaponlockerstatus = 'no longer'
-                         else:
-                             if adjustmentdirection == 'add':
-                                 weaponslist.append(weaponchange)
-                                 update_weaponslocker(bot, instigator, weaponslist)
-                                 weaponlockerstatus = 'now'
-                             else:
-                                 weaponlockerstatus = 'already not'
-                         message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
-                         bot.say(message)
+            ## Loot Items usage
+            elif commandused in lootitemsarray:
+                uselootitem = 0
+                gethowmany = get_database_value(bot, instigator, commandused)
+                if gethowmany:
+                    saymsg = 'true'
+                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
+                else:
+                    bot.notice(instigator + ", You do not have a " +  commandused + " to use!", instigator)
          
-             ## Magic Attack
-             elif commandused == 'magic':
-                 magicoptions = ['attack','instakill','health']
-                 magicusage = trigger.group(4)
-                 if magicusage not in magicoptions:
-                     bot.say('Magic uses include: attack, instakill, health')
-                 else:
-                     target = trigger.group(5)
-                     if not target:
-                         target = trigger.nick
-                     mana = get_mana(bot, instigator)
-                     if magicusage == 'attack':
-                         manarequired = 250
-                         damage = 200
-                     elif magicusage == 'health':
-                         manarequired = 200
-                         damage = -200
-                     elif magicusage == 'instakill':
-                         manarequired = 1000
-                         damage = 99999
-                     if not mana:
-                         bot.notice(instigator + " you don't have any mana.", instigator)
-                     elif mana < manarequired:
-                         manamath = int(manarequired - mana)
-                         bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
-                     else:
-                         if target.lower() not in bot.privileges[channel.lower()]:
-                             bot.say("I'm not sure who that is.")
-                         else:
-                             targethealthstart = get_health(bot, target)
-                             use_magicattack(bot, instigator, target, damage)
-                             targethealth = get_health(bot, target)
-                             if targethealth <= 0:
-                                 update_respawn(bot, target)
-                                 respawn_mana(bot, target)
-                                 update_kills(bot, instigator)
-                                 lootcorpse(bot, target, instigator)
-                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
-                                 magicnotice = str(instigator + " used a magic on you that killed you")
-                             elif magicusage == 'health':
-                                 healthmath = int(int(targethealth) - int(targethealthstart))
-                                 magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
-                                 magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
-                             else:
-                                 magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
-                                 magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
-                             bot.say(str(magicsay))
-                             if not inchannel.startswith("#") and target != instigator:
-                                 bot.notice(str(magicnotice), target)
-                                 
-             else:
-                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-     else:
-         lastfought = get_lastfought(bot, instigator)
-         target = trigger.group(3)
-         targetsplit = trigger.group(3)
-         targetspicebotdisenable = get_spicebotdisenable(bot, target)
-         instigatordisenable = get_disenable(bot, instigator)
-         targetdisenable = get_disenable(bot, target)
-         instigatortime = get_timesince(bot, instigator)
-         targettime = get_timesince(bot, target)
-         channeltime = get_timesince(bot, ALLCHAN)
-         if not inchannel.startswith("#"):
-             bot.notice(instigator + " Duels must be in channel.", instigator)
-         elif target == bot.nick:
-             bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
-         elif target == instigator:
-             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
-         elif target == lastfought and not bot.nick.endswith('dev'):
-             bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
-         elif not targetspicebotdisenable:
-             bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
-         elif not instigatordisenable:
-             bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
-         elif not targetdisenable:
-             bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
-         elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
-             bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
-             if targettime < TIMEOUT:
-                 bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-             if channeltime < TIMEOUTC:
-                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
-             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-             if channeltime < TIMEOUTC:
-                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-             elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-         else:
-             return getreadytorumble(bot, trigger)
+            ## Konami
+            elif commandused == 'upupdowndownleftrightleftrightba':
+                konami = get_database_value(bot, target, 'konami')
+                if not konami:
+                    set_database_value(bot, instigator, 'konami', 1)
+                    set_konami(bot, instigator)
+                    bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
+                else:
+                    bot.notice(instigator + " you can only cheat once.", instigator)
+                
+            ## Weaponslocker
+            elif commandused == 'weaponslocker':
+                weaponslist = get_weaponslocker(bot, instigator)
+                adjustmentdirection = trigger.group(4)
+                if not adjustmentdirection:
+                    bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
+                elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
+                    weaponslistnew = []
+                    for weapon in weaponslist:
+                        weapon = str(weapon)
+                        weaponslistnew.append(weapon)
+                    for channel in bot.channels:
+                        bot.db.set_nick_value(channel, 'weapons_locker', '')
+                    for weapon in weaponslistnew:
+                        if weapon not in weaponslist:
+                            weaponslist.append(weapon)
+                    update_weaponslocker(bot, instigator, weaponslist)
+                    weaponslist = get_weaponslocker(bot, instigator)
+                    weaponslist = str(weaponslist)
+                    weaponslist = weaponslist.replace('[', '')
+                    weaponslist = weaponslist.replace(']', '')
+                    weaponslist = weaponslist.replace("u'", '')
+                    weaponslist = weaponslist.replace('u"', '')
+                    weaponslist = weaponslist.replace("'", '')
+                    weaponslist = weaponslist.replace('"', '')
+                    chunks = weaponslist.split()
+                    per_line = 15
+                    for i in range(0, len(chunks), per_line):
+                        weaponline = " ".join(chunks[i:i + per_line])
+                        bot.say(str(weaponline))
+                elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
+                    bot.say('Inventory can only be viewed in privmsg.')
+                else:
+                    weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
+                    if not weaponchange:
+                        bot.say("What weapon would you like to add/remove?")
+                    else:
+                        if weaponchange in weaponslist:
+                            if adjustmentdirection == 'add':
+                                weaponlockerstatus = 'already'
+                            else:
+                                weaponslist.remove(weaponchange)
+                                update_weaponslocker(bot, instigator, weaponslist)
+                                weaponlockerstatus = 'no longer'
+                        else:
+                            if adjustmentdirection == 'add':
+                                weaponslist.append(weaponchange)
+                                update_weaponslocker(bot, instigator, weaponslist)
+                                weaponlockerstatus = 'now'
+                            else:
+                                weaponlockerstatus = 'already not'
+                        message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
+                        bot.say(message)
+        
+            ## Magic Attack
+            elif commandused == 'magic':
+                magicoptions = ['attack','instakill','health']
+                magicusage = trigger.group(4)
+                if magicusage not in magicoptions:
+                    bot.say('Magic uses include: attack, instakill, health')
+                else:
+                    target = trigger.group(5)
+                    if not target:
+                        target = trigger.nick
+                    mana = get_mana(bot, instigator)
+                    if magicusage == 'attack':
+                        manarequired = 250
+                        damage = 200
+                    elif magicusage == 'health':
+                        manarequired = 200
+                        damage = -200
+                    elif magicusage == 'instakill':
+                        manarequired = 1000
+                        damage = 99999
+                    if not mana:
+                        bot.notice(instigator + " you don't have any mana.", instigator)
+                    elif mana < manarequired:
+                        manamath = int(manarequired - mana)
+                        bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+                    else:
+                        if target.lower() not in bot.privileges[channel.lower()]:
+                            bot.say("I'm not sure who that is.")
+                        else:
+                            targethealthstart = get_health(bot, target)
+                            use_magicattack(bot, instigator, target, damage)
+                            targethealth = get_health(bot, target)
+                            if targethealth <= 0:
+                                update_respawn(bot, target)
+                                respawn_mana(bot, target)
+                                update_kills(bot, instigator)
+                                lootcorpse(bot, target, instigator)
+                                magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
+                                magicnotice = str(instigator + " used a magic on you that killed you")
+                            elif magicusage == 'health':
+                                healthmath = int(int(targethealth) - int(targethealthstart))
+                                magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
+                                magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
+                            else:
+                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
+                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
+                            bot.say(str(magicsay))
+                            if not inchannel.startswith("#") and target != instigator:
+                                bot.notice(str(magicnotice), target)
+                                
+            else:
+                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+    else:
+        lastfought = get_lastfought(bot, instigator)
+        target = trigger.group(3)
+        targetsplit = trigger.group(3)
+        targetspicebotdisenable = get_spicebotdisenable(bot, target)
+        instigatordisenable = get_disenable(bot, instigator)
+        targetdisenable = get_disenable(bot, target)
+        instigatortime = get_timesince(bot, instigator)
+        targettime = get_timesince(bot, target)
+        channeltime = get_timesince(bot, ALLCHAN)
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + " Duels must be in channel.", instigator)
+        elif target == bot.nick:
+            bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
+        elif target == instigator:
+            bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
+        elif target == lastfought and not bot.nick.endswith('dev'):
+            bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
+        elif not targetspicebotdisenable:
+            bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
+        elif not instigatordisenable:
+            bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
+        elif not targetdisenable:
+            bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
+        elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
+            bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
+            if targettime < TIMEOUT:
+                bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+            if channeltime < TIMEOUTC:
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
+            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+            if channeltime < TIMEOUTC:
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+            elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        else:
+            return getreadytorumble(bot, trigger)
         
 def getreadytorumble(bot, trigger):
     ## Announce Combat
