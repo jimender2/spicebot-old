@@ -7,7 +7,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/momsspaghetti.txt'
+fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/momsspaghetti.txt'
 
 @sopel.module.commands('eminem')
 def mainfunction(bot, trigger):
