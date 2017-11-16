@@ -322,6 +322,7 @@ def mainfunction(bot, trigger):
                     elif magicusage == 'instakill':
                         manarequired = -1000
                         damage = -99999
+                    damagetext = abs(damage)
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif mana < manarequired:
@@ -347,8 +348,8 @@ def mainfunction(bot, trigger):
                                 magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
                                 magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
                             else:
-                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
-                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damage) + ' damage.')
+                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
+                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
                             bot.say(str(magicsay))
                             if not inchannel.startswith("#") and target != instigator:
                                 bot.notice(str(magicnotice), target)
