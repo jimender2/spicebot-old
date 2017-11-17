@@ -29,7 +29,7 @@ def execute_main(bot, trigger):
         webbytitle = getwebbytitle()
         webbylink = getwebbylink()
         bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-        if webbybonus != '[]' or webbybonus != '' or webbybonus != ' ':
+        if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
             bot.say('BONUS: ' + webbybonus)
 
 @sopel.module.interval(60)
@@ -45,7 +45,7 @@ def webbyauto(bot):
                     webbytitle = getwebbytitle()
                     webbylink = getwebbylink()
                     bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                    if webbybonus != '[]' or webbybonus != '' or webbybonus != ' ':
+                    if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
                         bot.msg(channel, str(webbybonus))
 
 def getwebbytime():
