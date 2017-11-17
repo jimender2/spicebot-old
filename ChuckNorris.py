@@ -25,12 +25,12 @@ def execute_main(bot, trigger):
         bot.say('Chuck will find you.')
 
 def getJoke():
-    url = 'https://api.chucknorris.io/jokes/random'
+    url = 'http://api.icndb.com/jokes/random'
     try:
       page = requests.get(url)
       result = page.content
       jsonjoke = json.loads(result)
-      joke = jsonjoke['value']
+      joke = jsonjoke['joke']
     except:
       joke = "Chuck Norris broke the interwebs."
     return joke
