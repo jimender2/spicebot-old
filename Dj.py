@@ -13,15 +13,15 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     song = getsong()
-    if song:
-        bot.say(song)
-    else:
-        bot.say('Never Gonna Give You Up by Rick Astley')
+       if song:
+		  bot.say(trigger.nick + 'put in a nickel and plays ' + song)
+       else:
+          bot.say(trigger.nick + 'put in a nickel and plays ' + 'Never Gonna Give You Up by Rick Astley')
 
 def getsong():
-    #url replace with a song API
+	#url replace with a song API
     #url = 'https://icanhazdadjoke.com'    
     #page = requests.get(url,headers = {'Accept':'text/plain'}) 
     #song = page.content
-    song='Party all the Time by Eddie Murphy '
+	song='Party all the Time by Eddie Murphy '
     return song
