@@ -30,8 +30,7 @@ def getJoke():
       page = requests.get(url)
       result = page.content
       jsonjoke = json.loads(result)
-      joke = jsonjoke['value']
-      joke = jsonjoke['joke']
+      joke = jsonjoke['value','joke']
     except:
       joke = "Chuck Norris broke the interwebs."
     return joke
