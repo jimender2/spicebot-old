@@ -583,7 +583,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
-        health = get_database_value(bot, target, 'health')
+        targethealth = get_database_value(bot, target, 'health')
     gethowmany = get_database_value(bot, target, 'mana')
     adjust_database_value(bot, instigator, loottype, -1)
     mana = get_database_value(bot, target, 'mana')
@@ -594,6 +594,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     if loottype == 'healthpotion':
         adjust_database_value(bot, target, 'health', '100')
     elif loottype == 'posionpotion':
+        #bot.db.set_nick_value(target, 'challenges_health', int(health) - 50)
         adjust_database_value(bot, target, 'health', '-50')
     elif loottype == 'manapotion':
         adjust_database_value(bot, target, 'mana', '100')
