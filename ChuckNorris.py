@@ -3,6 +3,7 @@ import requests
 import json
 import sys
 import os
+import html2text
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
@@ -31,6 +32,7 @@ def getJoke():
       result = page.content
       jsonjoke = json.loads(result)
       joke = jsonjoke['value']['joke']
+      joke = html2text.joke()
     except:
       joke = "Chuck Norris broke the interwebs."
     return joke
