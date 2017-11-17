@@ -113,6 +113,16 @@ def adjust_database_value(bot, nick, databasekey, value):
 #scriptdef = str('get_' + x + '(bot,target)')
 #gethowmany = eval(scriptdef)
 
+###################
+## Not Bot stuff ##
+###################
 
+## Random Item from array
+#missions  = ["Protect Technical Angel","INSTALL MOAR PATCHES"]
+#mission = random.randint(0,len(missions) - 1)
+#mission = str(missions [mission])
+# bot.say(mission)
 
-
+## append and remove from an array
+# weaponslist.append(weaponchange)
+# weaponslist.remove(weaponchange)
