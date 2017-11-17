@@ -60,8 +60,6 @@ def getwebbytime():
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
-    if not webbytitle:
-        webbytitle = 'Title Not Found'
     for r in (("\u2026", "..."), ("\u2019", "'"), ("u'", ""), ("['", ""), ("[", ""), ("']", "")):
         webbytitle = webbytitle.replace(*r)
     return webbytitle
@@ -69,8 +67,6 @@ def getwebbytitle():
 def getwebbylink():
     tree = gettree()
     webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
-    if not webbylink:
-        webbylink = 'Link Not Found'
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
     webbylink = str(webbylink.split("&", 1)[0])
@@ -80,8 +76,6 @@ def getwebbybonus():
     tree = gettree()
     webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
     webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-    if not webbybonus:
-        webbybonus = 'Bonus Not Found'
     for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
         webbybonus = webbybonus.replace(*r)
     return webbybonus
