@@ -14,13 +14,13 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     song = getsong()
-    if joke:
+    if song:
         bot.say(song)
     else:
-        bot.say('My humor module is broken.')
+        bot.say('Never Gonna Give You Up by Rick Astley')
 
 def getsong():
-	#url replace with a song API
+    #url replace with a song API
     #url = 'https://icanhazdadjoke.com'    
     #page = requests.get(url,headers = {'Accept':'text/plain'}) 
     #song = page.content
