@@ -499,7 +499,7 @@ def set_database_value(bot, nick, databasekey, value):
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
     databasecolumn = str('challenges_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    bot.db.set_nick_value(nick, databasecolumn, oldvalue + value)
     
 ##########
 ## Time ##
@@ -594,8 +594,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     if loottype == 'healthpotion':
         adjust_database_value(bot, target, 'health', '100')
     elif loottype == 'posionpotion':
-        damage = -50
-        adjust_database_value(bot, target, 'health', damage)
+        adjust_database_value(bot, target, 'health', '-50')
     elif loottype == 'manapotion':
         adjust_database_value(bot, target, 'mana', '100')
     elif loottype == 'timepotion':
