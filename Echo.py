@@ -13,4 +13,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    bot.say(trigger.group(2))
+    if trigger.group(2):
+        bot.say(trigger.group(2))
+    else:
+        bot.say('.echo')
