@@ -29,7 +29,8 @@ def execute_main(bot, trigger):
         webbytitle = getwebbytitle()
         webbylink = getwebbylink()
         bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-        bot.say('BONUS: ' + webbybonus)
+        if not webbybonus or str(webbybonus) != '[]' or str(webbybonus) != '' or str(webbybonus) != ' ':
+            bot.say('BONUS: ' + webbybonus)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
