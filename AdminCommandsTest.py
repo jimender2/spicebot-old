@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
     five = trigger.group(5)
     six = trigger.group(6)
     aftersix = str(fullcommandused.split(six, 1)[1]).strip()
-    bot.say("args1 = " + str(args1))
+    bot.say("args = " + str(args))
     bot.say("zero = " + str(zero))
     bot.say("one = " + str(one))
     bot.say("two = " + str(two))
