@@ -499,7 +499,7 @@ def set_database_value(bot, nick, databasekey, value):
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
     databasecolumn = str('challenges_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, oldvalue + value)
+    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
     
 ##########
 ## Time ##
