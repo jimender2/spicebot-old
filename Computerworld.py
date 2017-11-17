@@ -12,7 +12,7 @@ from SpicebotShared import *
 feedname = "Computerworld"
 url = 'https://www.computerworld.com/news/index.rss'
 alt_url = 'https://www.computerworld.com/about/rss.html'
-childnumber = 1
+childnumber = 3
 ## End Of Template
 
 ## Based On Template
