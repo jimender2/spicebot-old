@@ -320,7 +320,7 @@ def mainfunction(bot, trigger):
                         manarequired = -200
                         damage = 200
                     elif magicusage == 'instakill':
-                        manarequired = -1000
+                        manarequired = -1550
                         damage = -99999
                     damagetext = abs(damage)
                     if not mana:
