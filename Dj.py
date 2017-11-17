@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     song = getsong()
     if joke:
-        bot.say(joke)
+        bot.say(song)
     else:
         bot.say('My humor module is broken.')
 
