@@ -15,7 +15,7 @@ log_file_path = os.path.join(script_dir, log_path)
 def spicebotadmin(bot, trigger):
     for c in bot.channels:
         channel = c
-    options = str("update, restart, debug, pipinstall")
+    options = str("update, restart, debugreset, debug, pipinstall")
     service = bot.nick.lower()
     if not trigger.group(2):
         bot.say("Which Command Do You want To run?")
@@ -29,6 +29,11 @@ def spicebotadmin(bot, trigger):
         elif commandused == 'restart':
             bot.msg(channel, trigger.nick + " Commanded me to restart. Be Back Soon!")
             restart(bot, trigger, service)
+        elif commandused == 'debugreset':
+            bot.action('Is Copying Log')
+            os.system("sudo journalctl -u " + service + " >> " + log_file_path)
+            bot.action('Is Removing Log')
+            os.system("sudo rm " + log_file_path)
         elif commandused == 'debug':
             bot.action('Is Copying Log')
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
