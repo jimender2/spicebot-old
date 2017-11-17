@@ -45,7 +45,7 @@ def webbyauto(bot):
                     webbytitle = getwebbytitle()
                     webbylink = getwebbylink()
                     bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                    if str(webbybonus) != '[]' or str(webbybonus) != '' or str(webbybonus) != ' ':
+                    if not webbybonus or str(webbybonus) != '[]' or str(webbybonus) != '' or str(webbybonus) != ' ':
                         bot.msg(channel, str(webbybonus))
 
 def getwebbytime():
