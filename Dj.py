@@ -1,12 +1,11 @@
 import sopel.module
-import requests
 import sys
 import os
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.commands('dj','jukebox','song')
+@sopel.module.commands('dj')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
