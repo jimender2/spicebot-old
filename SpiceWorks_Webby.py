@@ -79,7 +79,7 @@ def getwebbybonus():
         webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
     except IndexError:
-        webbybonus = ''
+        webbybonus = 0
     for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
         webbybonus = webbybonus.replace(*r)
     return webbybonus
