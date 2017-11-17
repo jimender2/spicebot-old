@@ -10,6 +10,7 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
+    fullcommandused = trigger.group(2)
     args = trigger.args[1]
     zero = trigger.group(0)
     one = trigger.group(1)
@@ -18,7 +19,7 @@ def mainfunction(bot, trigger):
     four = trigger.group(4)
     five = trigger.group(5)
     six = trigger.group(6)
-    seven = trigger.group(7)
+    aftersix = str(fullcommandused.split(six, 1)[1]).strip()
     bot.say("args1 = " + str(args1))
     bot.say("zero = " + str(zero))
     bot.say("one = " + str(one))
@@ -27,4 +28,5 @@ def mainfunction(bot, trigger):
     bot.say("four = " + str(four))
     bot.say("five = " + str(five))
     bot.say("six = " + str(six))
-    bot.say("seven = " + str(seven))
+    bot.say("aftersix = " + str(aftersix))
+    
