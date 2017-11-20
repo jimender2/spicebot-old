@@ -50,7 +50,7 @@ def spicebotadmin(bot, trigger):
             line_num = 0
             for line in f.readlines():
                 line_num += 1
-                if line_num >= recentlinenum:
+                if int(line_num) >= int(recentlinenum):
                     bot.say(line)
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
