@@ -1,6 +1,7 @@
 import sopel.module
 from sopel import module, tools
 from sopel.module import ADMIN
+from sopel.module import VOICE
 from sopel.module import event, rule
 from sopel.module import OP
 from sopel.tools.target import User, Channel
@@ -46,7 +47,7 @@ def execute_main(bot, trigger):
         target = trigger.nick
     for c in bot.channels:
         channel = c
-    options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop")
+    options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop, isvoice")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
@@ -89,6 +90,16 @@ def execute_main(bot, trigger):
                 bot.say("I'm not sure who that is.")
             else:
                 if bot.privileges[channel.lower()][target] == OP:
+                    bot.say(target + ' is an op.')
+                else:
+                    bot.say(target + ' is not an op.')
+                    
+        ## Is OP
+        elif commandused == 'isvoice':
+            if target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
+                if bot.privileges[channel.lower()][target] == VOICE:
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
