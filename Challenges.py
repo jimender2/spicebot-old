@@ -417,58 +417,46 @@ def getreadytorumble(bot, trigger, instigator, target):
     targetpepper = get_pepper(bot, target)
     
     ## Is user Special?
-    botownerarray = []
-    operatorarray = []
-    voicearray = []
-    adminsarray = []
-    for u in bot.channels[channel.lower()].users:
-        nametargetdisenable = get_database_value(bot, u, 'disenable')
-        if u != bot.nick and len(u) > 3 and nametargetdisenable:
-            nametarget = str(u)
-            try:
-                if nametarget.lower() in bot.config.core.owner.lower():
-                    botownerarray.append(nametarget)
-            except KeyError:
-                test = 1
-            try:
-                if bot.privileges[channel.lower()][nametarget] == OP:
-                    operatorarray.append(nametarget)
-            except KeyError:
-                test = 1
-            try:
-                if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
-                    voicearray.append(nametarget)
-            except KeyError:
-                test = 1
-            try:
-                if target in bot.config.core.admins:
-                    adminsarray.append(nametarget)
-            except KeyError:
-                test = 1
+    #botownerarray = []
+    #operatorarray = []
+    #voicearray = []
+    #adminsarray = []
+    #for u in bot.channels[channel.lower()].users:
+    #    nametargetdisenable = get_database_value(bot, u, 'disenable')
+    #    if u != bot.nick and len(u) > 3 and nametargetdisenable:
+    #        nametarget = u
+    #        if nametarget.lower() in bot.config.core.owner.lower():
+    #            botownerarray.append(nametarget)
+    #        if bot.privileges[channel.lower()][nametarget] == OP:
+    #            operatorarray.append(nametarget)
+    #        if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+    #            voicearray.append(nametarget)
+    #        if target in bot.config.core.admins:
+    #            adminsarray.append(nametarget)
     
     ## Is instigator Special?
-    if instigator in botownerarray:
-        instigatorname = str("The Legendary " + instigatorname)
-    elif instigator in operatorarray:
-        instigatorname = str("The Magnificent " + instigatorname)
-    elif instigator in voicearray:
-        instigatorname = str("The Incredible " + instigatorname)
-    elif instigator in adminsarray:
-        instigatorname = str("The Valient " + instigatorname)
-    else:
-        instigatorname = str(instigatorname)
+    #if instigator in botownerarray:
+    #    instigatorname = str("The Legendary " + instigatorname)
+    #elif instigator in operatorarray:
+    #    instigatorname = str("The Magnificent " + instigatorname)
+    #elif instigator in voicearray:
+    #    instigatorname = str("The Incredible " + instigatorname)
+    #elif instigator in adminsarray:
+    #    instigatorname = str("The Valient " + instigatorname)
+    #else:
+    #    instigatorname = str(instigatorname)
         
     ## Is target Special?
-    if target in botownerarray:
-        targetname = str("The Legendary " + targetname)
-    elif target in operatorarray:
-        targetname = str("The Magnificent " + targetname)
-    elif target in voicearray:
-        targetname = str("The Incredible " + targetname)
-    elif target in adminsarray:
-        targetname = str("The Valient " + targetname)
-    else:
-        targetname = str(targetname)
+    #if target in botownerarray:
+    #    targetname = str("The Legendary " + targetname)
+    #elif target in operatorarray:
+    #    targetname = str("The Magnificent " + targetname)
+    #elif target in voicearray:
+    #    targetname = str("The Incredible " + targetname)
+    #elif target in adminsarray:
+    #    targetname = str("The Valient " + targetname)
+    #else:
+    #    targetname = str(targetname)
         
     ## Pepper Names
     instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
