@@ -15,9 +15,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     if not trigger.group(2):
-        trigger = sfw
+        trigger = 'sfw'
     elif not trigger.group(2).strip() == bot.nick:
-        trigger = nsfw
+        trigger = 'nsfw'
     #trigger = trigger.group(2).strip()
     joke = getJoke(trigger)
     if joke:
