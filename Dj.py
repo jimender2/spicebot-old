@@ -9,7 +9,6 @@ from SpicebotShared import *
 
 fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/jukebox_party.txt'
 
-
 @sopel.module.commands('dj')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
