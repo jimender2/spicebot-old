@@ -26,7 +26,7 @@ def execute_main(bot, trigger):
 		
 	song = getsong(playlist)
 	if song:
-		bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
+		bot.say(trigger.nick + ' puts a nickel in the jukebox and it starts to play ' + song)
 	else:
 		bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
 
