@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
 	if not trigger group(2):
 		playlist=party
-	else trigger.group(2):
+	else:
 		query = trigger.group(2).replace(' ','20%')
 		query = str(query)
 		playlist = getplaylist(query)
