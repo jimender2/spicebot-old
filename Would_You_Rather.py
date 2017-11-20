@@ -29,7 +29,7 @@ def getJoke():
       page = requests.get(url)
       result = page.content
       jsonjoke = json.loads(result)
-      joke = jsonjoke['title'] + " A:" + jsonjoke['choicea'] + " or B:" + jsonjoke['choiceb']
+      joke = jsonjoke['title'] #+ " A:" + jsonjoke['choicea'] + " or B:" + jsonjoke['choiceb']
     except:
       joke = "I would rather not."
     return joke
