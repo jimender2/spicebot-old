@@ -7,11 +7,8 @@ import git
 
 script_dir = os.path.dirname(__file__)
 log_path = "data/templog.txt"
-log_pathb = "data/templogb.txt"
 log_pathc = "data/*.txt"
 log_file_path = os.path.join(script_dir, log_path)
-log_file_pathb = os.path.join(script_dir, log_pathb)
-log_file_pathc = os.path.join(script_dir, log_pathc)
 
 @sopel.module.require_admin
 @sopel.module.require_privmsg
@@ -45,7 +42,6 @@ def spicebotadmin(bot, trigger):
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
             bot.action('Is Filtering Log')
             f = open(log_file_path)
-            f1 = open(log_file_pathb, 'a')
             line_num = 0
             search_phrase = "Starting Sopel IRC bot"
             for line in f.readlines():
@@ -55,13 +51,9 @@ def spicebotadmin(bot, trigger):
             for line in f.readlines():
                 line_num += 1
                 if line_num >= recentlinenum:
-                    f1.write(line)
-            f1.close()
-            f.close()
-            for line in open(log_file_pathb):
-                bot.say(line)
+                    bot.say(line)
             bot.action('Is Removing Log')
-            os.system("sudo rm " + log_file_pathc)
+            os.system("sudo rm " + log_file_path)
         elif commandused == 'pipinstall':
             pippackage = trigger.group(4)
             if not pippackage:
@@ -90,4 +82,4 @@ def debuglogreset(bot, trigger):
     bot.action('Is Copying Log')
     os.system("sudo journalctl -u " + service + " >> " + log_file_path)
     bot.action('Is Removing Log')
-    os.system("sudo rm " + log_file_pathb)
+    os.system("sudo rm " + log_file_path)
