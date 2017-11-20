@@ -89,6 +89,7 @@ def execute_main(bot, trigger):
             
         ## Is Admin
         elif commandused == 'isadmin':
+            bot.say(bot.config.core.admins)
             if target not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
