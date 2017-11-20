@@ -94,15 +94,15 @@ def execute_main(bot, trigger):
                 else:
                     bot.say(target + ' is not an op.')
                     
-        ## Is OP
+        ## Is VOICE
         elif commandused == 'isvoice':
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
                 if bot.privileges[channel.lower()][target] == VOICE:
-                    bot.say(target + ' is an op.')
+                    bot.say(target + ' has voice.')
                 else:
-                    bot.say(target + ' is not an op.')
+                    bot.say(target + ' does not have voice.')
             
         ## Is Admin
         elif commandused == 'isadmin':
