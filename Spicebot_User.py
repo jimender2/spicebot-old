@@ -70,9 +70,16 @@ def execute_main(bot, trigger):
             bot.say('There are currently ' + modulecount +' custom modules installed.')
         
         ## Bot Owner
-        elif commandused == 'owner':
-            bot.say(bot.config.core.owner)
-        
+        elif commandused == 'isowner':
+            #bot.say(bot.config.core.owner)
+            if target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm not sure who that is.")
+            else:
+                if instigator in bot.config.core.owner:
+                    bot.say(target + ' is the owner.')
+                else:
+                    bot.say(target + ' is not the owner.')
+
         ## link to github repo
         elif commandused == 'github':
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
