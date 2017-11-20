@@ -20,7 +20,7 @@ def execute_main(bot, trigger):
     else:
         bot.say('I would rather not give you a response.')
 
-def getJoke(trigger):
+def getJoke():
     url = 'http://www.rrrather.com/botapi?nsfw=true'
     try:
       page = requests.get(url)
