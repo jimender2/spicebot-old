@@ -19,7 +19,7 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsarray = ['health','mana','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
 ####################
 ## Main Operation ##
@@ -133,7 +133,7 @@ def mainfunction(bot, trigger):
             elif commandused == 'stats':
                 stats = ''
                 for x in challengestatsarray:
-                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout':
+                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
                         scriptdef = str('get_' + x + '(bot,target)')
                         gethowmany = eval(scriptdef)
                     else:
@@ -403,8 +403,16 @@ def getreadytorumble(bot, trigger, instigator, target):
     targetsplit = trigger.group(3)
     now = time.time()
     
+    ## Fetch XP Pepper Levels
+    instigatorxp = get_database_value(bot, instigator, 'xp')
+    targetxp = get_database_value(bot, target, 'xp')
+    instigatorpepper = get_pepper(bot, instigatorxp)
+    targetpepper = get_pepper(bot, targetxp)
+    
     ## Announce Combat
-    announcecombatmsg = str(instigator + " versus " + target)
+    instigatorname = str(instigator + " (" + instigatorpepper + ")")
+    targetname = str(target + " (" + targetpepper + ")")
+    announcecombatmsg = str(instigatorname + " versus " + targetname)
        
     ## Check new player health
     instigatorhealth = get_database_value(bot, instigator, 'health')
@@ -671,6 +679,43 @@ def damagedone(bot):
     else:
         damage = -5
     return damage
+
+##################
+## Pepper level ##
+##################
+
+def get_pepper(bot, xp):
+    if xp >= 0 and xp < 100:
+        pepper = 'Pimiento'
+    elif xp >= 100 and xp < 250:
+        pepper = 'Sonora'
+    elif xp >= 250 and xp < 500:
+        pepper = 'Anaheim'
+    elif xp >= 500 and xp < 1000:
+        pepper = 'Poblano'
+    elif xp >= 1000 and xp < 2500:
+        pepper = 'Jalapeno'
+    elif xp >= 2500 and xp < 5000:
+        pepper = 'Serrano'
+    elif xp >= 5000 and xp < 7500:
+        pepper = 'Chipotle'
+    elif xp >= 7500 and xp < 10000:
+        pepper = 'Tabasco'
+    elif xp >= 10000 and xp < 15000:
+        pepper = 'Cayenne'
+    elif xp >= 15000 and xp < 25000:
+        pepper = 'Thai Pepper'
+    elif xp >= 25000 and xp < 45000:
+        pepper = 'Datil'
+    elif xp >= 45000 and xp < 70000:
+        pepper = 'Habanero'
+    elif xp >= 70000 and xp < 100000:
+        pepper = 'Ghost Chili'
+    elif xp >= 100000 and xp < 250000:
+        pepper = 'Mace'
+    elif xp >= 250000:
+        pepper = 'Pure Capsaicin'
+    return pepper
 
 ###################
 ## Select Winner ##
