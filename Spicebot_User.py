@@ -52,8 +52,8 @@ def execute_main(bot, trigger):
     voicearray = []
     adminsarray = []
     for u in bot.channels[channel.lower()].users:
-        if u != bot.nick and len(u) > 3:
-            nametarget = str(u)
+        if u != bot.nick:# and len(u) > 3:
+            nametarget = u
             if nametarget.lower() in bot.config.core.owner.lower():
                 botownerarray.append(nametarget)
             if bot.privileges[channel.lower()][nametarget] == OP:
