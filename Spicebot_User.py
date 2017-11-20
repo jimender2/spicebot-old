@@ -98,7 +98,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target.lower() in bot.config.core.admins.lower():
+                if target in bot.config.core.admins:
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
