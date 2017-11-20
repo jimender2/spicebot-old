@@ -46,7 +46,7 @@ def execute_main(bot, trigger):
         target = trigger.nick
     for c in bot.channels:
         channel = c
-    options = str("options, warn, channel, modulecount, owner, github, timeout, usage, status, on/off, isadmin, isop")
+    options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
@@ -71,7 +71,6 @@ def execute_main(bot, trigger):
         
         ## Bot Owner
         elif commandused == 'isowner':
-            #bot.say(bot.config.core.owner)
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
@@ -96,13 +95,10 @@ def execute_main(bot, trigger):
             
         ## Is Admin
         elif commandused == 'isadmin':
-            bot.say(str(bot.config.core.admins))
-            if target not in bot.privileges[channel.lower()]:
+            if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target != instigator:
-                    bot.say("Work in progress.")
-                elif trigger.admin:
+                if target.lower() in bot.config.core.admins.lower():
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
