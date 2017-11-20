@@ -20,10 +20,10 @@ def execute_main(bot, trigger):
         if not trigger.group(2):
             bot.say(joke)
         elif not trigger.group(2).strip() == bot.nick:
-            #joke = joke.replace('Chuck Norris', trigger.group(2).strip())
-            #joke = joke.replace('chuck norris', trigger.group(2).strip())
-            #joke = joke.replace('Norris', trigger.group(2).strip())
-            #joke = joke.replace('Chuck', trigger.group(2).strip())
+            joke = joke.replace('Chuck Norris', trigger.group(2).strip())
+            joke = joke.replace('chuck norris', trigger.group(2).strip())
+            joke = joke.replace('Norris', trigger.group(2).strip())
+            joke = joke.replace('Chuck', trigger.group(2).strip())
             bot.say(joke)        
     else:
         bot.say('Chuck will find you.')
@@ -34,7 +34,8 @@ def getJoke():
       page = requests.get(url)
       result = page.content
       jsonjoke = json.loads(result)
-      joke = html2text.html2text(jsonjoke['value']['joke'])
+      #joke = html2text.html2text(jsonjoke['value']['joke'])
+      joke = jsonjoke['value']['joke']
     except:
       joke = "Chuck Norris broke the interwebs."
     return joke
