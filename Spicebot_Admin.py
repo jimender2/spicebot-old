@@ -26,16 +26,16 @@ def spicebotadmin(bot, trigger):
         if commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
-            cleandir(bot, trigger)
-            debuglogreset(bot, trigger)
+            #cleandir(bot, trigger)
+            #debuglogreset(bot, trigger)
             restart(bot, trigger, service)
         elif commandused == 'restart':
             bot.msg(channel, trigger.nick + " Commanded me to restart. Be Back Soon!")
-            cleandir(bot, trigger)
-            debuglogreset(bot, trigger)
+            #cleandir(bot, trigger)
+            #debuglogreset(bot, trigger)
             restart(bot, trigger, service)
-        elif commandused == 'debugreset':
-            debuglogreset(bot, trigger)
+        #elif commandused == 'debugreset':
+            #debuglogreset(bot, trigger)
         elif commandused == 'debug':
             debugloglinenumberarray = []
             bot.action('Is Copying Log')
