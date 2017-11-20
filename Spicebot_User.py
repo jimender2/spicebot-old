@@ -43,6 +43,8 @@ def execute_main(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
     target = trigger.group(4)
+    if target.endswith('_'):
+        targetname = target[:-1]
     if not target:
         target = trigger.nick
     for c in bot.channels:
@@ -54,6 +56,8 @@ def execute_main(bot, trigger):
     for u in bot.channels[channel.lower()].users:
         if u != bot.nick:
             nametarget = str(u)
+            if nametarget.endswith('_'):
+                nametarget = nametarget[:-1]
             if nametarget.lower() in bot.config.core.owner.lower():
                 botownerarray.append(nametarget)
             if bot.privileges[channel.lower()][nametarget] == OP:
@@ -91,7 +95,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target in botownerarray:
+                if targetname in botownerarray:
                     bot.say(target + ' is the owner.')
                 else:
                     bot.say(target + ' is not the owner.')
@@ -105,7 +109,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target in operatorarray:
+                if targetname in operatorarray:
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
@@ -115,7 +119,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target in voicearray:
+                if targetname in voicearray:
                     bot.say(target + ' has voice.')
                 else:
                     bot.say(target + ' does not have voice.')
@@ -125,7 +129,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target in adminsarray:
+                if targetname in adminsarray:
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
