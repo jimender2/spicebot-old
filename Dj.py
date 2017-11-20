@@ -28,4 +28,4 @@ def getsong():
     mysong=random.choice(lines)
     if not mysong or mysong == '\n':
        mysong = randomfra()
-    return mysongsong
+    return mysong
