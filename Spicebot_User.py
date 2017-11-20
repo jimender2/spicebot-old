@@ -75,7 +75,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if instigator in bot.config.core.owner:
+                if target.lower() in bot.config.core.owner.lower():
                     bot.say(target + ' is the owner.')
                 else:
                     bot.say(target + ' is not the owner.')
