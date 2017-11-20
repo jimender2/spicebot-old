@@ -42,6 +42,7 @@ def spicebotadmin(bot, trigger):
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
             bot.action('Is Filtering Log')
             search_phrase = "Welcome to Sopel. Loading modules..."
+            ignorearray = ['COMMAND=/bin/journalctl','pam_unix(sudo:session): session opened for user root']
             mostrecentstartbot = 0
             with open(log_file_path) as f:
                 line_num = 0
