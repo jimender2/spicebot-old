@@ -14,7 +14,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    joke = getJoke(trigger.group(2).strip())
+    trigger = trigger.group(2).strip()
+    joke = getJoke(trigger)
     if joke:
         bot.say(joke)
     else:
