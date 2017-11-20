@@ -415,21 +415,46 @@ def getreadytorumble(bot, trigger, instigator, target):
     instigatorpepper = get_pepper(bot, instigator)
     targetpepper = get_pepper(bot, target)
     
+    ## Is user Special?
+    botownerarray = []
+    operatorarray = []
+    voicearray = []
+    adminsarray = []
+    for u in bot.channels[channel.lower()].users:
+        if u != bot.nick and len(u) > 3:
+            nametarget = str(u)
+            if nametarget.lower() in bot.config.core.owner.lower():
+                botownerarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget] == OP:
+                operatorarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+                voicearray.append(nametarget)
+            if target in bot.config.core.admins:
+                adminsarray.append(nametarget)
+    
     ## Is instigator Special?
-    if instigator.lower() in bot.config.core.owner.lower():
+    if instigator in botownerarray:
         instigatorname = str("The Legendary " + instigatorname)
-    elif bot.privileges[channel.lower()][instigator] == OP:
+    elif instigator in operatorarray:
         instigatorname = str("The Magnificent " + instigatorname)
-    elif instigator in bot.config.core.admins:
+    elif instigator in voicearray:
+        instigatorname = str("The Incredible " + instigatorname)
+    elif instigator in adminsarray:
         instigatorname = str("The Valient " + instigatorname)
+    else:
+        instigatorname = str(instigatorname)
         
     ## Is target Special?
-    if target.lower() in bot.config.core.owner.lower():
+    if target in botownerarray:
         targetname = str("The Legendary " + targetname)
-    elif bot.privileges[channel.lower()][target] == OP:
+    elif target in operatorarray:
         targetname = str("The Magnificent " + targetname)
-    elif target in bot.config.core.admins:
+    elif target in voicearray:
+        targetname = str("The Incredible " + targetname)
+    elif target in adminsarray:
         targetname = str("The Valient " + targetname)
+    else:
+        targetname = str(targetname)
         
     ## Pepper Names
     instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
