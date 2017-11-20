@@ -33,7 +33,7 @@ def execute_main(bot, trigger):
 		bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
 
 def getsong(playlist):
-	htmlfile=urllib.urlopen(playlist)
+    htmlfile=urllib.urlopen(playlist)
     lines=htmlfile.read().splitlines()
     mysong=random.choice(lines)
     if not mysong or mysong == '\n':
