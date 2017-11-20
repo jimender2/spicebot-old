@@ -99,7 +99,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if bot.privileges[channel.lower()][target] == VOICE:
+                if bot.privileges[channel.lower()][target.lower()] == VOICE:
                     bot.say(target + ' has voice.')
                 else:
                     bot.say(target + ' does not have voice.')
