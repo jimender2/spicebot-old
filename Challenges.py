@@ -431,7 +431,7 @@ def getreadytorumble(bot, trigger, instigator, target):
                 operatorarray.append(nametarget)
             if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
                 voicearray.append(nametarget)
-            if target in bot.config.core.admins:
+            if nametarget in bot.config.core.admins:
                 adminsarray.append(nametarget)
     
     ## Is instigator Special?
