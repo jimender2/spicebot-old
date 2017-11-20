@@ -91,7 +91,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if targetname in botownerarray:
+                if target in botownerarray:
                     bot.say(target + ' is the owner.')
                 else:
                     bot.say(target + ' is not the owner.')
@@ -105,7 +105,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if targetname in operatorarray:
+                if target in operatorarray:
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
@@ -115,7 +115,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if targetname in voicearray:
+                if target in voicearray:
                     bot.say(target + ' has voice.')
                 else:
                     bot.say(target + ' does not have voice.')
@@ -125,7 +125,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if targetname in adminsarray:
+                if target in adminsarray:
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
