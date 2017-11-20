@@ -66,6 +66,7 @@ def update(bot, trigger):
     os.system("sudo rm " + script_dir + "/*.pyc")
 
 def debuglogreset(bot, trigger):
+    service = bot.nick.lower()
     bot.action('Is Copying Log')
     os.system("sudo journalctl -u " + service + " >> " + log_file_path)
     bot.action('Is Removing Log')
