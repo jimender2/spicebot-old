@@ -411,12 +411,18 @@ def getreadytorumble(bot, trigger, instigator, target):
     instigatorpepper = get_pepper(bot, instigator)
     targetpepper = get_pepper(bot, target)
     
+    ## Is user a Channel OP?
+    if bot.privileges[channel.lower()][instigator] == OP:
+        instigatorname = str("Operator " + instigatorname)
+    if bot.privileges[channel.lower()][target] == OP:
+        targetname = str("Operator " + targetname)
+        
     ## Is user the Bot Owner?
     if instigator.lower() in bot.config.core.owner.lower():
         instigatorname = str("The Legendary " + instigatorname)
     if target.lower() in bot.config.core.owner.lower():
         targetname = str("The Legendary " + targetname)
-    
+        
     ## Announce Combat
     instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
     targetname = str(targetname + " (" + targetpepper + ")")
