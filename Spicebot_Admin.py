@@ -7,7 +7,9 @@ import git
 
 script_dir = os.path.dirname(__file__)
 log_path = "data/templog.txt"
+log_pathb = "data/templogb.txt"
 log_file_path = os.path.join(script_dir, log_path)
+log_file_pathb = os.path.join(script_dir, log_path)
 
 @sopel.module.require_admin
 @sopel.module.require_privmsg
@@ -36,17 +38,30 @@ def spicebotadmin(bot, trigger):
         elif commandused == 'debugreset':
             debuglogreset(bot, trigger)
         elif commandused == 'debug':
+            debugloglinenumberarray = []
             bot.action('Is Copying Log')
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
             bot.action('Is Filtering Log')
-            os.system("sudo sed -i '/Starting Sopel IRC bot/h;//!H;$!d;x;' " + log_file_path)
-            os.system("sudo sed -i '/sudo/d; /COMMAND/d' " + log_file_path)
+            f = open(log_file_path)
+            f1 = open(log_file_pathb, 'a')
+            line_num = 0
+            search_phrase = "Starting Sopel IRC bot"
+            for line in f.readlines():
+                line_num += 1
+                recentlinenum = line_num
+            line_num = 0
+            for line in f.readlines():
+                line_num += 1
+                if line_num >= recentlinenum:
+                    f1.write(line)
+            f1.close()
+            f.close()
+            os.remove(log_file_path)
+            os.rename(log_file_pathb, log_file_path)
             for line in open(log_file_path):
                 bot.say(line)
-            if os.path.getsize(log_file_path) == 0:
-                bot.say('Log File Not Updated.')
             bot.action('Is Removing Log')
-            os.system("sudo rm " + log_file_path)
+            os.remove(log_file_path)
         elif commandused == 'pipinstall':
             pippackage = trigger.group(4)
             if not pippackage:
@@ -68,11 +83,11 @@ def update(bot, trigger):
     
 def cleandir(bot, trigger):
     bot.say('Cleaning Directory...')
-    os.system("sudo rm " + script_dir + "/*.pyc")
+    os.remove(script_dir + "/*.pyc")
     
 def debuglogreset(bot, trigger):
     service = bot.nick.lower()
     bot.action('Is Copying Log')
     os.system("sudo journalctl -u " + service + " >> " + log_file_path)
     bot.action('Is Removing Log')
-    os.system("sudo rm " + log_file_path)
+    os.remove(log_file_path)
