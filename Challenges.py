@@ -402,6 +402,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     fullcommandused = trigger.group(2)
     targetsplit = trigger.group(3)
     now = time.time()
+    for c in bot.channels:
+        channel = c
     
     ## Naming
     instigatorname = str(instigator)
@@ -411,21 +413,27 @@ def getreadytorumble(bot, trigger, instigator, target):
     instigatorpepper = get_pepper(bot, instigator)
     targetpepper = get_pepper(bot, target)
     
-    ## Is user a Channel OP?
-    if bot.privileges[channel.lower()][instigator] == OP:
-        instigatorname = str("Operator " + instigatorname)
-    if bot.privileges[channel.lower()][target] == OP:
-        targetname = str("Operator " + targetname)
-        
-    ## Is user the Bot Owner?
+    ## Is instigator Special?
     if instigator.lower() in bot.config.core.owner.lower():
         instigatorname = str("The Legendary " + instigatorname)
+    elif bot.privileges[channel.lower()][instigator] == OP:
+        instigatorname = str("The Magnificent " + instigatorname)
+    elif instigator in bot.config.core.admins:
+        instigatorname = str("The Valient " + instigatorname)
+        
+    ## Is target Special?
     if target.lower() in bot.config.core.owner.lower():
         targetname = str("The Legendary " + targetname)
+    elif bot.privileges[channel.lower()][target] == OP:
+        targetname = str("The Magnificent " + targetname)
+    elif target in bot.config.core.admins:
+        targetname = str("The Valient " + targetname)
         
-    ## Announce Combat
+    ## Pepper Names
     instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
     targetname = str(targetname + " (" + targetpepper + ")")
+    
+    ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
        
     ## Check new player health
