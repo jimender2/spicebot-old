@@ -43,8 +43,6 @@ def execute_main(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
     target = trigger.group(4)
-    if target.endswith('_'):
-        targetname = target[:-1]
     if not target:
         target = trigger.nick
     for c in bot.channels:
@@ -54,10 +52,8 @@ def execute_main(bot, trigger):
     voicearray = []
     adminsarray = []
     for u in bot.channels[channel.lower()].users:
-        if u != bot.nick:
+        if u != bot.nick and u != "PM_" and u != "PM":
             nametarget = str(u)
-            if nametarget.endswith('_'):
-                nametarget = nametarget[:-1]
             if nametarget.lower() in bot.config.core.owner.lower():
                 botownerarray.append(nametarget)
             if bot.privileges[channel.lower()][nametarget] == OP:
