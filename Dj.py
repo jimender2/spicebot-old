@@ -26,10 +26,10 @@ def execute_main(bot, trigger):
 	query = str(query)
 	playlist = getplaylist(query)
 		
-     song = getsong(playlist)
-     if song:
-	bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
-     else:
+    song = getsong(playlist)
+    if song:
+       bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
+    else:
 	bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
 
 def getsong(playlist):
