@@ -57,11 +57,10 @@ def spicebotadmin(bot, trigger):
             f1.close()
             f.close()
             os.remove(log_file_path)
-            os.rename(log_file_pathb, log_file_path)
-            for line in open(log_file_path):
+            for line in open(log_file_pathb):
                 bot.say(line)
             bot.action('Is Removing Log')
-            os.remove(log_file_path)
+            os.remove(log_file_pathb)
         elif commandused == 'pipinstall':
             pippackage = trigger.group(4)
             if not pippackage:
