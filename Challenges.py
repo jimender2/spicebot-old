@@ -404,10 +404,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     now = time.time()
     
     ## Fetch XP Pepper Levels
-    instigatorxp = get_database_value(bot, instigator, 'xp')
-    targetxp = get_database_value(bot, target, 'xp')
-    instigatorpepper = get_pepper(bot, instigatorxp)
-    targetpepper = get_pepper(bot, targetxp)
+    instigatorpepper = get_pepper(bot, instigator)
+    targetpepper = get_pepper(bot, target)
     
     ## Announce Combat
     instigatorname = str(instigator + " (" + instigatorpepper + ")")
@@ -684,7 +682,8 @@ def damagedone(bot):
 ## Pepper level ##
 ##################
 
-def get_pepper(bot, xp):
+def get_pepper(bot, nick):
+    xp = get_database_value(bot, nick, 'xp')
     if xp >= 0 and xp < 100:
         pepper = 'Pimiento'
     elif xp >= 100 and xp < 250:
