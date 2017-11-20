@@ -1,4 +1,5 @@
 import sopel.module
+from sopel.module import OP
 import sopel
 from sopel import module, tools
 import random
