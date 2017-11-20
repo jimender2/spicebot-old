@@ -425,14 +425,26 @@ def getreadytorumble(bot, trigger, instigator, target):
         nametargetdisenable = get_database_value(bot, u, 'disenable')
         if u != bot.nick and len(u) > 3 and nametargetdisenable:
             nametarget = str(u)
-            if nametarget.lower() in bot.config.core.owner.lower():
-                botownerarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget] == OP:
-                operatorarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
-                voicearray.append(nametarget)
-            if target in bot.config.core.admins:
-                adminsarray.append(nametarget)
+            try:
+                if nametarget.lower() in bot.config.core.owner.lower():
+                    botownerarray.append(nametarget)
+            except KeyError:
+                test = 1
+            try:
+                if bot.privileges[channel.lower()][nametarget] == OP:
+                    operatorarray.append(nametarget)
+            except KeyError:
+                test = 1
+            try:
+                if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+                    voicearray.append(nametarget)
+            except KeyError:
+                test = 1
+            try:
+                if target in bot.config.core.admins:
+                    adminsarray.append(nametarget)
+            except KeyError:
+                test = 1
     
     ## Is instigator Special?
     if instigator in botownerarray:
