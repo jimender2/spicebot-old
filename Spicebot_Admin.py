@@ -44,6 +44,7 @@ def spicebotadmin(bot, trigger):
             search_phrase = "Welcome to Sopel. Loading modules..."
             ignoreone = "COMMAND=/bin/journalctl"
             ignoretwo = "pam_unix(sudo:session): session opened for user root"
+            ignorethree = "COMMAND=/bin/rm"
             mostrecentstartbot = 0
             with open(log_file_path) as f:
                 line_num = 0
@@ -56,7 +57,7 @@ def spicebotadmin(bot, trigger):
                 for line in fb:
                     line_num += 1
                     currentline = line_num
-                    if int(currentline) >= int(mostrecentstartbot) and ignoreone not in line and ignoretwo not in line:
+                    if int(currentline) >= int(mostrecentstartbot) and ignoreone not in line and ignoretwo not in line and ignorethree not in line:
                         bot.say(line)
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
