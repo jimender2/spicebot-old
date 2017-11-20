@@ -275,9 +275,12 @@ def mainfunction(bot, trigger):
                     weaponslist = weaponslist.replace('"', '')
                     chunks = weaponslist.split()
                     per_line = 15
+                    weaponline = ''
                     for i in range(0, len(chunks), per_line):
                         weaponline = " ".join(chunks[i:i + per_line])
                         bot.say(str(weaponline))
+                    if weaponline == '':
+                        bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
                     bot.say('Inventory can only be viewed in privmsg.')
                 else:
