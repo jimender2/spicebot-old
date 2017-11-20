@@ -56,7 +56,9 @@ def spicebotadmin(bot, trigger):
                     line_num += 1
                     currentline = line_num
                     if int(currentline) >= int(mostrecentstartbot):
-                        bot.say(line)
+                        for x in ignorearray:
+                            if x not in line:
+                                bot.say(line)
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
         elif commandused == 'pipinstall':
