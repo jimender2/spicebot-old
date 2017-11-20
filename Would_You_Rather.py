@@ -14,22 +14,14 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    if not trigger.group(2):
-        trigger = 'sfw'
-    elif not trigger.group(2).strip() == bot.nick:
-        trigger = 'nsfw'
-    #trigger = trigger.group(2).strip()
-    joke = getJoke(trigger)
+    joke = getJoke()
     if joke:
         bot.say(joke)
     else:
         bot.say('I would rather not give you a response.')
 
 def getJoke(trigger):
-    if trigger == 'nsfw':
-        url = 'http://www.rrrather.com/botapi?nsfw=true'
-    else:
-        url = 'http://www.rrrather.com/botapi'
+    url = 'http://www.rrrather.com/botapi?nsfw=true'
     try:
       page = requests.get(url)
       result = page.content
