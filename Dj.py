@@ -19,18 +19,18 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-	if not trigger.group(2):
-		playlist=party
-	else:
-		query = trigger.group(2).replace(' ','20%')
-		query = str(query)
-		playlist = getplaylist(query)
+    if not trigger.group(2):
+       playlist=party
+    else:
+	query = trigger.group(2).replace(' ','20%')
+	query = str(query)
+	playlist = getplaylist(query)
 		
-	song = getsong(playlist)
-	if song:
-		bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
-	else:
-		bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
+     song = getsong(playlist)
+     if song:
+	bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
+     else:
+	bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
 
 def getsong(playlist):
     htmlfile=urllib.urlopen(playlist)
