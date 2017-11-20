@@ -24,7 +24,7 @@ def getJoke():
     #if nsfw='nsfw':
     #    url = 'http://www.rrrather.com/botapi?nsfw=true'
     #else:
-        url = 'http://www.rrrather.com/botapi'
+    url = 'http://www.rrrather.com/botapi'
     try:
       page = requests.get(url)
       result = page.content
