@@ -25,10 +25,13 @@ def spicebotadmin(bot, trigger):
         if commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
+            cleandir(bot, trigger)
             debuglogreset(bot, trigger)
             restart(bot, trigger, service)
         elif commandused == 'restart':
             bot.msg(channel, trigger.nick + " Commanded me to restart. Be Back Soon!")
+            cleandir(bot, trigger)
+            debuglogreset(bot, trigger)
             restart(bot, trigger, service)
         elif commandused == 'debugreset':
             debuglogreset(bot, trigger)
@@ -62,9 +65,11 @@ def update(bot, trigger):
     bot.say('Pulling From Github...')
     g = git.cmd.Git(script_dir)
     g.pull()
+    
+def cleandir(bot, trigger):
     bot.say('Cleaning Directory...')
     os.system("sudo rm " + script_dir + "/*.pyc")
-
+    
 def debuglogreset(bot, trigger):
     service = bot.nick.lower()
     bot.action('Is Copying Log')
