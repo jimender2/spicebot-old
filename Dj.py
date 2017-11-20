@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     song = getsong()
        if song:
-		  bot.say(trigger.nick + 'put in a nickel and plays ' + song)
+	  bot.say(trigger.nick + 'put in a nickel and plays ' + song)
        else:
           bot.say(trigger.nick + 'put in a nickel and plays ' + 'Never Gonna Give You Up by Rick Astley')
 
