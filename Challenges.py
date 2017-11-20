@@ -403,13 +403,23 @@ def getreadytorumble(bot, trigger, instigator, target):
     targetsplit = trigger.group(3)
     now = time.time()
     
+    ## Naming
+    instigatorname = str(instigator)
+    targetname = str(target)
+    
     ## Fetch XP Pepper Levels
     instigatorpepper = get_pepper(bot, instigator)
     targetpepper = get_pepper(bot, target)
     
+    ## Is user the Bot Owner?
+    if instigator.lower() in bot.config.core.owner.lower():
+        instigatorname = str("The Legendary " + instigatorname)
+    if target.lower() in bot.config.core.owner.lower():
+        targetname = str("The Legendary " + targetname)
+    
     ## Announce Combat
-    instigatorname = str(instigator + " (" + instigatorpepper + ")")
-    targetname = str(target + " (" + targetpepper + ")")
+    instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
+    targetname = str(targetname + " (" + targetpepper + ")")
     announcecombatmsg = str(instigatorname + " versus " + targetname)
        
     ## Check new player health
