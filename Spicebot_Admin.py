@@ -41,17 +41,18 @@ def spicebotadmin(bot, trigger):
             bot.action('Is Copying Log')
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
             bot.action('Is Filtering Log')
-            f = open(log_file_path)
-            line_num = 0
             search_phrase = "Starting Sopel IRC bot"
-            for line in f.readlines():
-                line_num += 1
-                recentlinenum = line_num
-            line_num = 0
-            for line in f.readlines():
-                line_num += 1
-                if int(line_num) >= int(recentlinenum):
-                    bot.say(line)
+            with open(log_file_path) as f:
+                line_num = 0
+                for line in f:
+                    line_num += 1
+                    if search_phrase in line:
+                        mostrecentstartbot = line_num
+                line_num = 0
+                for line in f:
+                    line_num += 1
+                    if int(line_num) >= int(recentlinenum):
+                        bot.say(line)
             bot.action('Is Removing Log')
             os.system("sudo rm " + log_file_path)
         elif commandused == 'pipinstall':
