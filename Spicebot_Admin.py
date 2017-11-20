@@ -83,7 +83,7 @@ def update(bot, trigger):
     
 def cleandir(bot, trigger):
     bot.say('Cleaning Directory...')
-    os.remove(script_dir + "/*.pyc")
+    os.system("sudo rm " + script_dir + "/*.pyc")
     
 def debuglogreset(bot, trigger):
     service = bot.nick.lower()
