@@ -50,7 +50,8 @@ def spicebotadmin(bot, trigger):
                     if search_phrase in line:
                         mostrecentstartbot = line_num
                 line_num = 0
-                for line in f:
+            with open(log_file_path) as fb:
+                for line in fb:
                     line_num += 1
                     currentline = line_num
                     if int(currentline) >= int(mostrecentstartbot):
