@@ -10,8 +10,6 @@ from SpicebotShared import *
 party='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/jukebox_party.txt'
 friday='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/master/otherfiles/jukebox_friday.txt'
 
-
-
 @sopel.module.commands('dj')
 def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
@@ -37,7 +35,7 @@ def getsong(playlist):
     lines=htmlfile.read().splitlines()
     mysong=random.choice(lines)
     if not mysong or mysong == '\n':
-       mysong = getsong()
+	mysong = getsong()
     return mysong	
 	
 def getplaylist(query):
