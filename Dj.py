@@ -26,6 +26,6 @@ def getsong():
     htmlfile=urllib.urlopen(fra)
     lines=htmlfile.read().splitlines()
     mysong=random.choice(lines)
-    if not mysong or myline == '\n':
+    if not mysong or mysong == '\n':
        mysong = randomfra()
     return mysongsong
