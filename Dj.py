@@ -18,9 +18,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     song = getsong()
     if song:
-        bot.say(trigger.nick + ' puts in a nickel and plays ' + song)
+        bot.say(trigger.nick + ' puts a nickel in the jukebox and it start to playing ' + song)
     else:
-        bot.say(trigger.nick + ' puts in a nickel and plays ' + 'Never Gonna Give You Up by Rick Astley')
+        bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
 
 def getsong():
     htmlfile=urllib.urlopen(fra)
