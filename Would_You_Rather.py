@@ -21,7 +21,7 @@ def execute_main(bot, trigger):
         bot.say('I would rather not give you a response.')
 
 def getJoke(trigger):
-    if trigger='nsfw':
+    if trigger == 'nsfw':
         url = 'http://www.rrrather.com/botapi?nsfw=true'
     else:
         url = 'http://www.rrrather.com/botapi'
