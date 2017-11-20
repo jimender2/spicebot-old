@@ -41,7 +41,7 @@ def spicebotadmin(bot, trigger):
             bot.action('Is Copying Log')
             os.system("sudo journalctl -u " + service + " >> " + log_file_path)
             bot.action('Is Filtering Log')
-            search_phrase = "Starting Sopel IRC bot"
+            search_phrase = "Welcome to Sopel. Loading modules..."
             mostrecentstartbot = 0
             with open(log_file_path) as f:
                 line_num = 0
