@@ -47,6 +47,21 @@ def execute_main(bot, trigger):
         target = trigger.nick
     for c in bot.channels:
         channel = c
+    botownerarray = []
+    operatorarray = []
+    voicearray = []
+    adminsarray = []
+    for u in bot.channels[channel.lower()].users:
+        nametarget = str(u)
+        if nametarget.lower() in bot.config.core.owner.lower():
+            botownerarray.append(nametarget)
+        if bot.privileges[channel.lower()][nametarget] == OP:
+            operatorarray.append(nametarget)
+        if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+            voicearray.append(nametarget)
+        if target in bot.config.core.admins:
+            adminsarray.append(nametarget)
+            
     options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop, isvoice")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
@@ -75,7 +90,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target.lower() in bot.config.core.owner.lower():
+                if target.lower() in botownerarray.lower():
                     bot.say(target + ' is the owner.')
                 else:
                     bot.say(target + ' is not the owner.')
@@ -89,7 +104,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if bot.privileges[channel.lower()][target] == OP:
+                if target.lower() in operatorarray.lower():
                     bot.say(target + ' is an op.')
                 else:
                     bot.say(target + ' is not an op.')
@@ -99,7 +114,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if bot.privileges[channel.lower()][target.lower()] == VOICE:
+                if target.lower() in voicearray.lower():
                     bot.say(target + ' has voice.')
                 else:
                     bot.say(target + ' does not have voice.')
@@ -109,7 +124,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             else:
-                if target in bot.config.core.admins:
+                if target.lower() in adminsarray.lower():
                     bot.say(target + ' is a bot admin.')
                 else:
                     bot.say(target + ' is not a bot admin.')
