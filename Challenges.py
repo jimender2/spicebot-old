@@ -413,8 +413,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     targetname = str(target)
     
     ## Fetch XP Pepper Levels
-    instigatorpepper = get_pepper(bot, instigator)
-    targetpepper = get_pepper(bot, target)
+    instigatorpepperstart = get_pepper(bot, instigator)
+    targetpepperstart = get_pepper(bot, target)
     
     ## Is user Special?
     botownerarray = []
@@ -459,8 +459,8 @@ def getreadytorumble(bot, trigger, instigator, target):
         targetname = str(targetname)
         
     ## Pepper Names
-    instigatorname = str(instigatorname + " (" + instigatorpepper + ")")
-    targetname = str(targetname + " (" + targetpepper + ")")
+    instigatorname = str(instigatorname + " (" + instigatorpepperstart + ")")
+    targetname = str(targetname + " (" + targetpepperstart + ")")
     
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
@@ -512,6 +512,15 @@ def getreadytorumble(bot, trigger, instigator, target):
         lootcorpse(bot, loser, winner)
     else:
         winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + str(damage) + ' damage.')
+        
+    ## new pepper level?
+    pepperstatuschangemsg = ''
+    instigatorpeppernow = get_pepper(bot, instigator)
+    targetpeppernow = get_pepper(bot, target)
+    if instigatorpeppernow != instigatorpepperstart:
+        pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
+    if targetpeppernow != targetpepperstart:
+        pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
             
     ## Random Inventory gain
     lootwinnermsg = ''
@@ -528,6 +537,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## On Screen Text
     bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
     bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
+    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
+        bot.say(pepperstatuschangemsg)
         
     ## Update Time Of Combat
     set_database_value(bot, instigator, 'timeout', now)
