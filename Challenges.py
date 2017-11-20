@@ -422,7 +422,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     voicearray = []
     adminsarray = []
     for u in bot.channels[channel.lower()].users:
-        if u != bot.nick and len(u) > 3:
+        nametargetdisenable = get_database_value(bot, u, 'disenable')
+        if u != bot.nick and len(u) > 3 and nametargetdisenable:
             nametarget = str(u)
             if nametarget.lower() in bot.config.core.owner.lower():
                 botownerarray.append(nametarget)
