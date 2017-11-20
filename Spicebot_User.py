@@ -52,15 +52,16 @@ def execute_main(bot, trigger):
     voicearray = []
     adminsarray = []
     for u in bot.channels[channel.lower()].users:
-        nametarget = str(u)
-        if nametarget.lower() in bot.config.core.owner.lower():
-            botownerarray.append(nametarget)
-        if bot.privileges[channel.lower()][nametarget] == OP:
-            operatorarray.append(nametarget)
-        if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
-            voicearray.append(nametarget)
-        if target in bot.config.core.admins:
-            adminsarray.append(nametarget)
+        if u != bot.nick:
+            nametarget = str(u)
+            if nametarget.lower() in bot.config.core.owner.lower():
+                botownerarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget] == OP:
+                operatorarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+                voicearray.append(nametarget)
+            if target in bot.config.core.admins:
+                adminsarray.append(nametarget)
             
     options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop, isvoice")
     if not trigger.group(2):
