@@ -85,6 +85,10 @@ def mainfunction(bot, trigger):
             targetopttime = abs(now - int(targetopttime))
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
+            instigatortime = get_database_value(bot, instigator, 'opttime')
+            instigatortime = abs(now - instigatortime)
+            targettime = get_database_value(bot, target, 'opttime')
+            targettime = abs(now - targettime)
             channeltime = get_database_value(bot, ALLCHAN, 'opttime')
             channeltime = abs(now - channeltime)
                     
@@ -94,10 +98,15 @@ def mainfunction(bot, trigger):
             
             ## Channel Timeout
             if commandused == 'channeltimeout':
-                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                if channeltime < TIMEOUTC:
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 else:
                     bot.notice(channel + " should be able to run challenges.", instigator)
+            
+            ## Can I fight
+            #elif commandused == 'canifight':
+            #    if channeltime < TIMEOUTC:
+                    
                 
             ## Random Dueling
             elif commandused == 'random':
