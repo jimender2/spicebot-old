@@ -35,7 +35,7 @@ def challenge_action(bot, trigger):
         target = trigger.group(1).strip()
         for c in bot.channels:
             channel = c
-        if target.lower() not in bot.privileges[channel.lower()]:
+        if target.lower() in bot.privileges[channel.lower()]:
             return getreadytorumble(bot, trigger, instigator, target)
         elif target == 'random':
             bot.say("I can't do that function via action command yet")
