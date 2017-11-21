@@ -11,7 +11,7 @@ from os.path import exists
 
 JOINTIMEOUT = 60
 LASTTIMEOUT = 60
-TOOMANYTIMES = 10
+TOOMANYTIMES = 15
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
