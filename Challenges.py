@@ -33,6 +33,8 @@ def challenge_action(bot, trigger):
     if not enablestatus:
         instigator = trigger.nick
         target = trigger.group(1)
+        for c in bot.channels:
+            channel = c
         if target.lower() not in bot.privileges[channel.lower()]:
             return getreadytorumble(bot, trigger, instigator, target)
         elif target == 'random':
