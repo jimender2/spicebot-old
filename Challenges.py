@@ -227,7 +227,7 @@ def mainfunction(bot, trigger):
                         kills = get_database_value(bot, target, 'kills')
                         if kills > currentleadernumber:
                             currentleader = target
-                            currentleadernumber = winlossratio
+                            currentleadernumber = kills
                 leaderboardscript = str("The Top Killer in the room is: " + str(currentleader) + " with: " + str(currentleadernumber) + " kills.")
                 bot.say(leaderboardscript)
             
