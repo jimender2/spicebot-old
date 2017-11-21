@@ -18,7 +18,7 @@ def execute_main(bot, trigger):
     mynumber =  getnumber()
   else:
     mynumber = int(trigger.group(2))
-  if not mynumber>=1 & <=maxcomics
+  if not mynumber>=1 & <=maxcomics:
     mynumber=getnumber()
   bot.say('https://xkcd.com/' + mynumber)
    
