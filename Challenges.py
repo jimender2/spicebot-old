@@ -104,8 +104,17 @@ def mainfunction(bot, trigger):
                     bot.notice(channel + " should be able to run challenges.", instigator)
             
             ## Can I fight
-            #elif commandused == 'canifight':
-            #    if channeltime < TIMEOUTC:
+            elif commandused == 'canifight':
+                displaymsg = ''
+                if channeltime < TIMEOUTC:
+                    mathing = (TIMEOUTC - channeltime)
+                    displaymsg = str(displaymsg + channel + " can't duel for: " + str(mathing) + " seconds. ")
+                if instigatortime < TIMEOUT:
+                    mathing = (TIMEOUT - instigatortime)
+                    displaymsg = str(displaymsg + instigator + " can't duel for: " + str(mathing) + " seconds. ")
+                if targettime < TIMEOUT and target != instigator:
+                    mathing = (TIMEOUT - targettime)
+                    displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
                     
                 
             ## Random Dueling
