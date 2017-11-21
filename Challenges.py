@@ -93,7 +93,7 @@ def mainfunction(bot, trigger):
             ## Random Dueling
             elif commandused == 'random':
                 channeltime = get_timesince(bot, ALLCHAN)
-                if channeltime < TIMEOUTC:
+                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 else:
                     if not lastfought:
