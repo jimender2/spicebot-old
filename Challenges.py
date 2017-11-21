@@ -288,10 +288,10 @@ def mainfunction(bot, trigger):
                         if health < currenthealthleadernumber:
                             currenthealthleader = target
                             currenthealthleadernumber = winlossratio
-                leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader " at ratio of " + str(currentwlrleadernumber) + ".     ")
-                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader " at " + str(currentkillsleadernumber) + " kills.     ")
-                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader " at " + str(currentrespawnsleadernumber) + " respawns.     ")
-                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader " at " + str(currenthealthleadernumber) + " health.     ")
+                leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
+                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
+                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " at " + str(currentrespawnsleadernumber) + " respawns.     ")
+                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " at " + str(currenthealthleadernumber) + " health.     ")
                 bot.say(leaderboardscript)
 
             ## Loot Items usage
