@@ -115,6 +115,8 @@ def execute_main(bot, trigger):
             targetarray = targetarray.replace('u"', '')
             targetarray = targetarray.replace("'", '')
             targetarray = targetarray.replace('"', '')
+            targetarray = targetarray.replace(")", '')
+            targetarray = targetarray.replace("(Identifier", '')
             chunks = targetarray.split()
             per_line = 15
             targetline = ''
