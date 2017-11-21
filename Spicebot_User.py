@@ -100,6 +100,23 @@ def execute_main(bot, trigger):
         elif commandused == 'github':
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
             
+        ## Is on for who
+        elif commandused == 'isonforwho' and not inchannel.startswith("#"):
+            targetarray = []
+            for u in bot.channels[channel.lower()].users:
+                target = u
+                disenable = get_spicebotdisenable(bot, target)
+                if disenable:
+                    targetarray.append(target)
+            chunks = targetarray.split()
+            per_line = 15
+            targetline = ''
+            for i in range(0, len(chunks), per_line):
+                targetline = " ".join(chunks[i:i + per_line])
+                bot.say(str(targetline))
+            if targetline == '':
+                bot.say('Nobody has ' + bot.nick + " enabled.")
+            
         ## Is OP
         elif commandused == 'isop':
             if target.lower() not in bot.privileges[channel.lower()]:
