@@ -825,7 +825,15 @@ def getwinner(bot, instigator, target):
     ## each person
     instigatorfight = '1'
     targetfight = '1'
-
+    
+    # extra roll for using the weaponslocker
+    instigatorweaponslist = get_weaponslocker(bot, instigator)
+    if not instigatorweaponslist == []:
+        instigatorfight = int(instigatorfight) + 1
+    targetweaponslist = get_weaponslocker(bot, target)
+    if not targetweaponslist == []:
+        targetfight = int(targetfight) + 1
+    
     # instigator gets 1 for surprise
     instigatorfight = int(instigatorfight) + 1
 
