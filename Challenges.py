@@ -491,7 +491,9 @@ def mainfunction(bot, trigger):
             return getreadytorumble(bot, trigger, instigator, target)
         
 def getreadytorumble(bot, trigger, instigator, target):
+    
     ## Update Time Of Combat
+    now = time.time()
     set_database_value(bot, instigator, 'timeout', now)
     set_database_value(bot, target, 'timeout', now)
     set_database_value(bot, ALLCHAN, 'timeout', now)
@@ -499,7 +501,6 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## Vars
     fullcommandused = trigger.group(2)
     targetsplit = trigger.group(3)
-    now = time.time()
     for c in bot.channels:
         channel = c
     
