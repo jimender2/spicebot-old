@@ -491,6 +491,11 @@ def mainfunction(bot, trigger):
             return getreadytorumble(bot, trigger, instigator, target)
         
 def getreadytorumble(bot, trigger, instigator, target):
+    ## Update Time Of Combat
+    set_database_value(bot, instigator, 'timeout', now)
+    set_database_value(bot, target, 'timeout', now)
+    set_database_value(bot, ALLCHAN, 'timeout', now)
+    
     ## Vars
     fullcommandused = trigger.group(2)
     targetsplit = trigger.group(3)
@@ -635,11 +640,6 @@ def getreadytorumble(bot, trigger, instigator, target):
     bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
     if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
         bot.say(pepperstatuschangemsg)
-        
-    ## Update Time Of Combat
-    set_database_value(bot, instigator, 'timeout', now)
-    set_database_value(bot, target, 'timeout', now)
-    set_database_value(bot, ALLCHAN, 'timeout', now)
 
 ## Health Regeneration
 @sopel.module.interval(1800)
