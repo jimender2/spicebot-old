@@ -24,7 +24,7 @@ def execute_main(bot, trigger):
 		query = str(query)
 		playlist = getplaylist(query)
 		if playlist == party
-			bot.say('You have selected the Party playlist')		
+			bot.say('You have selected the Party Playlist')		
 	song = getsong(playlist)
 	if song:
 		bot.say(trigger.nick + ' puts a nickel in the jukebox and it starts to play ' + song)
