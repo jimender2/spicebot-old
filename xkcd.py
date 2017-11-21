@@ -2,7 +2,6 @@ import sopel.module
 import urllib
 import sys
 import os
-sys.path.append(moduledir)
 from SpicebotShared import *
 
 maxcomics=1917
