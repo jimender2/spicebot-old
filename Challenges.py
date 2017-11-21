@@ -215,6 +215,21 @@ def mainfunction(bot, trigger):
                             currentleadernumber = winlossratio
                 leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
                 bot.say(leaderboardscript)
+                
+            ## Most Kills
+            elif commandused == 'mostkills':
+                currentleader = ''
+                currentleadernumber = 0
+                for u in bot.channels[channel].users:
+                    target = u
+                    targetdisenable = get_database_value(bot, target, 'disenable')
+                    if targetdisenable:
+                        kills = get_database_value(bot, target, 'kills')
+                        if kills > currentleadernumber:
+                            currentleader = target
+                            currentleadernumber = winlossratio
+                leaderboardscript = str("The Top Killer in the room is: " + str(currentleader) + " with: " + str(currentleadernumber) + " kills.")
+                bot.say(leaderboardscript)
             
             ## Close to death
             elif commandused == 'closetodeath':
