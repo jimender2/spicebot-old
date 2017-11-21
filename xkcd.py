@@ -11,16 +11,16 @@ maxcomics=1917
 def mainfunction(bot, trigger):
   enablestatus = spicebot_prerun(bot, trigger)
   if not enablestatus:
-      execute_main(bot, trigger)
+    execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
   if not trigger.group(2):
     mynumber =  getnumber()
   else:
-   mynumber = int(trigger.group(2))
-   if not mynumber>=1 & <=maxcomics
+    mynumber = int(trigger.group(2))
+  if not mynumber>=1 & <=maxcomics
     mynumber=getnumber()
- bot.say('https://xkcd.com/' + mynumber)
+  bot.say('https://xkcd.com/' + mynumber)
    
 def getnumber():
   thenumber = random.range(0,maxcomics,2)
