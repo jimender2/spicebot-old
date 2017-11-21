@@ -21,7 +21,7 @@ TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsadminarray = ['opttime','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
     
 ####################
@@ -74,7 +74,7 @@ def mainfunction(bot, trigger):
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random':
+        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'statsadmin':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
         elif target == bot.nick:
             bot.notice(instigator + " I cannot do that.", instigator)
@@ -506,11 +506,17 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## Damage Done
     damage = damagedone(bot)
 
+    ## Manual weapon
+    weapon = str(fullcommandused.split(targetsplit, 1)[1]).strip()
+    if not weapon:
+        manualweapon = 'false'
+    else:
+        manualweapon = 'true'
+        
     ## Select Winner
-    winner, loser = getwinner(bot, instigator, target)
+    winner, loser = getwinner(bot, instigator, target, manualweapon)
 
     ## Weapon Select
-    weapon = str(fullcommandused.split(targetsplit, 1)[1]).strip()
     if not weapon or winner == target:
         weapon = weaponofchoice(bot, winner)
     weapon = weaponformatter(bot, weapon)
@@ -814,7 +820,7 @@ def get_pepper(bot, nick):
 ## Select Winner ##
 ###################
 
-def getwinner(bot, instigator, target):
+def getwinner(bot, instigator, target, manualweapon):
     instigatorxp = get_database_value(bot, instigator, 'xp')
     if not instigatorxp:
         instigatorxp = '1'
@@ -826,9 +832,9 @@ def getwinner(bot, instigator, target):
     instigatorfight = '1'
     targetfight = '1'
     
-    # extra roll for using the weaponslocker
+    # extra roll for using the weaponslocker or manual weapon usage
     instigatorweaponslist = get_weaponslocker(bot, instigator)
-    if not instigatorweaponslist == []:
+    if not instigatorweaponslist == [] or manualweapon == 'true':
         instigatorfight = int(instigatorfight) + 1
     targetweaponslist = get_weaponslocker(bot, target)
     if not targetweaponslist == []:
