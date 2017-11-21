@@ -270,7 +270,7 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                    if targetdisenable and target != bot.nick:
                         winlossratio = get_winlossratio(bot,target)
                         if winlossratio > currentwlrleadernumber:
                             currentwlrleader = target
