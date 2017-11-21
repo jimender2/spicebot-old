@@ -94,24 +94,17 @@ def mainfunction(bot, trigger):
             if commandused == 'docs' or commandused == 'help':
                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
             
-            ## Channel Timeout
-            if commandused == 'channeltimeout':
-                if channeltime < TIMEOUTC:
-                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                else:
-                    bot.notice(channel + " should be able to run challenges.", instigator)
-            
             ## Can I fight
             elif commandused == 'canifight':
                 displaymsg = ''
                 if channeltime < TIMEOUTC:
-                    mathing = (TIMEOUTC - channeltime)
+                    mathing = abs(TIMEOUTC - channeltime)
                     displaymsg = str(displaymsg + channel + " can't duel for: " + str(mathing) + " seconds. ")
                 if instigatortime < TIMEOUT:
-                    mathing = (TIMEOUT - instigatortime)
+                    mathing = abs(TIMEOUT - instigatortime)
                     displaymsg = str(displaymsg + instigator + " can't duel for: " + str(mathing) + " seconds. ")
                 if targettime < TIMEOUT and target != instigator:
-                    mathing = (TIMEOUT - targettime)
+                    mathing = abs(TIMEOUT - targettime)
                     displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
                 if target.lower() == lastfought.lower():
                     displaymsg = str(displaymsg + target + " = lastfought. ")
@@ -584,7 +577,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     winner, loser = getwinner(bot, instigator, target, manualweapon)
 
     ## Weapon Select
-    if not weapon or winner == target:
+    if manualweapon == 'false' or winner == target:
         weapon = weaponofchoice(bot, winner)
     weapon = weaponformatter(bot, weapon)
            
@@ -613,6 +606,7 @@ def getreadytorumble(bot, trigger, instigator, target):
         adjust_database_value(bot, winner, 'kills', defaultadjust)
         ## Loot Corpse
         lootcorpse(bot, loser, winner)
+        currenthealth = get_database_value(bot, loser, 'health')
     else:
         winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + str(damage) + ' damage.')
         
