@@ -132,6 +132,32 @@ def mainfunction(bot, trigger):
                         set_database_value(bot, target, 'opttime', now)
                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
 
+            ## Is on for who
+            elif commandused == 'isonforwho' and not inchannel.startswith("#"):
+                targetarray = []
+                for u in bot.channels[channel.lower()].users:
+                    target = u
+                    targetdisenable = get_database_value(bot, target, 'disenable')
+                    if targetdisenable:
+                        targetarray.append(target)
+                targetarray = str(targetarray)
+                targetarray = targetarray.replace('[', '')
+                targetarray = targetarray.replace(']', '')
+                targetarray = targetarray.replace("u'", '')
+                targetarray = targetarray.replace('u"', '')
+                targetarray = targetarray.replace("'", '')
+                targetarray = targetarray.replace('"', '')
+                targetarray = targetarray.replace(")", '')
+                targetarray = targetarray.replace("Identifier(", '')
+                chunks = targetarray.split()
+                per_line = 15
+                targetline = ''
+                for i in range(0, len(chunks), per_line):
+                    targetline = " ".join(chunks[i:i + per_line])
+                    bot.say(str(targetline))
+                if targetline == '':
+                    bot.say("Nobody has challenges enabled.")
+                
             ## Stats
             elif commandused == 'stats':
                 stats = ''
