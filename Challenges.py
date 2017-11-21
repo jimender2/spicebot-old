@@ -32,7 +32,7 @@ def challenge_action(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
         instigator = trigger.nick
-        target = trigger.group(3)
+        target = trigger.group(2)
         if target.lower() not in bot.privileges[channel.lower()]:
             return getreadytorumble(bot, trigger, instigator, target)
         elif target == 'random':
