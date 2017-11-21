@@ -15,21 +15,17 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger)
     
-def execute_main(bot, trigger):
-    if trigger.nick == 'IT_Sean':
-        gif = 'https://media2.giphy.com/media/11aCNnhizTWfXW/giphy.gif'
-        bot.say('IT_Sean, you\'re safe with me. ' + gif)
-    else:        
-        if trigger.group(2):
-            query = trigger.group(2).replace(' ', '%20')
-            query = str(query)
-            gif = getGif(query)
-            if gif:
-                bot.say(gif)
-            else:
-                bot.say('Hmm...Couldn\'t find a gif for that!')
+def execute_main(bot, trigger):       
+    if trigger.group(2):
+        query = trigger.group(2).replace(' ', '%20')
+        query = str(query)
+        gif = getGif(query)
+        if gif:
+            bot.say(gif)
         else:
-            bot.say('Tell me what you\'re looking for!')
+            bot.say('Hmm...Couldn\'t find a gif for that!')
+    else:
+        bot.say('Tell me what you\'re looking for!')
             
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
