@@ -85,7 +85,8 @@ def mainfunction(bot, trigger):
             targetopttime = abs(now - targetopttime)
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
-            channeltime = get_timesince(bot, ALLCHAN)
+            channeltime = get_database_value(bot, ALLCHAN, 'opttime')
+            channeltime = abs(now - channeltime)
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
