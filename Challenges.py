@@ -85,14 +85,21 @@ def mainfunction(bot, trigger):
             targetopttime = abs(now - targetopttime)
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
+            channeltime = get_timesince(bot, ALLCHAN)
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
             
+            ## Channel Timeout
+            if commandused == 'channeltimeout':
+                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+                else:
+                    bot.notice(channel + " should be able to run challenges.", instigator)
+                
             ## Random Dueling
             elif commandused == 'random':
-                channeltime = get_timesince(bot, ALLCHAN)
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 else:
