@@ -23,7 +23,7 @@ def execute_main(bot, trigger):
 		query = trigger.group(2).replace(' ','20%')
 		query = str(query)
 		playlist = getplaylist(query)
-		if playlist == party
+		if playlist == party:
 			bot.say('You have selected the Party Playlist')		
 	song = getsong(playlist)
 	if song:
