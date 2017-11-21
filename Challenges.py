@@ -82,7 +82,7 @@ def mainfunction(bot, trigger):
         ## and, continue
         else:
             targetopttime = get_database_value(bot, target, 'opttime')
-            targetopttime = abs(now - targetopttime)
+            targetopttime = abs(now - int(targetopttime))
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
             channeltime = get_database_value(bot, ALLCHAN, 'opttime')
