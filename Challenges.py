@@ -112,7 +112,7 @@ def mainfunction(bot, trigger):
                 if targettime < TIMEOUT and target != instigator:
                     mathing = (TIMEOUT - targettime)
                     displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
-                if target == lastfought:
+                if target.lower() == lastfought.lower():
                     displaymsg = str(displaymsg + target + " = lastfought. ")
                 if displaymsg == '':
                     bot.notice("You Should be able to challenge.", instigator)
