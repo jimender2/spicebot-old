@@ -272,7 +272,7 @@ def mainfunction(bot, trigger):
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if targetdisenable:
                         winlossratio = get_winlossratio(bot,target)
-                        if winlossratio > currentleadernumber:
+                        if winlossratio > currentwlrleadernumber:
                             currentwlrleader = target
                             currentwlrleadernumber = winlossratio
                         kills = get_database_value(bot, target, 'kills')
