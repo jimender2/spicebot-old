@@ -1,4 +1,5 @@
 import sopel.module
+import random
 import urllib
 import sys
 import os
