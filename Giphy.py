@@ -19,9 +19,9 @@ def execute_main(bot, trigger):
     if trigger.group(2):
         query = trigger.group(2).replace(' ', '%20')
         query = str(query)
-        gif = getGif(query)
+        gif,randno = getGif(query)
         if gif:
-            bot.say(gif)
+            bot.say("Result number " + str(randno) + ": " + gif)
         else:
             bot.say('Hmm...Couldn\'t find a gif for that!')
     else:
@@ -38,4 +38,4 @@ def getGif(query):
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
-    return gif
+    return gif,randno
