@@ -278,16 +278,16 @@ def mainfunction(bot, trigger):
                         kills = get_database_value(bot, target, 'kills')
                         if kills > currentkillsleadernumber:
                             currentkillsleader = target
-                            currentkillsleadernumber = winlossratio
+                            currentkillsleadernumber = kills
                         respawns = get_database_value(bot, target, 'respawns')
                         if respawns > currentrespawnsleadernumber:
                             currentrespawnsleader = target
-                            currentrespawnsleadernumber = winlossratio
+                            currentrespawnsleadernumber = respawns
                         health = get_database_value(bot, target, 'health')
                         health = int(health)
                         if health < currenthealthleadernumber:
                             currenthealthleader = target
-                            currenthealthleadernumber = winlossratio
+                            currenthealthleadernumber = health
                 leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
                 leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
                 leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " at " + str(currentrespawnsleadernumber) + " respawns.     ")
