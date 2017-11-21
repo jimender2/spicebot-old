@@ -44,6 +44,6 @@ def getplaylist(query):
 	elif query =='friday':
 		myplaylist = friday
 	else:
-		bot.say('You have select the Party playlist')
+		bot.say('You have selected the Party playlist')
 		myplaylist = party
 	return myplaylist	
