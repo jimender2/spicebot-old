@@ -19,7 +19,7 @@ def execute_main(bot, trigger):
     mynumber = int(trigger.group(2))
     if not 1 >= mynumber <= maxcomics:
       mynumber=getnumber()
-  bot.say('https://xkcd.com/' + mynumber)
+  bot.say('https://xkcd.com/' + str(mynumber))
    
 def getnumber():
   thenumber = random.randint(0,maxcomics)
