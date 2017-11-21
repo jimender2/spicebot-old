@@ -68,7 +68,7 @@ def mainfunction(bot, trigger):
         privilegedarray = ['on','off']
         
         ## Must clear these4 challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'timeout':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'canifight':
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
