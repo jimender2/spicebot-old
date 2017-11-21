@@ -83,7 +83,10 @@ def mainfunction(bot, trigger):
         ## and, continue
         else:
             targetopttime = get_database_value(bot, target, 'opttime')
-            targetopttime = abs(now - int(targetopttime))
+            if targetopttime == now:
+                targetopttime = 0
+            else:
+                targetopttime = abs(now - int(targetopttime))
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince(bot, instigator)
