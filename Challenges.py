@@ -32,7 +32,7 @@ def challenge_action(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger)
     if not enablestatus:
         instigator = trigger.nick
-        target = trigger.group(1)
+        target = trigger.group(1).strip()
         for c in bot.channels:
             channel = c
         if target.lower() not in bot.privileges[channel.lower()]:
