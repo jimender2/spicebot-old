@@ -257,66 +257,43 @@ def mainfunction(bot, trigger):
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
 
             ## Leaderboard
-            elif commandused == 'leader':
-                currentleader = ''
-                currentleadernumber = 0
+            elif commandused == 'leaderboard':
+                leaderboardscript = ''
+                currentwlrleader = ''
+                currentkillsleader = ''
+                currentrespawnsleader = ''
+                currenthealthleader = ''
+                currentwlrleadernumber = 0
+                currentkillsleadernumber = 0
+                currentrespawnsleadernumber = 0
+                currenthealthleadernumber = 9999999999
                 for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if targetdisenable:
                         winlossratio = get_winlossratio(bot,target)
                         if winlossratio > currentleadernumber:
-                            currentleader = target
-                            currentleadernumber = winlossratio
-                leaderboardscript = str("The Current Leader in the room is: " + str(currentleader) + " with a ratio of: " + str(currentleadernumber))
-                bot.say(leaderboardscript)
-                
-            ## Most Kills
-            elif commandused == 'mostkills':
-                currentleader = ''
-                currentleadernumber = 0
-                for u in bot.channels[channel].users:
-                    target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                            currentwlrleader = target
+                            currentwlrleadernumber = winlossratio
                         kills = get_database_value(bot, target, 'kills')
-                        if kills > currentleadernumber:
-                            currentleader = target
-                            currentleadernumber = kills
-                leaderboardscript = str("The Top Killer in the room is: " + str(currentleader) + " with: " + str(currentleadernumber) + " kills.")
-                bot.say(leaderboardscript)
-            
-            ## Most deaths
-            elif commandused == 'mostdeaths':
-                currentleader = ''
-                currentleadernumber = 0
-                for u in bot.channels[channel].users:
-                    target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                        if kills > currentkillleadernumber:
+                            currentkillsleader = target
+                            currentkillsleadernumber = winlossratio
                         respawns = get_database_value(bot, target, 'respawns')
-                        if respawns > currentleadernumber:
-                            currentleader = target
-                            currentleadernumber = respawns
-                leaderboardscript = str("The Top Killed in the room is: " + str(currentleader) + " with: " + str(currentleadernumber) + " respawns.")
-                bot.say(leaderboardscript)
-                
-            ## Close to death
-            elif commandused == 'closetodeath':
-                currentleader = ''
-                currentleadernumber = 9999999999
-                for u in bot.channels[channel].users:
-                    target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                        if respawns > currentrespawnsleadernumber:
+                            currentrespawnsleader = target
+                            currentrespawnsleadernumber = winlossratio
                         health = get_database_value(bot, target, 'health')
                         health = int(health)
-                        if health < currentleadernumber:
-                            currentleader = target
-                            currentleadernumber = health
-                leaderboardscript = str("The Current person close to death in the room is: " + str(currentleader) + " with health at: " + str(currentleadernumber))
+                        if health < currenthealthleadernumber:
+                            currenthealthleader = target
+                            currenthealthleadernumber = winlossratio
+                leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader " at ratio of " + str(currentwlrleadernumber) + ".     ")
+                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader " at " + str(currentkillsleadernumber) + " kills.     ")
+                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader " at " + str(currentrespawnsleadernumber) + " respawns.     ")
+                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader " at " + str(currenthealthleadernumber) + " health.     ")
                 bot.say(leaderboardscript)
-                    
+
             ## Loot Items usage
             elif commandused in lootitemsarray:
                 uselootitem = 0
