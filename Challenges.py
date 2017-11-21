@@ -786,7 +786,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg) + '. ')
     else:
         mainlootusemessage = str(mainlootusemessage + '')
-    health = get_database_value(bot, target, 'health')
+    targethealth = get_database_value(bot, target, 'health')
     if targethealth <= 0:
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
         update_respawn(bot, target)
