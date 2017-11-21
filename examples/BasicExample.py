@@ -15,6 +15,10 @@ def execute_main(bot, trigger):
     if not trigger.group(2):
         bot.say('response')
 
+## React to /me (ACTION) challenges
+#@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+#@module.intent('ACTION')
+
 ##############
 ## Triggers ##
 ##############
