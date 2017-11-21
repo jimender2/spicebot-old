@@ -33,13 +33,12 @@ def challenge_action(bot, trigger):
     if not enablestatus:
         instigator = trigger.nick
         target = trigger.group(1)
-        bot.say(str(target))
-        #if target.lower() not in bot.privileges[channel.lower()]:
-        #    return getreadytorumble(bot, trigger, instigator, target)
-        #elif target == 'random':
-        #    bot.say("I can't do that function via action command yet")
-        #else:
-        #    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+        if target.lower() not in bot.privileges[channel.lower()]:
+            return getreadytorumble(bot, trigger, instigator, target)
+        elif target == 'random':
+            bot.say("I can't do that function via action command yet")
+        else:
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
     
 ####################
 ## Main Operation ##
