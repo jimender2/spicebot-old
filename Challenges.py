@@ -92,24 +92,28 @@ def mainfunction(bot, trigger):
             
             ## Random Dueling
             elif commandused == 'random':
-                if not lastfought:
-                    lastfought = instigator
-                randomtargetarray = []
-                for u in bot.channels[channel].users:
-                    target = u
-                    if target != instigator and target != bot.nick:
-                        if target != lastfought or bot.nick.endswith('dev'):
-                            targetdisenable = get_database_value(bot, target, 'disenable')
-                            targettime = get_timesince(bot, target)
-                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                randomtargetarray.append(target)
-                if randomtargetarray == []:
-                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                channeltime = get_timesince(bot, ALLCHAN)
+                if channeltime < TIMEOUTC:
+                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 else:
-                    randomselected = random.randint(0,len(randomtargetarray) - 1)
-                    target = str(randomtargetarray [randomselected])
-                    return getreadytorumble(bot, trigger, instigator, target)
+                    if not lastfought:
+                        lastfought = instigator
+                    randomtargetarray = []
+                    for u in bot.channels[channel].users:
+                        target = u
+                        if target != instigator and target != bot.nick:
+                            if target != lastfought or bot.nick.endswith('dev'):
+                                targetdisenable = get_database_value(bot, target, 'disenable')
+                                targettime = get_timesince(bot, target)
+                                targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                                if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
+                                    randomtargetarray.append(target)
+                    if randomtargetarray == []:
+                        bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                    else:
+                        randomselected = random.randint(0,len(randomtargetarray) - 1)
+                        target = str(randomtargetarray [randomselected])
+                        return getreadytorumble(bot, trigger, instigator, target)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -452,6 +456,8 @@ def mainfunction(bot, trigger):
             if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
             elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        elif channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         else:
             return getreadytorumble(bot, trigger, instigator, target)
