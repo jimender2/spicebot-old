@@ -16,6 +16,7 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 ## Configurables #############
+defaultadjust = 1
 TIMEOUT = 180
 TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
@@ -433,7 +434,7 @@ def mainfunction(bot, trigger):
                             if targethealth <= 0:
                                 update_respawn(bot, target)
                                 set_database_value(bot, target, 'opttime', now)
-                                adjust_database_value(bot, instigator, 'kills', '1')
+                                adjust_database_value(bot, instigator, 'kills', defaultadjust)
                                 lootcorpse(bot, target, instigator)
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
@@ -569,7 +570,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
 
-    ## Damage Done
+    ## Damage Done (random)
     damage = damagedone(bot)
 
     ## Manual weapon
@@ -588,8 +589,8 @@ def getreadytorumble(bot, trigger, instigator, target):
     weapon = weaponformatter(bot, weapon)
            
     ## Update Wins and Losses
-    adjust_database_value(bot, winner, 'wins', '1')
-    adjust_database_value(bot, loser, 'losses', '1')
+    adjust_database_value(bot, winner, 'wins', defaultadjust)
+    adjust_database_value(bot, loser, 'losses', defaultadjust)
             
     ## Update XP points
     XPearnedwinner = '5'
@@ -609,7 +610,7 @@ def getreadytorumble(bot, trigger, instigator, target):
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
         update_respawn(bot, loser)
         set_database_value(bot, loser, 'mana', '')
-        adjust_database_value(bot, winner, 'kills', '1')
+        adjust_database_value(bot, winner, 'kills', defaultadjust)
         ## Loot Corpse
         lootcorpse(bot, loser, winner)
     else:
@@ -631,7 +632,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     if randominventoryfind == 'true':
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
-        adjust_database_value(bot, winner, loot, '1')
+        adjust_database_value(bot, winner, loot, defaultadjust)
         lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
         if winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
@@ -773,7 +774,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
         if loot != 'mysterypotion':
-            adjust_database_value(bot, instigator, loot, '1')
+            adjust_database_value(bot, instigator, loot, defaultadjust)
             saymsg = 'false'
             use_lootitem(bot, instigator, target, inchannel, loot, saymsg)
             saymsg = 'true'
@@ -792,7 +793,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
         update_respawn(bot, target)
         set_database_value(bot, target, 'mana', '')
-        adjust_database_value(bot, instigator, 'kills', '1')
+        adjust_database_value(bot, instigator, 'kills', defaultadjust)
         lootcorpse(bot, target, instigator)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
