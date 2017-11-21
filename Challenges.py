@@ -24,6 +24,22 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 challengestatsadminarray = ['wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 
+## React to /me (ACTION) challenges
+@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+@module.intent('ACTION')
+@module.require_chanmsg
+def challenge_action(bot, trigger):
+    enablestatus = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        instigator = trigger.nick
+        target = trigger.group(3)
+        if target.lower() not in bot.privileges[channel.lower()]:
+            return getreadytorumble(bot, trigger, instigator, target)
+        elif target == 'random':
+            bot.say("I can't do that function via action command yet")
+        else:
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+    
 ####################
 ## Main Operation ##
 ####################
