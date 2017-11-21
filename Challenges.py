@@ -88,8 +88,7 @@ def mainfunction(bot, trigger):
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
-
-                    
+  
             ## Docs
             if commandused == 'docs' or commandused == 'help':
                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
@@ -113,6 +112,8 @@ def mainfunction(bot, trigger):
                 if targettime < TIMEOUT and target != instigator:
                     mathing = (TIMEOUT - targettime)
                     displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
+                if target == lastfought:
+                    displaymsg = str(displaymsg + target + " = lastfought. ")
                 if displaymsg == '':
                     bot.notice("You Should be able to challenge.", instigator)
                 else:
