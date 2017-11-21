@@ -22,7 +22,7 @@ def execute_main(bot, trigger):
   bot.say('https://xkcd.com/' + str(mynumber))
    
 def getnumber():
-  thenumber = random.randint(0,maxcomics)
+  thenumber = random.randint(0,int(maxcomics))
   if not thenumber or thenumber == '\n':
     thenumber=getnumber()
   return thenumber
