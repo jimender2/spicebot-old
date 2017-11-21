@@ -115,7 +115,10 @@ def mainfunction(bot, trigger):
                 if targettime < TIMEOUT and target != instigator:
                     mathing = (TIMEOUT - targettime)
                     displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
-                    
+                if displaymsg == '':
+                    bot.notice("You Should be able to challenge.", instigator)
+                else:
+                    bot.notice(displaymsg, instigator)
                 
             ## Random Dueling
             elif commandused == 'random':
