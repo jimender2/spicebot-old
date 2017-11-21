@@ -108,6 +108,13 @@ def execute_main(bot, trigger):
                 disenable = get_spicebotdisenable(bot, target)
                 if disenable:
                     targetarray.append(target)
+            targetarray = str(targetarray)
+            targetarray = targetarray.replace('[', '')
+            targetarray = targetarray.replace(']', '')
+            targetarray = targetarray.replace("u'", '')
+            targetarray = targetarray.replace('u"', '')
+            targetarray = targetarray.replace("'", '')
+            targetarray = targetarray.replace('"', '')
             chunks = targetarray.split()
             per_line = 15
             targetline = ''
