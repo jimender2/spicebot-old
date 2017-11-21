@@ -36,7 +36,7 @@ def getGif(query):
     limit = 50
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'    
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,19)
+    randno = randint(0,limit)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
