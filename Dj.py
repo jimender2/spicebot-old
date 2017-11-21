@@ -23,7 +23,8 @@ def execute_main(bot, trigger):
 		query = trigger.group(2).replace(' ','20%')
 		query = str(query)
 		playlist = getplaylist(query)
-		
+		if playlist == party
+			bot.say('You have selected the Party playlist')		
 	song = getsong(playlist)
 	if song:
 		bot.say(trigger.nick + ' puts a nickel in the jukebox and it starts to play ' + song)
@@ -44,6 +45,5 @@ def getplaylist(query):
 	elif query =='friday':
 		myplaylist = friday
 	else:
-		bot.say('You have selected the Party playlist')
 		myplaylist = party
 	return myplaylist	
