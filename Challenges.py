@@ -276,7 +276,7 @@ def mainfunction(bot, trigger):
                             currentwlrleader = target
                             currentwlrleadernumber = winlossratio
                         kills = get_database_value(bot, target, 'kills')
-                        if kills > currentkillleadernumber:
+                        if kills > currentkillsleadernumber:
                             currentkillsleader = target
                             currentkillsleadernumber = winlossratio
                         respawns = get_database_value(bot, target, 'respawns')
