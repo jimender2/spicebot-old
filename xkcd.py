@@ -24,7 +24,7 @@ def execute_main(bot, trigger):
 		maxcomics = 1918
 	if not trigger.group(2):
 		mynumber =  getnumber()
-  else:
+	else:
 		mynumber = trigger.group(2)
 	if str(mynumber) == 'today':
 		mynumber=maxcomics	
