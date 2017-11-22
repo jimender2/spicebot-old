@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
 	latest=get_info(verify_ssl=verify_ssl)
-  maxcomics=latest['num']
+	maxcomics=latest['num']
 	if not int(maxcomics)<=1:
 		maxcomics = 1918
   if not trigger.group(2):
@@ -44,7 +44,7 @@ def getinfo(number=None, verify_ssl=True):
 	return data
    
 def getnumber():
-  thenumber = random.randint(0,int(maxcomics))
-  if not thenumber or thenumber == '\n':
-    thenumber=getnumber()
-  return thenumber
+	thenumber = random.randint(0,int(maxcomics))
+	if not thenumber or thenumber == '\n':
+		thenumber=getnumber()
+	return thenumber
