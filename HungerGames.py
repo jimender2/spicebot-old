@@ -22,23 +22,23 @@ def execute_main(bot, trigger):
         #targetdisenable = get_database_value(bot, target, 'disenable')
         #if targetdisenabled:
         randomtargetarray.append(target) ##need to filter out those with spicebot disabled
-        if randomtargetarray == []:
-            bot.say("There is currently no one available to play the hunger games.")
-        else:      
-            random.shuffle(randomtargetarray)
-            totaltributes = len(randomtargetarray)
-            bot.say("Currently there are " + str(totaltributes) + " tributes (to be removed).")
-            if totaltributes == 1:
-                bot.say("There is only one tribute.  Try again later.")
+    if randomtargetarray == []:
+        bot.say("There is currently no one available to play the hunger games.")
+    else:      
+        random.shuffle(randomtargetarray)
+        totaltributes = len(randomtargetarray)
+        bot.say("Currently there are " + str(totaltributes) + " tributes (to be removed).")
+        if totaltributes == 1:
+            bot.say("There is only one tribute.  Try again later.")
+        else:
+            bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
+            if totaltributes == 2:
+                bot.say("The victor is " + str(randomtargetarray[0]))
+            elif totaltributes == 3:
+                bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
             else:
-                bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
-                if totaltributes == 2:
-                    bot.say("The victor is " + str(randomtargetarray[0]))
-                elif totaltributes == 3:
-                    bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
-                else:
-                    safetribute = str(randomtargetarray[2])
-                    volunteer = str(randomtargetarray[3])
-                    randomtargetarray.pop(2)
-                    random.shuffle(randomtargetarray)
-                    bot.say(volunteer + " volunteered for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
+                safetribute = str(randomtargetarray[2])
+                volunteer = str(randomtargetarray[3])
+                randomtargetarray.pop(2)
+                random.shuffle(randomtargetarray)
+                bot.say(volunteer + " volunteered for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
