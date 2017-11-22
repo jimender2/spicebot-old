@@ -1,3 +1,4 @@
+import sopel.module
 import random
 import sys
 import os
@@ -17,7 +18,7 @@ def mainfunction(bot, trigger):
 		execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-  latest=get_info(verify_ssl=verify_ssl)
+	latest=get_info(verify_ssl=verify_ssl)
   maxcomics=latest['num']
 	if not int(maxcomics)<=1:
 		maxcomics = 1918
