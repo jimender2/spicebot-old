@@ -25,10 +25,8 @@ def execute_main(bot, trigger):
 		maxcomics = 1918
 	if not trigger.group(2):
 		mynumber =  getnumber(maxcomics)
-	else:
-		data = trigger.group(2).strip()	
-		numbered = re.match(r"^(#|\+|-)?(\d+)$", data)
-		if not numbered:
+	else:		
+		if data.isdigit():
 			if data == 'today'
 				mynumber=maxcomics
 			elif data == 'first'
