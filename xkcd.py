@@ -34,7 +34,7 @@ def execute_main(bot, trigger):
 				bot.say('not Today')
 				mynumber = getnumber(maxcomics)					
 	  	else:
-			mynumber= data    
+			mynumber= int(data)    
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
 		mynumber = maxcomics
