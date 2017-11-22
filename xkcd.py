@@ -33,7 +33,7 @@ def execute_main(bot, trigger):
 			data.lower()
 			if (data == 'today' or data=='latest' or data=='new'):
 				mynumber=maxcomics
-			elif (data == 'first', data=='oldest'):
+			elif (data == 'first' or data=='oldest'):
 				mynumber = 1
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
