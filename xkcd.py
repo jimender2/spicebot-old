@@ -31,7 +31,6 @@ def execute_main(bot, trigger):
 			if str(data) == 'today':
 				mynumber=maxcomics	
 			else:
-				bot.say('not Today')
 				mynumber = getnumber(maxcomics)					
 	  	else:
 			mynumber= int(data)    
