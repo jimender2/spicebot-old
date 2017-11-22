@@ -6,6 +6,9 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
+
+## Small adjustments made to conform to other SpiceBot modules (opt-in)
+
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 import os
