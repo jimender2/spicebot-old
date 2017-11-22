@@ -32,7 +32,7 @@ def execute_main(bot, trigger):
   bot.say('https://xkcd.com/' + str(mynumber))
    
 def getmaxnumber():
-  url = 'http://xkcd.com/{}/info.0.json'.format(number)
+  url = 'https://xkcd.com/info.0.json'
   data = requests.get(url, verify=verify_ssl).json()
   data['url'] = (data['num'])
   return data
