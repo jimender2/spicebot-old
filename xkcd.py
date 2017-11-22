@@ -4,6 +4,7 @@ import sys
 import os
 import html2text
 import requests
+import re
 from sopel.module import commands, url
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
