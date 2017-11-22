@@ -34,11 +34,11 @@ def execute_main(bot, trigger):
 def getmaxnumber():
   url = 'http://xkcd.com/{}/info.0.json'.format(number)
   data = requests.get(url, verify=verify_ssl).json()
-  data['url'] = 'http://xkcd.com/' + str(data['num'])
-	return data
+  data['url'] = (data['num'])
+  return data
    
 def getnumber():
   thenumber = random.randint(0,int(maxcomics))
   if not thenumber or thenumber == '\n':
-    thenumber=getnumber()
+  thenumber=getnumber()
   return thenumber
