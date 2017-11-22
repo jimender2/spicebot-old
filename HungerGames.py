@@ -15,6 +15,8 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     randomtargetarray = []
+    for c in bot.channels:
+        channel = c
     for u in bot.channels[channel].users:
         target = u
         targetdisenable = get_database_value(bot, target, 'disenable')
