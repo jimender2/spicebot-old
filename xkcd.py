@@ -24,15 +24,15 @@ def execute_main(bot, trigger):
 	if not int(maxcomics)<=1:
 		maxcomics = 1918
 	if not trigger.group(2):
-		mynumber =  getnumber()
+		mynumber =  getnumber(maxcomics)
 	else:
 		mynumber = trigger.group(2)
 	if str(mynumber) == 'today':
 		mynumber=maxcomics	
 	if not  mynumber<= int(maxcomics) and mynumber>=1:
-		mynumber= getnumber()      
+		mynumber= getnumber(maxcomics)      
 	else:
-		mynumber = getnumber()		
+		mynumber = getnumber(maxcomics)		
 	bot.say('https://xkcd.com/' + str(mynumber))
    
 def get_info(number=None, verify_ssl=True):
@@ -44,7 +44,7 @@ def get_info(number=None, verify_ssl=True):
 	data['url'] = 'http://xkcd.com/' + str(data['num'])
 	return data
    
-def getnumber():
+def getnumber(maxcomics):
 	thenumber = random.randint(0,int(maxcomics))
 	if not thenumber or thenumber == '\n':
 		thenumber=getnumber()
