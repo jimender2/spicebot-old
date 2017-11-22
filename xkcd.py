@@ -26,15 +26,12 @@ def execute_main(bot, trigger):
 	if not trigger.group(2):
 		mynumber =  getnumber(maxcomics)
 	else:		
-		if data.isdigit():
-			if data == 'today'
-				mynumber=maxcomics
-			elif data == 'first'
-				mynumber = 1
-			elif data == 'random' 
-				mynumber = getnumber(maxcomics)	
-			else:
-				mynumber = getnumber(maxcomics)					
+		if data == 'today'
+			mynumber=maxcomics
+		elif data == 'first'
+			mynumber = 1
+		elif data == 'random' 
+			mynumber = getnumber(maxcomics)							
 	  	else:
 			mynumber= int(data)    
 	if not mynumber<= int(maxcomics) and mynumber>=1:
