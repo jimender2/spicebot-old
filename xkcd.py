@@ -13,7 +13,7 @@ from SpicebotShared import *
 @sopel.module.commands('xkcd','comic')
 def mainfunction(bot, trigger):
 	enablestatus = spicebot_prerun(bot, trigger)
-  if not enablestatus:
+	if not enablestatus:
 		execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
