@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
 	else:
 		data = trigger.group(2).strip()
 		if data.isdigit():
-			mynumber=data
+			mynumber=int(data)
 		else:
 			if data == 'today':
 				mynumber=maxcomics
