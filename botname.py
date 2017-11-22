@@ -15,4 +15,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    bot.say(botname + ' test')
+    bot.say(str(botname) + ' test')
