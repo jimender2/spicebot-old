@@ -6,7 +6,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-botname = 'test'
+botname = bot.nick
 
 @sopel.module.commands('botname')
 def mainfunction(bot, trigger):
