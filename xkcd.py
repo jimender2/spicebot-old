@@ -30,9 +30,10 @@ def execute_main(bot, trigger):
 		if data.isdigit():
 			mynumber=int(data)
 		else:
-			if data == 'today':
+			data.lower()
+			if (data == 'today' or data=='latest' or data=='new'):
 				mynumber=maxcomics
-			elif data == 'first':
+			elif (data == 'first', data=='oldest'):
 				mynumber = 1
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
