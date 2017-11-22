@@ -40,5 +40,5 @@ def getmaxnumber():
 def getnumber():
   thenumber = random.randint(0,int(maxcomics))
   if not thenumber or thenumber == '\n':
-     thenumber=getnumber()
+    thenumber=getnumber()
   return thenumber
