@@ -26,13 +26,18 @@ def execute_main(bot, trigger):
 	if not trigger.group(2):
 		mynumber =  getnumber(maxcomics)
 	else:
-		mynumber = trigger.group(2)
-	if str(mynumber) == 'today':
-		mynumber=maxcomics	
-	if not  mynumber<= int(maxcomics) and mynumber>=1:
-		mynumber= getnumber(maxcomics)      
-	else:
-		mynumber = getnumber(maxcomics)		
+		mynumber = trigger.group(2).strip()
+		if not mynumber.isdigit(): 
+			if str(mynumber) == 'today':
+				mynumber=maxcomics	
+			else:
+				bot.say('not Today')
+				mynumber = getnumber(maxcomics)	
+		elseif  mynumber<= int(maxcomics) and mynumber>=1:
+			mynumber= getnumber(maxcomics)      
+		else:
+			bot.say('Please enter a number between 1 and " +maxcomics+" next time."
+			mynumber = getnumber(maxcomics)		
 	bot.say('https://xkcd.com/' + str(mynumber))
    
 def get_info(number=None, verify_ssl=True):
