@@ -27,14 +27,12 @@ def execute_main(bot, trigger):
 		mynumber =  getnumber(maxcomics)
 	else:
 		data = trigger.group(2)
-		if not data.isdigit(): 
-			data = trigger.group(2).replace(' ','20%')
-			data = str(data)
-			if data == 'today' 
+		if not data.isdigit(): 		
+			if data == "today" 
 				mynumber=maxcomics
-			elif data == 'first' 
+			elif data == "first" 
 				mynumber = 1
-			elif data == 'random' 
+			elif data == "random" 
 				mynumber = getnumber(maxcomics)	
 			else:
 				mynumber = getnumber(maxcomics)					
