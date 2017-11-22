@@ -14,20 +14,29 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    if not trigger.group(2):
-        blametargetarray = []
-        instigator = trigger_instigator(bot, trigger)
-        for c in bot.channels:
-            channel = c
-        for u in bot.channels[channel].users:
-            target = u
-            disenable = get_spicebotdisenable(bot, target)
-            if disenable:
-                if target != instigator and target != bot.nick:
-                    blametargetarray.append(target)
-        if blametargetarray == []:
-            whotoblame = str(instigator + "'s mom")
-        else:
-            blameselected = random.randint(0,len(blametargetarray) - 1)
-            whotoblame = str(blametargetarray [blameselected])
-        bot.say(whotoblame + " died. The odds were never in their favor.")
+    randomtargetarray = []
+    for u in bot.channels[channel].users:
+        target = u
+        targetdisenable = get_database_value(bot, target, 'disenable')
+        if targetdisenabled;
+            randomtargetarray.append(target)
+        if randomtargetarray == []:
+            bot.notice("There is currently no one available to play the hunger games.")
+        else:      
+            random.shuffle(randomtargetarray)
+            totaltributes = len(randomtargetarray)
+            bot.notice("Currently there are " + totaltributes + " tributes (to be removed)."
+            if totaltributes == 1:
+                bot.notice("There is only one tribute.  Try again later.")
+            else:
+                bot.notice("Let the Hunger Games begin!  May the odds be ever in your favor.")
+                if totaltributes == 2:
+                    bot.notice("The victor is " + str(randomtargetarray[0]))
+                elif totaltributes == 3:
+                    bot.notice("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
+                else:
+                    safetribute = str(randomtargetarray[2])
+                    volunteer = str(randomtargetarray[3])
+                    randomtargetarray.pop(2)
+                    random.shuffle(randomtargetarray)
+                    bot.notice(volunteer + " volunteered for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0])
