@@ -38,7 +38,7 @@ def getinfo(number=None, verify_ssl=True):
 	if number:
 		url = 'http://xkcd.com/{}/info.0.json'.format(number)
 	else:
-			url = 'http://xkcd.com/info.0.json'
+		url = 'http://xkcd.com/info.0.json'
 	data = requests.get(url, verify=verify_ssl).json()
 	data['url'] = 'http://xkcd.com/' + str(data['num'])
 	return data
