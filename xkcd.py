@@ -34,7 +34,7 @@ def execute_main(bot, trigger):
 		mynumber = getnumber()		
 	bot.say('https://xkcd.com/' + str(mynumber))
    
-def getinfo(number=None, verify_ssl=True):
+def get_info(number=None, verify_ssl=True):
 	if number:
 		url = 'http://xkcd.com/{}/info.0.json'.format(number)
 	else:
