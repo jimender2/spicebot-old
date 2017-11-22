@@ -27,14 +27,17 @@ def execute_main(bot, trigger):
 		mynumber =  getnumber(maxcomics)
 	else:
 		data = trigger.group(2).strip()
-		if data == 'today':
-			mynumber=maxcomics
-		elif data == 'first':
-			mynumber = 1
-		elif data == 'random':
-			mynumber = getnumber(maxcomics)							
-	  	else:
-			mynumber= int(data)    
+		if data.isdigit():
+			mynumber=data
+		else:
+			if data == 'today':
+				mynumber=maxcomics
+			elif data == 'first':
+				mynumber = 1
+			elif data == 'random':
+				mynumber = getnumber(maxcomics)							
+	  		else:
+				mynumber = getnumber(maxcomics)  
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
 		mynumber = maxcomics
