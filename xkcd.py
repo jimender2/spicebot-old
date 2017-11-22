@@ -28,8 +28,13 @@ def execute_main(bot, trigger):
 	else:
 		data = trigger.group(2).strip()
 		if not data.isdigit(): 
-			if str(data) == 'today' OR str(data) == 'now' OR str(data) == 'latest':
-				mynumber=maxcomics	
+			data=str(data)
+			if data == 'today' OR data == 'now' OR data == 'latest':
+				mynumber=maxcomics
+			elif data == 'first' 
+				mynumber = 1
+			elif data == 'random' 
+				mynumber = getnumber(maxcomics)	
 			else:
 				mynumber = getnumber(maxcomics)					
 	  	else:
