@@ -26,7 +26,6 @@ def execute_main(bot, trigger):
     else:      
         random.shuffle(randomtargetarray)
         totaltributes = len(randomtargetarray)
-        bot.say("Currently there are " + str(totaltributes) + " tributes (to be removed).")
         if totaltributes == 1:
             bot.say("There is only one tribute.  Try again later.")
         else:
@@ -40,4 +39,4 @@ def execute_main(bot, trigger):
                 volunteer = str(randomtargetarray[3])
                 randomtargetarray.pop(2)
                 random.shuffle(randomtargetarray)
-                bot.say(volunteer + " volunteered for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
+                bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
