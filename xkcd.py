@@ -3,6 +3,8 @@ import random
 import sys
 import os
 import html2text
+import requests
+from sopel.module import commands, url
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
@@ -15,7 +17,8 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-  maxcomics=getmaxnumber()
+  latest=get_info(verify_ssl=verify_ssl)
+  maxcomics=latest['num']
   if not int(maxcomics)<=1:
     maxcomics = 1918
   if not trigger.group(2):
@@ -31,9 +34,13 @@ def execute_main(bot, trigger):
 		
   bot.say('https://xkcd.com/' + str(mynumber))
    
-def getmaxnumber():
-  url = 'https://xkcd.com/info.0.json'
-  data['url'] = (data['num'])
+def getinfo(number=None, verify_ssl=True):
+   if number:
+     url = 'http://xkcd.com/{}/info.0.json'.format(number)
+    else:
+     url = 'http://xkcd.com/info.0.json'
+    data = requests.get(url, verify=verify_ssl).json()
+    data['url'] = 'http://xkcd.com/' + str(data['num'])
   return data
    
 def getnumber():
