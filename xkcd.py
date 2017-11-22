@@ -35,7 +35,7 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)					
 	  	else:
 			mynumber= data    
-	if mynumber<= int(maxcomics) and mynumber>=1:
+	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
 		mynumber = maxcomics
 			
