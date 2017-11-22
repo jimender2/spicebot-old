@@ -7,6 +7,7 @@ from SpicebotShared import *
 from sopel import bot
 
 bot = bot
+botname = bot.nick
 
 @sopel.module.commands('botname')
 def mainfunction(bot, trigger):
