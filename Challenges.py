@@ -99,7 +99,7 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                    if targetdisenable and target != bot.nick:
                         randomtargetarray.append(target)
                 if randomtargetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
