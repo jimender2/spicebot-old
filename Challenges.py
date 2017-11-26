@@ -69,7 +69,7 @@ def mainfunction(bot, trigger):
         privilegedarray = ['on','off']
         
         ## Must clear these4 challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'canifight':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'canifight'and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
@@ -92,6 +92,21 @@ def mainfunction(bot, trigger):
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
+            
+            ## Random Target
+            if target == 'random':
+                randomtargetarray = []
+                for u in bot.channels[channel].users:
+                    target = u
+                    targetdisenable = get_database_value(bot, target, 'disenable')
+                    if targetdisenable:
+                        randomtargetarray.append(target)
+                if randomtargetarray == []:
+                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                else:
+                    randomselected = random.randint(0,len(randomtargetarray) - 1)
+                    target = str(randomtargetarray [randomselected])
+                    
   
             ## Docs
             if commandused == 'docs' or commandused == 'help':
@@ -162,7 +177,7 @@ def mainfunction(bot, trigger):
                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
 
             ## Is on for who
-            elif commandused == 'isonforwho' and not inchannel.startswith("#"):
+            elif commandused == 'whocanifight':
                 targetarray = []
                 for u in bot.channels[channel.lower()].users:
                     target = u
