@@ -75,7 +75,7 @@ def mainfunction(bot, trigger):
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'statsadmin':
+        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
         elif target == bot.nick:
             bot.notice(instigator + " I cannot do that.", instigator)
