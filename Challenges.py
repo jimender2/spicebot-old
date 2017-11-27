@@ -594,7 +594,10 @@ def getreadytorumble(bot, trigger, instigator, target):
 
     ## Weapon Select
     if manualweapon == 'false' or winner == target:
-        weapon = weaponofchoice(bot, winner)
+        if winner == bot.nick:
+            weapon = ''
+        else:
+            weapon = weaponofchoice(bot, winner)
     weapon = weaponformatter(bot, weapon)
            
     ## Update Wins and Losses
