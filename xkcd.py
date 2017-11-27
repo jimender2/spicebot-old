@@ -21,8 +21,8 @@ def execute_main(bot, trigger):
 	verify_ssl = bot.config.core.verify_ssl
 	latest=get_info(verify_ssl=verify_ssl)
 	maxcomics=latest['num']
-	if not int(maxcomics)<=1:
-		maxcomics = 1918
+	#if not int(maxcomics)<=1:
+		#maxcomics = 1918
 	if not trigger.group(2):
 		mynumber =  getnumber(maxcomics)
 	else:
