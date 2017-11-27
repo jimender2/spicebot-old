@@ -556,7 +556,7 @@ def getreadytorumble(bot, trigger, instigator, target):
         
     ## Is target Special?
     if target == bot.nick:
-        targetname = str("The Well-Endowed " + targetname)
+        targetname = str("The Spectacular " + targetname)
     elif target in botownerarray:
         targetname = str("The Legendary " + targetname)
     elif target in operatorarray:
