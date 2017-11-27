@@ -454,7 +454,7 @@ def mainfunction(bot, trigger):
             ## bot does not need stats or backpack items
             for x in challengestatsadminarray:
                 statset = x
-                if statset != disenable:
+                if statset != 'disenable':
                     databasecolumn = str('challenges_' + statset)
                     bot.db.set_nick_value(bot.nick, databasecolumn, '')
     else:
@@ -676,8 +676,9 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
-        databasecolumn = str('challenges_' + statset)
-        bot.db.set_nick_value(bot.nick, databasecolumn, '')
+        if statset != 'disenable':
+            databasecolumn = str('challenges_' + statset)
+            bot.db.set_nick_value(bot.nick, databasecolumn, '')
         
         
 ## 30 minute automation
@@ -689,7 +690,7 @@ def healthregen(bot):
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
-        if statset != disenable:
+        if statset != 'disenable':
             databasecolumn = str('challenges_' + statset)
             bot.db.set_nick_value(bot.nick, databasecolumn, '')
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
