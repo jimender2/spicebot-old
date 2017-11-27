@@ -146,7 +146,7 @@ def mainfunction(bot, trigger):
                     randomtargetarray = []
                     for u in bot.channels[channel].users:
                         target = u
-                        if target != instigator and target != bot.nick:
+                        if target != instigator:# and target != bot.nick:
                             if target != lastfought or bot.nick.endswith('dev'):
                                 targetdisenable = get_database_value(bot, target, 'disenable')
                                 targettime = get_timesince(bot, target)
@@ -457,8 +457,8 @@ def mainfunction(bot, trigger):
             channellastinstigator = bot.nick
         if not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
-        elif target == bot.nick:
-            bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
+        #elif target == bot.nick:
+        #    bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
         elif target == instigator:
             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
         elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
@@ -508,7 +508,10 @@ def getreadytorumble(bot, trigger, instigator, target):
     
     ## Fetch XP Pepper Levels
     instigatorpepperstart = get_pepper(bot, instigator)
-    targetpepperstart = get_pepper(bot, target)
+    if target == bot.nick:
+        targetpepperstart = 'Dragon Breath Chilli'
+    else:
+        targetpepperstart = get_pepper(bot, target)
     
     ## Is user Special?
     botownerarray = []
@@ -541,7 +544,9 @@ def getreadytorumble(bot, trigger, instigator, target):
         instigatorname = str(instigatorname)
         
     ## Is target Special?
-    if target in botownerarray:
+    if target == bot.nick:
+        targetname = str("The Well-Endowed " + targetname)
+    elif target in botownerarray:
         targetname = str("The Legendary " + targetname)
     elif target in operatorarray:
         targetname = str("The Magnificent " + targetname)
@@ -563,12 +568,18 @@ def getreadytorumble(bot, trigger, instigator, target):
     instigatorhealth = get_database_value(bot, instigator, 'health')
     if not instigatorhealth:
         set_database_value(bot, instigator, 'health', '1000')
+    if target == bot.nick:
+        targethealth = 99999
+        set_database_value(bot, target, 'health', targethealth)
     targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
 
     ## Damage Done (random)
-    damage = damagedone(bot)
+    if target == bot.nick:
+        damage = 150
+    else:
+        damage = damagedone(bot)
 
     ## Manual weapon
     weapon = str(fullcommandused.split(targetsplit, 1)[1]).strip()
@@ -578,7 +589,11 @@ def getreadytorumble(bot, trigger, instigator, target):
         manualweapon = 'true'
         
     ## Select Winner
-    winner, loser = getwinner(bot, instigator, target, manualweapon)
+    if target == bot.nick:
+        winner = bot.nick
+        loser = instigator
+    else:
+        winner, loser = getwinner(bot, instigator, target, manualweapon)
 
     ## Weapon Select
     if manualweapon == 'false' or winner == target:
