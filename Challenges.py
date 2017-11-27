@@ -472,7 +472,7 @@ def mainfunction(bot, trigger):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-            if channeltime < TIMEOUTC:
+            if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
             elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
