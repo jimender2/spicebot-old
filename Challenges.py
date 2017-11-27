@@ -673,7 +673,7 @@ def healthregen(bot):
             loot_text = get_lootitem_text(bot, target, loot)
             adjust_database_value(bot, target, loot, defaultadjust)
             lootwinnermsg = str(target + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
-            bot.say(lootwinnermsg)
+            bot.msg(channel,lootwinnermsg)
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
             
         
