@@ -139,7 +139,7 @@ def mainfunction(bot, trigger):
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
+                    bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
                 else:
                     if not lastfought:
                         lastfought = instigator
@@ -462,7 +462,7 @@ def mainfunction(bot, trigger):
         elif target == instigator:
             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
         elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-            bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
+            bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
         elif target == lastfought and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
         elif not targetspicebotdisenable:
@@ -647,8 +647,10 @@ def getreadytorumble(bot, trigger, instigator, target):
 ## 30 minute automation
 # health regen
 # mysterypotion
+# reset last instigator
 @sopel.module.interval(1800)
 def healthregen(bot):
+    set_database_value(bot, ALLCHAN, 'lastinstigator', '')
     randomtargetarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
     if not lasttimedlootwinner:
@@ -671,6 +673,7 @@ def healthregen(bot):
             loot_text = get_lootitem_text(bot, target, loot)
             adjust_database_value(bot, target, loot, defaultadjust)
             lootwinnermsg = str(instigator + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
+            bot.say(lootwinnermsg)
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
             
         
