@@ -136,7 +136,7 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif target == channellastinstigator:# and not bot.nick.endswith('dev'):
+                elif instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
                 else:
                     if not lastfought:
@@ -457,7 +457,7 @@ def mainfunction(bot, trigger):
             bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
         elif target == instigator:
             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
-        elif target == channellastinstigator:# and not bot.nick.endswith('dev'):
+        elif instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
         elif target == lastfought and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
