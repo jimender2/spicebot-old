@@ -645,7 +645,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     lootwinnermsg = ''
     lootwinnermsgb = ''
     randominventoryfind = randominventory()
-    if randominventoryfind == 'true':
+    if randominventoryfind == 'true' and target != bot.nick:
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
         adjust_database_value(bot, winner, loot, defaultadjust)
