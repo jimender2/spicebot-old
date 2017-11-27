@@ -457,15 +457,15 @@ def mainfunction(bot, trigger):
             channellastinstigator = bot.nick
         if not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
-        #elif target == bot.nick:
-        #    bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
+        elif target == bot.nick and not targetdisenable:
+            bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
         elif target == instigator:
             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
         elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
         elif target == lastfought and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
-        elif not targetspicebotdisenable:
+        elif not targetspicebotdisenable and target != bot.nick:
             bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
         elif not instigatordisenable:
             bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
