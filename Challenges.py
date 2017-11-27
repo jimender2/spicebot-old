@@ -672,7 +672,7 @@ def healthregen(bot):
             loot = 'mysterypotion'
             loot_text = get_lootitem_text(bot, target, loot)
             adjust_database_value(bot, target, loot, defaultadjust)
-            lootwinnermsg = str(instigator + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
+            lootwinnermsg = str(target + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
             bot.say(lootwinnermsg)
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
             
