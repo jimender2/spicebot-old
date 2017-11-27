@@ -644,17 +644,35 @@ def getreadytorumble(bot, trigger, instigator, target):
     if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
         bot.say(pepperstatuschangemsg)
 
-## Health Regeneration
+## 30 minute automation
+# health regen
+# mysterypotion
 @sopel.module.interval(1800)
 def healthregen(bot):
+    randomtargetarray = []
+    lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
+    if not lasttimedlootwinner:
+        lasttimedlootwinner = bot.nick
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
             target = u
             targetdisenable = get_database_value(bot, target, 'disenable')
-            if targetdisenable:
+            if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
                 health = get_database_value(bot, target, 'health')
                 if health < 500:
                     bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
+                randomtargetarray.append(target)
+        if randomtargetarray == []:
+            dummyvar = 1
+        else:
+            randomselected = random.randint(0,len(randomtargetarray) - 1)
+            target = str(randomtargetarray [randomselected])
+            loot = 'mysterypotion'
+            loot_text = get_lootitem_text(bot, target, loot)
+            adjust_database_value(bot, target, loot, defaultadjust)
+            lootwinnermsg = str(instigator + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
+            set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
+            
         
 ## Functions######################################################################################################################
 
