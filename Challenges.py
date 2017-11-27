@@ -93,6 +93,8 @@ def mainfunction(bot, trigger):
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
             channellastinstigator = get_database_value(bot, target, 'lastinstigator')
+            if not channellastinstigator:
+                channellastinstigator = bot.nick
             
             ## Random Target
             if target == 'random':
@@ -136,7 +138,7 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif channellastinstigator and instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
+                elif instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
                 else:
                     if not lastfought:
@@ -451,6 +453,8 @@ def mainfunction(bot, trigger):
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
         channellastinstigator = get_database_value(bot, target, 'lastinstigator')
+        if not channellastinstigator:
+            channellastinstigator = bot.nick
         if not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
         elif target == bot.nick:
