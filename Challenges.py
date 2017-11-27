@@ -447,12 +447,15 @@ def mainfunction(bot, trigger):
         instigatortime = get_timesince(bot, instigator)
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
+        channellastinstigator = get_database_value(bot, target, 'lastinstigator')
         if not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
         elif target == bot.nick:
             bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
         elif target == instigator:
             bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
+        elif target == channellastinstigator:# and not bot.nick.endswith('dev'):
+            bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
         elif target == lastfought and not bot.nick.endswith('dev'):
             bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
         elif not targetspicebotdisenable:
@@ -588,6 +591,9 @@ def getreadytorumble(bot, trigger, instigator, target):
     ## Update last fought
     set_database_value(bot, instigator, 'lastfought', target)
     set_database_value(bot, target, 'lastfought', instigator)
+    
+    ## Same person can't instigate twice in a row
+    set_database_value(bot, ALLCHAN, 'lastinstigator', instigator)
             
     ## Update Health Of Loser, respawn, allow winner to loot
     adjust_database_value(bot, loser, 'health', damage)
