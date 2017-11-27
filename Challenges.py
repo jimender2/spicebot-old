@@ -92,7 +92,7 @@ def mainfunction(bot, trigger):
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
-            channellastinstigator = get_database_value(bot, target, 'lastinstigator')
+            channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
             bot.say(str(channellastinstigator))
@@ -453,7 +453,7 @@ def mainfunction(bot, trigger):
         instigatortime = get_timesince(bot, instigator)
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
-        channellastinstigator = get_database_value(bot, target, 'lastinstigator')
+        channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
         if not channellastinstigator:
             channellastinstigator = bot.nick
         bot.say(str(channellastinstigator))
