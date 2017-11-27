@@ -68,16 +68,16 @@ def mainfunction(bot, trigger):
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         
-        ## Must clear these4 challenges to do the below functions
+        ## Must clear these challenges to do the below functions
         if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'canifight'and target != 'random':
-            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+            bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-        elif target == bot.nick:
+        elif target == bot.nick and not trigger.admin:
             bot.notice(instigator + " I cannot do that.", instigator)
             
         ## and, continue
@@ -442,7 +442,7 @@ def mainfunction(bot, trigger):
                                 bot.notice(str(magicnotice), target)
                                 
             else:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
     else:
         lastfought = get_database_value(bot, instigator, 'lastfought')
         target = trigger.group(3)
