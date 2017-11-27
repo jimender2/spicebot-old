@@ -37,6 +37,12 @@ def challenge_cmd(bot, trigger):
         
 def mainfunction(bot, trigger):
     
+    ## bot does not need stats or backpack items
+    for x in challengestatsadminarray:
+        statset = x
+        databasecolumn = str('challenges_' + statset)
+        bot.db.set_nick_value(bot.nick, databasecolumn, '')
+    
     ## Basic Vars that we will use
     instigator = trigger.nick
     inchannel = trigger.sender
@@ -443,6 +449,12 @@ def mainfunction(bot, trigger):
                                 
             else:
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
+            
+            ## bot does not need stats or backpack items
+            for x in challengestatsadminarray:
+                statset = x
+                databasecolumn = str('challenges_' + statset)
+                bot.db.set_nick_value(bot.nick, databasecolumn, '')
     else:
         lastfought = get_database_value(bot, instigator, 'lastfought')
         target = trigger.group(3)
@@ -567,8 +579,8 @@ def getreadytorumble(bot, trigger, instigator, target):
         set_database_value(bot, instigator, 'health', '1000')
     if target == bot.nick:
         targethealth = 99999
-        set_database_value(bot, target, 'health', targethealth)
-    targethealth = get_database_value(bot, target, 'health')
+    else:
+        targethealth = get_database_value(bot, target, 'health')
     if not targethealth:
         set_database_value(bot, target, 'health', '1000')
 
@@ -659,12 +671,24 @@ def getreadytorumble(bot, trigger, instigator, target):
     if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
         bot.say(pepperstatuschangemsg)
 
+    ## bot does not need stats or backpack items
+    for x in challengestatsadminarray:
+        statset = x
+        databasecolumn = str('challenges_' + statset)
+        bot.db.set_nick_value(bot.nick, databasecolumn, '')
+        
+        
 ## 30 minute automation
 # health regen
 # mysterypotion
 # reset last instigator
 @sopel.module.interval(1800)
 def healthregen(bot):
+    ## bot does not need stats or backpack items
+    for x in challengestatsadminarray:
+        statset = x
+        databasecolumn = str('challenges_' + statset)
+        bot.db.set_nick_value(bot.nick, databasecolumn, '')
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
     randomtargetarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
