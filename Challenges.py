@@ -630,7 +630,7 @@ def getreadytorumble(bot, trigger, instigator, target):
         lootcorpse(bot, loser, winner)
         currenthealth = get_database_value(bot, loser, 'health')
     else:
-        winnermsg = str(winner + " hits " + loser + " with " + weapon + ', dealing ' + str(damage) + ' damage.')
+        winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
         
     ## new pepper level?
     pepperstatuschangemsg = ''
@@ -851,12 +851,14 @@ def weaponofchoice(bot, nick):
     return weapon
 
 def weaponformatter(bot, weapon):
-    if weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
-        weapon = str(weapon)
+    if weapon == '':
+        weapon = weapon
+    elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
+        weapon = str('with ' + weapon)
     elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
-        weapon = str('an ' + weapon)
+        weapon = str('with an ' + weapon)
     else:
-        weapon = str('a ' + weapon)
+        weapon = str('with a ' + weapon)
     return weapon
 
 #################
