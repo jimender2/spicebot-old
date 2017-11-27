@@ -476,7 +476,7 @@ def mainfunction(bot, trigger):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
             elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif channeltime < TIMEOUTC:
+        elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         else:
             return getreadytorumble(bot, trigger, instigator, target)
