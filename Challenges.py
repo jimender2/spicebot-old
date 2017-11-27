@@ -40,8 +40,9 @@ def mainfunction(bot, trigger):
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
-        databasecolumn = str('challenges_' + statset)
-        bot.db.set_nick_value(bot.nick, databasecolumn, '')
+        if statset != disenable:
+            databasecolumn = str('challenges_' + statset)
+            bot.db.set_nick_value(bot.nick, databasecolumn, '')
     
     ## Basic Vars that we will use
     instigator = trigger.nick
@@ -453,8 +454,9 @@ def mainfunction(bot, trigger):
             ## bot does not need stats or backpack items
             for x in challengestatsadminarray:
                 statset = x
-                databasecolumn = str('challenges_' + statset)
-                bot.db.set_nick_value(bot.nick, databasecolumn, '')
+                if statset != disenable:
+                    databasecolumn = str('challenges_' + statset)
+                    bot.db.set_nick_value(bot.nick, databasecolumn, '')
     else:
         lastfought = get_database_value(bot, instigator, 'lastfought')
         target = trigger.group(3)
@@ -687,8 +689,9 @@ def healthregen(bot):
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
-        databasecolumn = str('challenges_' + statset)
-        bot.db.set_nick_value(bot.nick, databasecolumn, '')
+        if statset != disenable:
+            databasecolumn = str('challenges_' + statset)
+            bot.db.set_nick_value(bot.nick, databasecolumn, '')
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
     randomtargetarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
