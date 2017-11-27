@@ -508,10 +508,7 @@ def getreadytorumble(bot, trigger, instigator, target):
     
     ## Fetch XP Pepper Levels
     instigatorpepperstart = get_pepper(bot, instigator)
-    if target == bot.nick:
-        targetpepperstart = 'Dragon Breath Chilli'
-    else:
-        targetpepperstart = get_pepper(bot, target)
+    targetpepperstart = get_pepper(bot, target)
     
     ## Is user Special?
     botownerarray = []
@@ -883,7 +880,9 @@ def damagedone(bot):
 
 def get_pepper(bot, nick):
     xp = get_database_value(bot, nick, 'xp')
-    if xp >= 0 and xp < 100:
+    if nick == bot.nick:
+        pepper = 'Dragon Breath Chilli'
+    elif xp >= 0 and xp < 100:
         pepper = 'Pimiento'
     elif xp >= 100 and xp < 250:
         pepper = 'Sonora'
