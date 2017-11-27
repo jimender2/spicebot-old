@@ -92,6 +92,7 @@ def mainfunction(bot, trigger):
             instigatortime = get_timesince(bot, instigator)
             targettime = get_timesince(bot, target)
             channeltime = get_timesince(bot, ALLCHAN)
+            channellastinstigator = get_database_value(bot, target, 'lastinstigator')
             
             ## Random Target
             if target == 'random':
@@ -135,6 +136,8 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+                elif target == channellastinstigator:# and not bot.nick.endswith('dev'):
+                    bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
                 else:
                     if not lastfought:
                         lastfought = instigator
@@ -472,9 +475,9 @@ def mainfunction(bot, trigger):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
             bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-            if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+            if channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-            elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+            elif channeltime < TIMEOUTC:
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
