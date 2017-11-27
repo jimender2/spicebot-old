@@ -136,7 +136,7 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
+                elif channellastinstigator and instigator == channellastinstigator:# and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ', You may not instigate fights twice in a row.', instigator)
                 else:
                     if not lastfought:
