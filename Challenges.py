@@ -40,7 +40,7 @@ def mainfunction(bot, trigger):
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
-        if statset != disenable:
+        if statset != 'disenable':
             databasecolumn = str('challenges_' + statset)
             bot.db.set_nick_value(bot.nick, databasecolumn, '')
     
