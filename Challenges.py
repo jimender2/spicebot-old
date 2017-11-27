@@ -95,7 +95,6 @@ def mainfunction(bot, trigger):
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
-            bot.say(str(channellastinstigator))
             
             ## Random Target
             if target == 'random':
@@ -456,7 +455,6 @@ def mainfunction(bot, trigger):
         channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
         if not channellastinstigator:
             channellastinstigator = bot.nick
-        bot.say(str(channellastinstigator))
         if not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
         elif target == bot.nick:
