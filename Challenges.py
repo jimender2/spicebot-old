@@ -140,6 +140,21 @@ def mainfunction(bot, trigger):
                     bot.notice("You Should be able to challenge.", instigator)
                 else:
                     bot.notice(displaymsg, instigator)
+            
+            ## Duel Everyone
+            elif commandused == 'everyone':
+                everytargetarray = []
+                for u in bot.channels[channel].users:
+                    target = u
+                    targetdisenable = get_database_value(bot, target, 'disenable')
+                    if targetdisenable and target != bot.nick:
+                        everytargetarray.append(target)
+                if everytargetarray == []:
+                    bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                else:
+                    for x in everytargetarray:
+                        target = x
+                        return getreadytorumble(bot, trigger, instigator, target)
                 
             ## Random Dueling
             elif commandused == 'random':
@@ -153,7 +168,7 @@ def mainfunction(bot, trigger):
                     randomtargetarray = []
                     for u in bot.channels[channel].users:
                         target = u
-                        if target != instigator:# and target != bot.nick:
+                        if target != instigator:
                             if target != lastfought or bot.nick.endswith('dev'):
                                 targetdisenable = get_database_value(bot, target, 'disenable')
                                 targettime = get_timesince(bot, target)
