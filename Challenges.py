@@ -92,12 +92,7 @@ def mainfunction(bot, trigger):
             
         ## and, continue
         else:
-            targetopttime = get_database_value(bot, target, 'opttime')
-            if targetopttime == now:
-                targetopttime = 0
-            else:
-                targetopttime = abs(now - int(targetopttime))
-            targetopttimemath = (OPTTIMEOUT - targetopttime)
+            targetopttime = get_timesince(bot, target, 'opttime')
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince(bot, instigator, 'timeout')
             targettime = get_timesince(bot, target, 'timeout')
@@ -150,7 +145,7 @@ def mainfunction(bot, trigger):
                 OSDTYPE = 'notice'
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif lastfullroomassult < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
+                elif lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(" Full Channel Assualt can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
                 elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
@@ -213,7 +208,7 @@ def mainfunction(bot, trigger):
                         target = u
                         set_database_value(bot, target, 'disenable', disenablevalue)
                 elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + ", It looks like " + target + " can't enable/disable challenges for " + str(targetopttimemath) + " seconds.", instigator)
+                    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
                 else:
                     if targetdisenable and commandused == 'on':
                         bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
@@ -486,58 +481,18 @@ def mainfunction(bot, trigger):
                                 
             else:
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
-            
-            ## bot does not need stats or backpack items
-            for x in challengestatsadminarray:
-                statset = x
-                if statset != 'disenable':
-                    databasecolumn = str('challenges_' + statset)
-                    bot.db.set_nick_value(bot.nick, databasecolumn, '')
     else:
-        lastfought = get_database_value(bot, instigator, 'lastfought')
-        target = trigger.group(3)
-        targetspicebotdisenable = get_spicebotdisenable(bot, target)
-        instigatordisenable = get_database_value(bot, instigator, 'disenable')
-        targetdisenable = get_database_value(bot, target, 'disenable')
-        instigatortime = get_timesince(bot, instigator, 'timeout')
-        targettime = get_timesince(bot, target, 'timeout')
-        channeltime = get_timesince(bot, ALLCHAN, 'timeout')
-        channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
         OSDTYPE = 'say'
-        if not channellastinstigator:
-            channellastinstigator = bot.nick
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + " Duels must be in channel.", instigator)
-        elif target == bot.nick and not targetdisenable:
-            bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
-        elif target == instigator:
-            bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
-        elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-            bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
-        elif target == lastfought and not bot.nick.endswith('dev'):
-            bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
-        elif not targetspicebotdisenable and target != bot.nick:
-            bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
-        elif not instigatordisenable:
-            bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
-        elif not targetdisenable:
-            bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
-        elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
-            bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
-            if targettime < TIMEOUT:
-                bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-            if channeltime < TIMEOUTC:
-                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
-            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-            if channeltime < TIMEOUTC:
-                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-            elif channeltime < TIMEOUTC:
-                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-                bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        else:
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target)
+        if executedueling:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
+    
+    ## bot does not need stats or backpack items
+    for x in challengestatsadminarray:
+        statset = x
+        if statset != 'disenable':
+            databasecolumn = str('challenges_' + statset)
+            bot.db.set_nick_value(bot.nick, databasecolumn, '')
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
     
@@ -720,13 +675,6 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
             bot.notice(pepperstatuschangemsg, loser)
     else:
         bot.say('Looks Like Something went wrong!')
-
-    ## bot does not need stats or backpack items
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
         
         
 ## 30 minute automation
@@ -770,7 +718,57 @@ def healthregen(bot):
         
 ## Functions######################################################################################################################
 
-## Database
+## Criteria to duel
+def mustpassthesetoduel(bot, trigger, instigator, target):
+    executedueling = 0
+    lastfought = get_database_value(bot, instigator, 'lastfought')
+    targetspicebotdisenable = get_spicebotdisenable(bot, target)
+    instigatordisenable = get_database_value(bot, instigator, 'disenable')
+    targetdisenable = get_database_value(bot, target, 'disenable')
+    instigatortime = get_timesince(bot, instigator, 'timeout')
+    targettime = get_timesince(bot, target, 'timeout')
+    channeltime = get_timesince(bot, ALLCHAN, 'timeout')
+    channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
+    if not channellastinstigator:
+        channellastinstigator = bot.nick
+    if not inchannel.startswith("#"):
+        bot.notice(instigator + " Duels must be in channel.", instigator)
+    elif target == bot.nick and not targetdisenable:
+        bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
+    elif target == instigator:
+        bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
+    elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
+        bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
+    elif target == lastfought and not bot.nick.endswith('dev'):
+        bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
+    elif not targetspicebotdisenable and target != bot.nick:
+        bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
+    elif not instigatordisenable:
+        bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
+    elif not targetdisenable:
+        bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
+    elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
+        bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
+        if targettime < TIMEOUT:
+            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+        if channeltime < TIMEOUTC:
+            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+    elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
+        bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
+        if channeltime < TIMEOUTC:
+            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        elif channeltime < TIMEOUTC:
+            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+    elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+    else:
+        executedueling = 1
+    return executedueling
+
+##############
+## Database ##
+##############
+
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('challenges_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
@@ -794,14 +792,6 @@ def get_timesince(bot, nick, databasekey):
     databasecolumn = str('challenges_' + databasekey)
     last = bot.db.get_nick_value(nick, databasecolumn) or 0
     return abs(now - int(last))
-    
-def get_timeout(bot, nick):
-    time_since = get_timesince(bot, nick, 'timeout')
-    if time_since < TIMEOUT:
-        timediff = int(TIMEOUT - time_since)
-    else:
-        timediff = 0
-    return timediff
 
 #####################
 ## Spawn / ReSpawn ##
