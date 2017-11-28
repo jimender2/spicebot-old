@@ -194,7 +194,7 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel.lower()].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick:
+                    if targetdisenable and target != bot.nick and target != instigator:
                         targetarray.append(target)
                 targetarray = str(targetarray)
                 targetarray = targetarray.replace('[', '')
