@@ -784,6 +784,14 @@ def get_timesince(bot, nick, databasekey):
     last = bot.db.get_nick_value(nick, databasecolumn) or 0
     return abs(now - int(last))
 
+def get_timeout(bot, nick):
+    time_since = get_timesince(bot, nick)
+    if time_since < TIMEOUT:
+        timediff = int(TIMEOUT - time_since)
+    else:
+        timediff = 0
+    return timediff
+
 #####################
 ## Spawn / ReSpawn ##
 #####################
