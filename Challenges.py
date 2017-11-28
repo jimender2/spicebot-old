@@ -154,7 +154,8 @@ def mainfunction(bot, trigger):
                 else:
                     for x in everytargetarray:
                         target = x
-                        return getreadytorumble(bot, trigger, instigator, target)
+                        if target != instigator:
+                            return getreadytorumble(bot, trigger, instigator, target)
                 
             ## Random Dueling
             elif commandused == 'random':
