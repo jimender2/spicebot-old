@@ -885,7 +885,6 @@ def weaponofchoice(bot, nick):
     return weapon
 
 def weaponformatter(bot, weapon):
-    #weaponfirstword = weapon.split(' ', 1)[0]
     if weapon == '':
         weapon = weapon
     elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
