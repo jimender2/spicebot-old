@@ -483,6 +483,7 @@ def mainfunction(bot, trigger):
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
     else:
         OSDTYPE = 'say'
+        target = trigger.group(3)
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target)
         if executedueling:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
