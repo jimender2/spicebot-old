@@ -172,7 +172,8 @@ def mainfunction(bot, trigger):
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
-                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel)
+                    dowedisplay = 1
+                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
                     if executedueling:
                         return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
 
@@ -462,7 +463,8 @@ def mainfunction(bot, trigger):
     else:
         OSDTYPE = 'say'
         target = trigger.group(3)
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel)
+        dowedisplay = 1
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
     
@@ -698,7 +700,7 @@ def healthregen(bot):
 ## Functions######################################################################################################################
 
 ## Criteria to duel
-def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
+def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
     targetspicebotdisenable = get_spicebotdisenable(bot, target)
@@ -710,38 +712,34 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
     channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
     if not channellastinstigator:
         channellastinstigator = bot.nick
+    
     if not inchannel.startswith("#"):
-        bot.notice(instigator + " Duels must be in channel.", instigator)
+        displaymsg = str(instigator + " Duels must be in channel.")
     elif target == bot.nick and not targetdisenable:
-        bot.notice(instigator + " I refuse to fight a biological entity!", instigator)
+        displaymsg = str(instigator + " I refuse to fight a biological entity!")
     elif target == instigator:
-        bot.notice(instigator + " If you are feeling self-destructive, there are places you can call.", instigator)
+        displaymsg = str(instigator + " If you are feeling self-destructive, there are places you can call.")
     elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-        bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
+        displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == lastfought and not bot.nick.endswith('dev'):
-        bot.notice(instigator + ', You may not fight the same person twice in a row.', instigator)
+        displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif not targetspicebotdisenable and target != bot.nick:
-        bot.notice(instigator + ', It looks like ' + target + ' has disabled Spicebot.', instigator)
+        displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Spicebot.')
     elif not instigatordisenable:
-        bot.notice(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.", instigator)
+        displaymsg = str(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.")
     elif not targetdisenable:
-        bot.notice(instigator + ', It looks like ' + target + ' has disabled Challenges.', instigator)
+        displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Challenges.')
     elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
-        bot.notice("You can't challenge for %d seconds." % (TIMEOUT - instigatortime), instigator)
-        if targettime < TIMEOUT:
-            bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        if channeltime < TIMEOUTC:
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        displaymsg = str("You can't challenge for %d seconds." % (TIMEOUT - instigatortime))
     elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
-        bot.notice(target + " can't challenge for %d seconds." % (TIMEOUT - targettime), instigator)
-        if channeltime < TIMEOUTC:
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-        elif channeltime < TIMEOUTC:
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        displaymsg = str(target + " can't challenge for %d seconds." % (TIMEOUT - targettime))
     elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-            bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+        displaymsg = str(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime))
     else:
+        displaymsg = ''
         executedueling = 1
+    if dowedisplay:
+        bot.notice(displaymsg, instigator)
     return executedueling
 
 def cantargetdueldef(bot, instigator, target, lastfought):
