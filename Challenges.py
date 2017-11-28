@@ -1004,6 +1004,13 @@ def getwinner(bot, instigator, target, manualweapon):
     if not targetxp:
         targetxp = '1'
     
+    instigatorkills = get_database_value(bot, instigator, 'kills')
+    if not instigatorkills:
+        instigatorkills = '1'
+    targetkills = get_database_value(bot, target, 'kills')
+    if not targetkills:
+        targetkills = '1'
+    
     ## each person
     instigatorfight = '1'
     targetfight = '1'
@@ -1031,6 +1038,18 @@ def getwinner(bot, instigator, target, manualweapon):
         instigatorfight = int(instigatorfight) + 1
         targetfight = int(targetfight) + 1
         
+    ## more kills
+    if int(instigatorkills) > int(targetkills):
+        instigatorfight = int(instigatorfight) + 1
+    elif int(instigatorkills) < int(targetkills):
+        targetfight = int(targetfight) + 1
+    elif int(instigatorkills) == int(targetkills):
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
+    else:
+        instigatorfight = int(instigatorfight) + 1
+        targetfight = int(targetfight) + 1
+    
     ## Random Number
     flip = randint(0, 1)
     if (flip == 0):
