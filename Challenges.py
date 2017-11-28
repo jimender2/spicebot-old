@@ -99,9 +99,9 @@ def mainfunction(bot, trigger):
                 targetopttime = abs(now - int(targetopttime))
             targetopttimemath = (OPTTIMEOUT - targetopttime)
             lastfought = get_database_value(bot, instigator, 'lastfought')
-            instigatortime = get_timesince(bot, instigator)
-            targettime = get_timesince(bot, target)
-            channeltime = get_timesince(bot, ALLCHAN)
+            instigatortime = get_timesince(bot, instigator, 'timeout')
+            targettime = get_timesince(bot, target, 'timeout')
+            channeltime = get_timesince(bot, ALLCHAN, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
@@ -146,12 +146,16 @@ def mainfunction(bot, trigger):
             
             ## Duel Everyone
             elif commandused == 'everyone':
+                lastfullroomassult = get_timesince(bot, ALLCHAN, 'lastfullroomassult')
                 OSDTYPE = 'notice'
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+                elif lastfullroomassult < OPTTIMEOUT:# and not bot.nick.endswith('dev'):
+                    bot.notice(" Full Channel Assualt can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
                 elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
                     bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
                 else:
+                    set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     everytargetarray = []
                     if not lastfought:
                         lastfought = instigator
@@ -160,7 +164,7 @@ def mainfunction(bot, trigger):
                         if target != instigator and target != bot.nick:
                             if target != lastfought or bot.nick.endswith('dev'):
                                 targetdisenable = get_database_value(bot, target, 'disenable')
-                                targettime = get_timesince(bot, target)
+                                targettime = get_timesince(bot, target, 'timeout')
                                 targetspicebotdisenable = get_spicebotdisenable(bot, target)
                                 if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
                                     everytargetarray.append(target)
@@ -188,7 +192,7 @@ def mainfunction(bot, trigger):
                         if target != instigator:
                             if target != lastfought or bot.nick.endswith('dev'):
                                 targetdisenable = get_database_value(bot, target, 'disenable')
-                                targettime = get_timesince(bot, target)
+                                targettime = get_timesince(bot, target, 'timeout')
                                 targetspicebotdisenable = get_spicebotdisenable(bot, target)
                                 if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
                                     randomtargetarray.append(target)
@@ -495,9 +499,9 @@ def mainfunction(bot, trigger):
         targetspicebotdisenable = get_spicebotdisenable(bot, target)
         instigatordisenable = get_database_value(bot, instigator, 'disenable')
         targetdisenable = get_database_value(bot, target, 'disenable')
-        instigatortime = get_timesince(bot, instigator)
-        targettime = get_timesince(bot, target)
-        channeltime = get_timesince(bot, ALLCHAN)
+        instigatortime = get_timesince(bot, instigator, 'timeout')
+        targettime = get_timesince(bot, target, 'timeout')
+        channeltime = get_timesince(bot, ALLCHAN, 'timeout')
         channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
         OSDTYPE = 'say'
         if not channellastinstigator:
@@ -785,13 +789,14 @@ def adjust_database_value(bot, nick, databasekey, value):
 ## Time ##
 ##########
     
-def get_timesince(bot, nick):
+def get_timesince(bot, nick, databasekey):
     now = time.time()
-    last = bot.db.get_nick_value(nick, 'challenges_timeout') or 0
+    databasecolumn = str('challenges_' + databasekey)
+    last = bot.db.get_nick_value(nick, databasecolumn) or 0
     return abs(now - int(last))
     
 def get_timeout(bot, nick):
-    time_since = get_timesince(bot, nick)
+    time_since = get_timesince(bot, nick, 'timeout')
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
     else:
