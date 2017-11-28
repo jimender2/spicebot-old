@@ -443,10 +443,7 @@ def mainfunction(bot, trigger):
                             adjust_database_value(bot, target, 'health', damage)
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
-                                update_respawn(bot, target)
-                                set_database_value(bot, target, 'opttime', now)
-                                adjust_database_value(bot, instigator, 'kills', defaultadjust)
-                                lootcorpse(bot, target, instigator)
+                                whokilledwhom(bot, trigger, instigator, target)
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
                             elif magicusage == 'health':
@@ -614,13 +611,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
     damage = abs(damage)
     currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
+        whokilledwhom(bot, trigger, winner, loser)
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
-        update_respawn(bot, loser)
-        set_database_value(bot, loser, 'mana', '')
-        adjust_database_value(bot, winner, 'kills', defaultadjust)
-        ## Loot Corpse
-        lootcorpse(bot, loser, winner)
-        currenthealth = get_database_value(bot, loser, 'health')
     else:
         winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
         
@@ -777,6 +769,20 @@ def adjust_database_value(bot, nick, databasekey, value):
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
     
+###########
+## Death ##
+###########
+
+def whokilledwhom(bot, trigger, winner, loser):
+    ## Reset mana and health
+    set_database_value(bot, loser, 'mana', '')
+    set_database_value(bot, loser, 'health', '1000')
+    ## update kills/deaths
+    adjust_database_value(bot, winner, 'kills', defaultadjust)
+    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    ## Loot Corpse
+    lootcorpse(bot, loser, winner)
+    
 ##########
 ## Time ##
 ##########
@@ -794,17 +800,6 @@ def get_timeout(bot, nick):
     else:
         timediff = 0
     return timediff
-
-#####################
-## Spawn / ReSpawn ##
-#####################
-
-def update_respawn(bot, nick):
-    respawns = int(get_database_value(bot, nick, 'respawns'))
-    bot.db.set_nick_value(nick, 'challenges_respawns', respawns + 1)
-    bot.db.set_nick_value(nick, 'challenges_health', '1000')
-    currentrespawns = get_database_value(bot, nick, 'respawns')
-    return currentrespawns
     
 ###############
 ## Inventory ##
@@ -903,10 +898,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     targethealth = get_database_value(bot, target, 'health')
     if targethealth <= 0:
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
-        update_respawn(bot, target)
-        set_database_value(bot, target, 'mana', '')
-        adjust_database_value(bot, instigator, 'kills', defaultadjust)
-        lootcorpse(bot, target, instigator)
+        whokilledwhom(bot, trigger, instigator, target)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
         if not inchannel.startswith("#") and target != instigator:
