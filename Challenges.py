@@ -74,6 +74,7 @@ def mainfunction(bot, trigger):
         nontargetarray = ['everyone','add','del','inv','health','attack','instakill']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
+        inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
         if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
@@ -84,6 +85,8 @@ def mainfunction(bot, trigger):
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+        elif commandused not in inchannelarray and not inchannel.startswith("#"):
+            bot.notice(instigator + " Duels must be in channel.", instigator)
         elif target == bot.nick and not trigger.admin:
             bot.notice(instigator + " I cannot do that.", instigator)
             
