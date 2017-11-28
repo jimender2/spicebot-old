@@ -33,5 +33,6 @@ def execute_main(bot, trigger):
     try:    
         if trigger.group(2).strip() != '' and players[0] == trigger.group(2).strip():
             bot.say('You guessed the killer correctly!')
+    except:
     if trigger.nick == players[0]:
             bot.say('YOU ARE THE KILLER!')
