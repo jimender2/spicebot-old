@@ -484,7 +484,7 @@ def mainfunction(bot, trigger):
     else:
         OSDTYPE = 'say'
         target = trigger.group(3)
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target)
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel)
         if executedueling:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
     
@@ -720,7 +720,7 @@ def healthregen(bot):
 ## Functions######################################################################################################################
 
 ## Criteria to duel
-def mustpassthesetoduel(bot, trigger, instigator, target):
+def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
     targetspicebotdisenable = get_spicebotdisenable(bot, target)
