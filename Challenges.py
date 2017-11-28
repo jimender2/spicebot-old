@@ -144,17 +144,29 @@ def mainfunction(bot, trigger):
             ## Duel Everyone
             elif commandused == 'everyone':
                 OSDTYPE = 'notice'
-                everytargetarray = []
-                for u in bot.channels[channel].users:
-                    targetdisenable = get_database_value(bot, u, 'disenable')
-                    if targetdisenable and u != bot.nick:
-                        everytargetarray.append(u)
-                if everytargetarray == []:
-                    bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
+                elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
+                    bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
                 else:
-                    for x in everytargetarray:
-                        if x != instigator:
-                            getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
+                    everytargetarray = []
+                    if not lastfought:
+                        lastfought = instigator
+                    for u in bot.channels[channel].users:
+                        target = u
+                        if target != instigator and target != bot.nick:
+                            if target != lastfought or bot.nick.endswith('dev'):
+                                targetdisenable = get_database_value(bot, target, 'disenable')
+                                targettime = get_timesince(bot, target)
+                                targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                                if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
+                                    everytargetarray.append(target)
+                    if everytargetarray == []:
+                        bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                    else:
+                        for x in everytargetarray:
+                            if x != instigator:
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
                 
             ## Random Dueling
             elif commandused == 'random':
