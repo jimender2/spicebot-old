@@ -12,7 +12,7 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger)
 
-rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study']
+rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'RopeCandlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Wrench']
     
 def execute_main(bot, trigger):
@@ -26,4 +26,7 @@ def execute_main(bot, trigger):
     random.shuffle(rooms)
     random.shuffle(weapons)
     random.shuffle(players)
-    bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
+    if rooms[0] == 'secret passage':
+        bot.say(players[1] + " evaded " + players[0] + " by using the secret passage.")    
+    else
+        bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
