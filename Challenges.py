@@ -119,7 +119,6 @@ def mainfunction(bot, trigger):
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
                     
-  
             ## Docs
             if commandused == 'docs' or commandused == 'help':
                 bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
@@ -174,7 +173,7 @@ def mainfunction(bot, trigger):
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
                     dowedisplay = 1
-                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
+                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if executedueling:
                         return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
 
@@ -465,7 +464,7 @@ def mainfunction(bot, trigger):
         OSDTYPE = 'say'
         target = trigger.group(3)
         dowedisplay = 1
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
     
@@ -701,7 +700,7 @@ def healthregen(bot):
 ## Functions######################################################################################################################
 
 ## Criteria to duel
-def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay):
+def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
     targetspicebotdisenable = get_spicebotdisenable(bot, target)
