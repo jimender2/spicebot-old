@@ -834,7 +834,13 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     elif loottype == 'manapotion':
         adjust_database_value(bot, target, 'mana', '100')
     elif loottype == 'timepotion':
+        channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
+        if not channellastinstigator:
+            channellastinstigator = bot.nick
+        if channellastinstigator == target:
+            set_database_value(bot, ALLCHAN, 'lastinstigator', '')
         set_database_value(bot, target, 'timeout', '')
+        set_database_value(bot, ALLCHAN, 'timeout', '')
     elif loottype == 'mysterypotion':
         loot = random.randint(0,len(lootitemsarray) - 1)
         loot = str(lootitemsarray [loot])
