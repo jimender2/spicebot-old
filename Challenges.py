@@ -155,7 +155,7 @@ def mainfunction(bot, trigger):
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
+                                getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
@@ -175,7 +175,7 @@ def mainfunction(bot, trigger):
                     dowedisplay = 1
                     executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if executedueling:
-                        return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
+                        return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -468,7 +468,7 @@ def mainfunction(bot, trigger):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
     
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
@@ -477,98 +477,29 @@ def mainfunction(bot, trigger):
             databasecolumn = str('challenges_' + statset)
             bot.db.set_nick_value(bot.nick, databasecolumn, '')
         
-def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
+def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
     
     ## Update Time Of Combat
-    now = time.time()
     set_database_value(bot, instigator, 'timeout', now)
     set_database_value(bot, target, 'timeout', now)
     set_database_value(bot, ALLCHAN, 'timeout', now)
     
-    ## Vars
-    fullcommandused = trigger.group(2)
-    targetsplit = trigger.group(3)
-    for c in bot.channels:
-        channel = c
-    
-    ## Naming
-    instigatorname = str(instigator)
-    targetname = str(target)
-    
-    ## Fetch XP Pepper Levels
-    instigatorpepperstart = get_pepper(bot, instigator)
-    targetpepperstart = get_pepper(bot, target)
-    
-    ## Is user Special?
-    botownerarray = []
-    operatorarray = []
-    voicearray = []
-    adminsarray = []
-    for u in bot.channels[channel.lower()].users:
-        nametargetdisenable = get_database_value(bot, u, 'disenable')
-        if u != bot.nick and nametargetdisenable:
-            nametarget = u
-            if nametarget.lower() in bot.config.core.owner.lower():
-                botownerarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget] == OP:
-                operatorarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
-                voicearray.append(nametarget)
-            if nametarget in bot.config.core.admins:
-                adminsarray.append(nametarget)
-    
-    ## Is instigator Special?
-    if instigator in botownerarray:
-        instigatorname = str("The Legendary " + instigatorname)
-    elif instigator in operatorarray:
-        instigatorname = str("The Magnificent " + instigatorname)
-    elif instigator in voicearray:
-        instigatorname = str("The Incredible " + instigatorname)
-    elif instigator in adminsarray:
-        instigatorname = str("The Valient " + instigatorname)
-    else:
-        instigatorname = str(instigatorname)
-        
-    ## Is target Special?
-    if target == bot.nick:
-        targetname = str("The Spectacular " + targetname)
-    elif target in botownerarray:
-        targetname = str("The Legendary " + targetname)
-    elif target in operatorarray:
-        targetname = str("The Magnificent " + targetname)
-    elif target in voicearray:
-        targetname = str("The Incredible " + targetname)
-    elif target in adminsarray:
-        targetname = str("The Valient " + targetname)
-    else:
-        targetname = str(targetname)
-        
-    ## Pepper Names
-    instigatorname = str(instigatorname + " (" + instigatorpepperstart + ")")
-    targetname = str(targetname + " (" + targetpepperstart + ")")
-    
+    ## Naming and Initial pepper level
+    instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, nick, channel)
+    targetname, targetpepperstart = whatsyourname(bot, trigger, nick, channel)
+
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
        
-    ## Check new player health
-    instigatorhealth = get_database_value(bot, instigator, 'health')
-    if not instigatorhealth:
-        set_database_value(bot, instigator, 'health', '1000')
-    if target == bot.nick:
-        targethealth = 99999
-    else:
-        targethealth = get_database_value(bot, target, 'health')
-    if not targethealth:
-        set_database_value(bot, target, 'health', '1000')
-
+    ## Check for new player health
+    healthcheck(bot, instigator)
+    healthcheck(bot, target)
+    
     ## Damage Done (random)
-    if target == bot.nick:
-        damage = 150
-    else:
-        damage = damagedone(bot)
+    damage = damagedone(bot, target)
 
     ## Manual weapon
-    weapon = str(fullcommandused.split(targetsplit, 1)[1]).strip()
+    weapon = str(fullcommandused.split(trigger.group(3), 1)[1]).strip()
     if not weapon:
         manualweapon = 'false'
     else:
@@ -782,7 +713,16 @@ def whokilledwhom(bot, trigger, winner, loser):
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
     lootcorpse(bot, loser, winner)
-    
+
+#######################    
+## New Player Helath ##
+#######################
+
+def healthcheck(bot, nick)
+    health = get_database_value(bot, nick, 'health')
+    if not health and nick != bot.nick:
+        set_database_value(bot, nick, 'health', '1000')
+        
 ##########
 ## Time ##
 ##########
@@ -800,6 +740,51 @@ def get_timeout(bot, nick):
     else:
         timediff = 0
     return timediff
+
+###########
+## Names ##
+###########
+
+def whatsyourname(bot, trigger, nick, channel):
+    nickname = str(nick)
+    
+    ## Pepper Level
+    pepperstart = get_pepper(bot, nick)
+    
+    ## Is user Special?
+    botownerarray = []
+    operatorarray = []
+    voicearray = []
+    adminsarray = []
+    for u in bot.channels[channel.lower()].users:
+        nametargetdisenable = get_database_value(bot, u, 'disenable')
+        if u != bot.nick and nametargetdisenable:
+            nametarget = u
+            if nametarget.lower() in bot.config.core.owner.lower():
+                botownerarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget] == OP:
+                operatorarray.append(nametarget)
+            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
+                voicearray.append(nametarget)
+            if nametarget in bot.config.core.admins:
+                adminsarray.append(nametarget)
+    
+    ## Is nick Special?
+    if nick in botownerarray:
+        nickname = str("The Legendary " + nickname)
+    elif nick in operatorarray:
+        nickname = str("The Magnificent " + nickname)
+    elif nick in voicearray:
+        nickname = str("The Incredible " + nickname)
+    elif nick in adminsarray:
+        nickname = str("The Valient " + nickname)
+    else:
+        nickname = str(nickname)
+        
+    ## Pepper Names
+    nickname = str(nickname + " (" + pepperstart + ")")
+    
+    return nickname, pepperstart
     
 ###############
 ## Inventory ##
@@ -936,7 +921,9 @@ def weaponformatter(bot, weapon):
 
 def damagedone(bot):
     rando = randint(1, 100)
-    if rando >= 90:
+    if target == bot.nick:
+        damage = -150
+    elif rando >= 90:
         damage = -120
     elif rando >= 75 and rando < 90:
         damage = -70
