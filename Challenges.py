@@ -167,6 +167,7 @@ def mainfunction(bot, trigger):
                         for x in everytargetarray:
                             if x != instigator:
                                 getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
+                                bot.notice("  ", instigator)
                 
             ## Random Dueling
             elif commandused == 'random':
