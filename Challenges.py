@@ -98,22 +98,26 @@ def mainfunction(bot, trigger):
             targettime = get_timesince(bot, target, 'timeout')
             channeltime = get_timesince(bot, ALLCHAN, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
+            lastfullroomassult = get_timesince(bot, ALLCHAN, 'lastfullroomassult')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
+            if not lastfought:
+                lastfought = instigator
+            targetarray = []
+            displaymsg = ''
             
             ## Random Target
             if target == 'random':
-                randomtargetarray = []
                 for u in bot.channels[channel].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if targetdisenable and target != bot.nick:
-                        randomtargetarray.append(target)
-                if randomtargetarray == []:
+                        targetarray.append(target)
+                if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
-                    randomselected = random.randint(0,len(randomtargetarray) - 1)
-                    target = str(randomtargetarray [randomselected])
+                    randomselected = random.randint(0,len(targetarray) - 1)
+                    target = str(targetarray [randomselected])
                     
   
             ## Docs
@@ -122,16 +126,12 @@ def mainfunction(bot, trigger):
             
             ## Can I fight
             elif commandused == 'canifight':
-                displaymsg = ''
                 if channeltime < TIMEOUTC:
-                    mathing = abs(TIMEOUTC - channeltime)
-                    displaymsg = str(displaymsg + channel + " can't duel for: " + str(mathing) + " seconds. ")
+                    displaymsg = str(displaymsg + channel + " can't challenge for %d seconds. " % (TIMEOUTC - channeltime))
                 if instigatortime < TIMEOUT:
-                    mathing = abs(TIMEOUT - instigatortime)
-                    displaymsg = str(displaymsg + instigator + " can't duel for: " + str(mathing) + " seconds. ")
+                    displaymsg = str(displaymsg + instigator + " can't challenge for %d seconds. " % (TIMEOUT - instigatortime))
                 if targettime < TIMEOUT and target != instigator:
-                    mathing = abs(TIMEOUT - targettime)
-                    displaymsg = str(displaymsg + target + " can't duel for: " + str(mathing) + " seconds. ")
+                    displaymsg = str(displaymsg + target + " can't challenge for %d seconds. " % (TIMEOUT - targettime))
                 if target.lower() == lastfought.lower():
                     displaymsg = str(displaymsg + target + " = lastfought. ")
                 if displaymsg == '':
@@ -141,19 +141,11 @@ def mainfunction(bot, trigger):
             
             ## Duel Everyone
             elif commandused == 'everyone':
-                lastfullroomassult = get_timesince(bot, ALLCHAN, 'lastfullroomassult')
                 OSDTYPE = 'notice'
-                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(" Full Channel Assualt can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
-                elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
+                if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
-                    everytargetarray = []
-                    if not lastfought:
-                        lastfought = instigator
                     for u in bot.channels[channel].users:
                         target = u
                         if target != instigator and target != bot.nick:
@@ -162,11 +154,11 @@ def mainfunction(bot, trigger):
                                 targettime = get_timesince(bot, target, 'timeout')
                                 targetspicebotdisenable = get_spicebotdisenable(bot, target)
                                 if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                    everytargetarray.append(target)
-                    if everytargetarray == []:
+                                    targetarray.append(target)
+                    if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                     else:
-                        for x in everytargetarray:
+                        for x in targetarray:
                             if x != instigator:
                                 getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
                                 bot.notice("  ", instigator)
@@ -174,28 +166,22 @@ def mainfunction(bot, trigger):
             ## Random Dueling
             elif commandused == 'random':
                 OSDTYPE = 'say'
-                if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
-                    bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
-                elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + ', You may not instigate fights twice in a row within a half hour.', instigator)
+                for u in bot.channels[channel].users:
+                    target = u
+                    if target != instigator:
+                        if target != lastfought or bot.nick.endswith('dev'):
+                            targetdisenable = get_database_value(bot, target, 'disenable')
+                            targettime = get_timesince(bot, target, 'timeout')
+                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
+                                targetarray.append(target)
+                if targetarray == []:
+                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
-                    if not lastfought:
-                        lastfought = instigator
-                    randomtargetarray = []
-                    for u in bot.channels[channel].users:
-                        target = u
-                        if target != instigator:
-                            if target != lastfought or bot.nick.endswith('dev'):
-                                targetdisenable = get_database_value(bot, target, 'disenable')
-                                targettime = get_timesince(bot, target, 'timeout')
-                                targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                                if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                    randomtargetarray.append(target)
-                    if randomtargetarray == []:
-                        bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                    else:
-                        randomselected = random.randint(0,len(randomtargetarray) - 1)
-                        target = str(randomtargetarray [randomselected])
+                    randomselected = random.randint(0,len(targetarray) - 1)
+                    target = str(targetarray [randomselected])
+                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel)
+                    if executedueling:
                         return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
 
             ## On/off
