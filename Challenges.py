@@ -145,17 +145,16 @@ def mainfunction(bot, trigger):
             elif commandused == 'everyone':
                 everytargetarray = []
                 for u in bot.channels[channel].users:
-                    target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick:
-                        everytargetarray.append(target)
+                    targetdisenable = get_database_value(bot, u, 'disenable')
+                    if targetdisenable and u != bot.nick:
+                        bot.say(str(u))
+                        everytargetarray.append(u)
                 if everytargetarray == []:
                     bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                 else:
                     for x in everytargetarray:
-                        target = x
-                        if target != instigator:
-                            return getreadytorumble(bot, trigger, instigator, target)
+                        if x != instigator:
+                            return getreadytorumble(bot, trigger, instigator, x)
                 
             ## Random Dueling
             elif commandused == 'random':
