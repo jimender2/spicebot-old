@@ -919,7 +919,7 @@ def weaponformatter(bot, weapon):
 ## Damage Done ##
 #################
 
-def damagedone(bot):
+def damagedone(bot, target):
     rando = randint(1, 100)
     if target == bot.nick:
         damage = -150
