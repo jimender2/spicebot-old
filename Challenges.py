@@ -158,7 +158,7 @@ def mainfunction(bot, trigger):
                             if x != instigator:
                                 getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
                                 time.sleep(5)
-                                bot.say("  ")
+                                bot.notice("  ", instigator)
                 
             ## Random Dueling
             elif commandused == 'random':
