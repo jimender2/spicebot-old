@@ -3,6 +3,7 @@ import requests
 import json
 import sys
 import os
+import html2text
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
@@ -27,7 +28,7 @@ def getQuote():
         result = page.content
         jsonquote = json.loads(result)
         #quote = '"' + jsonquote['content'] + '" - ' + jsonquote['title']
-        quote = jsonquote[0]['content']
+        quote = html2text.html2text(jsonquote[0]['content'])
     except:
         quote = "No quote for you."
     return quote
