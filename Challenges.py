@@ -148,7 +148,7 @@ def mainfunction(bot, trigger):
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     for u in bot.channels[channel].users:
                         target = u
-                        cantargetduel = cantargetduel(bot, instigator, target, lastfought)
+                        cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
                         if cantargetduel:
                             targetarray.append(target)
                     if targetarray == []:
@@ -164,7 +164,7 @@ def mainfunction(bot, trigger):
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
                     target = u
-                    cantargetduel = cantargetduel(bot, instigator, target, lastfought)
+                    cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
                     if cantargetduel:
                         targetarray.append(target)
                 if targetarray == []:
@@ -744,7 +744,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
         executedueling = 1
     return executedueling
 
-def cantargetduel(bot, instigator, target, lastfought):
+def cantargetdueledef(bot, instigator, target, lastfought):
     cantargetduel = 0
     if target != instigator:
         if target != lastfought or bot.nick.endswith('dev'):
