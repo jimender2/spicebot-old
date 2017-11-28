@@ -3,7 +3,6 @@ import requests
 import json
 import sys
 import os
-import html2text
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
@@ -22,13 +21,13 @@ def execute_main(bot, trigger):
         bot.say('There is nothing to quote - Abraham Lincoln')
 
 def getQuote():
-    url = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1'
+    url = 'https://talaikis.com/api/quotes/random/'
     try:
         page = requests.get(url)
         result = page.content
         jsonquote = json.loads(result)
         #quote = '"' + jsonquote['content'] + '" - ' + jsonquote['title']
-        quote = html2text.html2text(jsonquote[0]['content'])
+        quote = '"' + jsonquote['quote'] + '" - ' + jsonquote['quote']
     except:
         quote = "No quote for you."
     return quote
