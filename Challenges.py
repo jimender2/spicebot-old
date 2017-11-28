@@ -744,7 +744,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
         executedueling = 1
     return executedueling
 
-def cantargetdueledef(bot, instigator, target, lastfought):
+def cantargetdueldef(bot, instigator, target, lastfought):
     cantargetduel = 0
     if target != instigator:
         if target != lastfought or bot.nick.endswith('dev'):
