@@ -691,13 +691,13 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
             bot.say(pepperstatuschangemsg)
     elif OSDTYPE == 'notice':
-        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), instigator)
-        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), target)
-        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), instigator)
-        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), target)
+        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), winner)
+        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
+        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), winner)
+        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), loser)
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
-            bot.notice(pepperstatuschangemsg, instigator)
-            bot.notice(pepperstatuschangemsg, target)
+            bot.notice(pepperstatuschangemsg, winner)
+            bot.notice(pepperstatuschangemsg, loser)
     else:
         bot.say('Looks Like Something went wrong!')
 
