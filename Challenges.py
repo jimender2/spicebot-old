@@ -143,21 +143,22 @@ def mainfunction(bot, trigger):
             
             ## Duel Everyone
             elif commandused == 'everyone':
+                OSDTYPE = 'notice'
                 everytargetarray = []
                 for u in bot.channels[channel].users:
                     targetdisenable = get_database_value(bot, u, 'disenable')
                     if targetdisenable and u != bot.nick:
-                        bot.say(str(u))
                         everytargetarray.append(u)
                 if everytargetarray == []:
                     bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                 else:
                     for x in everytargetarray:
                         if x != instigator:
-                            getreadytorumble(bot, trigger, instigator, x)
+                            getreadytorumble(bot, trigger, instigator, x, OSDTYPE)
                 
             ## Random Dueling
             elif commandused == 'random':
+                OSDTYPE = 'say'
                 if channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                     bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
                 elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
@@ -180,7 +181,7 @@ def mainfunction(bot, trigger):
                     else:
                         randomselected = random.randint(0,len(randomtargetarray) - 1)
                         target = str(randomtargetarray [randomselected])
-                        return getreadytorumble(bot, trigger, instigator, target)
+                        return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -482,6 +483,7 @@ def mainfunction(bot, trigger):
         targettime = get_timesince(bot, target)
         channeltime = get_timesince(bot, ALLCHAN)
         channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
+        OSDTYPE = 'say'
         if not channellastinstigator:
             channellastinstigator = bot.nick
         if not inchannel.startswith("#"):
@@ -515,9 +517,9 @@ def mainfunction(bot, trigger):
         elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
                 bot.notice(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime), instigator)
         else:
-            return getreadytorumble(bot, trigger, instigator, target)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE)
         
-def getreadytorumble(bot, trigger, instigator, target):
+def getreadytorumble(bot, trigger, instigator, target, OSDTYPE):
     
     ## Update Time Of Combat
     now = time.time()
@@ -683,10 +685,21 @@ def getreadytorumble(bot, trigger, instigator, target):
             lootwinnermsgb = str(winner + " gains the " + str(loot))
                                
     ## On Screen Text
-    bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
-    bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
-    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
-        bot.say(pepperstatuschangemsg)
+    if OSDTYPE == 'say':
+        bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
+        bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
+        if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
+            bot.say(pepperstatuschangemsg)
+    elif OSDTYPE == 'notice':
+        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), instigator)
+        bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), target)
+        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), instigator)
+        bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), target)
+        if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
+            bot.notice(pepperstatuschangemsg, instigator)
+            bot.notice(pepperstatuschangemsg, target)
+    else:
+        bot.say('Looks Like Something went wrong!')
 
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
