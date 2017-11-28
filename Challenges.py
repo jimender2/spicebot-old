@@ -718,7 +718,7 @@ def whokilledwhom(bot, trigger, winner, loser):
 ## New Player Helath ##
 #######################
 
-def healthcheck(bot, nick)
+def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
         set_database_value(bot, nick, 'health', '1000')
