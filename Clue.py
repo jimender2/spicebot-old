@@ -26,4 +26,4 @@ def execute_main(bot, trigger):
     random.shuffle(rooms)
     random.shuffle(weapons)
     random.shuffle(players)
-    bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + "."
+    bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
