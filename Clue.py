@@ -27,6 +27,6 @@ def execute_main(bot, trigger):
     random.shuffle(weapons)
     random.shuffle(players)
     if rooms[0] == 'secret passage':
-        bot.say(players[1] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[2] + " instead.")    
+        bot.say(players[1] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[2] + " with the " + weapons[0] + " instead.")    
     else:
         bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
