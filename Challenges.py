@@ -889,6 +889,8 @@ def weaponformatter(bot, weapon):
         weapon = weapon
     elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
         weapon = str('with ' + weapon)
+    elif len(weapon.split()) > 1:
+        weapon = str('with ' + weapon)
     elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
         weapon = str('with an ' + weapon)
     else:
