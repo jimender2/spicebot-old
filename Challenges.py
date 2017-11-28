@@ -188,13 +188,13 @@ def mainfunction(bot, trigger):
                         set_database_value(bot, target, 'opttime', now)
                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
 
-            ## Is on for who
+            ## Who can fight
             elif commandused == 'whocanifight':
                 targetarray = []
                 for u in bot.channels[channel.lower()].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable:
+                    if targetdisenable and target != bot.nick:
                         targetarray.append(target)
                 targetarray = str(targetarray)
                 targetarray = targetarray.replace('[', '')
