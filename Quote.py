@@ -27,7 +27,7 @@ def getQuote():
         result = page.content
         jsonquote = json.loads(result)
         #quote = '"' + jsonquote['content'] + '" - ' + jsonquote['title']
-        quote = '"' + jsonquote['quote'] + '" - ' + jsonquote['quote']
+        quote = '"' + jsonquote['quote'] + '" - ' + jsonquote['author']
     except:
         quote = "No quote for you."
     return quote
