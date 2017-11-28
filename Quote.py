@@ -23,10 +23,11 @@ def execute_main(bot, trigger):
 def getQuote():
     url = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1'
     try:
-      page = requests.get(url)
-      result = page.content
-      jsonquote = json.loads(result)
-      quote = '"' + jsonquote['content'] + '" - ' + jsonquote['title']
+        page = requests.get(url)
+        result = page.content
+        jsonquote = json.loads(result)
+        #quote = '"' + jsonquote['content'] + '" - ' + jsonquote['title']
+        quote = jsonquote['content']
     except:
-      quote = "No quote for you."
+        quote = "No quote for you."
     return quote
