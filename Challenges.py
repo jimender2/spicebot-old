@@ -148,13 +148,9 @@ def mainfunction(bot, trigger):
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     for u in bot.channels[channel].users:
                         target = u
-                        if target != instigator and target != bot.nick:
-                            if target != lastfought or bot.nick.endswith('dev'):
-                                targetdisenable = get_database_value(bot, target, 'disenable')
-                                targettime = get_timesince(bot, target, 'timeout')
-                                targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                                if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                    targetarray.append(target)
+                        cantargetduel = cantargetduel(bot, instigator, target, lastfought)
+                        if cantargetduel:
+                            targetarray.append(target)
                     if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                     else:
@@ -168,13 +164,9 @@ def mainfunction(bot, trigger):
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
                     target = u
-                    if target != instigator:
-                        if target != lastfought or bot.nick.endswith('dev'):
-                            targetdisenable = get_database_value(bot, target, 'disenable')
-                            targettime = get_timesince(bot, target, 'timeout')
-                            targetspicebotdisenable = get_spicebotdisenable(bot, target)
-                            if targetdisenable and targettime > TIMEOUT and targetspicebotdisenable or bot.nick.endswith('dev'):
-                                targetarray.append(target)
+                    cantargetduel = cantargetduel(bot, instigator, target, lastfought)
+                    if cantargetduel:
+                        targetarray.append(target)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
@@ -751,6 +743,18 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel):
     else:
         executedueling = 1
     return executedueling
+
+def cantargetduel(bot, instigator, target, lastfought):
+    cantargetduel = 0
+    if target != instigator:
+        if target != lastfought or bot.nick.endswith('dev'):
+            targetdisenable = get_database_value(bot, target, 'disenable')
+            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+            targettime = get_timesince(bot, target, 'timeout')
+            if targetdisenable and targetspicebotdisenable:
+                if targettime > TIMEOUT  or bot.nick.endswith('dev'):
+                    cantargetduel = 1
+    return cantargetduel
 
 ##############
 ## Database ##
