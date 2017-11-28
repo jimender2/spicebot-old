@@ -485,8 +485,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     set_database_value(bot, ALLCHAN, 'timeout', now)
     
     ## Naming and Initial pepper level
-    instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, nick, channel)
-    targetname, targetpepperstart = whatsyourname(bot, trigger, nick, channel)
+    instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
+    targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
