@@ -121,7 +121,7 @@ def mainfunction(bot, trigger):
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
-                bot.say("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md")
+                bot.notice("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", target)
             
             ## Can I fight
             elif commandused == 'canifight':
