@@ -785,7 +785,7 @@ def get_timesince(bot, nick, databasekey):
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
-    time_since = get_timesince(bot, nick)
+    time_since = get_timesince(bot, nick, 'timeout')
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
     else:
