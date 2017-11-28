@@ -149,7 +149,7 @@ def mainfunction(bot, trigger):
                     for u in bot.channels[channel].users:
                         target = u
                         cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
-                        if cantargetduel:
+                        if cantargetduel and target != bot.nick:
                             targetarray.append(target)
                     if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
