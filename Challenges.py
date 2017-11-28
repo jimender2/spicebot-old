@@ -435,6 +435,8 @@ def mainfunction(bot, trigger):
                     else:
                         if target.lower() not in bot.privileges[channel.lower()]:
                             bot.say("I'm not sure who that is.")
+                        elif target == bot.nick:
+                            bot.say("I am immune to that kind of attack.")
                         else:
                             targethealthstart = get_database_value(bot, target, 'health')
                             adjust_database_value(bot, instigator, 'mana', manarequired)
@@ -457,6 +459,9 @@ def mainfunction(bot, trigger):
                             bot.say(str(magicsay))
                             if not inchannel.startswith("#") and target != instigator:
                                 bot.notice(str(magicnotice), target)
+                    mana = get_database_value(bot, instigator, 'mana')
+                    if mana <= 0:
+                        set_database_value(bot, instigator, 'mana', '')
                                 
             else:
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
