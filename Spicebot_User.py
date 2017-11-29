@@ -161,7 +161,7 @@ def execute_main(bot, trigger):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
             elif target == instigator or trigger.admin:
-                lasttime = get_lasttime(bot, target)
+                lasttime = get_timesince(bot, target, 'lastusagetime')
                 if lasttime < LASTTIMEOUT:
                     lasttimemath = int(LASTTIMEOUT - lasttime)
                     message = str(target + " needs to wait " + str(lasttimemath) + " seconds to use Spicebot.")
@@ -248,7 +248,7 @@ def greeting(bot, trigger):
     now = time.time()
     target = trigger.nick
     set_botdatabase_value(bot, target, 'jointime', now)
-    lasttime = get_timesince(bot, target, 'jointime')
+    lasttime = get_timesince(bot, target, 'lastusagetime')
     if not lasttime or lasttime < LASTTIMEOUTHOUR:
         bot.db.set_nick_value(target, 'spicebot_usertotal', '')
         bot.db.set_nick_value(target, 'spicebothour_warn', '')
