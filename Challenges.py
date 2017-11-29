@@ -785,7 +785,10 @@ def whatsyourname(bot, trigger, nick, channel):
         nickname = str(nickname)
         
     ## Pepper Names
-    nickname = str(nickname + " (" + pepperstart + ")")
+    if pepperstart != '':
+        nickname = str(nickname + " (" + pepperstart + ")")
+    else:
+        nickname = str(nickname)
     
     return nickname, pepperstart
     
