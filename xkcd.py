@@ -6,10 +6,25 @@ import html2text
 import requests
 import re
 from sopel.module import commands, url
+from sopel.modules.search import google_search
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
+
 from SpicebotShared import *
+ignored_sites = [
+    # For google searching
+    'almamater.xkcd.com',
+    'blog.xkcd.com',
+    'blag.xkcd.com',
+    'forums.xkcd.com',
+    'fora.xkcd.com',
+    'forums3.xkcd.com',
+    'store.xkcd.com',
+    'wiki.xkcd.com',
+    'what-if.xkcd.com',
+]
+sites_query = ' site:xkcd.com -site:' + ' -site:'.join(ignored_sites)
 
 @sopel.module.commands('xkcd','comic')
 def mainfunction(bot, trigger):
@@ -38,7 +53,7 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				mynumber = getnumber(maxcomics)  
+				mynumber = google(data)
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
 		mynumber = maxcomics
@@ -59,3 +74,11 @@ def getnumber(maxcomics):
 	if not thenumber or thenumber == '\n':
 		thenumber=getnumber()
 	return thenumber
+
+def google(query):
+	url = google_search(query + sites_query)
+	if not url:
+		return None
+	match = re.match('(?:https?://)?xkcd.com/(\d+)/?', url)
+	if match:
+		return match.group(1)
