@@ -198,7 +198,7 @@ def execute_main(bot, trigger):
             reset_warn(bot, target)
         elif commandused == 'countreset' and trigger.admin:
             bot.say('resetting count for ' + target)
-            reset_count(bot, target)
+            set_botdatabase_value(bot, nick, 'usertotal', '')
             
         ## On/Off
         elif commandused == 'on' or commandused == 'off':
