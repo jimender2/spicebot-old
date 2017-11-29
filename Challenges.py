@@ -897,12 +897,23 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ######################
 
 def weaponofchoice(bot, nick):
+    weaponslistselect = []
     weaponslist = get_weaponslocker(bot, nick)
+    lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
+    if not lastusedweapon:
+        lastusedweapon = "fist"
     if weaponslist == []:
         weapon = "fist"
     else:
-        weaponselected = random.randint(0,len(weaponslist) - 1)
-        weapon = str(weaponslist [weaponselected])
+        for x in weaponslist:
+            if x != lastusedweapon:
+                weaponslistselect.append(x)
+        if weaponslistselect == []:
+            weapon = "fist"
+        else:
+            weaponselected = random.randint(0,len(weaponslistselect) - 1)
+            weapon = str(weaponslistselect [weaponselected])
+    set_database_value(bot, nick, 'lastweaponused', weapon)
     return weapon
 
 def weaponformatter(bot, weapon):
@@ -946,7 +957,9 @@ def get_pepper(bot, nick):
     xp = get_database_value(bot, nick, 'xp')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
-    elif xp >= 0 and xp < 100:
+    elif not xp:
+        pepper = ''
+    elif xp > 0 and xp < 100:
         pepper = 'Pimiento'
     elif xp >= 100 and xp < 250:
         pepper = 'Sonora'
