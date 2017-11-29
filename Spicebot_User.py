@@ -221,7 +221,7 @@ def execute_main(bot, trigger):
                 bot.say("Only bot admins can mark other users ability to use " + bot.nick + ".")
             else:
                 disenable = get_botdatabase_value(bot, target, 'disenable')
-                opttime = get_timeout(bot, target)
+                opttime = get_timesince(bot, target, 'lastopttime')
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 if not disenable:
