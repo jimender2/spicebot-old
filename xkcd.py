@@ -52,7 +52,8 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				mynumber = google(data)
+				bot.say('http://www.google.com/search?q=' + urllib.urlencode(queryu) + '&' + urllib.urlencode('site:xkcd.com') + '&btnI')
+				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
 		mynumber = maxcomics
@@ -73,11 +74,3 @@ def getnumber(maxcomics):
 	if not thenumber or thenumber == '\n':
 		thenumber=getnumber()
 	return thenumber
-
-def google(query):
-	url = duck_search(query + sites_query)
-	if not url:
-		return None
-	match = re.match('(?:https?://)?xkcd.com/(\d+)/?', url)
-	if match:
-		return match.group(1)
