@@ -634,7 +634,7 @@ def healthregen(bot):
 def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
-    targetspicebotdisenable = get_spicebotdisenable(bot, target)
+    targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
     instigatordisenable = get_database_value(bot, instigator, 'disenable')
     targetdisenable = get_database_value(bot, target, 'disenable')
     instigatortime = get_timesince(bot, instigator, 'timeout')
@@ -655,7 +655,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     elif target == lastfought and not bot.nick.endswith('dev'):
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif not targetspicebotdisenable and target != bot.nick:
-        displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Spicebot.')
+        displaymsg = str(instigator + ', It looks like ' + target + ' has disabled ' + bot.nick + "." )
     elif not instigatordisenable:
         displaymsg = str(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.")
     elif not targetdisenable:
