@@ -21,7 +21,7 @@ def execute_main(bot, trigger):
             channel = c
         for u in bot.channels[channel].users:
             target = u
-            disenable = get_spicebotdisenable(bot, target)
+            disenable = get_botdatabase_value(bot, target, 'disenable')
             if disenable:
                 if target != instigator and target != bot.nick:
                     blametargetarray.append(target)
