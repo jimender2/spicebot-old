@@ -134,7 +134,7 @@ def mainfunction(bot, trigger):
                 if target.lower() == lastfought.lower():
                     displaymsg = str(displaymsg + target + " = lastfought. ")
                 if instigator.lower() == channellastinstigator.lower():
-                    displaymsg = str(displaymsg + target + " = lastinstigator. ")
+                    displaymsg = str(displaymsg + instigator + " = lastinstigator. ")
                 if displaymsg == '':
                     bot.notice("You Should be able to challenge.", instigator)
                 else:
