@@ -13,7 +13,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
 
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage']
-weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Wrench']
+weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Wrench']
     
 def execute_main(bot, trigger):
     players = []
