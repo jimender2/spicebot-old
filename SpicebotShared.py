@@ -27,13 +27,13 @@ def spicebot_prerun(bot,trigger):
     instigator = trigger.nick
     
     ## User's Bot Status
-    instigatorbotstatus = get_spicebotdisenable(bot, instigator)
+    instigatorbotstatus = get_botdatabase_value(bot, instigator, 'disenable')
     
     ## Enable Status default is 1 = don't run
     enablestatus = 1
     
     ## Get User's current total uses
-    usertotal = get_usertotal(bot, instigator)
+    usertotal = get_botdatabase_value(bot, instigator, 'usertotal')
     
     ## When Did the user Join The room
     jointime = get_jointime(bot, instigator)
@@ -111,22 +111,6 @@ def adjust_botdatabase_value(bot, nick, databasekey, value):
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
 ######################################################################################
-
-## Check Status of Opt In
-def get_spicebotdisenable(bot, nick):
-    disenable = get_botdatabase_value(bot, nick, 'disenable')
-    return disenable
-
-def set_disable(bot, nick):
-    bot.db.set_nick_value(nick, 'spicebot_disenable', '')
-    
-## User Total
-def get_usertotal(bot, instigator):
-    usertotal = bot.db.get_nick_value(instigator, 'spicebot_usertotal') or 0
-    return usertotal
-
-def reset_count(bot, nick):
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', '')
     
 ## Join Time
 def get_jointime(bot, nick):
