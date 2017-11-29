@@ -5,8 +5,6 @@ import os
 import html2text
 import requests
 import re
-from sopel.module import commands, url
-from sopel.modules.search import google_search
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
