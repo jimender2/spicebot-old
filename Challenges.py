@@ -902,6 +902,7 @@ def weaponofchoice(bot, nick):
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     if not lastusedweapon:
         lastusedweapon = "fist"
+    bot.say(lastusedweapon)
     if weaponslist == []:
         weapon = "fist"
     else:
