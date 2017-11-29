@@ -19,7 +19,8 @@ def execute_main(bot, trigger):
         channel = c
     for u in bot.channels[channel].users:
         target = u
-        if get_spicebotdisenable(bot, target):
+        disenable = get_botdatabase_value(bot, target, 'disenable')
+        if disenable:
             randomtargetarray.append(target)
     if randomtargetarray == []:
         bot.say("There is currently no one available to play the hunger games.")
