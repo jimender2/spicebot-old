@@ -228,7 +228,7 @@ def execute_main(bot, trigger):
                     if commandused == 'on':
                         set_botdatabase_value(bot, nick, 'disenable', 'true')
                         adjustment = 'now'
-                        set_timeout(bot, target)
+                        set_botdatabase_value(bot, nick, 'lastopttime', now)
                     else:
                         adjustment = 'already'
                 else:
