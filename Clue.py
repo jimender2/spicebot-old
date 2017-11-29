@@ -33,4 +33,4 @@ def execute_main(bot, trigger):
     if trigger.group(2) and trigger.group(2) == players[0]:
             import Points
             bot.say('You guessed the killer correctly!')
-            bot.say(Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender))
+            Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
