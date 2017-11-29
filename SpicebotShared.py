@@ -76,7 +76,6 @@ def spicebot_prerun(bot,trigger):
     
     ## Update user's last use timestamp
     if botchannel.startswith("#") and not bot.nick.endswith('dev'):
-        update_usernicktime(bot, instigator)
         set_botdatabase_value(bot, instigator, 'lastusagetime', now)
     
     ## message, if any
@@ -122,11 +121,5 @@ def get_timesince(bot, nick, databasekey):
     last = bot.db.get_nick_value(nick, databasecolumn) or 0
     return abs(now - int(last))
 
-######################################################################################
 
-    
-## hour reset
-def get_spicebothourstart(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebothourstart_time') or 0
-    return abs(now - last)
+
