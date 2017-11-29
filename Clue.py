@@ -30,10 +30,8 @@ def execute_main(bot, trigger):
         bot.say(players[1] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[2] + " with the " + weapons[0] + " instead.")    
     else:
         bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
-    try:    
-        if trigger.group(2).strip() != '' and players[0] == trigger.group(2).strip():
-            bot.say('You guessed the killer correctly!')
-    except:
         
+    if trigger.group(2).strip() == players[0]:
+            bot.say('You guessed the killer correctly!')
     if trigger.nick == players[0]:
             bot.say('YOU ARE THE KILLER!')
