@@ -31,7 +31,7 @@ def execute_main(bot, trigger):
     else:
         bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
         
-    if trigger.group(2).strip() == players[0]:
+    if trigger.group(2) == players[0]:
             bot.say('You guessed the killer correctly!')
     if trigger.nick == players[0]:
             bot.say('YOU ARE THE KILLER!')
