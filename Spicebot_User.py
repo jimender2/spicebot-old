@@ -174,7 +174,7 @@ def execute_main(bot, trigger):
         ## How many times in the past hour has the user used the bot
         elif commandused == 'usage'and not inchannel.startswith("#"):
             if target == instigator or trigger.admin:
-                usertotal = get_usertotal(bot, target)
+                usertotal = get_botdatabase_value(bot, target, 'usertotal')
                 message = str(target + " has used " + str(usertotal) + " commands this hour.")
             else:
                 message = str(target + ", you can't check other's usage.")
