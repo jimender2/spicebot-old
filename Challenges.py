@@ -133,6 +133,8 @@ def mainfunction(bot, trigger):
                     displaymsg = str(displaymsg + target + " can't challenge for %d seconds. " % (TIMEOUT - targettime))
                 if target.lower() == lastfought.lower():
                     displaymsg = str(displaymsg + target + " = lastfought. ")
+                if instigator.lower() == channellastinstigator.lower():
+                    displaymsg = str(displaymsg + target + " = lastinstigator. ")
                 if displaymsg == '':
                     bot.notice("You Should be able to challenge.", instigator)
                 else:
