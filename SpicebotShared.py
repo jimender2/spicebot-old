@@ -15,6 +15,7 @@ TOOMANYTIMES = 15
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
+    now = time.time()
     
     ## used to circumvent
     commandused = trigger.group(1)
@@ -36,13 +37,13 @@ def spicebot_prerun(bot,trigger):
     usertotal = get_botdatabase_value(bot, instigator, 'usertotal')
     
     ## When Did the user Join The room
-    jointime = get_jointime(bot, instigator)
+    jointime = get_timesince(bot, instigator, 'jointime')
     
     ## When Did the User Last Use the bot
-    lasttime = get_lasttime(bot, instigator)
+    lasttime = get_timesince(bot, instigator, 'lastusagetime')
     
     ## Has The user already been warned?
-    warned = get_userwarned(bot, instigator)
+    warned = get_botdatabase_value(bot, instigator, 'hourwarned')
     
     ## Check user has spicebotenabled
     if not instigatorbotstatus and not warned:
@@ -71,11 +72,12 @@ def spicebot_prerun(bot,trigger):
     
         ## Update user total
         if botchannel.startswith("#") and not trigger.admin:
-            update_usernicktotal(bot, instigator)
+            adjust_botdatabase_value(bot, instigator, 'usertotal', '1')
     
     ## Update user's last use timestamp
     if botchannel.startswith("#") and not bot.nick.endswith('dev'):
         update_usernicktime(bot, instigator)
+        set_botdatabase_value(bot, instigator, 'lastusagetime', now)
     
     ## message, if any
     bot.notice(message, instigator)
@@ -110,54 +112,18 @@ def adjust_botdatabase_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
+##########
+## Time ##
+##########
+    
+def get_timesince(bot, nick, databasekey):
+    now = time.time()
+    databasecolumn = str('spicebot_' + databasekey)
+    last = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return abs(now - int(last))
+
 ######################################################################################
-    
-## Join Time
-def get_jointime(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotjoin_time') or 0
-    return abs(now - last)
 
-def set_jointime(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'spicebotjoin_time', now)
-    
-## Last Usage
-def get_lasttime(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotlast_time') or 0
-    return abs(now - last)
-
-## User warned or not
-def get_userwarned(bot, instigator):
-    warned = bot.db.get_nick_value(instigator, 'spicebothour_warn') or 0
-    return warned
-
-def reset_warn(bot, nick):
-    bot.db.set_nick_value(nick, 'spicebothour_warn', '')
-    
-## Update user total
-def update_usernicktotal(bot, nick):
-    usertotal = bot.db.get_nick_value(nick, 'spicebot_usertotal') or 0
-    bot.db.set_nick_value(nick, 'spicebot_usertotal', usertotal + 1)
-
-## Update user's last use timestamp
-def update_usernicktime(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'spicebotlast_time', now)
-
-## timeout
-def get_timeout(bot, nick):
-    now = time.time()
-    last = bot.db.get_nick_value(nick, 'spicebotopt_time') or 0
-    return abs(now - last)
-
-def set_timeout(bot, nick):
-    now = time.time()
-    bot.db.set_nick_value(nick, 'spicebotopt_time', now)
-    
-def reset_timeout(bot, nick):
-    bot.db.set_nick_value(nick, 'spicebotopt_time', '')
     
 ## hour reset
 def get_spicebothourstart(bot, nick):
