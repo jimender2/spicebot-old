@@ -192,10 +192,10 @@ def execute_main(bot, trigger):
         ## Resets
         elif commandused == 'timereset' and trigger.admin:
             bot.say('resetting timeout for ' + target)
-            reset_timeout(bot, target)
+            set_botdatabase_value(bot, nick, 'time', '')
         elif commandused == 'warnreset' and trigger.admin:
             bot.say('resetting warning for ' + target)
-            reset_warn(bot, target)
+            set_botdatabase_value(bot, nick, 'hourwarned', '')
         elif commandused == 'countreset' and trigger.admin:
             bot.say('resetting count for ' + target)
             set_botdatabase_value(bot, nick, 'usertotal', '')
@@ -245,9 +245,10 @@ def execute_main(bot, trigger):
 @event('JOIN','PART','QUIT','NICK')
 @rule('.*')
 def greeting(bot, trigger):
+    now = time.time()
     target = trigger.nick
-    set_jointime(bot, target)
-    lasttime = get_lasttime(bot, target)
+    set_botdatabase_value(bot, target, 'jointime', now)
+    lasttime = get_timesince(bot, target, 'jointime')
     if not lasttime or lasttime < LASTTIMEOUTHOUR:
         bot.db.set_nick_value(target, 'spicebot_usertotal', '')
         bot.db.set_nick_value(target, 'spicebothour_warn', '')
@@ -271,7 +272,7 @@ def autoblock(bot):
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
                 set_timeout(bot, target)
                 set_botdatabase_value(bot, target, 'disenable', '')
-                warn = get_userwarned(bot, target)
-                if not warn:
+                warned = get_botdatabase_value(bot, target, 'hourwarned')
+                if not warned:
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
                     bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
