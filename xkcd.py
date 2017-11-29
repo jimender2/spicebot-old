@@ -52,8 +52,8 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				bot.say('Let me find that for you')
-				bot.say('http://www.google.com/search?q=' + urllib.urlencode(data) + '&' + urllib.urlencode('site:xkcd.com') + '&btnI')
+				bot.say('Let me find a' + data)
+				#bot.say('http://www.google.com/search?q=' + urllib.urlencode(data) + '&' + urllib.urlencode('site:xkcd.com') + '&btnI')
 				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
