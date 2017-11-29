@@ -75,7 +75,7 @@ def getnumber(maxcomics):
 	return thenumber
 
 def google(query):
-	url = google_search(query + sites_query)
+	url = duck_search(query + sites_query)
 	if not url:
 		return None
 	match = re.match('(?:https?://)?xkcd.com/(\d+)/?', url)
