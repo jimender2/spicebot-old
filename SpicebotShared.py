@@ -107,7 +107,7 @@ def set_botdatabase_value(bot, nick, databasekey, value):
     
 # get current value and update it adding newvalue
 def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey)
+    oldvalue = get_botdatabase_value(bot, nick, databasekey)
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
