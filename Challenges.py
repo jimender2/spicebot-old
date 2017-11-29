@@ -902,7 +902,6 @@ def weaponofchoice(bot, nick):
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     if not lastusedweapon:
         lastusedweapon = "fist"
-    bot.say(lastusedweapon)
     if weaponslist == []:
         weapon = "fist"
     else:
@@ -910,7 +909,7 @@ def weaponofchoice(bot, nick):
             if x != lastusedweapon:
                 weaponslistselect.append(x)
         if weaponslistselect == []:
-            weapon = "fist"
+            weapon = lastusedweapon
         else:
             weaponselected = random.randint(0,len(weaponslistselect) - 1)
             weapon = str(weaponslistselect [weaponselected])
