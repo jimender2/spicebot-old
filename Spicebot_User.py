@@ -270,7 +270,7 @@ def autoblock(bot):
             usertotal = get_usertotal(bot, target)
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
                 set_timeout(bot, target)
-                set_disable(bot, target)
+                set_botdatabase_value(bot, target, 'disenable', '')
                 warn = get_userwarned(bot, target)
                 if not warn:
                     bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
