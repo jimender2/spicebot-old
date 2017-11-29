@@ -21,10 +21,10 @@ def spicebot_prerun(bot,trigger):
     allowedcommandsarray = ['duel','challenge']
     
     ## Get Name Of Channel
-    botchannel = bot_channelname(bot, trigger)
+    botchannel = trigger.sender
     
     ## Nick of user operating command
-    instigator = trigger_instigator(bot, trigger)
+    instigator = trigger.nick
     
     ## User's Bot Status
     instigatorbotstatus = get_spicebotdisenable(bot, instigator)
@@ -89,23 +89,35 @@ def spicebot_prerun(bot,trigger):
 ## Below This Line are Shared Functions
 #####################################################################################################################################
 
-## Name of channel
-def bot_channelname(bot, trigger):
-    botchannel = trigger.sender
-    return botchannel
+##############
+## Database ##
+##############
+
+# Get a value
+def get_botdatabase_value(bot, nick, databasekey):
+    databasecolumn = str('spicebot_' + databasekey)
+    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return database_value
+
+# Set a value
+def set_botdatabase_value(bot, nick, databasekey, value):
+    databasecolumn = str('spicebot_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
+    
+# get current value and update it adding newvalue
+def adjust_botdatabase_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey)
+    databasecolumn = str('spicebot_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+
+######################################################################################
 
 ## Check Status of Opt In
 def get_spicebotdisenable(bot, nick):
-    disenable = bot.db.get_nick_value(nick, 'spicebot_disenable') or 0
+    disenable = get_botdatabase_value(bot, nick, 'disenable')
     return disenable
 
-## Instigator
-def trigger_instigator(bot, trigger):
-    instigator = trigger.nick
-    return instigator
-
 def set_disable(bot, nick):
-    now = time.time()
     bot.db.set_nick_value(nick, 'spicebot_disenable', '')
     
 ## User Total
