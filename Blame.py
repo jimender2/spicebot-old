@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     if not trigger.group(2):
         blametargetarray = []
-        instigator = trigger_instigator(bot, trigger)
+        instigator = trigger.nick
         for c in bot.channels:
             channel = c
         for u in bot.channels[channel].users:
