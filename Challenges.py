@@ -351,7 +351,7 @@ def mainfunction(bot, trigger):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                weaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
+                weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
                 adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
@@ -360,13 +360,11 @@ def mainfunction(bot, trigger):
                     for weapon in weaponslist:
                         weapon = str(weapon)
                         weaponslistnew.append(weapon)
-                    for channel in bot.channels:
-                        bot.db.set_nick_value(channel, 'weapons_locker', '')
                     for weapon in weaponslistnew:
                         if weapon not in weaponslist:
                             weaponslist.append(weapon)
-                    update_weaponslocker(bot, instigator, weaponslist)
-                    weaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
+                    set_database_value(bot, instigator, 'weaponslocker', weaponslist)
+                    weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
                     weaponslist = str(weaponslist)
                     weaponslist = weaponslist.replace('[', '')
                     weaponslist = weaponslist.replace(']', '')
@@ -394,12 +392,12 @@ def mainfunction(bot, trigger):
                                 weaponlockerstatus = 'already'
                             else:
                                 weaponslist.remove(weaponchange)
-                                update_weaponslocker(bot, instigator, weaponslist)
+                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'no longer'
                         else:
                             if adjustmentdirection == 'add':
                                 weaponslist.append(weaponchange)
-                                update_weaponslocker(bot, instigator, weaponslist)
+                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'now'
                             else:
                                 weaponlockerstatus = 'already not'
@@ -920,7 +918,7 @@ def weaponsmigrate(bot, nick):
 
 def weaponofchoice(bot, nick):
     weaponslistselect = []
-    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
+    weaponslist = get_database_value(bot, nick, 'weaponslocker') or []
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     if not lastusedweapon:
         lastusedweapon = "fist"
@@ -1037,10 +1035,10 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = '1'
     
     # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
+    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
     if not instigatorweaponslist == [] or manualweapon == 'true':
         instigatorfight = int(instigatorfight) + 1
-    targetweaponslist = bot.db.get_nick_value(target, 'weapons_locker') or []
+    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
     if not targetweaponslist == []:
         targetfight = int(targetfight) + 1
     
@@ -1082,12 +1080,12 @@ def getwinner(bot, instigator, target, manualweapon):
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
-        instigatorfightroll = diceroll()
+        instigatorfightroll = diceroll(20)
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
-        targetfightroll = diceroll()
+        targetfightroll = diceroll(20)
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
@@ -1132,17 +1130,10 @@ def get_winlossratio(bot,target):
             winlossratio = 0
     return winlossratio
 
-####################
-## Weapons Locker ##
-####################
-
-def update_weaponslocker(bot, nick, weaponslist):
-    bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
-
 ###########
 ## Tools ##
 ###########
 
-def diceroll():
-    diceroll = randint(0, 20)
+def diceroll(howmanysides):
+    diceroll = randint(0, howmanysides)
     return diceroll
