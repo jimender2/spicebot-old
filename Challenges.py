@@ -707,6 +707,32 @@ def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+   
+def get_database_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    entriestotal = len(array)
+    return entriestotal
+
+def list_database_array(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    prettytext = str(array)
+    prettytext = prettytext.replace('[', '')
+    prettytext = prettytext.replace(']', '')
+    prettytext = prettytext.replace("u'", '')
+    prettytext = prettytext.replace('u"', '')
+    prettytext = prettytext.replace("'", '')
+    prettytext = prettytext.replace('"', '')
+    return prettytext
+
+def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
+    adjustarray = get_database_value(bot, nick, databasekey) or []
+    if adjustmentdirection == 'add':
+        adjustarray.append(entry)
+    elif adjustmentdirection == 'del':
+        adjustarray.remove(entry)
+    else:
+        bot.say('Error Adjusting Array')
+    set_database_value(bot, nick, databasekey, adjustarray)
     
 ###################
 ## Living Status ##
