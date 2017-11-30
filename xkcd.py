@@ -60,8 +60,9 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
-				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'				
-				bot.say(str(baseurl))	
+				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
+				linkedurl = googleit(baseurl)	
+				bot.say(str(linkedurl))	
    
 def get_info(number=None, verify_ssl=True):
 	if number:
@@ -77,3 +78,7 @@ def getnumber(maxcomics):
 	if not thenumber or thenumber == '\n':
 		thenumber=getnumber()
 	return thenumber
+
+def googleit(url):
+	page = requests.get(url)       
+	return page
