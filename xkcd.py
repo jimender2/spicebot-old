@@ -60,8 +60,9 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
-				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
-				linkedurl = urllib2.urlopen(baseurl).read()
+				url = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
+				response = urllib2.urlopen(url)
+				linkedurl = response.geturl()
 				bot.say(str(linkedurl))	
    
 def get_info(number=None, verify_ssl=True):
