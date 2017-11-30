@@ -441,7 +441,7 @@ def mainfunction(bot, trigger):
                             adjust_database_value(bot, target, 'health', damage)
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
-                                whokilledwhom(bot, trigger, instigator, target)
+                                whokilledwhom(bot, instigator, target)
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
                             elif magicusage == 'health':
@@ -543,7 +543,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     damage = abs(damage)
     currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
-        whokilledwhom(bot, trigger, winner, loser)
+        whokilledwhom(bot, winner, loser)
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
     else:
         winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
@@ -738,7 +738,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 ## Living Status ##
 ###################
 
-def whokilledwhom(bot, trigger, winner, loser):
+def whokilledwhom(bot, winner, loser):
     ## Reset mana and health
     set_database_value(bot, loser, 'mana', '')
     set_database_value(bot, loser, 'health', '1000')
@@ -910,7 +910,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     targethealth = get_database_value(bot, target, 'health')
     if targethealth <= 0:
         mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
-        whokilledwhom(bot, trigger, instigator, target)
+        whokilledwhom(bot, instigator, target)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
         if not inchannel.startswith("#") and target != instigator:
