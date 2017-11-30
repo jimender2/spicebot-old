@@ -632,7 +632,10 @@ def healthregen(bot):
         
 ## Functions######################################################################################################################
 
-## Criteria to duel
+######################
+## Criteria to duel ##
+######################
+
 def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
@@ -705,9 +708,9 @@ def adjust_database_value(bot, nick, databasekey, value):
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
     
-###########
-## Death ##
-###########
+###################
+## Living Status ##
+###################
 
 def whokilledwhom(bot, trigger, winner, loser):
     ## Reset mana and health
@@ -719,15 +722,11 @@ def whokilledwhom(bot, trigger, winner, loser):
     ## Loot Corpse
     lootcorpse(bot, loser, winner)
 
-#######################    
-## New Player Health ##
-#######################
-
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
         set_database_value(bot, nick, 'health', '1000')
-        
+
 ##########
 ## Time ##
 ##########
@@ -806,7 +805,7 @@ def get_backpackitems(bot, target):
 
 ## maybe add a dice roll later
 def randominventory():
-    randomfindchance = randint(1, 120)
+    randomfindchance = diceroll(120)
     if randomfindchance >= 90:
         randominventoryfind = 'true'
     else:
@@ -821,10 +820,8 @@ def determineloottype(bot, nick):
 def lootcorpse(bot, loser, winner):
     for x in lootitemsarray:
         gethowmany = get_database_value(bot, loser, x)
-        if gethowmany:
-            set_database_value(bot, loser, x, '')
-            gethowmanyb = get_database_value(bot, winner, x)
-            set_database_value(bot, winner, x, int(gethowmany) + int(gethowmanyb))
+        adjust_database_value(bot, winner, x, gethowmany)
+        set_database_value(bot, loser, x, '')
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
