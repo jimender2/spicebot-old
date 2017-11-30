@@ -35,32 +35,34 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
 	verify_ssl = bot.config.core.verify_ssl
 	latest=get_info(verify_ssl=verify_ssl)
-	maxcomics=latest['num']
-	#if not int(maxcomics)<=1:
-		#maxcomics = 1918
+	maxcomics=latest['num']	
 	if not trigger.group(2):
 		mynumber =  getnumber(maxcomics)
+		bot.say('https://xkcd.com/' + str(mynumber))
 	else:
 		data = trigger.group(2).strip()
 		if data.isdigit():
 			mynumber=int(data)
+			if not mynumber<= int(maxcomics) and mynumber>=1:
+			bot.say('Please enter a number between 1 and ' +str(maxcomics))
+			mynumber = maxcomics
+			bot.say('https://xkcd.com/' + str(mynumber))			
 		else:
 			data.lower()
+			data=data.replace(' ', '%20')
 			if (data == 'today' or data=='latest' or data=='new'):
 				mynumber=maxcomics
+				bot.say('https://xkcd.com/' + str(mynumber))	
 			elif (data == 'first' or data=='oldest'):
 				mynumber = 1
+				bot.say('https://xkcd.com/' + str(mynumber))	
 			elif data == 'random':
-				mynumber = getnumber(maxcomics)							
+				mynumber = getnumber(maxcomics)
+				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
+				bot.say(data)
 				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'				
-				bot.say(str(baseurl))
-				mynumber = 1
-	if not mynumber<= int(maxcomics) and mynumber>=1:
-		bot.say('Please enter a number between 1 and ' +str(maxcomics))
-		mynumber = maxcomics
-			
-	bot.say('https://xkcd.com/' + str(mynumber))
+				bot.say(str(baseurl))	
    
 def get_info(number=None, verify_ssl=True):
 	if number:
