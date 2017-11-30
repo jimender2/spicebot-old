@@ -117,6 +117,6 @@ def adjust_botdatabase_value(bot, nick, databasekey, value):
 
 def get_timesince(bot, nick, databasekey):
     now = time.time()
-    last = get_database_value(bot, nick, databasekey) or 0
+    last = get_botdatabase_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
