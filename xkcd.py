@@ -5,7 +5,7 @@ import os
 import html2text
 import requests
 import re
-import urllib
+import urllib2
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
@@ -53,8 +53,8 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				bot.say('Let me find a' + data)
-				bot.say('http://www.google.com/search?q=' + data + 'site:xkcd.com' + '&btnI')
+				baseurl = 'http://www.google.com/search?q=' + data + ' site:xkcd.com' + '&btnI'				
+				bot.say(str(baseurl))
 				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
