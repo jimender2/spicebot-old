@@ -13,4 +13,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     if not trigger.group(2):
-        bot.say("Looks like " + trigger.nick + " picked the wrong week to stop sniffing glue?")
+        item = "sniffing glue"
+    else:
+        item = trigger.group(2)
+    bot.say("Looks like " + trigger.nick + " picked the wrong week to stop " + str(item) + "?")
