@@ -53,7 +53,6 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				bot.say('Let me find a' + data)
 				baseurl = 'http://www.google.com/search?q=' + data + ' site:xkcd.com' + '&btnI'				
 				bot.say(urllib2.urlopen(baseurl).read())
 				mynumber = 1
