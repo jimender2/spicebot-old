@@ -53,7 +53,7 @@ def execute_main(bot, trigger):
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)							
 	  		else:
-				baseurl = 'http://www.google.com/search?q=' + data + ' site:xkcd.com' + '&btnI'				
+				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'				
 				bot.say(str(baseurl))
 				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
