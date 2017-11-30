@@ -60,11 +60,11 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
-				#url = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
-				var = requests.get(r'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI')
-				#response = urllib2.urlopen(url)
-				#linkedurl = response.geturl()
-				bot.say(str(var.url))	
+				var = requests.get(r'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI')				
+				if str(var.url).startswith('https://xkcd.com/'):
+					bot.say(str(var.url))	
+				else:
+					bot.say('I could not find anything about ' + data)				
    
 def get_info(number=None, verify_ssl=True):
 	if number:
