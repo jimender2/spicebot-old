@@ -907,14 +907,8 @@ def weaponsmigrate(bot, nick):
     if weaponslist or weaponslist != []:
         for x in weaponslist:
             weaponslistnew.append(x)
-            bot.say(str(x))
         set_database_value(bot, nick, 'weaponslocker', weaponslistnew)
         bot.db.set_nick_value(nick, 'weapons_locker', '')
-    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
-    if weaponslist or weaponslist != []:
-        bot.say('oops')
-    else:
-        bot.say('good')
 
 def weaponofchoice(bot, nick):
     weaponslistselect = []
