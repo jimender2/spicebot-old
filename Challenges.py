@@ -52,6 +52,9 @@ def mainfunction(bot, trigger):
         channel = c
     now = time.time()
     
+    ## Weapons migrate
+    weaponsmigrate(bot, instigator)
+    
     ## Make sure Opt-In time is there
     opttime = get_database_value(bot, instigator, 'opttime')
     if not opttime:
@@ -348,7 +351,7 @@ def mainfunction(bot, trigger):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                weaponslist = get_weaponslocker(bot, instigator)
+                weaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
                 adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
@@ -363,7 +366,7 @@ def mainfunction(bot, trigger):
                         if weapon not in weaponslist:
                             weaponslist.append(weapon)
                     update_weaponslocker(bot, instigator, weaponslist)
-                    weaponslist = get_weaponslocker(bot, instigator)
+                    weaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
                     weaponslist = str(weaponslist)
                     weaponslist = weaponslist.replace('[', '')
                     weaponslist = weaponslist.replace(']', '')
@@ -474,6 +477,10 @@ def mainfunction(bot, trigger):
             set_database_value(bot, bot.nick, x, '')
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
+    
+    ## Weapons migrate
+    weaponsmigrate(bot, instigator)
+    weaponsmigrate(bot, target)
     
     ## Update Time Of Combat
     set_database_value(bot, instigator, 'timeout', now)
@@ -895,9 +902,25 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ## Weapon Selection ##
 ######################
 
+## Hacky Patch to move weaponslocker to new database setup
+def weaponsmigrate(bot, nick):
+    weaponslistnew = []
+    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
+    if weaponslist or weaponslist != []:
+        for x in weaponslist:
+            weaponslistnew.append(x)
+            bot.say(str(x))
+        set_database_value(bot, nick, 'weaponslocker', weaponslistnew)
+        bot.db.set_nick_value(nick, 'weapons_locker', '')
+    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
+    if weaponslist or weaponslist != []:
+        bot.say('oops')
+    else:
+        bot.say('good')
+
 def weaponofchoice(bot, nick):
     weaponslistselect = []
-    weaponslist = get_weaponslocker(bot, nick)
+    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     if not lastusedweapon:
         lastusedweapon = "fist"
@@ -1014,10 +1037,10 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = '1'
     
     # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = get_weaponslocker(bot, instigator)
+    instigatorweaponslist = bot.db.get_nick_value(instigator, 'weapons_locker') or []
     if not instigatorweaponslist == [] or manualweapon == 'true':
         instigatorfight = int(instigatorfight) + 1
-    targetweaponslist = get_weaponslocker(bot, target)
+    targetweaponslist = bot.db.get_nick_value(target, 'weapons_locker') or []
     if not targetweaponslist == []:
         targetfight = int(targetfight) + 1
     
@@ -1113,14 +1136,8 @@ def get_winlossratio(bot,target):
 ## Weapons Locker ##
 ####################
 
-def get_weaponslocker(bot, nick):
-    for channel in bot.channels:
-        weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
-        return weaponslist
-
 def update_weaponslocker(bot, nick, weaponslist):
-    for channel in bot.channels:
-        bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
+    bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
 
 ###########
 ## Tools ##
