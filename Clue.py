@@ -40,6 +40,9 @@ def execute_main(bot, trigger):
             elif trigger.group(4) == 'killed' and trigger.group(3) == players[1]:
                 bot.say('You guessed the person murdered!')
                 Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
+        if trigger.group(3) == players[0]:
+            bot.say('You guessed the killer correctly!')
+            Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
         Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' takes ', ' from', 'down', 'points', trigger.sender)
