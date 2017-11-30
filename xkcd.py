@@ -25,6 +25,7 @@ ignored_sites = [
 ]
 sites_query = ' site:xkcd.com -site:' + ' -site:'.join(ignored_sites)
 
+
 @sopel.module.commands('xkcd','comic')
 def mainfunction(bot, trigger):
 	enablestatus = spicebot_prerun(bot, trigger)
@@ -53,7 +54,7 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)							
 	  		else:
 				bot.say('Let me find a' + data)
-				bot.say('http://www.google.com/search?q=' + data + ' site:xkcd.com' + '&btnI')
+				bot.say('http://www.google.com/search?q=' + data + 'site:xkcd.com' + '&btnI')
 				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
