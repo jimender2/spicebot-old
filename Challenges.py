@@ -678,7 +678,7 @@ def cantargetdueldef(bot, instigator, target, lastfought):
     if target != instigator:
         if target != lastfought or bot.nick.endswith('dev'):
             targetdisenable = get_database_value(bot, target, 'disenable')
-            targetspicebotdisenable = get_spicebotdisenable(bot, target)
+            targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
             targettime = get_timesince_duels(bot, target, 'timeout')
             if targetdisenable and targetspicebotdisenable:
                 if targettime > TIMEOUT  or bot.nick.endswith('dev'):
