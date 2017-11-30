@@ -41,6 +41,7 @@ def mainfunction(bot, trigger):
             execute_main(bot, trigger)
 
 def execute_main(bot, trigger):
+    now = time.time()
     instigator = trigger.nick
     inchannel = trigger.sender
     target = trigger.group(4)
