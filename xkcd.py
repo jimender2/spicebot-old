@@ -5,7 +5,7 @@ import os
 import html2text
 import requests
 import re
-import urllib
+import urllib2
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
