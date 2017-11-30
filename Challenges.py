@@ -41,8 +41,7 @@ def mainfunction(bot, trigger):
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
     
     ## Basic Vars that we will use
     instigator = trigger.nick
@@ -279,21 +278,16 @@ def mainfunction(bot, trigger):
                             etarget = u
                             if statset == 'all':
                                 for x in challengestatsadminarray:
-                                    estatset = x
-                                    databasecolumn = str('challenges_' + estatset)
-                                    bot.db.set_nick_value(etarget, databasecolumn, newvalue)
+                                    set_database_value(bot, etarget, x, newvalue)
                             else:
-                                databasecolumn = str('challenges_' + statset)
-                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                                set_database_value(bot, etarget, statset, newvalue)
                     else:
                         if statset == 'all':
                             for x in challengestatsadminarray:
-                                statset = x
-                                databasecolumn = str('challenges_' + statset)
-                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                                set_database_value(bot, target, x, newvalue)
+                                
                         else:
-                            databasecolumn = str('challenges_' + statset)
-                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                            set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
 
             ## Leaderboard
@@ -477,8 +471,7 @@ def mainfunction(bot, trigger):
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
     
@@ -595,13 +588,17 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
 # reset last instigator
 @sopel.module.interval(1800)
 def healthregen(bot):
+    
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
+    
+    ## Clear Last Instigator
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
+    
+    ## Who gets to win a mysterypotion?
     randomtargetarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
     if not lasttimedlootwinner:
@@ -613,7 +610,7 @@ def healthregen(bot):
             if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
                 health = get_database_value(bot, target, 'health')
                 if health < 500:
-                    bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
+                    adjust_database_value(bot, target, 'health', '50')
                 randomtargetarray.append(target)
         if randomtargetarray == []:
             dummyvar = 1
@@ -732,8 +729,7 @@ def healthcheck(bot, nick):
     
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
-    databasecolumn = str('challenges_' + databasekey)
-    last = bot.db.get_nick_value(nick, databasecolumn) or 0
+    last = get_database_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
