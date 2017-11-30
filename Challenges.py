@@ -720,7 +720,10 @@ def whokilledwhom(bot, trigger, winner, loser):
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
-    lootcorpse(bot, loser, winner)
+    for x in lootitemsarray:
+        gethowmany = get_database_value(bot, loser, x)
+        adjust_database_value(bot, winner, x, gethowmany)
+        set_database_value(bot, loser, x, '')
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
@@ -812,16 +815,10 @@ def randominventory():
         randominventoryfind = 'false'
     return randominventoryfind
 
-def determineloottype(bot, nick): 
+def determineloottype(bot, nick):
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
     return loot
-
-def lootcorpse(bot, loser, winner):
-    for x in lootitemsarray:
-        gethowmany = get_database_value(bot, loser, x)
-        adjust_database_value(bot, winner, x, gethowmany)
-        set_database_value(bot, loser, x, '')
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
@@ -945,7 +942,7 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, target):
-    rando = randint(1, 100)
+    rando = diceroll(100)
     if target == bot.nick:
         damage = -150
     elif rando >= 90:
