@@ -60,7 +60,6 @@ def execute_main(bot, trigger):
 				mynumber = getnumber(maxcomics)
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
-				bot.say(data)
 				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'				
 				bot.say(str(baseurl))	
    
