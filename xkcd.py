@@ -61,9 +61,9 @@ def execute_main(bot, trigger):
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
 				url = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
-				response = urllib2.urlopen(url)
-				linkedurl = response.geturl()
-				bot.say(str(linkedurl))	
+				#response = urllib2.urlopen(url)
+				#linkedurl = response.geturl()
+				bot.say(str(url))	
    
 def get_info(number=None, verify_ssl=True):
 	if number:
