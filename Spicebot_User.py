@@ -226,16 +226,16 @@ def execute_main(bot, trigger):
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
                 if not disenable:
                     if commandused == 'on':
-                        set_botdatabase_value(bot, nick, 'disenable', 'true')
+                        set_botdatabase_value(bot, target, 'disenable', 'true')
                         adjustment = 'now'
-                        set_botdatabase_value(bot, nick, 'lastopttime', now)
+                        set_botdatabase_value(bot, target, 'lastopttime', now)
                     else:
                         adjustment = 'already'
                 else:
                     if commandused == 'on':
                         adjustment = 'already'
                     else:
-                        set_botdatabase_value(bot, nick, 'disenable', '')
+                        set_botdatabase_value(bot, target, 'disenable', '')
                         adjustment = 'now'
                         set_timeout(bot, target)
                 message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
