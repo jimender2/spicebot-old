@@ -120,3 +120,10 @@ def get_timesince(bot, nick, databasekey):
     last = get_botdatabase_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
+###########
+## Tools ##
+###########
+
+def diceroll(howmanysides):
+    diceroll = randint(0, howmanysides)
+    return diceroll
