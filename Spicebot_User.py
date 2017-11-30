@@ -22,6 +22,7 @@ LASTTIMEOUTHOUR = 3600
 
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
+    now = time.time()
     inchannel = trigger.sender
     if trigger.group(2):
         allowedcommandsarray = ['on','off']
