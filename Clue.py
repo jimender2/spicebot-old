@@ -12,9 +12,9 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger)
 
-rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage']
-weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Wrench']
-    
+rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'spa', 'theater', 'nearby guest house']
+weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
+
 def execute_main(bot, trigger):
     players = []
     for c in bot.channels:
