@@ -61,7 +61,7 @@ def execute_main(bot, trigger):
 				bot.say('https://xkcd.com/' + str(mynumber))
 	  		else:
 				baseurl = 'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI'
-				linkedurl = googleit(baseurl)	
+				linkedurl = urllib2.urlopen(baseurl).read()
 				bot.say(str(linkedurl))	
    
 def get_info(number=None, verify_ssl=True):
@@ -78,7 +78,3 @@ def getnumber(maxcomics):
 	if not thenumber or thenumber == '\n':
 		thenumber=getnumber()
 	return thenumber
-
-def googleit(url):
-	page = requests.get(url)       
-	return page
