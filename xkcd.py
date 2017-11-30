@@ -55,7 +55,7 @@ def execute_main(bot, trigger):
 	  		else:
 				bot.say('Let me find a' + data)
 				baseurl = 'http://www.google.com/search?q=' + data + ' site:xkcd.com' + '&btnI'				
-				bot.say(urllib2.urlopen(baseurl))
+				bot.say(urllib2.urlopen(baseurl).read())
 				mynumber = 1
 	if not mynumber<= int(maxcomics) and mynumber>=1:
 		bot.say('Please enter a number between 1 and ' +str(maxcomics))
