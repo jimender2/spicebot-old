@@ -41,8 +41,7 @@ def mainfunction(bot, trigger):
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
     
     ## Basic Vars that we will use
     instigator = trigger.nick
@@ -52,6 +51,9 @@ def mainfunction(bot, trigger):
     for c in bot.channels:
         channel = c
     now = time.time()
+    
+    ## Weapons migrate
+    weaponsmigrate(bot, instigator)
     
     ## Make sure Opt-In time is there
     opttime = get_database_value(bot, instigator, 'opttime')
@@ -279,21 +281,16 @@ def mainfunction(bot, trigger):
                             etarget = u
                             if statset == 'all':
                                 for x in challengestatsadminarray:
-                                    estatset = x
-                                    databasecolumn = str('challenges_' + estatset)
-                                    bot.db.set_nick_value(etarget, databasecolumn, newvalue)
+                                    set_database_value(bot, etarget, x, newvalue)
                             else:
-                                databasecolumn = str('challenges_' + statset)
-                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                                set_database_value(bot, etarget, statset, newvalue)
                     else:
                         if statset == 'all':
                             for x in challengestatsadminarray:
-                                statset = x
-                                databasecolumn = str('challenges_' + statset)
-                                bot.db.set_nick_value(target, databasecolumn, newvalue)
+                                set_database_value(bot, target, x, newvalue)
+                                
                         else:
-                            databasecolumn = str('challenges_' + statset)
-                            bot.db.set_nick_value(target, databasecolumn, newvalue)
+                            set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
 
             ## Leaderboard
@@ -354,7 +351,7 @@ def mainfunction(bot, trigger):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                weaponslist = get_weaponslocker(bot, instigator)
+                weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
                 adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
@@ -363,13 +360,11 @@ def mainfunction(bot, trigger):
                     for weapon in weaponslist:
                         weapon = str(weapon)
                         weaponslistnew.append(weapon)
-                    for channel in bot.channels:
-                        bot.db.set_nick_value(channel, 'weapons_locker', '')
                     for weapon in weaponslistnew:
                         if weapon not in weaponslist:
                             weaponslist.append(weapon)
-                    update_weaponslocker(bot, instigator, weaponslist)
-                    weaponslist = get_weaponslocker(bot, instigator)
+                    set_database_value(bot, instigator, 'weaponslocker', weaponslist)
+                    weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
                     weaponslist = str(weaponslist)
                     weaponslist = weaponslist.replace('[', '')
                     weaponslist = weaponslist.replace(']', '')
@@ -397,12 +392,12 @@ def mainfunction(bot, trigger):
                                 weaponlockerstatus = 'already'
                             else:
                                 weaponslist.remove(weaponchange)
-                                update_weaponslocker(bot, instigator, weaponslist)
+                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'no longer'
                         else:
                             if adjustmentdirection == 'add':
                                 weaponslist.append(weaponchange)
-                                update_weaponslocker(bot, instigator, weaponslist)
+                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'now'
                             else:
                                 weaponlockerstatus = 'already not'
@@ -477,10 +472,13 @@ def mainfunction(bot, trigger):
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
+    
+    ## Weapons migrate
+    weaponsmigrate(bot, instigator)
+    weaponsmigrate(bot, target)
     
     ## Update Time Of Combat
     set_database_value(bot, instigator, 'timeout', now)
@@ -595,13 +593,17 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
 # reset last instigator
 @sopel.module.interval(1800)
 def healthregen(bot):
+    
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            databasecolumn = str('challenges_' + statset)
-            bot.db.set_nick_value(bot.nick, databasecolumn, '')
+            set_database_value(bot, bot.nick, x, '')
+    
+    ## Clear Last Instigator
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
+    
+    ## Who gets to win a mysterypotion?
     randomtargetarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner')
     if not lasttimedlootwinner:
@@ -613,7 +615,7 @@ def healthregen(bot):
             if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
                 health = get_database_value(bot, target, 'health')
                 if health < 500:
-                    bot.db.set_nick_value(target, 'challenges_health', int(health) + 50)
+                    adjust_database_value(bot, target, 'health', '50')
                 randomtargetarray.append(target)
         if randomtargetarray == []:
             dummyvar = 1
@@ -630,7 +632,10 @@ def healthregen(bot):
         
 ## Functions######################################################################################################################
 
-## Criteria to duel
+######################
+## Criteria to duel ##
+######################
+
 def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
     executedueling = 0
     lastfought = get_database_value(bot, instigator, 'lastfought')
@@ -702,10 +707,36 @@ def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+   
+def get_database_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    entriestotal = len(array)
+    return entriestotal
+
+def list_database_array(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    prettytext = str(array)
+    prettytext = prettytext.replace('[', '')
+    prettytext = prettytext.replace(']', '')
+    prettytext = prettytext.replace("u'", '')
+    prettytext = prettytext.replace('u"', '')
+    prettytext = prettytext.replace("'", '')
+    prettytext = prettytext.replace('"', '')
+    return prettytext
+
+def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
+    adjustarray = get_database_value(bot, nick, databasekey) or []
+    if adjustmentdirection == 'add':
+        adjustarray.append(entry)
+    elif adjustmentdirection == 'del':
+        adjustarray.remove(entry)
+    else:
+        bot.say('Error Adjusting Array')
+    set_database_value(bot, nick, databasekey, adjustarray)
     
-###########
-## Death ##
-###########
+###################
+## Living Status ##
+###################
 
 def whokilledwhom(bot, trigger, winner, loser):
     ## Reset mana and health
@@ -715,25 +746,23 @@ def whokilledwhom(bot, trigger, winner, loser):
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
-    lootcorpse(bot, loser, winner)
-
-#######################    
-## New Player Health ##
-#######################
+    for x in lootitemsarray:
+        gethowmany = get_database_value(bot, loser, x)
+        adjust_database_value(bot, winner, x, gethowmany)
+        set_database_value(bot, loser, x, '')
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
         set_database_value(bot, nick, 'health', '1000')
-        
+
 ##########
 ## Time ##
 ##########
     
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
-    databasecolumn = str('challenges_' + databasekey)
-    last = bot.db.get_nick_value(nick, databasecolumn) or 0
+    last = get_database_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
@@ -805,25 +834,17 @@ def get_backpackitems(bot, target):
 
 ## maybe add a dice roll later
 def randominventory():
-    randomfindchance = randint(1, 120)
+    randomfindchance = diceroll(120)
     if randomfindchance >= 90:
         randominventoryfind = 'true'
     else:
         randominventoryfind = 'false'
     return randominventoryfind
 
-def determineloottype(bot, nick): 
+def determineloottype(bot, nick):
     loot = random.randint(0,len(lootitemsarray) - 1)
     loot = str(lootitemsarray [loot])
     return loot
-
-def lootcorpse(bot, loser, winner):
-    for x in lootitemsarray:
-        gethowmany = get_database_value(bot, loser, x)
-        if gethowmany:
-            set_database_value(bot, loser, x, '')
-            gethowmanyb = get_database_value(bot, winner, x)
-            set_database_value(bot, winner, x, int(gethowmany) + int(gethowmanyb))
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
@@ -899,9 +920,19 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ## Weapon Selection ##
 ######################
 
+## Hacky Patch to move weaponslocker to new database setup
+def weaponsmigrate(bot, nick):
+    weaponslistnew = []
+    weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
+    if weaponslist or weaponslist != []:
+        for x in weaponslist:
+            weaponslistnew.append(x)
+        set_database_value(bot, nick, 'weaponslocker', weaponslistnew)
+        bot.db.set_nick_value(nick, 'weapons_locker', '')
+
 def weaponofchoice(bot, nick):
     weaponslistselect = []
-    weaponslist = get_weaponslocker(bot, nick)
+    weaponslist = get_database_value(bot, nick, 'weaponslocker') or []
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     if not lastusedweapon:
         lastusedweapon = "fist"
@@ -937,7 +968,7 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, target):
-    rando = randint(1, 100)
+    rando = diceroll(100)
     if target == bot.nick:
         damage = -150
     elif rando >= 90:
@@ -1018,10 +1049,10 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = '1'
     
     # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = get_weaponslocker(bot, instigator)
+    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
     if not instigatorweaponslist == [] or manualweapon == 'true':
         instigatorfight = int(instigatorfight) + 1
-    targetweaponslist = get_weaponslocker(bot, target)
+    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
     if not targetweaponslist == []:
         targetfight = int(targetfight) + 1
     
@@ -1063,12 +1094,12 @@ def getwinner(bot, instigator, target, manualweapon):
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
-        instigatorfightroll = diceroll()
+        instigatorfightroll = diceroll(20)
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
-        targetfightroll = diceroll()
+        targetfightroll = diceroll(20)
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
@@ -1113,23 +1144,10 @@ def get_winlossratio(bot,target):
             winlossratio = 0
     return winlossratio
 
-####################
-## Weapons Locker ##
-####################
-
-def get_weaponslocker(bot, nick):
-    for channel in bot.channels:
-        weaponslist = bot.db.get_nick_value(nick, 'weapons_locker') or []
-        return weaponslist
-
-def update_weaponslocker(bot, nick, weaponslist):
-    for channel in bot.channels:
-        bot.db.set_nick_value(nick, 'weapons_locker', weaponslist)
-
 ###########
 ## Tools ##
 ###########
 
-def diceroll():
-    diceroll = randint(0, 20)
+def diceroll(howmanysides):
+    diceroll = randint(0, howmanysides)
     return diceroll

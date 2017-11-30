@@ -114,12 +114,16 @@ def adjust_botdatabase_value(bot, nick, databasekey, value):
 ##########
 ## Time ##
 ##########
-    
+
 def get_timesince(bot, nick, databasekey):
     now = time.time()
-    databasecolumn = str('spicebot_' + databasekey)
-    last = bot.db.get_nick_value(nick, databasecolumn) or 0
+    last = get_botdatabase_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
+###########
+## Tools ##
+###########
 
-
+def diceroll(howmanysides):
+    diceroll = randint(0, howmanysides)
+    return diceroll
