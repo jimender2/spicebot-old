@@ -44,8 +44,8 @@ def execute_main(bot, trigger):
 		if data.isdigit():
 			mynumber=int(data)
 			if not mynumber<= int(maxcomics) and mynumber>=1:
-			bot.say('Please enter a number between 1 and ' +str(maxcomics))
-			mynumber = maxcomics
+				bot.say('Please enter a number between 1 and ' +str(maxcomics))
+				mynumber = maxcomics
 			bot.say('https://xkcd.com/' + str(mynumber))			
 		else:
 			data.lower()
