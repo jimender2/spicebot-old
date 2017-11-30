@@ -269,7 +269,7 @@ def autoblock(bot):
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
             target = u
-            usertotal = get_usertotal(bot, target)
+            usertotal = get_botdatabase_value(bot, target, 'usertotal')
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
                 set_timeout(bot, target)
                 set_botdatabase_value(bot, target, 'disenable', '')
