@@ -809,10 +809,9 @@ def get_backpackitems(bot, target):
 ## maybe add a dice roll later
 def randominventory():
     randomfindchance = diceroll(120)
+    randominventoryfind = 'false'
     if randomfindchance >= 90:
         randominventoryfind = 'true'
-    else:
-        randominventoryfind = 'false'
     return randominventoryfind
 
 def determineloottype(bot, nick):
@@ -942,10 +941,10 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, target):
-    rando = diceroll(100)
     if target == bot.nick:
         damage = -150
     else:
+        rando = diceroll(120)
         damage = -abs(rando)
     return damage
 
