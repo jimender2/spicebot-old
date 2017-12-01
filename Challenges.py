@@ -329,6 +329,8 @@ def mainfunction(bot, trigger):
                     bot.notice(instigator + ", What do you want to trade?", instigator)
                 elif not tradeforitem:
                     bot.notice(instigator + ", What do you want to trade for?", instigator)
+                elif tradeforitem == tradeinitem:
+                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                 elif tradeinitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif tradeforitem not in lootitemsarray:
