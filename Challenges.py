@@ -900,7 +900,7 @@ def getallchanweaponsrandom(bot, channel):
     weaponslist = []
     for u in bot.channels[channel].users:
         bot.say(u)
-        weaponslist = bot.db.get_nick_value(u, 'weapons_locker') or []
+        weaponslist = get_database_value(bot, u, 'weaponslocker') or []
         if weaponslist != []:
             bot.say(str(weaponslist))
             for x in weaponslist:
