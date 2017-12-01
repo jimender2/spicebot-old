@@ -338,6 +338,7 @@ def mainfunction(bot, trigger):
                     if gethowmany < 3:
                         bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
                     else:
+                        bot.notice(instigator + ", Exchange Completed.", instigator)
                         set_database_value(bot, instigator, tradeinitem, '')
                         adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
                 
