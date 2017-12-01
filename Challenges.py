@@ -485,6 +485,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         manualweapon = 'false'
     else:
         manualweapon = 'true'
+        if weapon == 'allchan':
+            weapon = getallchanweaponsrandom(bot, channel)
         
     ## Select Winner
     if target == bot.nick:
@@ -892,6 +894,21 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ## Weapon Selection ##
 ######################
 
+## allchan weapons
+def getallchanweaponsrandom(bot, channel):
+    allchanweaponsarray = []
+    for u in bot.channels[channel].users:
+        weaponslist = get_database_value(bot, u, 'weaponslocker') or []
+        if weaponslist != []:
+            for x in weaponslist:
+                allchanweaponsarray.append(x)
+    if allchanweaponsarray == []:
+        weapon = "fist"
+    else:
+        weaponselected = random.randint(0,len(allchanweaponsarray) - 1)
+        weapon = str(allchanweaponsarray [weaponselected])
+    return weapon
+        
 ## Hacky Patch to move weaponslocker to new database setup
 def weaponsmigrate(bot, nick):
     weaponslistnew = []
