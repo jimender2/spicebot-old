@@ -84,7 +84,7 @@ def mainfunction(bot, trigger):
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
+        elif not targetdisenable and target != instigator and target not in lootitemsarray and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
         elif commandused in inchannelarray and not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
