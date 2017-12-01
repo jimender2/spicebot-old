@@ -1141,14 +1141,15 @@ def get_winlossratio(bot,target):
     wins = int(wins)
     losses = get_database_value(bot, target, 'losses')
     losses = int(losses)
-    if not wins and not losses:
+    if not wins or not losses:
         winlossratio = 0
     else:
-        winlosstotal = abs(wins + losses)
-        if winlosstotal != 0:
-            winlossratio = float(wins)/winlosstotal
-        else:
-            winlossratio = 0
+        winlossratio = abs(wins / losses)
+        #winlosstotal = abs(wins + losses)
+        #if winlosstotal != 0:
+        #    winlossratio = float(wins)/winlosstotal
+        #else:
+        #    winlossratio = 0
     return winlossratio
 
 ###########
