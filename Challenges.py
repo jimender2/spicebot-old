@@ -473,7 +473,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     ## Naming and Initial pepper level
     instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
     if instigator == target:
-        targetname = "Themself!"
+        targetname = "themself"
         targetpepperstart = ''
     else:
         targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
