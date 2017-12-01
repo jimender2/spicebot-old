@@ -895,28 +895,23 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ######################
 
 ## allchan weapons
-def getallchanweaponsrandom(bot, nick, channel):
-    allchanweaponsarray = getallchanweapons(bot, channel)
+def getallchanweaponsrandom(bot, channel):
+    allchanweaponsarray = []
+    for u in bot.channels[channel].users:
+        bot.say(u)
+        weaponslist = bot.db.get_nick_value(u, 'weapons_locker') or []
+        if weaponslist != []:
+            bot.say(str(weaponslist))
+            for x in weaponslist:
+                bot.say(str(x))
+                allchanweaponsarray.append(x)
     if allchanweaponsarray == []:
         weapon = "fist"
         bot.say('empty')
     else:
-        weaponslistselect = []
-        for x in allchanweaponsarray:
-            weaponslistselect.append(x)
-        weaponselected = random.randint(0,len(weaponslistselect) - 1)
+        weaponselected = random.randint(0,len(allchanweaponsarray) - 1)
         weapon = str(weaponslistselect [weaponselected])
     return weapon
-        
-def getallchanweapons(bot, channel):
-    allchanweaponsarray = []
-    for u in bot.channels[channel].users:
-        weaponslist = bot.db.get_nick_value(u, 'weapons_locker') or []
-        if weaponslist != []:
-            for x in weaponslist:
-                bot.say(str(x))
-                allchanweaponsarray.append(x)
-    return allchanweaponsarray
         
 ## Hacky Patch to move weaponslocker to new database setup
 def weaponsmigrate(bot, nick):
