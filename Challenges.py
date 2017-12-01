@@ -178,10 +178,7 @@ def mainfunction(bot, trigger):
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
-                    dowedisplay = 1
-                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                    if executedueling:
-                        return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
