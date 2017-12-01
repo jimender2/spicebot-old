@@ -897,7 +897,6 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ## allchan weapons
 def getallchanweaponsrandom(bot, channel):
     allchanweaponsarray = []
-    weaponslist = []
     for u in bot.channels[channel].users:
         weaponslist = get_database_value(bot, u, 'weaponslocker') or []
         if weaponslist != []:
