@@ -130,6 +130,7 @@ def mainfunction(bot, trigger):
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
+                inchannel = "#fart"
                 cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                 if cantargetduel:
                     bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
@@ -197,6 +198,7 @@ def mainfunction(bot, trigger):
                 targets = ''
                 for u in bot.channels[channel.lower()].users:
                     target = u
+                    inchannel = "#fart"
                     cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick and target != instigator:
                         targetarray.append(target)
