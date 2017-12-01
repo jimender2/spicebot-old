@@ -151,7 +151,8 @@ def mainfunction(bot, trigger):
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                                etarget = x
+                                getreadytorumble(bot, trigger, instigator, etarget, OSDTYPE, channel, fullcommandused, now)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
