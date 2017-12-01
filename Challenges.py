@@ -486,7 +486,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     else:
         manualweapon = 'true'
         if weapon == 'allchan':
-            weapon = getallchanweaponsrandom(bot, instigator)
+            weapon = getallchanweaponsrandom(bot, instigator, channel)
         
     ## Select Winner
     if target == bot.nick:
@@ -895,9 +895,9 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 ######################
 
 ## allchan weapons
-def getallchanweaponsrandom(bot, nick):
+def getallchanweaponsrandom(bot, nick, channel):
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
-    allchanweaponsarray = getallchanweapons(bot)
+    allchanweaponsarray = getallchanweapons(bot, channel)
     if not lastusedweapon:
         lastusedweapon = "fist"
     if allchanweaponsarray == []:
@@ -914,7 +914,7 @@ def getallchanweaponsrandom(bot, nick):
     set_database_value(bot, nick, 'lastweaponused', weapon)
     return weapon
         
-def getallchanweapons(bot):
+def getallchanweapons(bot, channel):
     allchanweaponsarray = []
     for u in bot.channels[channel].users:
         weaponslist = bot.db.get_nick_value(u, 'weapons_locker') or []
