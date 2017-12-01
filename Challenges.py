@@ -357,23 +357,13 @@ def mainfunction(bot, trigger):
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
-                    weaponslistnew = []
-                    for weapon in weaponslist:
-                        weapon = str(weapon)
-                        weaponslistnew.append(weapon)
-                    for weapon in weaponslistnew:
-                        if weapon not in weaponslist:
-                            weaponslist.append(weapon)
-                    set_database_value(bot, instigator, 'weaponslocker', weaponslist)
-                    weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-                    weaponslist = str(weaponslist)
-                    weaponslist = weaponslist.replace('[', '')
-                    weaponslist = weaponslist.replace(']', '')
-                    weaponslist = weaponslist.replace("u'", '')
-                    weaponslist = weaponslist.replace('u"', '')
-                    weaponslist = weaponslist.replace("'", '')
-                    weaponslist = weaponslist.replace('"', '')
-                    chunks = weaponslist.split()
+                    for x in weaponslist:
+                        weapon = x
+                        if weapon != '':
+                            weapons = str(weapons + ", " + weapon)
+                        else:
+                            weapons = str(weapons)
+                    chunks = weapons.split()
                     per_line = 15
                     weaponline = ''
                     for i in range(0, len(chunks), per_line):
@@ -707,17 +697,6 @@ def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
-
-def list_database_array(bot, nick, databasekey):
-    array = get_database_value(bot, nick, databasekey) or []
-    prettytext = str(array)
-    prettytext = prettytext.replace('[', '')
-    prettytext = prettytext.replace(']', '')
-    prettytext = prettytext.replace("u'", '')
-    prettytext = prettytext.replace('u"', '')
-    prettytext = prettytext.replace("'", '')
-    prettytext = prettytext.replace('"', '')
-    return prettytext
 
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
