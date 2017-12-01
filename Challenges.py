@@ -236,7 +236,7 @@ def mainfunction(bot, trigger):
                     if gethowmany:
                         addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
                         backpack = str(backpack + addbackpack)
-                totalweapons = get_database_array_total(bot, nick, 'weaponslocker')
+                totalweapons = get_database_array_total(bot, target, 'weaponslocker')
                 if totalweapons:
                     addbackpack = str(" weaponstotal" + "=" + str(totalweapons))
                     backpack = str(backpack + addbackpack)
