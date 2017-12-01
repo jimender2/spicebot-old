@@ -945,16 +945,8 @@ def damagedone(bot, target):
     rando = diceroll(100)
     if target == bot.nick:
         damage = -150
-    elif rando >= 90:
-        damage = -120
-    elif rando >= 75 and rando < 90:
-        damage = -70
-    elif rando < 75 and rando > 10:
-        damage = -40
-    elif rando > 1 and rando <= 10:
-        damage = -10 
     else:
-        damage = -5
+        damage = := -abs(rando)
     return damage
 
 ##################
@@ -1111,13 +1103,7 @@ def get_winlossratio(bot,target):
     if not wins or not losses:
         winlossratio = 0
     else:
-        #winlossratio = abs(wins / losses)
         winlossratio = float(wins)/losses
-        #winlosstotal = abs(wins + losses)
-        #if winlosstotal != 0:
-        #    winlossratio = float(wins)/winlosstotal
-        #else:
-        #    winlossratio = 0
     return winlossratio
 
 ###########
