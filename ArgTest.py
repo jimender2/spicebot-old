@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         
         for x in triggerargsarray:
             test = triggerargsarray[arraynumber]
-            bot.say(str(arraynumber + " " +test))
+            bot.say(str(arraynumber) + " " + str(test))
             arraynumber = arraynumber + 1
             
     else:
