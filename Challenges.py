@@ -37,12 +37,6 @@ def challenge_cmd(bot, trigger):
         
 def mainfunction(bot, trigger):
     
-    ## bot does not need stats or backpack items
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, '')
-    
     ## Basic Vars that we will use
     instigator = trigger.nick
     inchannel = trigger.sender
@@ -51,8 +45,14 @@ def mainfunction(bot, trigger):
     for c in bot.channels:
         channel = c
     now = time.time()
-    
-    ## Weapons migrate
+
+    ## bot does not need stats or backpack items
+    for x in challengestatsadminarray:
+        statset = x
+        if statset != 'disenable':
+            set_database_value(bot, bot.nick, x, '')
+            
+###### Weapons migrate
     weaponsmigrate(bot, instigator)
     
     ## Make sure Opt-In time is there
@@ -67,9 +67,8 @@ def mainfunction(bot, trigger):
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in bot.privileges[channel.lower()]:
         commandused = trigger.group(3)
-        target = trigger.group(4)
-        if not target:
-            target = trigger.nick
+        target = trigger.group(4) or trigger.nick
+        targettext = trigger.group(4) or "that person"
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
@@ -80,7 +79,7 @@ def mainfunction(bot, trigger):
         
         ## Must clear these challenges to do the below functions
         if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
-            bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
+            bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
