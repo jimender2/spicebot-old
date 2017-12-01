@@ -321,6 +321,10 @@ def mainfunction(bot, trigger):
                     leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
 
+            ## Loot Items Exchange 4 to 1
+            elif commandused == 'tradeloot':
+                bot.say('soon')
+                
             ## Loot Items usage
             elif commandused in lootitemsarray:
                 uselootitem = 0
