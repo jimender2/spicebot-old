@@ -129,20 +129,9 @@ def mainfunction(bot, trigger):
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
-                if target == instigator:
-                    if channeltime < TIMEOUTC:
-                        displaymsg = str(displaymsg + channel + " can't challenge for %d seconds. " % (TIMEOUTC - channeltime))
-                    if instigatortime < TIMEOUT:
-                        displaymsg = str(displaymsg + instigator + " can't challenge for %d seconds. " % (TIMEOUT - instigatortime))
-                    if instigator.lower() == channellastinstigator.lower():
-                        displaymsg = str(displaymsg + instigator + " = lastinstigator. ")
-                    if displaymsg == '':
-                        displaymsg = str("You Should be able to challenge.")
-                    bot.notice(displaymsg, instigator)
-                else:
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                    if cantargetduel:
-                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                if cantargetduel:
+                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
             
             ## Duel Everyone
             elif commandused == 'everyone':
