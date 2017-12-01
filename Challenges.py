@@ -731,12 +731,12 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     for x in adjustarray:
         adjustarraynew.append(x)
     set_database_value(bot, nick, databasekey, '')
+    adjustarray = []
     if adjustmentdirection == 'add':
         adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
         adjustarraynew.remove(entry)
     for x in adjustarraynew:
-        adjustarray = get_database_value(bot, nick, databasekey) or []
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
