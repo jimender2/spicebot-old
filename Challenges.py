@@ -903,7 +903,7 @@ def getallchanweaponsrandom(bot, nick, channel):
     if allchanweaponsarray == []:
         weapon = "fist"
     else:
-        for x in weaponslist:
+        for x in allchanweaponsarray:
             if x != lastusedweapon:
                 weaponslistselect.append(x)
         if weaponslistselect == []:
