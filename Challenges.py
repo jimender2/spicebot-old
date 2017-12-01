@@ -324,10 +324,16 @@ def mainfunction(bot, trigger):
                         if int(health) < int(currenthealthleadernumber):
                             currenthealthleader = target
                             currenthealthleadernumber = int(health)
-                leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
-                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
-                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " at " + str(currentrespawnsleadernumber) + " respawns.     ")
-                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " at " + str(currenthealthleadernumber) + " health.     ")
+                if currentwlrleadernumber > 0:
+                    leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
+                if currentkillsleadernumber > 0:
+                    leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
+                if currentrespawnsleadernumber > 0:
+                    leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " at " + str(currentrespawnsleadernumber) + " respawns.     ")
+                if currenthealthleadernumber > 0:
+                    leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " at " + str(currenthealthleadernumber) + " health.     ")
+                if leaderboardscript == '':
+                    leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
 
             ## Loot Items usage
