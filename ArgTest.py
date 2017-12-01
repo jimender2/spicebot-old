@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
     if trigger.group(2):
         triggerargsarray = []
         for word in fullcommandused:
-            triggerargsarray.append(x)
+            triggerargsarray.append(word)
         
         for x in triggerargsarray:
             test = triggerargsarray[arraynumber]
