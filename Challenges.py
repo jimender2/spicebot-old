@@ -135,7 +135,6 @@ def mainfunction(bot, trigger):
             
             ## Duel Everyone
             elif commandused == 'everyone':
-                bot.notice("This command is disabled, because it's all borked up.", instigator)
                 OSDTYPE = 'notice'
                 if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
