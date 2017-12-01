@@ -360,7 +360,7 @@ def mainfunction(bot, trigger):
                     weapons = ''
                     for x in weaponslist:
                         weapon = x
-                        if weapon != '':
+                        if weapons != '':
                             weapons = str(weapons + ", " + weapon)
                         else:
                             weapons = str(weapon)
