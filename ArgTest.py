@@ -19,8 +19,9 @@ def mainfunction(bot, trigger):
     five = trigger.group(5)
     six = trigger.group(6)
     sevenandup = str(trigger.group(2).split(six, 1)[1]).strip()
-    bot.say("Full = " + str(args) + " = trigger.group(args)")
-    bot.say("Full = " + str(zero) + " = trigger.group(0)")
+    wordfive = sevenandup(' ', 1)[0]
+    bot.say("Full command = " + str(args) + " = trigger.group(args)")
+    bot.say("Full command = " + str(zero) + " = trigger.group(0)")
     bot.say("command without period = " + str(one) + " = trigger.group(1)")
     bot.say("words1-? = " + str(two) + " = trigger.group(2)")
     bot.say("word1 = " + str(three) + " = trigger.group(3)")
@@ -28,3 +29,4 @@ def mainfunction(bot, trigger):
     bot.say("word3 = " + str(five) + " = trigger.group(5)")
     bot.say("word4 = " + str(six) + " = trigger.group(6)")
     bot.say("word5andup = " + str(sevenandup) + " = str(trigger.group(2).split(six, 1)[1]).strip()")
+    bot.say("word5 = " + str(wordfive) + " = sevenandup(' ', 1)[0]")
