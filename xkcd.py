@@ -64,7 +64,8 @@ def execute_main(bot, trigger):
 				if str(var.url).startswith('https://xkcd.com/'):
 					bot.say(str(var.url))	
 				else:
-					bot.say('I could not find anything to do with that' )				
+					mynumber =  getnumber(maxcomics)
+					bot.say('https://xkcd.com/' + str(mynumber))				
    
 def get_info(number=None, verify_ssl=True):
 	if number:

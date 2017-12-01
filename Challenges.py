@@ -78,13 +78,13 @@ def mainfunction(bot, trigger):
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
             bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
+        elif not targetdisenable and target != instigator and target not in lootitemsarray and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
         elif commandused in inchannelarray and not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
@@ -321,6 +321,27 @@ def mainfunction(bot, trigger):
                     leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
 
+            ## Loot Items Exchange 3 to 1
+            elif commandused == 'tradeloot':
+                tradeinitem = trigger.group(4)
+                tradeforitem = trigger.group(5)
+                if not tradeinitem:
+                    bot.notice(instigator + ", What do you want to trade?", instigator)
+                elif not tradeforitem:
+                    bot.notice(instigator + ", What do you want to trade for?", instigator)
+                elif tradeinitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif tradeforitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                else:
+                    gethowmany = get_database_value(bot, instigator, tradeinitem)
+                    if gethowmany < 3:
+                        bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
+                    else:
+                        bot.notice(instigator + ", Exchange Completed.", instigator)
+                        set_database_value(bot, instigator, tradeinitem, '')
+                        adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
+                
             ## Loot Items usage
             elif commandused in lootitemsarray:
                 uselootitem = 0
