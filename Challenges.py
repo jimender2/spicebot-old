@@ -118,6 +118,7 @@ def mainfunction(bot, trigger):
                         targetarray.append(target)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                    target = instigator
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
