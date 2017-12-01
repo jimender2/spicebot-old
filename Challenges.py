@@ -701,7 +701,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     elif adjustmentdirection == 'del':
         adjustarraynew.remove(entry)
     for x in adjustarraynew:
-        if x not in adjustarray:
+        if x not in adjustarray and len(x) <= 20:
             adjustarray.append(x)
     if adjustarray == []:
         set_database_value(bot, nick, databasekey, '')
