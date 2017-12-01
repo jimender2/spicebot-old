@@ -169,7 +169,8 @@ def mainfunction(bot, trigger):
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
                     target = u
-                    cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
+                    dowedisplay = 0
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if cantargetduel:
                         targetarray.append(target)
                 if targetarray == []:
@@ -637,6 +638,8 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in channel.")
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        displaymsg = str(instigator + ", It looks like that is either not here, or not a valid person.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
     elif target == instigator:
