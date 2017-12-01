@@ -205,22 +205,16 @@ def mainfunction(bot, trigger):
 
             ## Who can fight
             elif commandused == 'whocanifight':
-                targetarray = []
+                targets = ''
                 for u in bot.channels[channel.lower()].users:
                     target = u
                     targetdisenable = get_database_value(bot, target, 'disenable')
                     if targetdisenable and target != bot.nick and target != instigator:
-                        targetarray.append(target)
-                targetarray = str(targetarray)
-                targetarray = targetarray.replace('[', '')
-                targetarray = targetarray.replace(']', '')
-                targetarray = targetarray.replace("u'", '')
-                targetarray = targetarray.replace('u"', '')
-                targetarray = targetarray.replace("'", '')
-                targetarray = targetarray.replace('"', '')
-                targetarray = targetarray.replace(")", '')
-                targetarray = targetarray.replace("Identifier(", '')
-                chunks = targetarray.split()
+                        if targets != '':
+                            targets = str(targets + ", " + target)
+                        else:
+                            targets = str(target)
+                chunks = targets.split()
                 per_line = 15
                 targetline = ''
                 for i in range(0, len(chunks), per_line):
