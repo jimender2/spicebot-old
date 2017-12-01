@@ -324,6 +324,19 @@ def mainfunction(bot, trigger):
             ## Loot Items Exchange 4 to 1
             elif commandused == 'tradeloot':
                 bot.say('soon')
+                tradeinitem = trigger.group(4)
+                tradeforitem = trigger.group(5)
+                if tradeinitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif tradeforitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                else:
+                    gethowmany = get_database_value(bot, instigator, tradeinitem)
+                    if gethowmany < 4:
+                        bot.notice(instigator + ", You need 4 of a Loot item to trade.", instigator)
+                    else:
+                        set_database_value(bot, instigator, tradeinitem, '')
+                        adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
                 
             ## Loot Items usage
             elif commandused in lootitemsarray:
