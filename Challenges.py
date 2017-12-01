@@ -142,7 +142,7 @@ def mainfunction(bot, trigger):
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     for u in bot.channels[channel].users:
                         cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                        if cantargetduel and target != bot.nick:
+                        if cantargetduel and u != bot.nick:
                             targetarray.append(u)
                     if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
@@ -193,8 +193,8 @@ def mainfunction(bot, trigger):
                 for u in bot.channels[channel.lower()].users:
                     inchannel = "#bypass"
                     cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                    if cantargetduel and target != bot.nick and target != instigator:
-                        targetarray.append(target)
+                    if cantargetduel and u != bot.nick and u != instigator:
+                        targetarray.append(u)
                 for x in targetarray:
                     if targets != '':
                         targets = str(targets + ", " + x)
