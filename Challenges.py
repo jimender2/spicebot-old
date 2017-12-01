@@ -107,13 +107,14 @@ def mainfunction(bot, trigger):
                 lastfought = instigator
             targetarray = []
             displaymsg = ''
+            dowedisplay = 0
             
             ## Random Target
             if target == 'random':
                 for u in bot.channels[channel].users:
                     target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick:
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel and target != bot.nick:
                         targetarray.append(target)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
@@ -127,20 +128,8 @@ def mainfunction(bot, trigger):
             
             ## Can I fight
             elif commandused == 'canifight':
-                if channeltime < TIMEOUTC:
-                    displaymsg = str(displaymsg + channel + " can't challenge for %d seconds. " % (TIMEOUTC - channeltime))
-                if instigatortime < TIMEOUT:
-                    displaymsg = str(displaymsg + instigator + " can't challenge for %d seconds. " % (TIMEOUT - instigatortime))
-                if targettime < TIMEOUT and target != instigator:
-                    displaymsg = str(displaymsg + target + " can't challenge for %d seconds. " % (TIMEOUT - targettime))
-                if target.lower() == lastfought.lower():
-                    displaymsg = str(displaymsg + target + " = lastfought. ")
-                if instigator.lower() == channellastinstigator.lower():
-                    displaymsg = str(displaymsg + instigator + " = lastinstigator. ")
-                if displaymsg == '':
-                    bot.notice("You Should be able to challenge.", instigator)
-                else:
-                    bot.notice(displaymsg, instigator)
+                dowedisplay = 1
+                mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
             
             ## Duel Everyone
             elif commandused == 'everyone':
@@ -169,7 +158,6 @@ def mainfunction(bot, trigger):
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
                     target = u
-                    dowedisplay = 0
                     cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if cantargetduel:
                         targetarray.append(target)
@@ -206,8 +194,8 @@ def mainfunction(bot, trigger):
                 targets = ''
                 for u in bot.channels[channel.lower()].users:
                     target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick and target != instigator:
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel and target != bot.nick and target != instigator:
                         if targets != '':
                             targets = str(targets + ", " + target)
                         else:
