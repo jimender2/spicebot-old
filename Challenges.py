@@ -1144,7 +1144,8 @@ def get_winlossratio(bot,target):
     if not wins or not losses:
         winlossratio = 0
     else:
-        winlossratio = abs(wins / losses)
+        #winlossratio = abs(wins / losses)
+        winlossratio = float(wins)/losses
         #winlosstotal = abs(wins + losses)
         #if winlosstotal != 0:
         #    winlossratio = float(wins)/winlosstotal
