@@ -899,21 +899,15 @@ def getallchanweaponsrandom(bot, channel):
     allchanweaponsarray = []
     weaponslist = []
     for u in bot.channels[channel].users:
-        bot.say(u)
         weaponslist = get_database_value(bot, u, 'weaponslocker') or []
         if weaponslist != []:
-            bot.say(str(weaponslist))
             for x in weaponslist:
-                bot.say(str(x))
                 allchanweaponsarray.append(x)
-        else:
-            bot.say('no weapons')
     if allchanweaponsarray == []:
         weapon = "fist"
-        bot.say('empty')
     else:
         weaponselected = random.randint(0,len(allchanweaponsarray) - 1)
-        weapon = str(weaponslistselect [weaponselected])
+        weapon = str(allchanweaponsarray [weaponselected])
     return weapon
         
 ## Hacky Patch to move weaponslocker to new database setup
