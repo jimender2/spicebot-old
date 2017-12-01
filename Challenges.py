@@ -129,9 +129,20 @@ def mainfunction(bot, trigger):
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
-                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                if cantargetduel:
-                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                if target == instigator:
+                    if channeltime < TIMEOUTC:
+                        displaymsg = str(displaymsg + channel + " can't challenge for %d seconds. " % (TIMEOUTC - channeltime))
+                    if instigatortime < TIMEOUT:
+                        displaymsg = str(displaymsg + instigator + " can't challenge for %d seconds. " % (TIMEOUT - instigatortime))
+                    if instigator.lower() == channellastinstigator.lower():
+                        displaymsg = str(displaymsg + instigator + " = lastinstigator. ")
+                    if displaymsg == '':
+                        displaymsg = str("You Should be able to challenge.")
+                    bot.notice(displaymsg, instigator)
+                else:
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel:
+                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
             
             ## Duel Everyone
             elif commandused == 'everyone':
@@ -461,7 +472,11 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     
     ## Naming and Initial pepper level
     instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
-    targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+    if instigator == target:
+        targetname = "Themself!"
+        targetpepperstart = ''
+    else:
+        targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
@@ -496,18 +511,21 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     weapon = weaponformatter(bot, weapon)
            
     ## Update Wins and Losses
-    adjust_database_value(bot, winner, 'wins', defaultadjust)
-    adjust_database_value(bot, loser, 'losses', defaultadjust)
+    if instigator != target:
+        adjust_database_value(bot, winner, 'wins', defaultadjust)
+        adjust_database_value(bot, loser, 'losses', defaultadjust)
             
     ## Update XP points
     XPearnedwinner = '5'
     XPearnedloser = '3'
-    adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-    adjust_database_value(bot, loser, 'xp', XPearnedloser)
+    if instigator != target:
+        adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+        adjust_database_value(bot, loser, 'xp', XPearnedloser)
                 
     ## Update last fought
-    set_database_value(bot, instigator, 'lastfought', target)
-    set_database_value(bot, target, 'lastfought', instigator)
+    if instigator != target:
+        set_database_value(bot, instigator, 'lastfought', target)
+        set_database_value(bot, target, 'lastfought', instigator)
     
     ## Same person can't instigate twice in a row
     set_database_value(bot, ALLCHAN, 'lastinstigator', instigator)
@@ -535,7 +553,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     lootwinnermsg = ''
     lootwinnermsgb = ''
     randominventoryfind = randominventory()
-    if randominventoryfind == 'true' and target != bot.nick:
+    if randominventoryfind == 'true' and target != bot.nick and instigator != target:
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
         adjust_database_value(bot, winner, loot, defaultadjust)
@@ -629,8 +647,8 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
         displaymsg = str(instigator + ", It looks like that is either not here, or not a valid person.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
-    elif target == instigator:
-        displaymsg = str(instigator + " If you are feeling self-destructive, there are places you can call.")
+    #elif target == instigator:
+    #    displaymsg = str(instigator + " If you are feeling self-destructive, there are places you can call.")
     elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == lastfought and not bot.nick.endswith('dev'):
