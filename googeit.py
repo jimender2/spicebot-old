@@ -23,4 +23,5 @@ def execute_main(bot, trigger):
     data = trigger.group(2).strip()
     data.lower()
     data=data.replace(' ', '%20')
-    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')	
+    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+    bot.say(str(var.url))	
