@@ -946,7 +946,7 @@ def damagedone(bot, target):
     if target == bot.nick:
         damage = -150
     else:
-        damage = := -abs(rando)
+        damage = = -abs(rando)
     return damage
 
 ##################
