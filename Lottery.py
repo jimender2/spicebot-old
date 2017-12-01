@@ -8,7 +8,6 @@ from SpicebotShared import *
 
 @sopel.module.commands('lottery')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
     if not trigger.group(7):
         bot.notify('You must enter 5 numbers to enter the lottery.')
     else:
