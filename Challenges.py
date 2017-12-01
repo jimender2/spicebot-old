@@ -199,10 +199,12 @@ def mainfunction(bot, trigger):
                     target = u
                     cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick and target != instigator:
-                        if targets != '':
-                            targets = str(targets + ", " + target)
-                        else:
-                            targets = str(target)
+                        targetarray.append(target)
+                for x in targetarray:
+                    if targets != '':
+                        targets = str(targets + ", " + target)
+                    else:
+                        targets = str(target)
                 chunks = targets.split()
                 per_line = 15
                 targetline = ''
