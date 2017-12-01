@@ -15,12 +15,13 @@ def mainfunction(bot, trigger):
     if trigger.group(2):
         triggerargsarray = []
         for word in fullcommandused:
-            triggerargsarray.append(word)
+            bot.say(word)
+        #    triggerargsarray.append(word)
         
-        for x in triggerargsarray:
-            test = triggerargsarray[arraynumber]
-            bot.say(str(arraynumber) + " " + str(test))
-            arraynumber = arraynumber + 1
+        #for x in triggerargsarray:
+        #    test = triggerargsarray[arraynumber]
+        #    bot.say(str(arraynumber) + " " + str(test))
+        #    arraynumber = arraynumber + 1
             
     else:
         bot.say("No args given")
