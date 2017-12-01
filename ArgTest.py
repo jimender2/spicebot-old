@@ -17,10 +17,11 @@ def mainfunction(bot, trigger):
         for x in fullcommandused:
             triggerargsarray.append(x)
         
-        for i in triggerargsarray:
+        for x in triggerargsarray:
             test = triggerargsarray[arraynumber]
+            bot.say(str(arraynumber + " " +test))
             arraynumber = arraynumber + 1
-            bot.say(str(test))
+            
     else:
         bot.say("No args given")
     
