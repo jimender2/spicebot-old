@@ -489,6 +489,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             weapon = getallchanweaponsrandom(bot, channel)
         elif weapon == 'target':
             weapon = weaponofchoice(bot, target)
+            weapon = str(target + "'s " + weapon)
         
     ## Select Winner
     if target == bot.nick:
