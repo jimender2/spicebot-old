@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
     six = trigger.group(6)
     sevenandup = str(trigger.group(2).split(six, 1)[1]).strip()
     wordfive = sevenandup(' ', 1)[0]
-    wordsix = sevenandup(wordfive, )[0]
+    wordsix = sevenandup(wordfive, 1)[0]
     wordseven = sevenandup(wordsix, 1)[0]
     wordeight = sevenandup(wordseven, 1)[0]
     wordnine = sevenandup(wordeight, 1)[0]
