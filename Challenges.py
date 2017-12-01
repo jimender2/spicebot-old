@@ -536,8 +536,12 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
         whokilledwhom(bot, winner, loser)
+        if instigator == target:
+            loser = targetname
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
     else:
+        if instigator == target:
+            loser = targetname
         winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
         
     ## new pepper level?
@@ -562,8 +566,6 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             lootwinnermsgb = str(winner + " gains the " + str(loot))
                                
     ## On Screen Text
-    if instigator == target:
-        loser = targetname
     if OSDTYPE == 'say':
         bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
         bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
