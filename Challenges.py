@@ -325,7 +325,7 @@ def mainfunction(bot, trigger):
                             currenthealthleader = target
                             currenthealthleadernumber = int(health)
                 if currentwlrleadernumber > 0:
-                    currentwlrleadernumber = format(currentwlrleadernumber, '.2f')
+                    currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                     leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
                 if currentkillsleadernumber > 0:
                     leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
