@@ -357,12 +357,13 @@ def mainfunction(bot, trigger):
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
+                    weapons = ''
                     for x in weaponslist:
                         weapon = x
                         if weapon != '':
                             weapons = str(weapons + ", " + weapon)
                         else:
-                            weapons = str(weapons)
+                            weapons = str(weapon)
                     chunks = weapons.split()
                     per_line = 15
                     weaponline = ''
