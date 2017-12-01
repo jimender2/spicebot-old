@@ -341,7 +341,8 @@ def mainfunction(bot, trigger):
                         bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
                     else:
                         bot.notice(instigator + ", Exchange Completed.", instigator)
-                        set_database_value(bot, instigator, tradeinitem, '')
+                        tradecost = -3
+                        adjust_database_value(bot, instigator, tradeinitem, tradecost)
                         adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
                 
             ## Loot Items usage
