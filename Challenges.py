@@ -202,9 +202,9 @@ def mainfunction(bot, trigger):
                         targetarray.append(target)
                 for x in targetarray:
                     if targets != '':
-                        targets = str(targets + ", " + target)
+                        targets = str(targets + ", " + x)
                     else:
-                        targets = str(target)
+                        targets = str(x)
                 chunks = targets.split()
                 per_line = 15
                 targetline = ''
@@ -212,7 +212,7 @@ def mainfunction(bot, trigger):
                     targetline = " ".join(chunks[i:i + per_line])
                     bot.say(str(targetline))
                 if targetline == '':
-                    bot.say("Nobody has challenges enabled.")
+                    bot.say("It looks like you cannot challenge anybody at the moment.")
                 
             ## Stats
             elif commandused == 'stats':
