@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
             triggerargsarray.append(x)
         
         for i in triggerargsarray:
-            test = triggerargsarray[i]
+            test = triggerargsarray[int(i)]
             bot.say(str(test))
     else:
         bot.say("No args given")
