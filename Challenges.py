@@ -143,7 +143,7 @@ def mainfunction(bot, trigger):
             #        set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
             #        for u in bot.channels[channel].users:
             #            target = u
-            #            cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
+#########################cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
             #            if cantargetduel and target != bot.nick:
             #                targetarray.append(target)
             #        if targetarray == []:
@@ -640,8 +640,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
         displaymsg = str(instigator + ", It looks like that is either not here, or not a valid person.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
-    #elif target == instigator:
-    #    displaymsg = str(instigator + " If you are feeling self-destructive, there are places you can call.")
     elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == lastfought and not bot.nick.endswith('dev'):
@@ -664,18 +662,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     if dowedisplay:
         bot.notice(displaymsg, instigator)
     return executedueling
-
-def cantargetdueldef(bot, instigator, target, lastfought):
-    cantargetduel = 0
-    if target != instigator:
-        if target != lastfought or bot.nick.endswith('dev'):
-            targetdisenable = get_database_value(bot, target, 'disenable')
-            targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
-            targettime = get_timesince_duels(bot, target, 'timeout')
-            if targetdisenable and targetspicebotdisenable:
-                if targettime > TIMEOUT  or bot.nick.endswith('dev'):
-                    cantargetduel = 1
-    return cantargetduel
 
 ##############
 ## Database ##
