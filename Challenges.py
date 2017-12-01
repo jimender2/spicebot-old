@@ -112,10 +112,9 @@ def mainfunction(bot, trigger):
             ## Random Target
             if target == 'random':
                 for u in bot.channels[channel].users:
-                    target = u
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick:
-                        targetarray.append(target)
+                        targetarray.append(u)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                     target = instigator
@@ -130,7 +129,7 @@ def mainfunction(bot, trigger):
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
-                inchannel = "#fart"
+                inchannel = "#bypass"
                 cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                 if cantargetduel:
                     bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
@@ -143,17 +142,15 @@ def mainfunction(bot, trigger):
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     for u in bot.channels[channel].users:
-                        target = u
-                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                         if cantargetduel and target != bot.nick:
-                            targetarray.append(target)
+                            targetarray.append(u)
                     if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                etarget = x
-                                getreadytorumble(bot, trigger, instigator, etarget, OSDTYPE, channel, fullcommandused, now)
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
@@ -161,10 +158,9 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
-                    target = u
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel:
-                        targetarray.append(target)
+                        targetarray.append(u)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
@@ -179,8 +175,7 @@ def mainfunction(bot, trigger):
                     disenablevalue = 1
                 if target == 'everyone':
                     for u in bot.channels[channel].users:
-                        target = u
-                        set_database_value(bot, target, 'disenable', disenablevalue)
+                        set_database_value(bot, u, 'disenable', disenablevalue)
                 elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
                 else:
@@ -197,9 +192,8 @@ def mainfunction(bot, trigger):
             elif commandused == 'whocanifight':
                 targets = ''
                 for u in bot.channels[channel.lower()].users:
-                    target = u
-                    inchannel = "#fart"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    inchannel = "#bypass"
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick and target != instigator:
                         targetarray.append(target)
                 for x in targetarray:
@@ -242,6 +236,10 @@ def mainfunction(bot, trigger):
                     if gethowmany:
                         addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
                         backpack = str(backpack + addbackpack)
+                totalweapons = get_database_array_total(bot, target, 'weaponslocker')
+                if totalweapons:
+                    addbackpack = str(" weaponstotal" + "=" + str(totalweapons))
+                    backpack = str(backpack + addbackpack)
                 if backpack != '':
                     backpack = str(target + "'s backpack:" + backpack)
                     bot.notice(backpack, instigator)
@@ -947,16 +945,8 @@ def damagedone(bot, target):
     rando = diceroll(100)
     if target == bot.nick:
         damage = -150
-    elif rando >= 90:
-        damage = -120
-    elif rando >= 75 and rando < 90:
-        damage = -70
-    elif rando < 75 and rando > 10:
-        damage = -40
-    elif rando > 1 and rando <= 10:
-        damage = -10 
     else:
-        damage = -5
+        damage = -abs(rando)
     return damage
 
 ##################
@@ -1113,13 +1103,7 @@ def get_winlossratio(bot,target):
     if not wins or not losses:
         winlossratio = 0
     else:
-        #winlossratio = abs(wins / losses)
         winlossratio = float(wins)/losses
-        #winlosstotal = abs(wins + losses)
-        #if winlosstotal != 0:
-        #    winlossratio = float(wins)/winlosstotal
-        #else:
-        #    winlossratio = 0
     return winlossratio
 
 ###########
