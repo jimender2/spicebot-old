@@ -912,8 +912,10 @@ def getallchanweapons(bot, channel):
     allchanweaponsarray = []
     for u in bot.channels[channel].users:
         weaponslist = bot.db.get_nick_value(u, 'weapons_locker') or []
-        for x in weaponslist:
-            allchanweaponsarray.append(x)
+        if weaponslist != []:
+            for x in weaponslist:
+                bot.say(str(x))
+                allchanweaponsarray.append(x)
     return allchanweaponsarray
         
 ## Hacky Patch to move weaponslocker to new database setup
