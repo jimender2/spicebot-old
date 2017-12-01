@@ -3,6 +3,7 @@ import sys
 import os
 import random
 import Points
+import string
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
