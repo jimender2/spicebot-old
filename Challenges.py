@@ -896,22 +896,16 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
 
 ## allchan weapons
 def getallchanweaponsrandom(bot, nick, channel):
-    lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
     allchanweaponsarray = getallchanweapons(bot, channel)
-    if not lastusedweapon:
-        lastusedweapon = "fist"
     if allchanweaponsarray == []:
         weapon = "fist"
+        bot.say('empty')
     else:
+        weaponslistselect = []
         for x in allchanweaponsarray:
-            if x != lastusedweapon:
-                weaponslistselect.append(x)
-        if weaponslistselect == []:
-            weapon = lastusedweapon
-        else:
-            weaponselected = random.randint(0,len(weaponslistselect) - 1)
-            weapon = str(weaponslistselect [weaponselected])
-    set_database_value(bot, nick, 'lastweaponused', weapon)
+            weaponslistselect.append(x)
+        weaponselected = random.randint(0,len(weaponslistselect) - 1)
+        weapon = str(weaponslistselect [weaponselected])
     return weapon
         
 def getallchanweapons(bot, channel):
