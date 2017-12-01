@@ -112,10 +112,9 @@ def mainfunction(bot, trigger):
             ## Random Target
             if target == 'random':
                 for u in bot.channels[channel].users:
-                    target = u
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick:
-                        targetarray.append(target)
+                        targetarray.append(u)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                     target = instigator
@@ -143,17 +142,15 @@ def mainfunction(bot, trigger):
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     for u in bot.channels[channel].users:
-                        target = u
-                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                         if cantargetduel and target != bot.nick:
-                            targetarray.append(target)
+                            targetarray.append(u)
                     if targetarray == []:
                         bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                etarget = x
-                                getreadytorumble(bot, trigger, instigator, etarget, OSDTYPE, channel, fullcommandused, now)
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
@@ -161,10 +158,9 @@ def mainfunction(bot, trigger):
             elif commandused == 'random':
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
-                    target = u
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel:
-                        targetarray.append(target)
+                        targetarray.append(u)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
                 else:
@@ -179,8 +175,7 @@ def mainfunction(bot, trigger):
                     disenablevalue = 1
                 if target == 'everyone':
                     for u in bot.channels[channel].users:
-                        target = u
-                        set_database_value(bot, target, 'disenable', disenablevalue)
+                        set_database_value(bot, u, 'disenable', disenablevalue)
                 elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
                 else:
@@ -197,9 +192,8 @@ def mainfunction(bot, trigger):
             elif commandused == 'whocanifight':
                 targets = ''
                 for u in bot.channels[channel.lower()].users:
-                    target = u
                     inchannel = "#bypass"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                     if cantargetduel and target != bot.nick and target != instigator:
                         targetarray.append(target)
                 for x in targetarray:
@@ -242,6 +236,10 @@ def mainfunction(bot, trigger):
                     if gethowmany:
                         addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
                         backpack = str(backpack + addbackpack)
+                totalweapons = get_database_array_total(bot, nick, 'weaponslocker')
+                if totalweapons:
+                    addbackpack = str(" weaponstotal" + "=" + str(totalweapons))
+                    backpack = str(backpack + addbackpack)
                 if backpack != '':
                     backpack = str(target + "'s backpack:" + backpack)
                     bot.notice(backpack, instigator)
