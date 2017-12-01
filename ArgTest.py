@@ -11,13 +11,15 @@ from SpicebotShared import *
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
     fullcommandused = trigger.group(2)
+    arraynumber = 0
     if trigger.group(2):
         triggerargsarray = []
         for x in fullcommandused:
             triggerargsarray.append(x)
         
         for i in triggerargsarray:
-            test = triggerargsarray[int(i)]
+            test = triggerargsarray[arraynumber]
+            arraynumber = arraynumber + 1
             bot.say(str(test))
     else:
         bot.say("No args given")
