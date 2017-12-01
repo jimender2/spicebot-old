@@ -326,13 +326,13 @@ def mainfunction(bot, trigger):
                             currenthealthleadernumber = int(health)
                 if currentwlrleadernumber > 0:
                     currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
-                    leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at ratio of " + str(currentwlrleadernumber) + ".     ")
+                    leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
                 if currentkillsleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " at " + str(currentkillsleadernumber) + " kills.     ")
+                    leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
                 if currentrespawnsleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " at " + str(currentrespawnsleadernumber) + " respawns.     ")
+                    leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
                 if currenthealthleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " at " + str(currenthealthleadernumber) + " health.     ")
+                    leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
                 if leaderboardscript == '':
                     leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
