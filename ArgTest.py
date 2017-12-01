@@ -27,4 +27,4 @@ def mainfunction(bot, trigger):
     bot.say("word2 = " + str(four) + " = trigger.group(4)")
     bot.say("word3 = " + str(five) + " = trigger.group(5)")
     bot.say("word4 = " + str(six) + " = trigger.group(6)")
-    bot.say("word7andup = " + str(sevenandup) + " = str(trigger.group(2).split(six, 1)[1]).strip()")
+    bot.say("word5andup = " + str(sevenandup) + " = str(trigger.group(2).split(six, 1)[1]).strip()")
