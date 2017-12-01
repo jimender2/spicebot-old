@@ -323,10 +323,13 @@ def mainfunction(bot, trigger):
 
             ## Loot Items Exchange 3 to 1
             elif commandused == 'tradeloot':
-                bot.say('soon')
                 tradeinitem = trigger.group(4)
                 tradeforitem = trigger.group(5)
-                if tradeinitem not in lootitemsarray:
+                if not tradeinitem:
+                    bot.notice(instigator + ", What do you want to trade?", instigator)
+                elif not tradeforitem:
+                    bot.notice(instigator + ", What do you want to trade for?", instigator)
+                elif tradeinitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif tradeforitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
