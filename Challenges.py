@@ -78,7 +78,7 @@ def mainfunction(bot, trigger):
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
             bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
@@ -332,8 +332,8 @@ def mainfunction(bot, trigger):
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 else:
                     gethowmany = get_database_value(bot, instigator, tradeinitem)
-                    if gethowmany < 4:
-                        bot.notice(instigator + ", You need 4 of a Loot item to trade.", instigator)
+                    if gethowmany < 3:
+                        bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
                     else:
                         set_database_value(bot, instigator, tradeinitem, '')
                         adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
