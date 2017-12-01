@@ -326,7 +326,7 @@ def mainfunction(bot, trigger):
                             currenthealthleadernumber = int(health)
                 if currentwlrleadernumber > 0:
                     currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
-                    leaderboardscript = str(leaderboardscript + "Wins/Total: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
+                    leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
                 if currentkillsleadernumber > 0:
                     leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
                 if currentrespawnsleadernumber > 0:
@@ -1141,14 +1141,16 @@ def get_winlossratio(bot,target):
     wins = int(wins)
     losses = get_database_value(bot, target, 'losses')
     losses = int(losses)
-    if not wins and not losses:
+    if not wins or not losses:
         winlossratio = 0
     else:
-        winlosstotal = abs(wins + losses)
-        if winlosstotal != 0:
-            winlossratio = float(wins)/winlosstotal
-        else:
-            winlossratio = 0
+        #winlossratio = abs(wins / losses)
+        winlossratio = float(wins)/losses
+        #winlosstotal = abs(wins + losses)
+        #if winlosstotal != 0:
+        #    winlossratio = float(wins)/winlosstotal
+        #else:
+        #    winlossratio = 0
     return winlossratio
 
 ###########
