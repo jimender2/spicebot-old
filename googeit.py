@@ -1,0 +1,27 @@
+import sopel.module
+import random
+import sys
+import os
+import requests
+import urllib2
+
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+
+from SpicebotShared import *
+
+@sopel.module.commands('google','googleit')
+def mainfunction(bot, trigger):
+  enablestatus = spicebot_prerun(bot, trigger)
+  if not enablestatus:
+    execute_main(bot, trigger)
+    
+def execute_main(bot, trigger):
+  if not trigger.group(2):
+    bot.say('Please enter a term to search for')
+  else:
+    data = trigger.group(2).strip()
+    data.lower()
+    data=data.replace(' ', '%20')
+    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+    bot.say(str(var.url))	
