@@ -129,7 +129,9 @@ def mainfunction(bot, trigger):
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
-                mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                if cantargetduel:
+                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
             
             ## Duel Everyone
             elif commandused == 'everyone':
