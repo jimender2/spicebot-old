@@ -107,16 +107,18 @@ def mainfunction(bot, trigger):
                 lastfought = instigator
             targetarray = []
             displaymsg = ''
+            dowedisplay = 0
             
             ## Random Target
             if target == 'random':
                 for u in bot.channels[channel].users:
                     target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick:
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel and target != bot.nick:
                         targetarray.append(target)
                 if targetarray == []:
                     bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                    target = instigator
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
@@ -127,49 +129,39 @@ def mainfunction(bot, trigger):
             
             ## Can I fight
             elif commandused == 'canifight':
-                if channeltime < TIMEOUTC:
-                    displaymsg = str(displaymsg + channel + " can't challenge for %d seconds. " % (TIMEOUTC - channeltime))
-                if instigatortime < TIMEOUT:
-                    displaymsg = str(displaymsg + instigator + " can't challenge for %d seconds. " % (TIMEOUT - instigatortime))
-                if targettime < TIMEOUT and target != instigator:
-                    displaymsg = str(displaymsg + target + " can't challenge for %d seconds. " % (TIMEOUT - targettime))
-                if target.lower() == lastfought.lower():
-                    displaymsg = str(displaymsg + target + " = lastfought. ")
-                if instigator.lower() == channellastinstigator.lower():
-                    displaymsg = str(displaymsg + instigator + " = lastinstigator. ")
-                if displaymsg == '':
-                    bot.notice("You Should be able to challenge.", instigator)
-                else:
-                    bot.notice(displaymsg, instigator)
+                dowedisplay = 1
+                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                if cantargetduel:
+                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
             
             ## Duel Everyone
             elif commandused == 'everyone':
-                bot.notice("This command is disabled, because it's all borked up.", instigator)
-            #    OSDTYPE = 'notice'
-            #    if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
-            #        bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
-            #    else:
-            #        set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
-            #        for u in bot.channels[channel].users:
-            #            target = u
-            #            cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
-            #            if cantargetduel and target != bot.nick:
-            #                targetarray.append(target)
-            #        if targetarray == []:
-            #            bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
-            #        else:
-            #            for x in targetarray:
-            #                if x != instigator:
-            #                    getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
-            #                    time.sleep(5)
-            #                    bot.notice("  ", instigator)
+                OSDTYPE = 'notice'
+                if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
+                else:
+                    set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
+                    for u in bot.channels[channel].users:
+                        target = u
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                        if cantargetduel and target != bot.nick:
+                            targetarray.append(target)
+                    if targetarray == []:
+                        bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                    else:
+                        for x in targetarray:
+                            if x != instigator:
+                                etarget = x
+                                getreadytorumble(bot, trigger, instigator, etarget, OSDTYPE, channel, fullcommandused, now)
+                                time.sleep(5)
+                                bot.notice("  ", instigator)
                 
             ## Random Dueling
             elif commandused == 'random':
                 OSDTYPE = 'say'
                 for u in bot.channels[channel].users:
                     target = u
-                    cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
                     if cantargetduel:
                         targetarray.append(target)
                 if targetarray == []:
@@ -177,10 +169,7 @@ def mainfunction(bot, trigger):
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
-                    dowedisplay = 1
-                    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                    if executedueling:
-                        return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -205,22 +194,16 @@ def mainfunction(bot, trigger):
 
             ## Who can fight
             elif commandused == 'whocanifight':
-                targetarray = []
+                targets = ''
                 for u in bot.channels[channel.lower()].users:
                     target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick and target != instigator:
-                        targetarray.append(target)
-                targetarray = str(targetarray)
-                targetarray = targetarray.replace('[', '')
-                targetarray = targetarray.replace(']', '')
-                targetarray = targetarray.replace("u'", '')
-                targetarray = targetarray.replace('u"', '')
-                targetarray = targetarray.replace("'", '')
-                targetarray = targetarray.replace('"', '')
-                targetarray = targetarray.replace(")", '')
-                targetarray = targetarray.replace("Identifier(", '')
-                chunks = targetarray.split()
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel and target != bot.nick and target != instigator:
+                        if targets != '':
+                            targets = str(targets + ", " + target)
+                        else:
+                            targets = str(target)
+                chunks = targets.split()
                 per_line = 15
                 targetline = ''
                 for i in range(0, len(chunks), per_line):
@@ -362,52 +345,37 @@ def mainfunction(bot, trigger):
                 adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
-                    weaponslistnew = []
-                    for weapon in weaponslist:
-                        weapon = str(weapon)
-                        weaponslistnew.append(weapon)
-                    for weapon in weaponslistnew:
-                        if weapon not in weaponslist:
-                            weaponslist.append(weapon)
-                    set_database_value(bot, instigator, 'weaponslocker', weaponslist)
-                    weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-                    weaponslist = str(weaponslist)
-                    weaponslist = weaponslist.replace('[', '')
-                    weaponslist = weaponslist.replace(']', '')
-                    weaponslist = weaponslist.replace("u'", '')
-                    weaponslist = weaponslist.replace('u"', '')
-                    weaponslist = weaponslist.replace("'", '')
-                    weaponslist = weaponslist.replace('"', '')
-                    chunks = weaponslist.split()
+                elif adjustmentdirection == 'inv':
+                    weapons = ''
+                    for x in weaponslist:
+                        weapon = x
+                        if weapons != '':
+                            weapons = str(weapons + ", " + weapon)
+                        else:
+                            weapons = str(weapon)
+                    chunks = weapons.split()
                     per_line = 15
                     weaponline = ''
                     for i in range(0, len(chunks), per_line):
                         weaponline = " ".join(chunks[i:i + per_line])
-                        bot.say(str(weaponline))
+                        bot.notice(str(weaponline), instigator)
                     if weaponline == '':
                         bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
-                    bot.say('Inventory can only be viewed in privmsg.')
                 else:
                     weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
                     else:
-                        if weaponchange in weaponslist:
-                            if adjustmentdirection == 'add':
-                                weaponlockerstatus = 'already'
-                            else:
-                                weaponslist.remove(weaponchange)
-                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
-                                weaponlockerstatus = 'no longer'
+                        if weaponchange in weaponslist and adjustmentdirection == 'add':
+                            weaponlockerstatus = 'already'
+                        elif weaponchange not in weaponslist and adjustmentdirection == 'del':
+                            weaponlockerstatus = 'already not'
                         else:
                             if adjustmentdirection == 'add':
-                                weaponslist.append(weaponchange)
-                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'now'
-                            else:
-                                weaponlockerstatus = 'already not'
+                            elif adjustmentdirection == 'del':
+                                weaponlockerstatus = 'no longer'
+                            adjust_database_array(bot, instigator, weaponchange, 'weaponslocker', adjustmentdirection)
                         message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
                         bot.say(message)
         
@@ -494,7 +462,11 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     
     ## Naming and Initial pepper level
     instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
-    targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+    if instigator == target:
+        targetname = "themself"
+        targetpepperstart = ''
+    else:
+        targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
@@ -529,18 +501,21 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     weapon = weaponformatter(bot, weapon)
            
     ## Update Wins and Losses
-    adjust_database_value(bot, winner, 'wins', defaultadjust)
-    adjust_database_value(bot, loser, 'losses', defaultadjust)
+    if instigator != target:
+        adjust_database_value(bot, winner, 'wins', defaultadjust)
+        adjust_database_value(bot, loser, 'losses', defaultadjust)
             
     ## Update XP points
     XPearnedwinner = '5'
     XPearnedloser = '3'
-    adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-    adjust_database_value(bot, loser, 'xp', XPearnedloser)
+    if instigator != target:
+        adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+        adjust_database_value(bot, loser, 'xp', XPearnedloser)
                 
     ## Update last fought
-    set_database_value(bot, instigator, 'lastfought', target)
-    set_database_value(bot, target, 'lastfought', instigator)
+    if instigator != target:
+        set_database_value(bot, instigator, 'lastfought', target)
+        set_database_value(bot, target, 'lastfought', instigator)
     
     ## Same person can't instigate twice in a row
     set_database_value(bot, ALLCHAN, 'lastinstigator', instigator)
@@ -551,24 +526,28 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     currenthealth = get_database_value(bot, loser, 'health')
     if currenthealth <= 0:
         whokilledwhom(bot, winner, loser)
+        if instigator == target:
+            loser = targetname
         winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
     else:
+        if instigator == target:
+            loser = targetname
         winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
         
     ## new pepper level?
     pepperstatuschangemsg = ''
     instigatorpeppernow = get_pepper(bot, instigator)
     targetpeppernow = get_pepper(bot, target)
-    if instigatorpeppernow != instigatorpepperstart:
+    if instigatorpeppernow != instigatorpepperstart and instigator != target:
         pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
-    if targetpeppernow != targetpepperstart:
+    if targetpeppernow != targetpepperstart and instigator != target:
         pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
             
     ## Random Inventory gain
     lootwinnermsg = ''
     lootwinnermsgb = ''
     randominventoryfind = randominventory()
-    if randominventoryfind == 'true' and target != bot.nick:
+    if randominventoryfind == 'true' and target != bot.nick and instigator != target:
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
         adjust_database_value(bot, winner, loot, defaultadjust)
@@ -658,10 +637,10 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in channel.")
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        displaymsg = str(instigator + ", It looks like that is either not here, or not a valid person.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
-    elif target == instigator:
-        displaymsg = str(instigator + " If you are feeling self-destructive, there are places you can call.")
     elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == lastfought and not bot.nick.endswith('dev'):
@@ -684,18 +663,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     if dowedisplay:
         bot.notice(displaymsg, instigator)
     return executedueling
-
-def cantargetdueldef(bot, instigator, target, lastfought):
-    cantargetduel = 0
-    if target != instigator:
-        if target != lastfought or bot.nick.endswith('dev'):
-            targetdisenable = get_database_value(bot, target, 'disenable')
-            targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
-            targettime = get_timesince_duels(bot, target, 'timeout')
-            if targetdisenable and targetspicebotdisenable:
-                if targettime > TIMEOUT  or bot.nick.endswith('dev'):
-                    cantargetduel = 1
-    return cantargetduel
 
 ##############
 ## Database ##
@@ -720,26 +687,24 @@ def get_database_array_total(bot, nick, databasekey):
     entriestotal = len(array)
     return entriestotal
 
-def list_database_array(bot, nick, databasekey):
-    array = get_database_value(bot, nick, databasekey) or []
-    prettytext = str(array)
-    prettytext = prettytext.replace('[', '')
-    prettytext = prettytext.replace(']', '')
-    prettytext = prettytext.replace("u'", '')
-    prettytext = prettytext.replace('u"', '')
-    prettytext = prettytext.replace("'", '')
-    prettytext = prettytext.replace('"', '')
-    return prettytext
-
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
+    adjustarraynew = []
+    for x in adjustarray:
+        adjustarraynew.append(x)
+    set_database_value(bot, nick, databasekey, '')
+    adjustarray = []
     if adjustmentdirection == 'add':
-        adjustarray.append(entry)
+        adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
-        adjustarray.remove(entry)
+        adjustarraynew.remove(entry)
+    for x in adjustarraynew:
+        if x not in adjustarray:
+            adjustarray.append(x)
+    if adjustarray == []:
+        set_database_value(bot, nick, databasekey, '')
     else:
-        bot.say('Error Adjusting Array')
-    set_database_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarray)
     
 ###################
 ## Living Status ##
