@@ -53,7 +53,7 @@ def spicebot_prerun(bot,trigger):
     
     ## Make sure the user hasn't overdone the bot in the past hour
     elif instigatorbotstatus and usertotal > TOOMANYTIMES and botchannel.startswith("#") and not bot.nick.endswith('dev'):
-        message = str(instigator + ", you must have used Spicebot more than 10 times this past hour.")
+        message = str(instigator + ", you must have used Spicebot more than " + str(TOOMANYTIMES) + " times this past hour.")
     
     ## Make sure the user hasn't just entered the room
     elif instigatorbotstatus and jointime < JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
