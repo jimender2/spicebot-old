@@ -727,13 +727,22 @@ def list_database_array(bot, nick, databasekey):
 
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
+    adjustarraynew = []
+    for x in adjustarray:
+        adjustarraynew.append(x)
+    set_database_value(bot, nick, databasekey, '')
     if adjustmentdirection == 'add':
-        adjustarray.append(entry)
+        adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
-        adjustarray.remove(entry)
+        adjustarraynew.remove(entry)
+    for x in adjustarraynew:
+        adjustarray = get_database_value(bot, nick, databasekey) or []
+        if x not in adjustarray:
+            adjustarray.append(x)
+    if adjustarray == []:
+        set_database_value(bot, nick, databasekey, '')
     else:
-        bot.say('Error Adjusting Array')
-    set_database_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarray)
     
 ###################
 ## Living Status ##
