@@ -544,9 +544,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     pepperstatuschangemsg = ''
     instigatorpeppernow = get_pepper(bot, instigator)
     targetpeppernow = get_pepper(bot, target)
-    if instigatorpeppernow != instigatorpepperstart:
+    if instigatorpeppernow != instigatorpepperstart and instigator != target:
         pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
-    if targetpeppernow != targetpepperstart:
+    if targetpeppernow != targetpepperstart and instigator != target:
         pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
             
     ## Random Inventory gain
@@ -562,6 +562,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             lootwinnermsgb = str(winner + " gains the " + str(loot))
                                
     ## On Screen Text
+    if instigator == target:
+        loser = targetname
     if OSDTYPE == 'say':
         bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
         bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
