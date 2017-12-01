@@ -362,7 +362,7 @@ def mainfunction(bot, trigger):
                 adjustmentdirection = trigger.group(4)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
+                elif adjustmentdirection == 'inv':
                     weaponslistnew = []
                     for weapon in weaponslist:
                         weapon = str(weapon)
@@ -384,30 +384,24 @@ def mainfunction(bot, trigger):
                     weaponline = ''
                     for i in range(0, len(chunks), per_line):
                         weaponline = " ".join(chunks[i:i + per_line])
-                        bot.say(str(weaponline))
+                        bot.notice(str(weaponline), instigator)
                     if weaponline == '':
                         bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
-                    bot.say('Inventory can only be viewed in privmsg.')
                 else:
                     weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
                     else:
-                        if weaponchange in weaponslist:
-                            if adjustmentdirection == 'add':
-                                weaponlockerstatus = 'already'
-                            else:
-                                weaponslist.remove(weaponchange)
-                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
-                                weaponlockerstatus = 'no longer'
+                        if weaponchange in weaponslist and adjustmentdirection == 'add':
+                            weaponlockerstatus = 'already'
+                        elif weaponchange not in weaponslist and adjustmentdirection == 'del':
+                            weaponlockerstatus = 'already not'
                         else:
                             if adjustmentdirection == 'add':
-                                weaponslist.append(weaponchange)
-                                set_database_value(bot, instigator, 'weaponslocker', weaponslist)
                                 weaponlockerstatus = 'now'
-                            else:
-                                weaponlockerstatus = 'already not'
+                            elif adjustmentdirection == 'del':
+                                weaponlockerstatus = 'no longer'
+                            adjust_database_array(bot, instigator, weaponchange, 'weaponslocker', adjustmentdirection)
                         message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
                         bot.say(message)
         
