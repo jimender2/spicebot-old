@@ -136,24 +136,23 @@ def mainfunction(bot, trigger):
             ## Duel Everyone
             elif commandused == 'everyone':
                 bot.notice("This command is disabled, because it's all borked up.", instigator)
-            #    OSDTYPE = 'notice'
-            #    if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
-            #        bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
-            #    else:
-            #        set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
-            #        for u in bot.channels[channel].users:
-            #            target = u
-#########################cantargetduel = cantargetdueldef(bot, instigator, target, lastfought)
-            #            if cantargetduel and target != bot.nick:
-            #                targetarray.append(target)
-            #        if targetarray == []:
-            #            bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
-            #        else:
-            #            for x in targetarray:
-            #                if x != instigator:
-            #                    getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
-            #                    time.sleep(5)
-            #                    bot.notice("  ", instigator)
+                OSDTYPE = 'notice'
+                if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
+                else:
+                    set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
+                    for u in bot.channels[channel].users:
+                        target = u
+                         cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                            if cantargetduel and target != bot.nick:
+                    if targetarray == []:
+                        bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                    else:
+                        for x in targetarray:
+                            if x != instigator:
+                                getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                                time.sleep(5)
+                                bot.notice("  ", instigator)
                 
             ## Random Dueling
             elif commandused == 'random':
