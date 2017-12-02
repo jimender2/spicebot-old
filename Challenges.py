@@ -764,10 +764,8 @@ def healthcheck(bot, nick):
     
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
-    try:
-        last = get_database_value(bot, nick, databasekey)
-    except ValueError:
-        last = 1
+    timedb = databasekey
+    last = get_database_value(bot, nick, timedb)
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
