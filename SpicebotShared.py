@@ -15,6 +15,11 @@ TOOMANYTIMES = 15
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
+    
+    ## Custom args
+    triggerargsarray = create_args_array(trigger.group(2))
+    
+    ## time
     now = time.time()
     
     ## used to circumvent
@@ -82,13 +87,31 @@ def spicebot_prerun(bot,trigger):
     bot.notice(message, instigator)
     
     ## Send Status Forward
-    return enablestatus
+    return enablestatus, triggerargsarray
 
 
 
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
+
+##########
+## Args ##
+##########
+
+def create_args_array(fullstring):
+    triggerargsarray = []
+    for word in fullstring.split():
+        triggerargsarray.append(word)
+    return triggerargsarray
+
+def get_trigger_arg(triggerargsarray, number):
+    number = number - 1
+    try:
+        triggerarg = triggerargsarray[number]
+    except IndexError:
+        triggerarg = ''
+    return triggerarg
 
 ##############
 ## Database ##
