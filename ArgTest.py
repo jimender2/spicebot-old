@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*/
-from sopel import module
-from sopel.tools import events
-import sys
-import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
+import sopel.module
 
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
