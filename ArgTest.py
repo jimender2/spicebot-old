@@ -5,12 +5,11 @@ import sopel.module
 def mainfunction(bot, trigger):
     fullstring = trigger.group(2)
     triggerargsarray = create_args_array(fullstring)
-    entriestotal = len(triggerargsarray)
-    argone = get_trigger_arg(triggerargsarray, 1)
-    argtwelve = get_trigger_arg(triggerargsarray, 12)
-    bot.say(str(argone))
-    bot.say(str(argtwelve))
-    bot.day(str(numberofwords))
+    vr={}
+    for num in range(1,4):
+        vr[str(num)] = get_trigger_arg(triggerargsarray, num)
+        bot.say(str(vr["3"]))
+        
 
 def create_args_array(fullstring):
     triggerargsarray = []
@@ -25,8 +24,5 @@ def get_trigger_arg(triggerargsarray, number):
     except IndexError:
         triggerarg = ''
     return triggerarg
-
-
-
 
 
