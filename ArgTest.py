@@ -7,9 +7,8 @@ def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(fullstring)
     vr={}
     for num in range(1,4):
-        vr[num] = get_trigger_arg(triggerargsarray, num)
-        test = vr["3"]
-        bot.say(test)
+        vars()["triggerarg"+num[0]]=get_trigger_arg(triggerargsarray, num)[0]
+    bot.say(str(triggerarg3))
         
 def create_args_array(fullstring):
     triggerargsarray = []
