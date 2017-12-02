@@ -12,7 +12,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    argone = get_trigger_arg(triggerargsarray, 1)
-    bot.say(str(argone))
+    for i in range(0,20):
+        arg = get_trigger_arg(triggerargsarray, i)
+        bot.say(str(arg))
 
 
