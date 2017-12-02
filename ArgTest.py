@@ -7,11 +7,10 @@ def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(fullstring)
     vr={}
     for num in range(1,4):
-        vr[str(num)] = get_trigger_arg(triggerargsarray, num)
+        vr[num] = get_trigger_arg(triggerargsarray, num)
         test = vr["3"]
         bot.say(test)
         
-
 def create_args_array(fullstring):
     triggerargsarray = []
     for word in fullstring.split():
