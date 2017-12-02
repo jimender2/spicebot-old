@@ -9,11 +9,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('devexcuse')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     bot.say(parseString(
         urllib.urlopen('http://developerexcuses.com').read().replace('&', '')).
         getElementsByTagName('body')[0].getElementsByTagName('div')[0].
