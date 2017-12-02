@@ -10,11 +10,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('lottery')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
-
-def execute_main(bot, trigger):
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
     enteredValues = string.split(trigger.args[1], " ")
     if len.enteredValues <= 6:
         bot.notify('You must enter 5 lottery numbers to play.')
