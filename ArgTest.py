@@ -12,8 +12,8 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     fullcommandused = trigger.group(2)
     argone = triggerargsnumber(fullcommandused, 0)
-    argeleven = triggerargsnumber(fullcommandused, 1)
-    argtwelve = triggerargsnumber(fullcommandused, 2)
+    argeleven = triggerargsnumber(fullcommandused, 10)
+    argtwelve = triggerargsnumber(fullcommandused, 11)
     bot.say(str(fullcommandused))
     bot.say(str(argone))
     bot.say(str(argeleven))
