@@ -10,8 +10,9 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
-    numberofwords = len(str(trigger.group(2)).split())
-    argone = triggerargsnumber(trigger.group(2), 1)
+    fullstring = trigger.group(2)
+    numberofwords = len(fullstring.split())
+    argone = triggerargsnumber(fullstring, 1)
     bot.say(str(argone))
     bot.day(str(numberofwords))
 
