@@ -30,12 +30,12 @@ challengestatsarray = ['health','mana','xp','pepper','wins','losses','winlossrat
 ####################
 
 @sopel.module.commands('challenge','duel')
-def challenge_cmd(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        return mainfunction(bot, trigger)
-        
 def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
     
     ## Basic Vars that we will use
     instigator = trigger.nick
