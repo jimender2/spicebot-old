@@ -12,6 +12,8 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     fullcommandused = trigger.group(2)
     argone = fullcommandused.triggerargsnumber(0)
+    bot.say(str(fullcommandused))
+    bot.say(str(argone))
     
 def triggerargsnumber(number):
     triggerargsarray = []
