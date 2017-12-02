@@ -765,12 +765,12 @@ def healthcheck(bot, nick):
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
     timedb = databasekey
+    bot.say(str(timedb))
     last = get_database_value(bot, nick, timedb)
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
-    #time_since = get_timesince_duels(bot, nick, 'timeout')
-    time_since = 0
+    time_since = get_timesince_duels(bot, nick, 'timeout')
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
     else:
