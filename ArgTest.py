@@ -12,19 +12,19 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     fullcommandused = trigger.group(2)
     argone = triggerargsnumber(fullcommandused, 0)
+    argeleven = triggerargsnumber(fullcommandused, 1)
+    argtwelve = triggerargsnumber(fullcommandused, 2)
     bot.say(str(fullcommandused))
     bot.say(str(argone))
+    bot.say(str(argeleven))
+    bot.say(str(argtwelve))
     
 def triggerargsnumber(fullcommandused, number):
     triggerargsarray = []
     for word in fullcommandused.split():
         triggerargsarray.append(word)
     entriestotal = len(triggerargsarray)
-    #if number <= entriestotal:
-    #    triggerarg = triggerargsarray[arraynumber] or 0
-    #else:
-    #    triggerarg = 0
-    triggerarg = triggerargsarray[number] or ''
+    triggerarg = triggerargsarray[number] or 8675309
     return triggerarg
 
 
