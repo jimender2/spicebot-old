@@ -101,8 +101,9 @@ def spicebot_prerun(bot,trigger):
 
 def create_args_array(fullstring):
     triggerargsarray = []
-    for word in fullstring.split():
-        triggerargsarray.append(word)
+    if fullstring != '':
+        for word in fullstring.split():
+            triggerargsarray.append(word)
     return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
