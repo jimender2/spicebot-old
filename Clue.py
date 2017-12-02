@@ -6,16 +6,17 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.commands('clue')
-def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger)
-
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
 
-def execute_main(bot, trigger):
+@sopel.module.commands('clue')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
+    
     players = []
     for c in bot.channels:
         channel = c

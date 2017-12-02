@@ -7,11 +7,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('asimov')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     if not trigger.group(2):
         bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
         bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')

@@ -8,11 +8,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('cipher','terminator','ciphertheterminator')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     if trigger.group(2):
         if trigger.group(2) == 'story':
             bot.say('The machines rose from the ashes of the nuclear fire. Their war to exterminate mankind had raged on for decades. But the final battle will not be fought in the future. It would be fought in our present...tonight.')

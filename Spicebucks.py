@@ -1,6 +1,4 @@
 import sopel.module
-from random import random
-from random import randint
 from sopel import module, tools
 import sys
 import os
@@ -8,7 +6,13 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints','checkpoints','checkpants')
+## All commands will use .spicebucks [action]
+## Actions to include
+### payday - Recieve a once a day payday amount (current Thought is 5 / day)
+### bank - Check amount in bank
+### transfer - Transfer money from one user to another
+
+@sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
@@ -17,29 +21,21 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     for c in bot.channels:
         channel = c
-    commandused = trigger.group(1)
+    commandused = trigger.group(3)
     inchannel = trigger.sender
-    target = trigger.group(3) or trigger.nick
-    if commandused.endswith('points'):
-        pointstype = 'points'
-    else:
-        pointstype = 'pants'
-    if commandused.startswith('check'):
-        points = get_points(bot, target)
-        if not points:
-            bot.say(target + ' has no ' + pointstype + ' history.')
-        else:
-            bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
-    else:
-        if commandused.startswith('take') or commandused.startswith('minus'):
-            giveortake = ' takes '
-            tofrom = ' from '
-            addminus = 'down'
-        else:
-            giveortake = ' gives '
-            tofrom = ' to '
-            addminus = 'up'      
-        return pointstask(bot, channel, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype, inchannel)
+    if commandused.startswith('payday'):
+        bot.say('add payday money')
+    elif commandused.startswith('bank'):
+        bot.say('check amount in bank')
+    elif commandused.startswith('transfer'):
+        bot.say('transfer money to another user')
+##### Lots to do
+
+def spicebuckstransaction(bot, channel, instigator, target, addsubtract, amount, inchannel):
+    ### use this to add or remove spicebucks from a user.  Returns True if successful, and False if unsuccessful
+    ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
+    bot.say('add more here')
+    
 
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
     target = tools.Identifier(target or '')

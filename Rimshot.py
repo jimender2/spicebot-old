@@ -7,10 +7,10 @@ from SpicebotShared import *
 
 @sopel.module.commands('rimshot')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     #bot.action('uses drumsticks to hit both the head and the rim of the drum, then the cymbal.')
     bot.say('*Ba Dum Tss!!!*')

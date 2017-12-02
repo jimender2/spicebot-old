@@ -28,11 +28,11 @@ sites_query = ' site:xkcd.com -site:' + ' -site:'.join(ignored_sites)
 
 @sopel.module.commands('xkcd','comic')
 def mainfunction(bot, trigger):
-	enablestatus = spicebot_prerun(bot, trigger)
-	if not enablestatus:
-		execute_main(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
 	verify_ssl = bot.config.core.verify_ssl
 	latest=get_info(verify_ssl=verify_ssl)
 	maxcomics=latest['num']	

@@ -23,11 +23,11 @@ from SpicebotShared import *
 
 @commands('seen')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
-
-def execute_main(bot, trigger):
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
     """Reports when and where the user was last seen."""
     if not trigger.group(2):
         bot.say(".seen <nick> - Reports when <nick> was last seen.")

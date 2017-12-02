@@ -29,11 +29,11 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.rate(120)
 @sopel.module.commands(maincommand)
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     runprocess(bot)
 
 @sopel.module.require_admin

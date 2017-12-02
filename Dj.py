@@ -12,11 +12,11 @@ friday='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/other
 
 @sopel.module.commands('dj')
 def mainfunction(bot, trigger):
-	enablestatus = spicebot_prerun(bot, trigger)
-	if not enablestatus:
-		execute_main(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
 	if not trigger.group(2):
 		playlist=party
 	else:

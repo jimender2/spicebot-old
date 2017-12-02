@@ -23,24 +23,25 @@ LASTTIMEOUTHOUR = 3600
 @sopel.module.commands('spicebot')
 def mainfunction(bot, trigger):
     now = time.time()
+    triggerargsarray = create_args_array(trigger.group(2))
     inchannel = trigger.sender
     if trigger.group(2):
         allowedcommandsarray = ['on','off']
         commandused = trigger.group(3)
         if commandused in allowedcommandsarray:
-            execute_main(bot, trigger)
+            execute_main(bot, trigger, triggerargsarray)
         elif not inchannel.startswith("#"):
-            execute_main(bot, trigger)
+            execute_main(bot, trigger, triggerargsarray)
         else:
-            enablestatus = spicebot_prerun(bot, trigger)
+            enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
             if not enablestatus:
-                execute_main(bot, trigger)
+                execute_main(bot, trigger, triggerargsarray)
     else:
-        enablestatus = spicebot_prerun(bot, trigger)
+        enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
         if not enablestatus:
-            execute_main(bot, trigger)
-
-def execute_main(bot, trigger):
+            execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
     now = time.time()
     instigator = trigger.nick
     inchannel = trigger.sender
