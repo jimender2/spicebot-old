@@ -23,12 +23,13 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if commandused.startswith('payday'):
-        bot.say('add payday money')
-    elif commandused.startswith('bank'):
-        bot.say('check amount in bank')
-    elif commandused.startswith('transfer'):
-        bot.say('transfer money to another user')
+    if commandused:
+        if commandused.startswith('payday'):
+            bot.say('add payday money')
+        elif commandused.startswith('bank'):
+            bot.say('check amount in bank')
+        elif commandused.startswith('transfer'):
+            bot.say('transfer money to another user')
 ##### Lots to do
 
 def spicebuckstransaction(bot, channel, instigator, target, addsubtract, amount, inchannel):
