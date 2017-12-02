@@ -11,11 +11,11 @@ from SpicebotShared import *
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
     fullcommandused = trigger.group(2)
-    argone = fullcommandused.triggerargsnumber(0)
+    argone = triggerargsnumber(fullcommandused, 0)
     bot.say(str(fullcommandused))
     bot.say(str(argone))
     
-def triggerargsnumber(number):
+def triggerargsnumber(fullcommandused, number):
     triggerargsarray = []
     for word in fullcommandused.split():
         triggerargsarray.append(word)
