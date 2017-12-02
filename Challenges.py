@@ -97,7 +97,7 @@ def execute_main(bot, trigger, triggerargsarray):
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince_duels(bot, instigator, 'timeout')
             targettime = get_timesince_duels(bot, target, 'timeout')
-            channeltime = get_timesince_duels(bot, ALLCHAN, 'timeout')
+            channeltime = get_timesince_duels(bot, channel, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
             if not channellastinstigator:
