@@ -34,7 +34,7 @@ def execute_main(bot, trigger):
 def spicebuckstransaction(bot, channel, instigator, target, addsubtract, amount, inchannel):
     ### use this to add or remove spicebucks from a user.  Returns True if successful, and False if unsuccessful
     ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
-    
+    bot.say('add more here')
     
 
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
