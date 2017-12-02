@@ -10,11 +10,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('chucknorris','chuck')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     joke = getJoke()
     if joke:
         if not trigger.group(2):
