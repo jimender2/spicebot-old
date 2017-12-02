@@ -9,10 +9,10 @@ from SpicebotShared import *
 
 @sopel.module.commands('sexbot','cockbot','fuckbot')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     rando = randint(2, 666)
     bot.say("Please insert " + str(rando) + " bitcoins, for that kind of service.")
