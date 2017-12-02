@@ -5,10 +5,8 @@ import sopel.module
 def mainfunction(bot, trigger):
     fullstring = trigger.group(2)
     triggerargsarray = create_args_array(fullstring)
-    vr={}
-    for num in range(1,4):
-        vars()["triggerarg"+num[0]]=get_trigger_arg(triggerargsarray, num)[0]
-    bot.say(str(triggerarg3))
+    vars()['food'] = 123
+    bot.say(str(food))
         
 def create_args_array(fullstring):
     triggerargsarray = []
