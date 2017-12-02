@@ -5,12 +5,12 @@ import sopel.module
 def mainfunction(bot, trigger):
     fullstring = trigger.group(2)
     triggerargsarray = create_args_array(fullstring)
-    numberofwords = number_of_words(triggerargsarray)
+    #numberofwords = number_of_words(triggerargsarray)
     argone = get_trigger_arg(triggerargsarray, 1)
     argtwelve = get_trigger_arg(triggerargsarray, 12)
     bot.say(str(argone))
     bot.say(str(argtwelve))
-    bot.day(str(numberofwords))
+    #bot.day(str(numberofwords))
 
 def create_args_array(fullstring):
     triggerargsarray = []
