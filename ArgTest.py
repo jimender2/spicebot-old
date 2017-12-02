@@ -24,7 +24,10 @@ def triggerargsnumber(fullcommandused, number):
     for word in fullcommandused.split():
         triggerargsarray.append(word)
     entriestotal = len(triggerargsarray)
-    triggerarg = triggerargsarray[number] or 8675309
+    if number <= entriestotal:
+        triggerarg = triggerargsarray[number]
+    else:
+        triggerarg = "ERROROUTOFRANGE"
     return triggerarg
 
 
