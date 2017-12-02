@@ -24,7 +24,7 @@ def triggerargsnumber(fullcommandused, number):
     #    triggerarg = triggerargsarray[arraynumber] or 0
     #else:
     #    triggerarg = 0
-    triggerarg = triggerargsarray[arraynumber] or ''
+    triggerarg = triggerargsarray[number] or ''
     return triggerarg
 
 
