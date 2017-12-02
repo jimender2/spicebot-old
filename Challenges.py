@@ -93,13 +93,13 @@ def execute_main(bot, trigger, triggerargsarray):
             
         ## and, continue
         else:
-            targetopttime = get_timesince(bot, target, 'opttime')
+            targetopttime = get_timesince_duels(bot, target, 'opttime')
             lastfought = get_database_value(bot, instigator, 'lastfought')
-            instigatortime = get_timesince(bot, instigator, 'timeout')
-            targettime = get_timesince(bot, target, 'timeout')
-            channeltime = get_timesince(bot, ALLCHAN, 'timeout')
+            instigatortime = get_timesince_duels(bot, instigator, 'timeout')
+            targettime = get_timesince_duels(bot, target, 'timeout')
+            channeltime = get_timesince_duels(bot, ALLCHAN, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
-            lastfullroomassult = get_timesince(bot, ALLCHAN, 'lastfullroomassult')
+            lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
             if not lastfought:
@@ -658,9 +658,9 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
     instigatordisenable = get_database_value(bot, instigator, 'disenable')
     targetdisenable = get_database_value(bot, target, 'disenable')
-    instigatortime = get_timesince(bot, instigator, 'timeout')
-    targettime = get_timesince(bot, target, 'timeout')
-    channeltime = get_timesince(bot, ALLCHAN, 'timeout')
+    instigatortime = get_timesince_duels(bot, instigator, 'timeout')
+    targettime = get_timesince_duels(bot, target, 'timeout')
+    channeltime = get_timesince_duels(bot, ALLCHAN, 'timeout')
     channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
     if not channellastinstigator:
         channellastinstigator = bot.nick
@@ -762,16 +762,14 @@ def healthcheck(bot, nick):
 ## Time ##
 ##########
     
-def get_timesince(bot, nick, databasekey):
+def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
-    try:
-        last = get_database_value(bot, nick, databasekey) or 0
-    except ValueError:
-        last = 0
+    last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
 
 def get_timeout(bot, nick):
-    time_since = get_timesince(bot, nick, 'timeout')
+    #time_since = get_timesince_duels(bot, nick, 'timeout')
+    time_since = 0
     if time_since < TIMEOUT:
         timediff = int(TIMEOUT - time_since)
     else:
