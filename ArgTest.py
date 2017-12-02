@@ -8,7 +8,6 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
-    bot.db.set_nick_value('BaggedTaco', 'challenges_timeout', '')
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
