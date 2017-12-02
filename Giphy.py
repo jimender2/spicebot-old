@@ -11,11 +11,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('gif','giphy')
 def mainfunction(bot, trigger):
-    enablestatus = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger):       
+def execute_main(bot, trigger, triggerargsarray): 
     if trigger.group(2):
         query = trigger.group(2).replace(' ', '%20')
         query = str(query)
