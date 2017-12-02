@@ -24,14 +24,18 @@ def execute_main(bot, trigger):
     commandused = trigger.group(3)
     inchannel = trigger.sender
     if commandused.startswith('payday'):
-    
+        bot.say('add payday money')
     elif commandused.startswith('bank'):
-    
-    commandused.startswith('transfer')
-    
+        bot.say('check amount in bank')
+    elif commandused.startswith('transfer'):
+        bot.say('transfer money to another user')
 ##### Lots to do
 
-def spicebucksTransaction(bot, channel, instigator, target, 
+def spicebuckstransaction(bot, channel, instigator, target, addsubtract, amount, inchannel):
+    ### use this to add or remove spicebucks from a user.  Returns True if successful, and False if unsuccessful
+    ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
+    
+    
 
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
     target = tools.Identifier(target or '')
