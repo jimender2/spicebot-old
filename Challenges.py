@@ -56,9 +56,9 @@ def execute_main(bot, trigger, triggerargsarray):
     weaponsmigrate(bot, instigator)
     
     ## Make sure Opt-In time is there
-    opttime = get_database_value(bot, instigator, 'opttime')
-    if not opttime:
-        set_database_value(bot, instigator, 'opttime', now)
+    #opttime = get_database_value(bot, instigator, 'opttime')
+    #if not opttime:
+    #    set_database_value(bot, instigator, 'opttime', now)
     
     ## If Not a target or a command used
     if not fullcommandused:
@@ -93,7 +93,7 @@ def execute_main(bot, trigger, triggerargsarray):
             
         ## and, continue
         else:
-            targetopttime = get_timesince_duels(bot, target, 'opttime')
+            #targetopttime = get_timesince_duels(bot, target, 'opttime')
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince_duels(bot, instigator, 'timeout')
             targettime = get_timesince_duels(bot, target, 'timeout')
@@ -175,8 +175,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if target == 'everyone':
                     for u in bot.channels[channel].users:
                         set_database_value(bot, u, 'disenable', disenablevalue)
-                elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+                #elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                #    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
                 else:
                     if targetdisenable and commandused == 'on':
                         bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
@@ -184,7 +184,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
                     else:
                         set_database_value(bot, target, 'disenable', disenablevalue)
-                        set_database_value(bot, target, 'opttime', now)
+                        #set_database_value(bot, target, 'opttime', now)
                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
 
             ## Who can fight
@@ -764,12 +764,8 @@ def healthcheck(bot, nick):
     
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
-    last = get_database_value(bot, nick, databasekey)
-    if not last:
-        last = 0
-    else:
-        last = int(last)
-    return abs(now - last)
+    last = get_database_value(bot, nick, databasekey) or 0
+    return abs(now - int(last))
 
 def get_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout')
