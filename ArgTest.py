@@ -10,19 +10,19 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
-    fullcommandused = trigger.group(2)
-    argone = triggerargsnumber(fullcommandused, 1)
-    argeleven = triggerargsnumber(fullcommandused, 11)
-    argtwelve = triggerargsnumber(fullcommandused, 12)
-    bot.say(str(fullcommandused))
+    numberofwords = len(trigger.group(2).split())
+    argone = triggerargsnumber(trigger.group(2), 1)
     bot.say(str(argone))
-    bot.say(str(argeleven))
-    bot.say(str(argtwelve))
+    bot.day(str(numberofwords))
+
+
+#def settheargvars():
     
-def triggerargsnumber(fullcommandused, number):
+
+def triggerargsnumber(fullstring, number):
     triggerargsarray = []
     number = number - 1
-    for word in fullcommandused.split():
+    for word in fullstring.split():
         triggerargsarray.append(word)
     entriestotal = len(triggerargsarray)
     try:
