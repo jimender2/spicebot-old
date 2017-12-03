@@ -41,7 +41,8 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
     fullcommandused = trigger.group(2)
-    commandortarget = trigger.group(3)
+    commandortarget = get_trigger_arg(triggerargsarray, 1)
+    #commandortarget = trigger.group(3)
     for c in bot.channels:
         channel = c
     now = time.time()
