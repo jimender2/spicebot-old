@@ -484,7 +484,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
     else:
         OSDTYPE = 'say'
-        target = trigger.group(3)
+        target = get_trigger_arg(triggerargsarray, 1)
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
@@ -526,7 +526,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     damage = damagedone(bot, target)
 
     ## Manual weapon
-    weapon = str(fullcommandused.split(trigger.group(3), 1)[1]).strip()
+    weapon = get_trigger_arg(triggerargsarray, '2+')
     if not weapon:
         manualweapon = 'false'
     else:
