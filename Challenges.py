@@ -156,7 +156,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now)
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
@@ -172,7 +172,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
-                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -488,7 +488,7 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
     
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
@@ -496,7 +496,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if statset != 'disenable':
             set_database_value(bot, bot.nick, x, '')
         
-def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
+def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
     ## Weapons migrate
     weaponsmigrate(bot, instigator)
