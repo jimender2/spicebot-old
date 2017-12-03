@@ -386,10 +386,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 validdirectionarray = ['inv','add','del']
                 if target in validdirectionarray:
                     adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
-                    weaponsplit = "3\+"
+                    weaponchange = get_trigger_arg(triggerargsarray, '3+')
                 else:
                     adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
-                    weaponsplit = "4\+"
+                    weaponchange = get_trigger_arg(triggerargsarray, '4+')
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
@@ -409,7 +409,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     if weaponline == '':
                         bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 else:
-                    weaponchange = get_trigger_arg(triggerargsarray, weaponsplit)
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
                     else:
