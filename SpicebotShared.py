@@ -111,7 +111,7 @@ def get_trigger_arg(triggerargsarray, number):
     triggerarg = ''
     if number.endswith("+"):
         numsplit = number.split()[-1]
-        numsplit = numsplit - 1
+        numsplit = int(numsplit) - 1
         for i in range(numsplit,totalarray):
             arg = get_trigger_arg(triggerargsarray, i)
             triggerarg = str(triggerarg + arg)
