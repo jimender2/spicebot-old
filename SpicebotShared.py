@@ -5,7 +5,7 @@ from sopel.module import ADMIN
 from sopel.module import event, rule
 import time
 import os
-import sys
+import sys, re
 import fnmatch
 from os.path import exists
 
