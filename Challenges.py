@@ -252,14 +252,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     target = instigator
                     settype = get_trigger_arg(triggerargsarray, 2)
                     statset = get_trigger_arg(triggerargsarray, 3)
-                    if settype == reset:
+                    if settype == 'reset':
                         newvalue = ''
                     else:
                         newvalue = get_trigger_arg(triggerargsarray, 4)
                 else:
                     settype = get_trigger_arg(triggerargsarray, 3)
                     statset = get_trigger_arg(triggerargsarray, 4)
-                    if settype == reset:
+                    if settype == 'reset':
                         newvalue = ''
                     else:
                         newvalue = get_trigger_arg(triggerargsarray, 5)
