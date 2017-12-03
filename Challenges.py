@@ -93,10 +93,17 @@ def execute_main(bot, trigger, triggerargsarray):
             
         ## and, continue
         else:
-            targetopttime = get_timesince_duels(bot, target, 'opttime')
+            
+            ## instigator
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince_duels(bot, instigator, 'timeout')
-            targettime = get_timesince_duels(bot, target, 'timeout')
+            
+            ## target
+            if target not in nontargetarray:
+                targetopttime = get_timesince_duels(bot, target, 'opttime')
+                targettime = get_timesince_duels(bot, target, 'timeout')
+            
+            ## Channel
             channeltime = get_timesince_duels(bot, channel, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
@@ -376,7 +383,13 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Weaponslocker
             elif commandused == 'weaponslocker':
                 weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-                adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                validdirectionarray = ['inv','add','del']
+                if target in validdirectionarray:
+                    adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                    weaponsplit = "2+"
+                else:
+                    adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
+                    weaponsplit = "3+"
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
@@ -396,7 +409,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if weaponline == '':
                         bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 else:
-                    weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
+                    weaponchange = get_trigger_arg(triggerargsarray, weaponsplit)
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
                     else:
