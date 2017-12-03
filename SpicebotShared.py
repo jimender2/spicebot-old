@@ -107,11 +107,20 @@ def create_args_array(fullstring):
     return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
-    number = number - 1
-    try:
-        triggerarg = triggerargsarray[number]
-    except IndexError:
-        triggerarg = ''
+    totalarray = len(triggerargsarray)
+    triggerarg = ''
+    if number.endswith("+"):
+        numsplit = number.split("+", 1)[0])
+        numsplit = numsplit - 1
+        for i in range(numsplit,totalarray):
+            arg = get_trigger_arg(triggerargsarray, i)
+            triggerarg = str(triggerarg + arg)
+    else:
+        number = number - 1
+        try:
+            triggerarg = triggerargsarray[number]
+        except IndexError:
+            triggerarg = ''
     return triggerarg
 
 ##############
