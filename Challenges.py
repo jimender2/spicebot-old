@@ -42,7 +42,6 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     fullcommandused = trigger.group(2)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
-    #commandortarget = trigger.group(3)
     for c in bot.channels:
         channel = c
     now = time.time()
@@ -67,9 +66,9 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in bot.privileges[channel.lower()]:
-        commandused = trigger.group(3)
-        target = trigger.group(4) or trigger.nick
-        targettext = trigger.group(4) or "that person"
+        commandused = commandortarget
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        targettext = get_trigger_arg(triggerargsarray, 2) or "that person"
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
@@ -249,8 +248,8 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Stats Admin
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
-                commandtrimmed = trigger.group(5)
-                statset = trigger.group(6)
+                commandtrimmed = get_trigger_arg(triggerargsarray, 3)
+                statset = get_trigger_arg(triggerargsarray, 4)
                 newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
                 if commandtrimmed not in statsadminarray:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
@@ -324,8 +323,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
             ## Loot Items Exchange 3 to 1
             elif commandused == 'tradeloot':
-                tradeinitem = trigger.group(4)
-                tradeforitem = trigger.group(5)
+                tradeinitem = get_trigger_arg(triggerargsarray, 2)
+                tradeforitem = get_trigger_arg(triggerargsarray, 3)
                 if not tradeinitem:
                     bot.notice(instigator + ", What do you want to trade?", instigator)
                 elif not tradeforitem:
@@ -368,7 +367,7 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Weaponslocker
             elif commandused == 'weaponslocker':
                 weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-                adjustmentdirection = trigger.group(4)
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
@@ -408,11 +407,11 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Magic Attack
             elif commandused == 'magic':
                 magicoptions = ['attack','instakill','health']
-                magicusage = trigger.group(4)
+                magicusage = get_trigger_arg(triggerargsarray, 2)
                 if magicusage not in magicoptions:
                     bot.say('Magic uses include: attack, instakill, health')
                 else:
-                    target = trigger.group(5)
+                    target = get_trigger_arg(triggerargsarray, 3)
                     if not target:
                         target = trigger.nick
                     mana = get_database_value(bot, instigator, 'mana')
@@ -1156,3 +1155,20 @@ def get_winlossratio(bot,target):
 def diceroll(howmanysides):
     diceroll = randint(0, howmanysides)
     return diceroll
+
+## Triggerargs
+
+#def create_args_array(fullstring):
+#    triggerargsarray = []
+#    if fullstring:
+#        for word in fullstring.split():
+#            triggerargsarray.append(word)
+#    return triggerargsarray
+
+#def get_trigger_arg(triggerargsarray, number):
+#    number = number - 1
+#    try:
+#        triggerarg = triggerargsarray[number]
+#    except IndexError:
+#        triggerarg = ''
+#    return triggerarg
