@@ -248,26 +248,35 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Stats Admin
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
-                commandtrimmed = get_trigger_arg(triggerargsarray, 3)
-                statset = get_trigger_arg(triggerargsarray, 4)
-                newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
-                if commandtrimmed not in statsadminarray:
+                if target in statsadminarray:
+                    target = instigator
+                    settype = get_trigger_arg(triggerargsarray, 2)
+                    statset = get_trigger_arg(triggerargsarray, 3)
+                    if settype == reset:
+                        newvalue = ''
+                    else:
+                        newvalue = get_trigger_arg(triggerargsarray, 4)
+                else:
+                    settype = get_trigger_arg(triggerargsarray, 3)
+                    statset = get_trigger_arg(triggerargsarray, 4)
+                    if settype == reset:
+                        newvalue = ''
+                    else:
+                        newvalue = get_trigger_arg(triggerargsarray, 5)
+                if settype not in statsadminarray:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
                 elif statset not in challengestatsadminarray and statset != 'all':
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                elif commandtrimmed == 'set' and not newvalue:
+                elif settype == 'set' and not newvalue:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
                 else:
-                    if not newvalue:
-                        newvalue = ''
                     if target == 'everyone':
                         for u in bot.channels[channel].users:
-                            etarget = u
                             if statset == 'all':
                                 for x in challengestatsadminarray:
-                                    set_database_value(bot, etarget, x, newvalue)
+                                    set_database_value(bot, u, x, newvalue)
                             else:
-                                set_database_value(bot, etarget, statset, newvalue)
+                                set_database_value(bot, u, statset, newvalue)
                     else:
                         if statset == 'all':
                             for x in challengestatsadminarray:
