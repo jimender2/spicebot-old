@@ -382,14 +382,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
                 validdirectionarray = ['inv','add','del']
                 if target in validdirectionarray:
+                    target = instigator
                     adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
                     weaponchange = get_trigger_arg(triggerargsarray, '3+')
                 else:
                     adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
                     weaponchange = get_trigger_arg(triggerargsarray, '4+')
+                weaponslist = get_database_value(bot, target, 'weaponslocker') or []
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
@@ -407,7 +408,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         weaponline = " ".join(chunks[i:i + per_line])
                         bot.notice(str(weaponline), instigator)
                     if weaponline == '':
-                        bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
+                        bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 else:
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
@@ -421,8 +422,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 weaponlockerstatus = 'now'
                             elif adjustmentdirection == 'del':
                                 weaponlockerstatus = 'no longer'
-                            adjust_database_array(bot, instigator, weaponchange, 'weaponslocker', adjustmentdirection)
-                        message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
+                            adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
+                        message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                         bot.say(message)
         
             ## Magic Attack
