@@ -63,6 +63,6 @@ def spicebucks(bot, target, plusminus, amount):
 
 def bank(bot, nick):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
-    bot.say("You have " + str(spicebucks) + " in the bank.")
+    bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")
 
 
