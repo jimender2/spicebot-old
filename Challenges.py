@@ -1062,88 +1062,81 @@ def get_pepper(bot, nick):
 ###################
 
 def getwinner(bot, instigator, target, manualweapon):
-    instigatorxp = get_database_value(bot, instigator, 'xp')
-    if not instigatorxp:
-        instigatorxp = '1'
-    targetxp = get_database_value(bot, target, 'xp')
-    if not targetxp:
-        targetxp = '1'
     
-    instigatorkills = get_database_value(bot, instigator, 'kills')
-    if not instigatorkills:
-        instigatorkills = '1'
-    targetkills = get_database_value(bot, target, 'kills')
-    if not targetkills:
-        targetkills = '1'
-    
-    ## each person
-    instigatorfight = '1'
-    targetfight = '1'
-    
-    # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-    if not instigatorweaponslist == [] or manualweapon == 'true':
-        instigatorfight = int(instigatorfight) + 1
-    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
-    if not targetweaponslist == []:
-        targetfight = int(targetfight) + 1
-    
-    # instigator gets 1 for surprise
-    instigatorfight = int(instigatorfight) + 1
-
-    # XP difference
-    if int(instigatorxp) > int(targetxp):
-        instigatorfight = int(instigatorfight) + 1
-    elif int(instigatorxp) < int(targetxp):
-        targetfight = int(targetfight) + 1
-    elif int(instigatorxp) == int(targetxp):
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-    else:
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-        
-    ## more kills
-    if int(instigatorkills) > int(targetkills):
-        instigatorfight = int(instigatorfight) + 1
-    elif int(instigatorkills) < int(targetkills):
-        targetfight = int(targetfight) + 1
-    elif int(instigatorkills) == int(targetkills):
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-    else:
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
+    ## each person gets one diceroll
+    instigatorfight = 1
+    targetfight = 1
     
     ## Random Number
     flip = randint(0, 1)
-    if (flip == 0):
-        instigatorfight = int(instigatorfight) + 1
+    if flip == 0:
+        instigatorfight = instigatorfight + 1
     else:
-        targetfight = int(targetfight) + 1
+        targetfight = targetfight + 1
     
-    ## Dice Roll
+    # Most XP gets an extra roll
+    instigatorxp = get_database_value(bot, instigator, 'xp')
+    targetxp = get_database_value(bot, target, 'xp')
+    if int(instigatorxp) > int(targetxp):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorxp) < int(targetxp):
+        targetfight = targetfight + 1
+    
+    ## More Kills Gets an extra roll
+    instigatorkills = get_database_value(bot, instigator, 'kills')
+    targetkills = get_database_value(bot, target, 'kills')
+    if int(instigatorkills) > int(targetkills):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorkills) < int(targetkills):
+        targetfight = targetfight + 1
+        
+    ## Least Respawns Gets an extra roll
+    instigatorrespawns = get_database_value(bot, instigator, 'respawns')
+    targetrespawns = get_database_value(bot, target, 'respawns')
+    if int(instigatorrespawns) < int(targetrespawns):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorrespawns) > int(targetrespawns):
+        targetfight = targetfight + 1
+    
+    # extra roll for using the weaponslocker or manual weapon usage
+    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
+    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
+    if instigatorweaponslist != [] or manualweapon == 'true':
+        instigatorfight = instigatorfight + 1
+    if targetweaponslist != []:
+        targetfight = targetfight + 1
+
+    bot.say('instigator rolls ' + str(instigatorfight))
+    bot.say('target rolls ' + str(targetfight))
+    
+    ## Dice Roll (instigator d20, target d19)
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
         instigatorfightroll = diceroll(20)
+        bot.say('instigator roll number ' + str(instigatorfight) + " produced " + str(instigatorfightroll))
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
-        targetfightroll = diceroll(20)
+        targetfightroll = diceroll(19)
+        bot.say('target roll number ' + str(targetfight) + " produced " + str(targetfightroll))
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
  
     ## tie breaker
     if instigatorfight == targetfight:
+        bot.say('tie breaker')
         tiebreaker = randint(0, 1)
         if (tiebreaker == 0):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-            
+    
+    bot.say('instigator best ' + str(instigatorfight))
+    bot.say('target best ' + str(targetfight))
+    
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
