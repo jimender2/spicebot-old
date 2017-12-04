@@ -138,6 +138,7 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 'last':
+        totalarray = totalarray -2
         triggerarg = str(triggerargsarray[totalarray])
     else:
         number = int(number) - 1
