@@ -130,6 +130,7 @@ def get_trigger_arg(triggerargsarray, number):
         elif "^" in str(number):
             rangea = number.split("^", 1)[0]
             rangeb = number.split("^", 1)[1]
+            bot.say(str(rangea) + " " + str(rangeb))
         elif number == 0:
             rangea = 1
             rangeb = totalarray
