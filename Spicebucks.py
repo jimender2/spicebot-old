@@ -56,7 +56,7 @@ def spicebucksmoney(bot, target, plusminus, amount):
         inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
         if plusminus == 'plus':
             bot.db.set_nick_value(target, plusminus, inbank + amount)
-        elif plusminus == 'minus'
+        elif plusminus == 'minus':
             bot.db.set_nick_value(target, plusminus, inbank - amount)
     else:
         bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
