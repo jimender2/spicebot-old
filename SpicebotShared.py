@@ -108,11 +108,11 @@ def create_args_array(fullstring):
 
 def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
+    totalarray = totalarray + 2
     triggerarg = ''
     if str(number).endswith("+"):
         numsplit = re.sub(r"\+", '', str(number))
         numsplit = int(numsplit)
-        totalarray = totalarray + 1
         for i in range(numsplit,totalarray):
             arg = get_trigger_arg(triggerargsarray, i)
             if triggerarg != '':
