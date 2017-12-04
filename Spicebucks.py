@@ -1,4 +1,5 @@
 import sopel.module
+import datetime
 from sopel import module, tools
 import sys
 import os
@@ -11,6 +12,8 @@ from SpicebotShared import *
 ### payday - Recieve a once a day payday amount (current Thought is 5 / day)
 ### bank - Check amount in bank
 ### transfer - Transfer money from one user to another
+
+#db, channel= current channel, 
 
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
@@ -25,12 +28,19 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     if commandused:
         if commandused.startswith('payday'):
-            spicebuckstransaction(bot, channel, 'SpiceBot', 'plus', 5)
+            
         elif commandused.startswith('bank'):
             bot.say(checkbank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
             bot.say('transfer money to another user')
+            
 ##### Lots to do
+
+def checkpayday(bot, target):
+    now = datetime.datetime.now()
+    datetoday = int(now.strftime("%Y%j"))
+    bot.say(datetoday)
+    return
 
 def spicebuckstransaction(instigator, target, plusminus, amount):
     ### use this to add or remove spicebucks from a user.  Returns True if successful
@@ -43,43 +53,4 @@ def checkbank(bot, nick):
     points = bot.db.get_nick_value(nick, 'spicebucks_spicebucks') or 1
     return points
 
-def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
-    target = tools.Identifier(target or '')
-    rando = randint(1, 666)
-    randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
-    if not target:
-        bot.say(str(randopoints) + "everyone")
-        channelpoints(bot, instigator, channel, rando, addminus)
-    else:
-        if target == 'all' or target == 'everybody' or target == 'everyone':
-            if not inchannel.startswith("#"):
-                bot.say('you must be in the room to give everyone points')
-            else:
-                bot.say(str(randopoints) + "everyone")
-                channelpoints(bot, instigator, channel, rando, addminus)
-        elif target == instigator:
-            bot.say('You can\'t adjust your own ' + pointstype + '!!')
-        elif target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm not sure who that is.")
-        else:
-            bot.say(str(randopoints) + target)
-            update_points(bot, target, rando, addminus)
-            if target != instigator and not inchannel.startswith("#"):
-                bot.notice(str(randopoints) + target, target)
-            
-def channelpoints(bot, instigator, channel, rando, addminus):
-    for u in bot.channels[channel].users:
-        errrbody = u
-        if errrbody != instigator:
-            update_points(bot, errrbody, rando, addminus)
-            
-def update_points(bot, nick, rando, addminus):
-    pointsgotten = get_points(bot, nick)
-    if addminus == 'up':
-        bot.db.set_nick_value(nick, 'points_points', pointsgotten + int(rando))
-    else:
-        bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando))
 
-def get_points(bot, nick):
-    points = bot.db.get_nick_value(nick, 'points_points') or 1
-    return points
