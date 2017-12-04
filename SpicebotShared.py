@@ -119,10 +119,10 @@ def get_trigger_arg(triggerargsarray, number):
             numsplit = int(numsplit) + 1
         elif str(number).endswith(">"):
             numsplit = re.sub(r">", '', str(number))
-            numsplit = int(numsplit) - 1
+            numsplit = int(numsplit)
         elif str(number).endswith("<"):
             numsplit = re.sub(r"<", '', str(number))
-            numsplit = int(numsplit)
+            numsplit = int(numsplit) - 1
         elif number == 0:
             numsplit = 1
         if numsplit <= totalarray:
