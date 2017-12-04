@@ -145,6 +145,14 @@ def get_trigger_arg(triggerargsarray, number):
     elif number == 'last':
         totalarray = totalarray -2
         triggerarg = str(triggerargsarray[totalarray])
+    elif str(number).endswith("!"):
+        for i in range(1,totalarray):
+            arg = get_trigger_arg(triggerargsarray, i)
+            if i != number:
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
     else:
         number = int(number) - 1
         try:
