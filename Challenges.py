@@ -1124,7 +1124,6 @@ def getwinner(bot, instigator, target, manualweapon):
  
     ## tie breaker
     if instigatorfight == targetfight:
-        bot.say('tie breaker')
         tiebreaker = randint(0, 1)
         if (tiebreaker == 0):
             instigatorfight = int(instigatorfight) + 1
