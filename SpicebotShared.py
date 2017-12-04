@@ -146,6 +146,7 @@ def get_trigger_arg(triggerargsarray, number):
         totalarray = totalarray -2
         triggerarg = str(triggerargsarray[totalarray])
     elif str(number).endswith("!"):
+        number = re.sub(r"!", '', str(number))
         for i in range(1,totalarray):
             if int(i) != int(number):
                 arg = get_trigger_arg(triggerargsarray, i)
