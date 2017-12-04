@@ -40,7 +40,7 @@ def checkpayday(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     databasecolumn = str('spicebucks_payday')
-    lastpayday = bot.db.get_nick_value(trigger.nick, databasecolumn) or 0
+    lastpayday = bot.db.get_nick_value(target, databasecolumn) or 0
     if lastpayday == 0 or lastpayday < datetoday:
         databasecolumn = str('challenges_' + databasekey)
         bot.db.set_nick_value(nick, 'spicebucks_payday', datetoday)
