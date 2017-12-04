@@ -18,6 +18,7 @@ def execute_main(bot, trigger, triggerargsarray):
     newvaluec = get_trigger_arg(triggerargsarray, '5<')
     newvalued = get_trigger_arg(triggerargsarray, '5>')
     newvaluee = get_trigger_arg(triggerargsarray, 'last')
+    newvaluef = get_trigger_arg(triggerargsarray, '5^7')
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     for i in range(0,totalarray):
@@ -43,3 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("simulating arg last " + str(newvaluee))
     else:
         bot.say("can't simulate arg last as it returns empty values.")
+    if newvaluef != '':
+        bot.say("simulating arg 5^7 " + str(newvaluef))
+    else:
+        bot.say("can't simulate arg 5^7 as it returns empty values.")
