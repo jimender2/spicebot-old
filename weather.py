@@ -4,13 +4,13 @@
 # Licensed under the Eiffel Forum License 2.
 from __future__ import unicode_literals, absolute_import, print_function, division
 
-#from sopel.module import commands, example, NOLIMIT
+from sopel.module import commands, example, NOLIMIT
 import sopel.module
 #import requests
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+#moduledir = os.path.dirname(__file__)
+#sys.path.append(moduledir)
 
 from SpicebotShared import *
 import requests
