@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     if commandused:
         if commandused.startswith('payday'):
-            spicebuckstransaction(bot, channel, 'SpiceBot', 'plus', 5
+            spicebuckstransaction(bot, channel, 'SpiceBot', 'plus', 5)
         elif commandused.startswith('bank'):
             bot.say(checkbank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
