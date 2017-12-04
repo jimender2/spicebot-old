@@ -240,7 +240,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         set_botdatabase_value(bot, target, 'disenable', '')
                         adjustment = 'now'
-                        set_timeout(bot, target)
+                        set_botdatabase_value(bot, target, 'lastopttime', now)
                 message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
                 bot.say(message)
 
