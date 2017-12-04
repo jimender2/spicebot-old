@@ -110,7 +110,7 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
-    if number == 0 or str(number).endswith("+") or str(number).endswith("-"):
+    if number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
             numsplit = re.sub(r"\+", '', str(number))
             numsplit = int(numsplit)
@@ -118,10 +118,10 @@ def get_trigger_arg(triggerargsarray, number):
             numsplit = re.sub(r"-", '', str(number))
             numsplit = int(numsplit) + 1
         elif str(number).endswith(">"):
-            numsplit = re.sub(r"\+", '', str(number))
+            numsplit = re.sub(r">", '', str(number))
             numsplit = int(numsplit) - 1
         elif str(number).endswith("<"):
-            numsplit = re.sub(r"-", '', str(number))
+            numsplit = re.sub(r"<", '', str(number))
             numsplit = int(numsplit)
         elif number == 0:
             numsplit = 1
@@ -133,7 +133,7 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     else:
-        number = number - 1
+        number = int(number) - 1
         try:
             triggerarg = triggerargsarray[number]
         except IndexError:
