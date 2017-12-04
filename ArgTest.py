@@ -14,9 +14,10 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     newvalue = get_trigger_arg(triggerargsarray, '5+')
-    arg = get_trigger_arg(triggerargsarray, 4)
     totalarray = len(triggerargsarray)
     for i in range(1,totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
         bot.say("arg" + str(i) + " = " + str(arg))
     bot.say("simulating arg5+ " + str(newvalue))
+    arg = get_trigger_arg(triggerargsarray, 4)
+    bot.say(str(arg))
