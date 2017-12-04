@@ -120,6 +120,13 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
+    elif number == 0:
+        for i in range(0,totalarray):
+            arg = get_trigger_arg(triggerargsarray, i)
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + arg)
+            else:
+                triggerarg = str(arg)
     else:
         number = number - 1
         try:
