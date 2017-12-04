@@ -65,22 +65,22 @@ def checkpayday(bot, target):
         bot.say("You've already been paid today. Now go do some work.")
         
 def spicebucks(bot, target, plusminus, amount):
-    success = false
+    success = 'false'
     if type(amount) == int:
         inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
         if plusminus == 'plus':
             bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
-            success = true
+            success = 'true'
         elif plusminus == 'minus':
             if inbank - amount < 0:
                 bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
-                success = false
+                success = 'false'
             else:
                 bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
-                success = true            
+                success = 'true'            
     else:
         bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
-        success = false
+        success = 'false'
     return success
 
 def bank(bot, nick):
@@ -95,7 +95,7 @@ def transfer(bot, instigator, target, amount):
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm sorry, I do not know who you want to transfer money to.")
             else:
-                if spicebucks(bot, instigator, 'minus', amount) == true:
+                if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
                     bot.say("You successfully transfered " + amount + " to " + target + ".")
 
