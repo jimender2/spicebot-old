@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def checkpayday(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    bot.say(datetoday)
+    bot.say(str(datetoday))
 
 def spicebuckstransaction(instigator, target, plusminus, amount):
     ### use this to add or remove spicebucks from a user.  Returns True if successful
