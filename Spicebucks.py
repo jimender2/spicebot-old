@@ -61,15 +61,8 @@ def spicebucksmoney(bot, target, plusminus, amount):
     else:
         bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
 
-def spicebuckstransaction(instigator, target, plusminus, amount):
-    ### use this to add or remove spicebucks from a user.  Returns True if successful
-    ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
-    #def set_database_value(bot, nick, databasekey, value):
-    databasecolumn = str('challenges_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
-    
-def checkbank(bot, nick):
-    points = bot.db.get_nick_value(nick, 'spicebucks_spicebucks') or 1
-    return points
+def bank(bot, nick):
+    spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
+    bot.say("You have " + str(spicebucks) + " in the bank.")
 
 
