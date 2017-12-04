@@ -72,7 +72,7 @@ def spicebucks(bot, target, plusminus, amount):
             bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
             success = true
         elif plusminus == 'minus':
-            if inbank - amount < 0
+            if inbank - amount < 0:
                 bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
                 success = false
             else:
