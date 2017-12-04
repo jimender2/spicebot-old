@@ -121,7 +121,7 @@ def get_trigger_arg(triggerargsarray, number):
             rangeb = int(rangeb) + 1
         elif str(number).endswith(">"):
             rangea = re.sub(r">", '', str(number))
-            rangea = int(rangea)
+            rangea = int(rangea) + 1
             rangeb = totalarray
         elif str(number).endswith("<"):
             rangea = 1
@@ -137,6 +137,8 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
+    elif number == 'last':
+        triggerarg = triggerargsarray[totalarray]
     else:
         number = int(number) - 1
         try:
