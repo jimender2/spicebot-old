@@ -116,6 +116,12 @@ def get_wind(parsed):
 @commands('weather', 'wea')
 @example('.weather London')
 def weather(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
+#def weather(bot, trigger):
     """.weather location - Show the weather at the given location."""
 
     location = trigger.group(2)
