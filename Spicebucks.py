@@ -46,7 +46,7 @@ def checkpayday(bot, target):
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
-        spicebucks(bot, target, plus, 5)
+        spicebucks(bot, target, 'plus', 5)
         bot.say("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
