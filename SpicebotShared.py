@@ -127,7 +127,7 @@ def get_trigger_arg(triggerargsarray, number):
             rangea = 1
             rangeb = re.sub(r"<", '', str(number))
             rangeb = int(rangeb)
-        elif "^" in number:
+        elif "^" in str(number):
             rangea = number.split("^", 1)[0]
             rangeb = number.split("^", 1)[1]
         elif number == 0:
