@@ -110,7 +110,7 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
-    if number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
+    if "^" in number or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
             rangea = re.sub(r"\+", '', str(number))
             rangea = int(rangea)
@@ -127,6 +127,9 @@ def get_trigger_arg(triggerargsarray, number):
             rangea = 1
             rangeb = re.sub(r"<", '', str(number))
             rangeb = int(rangeb)
+        elif "^" in number:
+            rangea = number.split("^", 1)[0]
+            rangeb = number.split("^", 1)[1]
         elif number == 0:
             rangea = 1
             rangeb = totalarray
