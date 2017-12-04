@@ -16,7 +16,7 @@ def execute_main(bot, trigger, triggerargsarray):
     newvalue = get_trigger_arg(triggerargsarray, '5+')
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
-    for i in range(1,totalarray):
+    for i in range(0,totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
         bot.say("arg" + str(i) + " = " + str(arg))
     if newvalue != '':
