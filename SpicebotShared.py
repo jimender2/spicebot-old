@@ -131,7 +131,7 @@ def get_trigger_arg(triggerargsarray, number):
             rangea = number.split("^", 1)[0]
             rangeb = number.split("^", 1)[1]
             rangea = int(rangea)
-            rangeb = int(rangeb)
+            rangeb = int(rangeb) + 1
         elif number == 0:
             rangea = 1
             rangeb = totalarray
