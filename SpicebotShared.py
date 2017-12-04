@@ -121,7 +121,7 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 0:
-        for i in range(0,totalarray):
+        for i in range(1,totalarray):
             arg = get_trigger_arg(triggerargsarray, i)
             if triggerarg != '':
                 triggerarg = str(triggerarg + " " + arg)
