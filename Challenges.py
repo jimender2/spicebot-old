@@ -40,25 +40,17 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Basic Vars that we will use
     instigator = trigger.nick
     inchannel = trigger.sender
-    fullcommandused = trigger.group(2)
+    fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     for c in bot.channels:
         channel = c
     now = time.time()
 
     ## bot does not need stats or backpack items
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, '')
+    refreshbot(bot)
             
 ###### Weapons migrate
     weaponsmigrate(bot, instigator)
-    
-    ## Make sure Opt-In time is there
-    opttime = get_database_value(bot, instigator, 'opttime')
-    if not opttime:
-        set_database_value(bot, instigator, 'opttime', now)
     
     ## If Not a target or a command used
     if not fullcommandused:
@@ -491,10 +483,7 @@ def execute_main(bot, trigger, triggerargsarray):
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
     
     ## bot does not need stats or backpack items
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, '')
+    refreshbot(bot)
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
@@ -782,6 +771,12 @@ def healthcheck(bot, nick):
     if not health and nick != bot.nick:
         set_database_value(bot, nick, 'health', '1000')
 
+def refreshbot(bot):
+    for x in challengestatsadminarray:
+        statset = x
+        if statset != 'disenable':
+            set_database_value(bot, bot.nick, x, '')
+            
 ##########
 ## Time ##
 ##########
