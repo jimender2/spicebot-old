@@ -52,14 +52,23 @@ def checkpayday(bot, target):
         bot.say("You've already been paid today. Now go do some work.")
         
 def spicebucks(bot, target, plusminus, amount):
+    success = false
     if type(amount) == int:
         inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
         if plusminus == 'plus':
             bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
+            success = true
         elif plusminus == 'minus':
-            bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
+            if inbank - amount < 0
+                bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
+                success = false
+            else:
+                bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
+                success = true            
     else:
         bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
+        success = false
+    return success
 
 def bank(bot, nick):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
