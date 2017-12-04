@@ -26,15 +26,28 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if commandused:
-        if commandused.startswith('payday'):
+    if arg:
+        if arg1 == 'payday':
             checkpayday(bot,trigger.nick)
-        elif commandused.startswith('reset'): ##to be removed
+        elif arg1 == 'reset': #to be removed
             reset(bot,trigger.nick)
-        elif commandused.startswith('bank'):
+        elif arg1 == 'bank':
             bank(bot, trigger.nick)
-        elif commandused.startswith('transfer'):
-            bot.say('transfer money to another user')
+        elif arg1 == 'transfer':
+            if arg2 and arg3:
+                transfer(bot, trigger.nick, arg2, amount)
+            else:
+                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+            
+    #if commandused:
+    #    if commandused.startswith('payday'):
+    #        checkpayday(bot,trigger.nick)
+    #    elif commandused.startswith('reset'): ##to be removed
+    #        reset(bot,trigger.nick)
+    #    elif commandused.startswith('bank'):
+    #        bank(bot, trigger.nick)
+    #    elif commandused.startswith('transfer'):
+    #        bot.say('transfer money to another user')
             
 ##### Lots to do
 def reset(bot, target): ##### to be removed, verify payday
@@ -74,4 +87,15 @@ def bank(bot, nick):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
     bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")
 
+def transfer(bot, instigator, target, amount)
+    if not type(amount) == int:
+        if amount <= 0:
+            bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
+        else:
+        if target.lower() not in bot.privileges[channel.lower()]:
+            bot.say("I'm sorry, I do not know who you want to transfer money to.")
+        else
+            if spicebucks(bot, instigator, 'minus', amount) == true:
+                spicebucks(bot, target, 'plus', amount)
+                bot.say("You successfully transfered " + amount + " to " + target + ".")
 
