@@ -18,7 +18,7 @@ def execute_main(bot, trigger, triggerargsarray):
     newvaluec = get_trigger_arg(triggerargsarray, '5<')
     newvalued = get_trigger_arg(triggerargsarray, '5>')
     newvaluee = get_trigger_arg(triggerargsarray, 'last')
-    newvaluef = get_trigger_arg(triggerargsarray, '5^7')
+    newvaluef = get_trigger_argb(bot, triggerargsarray, '5^7')
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     for i in range(0,totalarray):
