@@ -39,7 +39,20 @@ def execute_main(bot, trigger, triggerargsarray):
 def checkpayday(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    bot.say(str(datetoday))
+    databasecolumn = str('spicebucks_payday')
+    lastpayday = bot.db.get_nick_value(trigger.nick, databasecolumn) or 0
+    if lastpayday == 0 or lastpayday < datetoday:
+        databasecolumn = str('challenges_' + databasekey)
+        bot.db.set_nick_value(nick, 'spicebucks_payday', datetoday)
+        #add function to give them the money
+        bot.say("You haven't been paid yet today. I'll show you the money, eventually...") #remove when above completed
+    elif lastpayday == datetoday:
+        bot.say("You've already been paid today. Now go do some work.")
+        
+        
+        
+    
+    #bot.say(str(datetoday))
 
 def spicebuckstransaction(instigator, target, plusminus, amount):
     ### use this to add or remove spicebucks from a user.  Returns True if successful
