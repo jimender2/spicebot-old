@@ -26,16 +26,16 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if arg1:
-        if arg1 == 'payday':
+    if arg[0]:
+        if arg[1] == 'payday':
             checkpayday(bot,trigger.nick)
-        elif arg1 == 'reset': #to be removed
+        elif arg[1] == 'reset': #to be removed
             reset(bot,trigger.nick)
-        elif arg1 == 'bank':
+        elif arg[1] == 'bank':
             bank(bot, trigger.nick)
-        elif arg1 == 'transfer':
-            if arg2 and arg3:
-                transfer(bot, trigger.nick, arg2, amount)
+        elif arg[1] == 'transfer':
+            if arg[2] and arg[3]:
+                transfer(bot, trigger.nick, arg[2], amount)
             else:
                 bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
