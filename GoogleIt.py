@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
   else:
     data = trigger.group(2).strip()
     data.lower()
-    data=data.replace(' ', '%20')
-    data=data.replace('site:', 'site%3A')
+    data=data.replace(' ', '%20').replace('site:', 'site%3A')
+    #data=data.replace('site:', 'site%3A')
     var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
     bot.say(str(var.url))	
