@@ -1,14 +1,14 @@
 # coding=utf-8
-# from __future__ import unicode_literals, absolute_import, print_function, division
+# Copyright 2008, Sean B. Palmer, inamidst.com
+# Copyright 2012, Elsie Powell, embolalia.com
+# Licensed under the Eiffel Forum License 2.
+from __future__ import unicode_literals, absolute_import, print_function, division
 
-import sopel.module 
-import sys
-import os
-
-#commands, example, NOLIMIT
+from sopel.module import commands, example, NOLIMIT
 
 import requests
 import xmltodict
+
 
 def woeid_search(query):
     """
