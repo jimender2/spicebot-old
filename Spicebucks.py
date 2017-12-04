@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say('transfer money to another user')
 ##### Lots to do
 
-def spicebuckstransaction(from, to, plusminus, amount):
+def spicebuckstransaction(instigator, target, plusminus, amount):
     ### use this to add or remove spicebucks from a user.  Returns True if successful
     ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
     #def set_database_value(bot, nick, databasekey, value):
