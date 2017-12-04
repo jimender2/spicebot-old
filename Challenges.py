@@ -994,15 +994,15 @@ def weaponformatter(bot, weapon):
     if weapon == '':
         weapon = weapon
     elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
-        weapon = str(' with ' + weapon)
+        weapon = str('with ' + weapon)
     elif weapon.split(' ', 1)[0].endswith("'s"):
-        weapon = str(' with ' + weapon)
+        weapon = str('with ' + weapon)
     elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
-        weapon = str(' with an ' + weapon)
+        weapon = str('with an ' + weapon)
     elif weapon.lower().startswith('with'):
-        weapon = str(" " + weapon)
+        weapon = str(weapon)
     else:
-        weapon = str(' with a ' + weapon)
+        weapon = str('with a ' + weapon)
     return weapon
 
 #################
