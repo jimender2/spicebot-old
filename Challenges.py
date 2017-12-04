@@ -1131,9 +1131,6 @@ def getwinner(bot, instigator, target, manualweapon):
         else:
             targetfight = int(targetfight) + 1
     
-    bot.say('instigator best ' + str(instigatorfight))
-    bot.say('target best ' + str(targetfight))
-    
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
