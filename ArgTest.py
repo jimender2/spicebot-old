@@ -13,9 +13,13 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    totalarray = len(triggerargsarray)
-    for i in range(1,totalarray):
-        arg = get_trigger_arg(triggerargsarray, i)
-        bot.say(str(arg))
-
+    newvalue = get_trigger_arg(triggerargsarray, '4+')
+    arg = get_trigger_arg(triggerargsarray, 4)
+    #totalarray = len(triggerargsarray)
+    #for i in range(1,totalarray):
+    #    globals()['arg%s' % i] = get_trigger_arg(triggerargsarray, i)
+        #arg = get_trigger_arg(triggerargsarray, i)
+        #bot.say(str(arg))
+    bot.say(str(newvalue))
+    bot.say(str(arg))
 

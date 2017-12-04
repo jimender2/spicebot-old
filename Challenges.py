@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
     fullcommandused = trigger.group(2)
-    commandortarget = trigger.group(3)
+    commandortarget = get_trigger_arg(triggerargsarray, 1)
     for c in bot.channels:
         channel = c
     now = time.time()
@@ -66,13 +66,13 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in bot.privileges[channel.lower()]:
-        commandused = trigger.group(3)
-        target = trigger.group(4) or trigger.nick
-        targettext = trigger.group(4) or "that person"
+        commandused = commandortarget
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        targettext = get_trigger_arg(triggerargsarray, 2) or "that person"
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['everyone','add','del','inv','health','attack','instakill']
+        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
@@ -93,10 +93,17 @@ def execute_main(bot, trigger, triggerargsarray):
             
         ## and, continue
         else:
-            targetopttime = get_timesince_duels(bot, target, 'opttime')
+            
+            ## instigator
             lastfought = get_database_value(bot, instigator, 'lastfought')
             instigatortime = get_timesince_duels(bot, instigator, 'timeout')
-            targettime = get_timesince_duels(bot, target, 'timeout')
+            
+            ## target
+            if target not in nontargetarray:
+                targetopttime = get_timesince_duels(bot, target, 'opttime')
+                targettime = get_timesince_duels(bot, target, 'timeout')
+            
+            ## Channel
             channeltime = get_timesince_duels(bot, channel, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
@@ -149,7 +156,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         for x in targetarray:
                             if x != instigator:
-                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now)
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
                 
@@ -165,7 +172,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     randomselected = random.randint(0,len(targetarray) - 1)
                     target = str(targetarray [randomselected])
-                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
 
             ## On/off
             elif commandused == 'on' or commandused == 'off':
@@ -248,26 +255,35 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Stats Admin
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
-                commandtrimmed = trigger.group(5)
-                statset = trigger.group(6)
-                newvalue = str(fullcommandused.split(statset, 1)[1]).strip()
-                if commandtrimmed not in statsadminarray:
+                if target in statsadminarray:
+                    target = instigator
+                    settype = get_trigger_arg(triggerargsarray, 2)
+                    statset = get_trigger_arg(triggerargsarray, 3)
+                    if settype == 'reset':
+                        newvalue = ''
+                    else:
+                        newvalue = get_trigger_arg(triggerargsarray, 4)
+                else:
+                    settype = get_trigger_arg(triggerargsarray, 3)
+                    statset = get_trigger_arg(triggerargsarray, 4)
+                    if settype == 'reset':
+                        newvalue = ''
+                    else:
+                        newvalue = get_trigger_arg(triggerargsarray, 5)
+                if settype not in statsadminarray:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
                 elif statset not in challengestatsadminarray and statset != 'all':
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                elif commandtrimmed == 'set' and not newvalue:
+                elif settype == 'set' and not newvalue:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
                 else:
-                    if not newvalue:
-                        newvalue = ''
                     if target == 'everyone':
                         for u in bot.channels[channel].users:
-                            etarget = u
                             if statset == 'all':
                                 for x in challengestatsadminarray:
-                                    set_database_value(bot, etarget, x, newvalue)
+                                    set_database_value(bot, u, x, newvalue)
                             else:
-                                set_database_value(bot, etarget, statset, newvalue)
+                                set_database_value(bot, u, statset, newvalue)
                     else:
                         if statset == 'all':
                             for x in challengestatsadminarray:
@@ -323,8 +339,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
             ## Loot Items Exchange 3 to 1
             elif commandused == 'tradeloot':
-                tradeinitem = trigger.group(4)
-                tradeforitem = trigger.group(5)
+                tradeinitem = get_trigger_arg(triggerargsarray, 2)
+                tradeforitem = get_trigger_arg(triggerargsarray, 3)
                 if not tradeinitem:
                     bot.notice(instigator + ", What do you want to trade?", instigator)
                 elif not tradeforitem:
@@ -366,8 +382,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                weaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-                adjustmentdirection = trigger.group(4)
+                validdirectionarray = ['inv','add','del']
+                if target in validdirectionarray:
+                    target = instigator
+                    adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                    weaponchange = get_trigger_arg(triggerargsarray, '3+')
+                else:
+                    adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
+                    weaponchange = get_trigger_arg(triggerargsarray, '4+')
+                weaponslist = get_database_value(bot, target, 'weaponslocker') or []
                 if not adjustmentdirection:
                     bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif adjustmentdirection == 'inv':
@@ -385,9 +408,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         weaponline = " ".join(chunks[i:i + per_line])
                         bot.notice(str(weaponline), instigator)
                     if weaponline == '':
-                        bot.say('You do not appear to have anything in your weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
+                        bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 else:
-                    weaponchange = str(fullcommandused.split(adjustmentdirection, 1)[1]).strip()
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
                     else:
@@ -400,18 +422,18 @@ def execute_main(bot, trigger, triggerargsarray):
                                 weaponlockerstatus = 'now'
                             elif adjustmentdirection == 'del':
                                 weaponlockerstatus = 'no longer'
-                            adjust_database_array(bot, instigator, weaponchange, 'weaponslocker', adjustmentdirection)
-                        message = str(weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
+                            adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
+                        message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                         bot.say(message)
         
             ## Magic Attack
             elif commandused == 'magic':
                 magicoptions = ['attack','instakill','health']
-                magicusage = trigger.group(4)
+                magicusage = get_trigger_arg(triggerargsarray, 2)
                 if magicusage not in magicoptions:
                     bot.say('Magic uses include: attack, instakill, health')
                 else:
-                    target = trigger.group(5)
+                    target = get_trigger_arg(triggerargsarray, 3)
                     if not target:
                         target = trigger.nick
                     mana = get_database_value(bot, instigator, 'mana')
@@ -462,11 +484,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
     else:
         OSDTYPE = 'say'
-        target = trigger.group(3)
+        target = get_trigger_arg(triggerargsarray, 1)
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
     
     ## bot does not need stats or backpack items
     for x in challengestatsadminarray:
@@ -474,7 +496,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if statset != 'disenable':
             set_database_value(bot, bot.nick, x, '')
         
-def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now):
+def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
     ## Weapons migrate
     weaponsmigrate(bot, instigator)
@@ -504,7 +526,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     damage = damagedone(bot, target)
 
     ## Manual weapon
-    weapon = str(fullcommandused.split(trigger.group(3), 1)[1]).strip()
+    weapon = get_trigger_arg(triggerargsarray, '2+')
     if not weapon:
         manualweapon = 'false'
     else:
@@ -529,7 +551,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         else:
             weapon = weaponofchoice(bot, winner)
     weapon = weaponformatter(bot, weapon)
-           
+    if weapon != '':
+        weapon = str(" " + weapon)
+        
     ## Update Wins and Losses
     if instigator != target:
         adjust_database_value(bot, winner, 'wins', defaultadjust)
@@ -558,11 +582,11 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         whokilledwhom(bot, winner, loser)
         if instigator == target:
             loser = targetname
-        winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+        winnermsg = str(winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
     else:
         if instigator == target:
             loser = targetname
-        winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
+        winnermsg = str(winner + " hits " + loser + weapon + ', dealing ' + str(damage) + ' damage.')
         
     ## new pepper level?
     pepperstatuschangemsg = ''
@@ -975,6 +999,8 @@ def weaponformatter(bot, weapon):
         weapon = str('with ' + weapon)
     elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
         weapon = str('with an ' + weapon)
+    elif weapon.lower().startswith('with'):
+        weapon = str(weapon)
     else:
         weapon = str('with a ' + weapon)
     return weapon
@@ -1038,67 +1064,51 @@ def get_pepper(bot, nick):
 ###################
 
 def getwinner(bot, instigator, target, manualweapon):
-    instigatorxp = get_database_value(bot, instigator, 'xp')
-    if not instigatorxp:
-        instigatorxp = '1'
-    targetxp = get_database_value(bot, target, 'xp')
-    if not targetxp:
-        targetxp = '1'
     
-    instigatorkills = get_database_value(bot, instigator, 'kills')
-    if not instigatorkills:
-        instigatorkills = '1'
-    targetkills = get_database_value(bot, target, 'kills')
-    if not targetkills:
-        targetkills = '1'
-    
-    ## each person
-    instigatorfight = '1'
-    targetfight = '1'
-    
-    # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-    if not instigatorweaponslist == [] or manualweapon == 'true':
-        instigatorfight = int(instigatorfight) + 1
-    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
-    if not targetweaponslist == []:
-        targetfight = int(targetfight) + 1
-    
-    # instigator gets 1 for surprise
-    instigatorfight = int(instigatorfight) + 1
-
-    # XP difference
-    if int(instigatorxp) > int(targetxp):
-        instigatorfight = int(instigatorfight) + 1
-    elif int(instigatorxp) < int(targetxp):
-        targetfight = int(targetfight) + 1
-    elif int(instigatorxp) == int(targetxp):
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-    else:
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-        
-    ## more kills
-    if int(instigatorkills) > int(targetkills):
-        instigatorfight = int(instigatorfight) + 1
-    elif int(instigatorkills) < int(targetkills):
-        targetfight = int(targetfight) + 1
-    elif int(instigatorkills) == int(targetkills):
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
-    else:
-        instigatorfight = int(instigatorfight) + 1
-        targetfight = int(targetfight) + 1
+    ## each person gets one diceroll
+    instigatorfight = 1
+    targetfight = 1
     
     ## Random Number
     flip = randint(0, 1)
-    if (flip == 0):
-        instigatorfight = int(instigatorfight) + 1
+    if flip == 0:
+        instigatorfight = instigatorfight + 1
     else:
-        targetfight = int(targetfight) + 1
+        targetfight = targetfight + 1
     
-    ## Dice Roll
+    # Most XP gets an extra roll
+    instigatorxp = get_database_value(bot, instigator, 'xp')
+    targetxp = get_database_value(bot, target, 'xp')
+    if int(instigatorxp) > int(targetxp):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorxp) < int(targetxp):
+        targetfight = targetfight + 1
+    
+    ## More Kills Gets an extra roll
+    instigatorkills = get_database_value(bot, instigator, 'kills')
+    targetkills = get_database_value(bot, target, 'kills')
+    if int(instigatorkills) > int(targetkills):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorkills) < int(targetkills):
+        targetfight = targetfight + 1
+        
+    ## Least Respawns Gets an extra roll
+    instigatorrespawns = get_database_value(bot, instigator, 'respawns')
+    targetrespawns = get_database_value(bot, target, 'respawns')
+    if int(instigatorrespawns) < int(targetrespawns):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorrespawns) > int(targetrespawns):
+        targetfight = targetfight + 1
+    
+    # extra roll for using the weaponslocker or manual weapon usage
+    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
+    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
+    if instigatorweaponslist != [] or manualweapon == 'true':
+        instigatorfight = instigatorfight + 1
+    if targetweaponslist != []:
+        targetfight = targetfight + 1
+    
+    ## Dice Roll (instigator d20, target d19)
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
@@ -1107,19 +1117,20 @@ def getwinner(bot, instigator, target, manualweapon):
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
-        targetfightroll = diceroll(20)
+        targetfightroll = diceroll(19)
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
  
     ## tie breaker
     if instigatorfight == targetfight:
+        bot.say('tie breaker')
         tiebreaker = randint(0, 1)
         if (tiebreaker == 0):
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-            
+    
     ## Compare
     if int(instigatorfight) > int(targetfight):
         winner = instigator
@@ -1155,3 +1166,20 @@ def get_winlossratio(bot,target):
 def diceroll(howmanysides):
     diceroll = randint(0, howmanysides)
     return diceroll
+
+## Triggerargs
+
+#def create_args_array(fullstring):
+#    triggerargsarray = []
+#    if fullstring:
+#        for word in fullstring.split():
+#            triggerargsarray.append(word)
+#    return triggerargsarray
+
+#def get_trigger_arg(triggerargsarray, number):
+#    number = number - 1
+#    try:
+#        triggerarg = triggerargsarray[number]
+#    except IndexError:
+#        triggerarg = ''
+#    return triggerarg

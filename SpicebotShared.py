@@ -5,7 +5,7 @@ from sopel.module import ADMIN
 from sopel.module import event, rule
 import time
 import os
-import sys
+import sys, re
 import fnmatch
 from os.path import exists
 
@@ -107,11 +107,24 @@ def create_args_array(fullstring):
     return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
-    number = number - 1
-    try:
-        triggerarg = triggerargsarray[number]
-    except IndexError:
-        triggerarg = ''
+    totalarray = len(triggerargsarray)
+    triggerarg = ''
+    if str(number).endswith("+"):
+        numsplit = re.sub(r"\+", '', str(number))
+        numsplit = int(numsplit)
+        totalarray = totalarray + 1
+        for i in range(numsplit,totalarray):
+            arg = get_trigger_arg(triggerargsarray, i)
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + arg)
+            else:
+                triggerarg = str(arg)
+    else:
+        number = number - 1
+        try:
+            triggerarg = triggerargsarray[number]
+        except IndexError:
+            triggerarg = ''
     return triggerarg
 
 ##############
