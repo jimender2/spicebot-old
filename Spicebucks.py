@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if commandused:
         if commandused.startswith('payday'):
             checkpayday(bot,trigger.nick)
-        elif commandused.startswith('paydayreset'): ##to be removed
+        elif commandused.startswith('reset'): ##to be removed
             paydayreset(bot,trigger.nick)
         elif commandused.startswith('bank'):
             bot.say(bank(bot, trigger.nick))
@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say('transfer money to another user')
             
 ##### Lots to do
-def paydayreset(bot, target): ##### to be removed, verify payday
+def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def checkpayday(bot, target):
