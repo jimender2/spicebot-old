@@ -112,21 +112,26 @@ def get_trigger_arg(triggerargsarray, number):
     triggerarg = ''
     if number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
-            numsplit = re.sub(r"\+", '', str(number))
-            numsplit = int(numsplit)
+            rangea = re.sub(r"\+", '', str(number))
+            rangea = int(rangea)
+            rangeb = totalarray
         elif str(number).endswith("-"):
-            numsplit = re.sub(r"-", '', str(number))
-            numsplit = int(numsplit) + 1
+            rangea = 1
+            rangeb = re.sub(r"-", '', str(number))
+            rangeb = int(rangeb) + 1
         elif str(number).endswith(">"):
-            numsplit = re.sub(r">", '', str(number))
-            numsplit = int(numsplit)
+            rangea = re.sub(r">", '', str(number))
+            rangea = int(rangea)
+            rangeb = totalarray
         elif str(number).endswith("<"):
-            numsplit = re.sub(r"<", '', str(number))
-            numsplit = int(numsplit) - 1
+            rangea = 1
+            rangeb = re.sub(r"<", '', str(number))
+            rangeb = int(rangeb)
         elif number == 0:
-            numsplit = 1
-        if numsplit <= totalarray:
-            for i in range(numsplit,totalarray):
+            rangea = 1
+            rangeb = totalarray
+        if rangea <= totalarray:
+            for i in range(rangea,rangeb):
                 arg = get_trigger_arg(triggerargsarray, i)
                 if triggerarg != '':
                     triggerarg = str(triggerarg + " " + arg)
