@@ -87,14 +87,14 @@ def bank(bot, nick):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
     bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")
 
-def transfer(bot, instigator, target, amount)
+def transfer(bot, instigator, target, amount):
     if not type(amount) == int:
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
         else:
         if target.lower() not in bot.privileges[channel.lower()]:
             bot.say("I'm sorry, I do not know who you want to transfer money to.")
-        else
+        else:
             if spicebucks(bot, instigator, 'minus', amount) == true:
                 spicebucks(bot, target, 'plus', amount)
                 bot.say("You successfully transfered " + amount + " to " + target + ".")
