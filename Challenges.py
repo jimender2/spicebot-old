@@ -551,7 +551,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         else:
             weapon = weaponofchoice(bot, winner)
     weapon = weaponformatter(bot, weapon)
-           
+    if weapon != '':
+        weapon = str(" " + weapon)
+        
     ## Update Wins and Losses
     if instigator != target:
         adjust_database_value(bot, winner, 'wins', defaultadjust)
@@ -580,11 +582,11 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         whokilledwhom(bot, winner, loser)
         if instigator == target:
             loser = targetname
-        winnermsg = str(winner + ' killed ' + loser + " with " + weapon + ' forcing a respawn!!')
+        winnermsg = str(winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
     else:
         if instigator == target:
             loser = targetname
-        winnermsg = str(winner + " hits " + loser + " " + weapon + ', dealing ' + str(damage) + ' damage.')
+        winnermsg = str(winner + " hits " + loser + weapon + ', dealing ' + str(damage) + ' damage.')
         
     ## new pepper level?
     pepperstatuschangemsg = ''
@@ -992,15 +994,15 @@ def weaponformatter(bot, weapon):
     if weapon == '':
         weapon = weapon
     elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
-        weapon = str('with ' + weapon)
+        weapon = str(' with ' + weapon)
     elif weapon.split(' ', 1)[0].endswith("'s"):
-        weapon = str('with ' + weapon)
+        weapon = str(' with ' + weapon)
     elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
-        weapon = str('with an ' + weapon)
+        weapon = str(' with an ' + weapon)
     elif weapon.lower().startswith('with'):
-        weapon = str(weapon)
+        weapon = str(" " + weapon)
     else:
-        weapon = str('with a ' + weapon)
+        weapon = str(' with a ' + weapon)
     return weapon
 
 #################
@@ -1105,22 +1107,17 @@ def getwinner(bot, instigator, target, manualweapon):
         instigatorfight = instigatorfight + 1
     if targetweaponslist != []:
         targetfight = targetfight + 1
-
-    bot.say('instigator rolls ' + str(instigatorfight))
-    bot.say('target rolls ' + str(targetfight))
     
     ## Dice Roll (instigator d20, target d19)
     instigatorfightarray = []
     targetfightarray = []
     while int(instigatorfight) > 0:
         instigatorfightroll = diceroll(20)
-        bot.say('instigator roll number ' + str(instigatorfight) + " produced " + str(instigatorfightroll))
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
         targetfightroll = diceroll(19)
-        bot.say('target roll number ' + str(targetfight) + " produced " + str(targetfightroll))
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
