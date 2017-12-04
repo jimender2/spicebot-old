@@ -147,8 +147,8 @@ def get_trigger_arg(triggerargsarray, number):
         triggerarg = str(triggerargsarray[totalarray])
     elif str(number).endswith("!"):
         for i in range(1,totalarray):
-            arg = get_trigger_arg(triggerargsarray, i)
-            if i != number:
+            if int(i) != int(number):
+                arg = get_trigger_arg(triggerargsarray, i)
                 if triggerarg != '':
                     triggerarg = str(triggerarg + " " + arg)
                 else:
