@@ -1,16 +1,12 @@
 # coding=utf-8
-# Copyright 2008, Sean B. Palmer, inamidst.com
-# Copyright 2012, Elsie Powell, embolalia.com
+# Based on the module by Sean B. Palmer, inamidst.com and Elsie Powell, embolalia.com
 # Licensed under the Eiffel Forum License 2.
 from __future__ import unicode_literals, absolute_import, print_function, division
 
-from sopel.module import commands, example, NOLIMIT
+#from sopel.module import commands, example, NOLIMIT
 import sopel.module
-#import requests
 import sys
 import os
-#moduledir = os.path.dirname(__file__)
-#sys.path.append(moduledir)
 
 from SpicebotShared import *
 import requests
@@ -128,7 +124,6 @@ def weather(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-#def weather(bot, trigger):
     """.weather location - Show the weather at the given location."""
 
     location = trigger.group(2)
@@ -166,6 +161,11 @@ def execute_main(bot, trigger, triggerargsarray):
 @commands('setlocation', 'setwoeid')
 @example('.setlocation Columbus, OH')
 def update_woeid(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        update_location(bot, trigger, triggerargsarray)
+    
+def update_location(bot, trigger, triggerargsarray):
     """Set your default weather location."""
     if not trigger.group(2):
         bot.reply('Give me a location, like "Washington, DC" or "London".')
