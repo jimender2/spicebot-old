@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     if commandused:
         if commandused.startswith('payday'):
-            
+            checkpayday(bot,trigger.nick)
         elif commandused.startswith('bank'):
             bot.say(checkbank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
