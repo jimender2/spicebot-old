@@ -18,10 +18,10 @@ def execute_main(bot, trigger, triggerargsarray):
     simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!']
     for i in range(0,totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
-        bot.say("arg" + str(i) + " = " + str(arg))
+        bot.say("arg " + str(i) + " = " + str(arg))
     for x in simulatedvaluearray:
         value = get_trigger_arg(triggerargsarray, x)
         if value != '':
-            bot.say("simulating arg-" + str(x) + " " + str(value))
+            bot.say("arg " + str(x) + " = " + str(value))
         else:
-            bot.say("can't simulate arg-" + str(x) + " as it returns empty values.")
+            bot.say("arg " + str(x) + " is empty")
