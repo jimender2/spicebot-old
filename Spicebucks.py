@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandused.startswith('paydayreset'): ##to be removed
             paydayreset(bot,trigger.nick)
         elif commandused.startswith('bank'):
-            bot.say(checkbank(bot, trigger.nick))
+            bot.say(bank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
             bot.say('transfer money to another user')
             
