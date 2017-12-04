@@ -29,18 +29,21 @@ def execute_main(bot, trigger, triggerargsarray):
     if commandused:
         if commandused.startswith('payday'):
             checkpayday(bot,trigger.nick)
+        elif commandused.startswith('paydayreset'): ##to be removed
+            paydayreset(bot,trigger.nick)
         elif commandused.startswith('bank'):
             bot.say(checkbank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
             bot.say('transfer money to another user')
             
 ##### Lots to do
+def paydayreset(bot, target): ##### to be removed, verify payday
+    bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def checkpayday(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    databasecolumn = str('spicebucks_payday')
-    lastpayday = bot.db.get_nick_value(target, databasecolumn) or 0
+    lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         #add function to give them the money
@@ -48,10 +51,15 @@ def checkpayday(bot, target):
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
         
-        
-        
-    
-    #bot.say(str(datetoday))
+def spicebucksmoney(bot, target, plusminus, amount):
+    if type(amount) == int:
+        inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
+        if plusminus == 'plus':
+            bot.db.set_nick_value(target, plusminus, inbank + amount)
+        elif plusminus == 'minus'
+            bot.db.set_nick_value(target, plusminus, inbank - amount)
+    else:
+        bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
 
 def spicebuckstransaction(instigator, target, plusminus, amount):
     ### use this to add or remove spicebucks from a user.  Returns True if successful
