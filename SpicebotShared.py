@@ -130,53 +130,8 @@ def get_trigger_arg(triggerargsarray, number):
         elif "^" in str(number):
             rangea = number.split("^", 1)[0]
             rangeb = number.split("^", 1)[1]
-            bot.say(str(rangea) + " " + str(rangeb))
-        elif number == 0:
-            rangea = 1
-            rangeb = totalarray
-        if rangea <= totalarray:
-            for i in range(rangea,rangeb):
-                arg = get_trigger_arg(triggerargsarray, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
-                else:
-                    triggerarg = str(arg)
-    elif number == 'last':
-        totalarray = totalarray -2
-        triggerarg = str(triggerargsarray[totalarray])
-    else:
-        number = int(number) - 1
-        try:
-            triggerarg = triggerargsarray[number]
-        except IndexError:
-            triggerarg = ''
-    return triggerarg
-
-def get_trigger_argb(bot, triggerargsarray, number):
-    totalarray = len(triggerargsarray)
-    totalarray = totalarray + 1
-    triggerarg = ''
-    if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
-        if str(number).endswith("+"):
-            rangea = re.sub(r"\+", '', str(number))
             rangea = int(rangea)
-            rangeb = totalarray
-        elif str(number).endswith("-"):
-            rangea = 1
-            rangeb = re.sub(r"-", '', str(number))
-            rangeb = int(rangeb) + 1
-        elif str(number).endswith(">"):
-            rangea = re.sub(r">", '', str(number))
-            rangea = int(rangea) + 1
-            rangeb = totalarray
-        elif str(number).endswith("<"):
-            rangea = 1
-            rangeb = re.sub(r"<", '', str(number))
             rangeb = int(rangeb)
-        elif "^" in str(number):
-            rangea = number.split("^", 1)[0]
-            rangeb = number.split("^", 1)[1]
-            bot.say(str(rangea) + " " + str(rangeb))
         elif number == 0:
             rangea = 1
             rangeb = totalarray
