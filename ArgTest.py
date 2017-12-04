@@ -20,4 +20,3 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("arg" + str(i) + " = " + str(arg))
     bot.say("simulating arg5+ " + str(newvalue))
     arg = get_trigger_arg(triggerargsarray, 4)
-    bot.say(str(arg))
