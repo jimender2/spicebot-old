@@ -25,18 +25,23 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     if commandused:
         if commandused.startswith('payday'):
-            bot.say('add payday money')
+            spicebuckstransaction(bot, channel, 'SpiceBot', 'plus', 5
         elif commandused.startswith('bank'):
-            bot.say('check amount in bank')
+            bot.say(checkbank(bot, trigger.nick))
         elif commandused.startswith('transfer'):
             bot.say('transfer money to another user')
 ##### Lots to do
 
-def spicebuckstransaction(bot, channel, instigator, target, addsubtract, amount, inchannel):
-    ### use this to add or remove spicebucks from a user.  Returns True if successful, and False if unsuccessful
+def spicebuckstransaction(from, to, plusminus, amount):
+    ### use this to add or remove spicebucks from a user.  Returns True if successful
     ### keep do not use this for spicebot.say or notify.  Use the calling function to do that so that you can say whatever you want.
-    bot.say('add more here')
+    #def set_database_value(bot, nick, databasekey, value):
+    databasecolumn = str('challenges_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
     
+def checkbank(bot, nick):
+    points = bot.db.get_nick_value(nick, 'spicebucks_spicebucks') or 1
+    return points
 
 def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
     target = tools.Identifier(target or '')
