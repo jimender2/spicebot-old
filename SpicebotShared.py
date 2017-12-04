@@ -113,12 +113,13 @@ def get_trigger_arg(triggerargsarray, number):
     if str(number).endswith("+"):
         numsplit = re.sub(r"\+", '', str(number))
         numsplit = int(numsplit)
-        for i in range(numsplit,totalarray):
-            arg = get_trigger_arg(triggerargsarray, i)
-            if triggerarg != '':
-                triggerarg = str(triggerarg + " " + arg)
-            else:
-                triggerarg = str(arg)
+        if numsplit <= totalarray:
+            for i in range(numsplit,totalarray):
+                arg = get_trigger_arg(triggerargsarray, i)
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
     else:
         number = number - 1
         try:
