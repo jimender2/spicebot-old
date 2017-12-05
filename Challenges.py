@@ -125,14 +125,26 @@ def execute_main(bot, trigger, triggerargsarray):
             if commandused == 'docs' or commandused == 'help':
                 bot.notice("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", target)
             
-            ## Can I fight
-            elif commandused == 'canifight':
-                dowedisplay = 1
-                inchannel = "#bypass"
-                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                if cantargetduel:
-                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
-            
+            ## On/off
+            elif commandused == 'on' or commandused == 'off':
+                disenablevalue = ''
+                if commandused == 'on':
+                    disenablevalue = 1
+                if target == 'everyone':
+                    for u in bot.channels[channel].users:
+                        set_database_value(bot, u, 'disenable', disenablevalue)
+                elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+                else:
+                    if targetdisenable and commandused == 'on':
+                        bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
+                    elif not targetdisenable and commandused == 'off':
+                        bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+                    else:
+                        set_database_value(bot, target, 'disenable', disenablevalue)
+                        set_database_value(bot, target, 'opttime', now)
+                        bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
+                        
             ## Duel Everyone
             elif commandused == 'everyone':
                 OSDTYPE = 'notice'
@@ -167,26 +179,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     target = str(targetarray [randomselected])
                     return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
 
-            ## On/off
-            elif commandused == 'on' or commandused == 'off':
-                disenablevalue = ''
-                if commandused == 'on':
-                    disenablevalue = 1
-                if target == 'everyone':
-                    for u in bot.channels[channel].users:
-                        set_database_value(bot, u, 'disenable', disenablevalue)
-                elif targetopttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
-                else:
-                    if targetdisenable and commandused == 'on':
-                        bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
-                    elif not targetdisenable and commandused == 'off':
-                        bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
-                    else:
-                        set_database_value(bot, target, 'disenable', disenablevalue)
-                        set_database_value(bot, target, 'opttime', now)
-                        bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
-
+            ## Can I fight
+            elif commandused == 'canifight':
+                dowedisplay = 1
+                inchannel = "#bypass"
+                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                if cantargetduel:
+                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                    
             ## Who can fight
             elif commandused == 'whocanifight':
                 targets = ''
@@ -208,43 +208,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(str(targetline))
                 if targetline == '':
                     bot.say("It looks like you cannot challenge anybody at the moment.")
-                
-            ## Stats
-            elif commandused == 'stats':
-                stats = ''
-                for x in challengestatsarray:
-                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
-                        scriptdef = str('get_' + x + '(bot,target)')
-                        gethowmany = eval(scriptdef)
-                    else:
-                        gethowmany = get_database_value(bot, target, x)
-                    if gethowmany:
-                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                        stats = str(stats + addstat)
-                if stats != '':
-                    stats = str(target + "'s stats:" + stats)
-                    bot.notice(stats, instigator)
-                else:
-                    bot.notice(instigator + ", It looks like " + target + " has no stats.", instigator)
-
-            ## Backpack
-            elif commandused == 'backpack':
-                backpack = ''
-                for x in lootitemsarray:
-                    gethowmany = get_database_value(bot, target, x)
-                    if gethowmany:
-                        addbackpack = str(' ' + str(x) + "=" + str(gethowmany))
-                        backpack = str(backpack + addbackpack)
-                totalweapons = get_database_array_total(bot, target, 'weaponslocker')
-                if totalweapons:
-                    addbackpack = str(" weaponstotal" + "=" + str(totalweapons))
-                    backpack = str(backpack + addbackpack)
-                if backpack != '':
-                    backpack = str(target + "'s backpack:" + backpack)
-                    bot.notice(backpack, instigator)
-                else:
-                    bot.notice(instigator + ", It looks like " + target + " has no backpack items.", instigator)
-
+                        
             ## Stats Admin
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
@@ -284,9 +248,45 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+                    
+            ## Stats
+            elif commandused == 'stats' or commandused == 'backpack':
+                if target != 'botadmin':
+                    stats = ''
+                    if commandused == 'stats':
+                        arraytoscan = challengestatsarray
+                    elif commandused == 'backpack':
+                        arraytoscan = lootitemsarray
+                        totalweapons = get_database_array_total(bot, target, 'weaponslocker')
+                        if totalweapons:
+                            addstat = str(" weaponstotal" + "=" + str(totalweapons))
+                            stats = str(stats + addstat)
+                    for x in arraytoscan:
+                        if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
+                            scriptdef = str('get_' + x + '(bot,target)')
+                            gethowmany = eval(scriptdef)
+                        else:
+                            gethowmany = get_database_value(bot, target, x)
+                        if gethowmany:
+                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                            stats = str(stats + addstat)
+                    if stats != '':
+                        stats = str(target + "'s stats:" + stats)
+                        bot.notice(stats, instigator)
+                    else:
+                        bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
+                elif target == 'highest' or target == 'highest':
+                    bot.say("wip")
+                elif target == 'botadmin' and trigger.admin:
+                    bot.say("wip")
+                elif target == 'botadmin' and not trigger.admin:
+                    bot.say("wip")
+                else:
+                    bot.say("wip")
 
             ## Leaderboard
             elif commandused == 'leaderboard':
+                ## make a for loop for this shit
                 leaderboardscript = ''
                 currentwlrleader = ''
                 currentkillsleader = ''
