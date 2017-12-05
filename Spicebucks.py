@@ -28,16 +28,16 @@ def execute_main(bot, trigger, args):
         elif args[0] == 'bank':
             if len(args) > 1:
                 if args[1] not in bot.privileges[channel.lower()]:
-                    bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+                    bot.notify("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
                     bank(bot, args[1], 'other')
             else:
                 bank(bot, trigger.nick, 'self')
-        elif args[0] == 'transfer':
-            if len(args) >= 3:
-                transfer(bot, channel, trigger.nick, args[1], args[2])
-            else:
-                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+        #elif args[0] == 'transfer':
+        #    if len(args) >= 3:
+        #        transfer(bot, channel, trigger.nick, args[1], args[2])
+        #    else:
+        #        bot.notify("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
@@ -49,9 +49,9 @@ def checkpayday(bot, target):
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', 5)
-        bot.say("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
+        bot.notify("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
     elif lastpayday == datetoday:
-        bot.say("You've already been paid today. Now go do some work.")
+        bot.notify("You've already been paid today. Now go do some work.")
         
 def spicebucks(bot, target, plusminus, amount):
     success = 'false'
