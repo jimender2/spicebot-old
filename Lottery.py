@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     if len(triggerargsarray) < 5:
-       bot.say("You must enter 5 lottery numbers from 1 to 10 to play.")
+       bot.say("You must enter 5 lottery numbers from 1 to 15 to play.")
     else:
         success = 0
         picks = []
@@ -31,13 +31,13 @@ def execute_main(bot, trigger, triggerargsarray):
         if success == 1:
             valid = 1
             for pick in picks:
-                if pick > 10 or pick < 1:
+                if pick > 15 or pick < 1:
                     valid = 0
             if valid == 0:
                 bot.say("One of the numbers you entered does is not within the 1 to 10 range.")
             else:
                 if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-                    winningnumbers = random.sample(range(1, 10), 5) 
+                    winningnumbers = random.sample(range(1, 15), 5) 
                     bot.say('The winning numbers are ' + str(winningnumbers))
                     correct = 0
                     for pick in picks:
@@ -47,10 +47,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     if correct == 2:
                         payout = 2
                     elif correct == 3:
-                        payout = 10
+                        payout = 5
                     elif correct == 4:
-                        payout = 25
+                        payout = 20
                     elif correct == 5:
-                        payout = 100
+                        payout = 50
                     Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
                     bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
