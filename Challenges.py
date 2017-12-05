@@ -275,12 +275,34 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(stats, instigator)
                     else:
                         bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
-                elif target == 'highest' or target == 'highest':
-                    bot.say("wip")
+                elif target == 'highest' or target == 'lowest':
+                    statcheck = get_trigger_arg(triggerargsarray, 3)
+                    if statcheck not in challengestatsarray:
+                        bot.notice(instigator + ", Pick a valid stat.", instigator)
+                    else:
+                        currentleader = ''
+                        if target == 'lowest':
+                            currentleadernumber = 9999999999
+                        elif target == 'highest':
+                            currentleadernumber = 0
+                        for u in bot.channels[channel].users:
+                            target = u
+                            if targetdisenable and target != bot.nick:
+                                checkingstat = get_database_value(bot, target, statcheck)
+                                if target == 'lowest':
+                                    if checkingstat < currentleadernumber:
+                                        currentleader = target
+                                        currentleadernumber = int(checkingstat)
+                                elif target == 'highest':
+                                    if checkingstat > currentleadernumber:
+                                        currentleader = target
+                                        currentleadernumber = int(checkingstat)
+                        leaderboardscript = str("Currently the " + str(target) + " " + str(statcheck) + " in the room is " + str(currentleader) + " with " + str(checkingstat) + ".")
+                        bot.say(leaderboardscript)
                 elif target == 'botadmin' and trigger.admin:
                     bot.say("wip")
                 elif target == 'botadmin' and not trigger.admin:
-                    bot.say("wip")
+                    bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
                     bot.say("wip")
 
@@ -381,15 +403,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", Exchange Completed.", instigator)
-   
-            ## Loot Items usage
-            elif commandused in lootitemsarray:
-                gethowmany = get_database_value(bot, instigator, commandused)
-                if gethowmany:
-                    saymsg = 'true'
-                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
-                else:
-                    bot.notice(instigator + ", You do not have a " +  commandused + " to use!", instigator)
          
             ## Konami
             elif commandused == 'upupdowndownleftrightleftrightba':
