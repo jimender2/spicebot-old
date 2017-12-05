@@ -84,7 +84,7 @@ def transfer(bot, channel, instigator, target, amount):
         int(amount)
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
-        else:
+        elif 'a'='c':
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm sorry, I do not know who you want to transfer money to.")
             else:
