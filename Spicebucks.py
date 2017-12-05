@@ -18,18 +18,18 @@ from SpicebotShared import *
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    bot.say(trigger)
-    #if not enablestatus:
-    #    execute_main(bot, trigger, triggerargsarray)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, args):
+def execute_main(bot, trigger, triggerargsarray):
     for c in bot.channels:
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if args[1]:
-        if args[1] == 'payday':
-            checkpayday(bot,trigger.nick)
+    bot.say(str(len.triggerargsarray()))
+    #if args[1]:
+    #   if args[1] == 'payday':
+    #        checkpayday(bot,trigger.nick)
     #    elif arg[1] == 'reset': #to be removed
     #        reset(bot,trigger.nick)
     #    elif arg[1] == 'bank':
