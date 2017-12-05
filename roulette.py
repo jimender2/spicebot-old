@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
   bot.say('The wheel stops on ' + result) 
   #payout based on results
 
-def spinwheel
+def spinwheel():
   random.seed()
   thenumber = random.randint(0,36)
   thecolor=random.randint(0,1)
