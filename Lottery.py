@@ -42,6 +42,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     correct = 0
                     for pick in picks:
                         if pick in winningnumbers:
-                        correct = correct + 1
+                            correct = correct + 1
                     bot.say("You guessed " + str(correct) + " numbers correctly.")
                     Spicebucks.spicebucks(bot, trigger.nick, 'plus', correct)
