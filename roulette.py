@@ -3,7 +3,7 @@ from sopel import module, tools
 import sys
 import os
 import random
-import Spicebucks.py
+import Spicebucks
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
