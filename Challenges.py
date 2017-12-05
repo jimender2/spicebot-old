@@ -335,6 +335,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem)
+                gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 if lootcommand not in transactiontypesarray:
                     bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
                 elif not lootitem:
@@ -351,6 +352,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
                 elif lootcommand == 'use' and not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
+                elif lootcommand == 'sell' and not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have a " +  lootitem + " to sell!", instigator)
+                elif lootcommand == 'buy' and gethowmanycoins < 100:
+                    bot.notice(instigator + ", You need 100 coins to buy.", instigator)
                 elif lootcommand == 'use':
                     target = lootitemb
                     if not target:
