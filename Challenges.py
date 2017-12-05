@@ -67,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Arrays
         nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
         adminonlyarray = ['statsadmin']
-        privilegedarray = ['on','off','weaponslocker']
+        privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
