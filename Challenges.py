@@ -922,8 +922,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
             nulllootitemsarray = ['water','vinegar','mud']
             nullloot = random.randint(0,len(nulllootitemsarray) - 1)
             nullloot = str(nulllootitemsarray [nullloot])
-            bot.say('Looks like the Potion was just ' + str(nullloot) + ' after all.')
-            lootusemsg = str("Just " + nullloot)
+            lootusemsg = str("Just " + str(nullloot) + ' after all.')
         mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg) + '. ')
     else:
         mainlootusemessage = str(mainlootusemessage + '')
