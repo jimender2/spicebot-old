@@ -23,6 +23,9 @@ def execute_main(bot, trigger, args):
     elif len(args) >= 1:
         if args[0] == 'payday':
             checkpayday(bot,trigger.nick)
+            bot.say(str(args[0]))
+            bot.say(str(args[1]))
+            bot.say(str(args[2]))
         elif args[0] == 'reset': #to be removed
             reset(bot,trigger.nick)
         elif args[0] == 'bank':
