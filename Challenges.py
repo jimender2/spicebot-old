@@ -372,6 +372,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.notice(instigator + " you can only cheat once.", instigator)
                 
+            ## MicroTransactions
+            elif commandused == 'microtransaction':
+                bot.say("WIP")
+                
             ## Weaponslocker
             elif commandused == 'weaponslocker':
                 validdirectionarray = ['inv','add','del']
@@ -527,11 +531,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             weapon = str(target + "'s " + weapon)
         
     ## Select Winner
-    if target == bot.nick:
-        winner = bot.nick
-        loser = instigator
-    else:
-        winner, loser = getwinner(bot, instigator, target, manualweapon)
+    winner, loser = getwinner(bot, instigator, target, manualweapon)
 
     ## Weapon Select
     if manualweapon == 'false' or winner == target:
@@ -1131,7 +1131,10 @@ def getwinner(bot, instigator, target, manualweapon):
         winner = target
         
     ## LOSER IS NOT WINNER
-    if winner == instigator:
+    if target == bot.nick:
+        winner = bot.nick
+        loser = instigator
+    elif winner == instigator:
         loser = target
     else:
         loser = instigator
