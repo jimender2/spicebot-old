@@ -29,16 +29,16 @@ def execute_main(bot, trigger, args):
     bot.say(str(len(triggerargsarray)))
     if len(args) > 0:
        if args[0] == 'payday':
-            checkpayday(bot,trigger.nick)
-        elif arg[0] == 'reset': #to be removed
-            reset(bot,trigger.nick)
-        elif arg[0] == 'bank':
-            bank(bot, trigger.nick)
-        elif arg[0] == 'transfer':
-            if arg[2] and arg[3]:
-                transfer(bot, trigger.nick, arg[2], amount)
-            else:
-                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+           checkpayday(bot,trigger.nick)
+       elif arg[0] == 'reset': #to be removed
+           reset(bot,trigger.nick)
+       elif arg[0] == 'bank':
+           bank(bot, trigger.nick)
+       elif arg[0] == 'transfer':
+           if arg[2] and arg[3]:
+               transfer(bot, trigger.nick, arg[2], amount)
+           else:
+               bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
     #if commandused:
     #    if commandused.startswith('payday'):
