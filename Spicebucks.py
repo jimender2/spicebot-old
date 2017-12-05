@@ -18,8 +18,9 @@ from SpicebotShared import *
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+    bot.show(trigger)
+    #if not enablestatus:
+    #    execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
     for c in bot.channels:
