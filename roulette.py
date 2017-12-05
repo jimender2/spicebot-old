@@ -24,7 +24,7 @@ def execute_main(bot, trigger, args):
     bot.say("Please enter your bet followed by number or color you wish to bet on")	
   else:
     if not int(arg[0])>=1:      
-      bot.say("Please enter the amount you wish to bet first")
+      bot.say('Please enter the amount you wish to bet first')
     elif not int(arg[1])<=maxwheel AND int(arg[1])>=1:
       bot.say("Please pick a number between 1 and " + maxwheel)
     elif not arg[2] == 'red' OR arg[2] == 'black':
