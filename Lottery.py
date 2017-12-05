@@ -15,11 +15,27 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    enteredValues = string.split(trigger.args[1], " ")
-    if len.enteredValues <= 6:
-        bot.notify('You must enter 5 lottery numbers to play.')
+    if len(triggerargsarray) < 6:
+       bot.say("You must enter 5 lottery numbers betwen from 1 to 50 to play.")
     else:
-        Points.pointstask(bot, channel, 'Entering the lottery', trigger.nick, ' takes ', ' from', 'down', 'points', trigger.sender)
-        winningnumbers = random.sample(range(1, 100), 5)    
-        bot.say('The winning numbers are ' + winningnumbers)    
+        success = 0
+        picks = []
+        try:
+            for pick in triggerargsarray:
+                picks.append(int(pick))
+            success = 1
+        except:
+            bot.say("One of the numbers you entered does not appear to be a number."
+            success = 0
         
+        if success = 1:
+            valid = 1
+            for pick in picks:
+                if pick > 50 or pick < 1:
+                    valid = 0
+            if valid == 0:
+                bot.say("One of the numbers you entered does is not within the 1 to 50 range.")
+            else:
+                winningnumbers = random.sample(range(1, 50, 5)    
+                bot.say('The winning numbers are ' + str(winningnumbers))
+                
