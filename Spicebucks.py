@@ -49,7 +49,7 @@ def checkpayday(bot, target):
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', 5)
-        bot.say("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
+        bot.say("You haven't been paid yet today. Here's your 5 spicebucks.") #change to notify
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
         
@@ -97,5 +97,5 @@ def transfer(bot, channel, instigator, target, amount):
             else:
                 spicebucks(bot, instigator, 'minus', amount)
                 spicebucks(bot, target, 'plus', amount)
-                bot.say("You successfully transfered " + str(amount) + " to " + target + ".") 
+                bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
         
