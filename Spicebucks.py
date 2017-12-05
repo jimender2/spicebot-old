@@ -27,7 +27,7 @@ def execute_main(bot, trigger, args):
             reset(bot,trigger.nick)
         elif args[0] == 'bank':
             if len(args) > 1:
-                if args[1] not in bot.privileges[channel.lower()]:
+                if args[1].lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
                     bank(bot, args[1], 'other')
