@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 picks.append(int(pick))
             success = 1
         except:
-            bot.say("One of the numbers you entered does not appear to be a number."
+            bot.say("One of the numbers you entered does not appear to be a number.")
             success = 0
         
         if success = 1:
