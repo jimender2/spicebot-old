@@ -80,18 +80,22 @@ def bank(bot, nick, target):
     bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
 
 def transfer(bot, channel, instigator, target, amount):
+    success = 0
     try:
-        int(amount)
+        amount = int(amount)
+        success = 1
+    except:
+        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+        success = 0
+    
+    if success == 1:
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
         else:
             if target.lower() not in bot.privileges[channel.lower()]:
-                bot.say("I'm sorry, I do not know who you want to transfer money to.")
+                 bot.say("I'm sorry, I do not know who you want to transfer money to.")
             else:
                 spicebucks(bot, instigator, 'minus', amount)
                 spicebucks(bot, target, 'plus', amount)
-                bot.say("You successfully transfered " + str(amount) + " to " + target + ".")
-    except:
-        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
-        
+                bot.say("You successfully transfered " + str(amount) + " to " + target + ".") 
         
