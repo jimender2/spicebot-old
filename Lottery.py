@@ -36,6 +36,6 @@ def execute_main(bot, trigger, triggerargsarray):
             if valid == 0:
                 bot.say("One of the numbers you entered does is not within the 1 to 50 range.")
             else:
-                winningnumbers = random.sample(range(1, 50, 5)) 
+                winningnumbers = random.sample(range(1, 50), 5) 
                 bot.say('The winning numbers are ' + str(winningnumbers))
                 
