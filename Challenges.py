@@ -280,8 +280,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     if statcheck not in challengestatsarray:
                         bot.notice(instigator + ", Pick a valid stat.", instigator)
                     else:
-                        currentleaderl = ''
                         currentleaderh = ''
+                        currentleaderl = ''
                         checkingstat = 0
                         currentleadernumberl = 9999999999
                         currentleadernumberh = 0
@@ -292,9 +292,14 @@ def execute_main(bot, trigger, triggerargsarray):
                                 if int(checkingstat) < int(currentleadernumberl):
                                     currentleaderl = u
                                     currentleadernumberl = int(checkingstat)
-                                if int(checkingstat) > int(currentleadernumberh):
+                                elif int(checkingstat) > int(currentleadernumberh):
                                     currentleaderh = u
                                     currentleadernumberh = int(checkingstat)
+                                else:
+                                    currentleaderh = currentleaderh
+                                    currentleaderl = currentleaderl
+                                    currentleadernumberh = currentleadernumberh
+                                    currentleadernumberl = currentleadernumberl
                         if target == 'lowest':
                             currentleader = currentleaderl
                             currentleadernumber = currentleadernumberl
