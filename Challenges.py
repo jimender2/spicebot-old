@@ -281,6 +281,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", Pick a valid stat.", instigator)
                     else:
                         currentleader = ''
+                        checkingstat = 0
                         if target == 'lowest':
                             currentleadernumber = 9999999999
                         elif target == 'highest':
