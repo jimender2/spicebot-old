@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if valid == 0:
                 bot.say("One of the numbers you entered does is not within the 1 to 20 range.")
             else:
-                if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == true:
+                if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
                     winningnumbers = random.sample(range(1, 20), 5) 
                     bot.say('The winning numbers are ' + str(winningnumbers))
                     correct = 0
