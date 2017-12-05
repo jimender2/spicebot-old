@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 
 #A roulette game to be used with Spicebucks.
-
+maxwheel = 19
 
 @sopel.module.commands('roulette', 'spin')
 def mainfunction(bot, trigger):
@@ -18,20 +18,34 @@ def mainfunction(bot, trigger):
   if not enablestatus:
     execute_main(bot, trigger, triggerargsarray)
         
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, args):
   #get triggerwords from player to allow number,color and even/odd choices
-  bot.say(trigger.nick + ' spins the wheel')
-  winningnumber,pickedcolor = spinwheel()  
-  if pickedcolor == 0:
-    color = 'black'
+  if len(args) < 3:
+    bot.say("Please enter your bet followed by number or color you wish to bet on")	
   else:
-    color = 'red' 
-  bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color) 
-  #payout based on results
-
+    if not int(arg[0])>=1:      
+      bot.say("Please enter the amount you wish to bet first")
+    elif not int(arg[1])<=maxwheel AND int(arg[1])>=1:
+      bot.say("Please pick a number between 1 and " + maxwheel)
+    elif not arg[2] == 'red' OR arg[2] == 'black':
+      bot.say("Please select either red or black")	
+    else:
+      mybet=int(arg[0])
+      mynumber=int(arg[1])
+      mycolor=arg[2]                         
+      bot.say(trigger.nick + ' puts ' + mybet + 'on the table spins the wheel')
+      winningnumber,pickedcolor = spinwheel()  
+      if pickedcolor == 0:
+        color = 'black'
+      else:
+        color = 'red' 
+      bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+      if winningnumber==mynumber or color==color:
+        bot.say(trigger.nick + ' is a winner')    
+      
 def spinwheel():
   random.seed()
-  thenumber = random.randint(0,36)
+  thenumber = random.randint(0,maxwheel)
   thecolor=random.randint(0,1)
   #return array with color and number
   return thenumber, thecolor
