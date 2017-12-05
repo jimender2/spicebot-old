@@ -349,6 +349,11 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                 elif lootcommand == 'trade' and gethowmanylootitem < 3:
                     bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
+                elif lootcommand == 'use' and not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
+                elif lootcommand == 'use':
+                    saymsg = 'true'
+                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
                 else:
                     if lootcommand == 'trade':
                         cost = -3
@@ -365,15 +370,12 @@ def execute_main(bot, trigger, triggerargsarray):
                         reward = 1
                         itemtoexchange = 'coins'
                         itemexchanged = lootitem
-                    #elif lootcommand == 'use':
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", Exchange Completed.", instigator)
-
    
             ## Loot Items usage
             elif commandused in lootitemsarray:
-                uselootitem = 0
                 gethowmany = get_database_value(bot, instigator, commandused)
                 if gethowmany:
                     saymsg = 'true'
