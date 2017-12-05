@@ -65,7 +65,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset']
+        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset','lowest','highest']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off','weaponslocker']
         inchannelarray = ['random','everyone']
