@@ -280,24 +280,27 @@ def execute_main(bot, trigger, triggerargsarray):
                     if statcheck not in challengestatsarray:
                         bot.notice(instigator + ", Pick a valid stat.", instigator)
                     else:
-                        currentleader = ''
+                        currentleaderl = ''
+                        currentleaderh = ''
                         checkingstat = 0
-                        if target == 'lowest':
-                            currentleadernumber = 9999999999
-                        elif target == 'highest':
-                            currentleadernumber = 0
+                        currentleadernumberl = 9999999999
+                        currentleadernumberh = 0
                         for u in bot.channels[channel].users:
                             targetdisenable = get_database_value(bot, u, 'disenable')
                             if targetdisenable and u != bot.nick:
                                 checkingstat = get_database_value(bot, u, statcheck)
-                                if target == 'lowest':
-                                    if int(checkingstat) < int(currentleadernumber):
-                                        currentleader = u
-                                        currentleadernumber = int(checkingstat)
-                                elif target == 'highest':
-                                    if int(checkingstat) > int(currentleadernumber):
-                                        currentleader = u
-                                        currentleadernumber = int(checkingstat)
+                                if int(checkingstat) < int(currentleadernumberl):
+                                    currentleaderl = u
+                                    currentleadernumberl = int(checkingstat)
+                                if int(checkingstat) > int(currentleadernumberh):
+                                    currentleaderh = u
+                                    currentleadernumberh = int(checkingstat)
+                        if target == 'lowest':
+                            currentleader = currentleaderl
+                            currentleadernumber = currentleadernumberl
+                        if target == 'highest':
+                            currentleader = currentleaderh
+                            currentleadernumber = currentleadernumberh
                         leaderboardscript = str("Currently the " + str(target) + " " + str(statcheck) + " in the room is " + str(currentleader) + " with " + str(checkingstat) + ".")
                         bot.say(leaderboardscript)
                 elif target == 'botadmin' and trigger.admin:
