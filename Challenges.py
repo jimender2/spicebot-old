@@ -356,7 +356,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if not target:
                         target = instigator
                     saymsg = 'true'
-                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
+                    use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                 else:
                     if lootcommand == 'trade':
                         cost = -3
@@ -365,11 +365,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         itemexchanged = lootitemb
                     elif lootcommand == 'sell':
                         cost = -1
-                        reward = 20
+                        reward = 25
                         itemtoexchange = lootitem
                         itemexchanged = 'coins'
                     elif lootcommand == 'buy':
-                        cost = -20
+                        cost = -100
                         reward = 1
                         itemtoexchange = 'coins'
                         itemexchanged = lootitem
