@@ -7,14 +7,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-## All commands will use .spicebucks [action]
-## Actions to include
-### payday - Recieve a once a day payday amount (current Thought is 5 / day)
-### bank - Check amount in bank
-### transfer - Transfer money from one user to another
-
-#db, channel= current channel, 
-
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
@@ -41,11 +33,11 @@ def execute_main(bot, trigger, args):
                     bank(bot, args[1], 'other')
             else:
                 bank(bot, trigger.nick, 'self')
-       #elif args[0] == 'transfer':
-       #    if len(args) >= 3:
-       #        transfer(bot, channel, trigger.nick, args[1], args[2])
-       #    else:
-       #        bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+        elif args[0] == 'transfer':
+            if len(args) >= 3:
+                transfer(bot, channel, trigger.nick, args[1], args[2])
+            else:
+                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
@@ -89,6 +81,8 @@ def bank(bot, nick, target):
 
 def transfer(bot, channel, instigator, target, amount):
     if not type(amount) == int:
+        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+    else:
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
         else:
