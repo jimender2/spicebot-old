@@ -48,7 +48,7 @@ def checkpayday(bot, target, args):
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = 5
-        if args == 'upupdowndownleftrightleftrightbastart':
+        if not args == 'payday':
             paydayamount = 15
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', paydayamount)
