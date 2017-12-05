@@ -42,7 +42,4 @@ def execute_main(bot, trigger, triggerargsarray):
                 for pick in picks:
                     if pick in winningnumbers:
                         correct = correct + 1
-                bot.say("You guessed " + str(correct) + " numbers."
-                
-                
-                
+                bot.say("You guessed " + str(correct) + " numbers.")
