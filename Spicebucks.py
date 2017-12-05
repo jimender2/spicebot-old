@@ -52,7 +52,7 @@ def checkpayday(bot, target, args):
             paydayamount = 15
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', paydayamount)
-        bot.say("You haven't been paid yet today. Here's your " + paydayamount + " spicebucks.") #change to notify
+        bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.") #change to notify
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
         
