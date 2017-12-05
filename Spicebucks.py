@@ -49,9 +49,9 @@ def checkpayday(bot, target):
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', 5)
-        bot.notify("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
+        bot.notify("You haven't been paid yet today. Here's your 5 Spicebucks.", target) #change to notify
     elif lastpayday == datetoday:
-        bot.notify("You've already been paid today. Now go do some work.")
+        bot.notify("You've already been paid today. Now go do some work.", target)
         
 def spicebucks(bot, target, plusminus, amount):
     success = 'false'
@@ -62,13 +62,13 @@ def spicebucks(bot, target, plusminus, amount):
             success = 'true'
         elif plusminus == 'minus':
             if inbank - amount < 0:
-                bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
+                bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.", target)
                 success = 'false'
             else:
                 bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
                 success = 'true'            
     else:
-        bot.notify("The amount you entered does not appear to be a number.  Transaction failed.")
+        bot.notify("The amount you entered does not appear to be a number.  Transaction failed.", target)
         success = 'false'
     return success
 
