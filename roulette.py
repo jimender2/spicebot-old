@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
   #get triggerwords from player to allow number,color and even/odd choices
   bot.say(trigger.nick + ' spins the wheel')
-  results = spinwheel()
+  winningnumber,color = spinwheel()
   winningnumber = results[0]
   if results[1] == 0:
     color = 'black'
@@ -35,4 +35,4 @@ def spinwheel():
   thenumber = random.randint(0,36)
   thecolor=random.randint(0,1)
   #return array with color and number
-  return result[thenumber, thecolor]
+  return thenumber, thecolor
