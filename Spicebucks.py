@@ -26,8 +26,8 @@ def execute_main(bot, trigger, args):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if arg[1]:
-        if arg[1] == 'payday':
+    if args[1]:
+        if args[1] == 'payday':
             checkpayday(bot,trigger.nick)
     #    elif arg[1] == 'reset': #to be removed
     #        reset(bot,trigger.nick)
