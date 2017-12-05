@@ -291,11 +291,11 @@ def execute_main(bot, trigger, triggerargsarray):
                             if targetdisenable and u != bot.nick:
                                 checkingstat = get_database_value(bot, u, statcheck)
                                 if target == 'lowest':
-                                    if checkingstat < currentleadernumber:
+                                    if int(checkingstat) < int(currentleadernumber):
                                         currentleader = u
                                         currentleadernumber = int(checkingstat)
                                 elif target == 'highest':
-                                    if checkingstat > currentleadernumber:
+                                    if int(checkingstat) > int(currentleadernumber):
                                         currentleader = u
                                         currentleadernumber = int(checkingstat)
                         leaderboardscript = str("Currently the " + str(target) + " " + str(statcheck) + " in the room is " + str(currentleader) + " with " + str(checkingstat) + ".")
