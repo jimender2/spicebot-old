@@ -80,10 +80,8 @@ def bank(bot, nick, target):
     bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
 
 def transfer(bot, channel, instigator, target, amount):
-    if not type(amount) == int:
-        bot.say(str(amount))
-        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
-    else:
+    try:
+        int(amount)
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
         else:
@@ -93,4 +91,7 @@ def transfer(bot, channel, instigator, target, amount):
                 if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
                     bot.say("You successfully transfered " + amount + " to " + target + ".")
-
+    except:
+        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+        
+        
