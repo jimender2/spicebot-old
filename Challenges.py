@@ -355,9 +355,17 @@ def execute_main(bot, trigger, triggerargsarray):
                         reward = 1
                         itemtoexchange = lootitem
                         itemexchanged = lootitemb
-                    #if lootcommand == 'sell':
-                    #if lootcommand == 'buy':
-                    #if lootcommand == 'use':
+                    elif lootcommand == 'sell':
+                        cost = -1
+                        reward = 20
+                        itemtoexchange = lootitem
+                        itemexchanged = 'coins'
+                    elif lootcommand == 'buy':
+                        cost = -20
+                        reward = 1
+                        itemtoexchange = 'coins'
+                        itemexchanged = lootitem
+                    #elif lootcommand == 'use':
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", Exchange Completed.", instigator)
