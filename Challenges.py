@@ -352,6 +352,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif lootcommand == 'use' and not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
                 elif lootcommand == 'use':
+                    target = lootitemb
+                    if not target:
+                        target = instigator
                     saymsg = 'true'
                     use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
                 else:
