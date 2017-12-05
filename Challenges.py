@@ -409,6 +409,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(str(weaponline), instigator)
                     if weaponline == '':
                         bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
+                elif target != instigator and not trigger.admin:
+                    bot.say("You may not adjust somebody elses locker.")
                 else:
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
