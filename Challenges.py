@@ -328,34 +328,41 @@ def execute_main(bot, trigger, triggerargsarray):
                     leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
 
-            ## Loot Items Exchange 3 to 1
-            elif commandused == 'tradeloot':
-                tradeinitem = get_trigger_arg(triggerargsarray, 2)
-                tradeforitem = get_trigger_arg(triggerargsarray, 3)
-                if not tradeinitem:
-                    bot.notice(instigator + ", What do you want to trade?", instigator)
-                elif not tradeforitem:
-                    bot.notice(instigator + ", What do you want to trade for?", instigator)
-                elif tradeforitem == tradeinitem:
+            ## Loot Items
+            elif commandused == 'loot':
+                transactiontypesarray = ['buy','sell','trade','use']
+                lootcommand = get_trigger_arg(triggerargsarray, 2)
+                lootitem = get_trigger_arg(triggerargsarray, 3)
+                lootitemb = get_trigger_arg(triggerargsarray, 4)
+                gethowmanylootitem = get_database_value(bot, instigator, lootitem)
+                if lootcommand not in transactiontypesarray:
+                    bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+                elif not lootitem:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif lootitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif lootcommand == 'trade' and lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                elif tradeinitem not in lootitemsarray:
+                elif lootcommand == 'trade' and lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
-                elif tradeforitem not in lootitemsarray:
-                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif lootcommand == 'trade' and lootitemb == lootitem:
+                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                elif lootcommand == 'trade' and gethowmanylootitem < 3:
+                    bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
                 else:
-                    gethowmany = get_database_value(bot, instigator, tradeinitem)
-                    if gethowmany < 3:
-                        bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
-                    else:
-                        bot.notice(instigator + ", Exchange Completed.", instigator)
-                        tradecost = -3
-                        adjust_database_value(bot, instigator, tradeinitem, tradecost)
-                        adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
-            
-            ## Sell loot
-            elif commandused == 'lootsell':
-                bot.say("WIP")
-            
+                    if lootcommand == 'trade':
+                        cost = -3
+                        reward = 1
+                        itemtoexchange = lootitem
+                        itemexchanged = lootitemb
+                    #if lootcommand == 'sell':
+                    #if lootcommand == 'buy':
+                    #if lootcommand == 'use':
+                    adjust_database_value(bot, instigator, itemtoexchange, cost)
+                    adjust_database_value(bot, instigator, itemexchanged, reward)
+                    bot.notice(instigator + ", Exchange Completed.", instigator)
+
+   
             ## Loot Items usage
             elif commandused in lootitemsarray:
                 uselootitem = 0
@@ -374,10 +381,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
                 else:
                     bot.notice(instigator + " you can only cheat once.", instigator)
-                
-            ## MicroTransactions
-            elif commandused == 'microtransaction':
-                bot.say("WIP")
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
