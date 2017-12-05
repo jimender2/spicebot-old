@@ -22,8 +22,8 @@ TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-challengestatsadminarray = ['opttime','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsadminarray = ['opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
     
 ####################
 ## Main Operation ##
@@ -280,7 +280,6 @@ def execute_main(bot, trigger, triggerargsarray):
                         if statset == 'all':
                             for x in challengestatsadminarray:
                                 set_database_value(bot, target, x, newvalue)
-                                
                         else:
                             set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
@@ -352,7 +351,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         tradecost = -3
                         adjust_database_value(bot, instigator, tradeinitem, tradecost)
                         adjust_database_value(bot, instigator, tradeforitem, defaultadjust)
-                
+            
+            ## Sell loot
+            elif commandused == 'lootsell':
+                bot.say("WIP")
+            
             ## Loot Items usage
             elif commandused in lootitemsarray:
                 uselootitem = 0
