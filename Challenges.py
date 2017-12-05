@@ -288,7 +288,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             currentleadernumber = 0
                         for u in bot.channels[channel].users:
                             targetdisenable = get_database_value(bot, u, 'disenable')
-                            if targetdisenable and target != bot.nick:
+                            if targetdisenable and u != bot.nick:
                                 checkingstat = get_database_value(bot, u, statcheck)
                                 if target == 'lowest':
                                     if checkingstat < currentleadernumber:
