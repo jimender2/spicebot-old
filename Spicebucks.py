@@ -26,7 +26,6 @@ def execute_main(bot, trigger, args):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    bot.say(str(len(triggerargsarray)))
     if len(args) > 0:
        if args[0] == 'payday':
            checkpayday(bot,trigger.nick)
