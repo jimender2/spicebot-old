@@ -28,7 +28,7 @@ def execute_main(bot, trigger, args):
         elif args[0] == 'bank':
             if len(args) > 1:
                 if args[1] not in bot.privileges[channel.lower()]:
-                    bot.notify("I'm sorry, I do not know who " + args[1] + " is.")
+                    bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
                     bank(bot, args[1], 'other')
             else:
@@ -49,9 +49,9 @@ def checkpayday(bot, target):
     if lastpayday == 0 or lastpayday < datetoday:
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', 5)
-        bot.notify("You haven't been paid yet today. Here's your 5 Spicebucks.", target) #change to notify
+        bot.say("You haven't been paid yet today. Here's your 5 Spicebucks.") #change to notify
     elif lastpayday == datetoday:
-        bot.notify("You've already been paid today. Now go do some work.", target)
+        bot.say("You've already been paid today. Now go do some work.")
         
 def spicebucks(bot, target, plusminus, amount):
     success = 'false'
@@ -62,13 +62,13 @@ def spicebucks(bot, target, plusminus, amount):
             success = 'true'
         elif plusminus == 'minus':
             if inbank - amount < 0:
-                bot.notify("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.", target)
+                bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
                 success = 'false'
             else:
                 bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
                 success = 'true'            
     else:
-        bot.notify("The amount you entered does not appear to be a number.  Transaction failed.", target)
+        bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
         success = 'false'
     return success
 
