@@ -55,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## If Not a target or a command used
     if not fullcommandused:
-        bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", instigator)
+        bot.notice(instigator + ", Who did you want to challenge? Online Docs: https://github.com/deathbybandaid/sopel-modules/wiki/Challenges", instigator)
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in bot.privileges[channel.lower()]:
@@ -123,7 +123,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     
             ## Docs
             if commandused == 'docs' or commandused == 'help':
-                bot.notice("Online Docs: https://github.com/deathbybandaid/sopel-modules/blob/master/otherfiles/ChallengesDocumentation.md", target)
+                bot.notice("Online Docs: https://github.com/deathbybandaid/sopel-modules/wiki/Challenges", target)
             
             ## On/off
             elif commandused == 'on' or commandused == 'off':
