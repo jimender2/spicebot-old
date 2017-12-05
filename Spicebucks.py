@@ -81,6 +81,7 @@ def bank(bot, nick, target):
 
 def transfer(bot, channel, instigator, target, amount):
     if not type(amount) == int:
+        bot.say(str(amount))
         bot.say("I'm sorry, the amount you entered does not appear to be a number.")
     else:
         if amount <= 0:
