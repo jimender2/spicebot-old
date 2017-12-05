@@ -44,7 +44,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         if pick in winningnumbers:
                             correct = correct + 1
                     payout = 0
-                    if correct == 2:
+                    if correct == 1:
+                        payout = 1
+                    elif correct == 2:
                         payout = 2
                     elif correct == 3:
                         payout = 5
