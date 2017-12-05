@@ -67,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Arrays
         nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset']
         adminonlyarray = ['statsadmin']
-        privilegedarray = ['on','off']
+        privilegedarray = ['on','off','weaponslocker']
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
@@ -271,7 +271,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             addstat = str(' ' + str(x) + "=" + str(gethowmany))
                             stats = str(stats + addstat)
                     if stats != '':
-                        stats = str(target + "'s stats:" + stats)
+                        stats = str(target + "'s " + commandused + ":" + stats)
                         bot.notice(stats, instigator)
                     else:
                         bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
