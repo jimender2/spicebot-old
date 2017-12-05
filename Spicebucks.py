@@ -76,7 +76,7 @@ def bank(bot, nick, target):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
     identifier = "You have "
     if target == 'other':
-        identifier = target + ' has '
+        identifier = nick + ' has '
     bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
 
 def transfer(bot, channel, instigator, target, amount):
