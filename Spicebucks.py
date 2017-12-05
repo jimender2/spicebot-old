@@ -29,13 +29,13 @@ def execute_main(bot, trigger, args):
     if len(args) > 0:
        if args[0] == 'payday':
            checkpayday(bot,trigger.nick)
-       elif arg[0] == 'reset': #to be removed
+       elif args[0] == 'reset': #to be removed
            reset(bot,trigger.nick)
-       elif arg[0] == 'bank':
+       elif args[0] == 'bank':
            bank(bot, trigger.nick)
-       elif arg[0] == 'transfer':
-           if arg[2] and arg[3]:
-               transfer(bot, trigger.nick, arg[2], amount)
+       elif args[0] == 'transfer':
+           if len(args) >= 3:
+               transfer(bot, trigger.nick, args[1], args[2])
            else:
                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
