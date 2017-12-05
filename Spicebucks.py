@@ -84,10 +84,10 @@ def transfer(bot, channel, instigator, target, amount):
         int(amount)
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
-        elif 'a'='c':
+        else:
             if target.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm sorry, I do not know who you want to transfer money to.")
-            else:
+            elif 'a'='c':
                 if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
                     bot.say("You successfully transfered " + str(amount) + " to " + target + ".")
