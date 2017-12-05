@@ -20,15 +20,24 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, triggerargsarray):
   #get triggerwords from player to allow number,color and even/odd choices
-  bot.say(trigger + ' spins the wheel')
-  result = spinwheel
+  bot.say(trigger.nick + ' spins the wheel')
+  results[] = spinwheel
+  winningnumber = results[0]
+  if results[1] == 0:
+    color = 'black'
+  else:
+    color = 'red'
+    
   #proccess array to determine if number is odd or even and color
-  bot.say('The wheel stops on ' + result) 
+  bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color) 
   #payout based on results
 
 def spinwheel():
   random.seed()
+  result=[]
   thenumber = random.randint(0,36)
   thecolor=random.randint(0,1)
   #return array with color and number
-  return thenumber
+  result.append(thenumber)    #adding first value in list
+  result.append(thecolor)  
+  return result
