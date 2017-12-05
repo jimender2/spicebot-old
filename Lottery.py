@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("One of the numbers you entered does not appear to be a number.")
             success = 0
         
-        if success = 1:
+        if success == 1:
             valid = 1
             for pick in picks:
                 if pick > 50 or pick < 1:
