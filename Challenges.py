@@ -251,7 +251,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     
             ## Stats
             elif commandused == 'stats' or commandused == 'backpack':
-                if target != 'botadmin':
+                if target != 'botadmin' and target != 'highest' and target != 'lowest':
                     stats = ''
                     if commandused == 'stats':
                         arraytoscan = challengestatsarray
