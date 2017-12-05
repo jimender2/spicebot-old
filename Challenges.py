@@ -65,7 +65,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset','lowest','highest']
+        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off','weaponslocker']
         inchannelarray = ['random','everyone']
@@ -328,24 +328,23 @@ def execute_main(bot, trigger, triggerargsarray):
                 currentrespawnsleadernumber = 0
                 currenthealthleadernumber = 9999999999
                 for u in bot.channels[channel].users:
-                    target = u
-                    targetdisenable = get_database_value(bot, target, 'disenable')
-                    if targetdisenable and target != bot.nick:
-                        winlossratio = get_winlossratio(bot,target)
+                    targetdisenable = get_database_value(bot, u, 'disenable')
+                    if targetdisenable and u != bot.nick:
+                        winlossratio = get_winlossratio(bot,u)
                         if winlossratio > currentwlrleadernumber:
-                            currentwlrleader = target
+                            currentwlrleader = u
                             currentwlrleadernumber = winlossratio
-                        kills = get_database_value(bot, target, 'kills')
+                        kills = get_database_value(bot, u, 'kills')
                         if int(kills) > int(currentkillsleadernumber):
-                            currentkillsleader = target
+                            currentkillsleader = u
                             currentkillsleadernumber = int(kills)
-                        respawns = get_database_value(bot, target, 'respawns')
+                        respawns = get_database_value(bot, u, 'respawns')
                         if int(respawns) > int(currentrespawnsleadernumber):
-                            currentrespawnsleader = target
+                            currentrespawnsleader = u
                             currentrespawnsleadernumber = int(respawns)
-                        health = get_database_value(bot, target, 'health')
+                        health = get_database_value(bot, u, 'health')
                         if int(health) < int(currenthealthleadernumber):
-                            currenthealthleader = target
+                            currenthealthleader = u
                             currenthealthleadernumber = int(health)
                 if currentwlrleadernumber > 0:
                     currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
