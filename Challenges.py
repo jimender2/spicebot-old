@@ -22,6 +22,7 @@ TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
+transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
     
@@ -70,13 +71,13 @@ def execute_main(bot, trigger, triggerargsarray):
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
             bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target != instigator and not trigger.admin and commandused in privilegedarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
-        elif not targetdisenable and target != instigator and target not in lootitemsarray and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
+        elif not targetdisenable and target != instigator and target not in lootitemsarray and target not in transactiontypesarray and commandused != 'on' and commandused != 'off' and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'statsadmin' and target != 'random':
             bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
         elif commandused in inchannelarray and not inchannel.startswith("#"):
             bot.notice(instigator + " Duels must be in channel.", instigator)
@@ -330,7 +331,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
             ## Loot Items
             elif commandused == 'loot':
-                transactiontypesarray = ['buy','sell','trade','use']
                 lootcommand = get_trigger_arg(triggerargsarray, 2)
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
