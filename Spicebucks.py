@@ -21,24 +21,24 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, args):
     for c in bot.channels:
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
     bot.say(str(len(triggerargsarray)))
-    #if args[1]:
-    #   if args[1] == 'payday':
-    #        checkpayday(bot,trigger.nick)
-    #    elif arg[1] == 'reset': #to be removed
-    #        reset(bot,trigger.nick)
-    #    elif arg[1] == 'bank':
-    #        bank(bot, trigger.nick)
-    #    elif arg[1] == 'transfer':
-    #        if arg[2] and arg[3]:
-    #            transfer(bot, trigger.nick, arg[2], amount)
-    #        else:
-    #            bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+    if len(args) > 0:
+       if args[0] == 'payday':
+            checkpayday(bot,trigger.nick)
+        elif arg[0] == 'reset': #to be removed
+            reset(bot,trigger.nick)
+        elif arg[0] == 'bank':
+            bank(bot, trigger.nick)
+        elif arg[0] == 'transfer':
+            if arg[2] and arg[3]:
+                transfer(bot, trigger.nick, arg[2], amount)
+            else:
+                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
     #if commandused:
     #    if commandused.startswith('payday'):
