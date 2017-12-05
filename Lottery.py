@@ -2,7 +2,7 @@ import sopel.module
 import sys
 import os
 import random
-import Points
+import Spicebucks
 import string
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
@@ -36,10 +36,12 @@ def execute_main(bot, trigger, triggerargsarray):
             if valid == 0:
                 bot.say("One of the numbers you entered does is not within the 1 to 20 range.")
             else:
-                winningnumbers = random.sample(range(1, 20), 5) 
-                bot.say('The winning numbers are ' + str(winningnumbers))
-                correct = 0
-                for pick in picks:
-                    if pick in winningnumbers:
+                if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == true:
+                    winningnumbers = random.sample(range(1, 20), 5) 
+                    bot.say('The winning numbers are ' + str(winningnumbers))
+                    correct = 0
+                    for pick in picks:
+                        if pick in winningnumbers:
                         correct = correct + 1
-                bot.say("You guessed " + str(correct) + " numbers.")
+                    bot.say("You guessed " + str(correct) + " numbers correctly.")
+                    Spicebucks.spicebucks(bot, trigger.nick, 'plus', correct)
