@@ -21,13 +21,13 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, args):
     for c in bot.channels:
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if arg1:
-        if arg1 == 'payday':
+    if arg[1]:
+        if arg[1] == 'payday':
             checkpayday(bot,trigger.nick)
     #    elif arg[1] == 'reset': #to be removed
     #        reset(bot,trigger.nick)
