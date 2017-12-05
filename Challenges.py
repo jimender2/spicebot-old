@@ -251,73 +251,32 @@ def execute_main(bot, trigger, triggerargsarray):
                     
             ## Stats
             elif commandused == 'stats' or commandused == 'backpack':
-                if target != 'botadmin' and target != 'highest' and target != 'lowest':
-                    stats = ''
-                    if commandused == 'stats':
-                        arraytoscan = challengestatsarray
-                    elif commandused == 'backpack':
-                        arraytoscan = lootitemsarray
-                        totalweapons = get_database_array_total(bot, target, 'weaponslocker')
-                        if totalweapons:
-                            addstat = str(" weaponstotal" + "=" + str(totalweapons))
-                            stats = str(stats + addstat)
-                    for x in arraytoscan:
-                        if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
-                            scriptdef = str('get_' + x + '(bot,target)')
-                            gethowmany = eval(scriptdef)
-                        else:
-                            gethowmany = get_database_value(bot, target, x)
-                        if gethowmany:
-                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                            stats = str(stats + addstat)
-                    if stats != '':
-                        stats = str(target + "'s " + commandused + ":" + stats)
-                        bot.notice(stats, instigator)
+                stats = ''
+                if commandused == 'stats':
+                    arraytoscan = challengestatsarray
+                elif commandused == 'backpack':
+                    arraytoscan = lootitemsarray
+                    totalweapons = get_database_array_total(bot, target, 'weaponslocker')
+                    if totalweapons:
+                        addstat = str(" weaponstotal" + "=" + str(totalweapons))
+                        stats = str(stats + addstat)
+                for x in arraytoscan:
+                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
+                        scriptdef = str('get_' + x + '(bot,target)')
+                        gethowmany = eval(scriptdef)
                     else:
-                        bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
-                elif target == 'highest' or target == 'lowest':
-                    statcheck = get_trigger_arg(triggerargsarray, 3)
-                    if statcheck not in challengestatsarray:
-                        bot.notice(instigator + ", Pick a valid stat.", instigator)
-                    else:
-                        currentleaderh = ''
-                        currentleaderl = ''
-                        checkingstat = 0
-                        currentleadernumberl = 0
-                        currentleadernumberh = 0
-                        for u in bot.channels[channel].users:
-                            targetdisenable = get_database_value(bot, u, 'disenable')
-                            if targetdisenable and u != bot.nick:
-                                checkingstat = get_database_value(bot, u, statcheck)
-                                if int(checkingstat) < int(currentleadernumberl):
-                                    currentleaderl = u
-                                    currentleadernumberl = int(checkingstat)
-                                elif int(checkingstat) > int(currentleadernumberh):
-                                    currentleaderh = u
-                                    currentleadernumberh = int(checkingstat)
-                                else:
-                                    currentleaderh = currentleaderh
-                                    currentleaderl = currentleaderl
-                                    currentleadernumberh = currentleadernumberh
-                                    currentleadernumberl = currentleadernumberl
-                        if target == 'lowest':
-                            currentleader = currentleaderl
-                            currentleadernumber = currentleadernumberl
-                        if target == 'highest':
-                            currentleader = currentleaderh
-                            currentleadernumber = currentleadernumberh
-                        leaderboardscript = str("Currently the " + str(target) + " " + str(statcheck) + " in the room is " + str(currentleader) + " with " + str(checkingstat) + ".")
-                        bot.say(leaderboardscript)
-                elif target == 'botadmin' and trigger.admin:
-                    bot.say("wip")
-                elif target == 'botadmin' and not trigger.admin:
-                    bot.notice(instigator + "This is an admin only function.", instigator)
+                        gethowmany = get_database_value(bot, target, x)
+                    if gethowmany:
+                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                        stats = str(stats + addstat)
+                if stats != '':
+                    stats = str(target + "'s " + commandused + ":" + stats)
+                    bot.notice(stats, instigator)
                 else:
-                    bot.say("wip")
+                    bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
 
             ## Leaderboard
             elif commandused == 'leaderboard':
-                ## make a for loop for this shit
                 leaderboardscript = ''
                 currentwlrleader = ''
                 currentkillsleader = ''
