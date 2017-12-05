@@ -33,11 +33,11 @@ def execute_main(bot, trigger, args):
                     bank(bot, args[1], 'other')
             else:
                 bank(bot, trigger.nick, 'self')
-        #elif args[0] == 'transfer':
-        #    if len(args) >= 3:
-        #        transfer(bot, channel, trigger.nick, args[1], args[2])
-        #    else:
-        #        bot.notify("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+        elif args[0] == 'transfer':
+            if len(args) >= 3:
+                transfer(bot, channel, trigger.nick, args[1], args[2])
+            else:
+                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
@@ -80,18 +80,18 @@ def bank(bot, nick, target):
     bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
 
 def transfer(bot, channel, instigator, target, amount):
-    #try:
-    int(amount)
-    if amount <= 0:
-        bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
-    else:
-        if target.lower() not in bot.privileges[channel.lower()]:
-            bot.say("I'm sorry, I do not know who you want to transfer money to.")
+    try:
+        int(amount)
+        if amount <= 0:
+            bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
         else:
-            spicebucks(bot, instigator, 'minus', amount)
-            spicebucks(bot, target, 'plus', amount)
-            bot.say("You successfully transfered " + str(amount) + " to " + target + ".")
-    #except:
-    #    bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+            if target.lower() not in bot.privileges[channel.lower()]:
+                bot.say("I'm sorry, I do not know who you want to transfer money to.")
+            else:
+                spicebucks(bot, instigator, 'minus', amount)
+                spicebucks(bot, target, 'plus', amount)
+                bot.say("You successfully transfered " + str(amount) + " to " + target + ".")
+    except:
+        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
         
         
