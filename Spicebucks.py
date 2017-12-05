@@ -90,7 +90,7 @@ def transfer(bot, channel, instigator, target, amount):
             else:
                 if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
-                    bot.say("You successfully transfered " + amount + " to " + target + ".")
+                    bot.say("You successfully transfered " + str(amount) + " to " + target + ".")
     except:
         bot.say("I'm sorry, the amount you entered does not appear to be a number.")
         
