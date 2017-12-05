@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if len(triggerargsarray) < 6:
+    if len(triggerargsarray) < 5:
        bot.say("You must enter 5 lottery numbers betwen from 1 to 50 to play.")
     else:
         success = 0
