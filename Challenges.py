@@ -145,6 +145,20 @@ def execute_main(bot, trigger, triggerargsarray):
                         set_database_value(bot, target, 'opttime', now)
                         bot.notice(instigator + ", It looks like Challenges should be " +  commandused + ' for ' + target + '.', instigator)
                         
+            ## Random Dueling
+            elif commandused == 'random':
+                OSDTYPE = 'say'
+                for u in bot.channels[channel].users:
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+                    if cantargetduel:
+                        targetarray.append(u)
+                if targetarray == []:
+                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+                else:
+                    randomselected = random.randint(0,len(targetarray) - 1)
+                    target = str(targetarray [randomselected])
+                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                
             ## Duel Everyone
             elif commandused == 'everyone':
                 OSDTYPE = 'notice'
@@ -164,20 +178,6 @@ def execute_main(bot, trigger, triggerargsarray):
                                 getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
-                
-            ## Random Dueling
-            elif commandused == 'random':
-                OSDTYPE = 'say'
-                for u in bot.channels[channel].users:
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                    if cantargetduel:
-                        targetarray.append(u)
-                if targetarray == []:
-                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                else:
-                    randomselected = random.randint(0,len(targetarray) - 1)
-                    target = str(targetarray [randomselected])
-                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
 
             ## Can I fight
             elif commandused == 'canifight':
@@ -249,7 +249,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     
-            ## Stats
+            ## Stats and Backpack
             elif commandused == 'stats' or commandused == 'backpack':
                 stats = ''
                 if commandused == 'stats':
