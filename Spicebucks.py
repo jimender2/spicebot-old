@@ -26,24 +26,26 @@ def execute_main(bot, trigger, args):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    if len(args) > 0:
-       if args[0] == 'payday':
-           checkpayday(bot,trigger.nick)
-       elif args[0] == 'reset': #to be removed
-           reset(bot,trigger.nick)
-       elif args[0] == 'bank':
-           if len(args) > 1:
-               if args[1] not in bot.privileges[channel.lower()]:
-                   bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-               else:
-                   bank(bot, args[1], 'other')
-           else:
-               bank(bot, trigger.nick, 'self')
-       elif args[0] == 'transfer':
-           if len(args) >= 3:
-               transfer(bot, channel, trigger.nick, args[1], args[2])
-           else:
-               bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+    if len(args) == 0:
+        bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank. (for now)")
+    elif len(args) >= 1:
+        if args[0] == 'payday':
+            checkpayday(bot,trigger.nick)
+        elif args[0] == 'reset': #to be removed
+            reset(bot,trigger.nick)
+        elif args[0] == 'bank':
+            if len(args) > 1:
+                if args[1] not in bot.privileges[channel.lower()]:
+                    bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+                else:
+                    bank(bot, args[1], 'other')
+            else:
+                bank(bot, trigger.nick, 'self')
+       #elif args[0] == 'transfer':
+       #    if len(args) >= 3:
+       #        transfer(bot, channel, trigger.nick, args[1], args[2])
+       #    else:
+       #        bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
