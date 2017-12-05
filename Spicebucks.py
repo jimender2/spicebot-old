@@ -21,8 +21,8 @@ def execute_main(bot, trigger, args):
     if len(args) == 0:
         bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank. (for now)")
     elif len(args) >= 1:
-        if args[0] == 'payday':
-            checkpayday(bot,trigger.nick)
+        if args[0] == 'payday' or args[0] == 'upupdowndownleftrightleftrightbastart':
+            checkpayday(bot,trigger.nick, args[0])
         elif args[0] == 'reset': #to be removed
             reset(bot,trigger.nick)
         elif args[0] == 'bank':
@@ -42,14 +42,17 @@ def execute_main(bot, trigger, args):
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
-def checkpayday(bot, target):
+def checkpayday(bot, target, args):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
+        paydayamount = 5
+        if args == 'upupdowndownleftrightleftrightbastart':
+            paydayamount = 15
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
-        spicebucks(bot, target, 'plus', 5)
-        bot.say("You haven't been paid yet today. Here's your 5 spicebucks.") #change to notify
+        spicebucks(bot, target, 'plus', paydayamount)
+        bot.say("You haven't been paid yet today. Here's your " + paydayamount + " spicebucks.") #change to notify
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
         
