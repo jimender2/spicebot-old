@@ -35,8 +35,10 @@ def execute_main(bot, trigger, args):
            if len(args) > 1
                if args[1] not in bot.privileges[channel.lower()]:
                    bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+               else:
+                   bank(bot, args[1], 'other')
            else:
-               bank(bot, trigger.nick)
+               bank(bot, trigger.nick, 'self')
        elif args[0] == 'transfer':
            if len(args) >= 3:
                transfer(bot, channel, trigger.nick, args[1], args[2])
@@ -76,9 +78,12 @@ def spicebucks(bot, target, plusminus, amount):
         success = 'false'
     return success
 
-def bank(bot, nick):
+def bank(bot, nick, target):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
-    bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")
+    identifier = "You have "
+    if target == 'other':
+        identifier = target + ' has '
+    bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
 
 def transfer(bot, channel, instigator, target, amount):
     if not type(amount) == int:
