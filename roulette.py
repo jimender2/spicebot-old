@@ -21,9 +21,8 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
   #get triggerwords from player to allow number,color and even/odd choices
   bot.say(trigger.nick + ' spins the wheel')
-  winningnumber,color = spinwheel()
-  winningnumber = results[0]
-  if results[1] == 0:
+  winningnumber,pickedcolor = spinwheel()  
+  if pickedcolor == 0:
     color = 'black'
   else:
     color = 'red' 
