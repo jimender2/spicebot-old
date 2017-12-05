@@ -26,9 +26,9 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
     commandused = trigger.group(3)
     inchannel = trigger.sender
-    #if arg[0]:
-    #    if arg[1] == 'payday':
-    #        checkpayday(bot,trigger.nick)
+    if arg1:
+        if arg1 == 'payday':
+            checkpayday(bot,trigger.nick)
     #    elif arg[1] == 'reset': #to be removed
     #        reset(bot,trigger.nick)
     #    elif arg[1] == 'bank':
@@ -39,15 +39,15 @@ def execute_main(bot, trigger, triggerargsarray):
     #        else:
     #            bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
-    if commandused:
-        if commandused.startswith('payday'):
-            checkpayday(bot,trigger.nick)
-        elif commandused.startswith('reset'): ##to be removed
-            reset(bot,trigger.nick)
-        elif commandused.startswith('bank'):
-            bank(bot, trigger.nick)
-        elif commandused.startswith('transfer'):
-            bot.say('transfer money to another user')
+    #if commandused:
+    #    if commandused.startswith('payday'):
+    #        checkpayday(bot,trigger.nick)
+    #    elif commandused.startswith('reset'): ##to be removed
+    #        reset(bot,trigger.nick)
+    #    elif commandused.startswith('bank'):
+    #        bank(bot, trigger.nick)
+    #    elif commandused.startswith('transfer'):
+    #        bot.say('transfer money to another user')
             
 ##### Lots to do
 def reset(bot, target): ##### to be removed, verify payday
