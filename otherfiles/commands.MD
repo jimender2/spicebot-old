@@ -37,12 +37,34 @@ Example:
 * JohnSmith: .myown chatroom
 * SpiceBot: Fine! I'll start my own chatroom, with blackjack and hookers!
 
+### BLAME
+Commands: blame
+
+Picks a random user with the bot enabled to blame.
+
+Example:
+* JohnSmith: .blame
+* SpiceBot: It's RandomUser's fault!
+
 ### CAN_YOU_SEE_ME
 Commands: canyouseeme
 
 Example:
 * JohnSmith: .canyouseeme
 * SpiceBot:  JohnSmith, I can see you.
+
+### CHUCKNORRIS
+Commands: chucknorris, chuck
+Users may also specify a name after the command, which the bot will use in place of "Chuck Norris" in the joke.
+
+Examples:
+* JohnSmith: .chuck
+* SpiceBot: How much wood would a woodchuck chuck if a woodchuck could Chuck Norris? All of it
+
+* JohnSmith: .chuck JohnSmith
+* SpiceBot: What was going through the minds of all of JohnSmith' victims before they died? His shoe.
+
+Note: This pulls a Chuck Norris joke from http://api.icndb.com/jokes/random
 
 ### CIPHER_THE_TERMINATOR
 Commands: cipher
@@ -63,6 +85,13 @@ Example:
 Note: If you are IT_Sean
 * IT_Sean: .pee JakeSnake
 * SpiceBot:  IT_Sean releases the contents of his bladder on JakeSnake! All should recognize this profound claim of ownership upon JakeSnake!
+
+### COWBOY
+Commands: cowboy
+
+Example:
+* JohnSmith: .cowboy
+* SpiceBot:  yeeeee-HAW!
 
 ### DAD_JOKES
 Commands: dad
@@ -89,13 +118,12 @@ Example:
 Note: This selects from an array of options
 
 ### DUEL
-Commands: duelon , dueloff , duels , duelself , duel
+Commands: duel
+To be able to duel, you must run .duel on
+Following this, .duel TargetNick will let you join in.
 
-Example:
-* JohnSmith: .duel JakeSnake
-* SpiceBot: JohnSmith vs. JakeSnake, loser's a yeller belly!
-* SpiceBot: JohnSmith wins!
-* SpiceBot: JohnSmith done killed ya, JakeSnake!
+Note: Duel has evolved beyond the scope of this document. 
+For full info, see https://github.com/deathbybandaid/sopel-modules/blob/dev/otherfiles/ChallengesDocumentation.md
 
 ### FERENGI_RULES_OF_ACQUISITION
 Commands: ferengi
@@ -107,6 +135,18 @@ Commands: gif , giphy
 
 Note: User Provides a Query, Pulls a gif from http://api.giphy.com/v1/gifs/search
 
+### GOOGLEIT
+Commands: google , googleit
+
+Note: User Provides a Query, returns top result from Google search.
+Users may also specify a site to search using the standard site:url.com format.
+Examples:
+* JohnSmith: .google sysadmin
+* SpiceBot: https://www.reddit.com/r/sysadmin/
+
+* JohnSmith: .google sysadmin site:xkcd.com
+* SpiceBot: https://xkcd.com/705/
+
 ### HALP_NOT_HELP
 Commands: halp
 
@@ -114,19 +154,20 @@ Example:
 * JohnSmith: .halp
 * SpiceBot: If you need help using help you are truly lost.
 
+### HAPPEN
+Commands: happen 
+
+Note: This command requires arguments.
+Example:
+* JohnSmith: .happen free icecream
+* SpiceBot: Stop trying to make free icecream happen. It's not going to happen
+
 ### HOMER_SIMPSON
 Commands: homer
 
 Example:
 * JohnSmith: .homer
 * SpiceBot: D'ooooh!
-
-### HUMPDAY_WEDNESDAY
-Commands: humpday
-
-Example:
-* JohnSmith: .humpday
-* SpiceBot: Today is Wednesday, AKA HUMPDAY!!!!
 
 ### I_SHOULD_BUY_A_BOAT
 Commands: boat
