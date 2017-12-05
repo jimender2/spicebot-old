@@ -283,7 +283,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         currentleaderh = ''
                         currentleaderl = ''
                         checkingstat = 0
-                        currentleadernumberl = 9999999999
+                        currentleadernumberl = 0
                         currentleadernumberh = 0
                         for u in bot.channels[channel].users:
                             targetdisenable = get_database_value(bot, u, 'disenable')
