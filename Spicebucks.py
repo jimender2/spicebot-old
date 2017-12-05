@@ -35,21 +35,10 @@ def execute_main(bot, trigger, args):
            bank(bot, trigger.nick)
        elif args[0] == 'transfer':
            if len(args) >= 3:
-               transfer(bot, trigger.nick, args[1], args[2])
+               transfer(bot, channel, trigger.nick, args[1], args[2])
            else:
                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
-    #if commandused:
-    #    if commandused.startswith('payday'):
-    #        checkpayday(bot,trigger.nick)
-    #    elif commandused.startswith('reset'): ##to be removed
-    #        reset(bot,trigger.nick)
-    #    elif commandused.startswith('bank'):
-    #        bank(bot, trigger.nick)
-    #    elif commandused.startswith('transfer'):
-    #        bot.say('transfer money to another user')
-            
-##### Lots to do
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
@@ -87,7 +76,7 @@ def bank(bot, nick):
     spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
     bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")
 
-def transfer(bot, instigator, target, amount):
+def transfer(bot, channel, instigator, target, amount):
     if not type(amount) == int:
         if amount <= 0:
             bot.say("I'm sorry, you must enter a proper amount to give to " + target + ".")
