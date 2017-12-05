@@ -32,7 +32,11 @@ def execute_main(bot, trigger, args):
        elif args[0] == 'reset': #to be removed
            reset(bot,trigger.nick)
        elif args[0] == 'bank':
-           bank(bot, trigger.nick)
+           if len(args) > 1
+               if args[1] not in bot.privileges[channel.lower()]:
+                   bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+           else:
+               bank(bot, trigger.nick)
        elif args[0] == 'transfer':
            if len(args) >= 3:
                transfer(bot, channel, trigger.nick, args[1], args[2])
