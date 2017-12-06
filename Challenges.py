@@ -100,7 +100,7 @@ def execute_main(bot, trigger, triggerargsarray):
             channeltime = get_timesince_duels(bot, channel, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
-            set_database_value(bot, nick, 'lastfullroomassultinstigator', '')
+            set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', '')
             lastfullroomassultinstigator = get_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator')
             if not channellastinstigator:
                 channellastinstigator = bot.nick
