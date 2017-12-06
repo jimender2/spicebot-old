@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 
 #A roulette game to be used with Spicebucks.
-maxwheel = 2
+maxwheel = 15
 
 @sopel.module.commands('roulette', 'spin')
 def mainfunction(bot, trigger):
