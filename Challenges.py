@@ -100,9 +100,9 @@ def execute_main(bot, trigger, triggerargsarray):
             channeltime = get_timesince_duels(bot, channel, 'timeout')
             channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
             lastfullroomassult = get_timesince_duels(bot, ALLCHAN, 'lastfullroomassult')
-            lastfullroomassultinstigator = get_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator')
-            if not lastfullroomassultinstigator:
-                lastfullroomassultinstigator = bot.nick
+            #lastfullroomassultinstigator = get_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator')
+            #if not lastfullroomassultinstigator:
+            #    lastfullroomassultinstigator = bot.nick
             if not channellastinstigator:
                 channellastinstigator = bot.nick
             if not lastfought:
@@ -167,8 +167,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 OSDTYPE = 'notice'
                 if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
-                elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                    bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
+                #elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                #    bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', instigator)
