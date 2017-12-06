@@ -793,6 +793,7 @@ def refreshbot(bot):
     
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
+    set_database_value(bot, nick, databasekey, '')
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
 
