@@ -40,21 +40,21 @@ def execute_main(bot, trigger, arg):
         if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
           bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
           winningnumber,pickedcolor = spinwheel()  
-            if pickedcolor == 0:
-              color = 'black'
-            else:
-              color = 'red' 
-            bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-            if mynumber == winningnumber:
-              mywinnings=mywinnings+(mybet*4)
-            elif mycolor == color:
-              mywinnings=mywinnings+mybet
-            if mywinnings >=1:
-              bot.say(trigger.nick + ' has won ' + mywinnings)
-              Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-              Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
-            else:
-              bot.say(trigger.nick + ' has lost ' + mybet)
+          if pickedcolor == 0:
+            color = 'black'
+          else:
+            color = 'red' 
+          bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+          if mynumber == winningnumber:
+            mywinnings=mywinnings+(mybet*4)
+          elif mycolor == color:
+            mywinnings=mywinnings+mybet
+          if mywinnings >=1:
+            bot.say(trigger.nick + ' has won ' + mywinnings)
+            Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+            Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
+          else:
+            bot.say(trigger.nick + ' has lost ' + mybet)
         else:
             bot.say('You do not have enough Spicebucks for your bet')
       
