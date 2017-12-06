@@ -30,6 +30,7 @@ def execute_main(bot, trigger, arg):
     elif not (arg[2] == 'red' or arg[2] == 'black'):
       bot.say("Please select either red or black")	
     else:
+      mywinnings=0
       mybet=int(arg[0])
       mynumber=int(arg[1])
       mycolor=arg[2]         
@@ -40,10 +41,14 @@ def execute_main(bot, trigger, arg):
       else:
         color = 'red' 
       bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-      if (mynumber == winningnumber and mycolor == color):
-        bot.say(trigger.nick + ' is a winner')
+      if mynumber == winningnumber:
+        mywinnings=mywinngs+(mybet*2)
+      elif mycolor==color:
+        mywinnings=mywinners+(mybet+2)
+      if mywinnings>=1:
+        bot.say(trigger.nick + ' has won ' + mywinnigs)
       else:
-        bot.say(trigger.nick + ' has lost ' + str(mybet))
+        bot.say(trigger.nick + ' has lost ' + mybet)
       
 def spinwheel():
   random.seed()
