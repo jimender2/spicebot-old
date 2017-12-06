@@ -359,9 +359,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         target = instigator
                     saymsg = 'true'
                     use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'dispose':
                     reward = -1
                     adjust_database_value(bot, instigator, lootitem, reward)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 else:
                     if lootcommand == 'trade':
                         cost = -3
@@ -380,7 +382,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         itemexchanged = lootitem
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
-                bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             
             ## Old loot system
             elif commandused in lootitemsarray:
