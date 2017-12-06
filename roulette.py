@@ -32,8 +32,7 @@ def execute_main(bot, trigger, arg):
     else:
       mybet=int(arg[0])
       mynumber=int(arg[1])
-      mycolor=arg[2]   
-      bot.say(mycolor)
+      mycolor=arg[2]         
       bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
       winningnumber,pickedcolor = spinwheel()  
       if pickedcolor == 0:
