@@ -21,17 +21,17 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   #get triggerwords from player to allow number,color and even/odd choices
   if str(arg(0))=='payout':
-    bot.say('Picking the correct number gives 4 times your bet. Picking the correct number gives double your bet')
+    bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
   else:
     if len(arg) < 3:
-      bot.say("Please enter your bet followed by number or color you wish to bet on")	
+      bot.say('Please enter your bet followed by number or color you wish to bet on')	
     else:
       if not int(arg[0])>=1:      
         bot.say('Please enter the amount you wish to bet first')
       elif not (int(arg[1])<=maxwheel and int(arg[1])>=1):
         bot.say('Please pick a number between 1 and ' + str(maxwheel))
       elif not (arg[2] == 'red' or arg[2] == 'black'):
-        bot.say("Please select either red or black")	
+        bot.say('Please select either red or black')	
       else:
         if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
           mywinnings=0
