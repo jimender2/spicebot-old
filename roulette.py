@@ -24,7 +24,7 @@ def execute_main(bot, trigger, arg):
     bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
   else:
     if len(arg) < 3:
-      bot.say('Please enter your bet followed by number or color you wish to bet on')	
+      bot.say('Please enter your bet followed by number and the color you wish to bet on')	
     else:
       if not int(arg[0])>=1:      
         bot.say('Please enter the amount you wish to bet first')
