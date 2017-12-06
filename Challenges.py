@@ -22,7 +22,7 @@ TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-transactiontypesarray = ['buy','sell','trade','use']
+transactiontypesarray = ['buy','sell','trade','use','dispose']
 challengestatsadminarray = ['opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
     
@@ -349,6 +349,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
                 elif lootcommand == 'sell' and not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to sell!", instigator)
+                elif lootcommand == 'dispose' and not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
                 elif lootcommand == 'buy' and gethowmanycoins < 100:
                     bot.notice(instigator + ", You need 100 coins to buy.", instigator)
                 elif lootcommand == 'use':
@@ -357,6 +359,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         target = instigator
                     saymsg = 'true'
                     use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                elif lootcommand == 'dispose':
+                    reward = -1
+                    adjust_database_value(bot, instigator, lootitem, reward)
                 else:
                     if lootcommand == 'trade':
                         cost = -3
