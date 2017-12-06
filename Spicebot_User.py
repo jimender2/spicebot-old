@@ -212,9 +212,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         target = u
                         disenable = get_botdatabase_value(bot, target, 'disenable')
                         if commandused == 'on':
-                            set_botdatabase_value(bot, nick, 'disenable', 'true')
+                            set_botdatabase_value(bot, target, 'disenable', 'true')
                         else:
-                            set_botdatabase_value(bot, nick, 'disenable', '')
+                            set_botdatabase_value(bot, target, 'disenable', '')
                     bot.say(bot.nick + ' turned ' + commandused + ' for all.')
                 else:
                     bot.say('Only Admin can Change Statuses for all.')
