@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
   #get triggerwords from player to allow number,color and even/odd choices
-  if str(arg(0))=='payout':
+  if str(arg[0])=='payout':
     bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
   else:
     if len(arg) < 3:
