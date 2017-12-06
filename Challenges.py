@@ -380,7 +380,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         itemexchanged = lootitem
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
-                    bot.notice(instigator + ", Exchange Completed.", instigator)
+                bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             
             ## Old loot system
             elif commandused in lootitemsarray:
