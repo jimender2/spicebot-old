@@ -893,7 +893,7 @@ def get_lootitem_text(bot, nick, loottype):
     else:
         loot_text = ''
     if loot_text != '':
-        loot_text = str(loot_text + " Use .challenge " + str(loottype) + " to consume.")
+        loot_text = str(loot_text + " Use .challenge loot use " + str(loottype) + " to consume.")
     return loot_text
         
 def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
