@@ -18,9 +18,9 @@ def mainfunction(bot, trigger):
   if not enablestatus:
     execute_main(bot, trigger, triggerargsarray)
         
-def execute_main(bot, trigger, args):
+def execute_main(bot, trigger, arg):
   #get triggerwords from player to allow number,color and even/odd choices
-  if len(args) < 3:
+  if len(arg) < 3:
     bot.say("Please enter your bet followed by number or color you wish to bet on")	
   else:
     if not int(arg[0])>=1:      
