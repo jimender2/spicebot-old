@@ -26,14 +26,14 @@ def execute_main(bot, trigger, arg):
     if not int(arg[0])>=1:      
       bot.say('Please enter the amount you wish to bet first')
     elif not int(arg[1])<=maxwheel and int(arg[1])>=1:
-      bot.say("Please pick a number between 1 and " + maxwheel)
+      bot.say('Please pick a number between 1 and ' + str(maxwheel))
     elif not arg[2] == 'red' or arg[2] == 'black':
       bot.say("Please select either red or black")	
     else:
       mybet=int(arg[0])
       mynumber=int(arg[1])
       mycolor=arg[2]                         
-      bot.say(trigger.nick + ' puts ' + mybet + 'on the table spins the wheel')
+      bot.say(trigger.nick + ' puts ' + str(mybet) + 'on the table spins the wheel')
       winningnumber,pickedcolor = spinwheel()  
       if pickedcolor == 0:
         color = 'black'
