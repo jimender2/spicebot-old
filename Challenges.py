@@ -167,7 +167,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 OSDTYPE = 'notice'
                 if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
                     bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
-                elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                elif lastfullroomassultinstigator == instigator:# and not bot.nick.endswith('dev'):
                     bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
