@@ -33,15 +33,14 @@ def execute_main(bot, trigger, arg):
       mybet=int(arg[0])
       mynumber=int(arg[1])
       mycolor=arg[2]                         
-      bot.say(trigger.nick + ' puts ' + str(mybet) + 'on the table spins the wheel')
+      bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
       winningnumber,pickedcolor = spinwheel()  
       if pickedcolor == 0:
         color = 'black'
       else:
         color = 'red' 
       bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-      if winningnumber==mynumber or color==color:
-        bot.say(trigger.nick + ' is a winner')    
+      bot.say(trigger.nick + ' bet on ' + mynumber + mycolor)
       
 def spinwheel():
   random.seed()
