@@ -722,11 +722,11 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
         displaymsg = str(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.")
     elif not targetdisenable:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Challenges.')
-    elif instigatortime < TIMEOUT and not bot.nick.endswith('dev'):
+    elif instigatortime <= TIMEOUT and not bot.nick.endswith('dev'):
         displaymsg = str("You can't challenge for %d seconds." % (TIMEOUT - instigatortime))
-    elif targettime < TIMEOUT and not bot.nick.endswith('dev'):
+    elif targettime <= TIMEOUT and not bot.nick.endswith('dev'):
         displaymsg = str(target + " can't challenge for %d seconds." % (TIMEOUT - targettime))
-    elif channeltime < TIMEOUTC and not bot.nick.endswith('dev'):
+    elif channeltime <= TIMEOUTC and not bot.nick.endswith('dev'):
         displaymsg = str(channel + " can't challenge for %d seconds." % (TIMEOUTC - channeltime))
     else:
         displaymsg = ''
