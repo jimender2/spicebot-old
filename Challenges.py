@@ -376,7 +376,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", Exchange Completed.", instigator)
-         
+            
+            ## Old loot system
+            elif commandused in lootitemsarray:
+                gethowmany = get_database_value(bot, instigator, commandused)
+                if gethowmany:
+                    saymsg = 'true'
+                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
+                else:
+                    bot.notice(instigator + ", You do not have a " +  commandused + " to use!", instigator)
+                    
             ## Konami
             elif commandused == 'upupdowndownleftrightleftrightba':
                 konami = get_database_value(bot, target, 'konami')
