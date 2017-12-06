@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 
 #A roulette game to be used with Spicebucks.
-maxwheel = 19
+maxwheel = 2
 
 @sopel.module.commands('roulette', 'spin')
 def mainfunction(bot, trigger):
@@ -51,12 +51,10 @@ def execute_main(bot, trigger, arg):
             mywinnings=mywinnings+mybet
           if mywinnings >=1:
             bot.say(trigger.nick + ' has won ' + str(mywinnings))
-            Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
-            Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mybet))
+            Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+            Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
           else:
-            bot.say(trigger.nick + ' has lost ' + str(mybet))
-        else:
-            bot.say('You do not have enough Spicebucks for your bet')
+            bot.say(trigger.nick + ' has lost ' + str(mybet))        
       
 def spinwheel():
   random.seed()
