@@ -79,7 +79,7 @@ def payouts(mybet,mycolor,mynumber):
 		  bot.say(trigger.nick + ' has lost ' + str(mybet))        
 
 	  
-  def spinwheel():
+def spinwheel():
   random.seed()
   thenumber = random.randint(0,maxwheel)
   thecolor=random.randint(0,1)
