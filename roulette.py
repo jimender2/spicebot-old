@@ -35,7 +35,7 @@ def execute_main(bot, trigger, arg):
         mynumber=int(arg[1])
         mycolor=arg[2]
     payouts(mybet,mycolor)
-    elif len(arg)==2
+    elif len(arg)==2:
 		  if int(arg[0])>=1:
 			  if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
 				  mycolor = arg[1]
