@@ -183,6 +183,15 @@ def adjust_botdatabase_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
+############################
+## Fix unicode in strings ##
+############################
+
+def unicode_string_cleanup(string):
+    for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
+        string = string.replace(*r)
+    return string
+    
 ##########
 ## Time ##
 ##########
