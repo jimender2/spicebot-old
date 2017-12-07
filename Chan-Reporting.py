@@ -14,4 +14,18 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    
+    commandused = get_trigger_arg(triggerargsarray, 1)
+    if not commandused:
+        bot.say("What report do you want?")
+    elif commandused == 'inactive':
+        bot.say("WIP")
+        
+
+#@thread(False)
+#@rule('(.*)')
+#@priority('low')
+#def note(bot, trigger):
+#    if not trigger.is_privmsg:
+#        bot.db.set_nick_value(trigger.nick, 'seen_timestamp', time.time())
+        
+# join monitoring
