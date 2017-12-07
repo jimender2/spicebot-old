@@ -59,10 +59,10 @@ def execute_main(bot, trigger, arg):
 		  					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
 						else:
 		  					bot.say(trigger.nick + ' has lost ' + str(mybet))        
-		elif len(arg)==2:
-  			if int(arg[0])>=1:
-				if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
-					mycolor = arg[1]
+		elif len(arg)==2:  			
+			mybet = int(arg[0])
+			if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
+				mycolor = arg[1]
 		  	elif (int(arg[1])<=maxwheel and int(arg[1])>=1):
 				mynumber=int(arg[1])
 		 	else:
