@@ -359,7 +359,6 @@ def execute_main(bot, trigger, triggerargsarray):
                         target = instigator
                     saymsg = 'true'
                     use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'dispose':
                     reward = -1
                     adjust_database_value(bot, instigator, lootitem, reward)
