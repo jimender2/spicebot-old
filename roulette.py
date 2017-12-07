@@ -67,6 +67,9 @@ def execute_main(bot, trigger, arg):
 					if(int(arg[1])<=maxwheel and int(arg[1])>=1):
 						mynumber=int(arg[1])
 						mycolor=' '
+					else:
+						bot.say('I choose the number 0 for you')
+						mynumber = 0
 		 		else:
 					bot.say('You have choosen to bet on black')
 					mycolor='black'
