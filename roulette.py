@@ -14,9 +14,9 @@ maxwheel = 15
 
 @sopel.module.commands('roulette', 'spin')
 def mainfunction(bot, trigger):
-  enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-  if not enablestatus:
-    execute_main(bot, trigger, triggerargsarray)
+	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+	if not enablestatus:
+		execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
   #get triggerwords from player to allow number,color and even/odd choices
@@ -26,9 +26,9 @@ def execute_main(bot, trigger, arg):
 		bot.say('Please enter your bet followed by number and/or the color you wish to bet on')	
 	else:
     		if len(arg) == 3:
-	      		if not int(arg[0])>=1:      
+			if not int(arg[0])>=1:      
 				bot.say('Please enter the amount you wish to bet first')
-	     		 elif not (int(arg[1])<=maxwheel and int(arg[1])>=1):
+			elif not (int(arg[1])<=maxwheel and int(arg[1])>=1):
 				bot.say('Please pick a number between 1 and ' + str(maxwheel))
 	      		elif not (arg[2] == 'red' or arg[2] == 'black'):
 				bot.say('Please select either red or black')	
@@ -43,7 +43,7 @@ def execute_main(bot, trigger, arg):
 					mycolor = arg[1]
 		  	elif (int(arg[1])<=maxwheel and int(arg[1])>=1):
 				mynumber=int(arg[1])
-     			 else:
+		 	else:
 				bot.say('You have choosen to bet on black')
 				mycolor='black'
 				mynumber=0
@@ -61,13 +61,13 @@ def payouts(mybet,mycolor,mynumber):
 	if mybet<=0:
 		bot.say('Please enter your bet followed by number and the color you wish to bet on')
 	else:
-  		if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-	    		bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
+		if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
+			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
 	    		winningnumber,pickedcolor = spinwheel()  
 	    		if pickedcolor == 0:
-		  		color = 'black'
+				color = 'black'
 	    		else:
-		  		color = 'red' 
+				color = 'red' 
     			bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
 	  		if mynumber == winningnumber:
 		  		mywinnings=mywinnings+(mybet*4)
@@ -82,8 +82,8 @@ def payouts(mybet,mycolor,mynumber):
 
 	  
 def spinwheel():
-  random.seed()
-  thenumber = random.randint(0,maxwheel)
-  thecolor=random.randint(0,1)
-  #return array with color and number
-  return thenumber, thecolor
+  	random.seed()
+	thenumber = random.randint(0,maxwheel)
+	thecolor=random.randint(0,1)
+	#return array with color and number
+	return thenumber, thecolor
