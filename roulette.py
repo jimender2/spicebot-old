@@ -63,8 +63,10 @@ def execute_main(bot, trigger, arg):
 			mybet = int(arg[0])
 			if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
 				mycolor = arg[1]
+				mynumber=0
 		  	elif (int(arg[1])<=maxwheel and int(arg[1])>=1):
 				mynumber=int(arg[1])
+			       mycolor=' '
 		 	else:
 				bot.say('You have choosen to bet on black')
 				mycolor='black'
