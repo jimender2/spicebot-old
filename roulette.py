@@ -73,23 +73,23 @@ def execute_main(bot, trigger, arg):
 				bot.say('Please enter your bet followed by number and the color you wish to bet on')
 			else:
 				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-				bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
-				winningnumber,pickedcolor = spinwheel()  
-				if pickedcolor == 0:
-					color = 'black'
-				else:
-					color = 'red' 
-				bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-				if mynumber == winningnumber:
-					mywinnings=mywinnings+(mybet*4)
-				elif mycolor == color:
-					mywinnings=mywinnings+mybet
-				if mywinnings >=1:
-					bot.say(trigger.nick + ' has won ' + str(mywinnings))
-					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
-				else:
-					bot.say(trigger.nick + ' has lost ' + str(mybet))  
+					bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
+					winningnumber,pickedcolor = spinwheel()  
+					if pickedcolor == 0:
+						color = 'black'
+					else:
+						color = 'red' 
+					bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+					if mynumber == winningnumber:
+						mywinnings=mywinnings+(mybet*4)
+					elif mycolor == color:
+						mywinnings=mywinnings+mybet
+					if mywinnings >=1:
+						bot.say(trigger.nick + ' has won ' + str(mywinnings))
+						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
+					else:
+						bot.say(trigger.nick + ' has lost ' + str(mybet))  
 		
 		else:
 			bot.say('Please enter your bet followed by number and or the color you wish to bet on') 
