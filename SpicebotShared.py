@@ -61,12 +61,12 @@ def spicebot_prerun(bot,trigger):
         message = str(instigator + ", you must have used Spicebot more than " + str(TOOMANYTIMES) + " times this past hour.")
     
     ## Make sure the user hasn't just entered the room
-    elif instigatorbotstatus and jointime < JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
+    elif instigatorbotstatus and jointime <= JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
         jointimemath = int(JOINTIMEOUT - jointime)
         message = str(instigator + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
     
     ## Make users wait between uses
-    elif instigatorbotstatus and lasttime < LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
+    elif instigatorbotstatus and lasttime <= LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
         lasttimemath = int(LASTTIMEOUT - lasttime)
         message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
     
