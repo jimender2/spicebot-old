@@ -471,8 +471,14 @@ def execute_main(bot, trigger, triggerargsarray):
                         manarequired = -200
                         damage = 200
                     elif magicusage == 'instakill':
-                        manarequired = -1550
-                        damage = -99999
+                        targethealthstart = get_database_value(bot, target, 'health')
+                        bot.say(str(targethealthstart))
+                        if int(targethealthstart) < 200:
+                            manarequired = 200
+                        else:
+                            manarequired = -abs(int(int(targethealthstart) / 200) * 250)
+                        bot.say(str(manarequired))
+                        damage = targethealthstart
                     damagetext = abs(damage)
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
