@@ -16,8 +16,6 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = trigger.group(2)
         if not myline.endswith('s'):
             myline = str(myline + "s")
-        else:
-            myline = str(myline)
-        bot.say("let me call my buddy and get him down here... he's an expert on " + str(myline)
+        bot.say("let me call my buddy and get him down here... he's an expert on " + myline)
     else:
         bot.say("What is your buddy good at?")
