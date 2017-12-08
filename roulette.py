@@ -28,6 +28,7 @@ def execute_main(bot, trigger, arg):
 		elif (str(arg[0])=='wheel' and trigger.nick=='under_score'):
 			if arg[1].isdigit():
 				maxwheel = int(arg[1])
+				bot.say('Wheel max is now set to ' + maxwheel)
 		elif not arg[0].isdigit():
 			bot.say('Please enter your bet followed by number and/or the color you wish to bet on')	
 		else:
