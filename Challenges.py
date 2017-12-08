@@ -172,6 +172,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', instigator)
+                    lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                     for u in bot.channels[channel].users:
                         cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                         if cantargetduel and u != bot.nick:
@@ -181,9 +182,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         for x in targetarray:
                             if x != instigator:
+                                targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                                 getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                                 time.sleep(5)
                                 bot.notice("  ", instigator)
+                                set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
+                    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
             ## Can I fight
             elif commandused == 'canifight':
