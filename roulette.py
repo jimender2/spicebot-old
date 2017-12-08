@@ -100,8 +100,8 @@ def spinwheel():
 	thenumber = random.randint(0,maxwheel)
 	thecolor=random.randint(0,1)
 	#return array with color and number
-	if pickedcolor == 0:
+	if thecolor == 0:
 		color = 'black'
 	else:
 		color = 'red' 
-	return thenumber, thecolor
+	return thenumber, color
