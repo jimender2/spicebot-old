@@ -12,5 +12,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
+    if trigger.group(2) and bot.nick.endswith('dev'):
         bot.say("!halbot " + str(trigger.group(2)))
