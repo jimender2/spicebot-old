@@ -25,10 +25,10 @@ def execute_main(bot, trigger, arg):
   	if not (len(arg)>3 or len(arg)<=1):	
 		if str(arg[0])=='payout':
 			bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
-		elif (str(arg[0])=='wheel' and trigger.nick=='under_score'):
-			if arg[1].isdigit():
-				maxwheel = int(arg[1])
-				bot.say('Wheel max is now set to ' + maxwheel)
+		#elif (str(arg[0])=='wheel' and trigger.nick=='under_score'):
+			#if arg[1].isdigit():
+				#maxwheel = int(arg[1])
+				#bot.say('Wheel max is now set to ' + str(maxwheel))
 		elif not arg[0].isdigit():
 			bot.say('Please enter your bet followed by number and/or the color you wish to bet on')	
 		else:
