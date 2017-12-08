@@ -472,6 +472,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         damage = 200
                     elif magicusage == 'instakill':
                         targethealthstart = get_database_value(bot, target, 'health')
+                        targethealthstart = int(targethealthstart)
                         bot.say(str(targethealthstart))
                         if int(targethealthstart) < 200:
                             manarequired = -200
