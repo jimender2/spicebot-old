@@ -52,7 +52,8 @@ def spicebot_prerun(bot,trigger):
     
     ## Check user has spicebotenabled
     if not instigatorbotstatus and not warned:
-        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you.")
+        message = str("For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
     elif not instigatorbotstatus and warned:
         message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.")
     
