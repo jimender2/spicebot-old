@@ -102,7 +102,7 @@ def spinwheel():
 	else:
 		color = 'red' 
 	return thenumber, color
-def payouts(mynumber,mycolor,winningnumber,color)
+def payouts(mynumber,mycolor,winningnumber,color):
 	mywinnings=0
 	if mynumber == winningnumber:
 		mywinnings=mywinnings+(mybet*numberpayout)
