@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 
 #A roulette game to be used with Spicebucks.
-maxwheel = 15
+maxwheel = 5
 numberpayout = 2
 colorpayout = 1
 evenpayout = 3
@@ -47,11 +47,10 @@ def execute_main(bot, trigger, arg):
 							bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
 	    						winningnumber,color = spinwheel()  	    						
 							bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-	  						mywinnings=payouts(mynumber,mycolor,winningnumber,color)
+	  						mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
 							if mywinnings >=1:
 		  						bot.say(trigger.nick + ' has won ' + str(mywinnings))
-		  						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-		  						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
+		  						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 							else:
 		  						bot.say(trigger.nick + ' has lost ' + str(mybet))        
 			elif len(arg)==2:  			
@@ -77,16 +76,12 @@ def execute_main(bot, trigger, arg):
 						bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
 						winningnumber,color = spinwheel()  						
 						bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-						if mynumber == winningnumber:
-							mywinnings=mywinnings+(mybet*numberpayout)
-						elif mycolor == color:
-							mywinnings=mywinnings+(mybet*colorpayout)
+						mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
 						if mywinnings >=1:
 							bot.say(trigger.nick + ' has won ' + str(mywinnings))
-							Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-							Spicebucks.spicebucks(bot, trigger.nick, 'plus', mybet)
+							Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)							
 						else:
-							bot.say(trigger.nick + ' has lost ' + str(mybet))  
+							bot.say(trigger.nick + ' is a loser')  
 		
 	else:
 		bot.say('Please enter your bet followed by number and or the color you wish to bet on') 
@@ -102,10 +97,11 @@ def spinwheel():
 	else:
 		color = 'red' 
 	return thenumber, color
-def payouts(mynumber,mycolor,winningnumber,color):
+
+def payouts(mybet,mynumber,mycolor,winningnumber,color):
 	mywinnings=0
 	if mynumber == winningnumber:
-		mywinnings=mywinnings+(mybet*numberpayout)
+		mywinnings=mywinnings+(mybet*numberpayout)+mybet
 	elif mycolor == color:
-		mywinnings=mywinnings+(mybet*colorpayout)
+		mywinnings=mywinnings+(mybet*colorpayout)+mybet
 	return mywinnings
