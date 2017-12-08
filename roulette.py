@@ -52,7 +52,7 @@ def execute_main(bot, trigger, arg):
 		  						bot.say(trigger.nick + ' has won ' + str(mywinnings))
 		  						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 							else:
-		  						bot.say(trigger.nick + ' has lost ' + str(mybet))        
+		  						bot.say(trigger.nick + 'is a loser')        
 			elif len(arg)==2:  			
 				mybet = int(arg[0])
 				if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
