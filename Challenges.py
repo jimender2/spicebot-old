@@ -474,11 +474,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         targethealthstart = get_database_value(bot, target, 'health')
                         bot.say(str(targethealthstart))
                         if int(targethealthstart) < 200:
-                            manarequired = 200
+                            manarequired = -200
                         else:
-                            manarequired = -abs(int(int(targethealthstart) / 200) * 250)
+                            manarequired = -abs(targethealthstart / 200 * 250)
                         bot.say(str(manarequired))
-                        damage = targethealthstart
+                        damage = -abs(targethealthstart)
                     damagetext = abs(damage)
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
