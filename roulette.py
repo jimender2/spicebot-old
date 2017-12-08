@@ -47,7 +47,7 @@ def execute_main(bot, trigger, arg):
 							bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
 	    						winningnumber,color = spinwheel()  	    						
 							bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-	  						mywinnings=payout(mynumber,mycolor,winningnumber,color)
+	  						mywinnings=payouts(mynumber,mycolor,winningnumber,color)
 							if mywinnings >=1:
 		  						bot.say(trigger.nick + ' has won ' + str(mywinnings))
 		  						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
