@@ -333,6 +333,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 lootcommand = get_trigger_arg(triggerargsarray, 2)
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
+                target = lootitemb
+                if not target:
+                    target = instigator
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem)
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 if lootcommand not in transactiontypesarray:
@@ -357,12 +360,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
                 elif lootcommand == 'buy' and gethowmanycoins < 100:
                     bot.notice(instigator + ", You need 100 coins to buy.", instigator)
-                elif target.lower() not in bot.privileges[channel.lower()]:
-                    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+                elif lootcommand == 'use' and target.lower() not in bot.privileges[channel.lower()]:
+                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif lootcommand == 'use':
-                    target = lootitemb
-                    if not target:
-                        target = instigator
                     saymsg = 'true'
                     use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                 elif lootcommand == 'dispose':
