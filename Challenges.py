@@ -357,6 +357,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
                 elif lootcommand == 'buy' and gethowmanycoins < 100:
                     bot.notice(instigator + ", You need 100 coins to buy.", instigator)
+                elif target.lower() not in bot.privileges[channel.lower()]:
+                    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
                 elif lootcommand == 'use':
                     target = lootitemb
                     if not target:
@@ -386,15 +388,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, itemtoexchange, cost)
                     adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-            
-            ## Old loot system
-            elif commandused in lootitemsarray:
-                gethowmany = get_database_value(bot, instigator, commandused)
-                if gethowmany:
-                    saymsg = 'true'
-                    use_lootitem(bot, instigator, target, inchannel, commandused, saymsg)
-                else:
-                    bot.notice(instigator + ", You do not have a " +  commandused + " to use!", instigator)
                     
             ## Konami
             elif commandused == 'upupdowndownleftrightleftrightba':
