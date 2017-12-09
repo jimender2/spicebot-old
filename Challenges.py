@@ -23,8 +23,9 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use','dispose']
-challengestatsadminarray = ['winstreaks','losestreaks','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','streaks','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsadminarray = ['bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+streaksarray = ['bestwinstreak','worstlosestreak','currentstreak']
     
 ####################
 ## Main Operation ##
@@ -259,8 +260,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     
-            ## Stats and Backpack
-            elif commandused == 'stats' or commandused == 'backpack':
+            ## Stats, Backpack and Streaks
+            elif commandused == 'stats' or commandused == 'backpack' or commandused == 'streaks':
+                statsbypassarray = ['winlossratio','backpackitems','timeout','pepper','currentstreak']
                 stats = ''
                 if commandused == 'stats':
                     arraytoscan = challengestatsarray
@@ -270,8 +272,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     if totalweapons:
                         addstat = str(" weaponstotal" + "=" + str(totalweapons))
                         stats = str(stats + addstat)
+                elif commandused == 'streaks':
+                    arraytoscan = streaksarray
                 for x in arraytoscan:
-                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper' or x == 'streaks':
+                    if x in statsbypassarray:
                         scriptdef = str('get_' + x + '(bot,target)')
                         gethowmany = eval(scriptdef)
                     else:
@@ -576,6 +580,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     if instigator != target:
         adjust_database_value(bot, winner, 'wins', defaultadjust)
         adjust_database_value(bot, loser, 'losses', defaultadjust)
+        set_current_streaks(bot, winner, 'win')
+        set_current_streaks(bot, loser, 'loss')
             
     ## Update XP points
     XPearnedwinner = '5'
@@ -876,11 +882,33 @@ def whatsyourname(bot, trigger, nick, channel):
 ## Streaks ##
 #############
 
-def get_streaks(bot, nick):
+def set_current_streaks(bot, nick, winlose):
+    if winlose == win:
+        beststreaktype = 'bestwinstreak'
+        currentstreaktype = 'currentwinstreak'
+        oppositestreaktype = 'currentlosestreak'
+    elif winlose == loss:
+        beststreaktype = 'worstlosestreak'
+        currentstreaktype = 'currentlosestreak'
+        oppositestreaktype = 'currentwinstreak'
+        
+    ## Update Best Streak
+    beststreak = get_database_value(bot, nick, beststreaktype) or 0
+    currentstreak = get_database_value(bot, nick, currentstreaktype) or 0
+    if int(currentstreak) > int(beststreak):
+        set_database_value(bot, nick, beststreaktype, int(currentstreak))
+    
+    ## Clear current opposite streak
+    set_database_value(bot, nick, oppositestreaktype, '')
+    
+    ## Update Current streak
+    adjust_database_value(bot, nick, currentstreaktype, defaultadjust)
+    
+def get_currentstreak(bot, nick):
     streaks = ''
-    streaksarray = ['winstreaks','losestreaks']
+    beststreaksarray = ['bestwinstreak','worstlosestreak','currentwinstreak','currentlosestreak']
     for x in streaksarray:
-        streak = get_database_value(bot, nick, x) or 1
+        streak = get_database_value(bot, nick, x) or 0
         if streak:
             addstreak = str(str(x) + " = " + str(streak))
             if streaks != '':
@@ -888,7 +916,7 @@ def get_streaks(bot, nick):
             else:
                 streaks = str(str(streaks) + ' ' + str(addstreak))
     return streaks
-
+    
 ###############
 ## Inventory ##
 ###############
