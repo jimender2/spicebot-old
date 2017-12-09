@@ -23,7 +23,7 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use','dispose']
-challengestatsadminarray = ['opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsadminarray = ['winstreaks','losestreaks','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','streaks','respawns','kills','backpackitems','lastfought','timeout']
     
 ####################
@@ -880,12 +880,13 @@ def get_streaks(bot, nick):
     streaks = ''
     streaksarray = ['winstreaks','losestreaks']
     for x in streaksarray:
-        streak = get_database_value(bot, nick, x) or 0
+        streak = get_database_value(bot, nick, x) or 1
         if streak:
+            addstreak = str(x + " = " + str(streak))
             if streaks != '':
-                streaks = str(streak)
+                streaks = str(streaks + addstreak)
             else:
-                streaks = str(streaks + ' ' + streak)
+                streaks = str(streaks + ' ' addstreak)
     return streaks
 
 ###############
