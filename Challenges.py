@@ -892,6 +892,9 @@ def set_current_streaks(bot, nick, winlose):
         currentstreaktype = 'currentlosestreak'
         oppositestreaktype = 'currentwinstreak'
         
+    ## Update Current streak
+    adjust_database_value(bot, nick, currentstreaktype, defaultadjust)
+    
     ## Update Best Streak
     beststreak = get_database_value(bot, nick, beststreaktype) or 0
     currentstreak = get_database_value(bot, nick, currentstreaktype) or 0
@@ -901,22 +904,13 @@ def set_current_streaks(bot, nick, winlose):
     ## Clear current opposite streak
     set_database_value(bot, nick, oppositestreaktype, '')
     
-    ## Update Current streak
-    adjust_database_value(bot, nick, currentstreaktype, defaultadjust)
     
 def get_currentstreak(bot, nick):
     streaks = ''
-    streaktext = ''
     for x in streaksarray:
         streak = get_database_value(bot, nick, x) or 0
         if streak:
-            if x == 'currentwinstreak':
-                streaktext = "Current Win Streak"
-            elif x == 'currentlosestreak':
-                streaktext = "Current Losing Streak"
-            else:
-                streaktext = str(x)
-            addstreak = str(str(streaktext) + " = " + str(streak))
+            addstreak = str(str(x) + " = " + str(streak))
             if streaks != '':
                 streaks = str(str(streaks) + str(addstreak))
             else:
