@@ -906,10 +906,17 @@ def set_current_streaks(bot, nick, winlose):
     
 def get_currentstreak(bot, nick):
     streaks = ''
+    streaktext = ''
     for x in streaksarray:
         streak = get_database_value(bot, nick, x) or 0
         if streak:
-            addstreak = str(str(x) + " = " + str(streak))
+            if x == 'currentwinstreak':
+                streaktext = "Current Win Streak"
+            elif x == 'currentlosestreak':
+                streaktext = "Current Losing Streak"
+            else:
+                streaktext = str(x)
+            addstreak = str(str(streaktext) + " = " + str(streak))
             if streaks != '':
                 streaks = str(str(streaks) + str(addstreak))
             else:
