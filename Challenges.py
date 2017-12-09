@@ -877,7 +877,7 @@ def whatsyourname(bot, trigger, nick, channel):
 #############
 
 def get_streaks(bot, nick):
-    streaks = 0
+    streaks = 'test'
     return streaks
 
 ###############
