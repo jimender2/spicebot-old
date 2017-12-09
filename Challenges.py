@@ -877,7 +877,15 @@ def whatsyourname(bot, trigger, nick, channel):
 #############
 
 def get_streaks(bot, nick):
-    streaks = 'test'
+    streaks = ''
+    streaksarray = ['winstreaks','losestreaks']
+    for x in streaksarray:
+        streak = get_database_value(bot, nick, x) or 0
+        if streak:
+            if streaks != '':
+                streaks = str(streak)
+            else:
+                streaks = str(streaks + ' ' + streak)
     return streaks
 
 ###############
