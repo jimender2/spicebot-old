@@ -882,11 +882,11 @@ def get_streaks(bot, nick):
     for x in streaksarray:
         streak = get_database_value(bot, nick, x) or 1
         if streak:
-            addstreak = str(x + " = " + str(streak))
+            addstreak = str(str(x) + " = " + str(streak))
             if streaks != '':
-                streaks = str(streaks + addstreak)
+                streaks = str(str(streaks) + str(addstreak))
             else:
-                streaks = str(streaks + ' ' addstreak)
+                streaks = str(str(streaks) + ' ' str(addstreak))
     return streaks
 
 ###############
