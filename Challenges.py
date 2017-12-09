@@ -886,7 +886,7 @@ def get_streaks(bot, nick):
             if streaks != '':
                 streaks = str(str(streaks) + str(addstreak))
             else:
-                streaks = str(str(streaks) + ' ' str(addstreak))
+                streaks = str(str(streaks) + ' ' + str(addstreak))
     return streaks
 
 ###############
