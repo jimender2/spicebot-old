@@ -24,7 +24,7 @@ OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use','dispose']
 challengestatsadminarray = ['opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','streaks','respawns','kills','backpackitems','lastfought','timeout']
     
 ####################
 ## Main Operation ##
@@ -271,7 +271,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         addstat = str(" weaponstotal" + "=" + str(totalweapons))
                         stats = str(stats + addstat)
                 for x in arraytoscan:
-                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper':
+                    if x == 'winlossratio' or x == 'backpackitems' or x == 'timeout' or x == 'pepper' or x == 'streaks':
                         scriptdef = str('get_' + x + '(bot,target)')
                         gethowmany = eval(scriptdef)
                     else:
@@ -872,6 +872,14 @@ def whatsyourname(bot, trigger, nick, channel):
     
     return nickname, pepperstart
     
+#############
+## Streaks ##
+#############
+
+def get_streaks(bot, nick):
+    streaks = 0
+    return streaks
+
 ###############
 ## Inventory ##
 ###############
