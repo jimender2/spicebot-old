@@ -883,11 +883,11 @@ def whatsyourname(bot, trigger, nick, channel):
 #############
 
 def set_current_streaks(bot, nick, winlose):
-    if winlose == win:
+    if winlose == 'win':
         beststreaktype = 'bestwinstreak'
         currentstreaktype = 'currentwinstreak'
         oppositestreaktype = 'currentlosestreak'
-    elif winlose == loss:
+    elif winlose == 'loss':
         beststreaktype = 'worstlosestreak'
         currentstreaktype = 'currentlosestreak'
         oppositestreaktype = 'currentwinstreak'
