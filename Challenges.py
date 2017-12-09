@@ -25,7 +25,7 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 transactiontypesarray = ['buy','sell','trade','use','dispose']
 challengestatsadminarray = ['bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-streaksarray = ['bestwinstreak','worstlosestreak','currentstreak']
+streaksarray = ['bestwinstreak','worstlosestreak','currentwinstreak','currentlosestreak']
     
 ####################
 ## Main Operation ##
@@ -906,7 +906,6 @@ def set_current_streaks(bot, nick, winlose):
     
 def get_currentstreak(bot, nick):
     streaks = ''
-    beststreaksarray = ['bestwinstreak','worstlosestreak','currentwinstreak','currentlosestreak']
     for x in streaksarray:
         streak = get_database_value(bot, nick, x) or 0
         if streak:
