@@ -1145,6 +1145,14 @@ def getwinner(bot, instigator, target, manualweapon):
     else:
         targetfight = targetfight + 1
     
+    # Most Health Extra roll
+    instigatorhealth = get_database_value(bot, instigator, 'health')
+    targethealth = get_database_value(bot, target, 'health')
+    if int(instigatorhealth) > int(targethealth):
+        instigatorfight = instigatorfight + 1
+    elif int(instigatorhealth) < int(targethealth):
+        targetfight = targetfight + 1
+    
     # Most XP gets an extra roll
     instigatorxp = get_database_value(bot, instigator, 'xp')
     targetxp = get_database_value(bot, target, 'xp')
