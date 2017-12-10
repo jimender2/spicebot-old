@@ -296,10 +296,12 @@ def execute_main(bot, trigger, triggerargsarray):
                 currentkillsleader = ''
                 currentrespawnsleader = ''
                 currenthealthleader = ''
+                currentstreaksleader = ''
                 currentwlrleadernumber = 0
                 currentkillsleadernumber = 0
                 currentrespawnsleadernumber = 0
                 currenthealthleadernumber = 9999999999
+                currentstreaksleadernumber = 0
                 for u in bot.channels[channel].users:
                     targetdisenable = get_database_value(bot, u, 'disenable')
                     if targetdisenable and u != bot.nick:
@@ -319,6 +321,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         if int(health) < int(currenthealthleadernumber):
                             currenthealthleader = u
                             currenthealthleadernumber = int(health)
+                        streaks = get_database_value(bot, u, 'bestwinstreak')
+                        if int(streaks) > int(currentstreaksleadernumber):
+                            currentstreaksleader = u
+                            currentstreaksleadernumber = int(respawns)
                 if currentwlrleadernumber > 0:
                     currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                     leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
@@ -328,6 +334,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
                 if currenthealthleadernumber > 0:
                     leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
+                if currentstreaksleadernumber > 0:
+                    leaderboardscript = str(leaderboardscript + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
                 if leaderboardscript == '':
                     leaderboardscript = str("Leaderboard appears to be empty")
                 bot.say(leaderboardscript)
