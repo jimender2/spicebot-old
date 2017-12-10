@@ -227,22 +227,23 @@ def execute_main(bot, trigger, triggerargsarray):
                 opttime = get_timesince(bot, target, 'lastopttime')
                 if opttime < OPTTIMEOUT and not bot.nick.endswith('dev') and not trigger.admin:
                     bot.notice(target + " can't enable/disable bot listening for %d seconds." % (OPTTIMEOUT - opttime), instigator)
-                if not disenable:
-                    if commandused == 'on':
-                        set_botdatabase_value(bot, target, 'disenable', 'true')
-                        adjustment = 'now'
-                        set_botdatabase_value(bot, target, 'lastopttime', now)
-                    else:
-                        adjustment = 'already'
                 else:
-                    if commandused == 'on':
-                        adjustment = 'already'
+                    if not disenable:
+                        if commandused == 'on':
+                            set_botdatabase_value(bot, target, 'disenable', 'true')
+                            adjustment = 'now'
+                            set_botdatabase_value(bot, target, 'lastopttime', now)
+                        else:
+                            adjustment = 'already'
                     else:
-                        set_botdatabase_value(bot, target, 'disenable', '')
-                        adjustment = 'now'
-                        set_botdatabase_value(bot, target, 'lastopttime', now)
-                message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
-                bot.say(message)
+                        if commandused == 'on':
+                            adjustment = 'already'
+                        else:
+                            set_botdatabase_value(bot, target, 'disenable', '')
+                            adjustment = 'now'
+                            set_botdatabase_value(bot, target, 'lastopttime', now)
+                    message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
+                    bot.say(message)
 
 ## Auto Mod
 @event('JOIN','PART','QUIT','NICK')
