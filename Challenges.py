@@ -324,7 +324,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         streaks = get_database_value(bot, u, 'bestwinstreak')
                         if int(streaks) > int(currentstreaksleadernumber):
                             currentstreaksleader = u
-                            currentstreaksleadernumber = int(respawns)
+                            currentstreaksleadernumber = int(streaks)
                 if currentwlrleadernumber > 0:
                     currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                     leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
