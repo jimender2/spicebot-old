@@ -23,8 +23,8 @@ ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use','dispose']
-challengestatsadminarray = ['bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsadminarray = ['curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsarray = ['health','curse','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 streaksarray = ['bestwinstreak','worstlosestreak','currentwinstreak','currentlosestreak']
     
 ####################
@@ -66,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
+        nontargetarray = ['curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
