@@ -1285,12 +1285,13 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = max(targetfightarray)
 
     ## check for curses
-    instigatorcurse = get_curse_check(bot, instigator)
-    if instigatorcurse:
-        instigatorfight = 0
-    targetcurse = get_curse_check(bot, target)
-    if targetcurse:
-        targetfight = 0
+    if instigator != target and instigator != bot.nick:
+        instigatorcurse = get_curse_check(bot, instigator)
+        if instigatorcurse:
+            instigatorfight = 0
+        targetcurse = get_curse_check(bot, target)
+        if targetcurse:
+            targetfight = 0
 
     ## tie breaker
     if instigatorfight == targetfight:
