@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 #        tz = get_timezone(bot.db, bot.config, None, trigger.nick,
 #                          trigger.sender)
-        tz = UTC+12
+        tz = "NZDT"
         saw = datetime.datetime.utcfromtimestamp(timestamp)
         timestamp = format_time(bot.db, bot.config, tz, trigger.nick,
                                 trigger.sender, saw)
