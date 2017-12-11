@@ -2,6 +2,7 @@ import sopel.module
 import sys
 import os
 import random
+from sopel.module import OP
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
