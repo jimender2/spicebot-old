@@ -1049,7 +1049,7 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
             nullloot = random.randint(0,len(nulllootitemsarray) - 1)
             nullloot = str(nulllootitemsarray [nullloot])
             lootusemsg = str("just " + str(nullloot) + ' after all.')
-        mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg) + '. ')
+        mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg))
     else:
         mainlootusemessage = str(mainlootusemessage + '')
     targethealth = get_database_value(bot, target, 'health')
