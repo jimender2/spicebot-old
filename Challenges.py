@@ -157,11 +157,11 @@ def execute_main(bot, trigger, triggerargsarray):
                     if cantargetduel:
                         targetarray.append(u)
                 if targetarray == []:
-                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                else:
-                    randomselected = random.randint(0,len(targetarray) - 1)
-                    target = str(targetarray [randomselected])
-                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                    targetarray.append(bot.nick)
+                    targetarray.append(instigator)
+                randomselected = random.randint(0,len(targetarray) - 1)
+                target = str(targetarray [randomselected])
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                 
             ## Duel Everyone
             elif commandused == 'everyone':
@@ -179,7 +179,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         if cantargetduel and u != bot.nick:
                             targetarray.append(u)
                     if targetarray == []:
-                        bot.notice(instigator + ", It looks like the every target finder has failed.", instigator)
+                        dowedisplay = 1
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                        if not cantargetduel:
+                            bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
                     else:
                         for x in targetarray:
                             if x != instigator:
