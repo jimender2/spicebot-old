@@ -380,7 +380,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
                         else:
                             saymsg = 'false'
-                            if lootitem == 'mysterypotion':
+                            if lootitem == 'mysterypotion' or not inchannel.startswith("#"):
                                 saymsg = 'true'
                             while int(quantity) > 0:
                                 quantity = int(quantity) - 1
