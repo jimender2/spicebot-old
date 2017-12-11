@@ -14,5 +14,5 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     bot.say(trigger)
-    bot.say(triggerargsarray
+    bot.say(triggerargsarray)
     
