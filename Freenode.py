@@ -27,5 +27,5 @@ def execute_main(bot, trigger):
         bot.say('"You have no power here." - ' + responseperson[0])
     else:
         trigger = trigger.replace('.', '/', 1)
-        bot.say('I believe you wanted to say was ' + trigger)
+        bot.say('"I believe you wanted to say ' + trigger + '" - ' + responseperson[0])
                 
