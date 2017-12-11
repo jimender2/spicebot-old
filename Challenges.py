@@ -381,7 +381,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             while int(quantity) > 0:
                                 quantity = int(quantity) - 1
-                                saymsg = 'false'
+                                saymsg = 'true'
                                 use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 ## trade
