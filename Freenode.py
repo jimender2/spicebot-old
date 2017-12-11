@@ -20,8 +20,8 @@ def execute_main(bot, trigger):
     random.shuffle(responseperson)
     operatorarray = []
     for u in bot.channels[channel.lower()].users:
-        if bot.privileges[channel.lower()][nametarget] == OP:
-            operatorarray.append(nametarget)
+        if bot.privileges[channel.lower()][u] == OP:
+            operatorarray.append(u)
     if trigger.startswith('.ban') and trigger.nick.lower() not in operatorarray:
         bot.say('"You have no power here." - ' + responseperson[0])
     else:
