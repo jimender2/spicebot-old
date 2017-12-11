@@ -16,7 +16,11 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger):
     random.shuffle(responseperson)
-    if trigger.startswith('.ban') and not trigger.admin:
+    operatorarray = []
+    for u in bot.channels[channel.lower()].users:
+        if bot.privileges[channel.lower()][nametarget] == OP:
+            operatorarray.append(nametarget)
+    if trigger.startswith('.ban') and trigger.nick.lower() not in operatorarray:
         bot.say('"You have no power here." - ' + responseperson[0])
     else:
         trigger = trigger.replace('.', '/', 1)
