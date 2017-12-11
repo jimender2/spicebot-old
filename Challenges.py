@@ -534,6 +534,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     target = get_trigger_arg(triggerargsarray, 3)
                     if not target:
                         target = trigger.nick
+                    targetcurse = get_curse_check(bot, target)
                     mana = get_database_value(bot, instigator, 'mana')
                     if magicusage == 'attack':
                         manarequired = -250
@@ -558,6 +559,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif mana < manarequired:
                         manamath = int(manarequired - mana)
                         bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+                    elif magicusage == 'curse' and targetcurse:
+                        bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
                     else:
                         if target.lower() not in bot.privileges[channel.lower()]:
                             bot.say("I'm not sure who that is.")
@@ -1282,11 +1285,11 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = max(targetfightarray)
 
     ## check for curses
-    instigatorcurse = get_curse_check(bot, nick)
+    instigatorcurse = get_curse_check(bot, instigator)
     if instigatorcurse:
         instigatorfight = 0
         bot.say(instigator + ' cursed remaining ' + str(instigatorcurse))
-    targetcurse = get_curse_check(bot, nick)
+    targetcurse = get_curse_check(bot, target)
     if targetcurse:
         targetfight = 0 
         bot.say(target + ' cursed remaining ' + str(targetcurse))
