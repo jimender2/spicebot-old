@@ -370,10 +370,15 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif target.lower() not in bot.privileges[channel.lower()]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                     else:
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
+                        if int(quantity) > 1:
                             saymsg = 'true'
                             use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                        else:
+                            while int(quantity) > 0:
+                                quantity = int(quantity) - 1
+                                saymsg = 'false'
+                                use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'dispose':
                     quantity = int(lootitemb)
                     if not quantity:
