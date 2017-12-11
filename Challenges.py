@@ -538,6 +538,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     if magicusage == 'attack':
                         manarequired = -250
                         damage = -200
+                    elif magicusage == 'curse':
+                        manarequired = -1000
+                        damage = 20
                     elif magicusage == 'health':
                         manarequired = -200
                         damage = 200
@@ -569,6 +572,10 @@ def execute_main(bot, trigger, triggerargsarray):
                                 whokilledwhom(bot, instigator, target)
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
+                            elif magicusage == 'curse':
+                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next 4 duels.')
+                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next 4 duels.')
+                                set_database_value(bot, instigator, 'curse', 'true')
                             elif magicusage == 'health':
                                 healthmath = int(int(targethealth) - int(targethealthstart))
                                 magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
@@ -1272,7 +1279,12 @@ def getwinner(bot, instigator, target, manualweapon):
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
- 
+
+    ## check for curses
+    instigatorcurse = get_database_value(bot, instigator, 'curse')
+    targetcurse = get_database_value(bot, instigator, 'curse')
+    
+
     ## tie breaker
     if instigatorfight == targetfight:
         tiebreaker = randint(0, 1)
