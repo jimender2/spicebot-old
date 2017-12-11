@@ -1060,8 +1060,8 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         whokilledwhom(bot, instigator, target)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
-    if not inchannel.startswith("#") and target != instigator:
-        bot.notice(str(mainlootusemessage), target)
+        if not inchannel.startswith("#") and target != instigator:
+            bot.notice(str(mainlootusemessage), target)
     
 ######################
 ## Weapon Selection ##
