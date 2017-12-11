@@ -1325,7 +1325,7 @@ def getwinner(bot, instigator, target, manualweapon):
 def get_curse_check(bot, nick):
     adjustment = -1
     cursed = 0
-    nickcurse = get_database_value(bot, instigator, 'curse')
+    nickcurse = get_database_value(bot, nick, 'curse')
     if nickcurse:
         adjust_database_value(bot, nick, 'curse', adjustment)
         cursed = 1
