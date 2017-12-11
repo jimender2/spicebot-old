@@ -382,11 +382,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, lootitem, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 else:
-                    quantity = lootitemb
+                    quantity = int(lootitemb)
                     if not quantity:
                         quantity = 1
-                    if int(quantity) > gethowmanylootitem and lootcommand != 'trade':
-                        bot.notice(instigator + ", You do not have that quantity " +  lootitem + " to " + lootcommand + "!", instigator)
+                    coinsrequired = 100 * int(quantity)
+                    if int(quantity) > gethowmanylootitem and lootcommand == 'sell':
+                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                    elif gethowmanycoins < coinsrequired and lootcommand == 'buy':
+                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                    elif lootcommand == 'trade' and quantity > 1:
+                        bot.notice(instigator + ", You can not trade multiple items at this time.", instigator)
                     else:
                         while int(quantity) > 0:
                             quantity = int(quantity) - 1
