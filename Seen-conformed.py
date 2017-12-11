@@ -42,9 +42,8 @@ def execute_main(bot, trigger, triggerargsarray):
         message = bot.db.get_nick_value(nick, 'seen_message')
         action = bot.db.get_nick_value(nick, 'seen_action')
 
-#        tz = get_timezone(bot.db, bot.config, None, trigger.nick,
-#                          trigger.sender)
-        tz = "NZT"
+        tz = get_timezone(bot.db, bot.config, None, trigger.nick,
+                          trigger.sender)
         saw = datetime.datetime.utcfromtimestamp(timestamp)
         timestamp = format_time(bot.db, bot.config, tz, trigger.nick,
                                 trigger.sender, saw)
