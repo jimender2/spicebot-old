@@ -372,10 +372,12 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                     elif target.lower() not in bot.privileges[channel.lower()]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                    else:
+                    else:   
                         if int(quantity) == 1:
                             saymsg = 'true'
                             use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                        elif lootitem == 'mysterypotion' and not inchannel.startswith("#") and int(quantity) > 1:
+                            bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
                         else:
                             while int(quantity) > 0:
                                 quantity = int(quantity) - 1
