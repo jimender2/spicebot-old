@@ -345,6 +345,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 lootcommand = get_trigger_arg(triggerargsarray, 2)
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
+                lootitemc = get_trigger_arg(triggerargsarray, 5)
                 target = lootitemb
                 if not target:
                     target = instigator
@@ -357,37 +358,53 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif lootcommand == 'use':
-                    if gethowmanylootitem:
-                        bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
+                    quantity = int(lootitemb)
+                    if not quantity:
+                        quantity = 1
+                    if gethowmanylootitem < quantity:
+                        bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                     elif target.lower() not in bot.privileges[channel.lower()]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                     else:
-                        saymsg = 'true'
-                        use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            saymsg = 'true'
+                            use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                 elif lootcommand == 'dispose':
-                    if lootcommand == 'dispose' and not gethowmanylootitem:
+                    quantity = int(lootitemb)
+                    if not quantity:
+                        quantity = 1
+                    if not gethowmanylootitem:
                         bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
                     else:
-                        reward = -1
-                        adjust_database_value(bot, instigator, lootitem, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            reward = -1
+                            adjust_database_value(bot, instigator, lootitem, reward)
+                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'trade':
+                    quantity = int(lootitemc)
+                    if not quantity:
+                        quantity = 1
+                    quantitymath = 3 * quantity
                     if lootitemb not in lootitemsarray:
                         bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                     elif lootitemb not in lootitemsarray:
                         bot.notice(instigator + ", Invalid loot item.", instigator)
                     elif lootitemb == lootitem:
                         bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                    elif gethowmanylootitem < 3:
-                        bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
+                    elif gethowmanylootitem < quantitymath:
+                        bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
                     else:
-                        cost = -3
-                        reward = 1
-                        itemtoexchange = lootitem
-                        itemexchanged = lootitemb
-                        adjust_database_value(bot, instigator, itemtoexchange, cost)
-                        adjust_database_value(bot, instigator, itemexchanged, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            cost = -3
+                            reward = 1
+                            itemtoexchange = lootitem
+                            itemexchanged = lootitemb
+                            adjust_database_value(bot, instigator, itemtoexchange, cost)
+                            adjust_database_value(bot, instigator, itemexchanged, reward)
+                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'buy':
                     quantity = int(lootitemb)
                     if not quantity:
