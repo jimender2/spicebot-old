@@ -1284,10 +1284,12 @@ def getwinner(bot, instigator, target, manualweapon):
     ## check for curses
     instigatorcurse = get_curse_check(bot, nick)
     if instigatorcurse:
-        instigatorfight = 0 
+        instigatorfight = 0
+        bot.say(instigator + ' cursed remaining ' + str(instigatorcurse))
     targetcurse = get_curse_check(bot, nick)
-    if instigatorcurse:
+    if targetcurse:
         targetfight = 0 
+        bot.say(target + ' cursed remaining ' + str(targetcurse))
 
     ## tie breaker
     if instigatorfight == targetfight:
