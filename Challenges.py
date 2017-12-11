@@ -190,19 +190,24 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
-            ## canifight replacement
-            
-            ## Can I fight
-            elif commandused == 'canifight':
-                dowedisplay = 1
-                inchannel = "#bypass"
-                cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                if cantargetduel:
-                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
-                    
-            ## Who can fight
-            elif commandused == 'whocanifight':
-                targets = ''
+            ## War Room
+            elif commandused == 'warroom':
+                subcommand = get_trigger_arg(triggerargsarray, 2)
+                if not subcommand:
+                    dowedisplay = 1
+                    inchannel = "#bypass"
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                    if cantargetduel:
+                        bot.notice(instigator + ", It looks like you can challenge.", instigator)
+                elif subcommand == 'everyone':
+                    if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                        bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
+                    elif lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
+                        bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
+                    else:
+                        bot.notice(" Full Channel Assault can be used.", instigator)
+                elif subcommand == 'list':
+                    targets = ''
                 for u in bot.channels[channel.lower()].users:
                     inchannel = "#bypass"
                     cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
@@ -220,8 +225,20 @@ def execute_main(bot, trigger, triggerargsarray):
                     targetline = " ".join(chunks[i:i + per_line])
                     bot.say(str(targetline))
                 if targetline == '':
-                    bot.say("It looks like you cannot challenge anybody at the moment.")
-                        
+                    dowedisplay = 1
+                    inchannel = "#bypass"
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                    if cantargetduel:
+                        bot.notice(instigator + ", It looks like you can challenge.", instigator)
+                    else:
+                        bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
+                elif target != instigator:
+                    dowedisplay = 1
+                    inchannel = "#bypass"
+                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    if cantargetduel:
+                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+
             ## Stats Admin
             elif commandused == 'statsadmin' and trigger.admin:
                 statsadminarray = ['set','reset']
