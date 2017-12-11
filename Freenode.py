@@ -7,7 +7,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-responseperson = ['Dubledore', 'Gandalf', 'Frodo', 'Captain James T. Kirk', 'Rainbow Bright', 'New Kids on the Block']
+responseperson = ['Dumbledore', 'Gandalf', 'Frodo', 'Captain James T. Kirk', 'Rainbow Bright', 'New Kids on the Block']
 
 @sopel.module.commands('msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
 def mainfunction(bot, trigger):
