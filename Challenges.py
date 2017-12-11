@@ -573,9 +573,10 @@ def execute_main(bot, trigger, triggerargsarray):
                                 magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
                                 magicnotice = str(instigator + " used a magic on you that killed you")
                             elif magicusage == 'curse':
-                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next 4 duels.')
-                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next 4 duels.')
-                                set_database_value(bot, instigator, 'curse', 'true')
+                                curseduration = 4
+                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next " + curseduration + " duels.')
+                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage AND forces ' + target + " to lose the next " + curseduration + " duels.')
+                                set_database_value(bot, instigator, 'curse', curseduration)
                             elif magicusage == 'health':
                                 healthmath = int(int(targethealth) - int(targethealthstart))
                                 magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
@@ -1281,9 +1282,12 @@ def getwinner(bot, instigator, target, manualweapon):
     targetfight = max(targetfightarray)
 
     ## check for curses
-    instigatorcurse = get_database_value(bot, instigator, 'curse')
-    targetcurse = get_database_value(bot, instigator, 'curse')
-    
+    instigatorcurse = get_curse_check(bot, nick)
+    if instigatorcurse:
+        instigatorfight = 0 
+    targetcurse = get_curse_check(bot, nick)
+    if instigatorcurse:
+        targetfight = 0 
 
     ## tie breaker
     if instigatorfight == targetfight:
@@ -1309,6 +1313,20 @@ def getwinner(bot, instigator, target, manualweapon):
         loser = instigator
     return winner, loser
 
+############
+## cursed ##
+############
+
+def get_curse_check(bot, nick):
+    adjustment = -1
+    cursed = 0
+    nickcurse = get_database_value(bot, instigator, 'curse')
+    if nickcurse:
+        adjust_database_value(bot, nick, 'curse', adjustment)
+        cursed = 1
+    return cursed
+
+                                                  
 ###############
 ## ScoreCard ##
 ###############
