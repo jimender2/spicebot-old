@@ -208,22 +208,22 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(" Full Channel Assault can be used.", instigator)
                 elif subcommand == 'list':
                     targets = ''
-                for u in bot.channels[channel.lower()].users:
-                    inchannel = "#bypass"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                    if cantargetduel and u != bot.nick and u != instigator:
-                        targetarray.append(u)
-                for x in targetarray:
-                    if targets != '':
-                        targets = str(targets + ", " + x)
-                    else:
-                        targets = str(x)
-                chunks = targets.split()
-                per_line = 15
-                targetline = ''
-                for i in range(0, len(chunks), per_line):
-                    targetline = " ".join(chunks[i:i + per_line])
-                    bot.say(str(targetline))
+                    for u in bot.channels[channel.lower()].users:
+                        inchannel = "#bypass"
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+                        if cantargetduel and u != bot.nick and u != instigator:
+                            targetarray.append(u)
+                    for x in targetarray:
+                        if targets != '':
+                            targets = str(targets + ", " + x)
+                        else:
+                            targets = str(x)
+                    chunks = targets.split()
+                    per_line = 15
+                    targetline = ''
+                    for i in range(0, len(chunks), per_line):
+                        targetline = " ".join(chunks[i:i + per_line])
+                        bot.say(str(targetline))
                 if targetline == '':
                     dowedisplay = 1
                     inchannel = "#bypass"
