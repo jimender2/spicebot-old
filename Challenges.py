@@ -382,25 +382,33 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, lootitem, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 else:
-                    if lootcommand == 'trade':
-                        cost = -3
-                        reward = 1
-                        itemtoexchange = lootitem
-                        itemexchanged = lootitemb
-                    elif lootcommand == 'sell':
-                        cost = -1
-                        reward = 25
-                        itemtoexchange = lootitem
-                        itemexchanged = 'coins'
-                    elif lootcommand == 'buy':
-                        cost = -100
-                        reward = 1
-                        itemtoexchange = 'coins'
-                        itemexchanged = lootitem
-                    adjust_database_value(bot, instigator, itemtoexchange, cost)
-                    adjust_database_value(bot, instigator, itemexchanged, reward)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                    
+                    quantity = lootitemb
+                    if not quantity:
+                        quantity = 1
+                    if int(quantity) > gethowmanylootitem and lootcommand != 'trade':
+                        bot.notice(instigator + ", You do not have that quantity " +  lootitem + " to " + lootcommand + "!", instigator)
+                    else:
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            if lootcommand == 'trade':
+                                cost = -3
+                                reward = 1
+                                itemtoexchange = lootitem
+                                itemexchanged = lootitemb
+                            elif lootcommand == 'sell':
+                                cost = -1
+                                reward = 25
+                                itemtoexchange = lootitem
+                                itemexchanged = 'coins'
+                            elif lootcommand == 'buy':
+                                cost = -100
+                                reward = 1
+                                itemtoexchange = 'coins'
+                                itemexchanged = lootitem
+                            adjust_database_value(bot, instigator, itemtoexchange, cost)
+                            adjust_database_value(bot, instigator, itemexchanged, reward)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+
             ## Konami
             elif commandused == 'upupdowndownleftrightleftrightba':
                 konami = get_database_value(bot, target, 'konami')
