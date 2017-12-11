@@ -224,14 +224,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     for i in range(0, len(chunks), per_line):
                         targetline = " ".join(chunks[i:i + per_line])
                         bot.say(str(targetline))
-                if targetline == '':
-                    dowedisplay = 1
-                    inchannel = "#bypass"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-                    if cantargetduel:
-                        bot.notice(instigator + ", It looks like you can challenge.", instigator)
-                    else:
-                        bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
+                    if targetline == '':
+                        dowedisplay = 1
+                        inchannel = "#bypass"
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                        if cantargetduel:
+                            bot.notice(instigator + ", It looks like you can challenge.", instigator)
+                        else:
+                            bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
                 elif target != instigator:
                     dowedisplay = 1
                     inchannel = "#bypass"
