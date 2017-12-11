@@ -354,6 +354,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
+                ## use
                 elif lootcommand == 'use':
                     if lootitemb.isdigit():
                         quantity = int(lootitemb)
@@ -381,18 +382,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 saymsg = 'false'
                                 use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                elif lootcommand == 'dispose':
-                    quantity = int(lootitemb)
-                    if not quantity:
-                        quantity = 1
-                    if not gethowmanylootitem:
-                        bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
-                    else:
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            reward = -1
-                            adjust_database_value(bot, instigator, lootitem, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                ## trade
                 elif lootcommand == 'trade':
                     quantity = int(lootitemc)
                     if not quantity:
@@ -416,6 +406,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                ## buy
                 elif lootcommand == 'buy':
                     quantity = int(lootitemb)
                     if not quantity:
@@ -433,6 +424,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                ## sell
                 elif lootcommand == 'sell':
                     quantity = int(lootitemb)
                     if not quantity:
@@ -1064,8 +1056,8 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
         whokilledwhom(bot, instigator, target)
     if saymsg == 'true':
         bot.say(str(mainlootusemessage))
-        if not inchannel.startswith("#") and target != instigator:
-            bot.notice(str(mainlootusemessage), target)
+    if not inchannel.startswith("#") and target != instigator:
+        bot.notice(str(mainlootusemessage), target)
     
 ######################
 ## Weapon Selection ##
