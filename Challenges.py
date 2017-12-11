@@ -526,10 +526,10 @@ def execute_main(bot, trigger, triggerargsarray):
         
             ## Magic Attack
             elif commandused == 'magic':
-                magicoptions = ['attack','instakill','health']
+                magicoptions = ['attack','instakill','health','curse']
                 magicusage = get_trigger_arg(triggerargsarray, 2)
                 if magicusage not in magicoptions:
-                    bot.say('Magic uses include: attack, instakill, health')
+                    bot.say('Magic uses include: attack, instakill, health, curse')
                 else:
                     target = get_trigger_arg(triggerargsarray, 3)
                     if not target:
