@@ -340,7 +340,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             currentrespawnsleader = u
                             currentrespawnsleadernumber = int(respawns)
                         health = get_database_value(bot, u, 'health')
-                        if int(health) < int(currenthealthleadernumber):
+                        if int(health) < int(currenthealthleadernumber) and int(health) != 0:
                             currenthealthleader = u
                             currenthealthleadernumber = int(health)
                         streaks = get_database_value(bot, u, 'bestwinstreak')
