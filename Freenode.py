@@ -7,8 +7,6 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 responseperson = ['Dubledore', 'Gandalf', 'Frodo', 'Captain James T. Kirk', 'Rainbow Bright', 'New Kids on the Block']
-for c in bot.channels:
-    channel = c
 
 @sopel.module.commands('msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
 def mainfunction(bot, trigger):
@@ -17,6 +15,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
+    for c in bot.channels:
+        channel = c
     random.shuffle(responseperson)
     operatorarray = []
     for u in bot.channels[channel.lower()].users:
