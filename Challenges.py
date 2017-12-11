@@ -190,6 +190,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
+            ## canifight replacement
+            
             ## Can I fight
             elif commandused == 'canifight':
                 dowedisplay = 1
