@@ -384,10 +384,10 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 ## trade
                 elif lootcommand == 'trade':
-                    quantity = int(lootitemc)
+                    quantity = lootitemc
                     if not quantity:
                         quantity = 1
-                    quantitymath = 3 * quantity
+                    quantitymath = 3 * int(quantity)
                     if lootitemb not in lootitemsarray:
                         bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                     elif lootitemb not in lootitemsarray:
