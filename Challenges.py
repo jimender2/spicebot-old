@@ -540,8 +540,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         manarequired = -250
                         damage = -200
                     elif magicusage == 'curse':
-                        manarequired = -1000
-                        damage = 20
+                        manarequired = -500
+                        damage = 80
                     elif magicusage == 'health':
                         manarequired = -200
                         damage = 200
