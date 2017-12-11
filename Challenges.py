@@ -379,9 +379,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         elif lootitem == 'mysterypotion' and int(quantity) > 1 and inchannel.startswith("#"):
                             bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
                         else:
+                            saymsg = 'false'
+                            if lootitem == 'mysterypotion':
+                                saymsg = 'true'
                             while int(quantity) > 0:
                                 quantity = int(quantity) - 1
-                                saymsg = 'true'
                                 use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 ## trade
