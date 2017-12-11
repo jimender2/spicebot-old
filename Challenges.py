@@ -408,7 +408,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 ## buy
                 elif lootcommand == 'buy':
-                    quantity = int(lootitemb)
+                    quantity = lootitemb
                     if not quantity:
                         quantity = 1
                     coinsrequired = 100 * int(quantity)
@@ -426,7 +426,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 ## sell
                 elif lootcommand == 'sell':
-                    quantity = int(lootitemb)
+                    quantity = lootitemb
                     if not quantity:
                         quantity = 1
                     if int(quantity) > gethowmanylootitem:
