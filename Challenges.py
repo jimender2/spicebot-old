@@ -356,63 +356,71 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
-                elif lootcommand == 'trade' and lootitemb not in lootitemsarray:
-                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                elif lootcommand == 'trade' and lootitemb not in lootitemsarray:
-                    bot.notice(instigator + ", Invalid loot item.", instigator)
-                elif lootcommand == 'trade' and lootitemb == lootitem:
-                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                elif lootcommand == 'trade' and gethowmanylootitem < 3:
-                    bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
-                elif lootcommand == 'use' and not gethowmanylootitem:
-                    bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
-                elif lootcommand == 'sell' and not gethowmanylootitem:
-                    bot.notice(instigator + ", You do not have a " +  lootitem + " to sell!", instigator)
-                elif lootcommand == 'dispose' and not gethowmanylootitem:
-                    bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
-                elif lootcommand == 'buy' and gethowmanycoins < 100:
-                    bot.notice(instigator + ", You need 100 coins to buy.", instigator)
-                elif lootcommand == 'use' and target.lower() not in bot.privileges[channel.lower()]:
-                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif lootcommand == 'use':
-                    saymsg = 'true'
-                    use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                    if gethowmanylootitem:
+                        bot.notice(instigator + ", You do not have a " +  lootitem + " to use!", instigator)
+                    elif target.lower() not in bot.privileges[channel.lower()]:
+                        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                    else:
+                        saymsg = 'true'
+                        use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                 elif lootcommand == 'dispose':
-                    reward = -1
-                    adjust_database_value(bot, instigator, lootitem, reward)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                else:
+                    if lootcommand == 'dispose' and not gethowmanylootitem:
+                        bot.notice(instigator + ", You do not have a " +  lootitem + " to dispose of!", instigator)
+                    else:
+                        reward = -1
+                        adjust_database_value(bot, instigator, lootitem, reward)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                elif lootcommand == 'trade':
+                    if lootitemb not in lootitemsarray:
+                        bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                    elif lootitemb not in lootitemsarray:
+                        bot.notice(instigator + ", Invalid loot item.", instigator)
+                    elif lootitemb == lootitem:
+                        bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                    elif gethowmanylootitem < 3:
+                        bot.notice(instigator + ", You need 3 of a Loot item to trade.", instigator)
+                    else:
+                        cost = -3
+                        reward = 1
+                        itemtoexchange = lootitem
+                        itemexchanged = lootitemb
+                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemexchanged, reward)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                elif lootcommand == 'buy':
                     quantity = int(lootitemb)
                     if not quantity:
                         quantity = 1
                     coinsrequired = 100 * int(quantity)
-                    if int(quantity) > gethowmanylootitem and lootcommand == 'sell':
+                    if gethowmanycoins < coinsrequired:
                         bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
-                    elif gethowmanycoins < coinsrequired and lootcommand == 'buy':
-                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
-                    elif lootcommand == 'trade' and quantity > 1:
-                        bot.notice(instigator + ", You can not trade multiple items at this time.", instigator)
                     else:
                         while int(quantity) > 0:
                             quantity = int(quantity) - 1
-                            if lootcommand == 'trade':
-                                cost = -3
-                                reward = 1
-                                itemtoexchange = lootitem
-                                itemexchanged = lootitemb
-                            elif lootcommand == 'sell':
-                                cost = -1
-                                reward = 25
-                                itemtoexchange = lootitem
-                                itemexchanged = 'coins'
-                            elif lootcommand == 'buy':
-                                cost = -100
-                                reward = 1
-                                itemtoexchange = 'coins'
-                                itemexchanged = lootitem
+                            cost = -100
+                            reward = 1
+                            itemtoexchange = 'coins'
+                            itemexchanged = lootitem
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                elif lootcommand == 'sell':
+                    quantity = int(lootitemb)
+                    if not quantity:
+                        quantity = 1
+                    if int(quantity) > gethowmanylootitem:
+                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                    else:
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            cost = -1
+                            reward = 25
+                            itemtoexchange = lootitem
+                            itemexchanged = 'coins'
+                            adjust_database_value(bot, instigator, itemtoexchange, cost)
+                            adjust_database_value(bot, instigator, itemexchanged, reward)
+                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
 
             ## Konami
             elif commandused == 'upupdowndownleftrightleftrightba':
