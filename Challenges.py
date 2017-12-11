@@ -346,9 +346,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
                 lootitemc = get_trigger_arg(triggerargsarray, 5)
-                target = lootitemb
-                if not target:
-                    target = instigator
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem)
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 if lootcommand not in transactiontypesarray:
@@ -358,13 +355,18 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif lootcommand == 'use':
-                    if target.isdigit():
+                    if lootitemb.isdigit():
                         quantity = int(lootitemb)
                         target = instigator
-                    else:
-                        quantity = int(lootitemc)
-                    if not quantity:
+                    elif not lootitemb:
                         quantity = 1
+                        target = instigator
+                    else:
+                        target = lootitemb
+                        if not lootitemc:
+                            quantity = 1
+                        else:
+                            quantity = int(lootitemc)
                     if gethowmanylootitem < quantity:
                         bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                     elif target.lower() not in bot.privileges[channel.lower()]:
