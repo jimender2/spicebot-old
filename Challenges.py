@@ -72,7 +72,7 @@ def execute_main(bot, trigger, triggerargsarray):
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight'and target != 'random':
+        if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight' and target != 'random' and not target.isdigit():
             bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
@@ -358,7 +358,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif lootcommand == 'use':
-                    quantity = int(lootitemb)
+                    if target.isdigit():
+                        quantity = int(lootitemb)
+                        target = instigator
+                    else:
+                        quantity = int(lootitemc)
                     if not quantity:
                         quantity = 1
                     if gethowmanylootitem < quantity:
@@ -381,7 +385,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             quantity = int(quantity) - 1
                             reward = -1
                             adjust_database_value(bot, instigator, lootitem, reward)
-                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'trade':
                     quantity = int(lootitemc)
                     if not quantity:
@@ -404,7 +408,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             itemexchanged = lootitemb
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
-                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                 elif lootcommand == 'buy':
                     quantity = int(lootitemb)
                     if not quantity:
