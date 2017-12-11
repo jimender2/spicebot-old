@@ -370,7 +370,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif target.lower() not in bot.privileges[channel.lower()]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                     else:
-                        if int(quantity) > 1:
+                        if int(quantity) == 1:
                             saymsg = 'true'
                             use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                         else:
