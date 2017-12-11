@@ -285,9 +285,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         stats = str(stats + addstat)
                 if stats != '':
                     stats = str(target + "'s " + commandused + ":" + stats)
-                    bot.notice(stats, instigator)
+                    bot.say(stats)
                 else:
-                    bot.notice(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
+                    bot.say(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
 
             ## Leaderboard
             elif commandused == 'leaderboard':
