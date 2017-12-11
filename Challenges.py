@@ -1288,11 +1288,13 @@ def getwinner(bot, instigator, target, manualweapon):
     instigatorcurse = get_curse_check(bot, instigator)
     if instigatorcurse:
         instigatorfight = 0
-        bot.say(instigator + ' cursed remaining ' + str(instigatorcurse))
+        instigatorcurseleft = get_database_value(bot, instigator, 'curse')
+        bot.say(instigator + ' cursed remaining ' + str(instigatorcurseleft))
     targetcurse = get_curse_check(bot, target)
     if targetcurse:
         targetfight = 0 
-        bot.say(target + ' cursed remaining ' + str(targetcurse))
+        targetcurseleft = get_database_value(bot, target, 'curse')
+        bot.say(target + ' cursed remaining ' + str(targetcurseleft))
 
     ## tie breaker
     if instigatorfight == targetfight:
