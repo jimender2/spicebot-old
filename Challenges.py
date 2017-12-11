@@ -579,7 +579,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 curseduration = 4
                                 magicsay = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                                 magicnotice = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
-                                set_database_value(bot, instigator, 'curse', curseduration)
+                                set_database_value(bot, target, 'curse', curseduration)
                             elif magicusage == 'health':
                                 healthmath = int(int(targethealth) - int(targethealthstart))
                                 magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
