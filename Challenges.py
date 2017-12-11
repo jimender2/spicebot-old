@@ -66,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['everyone','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
+        nontargetarray = ['everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
@@ -354,7 +354,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
-                ## use
                 elif lootcommand == 'use':
                     if lootitemb.isdigit():
                         quantity = int(lootitemb)
@@ -386,7 +385,6 @@ def execute_main(bot, trigger, triggerargsarray):
                                 quantity = int(quantity) - 1
                                 use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
                             bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                ## trade
                 elif lootcommand == 'trade':
                     quantity = lootitemc
                     if not quantity:
@@ -410,7 +408,6 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                ## buy
                 elif lootcommand == 'buy':
                     quantity = lootitemb
                     if not quantity:
@@ -428,7 +425,6 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
                             adjust_database_value(bot, instigator, itemexchanged, reward)
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                ## sell
                 elif lootcommand == 'sell':
                     quantity = lootitemb
                     if not quantity:
@@ -457,7 +453,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 
             ## Weaponslocker
             elif commandused == 'weaponslocker':
-                validdirectionarray = ['inv','add','del']
+                validdirectionarray = ['inv','add','del','reset']
                 if target in validdirectionarray:
                     target = instigator
                     adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
@@ -486,6 +482,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
                 elif target != instigator and not trigger.admin:
                     bot.say("You may not adjust somebody elses locker.")
+                elif adjustmentdirection == 'reset':
+                    set_database_value(bot, target, 'weaponslocker', '')
+                    bot.say('Locker Reset.')
                 else:
                     if not weaponchange:
                         bot.say("What weapon would you like to add/remove?")
