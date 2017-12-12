@@ -164,9 +164,9 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandused == 'everyone':
                 OSDTYPE = 'notice'
                 if lastfullroomassult < OPTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice("Full Channel Assault can't be used for %d seconds." % (OPTTIMEOUT - lastfullroomassult), instigator)
                 elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                    bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
+                    bot.notice("You may not instigate a Full Channel Assault twice in a row.", instigator)
                 else:
                     set_database_value(bot, ALLCHAN, 'lastfullroomassult', now)
                     set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', instigator)
@@ -414,6 +414,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     if lootitemb.isdigit():
                         quantity = int(lootitemb)
                         target = instigator
+                    elif lootitemb == 'all':
+                        quantity = gethowmanylootitem
                     elif not lootitemb:
                         quantity = 1
                         target = instigator
@@ -421,6 +423,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         target = lootitemb
                         if not lootitemc:
                             quantity = 1
+                        elif lootitemc == 'all':
+                            quantity = gethowmanylootitem
                         else:
                             quantity = int(lootitemc)
                     if gethowmanylootitem < quantity:
@@ -468,6 +472,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantity = lootitemb
                     if not quantity:
                         quantity = 1
+                    elif quantity == 'all':
+                        quantity = 99999999999999999
                     coinsrequired = 100 * int(quantity)
                     if gethowmanycoins < coinsrequired:
                         bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
@@ -485,6 +491,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantity = lootitemb
                     if not quantity:
                         quantity = 1
+                    elif quantity == 'all':
+                        quantity = gethowmanylootitem
                     if int(quantity) > gethowmanylootitem:
                         bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
                     else:
