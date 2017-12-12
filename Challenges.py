@@ -284,15 +284,9 @@ def execute_main(bot, trigger, triggerargsarray):
             
             ## Streaks
             elif commandused == 'streaks':
-                wins = get_database_value(bot, target, 'wins')
-                losses = get_database_value(bot, target, 'losses')
-                total = wins + losses
-                if not total:
-                    bot.say("%s has no duel record!" % target)
-                else:
-                    streaks = format_streaks(bot, target)
-                    win_rate = wins / total * 100
-                    bot.say("%s has won %d out of %d duels (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
+                streaks = format_streaks(bot, target)
+                bot.say(str(streaks))
+
             
             ## Stats, Backpack
             elif commandused == 'stats' or commandused == 'backpack':
