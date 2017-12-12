@@ -66,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if target in bot.config.core.admins:
                 adminsarray.append(nametarget)
             
-    options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop, isvoice")
+    options = str("options, warn, channel, modulecount, isowner, github, timeout, usage, status, on/off, isadmin, isop, isvoice, help")
     if not trigger.group(2):
         bot.say("That's my name. Don't wear it out!")
     else:
@@ -107,7 +107,6 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandused == 'help':
             message = "You can find bot help here: https://github.com/deathbybandaid/sopel-modules/wiki"
             bot.notice(message, instigator)
-            
         
         ## Is on for who
         elif commandused == 'isonforwho' and not inchannel.startswith("#"):
