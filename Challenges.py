@@ -174,7 +174,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', instigator)
                     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                     for u in bot.channels[channel].users:
-                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+                        #cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+                        cantargetduel = 1
                         if cantargetduel and u != bot.nick:
                             targetarray.append(u)
                     #if targetarray == []:
