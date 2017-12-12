@@ -704,8 +704,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, target, 'curse', curseduration)
                             elif magicusage == 'shield':
                                 shieldduration = 4
-                                magicsay = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(curseduration) + " duels.")
-                                magicnotice = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(curseduration) + " duels.")
+                                magicsay = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
+                                magicnotice = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
                                 set_database_value(bot, target, 'shield', shieldduration)
                             elif magicusage == 'health':
                                 healthmath = int(int(targethealth) - int(targethealthstart))
