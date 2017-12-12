@@ -27,7 +27,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger','rogue']
+classarray = ['barbarian','mage','scavenger','rogue','ranger']
 
 ####################
 ## Main Operation ##
@@ -785,8 +785,16 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         set_current_streaks(bot, loser, 'loss')
             
     ## Update XP points
-    XPearnedwinner = '5'
-    XPearnedloser = '3'
+    yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
+    if yourclasswinner == 'ranger':
+        XPearnedwinner = '7'
+    else:
+        XPearnedwinner = '5'
+    yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
+    if yourclassloser == 'ranger':
+        XPearnedwinner = '5'
+    else:
+        XPearnedloser = '3'
     if instigator != target:
         adjust_database_value(bot, winner, 'xp', XPearnedwinner)
         adjust_database_value(bot, loser, 'xp', XPearnedloser)
