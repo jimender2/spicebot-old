@@ -27,7 +27,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger']
+classarray = ['barbarian','mage','scavenger','rogue']
 
 ####################
 ## Main Operation ##
@@ -800,6 +800,10 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     set_database_value(bot, ALLCHAN, 'lastinstigator', instigator)
             
     ## Update Health Of Loser, respawn, allow winner to loot
+    yourclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    if yourclass == 'rogue':
+        if instigator == target or target == bot.nick:
+            damage = 0
     adjust_database_value(bot, loser, 'health', damage)
     damage = abs(damage)
     currenthealth = get_database_value(bot, loser, 'health')
