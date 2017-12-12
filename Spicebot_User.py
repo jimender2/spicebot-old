@@ -106,7 +106,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Help
         elif commandused == 'help':
             message = "You can find bot help here: https://github.com/deathbybandaid/sopel-modules/wiki"
-        bot.notice(message, instigator)
+            bot.notice(message, instigator)
             
         
         ## Is on for who
