@@ -722,7 +722,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             lootwinnermsgb = str(winner + " gains the " + str(loot))
     
     # Streaks B
-    streaktextb = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
+    streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
     
     ## On Screen Text
     if OSDTYPE == 'say':
