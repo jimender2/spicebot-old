@@ -66,13 +66,13 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin']
+        nontargetarray = ['curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
         
         ## Must clear these challenges to do the below functions
-        if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandused != 'random' and commandused != 'everyone' and commandused != 'canifight' and target != 'random' and not target.isdigit():
+        if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandused not in ['random','everyone','canifight'] and target != 'random' and not target.isdigit():
             bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
         elif not trigger.admin and commandused in adminonlyarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
@@ -507,6 +507,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if not konami:
                     set_database_value(bot, instigator, 'konami', 1)
                     bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
+                    damage = 600
+                    adjust_database_value(bot, target, 'health', damage)
                 else:
                     bot.notice(instigator + " you can only cheat once.", instigator)
                 
