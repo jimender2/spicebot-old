@@ -65,7 +65,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['shield','change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
+        nontargetarray = ['info','shield','change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
@@ -302,24 +302,24 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
                     bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'info':
-                    setclass = get_trigger_arg(triggerargsarray, 3)
-                        if setclass not in classarray:
-                            bot.say("Invalid class. Options are: " + classes +".")
-                        elif setclass == 'barbarian':
-                            abilities = "has a minimum damage of 40."
-                        elif setclass == 'mage':
-                            abilities = "has lower mana costs for magic."
-                        elif setclass == 'scavenger':
-                            abilities = "has a higher chance of finding loot in a duel, and is better at trading, buying, and selling."
-                        elif setclass == 'rogue':
-                            abilities = "does not take damage in fights against themself or the bot."
-                        elif setclass == 'ranger':
-                            abilities = "gains XP at an accelerated rate."
-                        elif setclass == 'smuggler':
-                            abilities = "does not lose their backpack items upon death."
-                        else:
-                            abilities = "do not have any abilities."
-                        bot.say('The' + setclass + " " + abilities)
+                    setclass = get_trigger_arg(triggerargsarray, 3) or 'classless'
+                    if setclass not in classarray:
+                        bot.say("Invalid class. Options are: " + classes +".")
+                    elif setclass == 'barbarian':
+                        abilities = "has a minimum damage of 40."
+                    elif setclass == 'mage':
+                        abilities = "has lower mana costs for magic."
+                    elif setclass == 'scavenger':
+                        abilities = "has a higher chance of finding loot in a duel, and is better at trading, buying, and selling."
+                    elif setclass == 'rogue':
+                        abilities = "does not take damage in fights against themself or the bot."
+                    elif setclass == 'ranger':
+                        abilities = "gains XP at an accelerated rate."
+                    elif setclass == 'smuggler':
+                        abilities = "does not lose their backpack items upon death."
+                    else:
+                        abilities = "do not have any abilities."
+                    bot.say('The' + setclass + " " + abilities)
                 elif subcommand == 'set':
                     if yourclass:
                         bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
