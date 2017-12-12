@@ -292,7 +292,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("Your class is currently set to " + str(yourclass))
                 elif subcommand == 'set':
                     if yourclass:
-                        bot.say("You appear to have a class set already. You can change your class for " + cost + " coins. Run .duel class change    to set your class. Options are barbarian or mage.")
+                        bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are barbarian or mage.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
@@ -301,7 +301,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, instigator, 'class', setclass)
                 elif subcommand == 'change':
                     if gethowmanycoins < cost:
-                        bot.say("Changing class costs " + cost + " coins.")
+                        bot.say("Changing class costs " + str(cost) + " coins.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
