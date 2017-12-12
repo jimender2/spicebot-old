@@ -27,7 +27,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger','rogue','ranger']
+classarray = ['barbarian','mage','scavenger','rogue','ranger','smuggler']
 
 ####################
 ## Main Operation ##
@@ -1025,10 +1025,12 @@ def whokilledwhom(bot, winner, loser):
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
-    for x in lootitemsarray:
-        gethowmany = get_database_value(bot, loser, x)
-        adjust_database_value(bot, winner, x, gethowmany)
-        set_database_value(bot, loser, x, '')
+    yourclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    if yourclass != 'smuggler':
+        for x in lootitemsarray:
+            gethowmany = get_database_value(bot, loser, x)
+            adjust_database_value(bot, winner, x, gethowmany)
+            set_database_value(bot, loser, x, '')
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
@@ -1095,7 +1097,7 @@ def whatsyourname(bot, trigger, nick, channel):
     elif nick in voicearray:
         nickname = str("The Incredible " + nickname)
     elif nick in adminsarray:
-        nickname = str("The Dubious " + nickname)
+        nickname = str("The Extraordinary " + nickname)
     else:
         nickname = str(nickname)
         
