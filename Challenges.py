@@ -286,13 +286,13 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandused == 'streaks':
                 script = ''
                 streak_type = get_database_value(bot, target, 'currentstreaktype')
-                best_wins = get_database_value(bot, nick, 'bestwinstreak') or 0
-                worst_losses = get_database_value(bot, nick, 'worstlosestreak') or 0
+                best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
+                worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
                 if streak_type == 'win':
-                    streak_count = get_database_value(bot, nick, 'currentwinstreak') or 0
+                    streak_count = get_database_value(bot, target, 'currentwinstreak') or 0
                     typeofstreak = 'winning'
                 elif streak_type == 'loss':
-                    streak_count = get_database_value(bot, nick, 'currentlosestreak') or 0
+                    streak_count = get_database_value(bot, target, 'currentlosestreak') or 0
                     typeofstreak = 'losing'
                 else:
                     streak_count = 0
