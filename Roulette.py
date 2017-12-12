@@ -87,7 +87,7 @@ def execute_main(bot, trigger, arg):
          
 def spinwheel():
   	random.seed()
-	thenumber = random.randint(0,maxwheel)
+	thenumber = random.randint(1,maxwheel)
 	thecolor=random.randint(0,1)
 	#return array with color and number
 	if thecolor == 0:
