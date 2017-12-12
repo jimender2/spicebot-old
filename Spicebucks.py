@@ -61,6 +61,7 @@ def checkpayday(bot, target, args):
         bot.say("You've already been paid today. Now go do some work.")
      
 def paytaxes(bot, target, args):
+    
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
@@ -71,6 +72,9 @@ def paytaxes(bot, target, args):
         spicebucks(bot, target, 'minus', taxtotal)
         bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
         bot.say("Thank you " + target + " for paying your total taxes today of " + str(taxtotal) + " to SpiceBot")
+    else:
+        bot.say("Taxes already paid today.")
+        bot.say(args)
     
         
 def spicebucks(bot, target, plusminus, amount):
