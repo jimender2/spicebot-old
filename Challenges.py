@@ -288,7 +288,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 cost = 100
                 if not yourclass and not subcommand:
                     bot.say("You don't appear to have a class set. Options are barbarian or mage. Run .duel class set    to set your class.")
-                if not subcommand:
+                elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
                 elif subcommand == 'set':
                     if yourclass:
@@ -299,6 +299,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.say("Invalid class. Options are barbarian or mage.")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
+                            bot.say('Your class is now set to ' +  setclass)
                 elif subcommand == 'change':
                     if gethowmanycoins < cost:
                         bot.say("Changing class costs " + str(cost) + " coins.")
@@ -309,6 +310,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             adjust_database_value(bot, instigator, 'coins', -abs(cost))
+                            bot.say('Your class is now set to ' +  setclass)
                 
             ## Streaks
             elif commandused == 'streaks':
