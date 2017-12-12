@@ -79,8 +79,6 @@ def paytaxes(bot, target):
         bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
     else:
         bot.say("Taxes already paid today.")
-        bot.say(args)
-    
         
 def spicebucks(bot, target, plusminus, amount):
     success = 'false'
