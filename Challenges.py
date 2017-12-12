@@ -290,6 +290,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         classes = str(x)
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 yourclass = get_database_value(bot, instigator, 'class')
+                yourclasstime = get_database_value(bot, instigator, 'classtimeout')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 subcommandarray = ['set','change']
                 cost = 100
@@ -297,6 +298,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("You don't appear to have a class set. Options are : " + classes +". Run .duel class set    to set your class.")
                 elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
+                elif yourclasstime <= 86400:# and not bot.nick.endswith('dev'):
+                    bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'set':
                     if yourclass:
                         bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
@@ -307,6 +310,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             bot.say('Your class is now set to ' +  setclass)
+                            set_database_value(bot, instigator, 'classtimeout', now)
                 elif subcommand not in subcommandarray:
                     bot.say("Invalid command. Options are set or change.")
                 elif subcommand == 'change':
@@ -320,6 +324,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, instigator, 'class', setclass)
                             adjust_database_value(bot, instigator, 'coins', -abs(cost))
                             bot.say('Your class is now set to ' +  setclass)
+                            set_database_value(bot, instigator, 'classtimeout', now)
                 
             ## Streaks
             elif commandused == 'streaks':
