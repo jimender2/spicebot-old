@@ -859,7 +859,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     # Streaks B
     if instigator != target:
         streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
-        streaktext = str(str(streaktext) + "       ")
+        if streaktext != '':
+            streaktext = str(str(streaktext) + "       ")
     else:
         streaktext = ''
     
