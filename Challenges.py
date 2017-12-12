@@ -286,7 +286,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 yourclass = get_database_value(bot, instigator, 'class')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 cost = 100
-                if not class:
+                if not yourclass:
                     bot.say("You don't appear to have a class set. Options are Barbarian or Mage. Run .duel class set    to set your class.")
                 elif subcommand == 'set':
                     if yourclass:
