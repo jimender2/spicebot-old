@@ -1205,7 +1205,9 @@ def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
     if loottype == 'healthpotion':
         adjust_database_value(bot, target, 'health', '100')
     elif loottype == 'poisonpotion':
-        adjust_database_value(bot, target, 'health', '-50')
+        yourclass = get_database_value(bot, target, 'class') or 'notclassy'
+        if yourclass != 'rogue':
+            adjust_database_value(bot, target, 'health', '-50')
     elif loottype == 'manapotion':
         adjust_database_value(bot, target, 'mana', '100')
     elif loottype == 'timepotion':
