@@ -26,7 +26,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian']
+classarray = ['barbarian','mage']
 
 ####################
 ## Main Operation ##
@@ -286,15 +286,17 @@ def execute_main(bot, trigger, triggerargsarray):
                 yourclass = get_database_value(bot, instigator, 'class')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 cost = 100
-                if not yourclass:
-                    bot.say("You don't appear to have a class set. Options are Barbarian or Mage. Run .duel class set    to set your class.")
+                if not yourclass and not subcommand:
+                    bot.say("You don't appear to have a class set. Options are barbarian or mage. Run .duel class set    to set your class.")
+                if not subcommand:
+                    bot.say("Your class is currently set to " + str(yourclass))
                 elif subcommand == 'set':
                     if yourclass:
-                        bot.say("You appear to have a class set already. You can change your class for " + cost + " coins. Run .duel class change    to set your class. Options are Barbarian or Mage.")
+                        bot.say("You appear to have a class set already. You can change your class for " + cost + " coins. Run .duel class change    to set your class. Options are barbarian or mage.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
-                            bot.say("Invalid class. Options are Barbarian or Mage.")
+                            bot.say("Invalid class. Options are barbarian or mage.")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                 elif subcommand == 'change':
