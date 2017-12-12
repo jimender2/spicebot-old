@@ -643,7 +643,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     damagetext = abs(damage)
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
-                        manarequired = manarequired * .80
+                        manarequired = -abs(manarequired / 10 * 8)
                         bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
