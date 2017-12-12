@@ -1019,7 +1019,7 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
     broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
     broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
     if broken_streak:
-        streaktext = str("%s %s" % (winner, broken_streak))
+        streaktext = str("%s wins%s!%s" % (winner, broken_streak, streak))
     else:
         streaktext = ''
     return streaktext
