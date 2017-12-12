@@ -1009,9 +1009,9 @@ def get_currentstreak(bot, nick):
     return streaks
     
 def get_streaktext(bot, winner, loser):
-    winner_loss_streak = get_database_value(bot, winner, 'currentwinstreak')
+    winner_loss_streak = get_database_value(bot, winner, 'currentlosestreak')
     loser_win_streak = get_database_value(bot, loser, 'currentwinstreak')
-    win_streak = get_win_streak(bot, winner)
+    win_streak = get_database_value(bot, winner, 'currentwinstreak')
     streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
     broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
     broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
