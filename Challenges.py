@@ -26,7 +26,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage']
+classarray = ['barbarian','mage','scavenger']
 
 ####################
 ## Main Operation ##
@@ -282,12 +282,19 @@ def execute_main(bot, trigger, triggerargsarray):
             
             ## Class
             elif commandused == 'class':
+                classes = ''
+                for x in classarray:
+                    if classes != '':
+                        classes = str(classes + ", " + x)
+                    else:
+                        classes = str(x)
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 yourclass = get_database_value(bot, instigator, 'class')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
+                subcommandarray = ['set','change']
                 cost = 100
                 if not yourclass and not subcommand:
-                    bot.say("You don't appear to have a class set. Options are barbarian or mage. Run .duel class set    to set your class.")
+                    bot.say("You don't appear to have a class set. Options are :" + classes +". Run .duel class set    to set your class.")
                 elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
                 elif subcommand == 'set':
@@ -296,17 +303,19 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
-                            bot.say("Invalid class. Options are barbarian or mage.")
+                            bot.say("Invalid class. Options are :" + classes +".")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             bot.say('Your class is now set to ' +  setclass)
+                elif subcommand not in subcommandarray:
+                    bot.say("Invalid command. Options are set or change.")
                 elif subcommand == 'change':
                     if gethowmanycoins < cost:
                         bot.say("Changing class costs " + str(cost) + " coins.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
-                            bot.say("Invalid class. Options are Barbarian or Mage.")
+                            bot.say("Invalid class. Options are :" + classes +".")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             adjust_database_value(bot, instigator, 'coins', -abs(cost))
@@ -632,6 +641,10 @@ def execute_main(bot, trigger, triggerargsarray):
                             manarequired = -abs(targethealthstart / 200 * 250)
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
+                    yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
+                    if yourclass == 'mage':
+                        manarequired = manarequired * .80
+                        bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif mana < manarequired:
@@ -1110,10 +1123,9 @@ def get_backpackitems(bot, target):
         totalbackpack = int(int(totalbackpack) + int(gethowmany))
     return totalbackpack
 
-## maybe add a dice roll later
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
-    if yourclass == 'mage':
+    if yourclass == 'scavenger':
         rando = randint(40, 120)
     else:
         randomfindchance = diceroll(120)
