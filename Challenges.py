@@ -1063,8 +1063,8 @@ def format_streaks(bot, nick):
         return streaks
 
     # best/worst streaks
-    best_wins = get_best_win_streak(bot, nick)
-    worst_losses = get_worst_loss_streak(bot, nick)
+    best_wins = get_database_value(bot, nick, 'bestwinstreak')
+    worst_losses = get_database_value(bot, nick, 'worstlosestreak')
     if best_wins or worst_losses:
         streaks += ' ('
         if best_wins and worst_losses:
