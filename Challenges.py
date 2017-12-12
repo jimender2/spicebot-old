@@ -284,8 +284,8 @@ def execute_main(bot, trigger, triggerargsarray):
             
             ## Streaks
             elif commandused == 'streaks':
-                wins = get_database_array_total(bot, target, 'wins')
-                losses = get_database_array_total(bot, target, 'losses')
+                wins = get_database_value(bot, target, 'wins')
+                losses = get_database_value(bot, target, 'losses')
                 total = wins + losses
                 if not total:
                     bot.say("%s has no duel record!" % target)
@@ -294,7 +294,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     win_rate = wins / total * 100
                     bot.say("%s has won %d out of %d duels (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
             
-            ## Stats, Backpack and Streaks
+            ## Stats, Backpack
             elif commandused == 'stats' or commandused == 'backpack':
                 statsbypassarray = ['winlossratio','backpackitems','timeout','pepper','currentstreak']
                 stats = ''
@@ -865,10 +865,7 @@ def adjust_database_value(bot, nick, databasekey, value):
    
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
-    if array != []:
-        entriestotal = len(array)
-    else:
-        entriestotal = 0
+    entriestotal = len(array)
     return entriestotal
 
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
