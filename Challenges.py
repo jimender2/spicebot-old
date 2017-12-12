@@ -638,12 +638,14 @@ def execute_main(bot, trigger, triggerargsarray):
                         if int(targethealthstart) < 200:
                             manarequired = -200
                         else:
-                            manarequired = -abs(targethealthstart / 200 * 250)
+                            manarequired = -abs(targethealthstart / 200)
+                            manarequired = -abs(manarequired * 250)
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
-                        manarequired = -abs(manarequired / 10 * 8)
+                        manarequired = -abs(manarequired / 10)
+                        manarequired = -abs(manarequired * 8)
                         bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
@@ -1124,7 +1126,7 @@ def get_backpackitems(bot, target):
     return totalbackpack
 
 def randominventory(bot, instigator):
-    yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
+    yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
     if yourclass == 'scavenger':
         rando = randint(40, 120)
     else:
