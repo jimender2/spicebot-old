@@ -203,11 +203,6 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say('resetting count for ' + target)
             set_botdatabase_value(bot, nick, 'usertotal', '')
             
-        ## Help
-        elif commandused == 'help':
-                message = "You can find bot help here: https://github.com/deathbybandaid/sopel-modules/wiki"
-            bot.notice(message, instigator)
-            
         ## On/Off
         elif commandused == 'on' or commandused == 'off':
             if target == 'all':
