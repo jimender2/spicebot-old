@@ -865,7 +865,10 @@ def adjust_database_value(bot, nick, databasekey, value):
    
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
-    entriestotal = len(array)
+    if array != []:
+        entriestotal = len(array)
+    else:
+        entriestotal = 0
     return entriestotal
 
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
