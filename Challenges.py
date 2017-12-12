@@ -22,9 +22,10 @@ TIMEOUTC = 40
 ALLCHAN = 'entirechannel'
 OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
+backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use','dispose']
 challengestatsadminarray = ['curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','curse','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsarray = ['health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
     
 ####################
 ## Main Operation ##
@@ -305,21 +306,15 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(target + " has no streaks.")
                 else:
                     bot.say(target + "'s streaks: " + script)
-
-            ## Stats, Backpack
-            elif commandused == 'stats' or commandused == 'backpack':
-                statsbypassarray = ['winlossratio','backpackitems','timeout','pepper']
+            
+            ## Backpack
+            elif commandused == 'backpack':
                 stats = ''
-                if commandused == 'stats':
-                    arraytoscan = challengestatsarray
-                elif commandused == 'backpack':
-                    arraytoscan = lootitemsarray
-                    totalweapons = get_database_array_total(bot, target, 'weaponslocker')
-                    if totalweapons:
-                        addstat = str(" weaponstotal" + "=" + str(totalweapons))
-                        stats = str(stats + addstat)
-                elif commandused == 'streaks':
-                    arraytoscan = streaksarray
+                arraytoscan = backpackarray
+                totalweapons = get_database_array_total(bot, target, 'weaponslocker')
+                if totalweapons:
+                    addstat = str(" weaponstotal" + "=" + str(totalweapons))
+                    stats = str(stats + addstat)
                 for x in arraytoscan:
                     if x in statsbypassarray:
                         scriptdef = str('get_' + x + '(bot,target)')
@@ -331,6 +326,28 @@ def execute_main(bot, trigger, triggerargsarray):
                         stats = str(stats + addstat)
                 if stats != '':
                     stats = str(target + "'s " + commandused + ":" + stats)
+                    bot.say(stats)
+                else:
+                    bot.say(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
+            
+            ## Stats
+            elif commandused == 'stats':
+                statsbypassarray = ['winlossratio','timeout']
+                stats = ''
+                arraytoscan = challengestatsarray
+                for x in arraytoscan:
+                    if x in statsbypassarray:
+                        scriptdef = str('get_' + x + '(bot,target)')
+                        gethowmany = eval(scriptdef)
+                    else:
+                        gethowmany = get_database_value(bot, target, x)
+                    if gethowmany:
+                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                        stats = str(stats + addstat)
+                if stats != '':
+                    pepper = get_pepper(bot, target)
+                    targetname = str("(" + str(pepper) + ")" + target)
+                    stats = str(targetname + "'s " + commandused + ":" + stats)
                     bot.say(stats)
                 else:
                     bot.say(instigator + ", It looks like " + target + " has no " +  commandused + ".", instigator)
