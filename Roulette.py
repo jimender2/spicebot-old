@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 
 #A roulette game to be used with Spicebucks.
-maxwheel = 5
+maxwheel = 24
 numberpayout = 2
 colorpayout = 1
 evenpayout = 3
