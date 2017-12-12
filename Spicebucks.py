@@ -73,7 +73,8 @@ def paytaxes(bot, target):
     inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
     if lasttaxday == 0 or lasttaxday < datetoday:
         taxtotal = int(inbank * .1)
-        spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
+        spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+        spicebucks(bot, 'SpiceBank', 'plus', taxtotal + spicebanktotal)
         spicebucks(bot, target, 'minus', taxtotal)
         bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
         bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
