@@ -933,14 +933,14 @@ def healthregen(bot):
 
 def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
     executedueling = 0
-    lastfought = get_database_value(bot, instigator, 'lastfought')
-    targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable')
-    instigatordisenable = get_database_value(bot, instigator, 'disenable')
-    targetdisenable = get_database_value(bot, target, 'disenable')
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout')
-    targettime = get_timesince_duels(bot, target, 'timeout')
-    channeltime = get_timesince_duels(bot, ALLCHAN, 'timeout')
-    channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator')
+    lastfought = get_database_value(bot, instigator, 'lastfought') or ''
+    targetspicebotdisenable = get_botdatabase_value(bot, target, 'disenable') or ''
+    instigatordisenable = get_database_value(bot, instigator, 'disenable') or ''
+    targetdisenable = get_database_value(bot, target, 'disenable') or ''
+    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
+    targettime = get_timesince_duels(bot, target, 'timeout') or ''
+    channeltime = get_timesince_duels(bot, ALLCHAN, 'timeout') or ''
+    channellastinstigator = get_database_value(bot, ALLCHAN, 'lastinstigator') or ''
     if not channellastinstigator:
         channellastinstigator = bot.nick
     
