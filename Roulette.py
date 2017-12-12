@@ -48,7 +48,7 @@ def execute_main(bot, trigger, arg):
 						bot.say('Please enter your bet followed by number and the color you wish to bet on')
 					else:
 						if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-							bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
+							bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
 	    						winningnumber,color = spinwheel()  	    						
 							bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
 	  						mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
@@ -77,7 +77,7 @@ def execute_main(bot, trigger, arg):
 					bot.say('Please enter your bet followed by number and the color you wish to bet on')
 				else:
 					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-						bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins the wheel')
+						bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table and spins the wheel')
 						winningnumber,color = spinwheel()  						
 						bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
 						mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
