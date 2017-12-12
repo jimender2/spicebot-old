@@ -315,14 +315,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif subcommand not in subcommandarray:
                     bot.say("Invalid command. Options are set or change.")
                 elif subcommand == 'change':
-                    if setclass == yourclass:
-                        bot.say('Your class is already set to ' +  setclass)
-                    elif gethowmanycoins < cost:
+                    if gethowmanycoins < cost:
                         bot.say("Changing class costs " + str(cost) + " coins.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
                             bot.say("Invalid class. Options are: " + classes +".")
+                        elif setclass == yourclass:
+                            bot.say('Your class is already set to ' +  setclass)
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             adjust_database_value(bot, instigator, 'coins', -abs(cost))
