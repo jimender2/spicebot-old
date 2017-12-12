@@ -644,7 +644,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     damagetext = abs(damage)
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
-                        manarequired = manarequired * .8
+                        manarequired = manarequired * .9
                     bot.say(str(manarequired))
                     manarequired = -abs(manarequired)
                     if not mana:
@@ -1128,7 +1128,7 @@ def get_backpackitems(bot, target):
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
     if yourclass == 'scavenger':
-        rando = randint(40, 120)
+        randomfindchance = randint(40, 120)
     else:
         randomfindchance = diceroll(120)
     randominventoryfind = 'false'
