@@ -294,16 +294,16 @@ def execute_main(bot, trigger, triggerargsarray):
                 subcommandarray = ['set','change']
                 cost = 100
                 if not yourclass and not subcommand:
-                    bot.say("You don't appear to have a class set. Options are :" + classes +". Run .duel class set    to set your class.")
+                    bot.say("You don't appear to have a class set. Options are : " + classes +". Run .duel class set    to set your class.")
                 elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
                 elif subcommand == 'set':
                     if yourclass:
-                        bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are barbarian or mage.")
+                        bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
-                            bot.say("Invalid class. Options are :" + classes +".")
+                            bot.say("Invalid class. Options are: " + classes +".")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             bot.say('Your class is now set to ' +  setclass)
@@ -315,7 +315,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
                         if setclass not in classarray:
-                            bot.say("Invalid class. Options are :" + classes +".")
+                            bot.say("Invalid class. Options are: " + classes +".")
                         else:
                             set_database_value(bot, instigator, 'class', setclass)
                             adjust_database_value(bot, instigator, 'coins', -abs(cost))
@@ -440,6 +440,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
             ## Loot Items
             elif commandused == 'loot':
+                yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                 lootcommand = get_trigger_arg(triggerargsarray, 2)
                 lootitem = get_trigger_arg(triggerargsarray, 3)
                 lootitemb = get_trigger_arg(triggerargsarray, 4)
@@ -492,7 +493,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantity = lootitemc
                     if not quantity:
                         quantity = 1
-                    quantitymath = 3 * int(quantity)
+                    if yourclass == 'scavenger':
+                        quantitymath = 2 * int(quantity)
+                    else:
+                        quantitymath = 3 * int(quantity)
                     if lootitemb not in lootitemsarray:
                         bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                     elif lootitemb not in lootitemsarray:
@@ -504,7 +508,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         while int(quantity) > 0:
                             quantity = int(quantity) - 1
-                            cost = -3
+                            if yourclass == 'scavenger':
+                                cost = -2
+                            else:
+                                cost = -3
                             reward = 1
                             itemtoexchange = lootitem
                             itemexchanged = lootitemb
@@ -517,13 +524,19 @@ def execute_main(bot, trigger, triggerargsarray):
                         quantity = 1
                     elif quantity == 'all':
                         quantity = 99999999999999999
-                    coinsrequired = 100 * int(quantity)
+                    if yourclass == 'scavenger':
+                        coinsrequired = 90 * int(quantity)
+                    else:
+                        coinsrequired = 100 * int(quantity)
                     if gethowmanycoins < coinsrequired:
                         bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
                     else:
                         while int(quantity) > 0:
                             quantity = int(quantity) - 1
-                            cost = -100
+                            if yourclass == 'scavenger':
+                                cost = -90
+                            else:
+                                cost = -100
                             reward = 1
                             itemtoexchange = 'coins'
                             itemexchanged = lootitem
@@ -537,12 +550,15 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif quantity == 'all':
                         quantity = gethowmanylootitem
                     if int(quantity) > gethowmanylootitem:
-                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                        bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
                     else:
                         while int(quantity) > 0:
                             quantity = int(quantity) - 1
                             cost = -1
-                            reward = 25
+                            if yourclass == 'scavenger':
+                                reward = 30
+                            else:
+                                reward = 25
                             itemtoexchange = lootitem
                             itemexchanged = 'coins'
                             adjust_database_value(bot, instigator, itemtoexchange, cost)
