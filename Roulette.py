@@ -22,52 +22,52 @@ def mainfunction(bot, trigger):
 		execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-	inputcheck=false	
+	inputcheck=0	
 	if not (len(arg)>3 or len(arg)<=1):	
 		if str(arg[0])=='payout':
 			bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
-			inputcheck=false		
+			inputcheck=0		
 		elif not arg[0].isdigit():
 			bot.say('Please enter your bet followed by number and/or the color you wish to bet on')
-			inputcheck=false
+			inputcheck=0
 		else:
 			mywinnings=0
 			if len(arg) == 3:
 				if not int(arg[0])>=1:      
 					bot.say('Please enter the amount you wish to bet first')
-					inputcheck=false
+					inputcheck=0
 				elif not (int(arg[1])<=maxwheel and int(arg[1])>=1):
 					bot.say('Please pick a number between 1 and ' + str(maxwheel))
-					inputcheck=false
+					inputcheck=0
 				elif not (arg[2] == 'red' or arg[2] == 'black'):
 					bot.say('Please select either red or black')	
-					inputcheck=false
+					inputcheck=0
 				else:        
 					mybet=int(arg[0])
 					mynumber=int(arg[1])
 					mycolor=arg[2]					
-	    				inputcheck = true	
+	    				inputcheck = 1	
 			elif len(arg)==2:  			
 				mybet = int(arg[0])
 				if(str(arg[1]) == 'red' or str(arg[1]) == 'black'):
 					mycolor = arg[1]
 					mynumber=-1
-					inputcheck =true
+					inputcheck =1
 				elif arg[1].isdigit():
 					if(int(arg[1])<=maxwheel and int(arg[1])>=1):
 						mynumber=int(arg[1])
 						mycolor=' '
-						inputcheck = true
+						inputcheck = 1
 					else:
 						bot.say('Please pick a number between 1 and ' + str(maxwheel))
-						inputcheck=false
+						inputcheck=0
 				else:
 					bot.say('You have choosen to bet on black')
 					mycolor='black'
 					mynumber=0
-					inputcheck = true
+					inputcheck = 1
 					        
-		if inputcheck:
+		if inputcheck==1:
 			if mybet<=0:
 				bot.say('Please enter your bet followed by number and the color you wish to bet on')
 			else:
