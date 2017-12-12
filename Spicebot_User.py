@@ -103,6 +103,12 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandused == 'github':
             bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
             
+        ## Help
+        elif commandused == 'help':
+            message = "You can find bot help here: https://github.com/deathbybandaid/sopel-modules/wiki"
+        bot.notice(message, instigator)
+            
+        
         ## Is on for who
         elif commandused == 'isonforwho' and not inchannel.startswith("#"):
             targetarray = []
