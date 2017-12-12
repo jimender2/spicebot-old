@@ -1331,7 +1331,8 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, winner, loser):
-    shield = get_shield_check(bot, loser)
+    shieldwinner = get_shield_check(bot, winner)
+    shieldloser = get_shield_check(bot, loser)
     yourclass = get_database_value(bot, winner, 'class') or 'notclassy'
     if winner == bot.nick:
         rando = 150
@@ -1339,7 +1340,7 @@ def damagedone(bot, winner, loser):
         rando = randint(40, 120)
     else:
         rando = randint(0, 120)
-    if shield:
+    if shieldloser:
         damage = 0
     else:
         damage = -abs(rando)
@@ -1513,8 +1514,8 @@ def get_curse_check(bot, nick):
 
 def get_shield_check(bot, nick):
     adjustment = -1
-    cursed = 0
-    nickcurse = get_database_value(bot, nick, 'shield')
+    shield = 0
+    nickshield = get_database_value(bot, nick, 'shield')
     if nickshield:
         adjust_database_value(bot, nick, 'shield', adjustment)
         shield = 1
