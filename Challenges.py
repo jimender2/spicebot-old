@@ -25,7 +25,6 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 transactiontypesarray = ['buy','sell','trade','use','dispose']
 challengestatsadminarray = ['curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['health','curse','mana','coins','xp','pepper','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-streaksarray = ['bestwinstreak','worstlosestreak','currentwinstreak','currentlosestreak']
     
 ####################
 ## Main Operation ##
@@ -1225,8 +1224,11 @@ def damagedone(bot, target):
 
 def get_pepper(bot, nick):
     xp = get_database_value(bot, nick, 'xp')
+    nickcurse = get_database_value(bot, nick, 'curse')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
+    elif nickcurse:
+        pepper = 'Cursed'
     elif not xp:
         pepper = ''
     elif xp > 0 and xp < 100:
