@@ -298,9 +298,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     streak_count = 0
                 if streak_count > 1 and streak_type != 'none':
                     script = str(script + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
-                if best_wins > 1:
+                if int(best_wins) > 1:
                     script = str(script + "Best Win streak= " + str(best_wins)
-                if worst_losses > 1:
+                if int(worst_losses) > 1:
                     script = str(script + "Worst Losing streak= " + str(worst_losses)
                 if script == '':
                     bot.say(target + " has no streaks.")
