@@ -291,7 +291,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         classes = str(x)
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
                 yourclass = get_database_value(bot, instigator, 'class')
-                yourclasstime = get_timesince_duels(bot, target, 'classtimeout')
+                yourclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 subcommandarray = ['set','change']
                 cost = 100
