@@ -802,7 +802,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         XPearnedwinner = '5'
     yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
     if yourclassloser == 'ranger':
-        XPearnedwinner = '5'
+        XPearnedloser = '5'
     else:
         XPearnedloser = '3'
     if instigator != target:
