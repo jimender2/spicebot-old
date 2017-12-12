@@ -651,6 +651,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     ## Select Winner
     winner, loser = getwinner(bot, instigator, target, manualweapon)
 
+    ## Streaks A
+    winner_loss_streak, loser_win_streak = get_streaktexta(bot, winner, loser)
+    
     ## Weapon Select
     if manualweapon == 'false' or winner == target:
         if winner == bot.nick:
@@ -718,8 +721,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         if winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
     
-    # streak text
-    streaktext = get_streaktext(bot, winner, loser) or ''
+    # Streaks B
+    streaktextb = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
     
     ## On Screen Text
     if OSDTYPE == 'say':
@@ -1008,14 +1011,17 @@ def get_currentstreak(bot, nick):
                 streaks = str(str(streaks) + ' ' + str(addstreak))
     return streaks
     
-def get_streaktext(bot, winner, loser):
-    winner_loss_streak = get_database_value(bot, winner, 'currentlosestreak')
-    loser_win_streak = get_database_value(bot, loser, 'currentwinstreak')
-    win_streak = get_database_value(bot, winner, 'currentwinstreak')
+def get_streaktexta(bot, winner, loser):
+    winner_loss_streak = get_database_value(bot, winner, 'currentlosestreak') or 0
+    loser_win_streak = get_database_value(bot, loser, 'currentwinstreak') or 0
+    return winner_loss_streak, loser_win_streak
+    
+def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
+    win_streak = get_database_value(bot, winner, 'currentwinstreak') or 0
     streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
     broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
     broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
-    streaktext = str("%s wins%s!%s" % (winner, broken_streak, streak))
+    streaktext = str("%s%s" % (broken_streak, streak))
     return streaktext
     
 ###############
