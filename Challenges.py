@@ -316,11 +316,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     addstat = str(" weaponstotal" + "=" + str(totalweapons))
                     stats = str(stats + addstat)
                 for x in arraytoscan:
-                    if x in statsbypassarray:
-                        scriptdef = str('get_' + x + '(bot,target)')
-                        gethowmany = eval(scriptdef)
-                    else:
-                        gethowmany = get_database_value(bot, target, x)
+                    gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
