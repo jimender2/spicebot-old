@@ -624,29 +624,29 @@ def execute_main(bot, trigger, triggerargsarray):
                     targetcurse = get_curse_check(bot, target)
                     mana = get_database_value(bot, instigator, 'mana')
                     if magicusage == 'attack':
-                        manarequired = -250
+                        manarequired = 250
                         damage = -200
                     elif magicusage == 'curse':
-                        manarequired = -500
+                        manarequired = 500
                         damage = 80
                     elif magicusage == 'health':
-                        manarequired = -200
+                        manarequired = 200
                         damage = 200
                     elif magicusage == 'instakill':
                         targethealthstart = get_database_value(bot, target, 'health')
                         targethealthstart = int(targethealthstart)
                         if int(targethealthstart) < 200:
-                            manarequired = -200
+                            manarequired = 200
                         else:
-                            manarequired = -abs(targethealthstart / 200)
-                            manarequired = -abs(manarequired * 250)
+                            manarequired = targethealthstart / 200
+                            manarequired = manarequired * 250
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
-                        manarequired = -abs(manarequired / 10)
-                        manarequired = -abs(manarequired * 8)
-                        bot.say(str(manarequired))
+                        manarequired = manarequired * .8
+                    bot.say(str(manarequired))
+                    manarequired = -abs(manarequired)
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif mana < manarequired:
