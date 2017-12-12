@@ -174,24 +174,23 @@ def execute_main(bot, trigger, triggerargsarray):
                     set_database_value(bot, ALLCHAN, 'lastfullroomassultinstigator', instigator)
                     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                     for u in bot.channels[channel].users:
-                        #cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                        cantargetduel = 1
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
                         if cantargetduel and u != bot.nick:
                             targetarray.append(u)
-                    #if targetarray == []:
-                    #    dowedisplay = 1
-                    #    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-                    #    if not cantargetduel:
-                    #        bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
-                    #else:
-                    #    for x in targetarray:
-                    #        if x != instigator:
-                    #            targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
-                    #            getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
-                    #            time.sleep(5)
-                    #            bot.notice("  ", instigator)
-                    #            set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
-                    #set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+                    if targetarray == []:
+                        dowedisplay = 1
+                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                        if not cantargetduel:
+                            bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
+                    else:
+                        for x in targetarray:
+                            if x != instigator:
+                                targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
+                                getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                                time.sleep(5)
+                                bot.notice("  ", instigator)
+                                set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
+                    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
             ## War Room
             elif commandused == 'warroom':
@@ -947,8 +946,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in channel.")
-    elif target.lower() not in bot.privileges[channel.lower()]:
-        displaymsg = str(instigator + ", It looks like that is either not here, or not a valid person.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
     elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
