@@ -315,7 +315,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif subcommand not in subcommandarray:
                     bot.say("Invalid command. Options are set or change.")
                 elif subcommand == 'change':
-                    if gethowmanycoins < cost:
+                    if setclass == yourclass:
+                        bot.say('Your class is already set to ' +  setclass)
+                    elif gethowmanycoins < cost:
                         bot.say("Changing class costs " + str(cost) + " coins.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
