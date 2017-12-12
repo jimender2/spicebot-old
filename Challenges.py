@@ -299,7 +299,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("You don't appear to have a class set. Options are : " + classes +". Run .duel class set    to set your class.")
                 elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
-                elif yourclasstime < CLASSTIMEOUT:# and not bot.nick.endswith('dev'):
+                elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
                     bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'set':
                     if yourclass:
