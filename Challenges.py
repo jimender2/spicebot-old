@@ -717,11 +717,15 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
         if winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
-                               
+    
+    # streak text
+    streaktext = get_streaktext(bot, winner, loser) or ''
+    
     ## On Screen Text
     if OSDTYPE == 'say':
         bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
         bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
+        bot.say(str(streaktext))
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
             bot.say(pepperstatuschangemsg)
     elif OSDTYPE == 'notice':
@@ -729,6 +733,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
         bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), winner)
         bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), loser)
+        bot.notice(str(streaktext), winner)
+        bot.notice(str(streaktext), loser)
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart:
             bot.notice(pepperstatuschangemsg, winner)
             bot.notice(pepperstatuschangemsg, loser)
@@ -1001,6 +1007,16 @@ def get_currentstreak(bot, nick):
             else:
                 streaks = str(str(streaks) + ' ' + str(addstreak))
     return streaks
+    
+def get_streaktext(bot, winner, loser):
+    winner_loss_streak = get_database_value(bot, winner, 'currentwinstreak')
+    loser_win_streak = get_database_value(bot, loser, 'currentwinstreak')
+    win_streak = get_win_streak(bot, winner)
+    streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
+    broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
+    broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
+    streaktext = str("%s wins%s!%s" % (winner, broken_streak, streak))
+    return streaktext
     
 ###############
 ## Inventory ##
