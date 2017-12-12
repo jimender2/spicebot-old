@@ -415,6 +415,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         quantity = int(lootitemb)
                         target = instigator
                     elif lootitemb == 'all':
+                        target = instigator
                         quantity = gethowmanylootitem
                     elif not lootitemb:
                         quantity = 1
