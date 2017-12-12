@@ -50,9 +50,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
-            
-###### Weapons migrate
-    weaponsmigrate(bot, instigator)
     
     ## If Not a target or a command used
     if not fullcommandused:
@@ -647,10 +644,6 @@ def execute_main(bot, trigger, triggerargsarray):
     refreshbot(bot)
         
 def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
-    
-    ## Weapons migrate
-    weaponsmigrate(bot, instigator)
-    weaponsmigrate(bot, target)
     
     ## Update Time Of Combat
     set_database_value(bot, instigator, 'timeout', now)
