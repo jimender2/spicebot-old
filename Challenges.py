@@ -981,7 +981,7 @@ def whatsyourname(bot, trigger, nick, channel):
     elif nick in voicearray:
         nickname = str("The Incredible " + nickname)
     elif nick in adminsarray:
-        nickname = str("The Valient " + nickname)
+        nickname = str("The Dubious " + nickname)
     else:
         nickname = str(nickname)
         
