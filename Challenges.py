@@ -24,9 +24,10 @@ OPTTIMEOUT = 1800
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use']
-challengestatsadminarray = ['curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-    
+challengestatsadminarray = ['class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsarray = ['class','health','curse','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+classarray = ['barbarian']
+
 ####################
 ## Main Operation ##
 ####################
@@ -63,7 +64,7 @@ def execute_main(bot, trigger, triggerargsarray):
         targetdisenable = get_database_value(bot, target, 'disenable')
         
         ## Arrays
-        nontargetarray = ['use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
+        nontargetarray = ['change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
         adminonlyarray = ['statsadmin']
         privilegedarray = ['on','off']
         inchannelarray = ['random','everyone']
@@ -279,6 +280,34 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, statset, newvalue)
                     bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             
+            ## Class
+            elif commandused == 'class':
+                gethowmanycoins = get_database_value(bot, instigator, 'coins')
+                class = get_database_value(bot, instigator, 'class')
+                subcommand = get_trigger_arg(triggerargsarray, 2)
+                cost = 100
+                if not class:
+                    bot.say("You don't appear to have a class set. Options are Barbarian or Mage. Run .duel class set    to set your class.")
+                elif subcommand == 'set':
+                    if class:
+                        bot.say("You appear to have a class set already. You can change your class for " + cost + " coins. Run .duel class change    to set your class. Options are Barbarian or Mage.")
+                    else:
+                        setclass = get_trigger_arg(triggerargsarray, 3)
+                        if setclass not in classarray:
+                            bot.say("Invalid class. Options are Barbarian or Mage.")
+                        else:
+                            set_database_value(bot, instigator, 'class', setclass)
+                elif subcommand == 'change':
+                    if gethowmanycoins < cost:
+                        bot.say("Changing class costs " + cost + " coins.")
+                    else:
+                        setclass = get_trigger_arg(triggerargsarray, 3)
+                        if setclass not in classarray:
+                            bot.say("Invalid class. Options are Barbarian or Mage.")
+                        else:
+                            set_database_value(bot, instigator, 'class', setclass)
+                            adjust_database_value(bot, instigator, 'coins', -abs(cost))
+                
             ## Streaks
             elif commandused == 'streaks':
                 script = ''
@@ -753,7 +782,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     ## Random Inventory gain
     lootwinnermsg = ''
     lootwinnermsgb = ''
-    randominventoryfind = randominventory()
+    randominventoryfind = randominventory(bot, instigator)
     if randominventoryfind == 'true' and target != bot.nick and instigator != target:
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
@@ -1078,8 +1107,12 @@ def get_backpackitems(bot, target):
     return totalbackpack
 
 ## maybe add a dice roll later
-def randominventory():
-    randomfindchance = diceroll(120)
+def randominventory(bot, instigator):
+    class = get_database_value(bot, nick, 'class') or 'notclassy'
+    if class == 'mage':
+        rando = randint(40, 120)
+    else:
+        randomfindchance = diceroll(120)
     randominventoryfind = 'false'
     if randomfindchance >= 90:
         randominventoryfind = 'true'
@@ -1227,12 +1260,15 @@ def weaponformatter(bot, weapon):
 ## Damage Done ##
 #################
 
-def damagedone(bot, target):
-    if target == bot.nick:
-        damage = -150
+def damagedone(bot, nick):
+    class = get_database_value(bot, nick, 'class') or 'notclassy'
+    if nick == bot.nick:
+        rando = 150
+    elif class == 'barbarian':
+        rando = randint(40, 120)
     else:
-        rando = diceroll(120)
-        damage = -abs(rando)
+        rando = randint(0, 120)
+    damage = -abs(rando)
     return damage
 
 ##################
