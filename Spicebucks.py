@@ -25,6 +25,8 @@ def execute_main(bot, trigger, args):
             checkpayday(bot,trigger.nick, args[0])
         elif args[0] == 'reset': #to be removed
             reset(bot,trigger.nick)
+        elif args[0] == 'taxes':
+            paytaxes(bot,trigger.nick, args)
         elif args[0] == 'bank':
             if len(args) > 1:
                 if args[1].lower() not in bot.privileges[channel.lower()]:
@@ -57,6 +59,19 @@ def checkpayday(bot, target, args):
         bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.") #change to notify
     elif lastpayday == datetoday:
         bot.say("You've already been paid today. Now go do some work.")
+     
+def paytaxes(bot, target, args):
+    now = datetime.datetime.now()
+    datetoday = int(now.strftime("%Y%j"))
+    lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
+    inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
+    if lasttaxday == 0 or lasttaxday < datetoday:
+        taxtotal = int(inbank * .1)
+        spicebucks(bot, 'SpiceBot', 'plus', taxtotal)
+        spicebucks(bot, target, 'minus', taxtotal)
+        bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
+        bot.say("Thank you " + target + " for paying your total taxes today of " + str(taxtotal) + " to SpiceBot")
+    
         
 def spicebucks(bot, target, plusminus, amount):
     success = 'false'
