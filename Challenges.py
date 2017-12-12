@@ -297,7 +297,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     streak_count = 0
                 if streak_count > 1 and streak_type != 'none':
-                    script = str(script "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
+                    script = str(script + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
                 if best_wins > 1:
                     script = str(script + "Best Win streak= " + str(best_wins)
                 if worst_losses > 1:
