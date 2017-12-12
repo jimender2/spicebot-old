@@ -284,13 +284,32 @@ def execute_main(bot, trigger, triggerargsarray):
             
             ## Streaks
             elif commandused == 'streaks':
-                streaks = format_streaks(bot, target)
-                bot.say(str(streaks))
+                script = ''
+                streak_type = get_database_value(bot, target, 'currentstreaktype')
+                best_wins = get_database_value(bot, nick, 'bestwinstreak') or 0
+                worst_losses = get_database_value(bot, nick, 'worstlosestreak') or 0
+                if streak_type == 'win':
+                    streak_count = get_database_value(bot, nick, 'currentwinstreak') or 0
+                    typeofstreak = 'winning'
+                elif streak_type == 'loss':
+                    streak_count = get_database_value(bot, nick, 'currentlosestreak') or 0
+                    typeofstreak = 'losing'
+                else:
+                    streak_count = 0
+                if streak_count > 1 and streak_type != 'none':
+                    script = str(script "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
+                if best_wins > 1:
+                    script = str(script + "Best Win streak= " + str(best_wins)
+                if worst_losses > 1:
+                    script = str(script + "Worst Losing streak= " + str(worst_losses)
+                if script == '':
+                    bot.say(target + " has no streaks.")
+                else:
+                    bot.say(target + "'s streaks: " + script)
 
-            
             ## Stats, Backpack
             elif commandused == 'stats' or commandused == 'backpack':
-                statsbypassarray = ['winlossratio','backpackitems','timeout','pepper','currentstreak']
+                statsbypassarray = ['winlossratio','backpackitems','timeout','pepper']
                 stats = ''
                 if commandused == 'stats':
                     arraytoscan = challengestatsarray
@@ -1030,45 +1049,6 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
     else:
         streaktext = ''
     return streaktext
-    
-def format_streaks(bot, nick):
-    # this started as a mess, and it only got messier from there
-    streaks = ''
-
-    # current streak
-    streak_type = get_database_value(bot, nick, 'currentstreaktype')
-    if streak_type == 'win':
-        streak_count = get_database_value(bot, nick, 'currentwinstreak') or 0
-        streak_preposition = 'and'
-        streak_type = 'win' if streak_count == 1 else 'wins'
-    elif streak_type == 'loss':
-        streak_count = get_database_value(bot, nick, 'currentlosestreak') or 0
-        streak_preposition = 'but'
-        streak_type = 'loss' if streak_count == 1 else 'losses'
-    else:
-        return 'but has no streaks recorded yet.'
-    if streak_count > 1:
-        streaks += '%s is riding a streak of %d %s.' % (streak_preposition, streak_count, streak_type)
-    elif streak_count == 1:
-        streaks += 'but can only hope %sto start a %s streak.' % (
-            'not ' if streak_type == 'loss' else '', 'winning' if streak_type == 'win' else 'losing')
-    else:
-        streaks += 'and has not achieved even a single %s? o_O' % streak_type
-        return streaks
-
-    # best/worst streaks
-    best_wins = get_database_value(bot, nick, 'bestwinstreak')
-    worst_losses = get_database_value(bot, nick, 'worstlosestreak')
-    if best_wins or worst_losses:
-        streaks += ' ('
-        if best_wins and worst_losses:
-            streaks += 'Best winning streak: %d; worst losing streak: %d.' % (best_wins, worst_losses)
-        elif best_wins and not worst_losses:
-            streaks += 'Best winning streak: %d.' % best_wins
-        elif not best_wins and worst_losses:
-            streaks += 'Worst losing streak: %d.' % worst_losses
-        streaks += ')'
-    return streaks
     
 ###############
 ## Inventory ##
