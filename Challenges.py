@@ -641,7 +641,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             manarequired = -abs(targethealthstart / 200 * 250)
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
-                    yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
+                    yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
                         manarequired = manarequired * .80
                         bot.say(str(manarequired))
