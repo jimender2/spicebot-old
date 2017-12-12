@@ -283,13 +283,13 @@ def execute_main(bot, trigger, triggerargsarray):
             ## Class
             elif commandused == 'class':
                 gethowmanycoins = get_database_value(bot, instigator, 'coins')
-                class = get_database_value(bot, instigator, 'class')
+                yourclass = get_database_value(bot, instigator, 'class')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 cost = 100
                 if not class:
                     bot.say("You don't appear to have a class set. Options are Barbarian or Mage. Run .duel class set    to set your class.")
                 elif subcommand == 'set':
-                    if class:
+                    if yourclass:
                         bot.say("You appear to have a class set already. You can change your class for " + cost + " coins. Run .duel class change    to set your class. Options are Barbarian or Mage.")
                     else:
                         setclass = get_trigger_arg(triggerargsarray, 3)
@@ -1108,8 +1108,8 @@ def get_backpackitems(bot, target):
 
 ## maybe add a dice roll later
 def randominventory(bot, instigator):
-    class = get_database_value(bot, nick, 'class') or 'notclassy'
-    if class == 'mage':
+    yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
+    if yourclass == 'mage':
         rando = randint(40, 120)
     else:
         randomfindchance = diceroll(120)
@@ -1261,10 +1261,10 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, nick):
-    class = get_database_value(bot, nick, 'class') or 'notclassy'
+    yourclass = get_database_value(bot, nick, 'class') or 'notclassy'
     if nick == bot.nick:
         rando = 150
-    elif class == 'barbarian':
+    elif yourclass == 'barbarian':
         rando = randint(40, 120)
     else:
         rando = randint(0, 120)
