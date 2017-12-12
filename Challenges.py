@@ -346,7 +346,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         stats = str(stats + addstat)
                 if stats != '':
                     pepper = get_pepper(bot, target)
-                    targetname = str("(" + str(pepper) + ")" + target)
+                    targetname = str("(" + str(pepper) + ") " + target)
                     stats = str(targetname + "'s " + commandused + ":" + stats)
                     bot.say(stats)
                 else:
