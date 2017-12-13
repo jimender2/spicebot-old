@@ -102,6 +102,7 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
         channelarray.append(c)
         inchannel = "#bypass"
+        dowedisplay = 0
         ## All Users in channel
         for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
