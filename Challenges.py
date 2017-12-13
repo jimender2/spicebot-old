@@ -299,8 +299,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("You don't appear to have a class set. Options are : " + classes +". Run .duel class set    to set your class.")
                 elif not subcommand:
                     bot.say("Your class is currently set to " + str(yourclass))
-                elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'info':
                     abilities = ''
                     setclass = get_trigger_arg(triggerargsarray, 3) or 'classless'
@@ -317,6 +315,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         abilities = "do not have any abilities."
                     bot.say('The ' + setclass + " " + abilities)
+                elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'set':
                     if yourclass:
                         bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
