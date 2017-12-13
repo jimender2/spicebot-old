@@ -549,7 +549,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         itemexchanged = lootitemb
                         adjust_database_value(bot, instigator, itemtoexchange, cost)
                         adjust_database_value(bot, instigator, itemexchanged, reward)
-                   bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
            elif lootcommand == 'buy':
                 quantity = lootitemb
                 if not quantity:
