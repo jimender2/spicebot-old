@@ -13,7 +13,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say(str(bot.channels))
+    channelarray = []
+    for c in bot.channels:
+        channelarray.append(c)
+    channel = get_trigger_arg(channelarray, 0)
+    bot.say(str(channel))
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!']
