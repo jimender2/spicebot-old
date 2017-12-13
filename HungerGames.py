@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     randomweapon = random.shuffle(weapon)
                     #tributerow = [tribute, 100, weapon[0]]
                     #tributes.append(tributerow)
-                    bot.say(randomweapon[0])
+                    bot.say(str(randomweapon[0]))
                 totaltributes = len(tributes)
                 
                 #while totaltributes > 1:
