@@ -6,7 +6,6 @@ import os
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
-from random import *
 
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
