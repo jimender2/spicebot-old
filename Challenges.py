@@ -303,9 +303,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     abilities = ''
                     setclass = get_trigger_arg(triggerargsarray, 3) or 'classless'
                     if setclass == 'barbarian':
-                        abilities = "has a minimum damage of 40."
+                        abilities = "has a minimum damage of 40, and a chance at stealing a loot item when losing a duel."
                     elif setclass == 'mage':
-                        abilities = "has lower mana costs for magic."
+                        abilities = "has lower mana costs for magic, and regenerates mana over time."
                     elif setclass == 'scavenger':
                         abilities = "has a higher chance of finding loot in a duel, and is better at trading, buying, and selling."
                     elif setclass == 'rogue':
@@ -869,10 +869,17 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     if randominventoryfind == 'true' and target != bot.nick and instigator != target:
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
-        adjust_database_value(bot, winner, loot, defaultadjust)
         lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-        if winner == target:
+        targetclass = get_database_value(bot, target, 'class') or 'notclassy'
+        barbarianstealroll = randint(0, 100)
+        if winner != target and targetclass == 'barbarian' and barbarianstealroll >= 50:
+            lootwinnermsgb = str(target + " steals the " + str(loot))
+            adjust_database_value(bot, target, loot, defaultadjust)
+        elif winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
+            adjust_database_value(bot, winner, loot, defaultadjust)
+        else:
+            adjust_database_value(bot, winner, loot, defaultadjust)
     
     # Streaks B
     if instigator != target:
@@ -927,8 +934,15 @@ def healthregen(bot):
             target = u
             targetdisenable = get_database_value(bot, target, 'disenable')
             if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
-                ## award 5 coins to everyone
+                ## award 10 coins to everyone
                 adjust_database_value(bot, target, 'coins', 10)
+                
+                ## mages regen mana
+                yourclass = get_database_value(bot, target, 'class') or 'notclassy'
+                if yourclass == 'mage':
+                    mana = get_database_value(bot, target, 'mana')
+                    if health < 1000:
+                        adjust_database_value(bot, target, 'mana', '50')
                 
                 health = get_database_value(bot, target, 'health')
                 if health < 500:
