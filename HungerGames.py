@@ -50,7 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     tributerow = [tribute, 100, weapons[0]]
                     tributes.append(tributerow)
                 totaltributes = len(tributes)
-                
+                deathorder = ''
                 while totaltributes > 1:
                     random.shuffle(tributes)
                     damageone = randint(10, 30)
@@ -64,11 +64,15 @@ def execute_main(bot, trigger, triggerargsarray):
                         if len(tributes) > 1:
                             bot.say(tributes[0][0] + " killed " + tributes[1][0])
                     if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
+                        deathorder = str(totaltributes) + ": " + tributes[1][0] + " " + deathorder
                         tributes.pop(1)
                     if tributes[0][1] <= 0:
                         if len(tributes) > 1:
+                            deathorder = str(totaltributes) + ": " + tributes[0][0] + " " + deathorder
                             tributes.pop(0)
                     totaltributes = len(tributes)
                 bot.say("The victor is " + tributes[0][0])
+                deathorder = "1: " + tributes[0][0] + " " + deathorder
+                bot.say(deathorder)
                         
                         
