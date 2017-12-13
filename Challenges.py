@@ -302,10 +302,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
                     bot.say("You may not change your class more than once per day.")
                 elif subcommand == 'info':
+                    abilities = ''
                     setclass = get_trigger_arg(triggerargsarray, 3) or 'classless'
-                    if setclass not in classarray:
-                        bot.say("Invalid class. Options are: " + classes +".")
-                    elif setclass == 'barbarian':
+                    if setclass == 'barbarian':
                         abilities = "has a minimum damage of 40."
                     elif setclass == 'mage':
                         abilities = "has lower mana costs for magic."
