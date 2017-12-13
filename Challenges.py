@@ -33,6 +33,7 @@ transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 classarray = ['barbarian','mage','scavenger','rogue','ranger']
+statsadminchangearray = ['set','reset']
 
 # deprecate these
 nontargetarray = ['info','shield','change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
@@ -47,6 +48,7 @@ inchannelarray = ['random','everyone']
 displaymsg = ''
 dowedisplay = 0
 disenablevalue = ''
+targets = ''
 
 #################
 ## null arrays ##
@@ -122,12 +124,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     adminsarray.append(u)
                 adminsarraytotal = len(adminsarray)
             
-            ## has to sit outside
-            dueloptedinarraytotal = len(dueloptedinarray)
-        allusersinroomarraytotal = len(allusersinroomarray)
-    channelarraytotal = len(channelarray)
+############## has to sit outside ############################
+            dueloptedinarraytotal = len(dueloptedinarray)   ##
+        allusersinroomarraytotal = len(allusersinroomarray) ##
+    channelarraytotal = len(channelarray)                   ##
         
-    ## Channel (assumes only one channel,,, need to fix someday)
+###### Channel (assumes only one channel,,, need to fix someday)
     channel = get_trigger_arg(channelarray, 0)
     inchannel = trigger.sender
     
@@ -207,7 +209,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in allusersinroomarray:
                     bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
-                elif target != instigator and not in adminsarray:
+                elif target != instigator and instigator not in adminsarray:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 elif target == 'everyone':
                     for u in allusersinroomarray:
@@ -258,23 +260,13 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandortarget == 'warroom':
                 subcommand = get_trigger_arg(triggerargsarray, 2)
                 if not subcommand:
-                    
-                elif subcommand == 'assault':
-                    
-                elif subcommand == 'list':
-                    
-                elif subcommand.lower() not in allusersinroomarray:
-                    bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
-                
-                
-                
-                if not subcommand:
-                    dowedisplay = 1
-                    inchannel = "#bypass"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-                    if cantargetduel:
+                    if instigator in canduelarray:
                         bot.notice(instigator + ", It looks like you can challenge.", instigator)
-                elif subcommand == 'everyone':
+                    else:
+                        inchannel = "#bypass"
+                        dowedisplay = 1
+                        mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+                elif subcommand == 'assault':
                     if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
                         bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
                     elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
@@ -282,78 +274,59 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.notice(" Full Channel Assault can be used.", instigator)
                 elif subcommand == 'list':
-                    targets = ''
-                    for u in bot.channels[channel.lower()].users:
-                        inchannel = "#bypass"
-                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                        if cantargetduel and u != bot.nick and u != instigator:
-                            targetarray.append(u)
-                    for x in targetarray:
+                    for x in canduelarray:
                         if targets != '':
                             targets = str(targets + ", " + x)
                         else:
                             targets = str(x)
-                    chunks = targets.split()
-                    per_line = 15
-                    targetline = ''
-                    for i in range(0, len(chunks), per_line):
-                        targetline = " ".join(chunks[i:i + per_line])
-                        bot.say(str(targetline))
-                    if targetline == '':
+                    bot.say(str(targets))
+                elif subcommand.lower() not in allusersinroomarray:
+                    bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
+                else:
+                    if subcommand in canduelarray:
+                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                    else:
                         dowedisplay = 1
                         inchannel = "#bypass"
-                        cantargetduel = mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-                        if cantargetduel:
-                            bot.notice(instigator + ", It looks like you can challenge.", instigator)
-                        else:
-                            bot.notice(instigator + ", It looks like you cannot challenge anybody at the moment.", instigator)
-                elif target != instigator:
-                    dowedisplay = 1
-                    inchannel = "#bypass"
-                    cantargetduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
-                    if cantargetduel:
-                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                        mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
 
             ## Stats Admin
-            elif commandortarget == 'statsadmin' and trigger.admin:
-                statsadminarray = ['set','reset']
-                if target in statsadminarray:
-                    target = instigator
-                    settype = get_trigger_arg(triggerargsarray, 2)
-                    statset = get_trigger_arg(triggerargsarray, 3)
-                    if settype == 'reset':
-                        newvalue = ''
-                    else:
-                        newvalue = get_trigger_arg(triggerargsarray, 4)
+            elif commandortarget == 'statsadmin':
+                subcommand = get_trigger_arg(triggerargsarray, 2)
+                stat = get_trigger_arg(triggerargsarray, 3)
+                target = get_trigger_arg(triggerargsarray, 4)
+                newvalue = get_trigger_arg(triggerargsarray, 4) or ''
+                if not subcommand:
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+                elif subcommand not in statsadminchangearray:
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+                elif stat not in challengestatsadminarray:
+                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+                elif target.lower() not in allusersinroomarray and target != 'everyone':
+                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+                elif instigator not in adminsarray:
+                    bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
-                    settype = get_trigger_arg(triggerargsarray, 3)
-                    statset = get_trigger_arg(triggerargsarray, 4)
-                    if settype == 'reset':
+                    if subcommand == 'reset':
                         newvalue = ''
-                    else:
-                        newvalue = get_trigger_arg(triggerargsarray, 5)
-                if settype not in statsadminarray:
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                elif statset not in challengestatsadminarray and statset != 'all':
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                elif settype == 'set' and not newvalue:
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin target set/reset stat", instigator)
-                else:
-                    if target == 'everyone':
+                    if subcommand == 'set' and newvalue != '':
+                        bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+                    elif target == 'everyone':
                         for u in bot.channels[channel].users:
                             if statset == 'all':
                                 for x in challengestatsadminarray:
                                     set_database_value(bot, u, x, newvalue)
                             else:
                                 set_database_value(bot, u, statset, newvalue)
+                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     else:
                         if statset == 'all':
                             for x in challengestatsadminarray:
                                 set_database_value(bot, target, x, newvalue)
                         else:
                             set_database_value(bot, target, statset, newvalue)
-                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-            
+                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+
             ## Class
             elif commandortarget == 'class':
                 classes = ''
