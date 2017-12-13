@@ -92,8 +92,12 @@ def spinwheel():
 	#return array with color and number
 	if thecolor == 0:
 		color = 'black'
+		blacktotal = bot.db.get_nick_value('roulette', 'roulette_blacks') or 0
+		bot.db.set_nick_value('roulette', 'roulette_blacks', blacktotal + 1)
 	else:
 		color = 'red' 
+		redtotal = bot.db.get_nick_value('roulette', 'roulette_reds') or 0
+		bot.db.set_nick_value('roulette', 'roulette_reds', redtotal + 1)
 	return thenumber, color
 
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
