@@ -54,7 +54,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     tributes = random.shuffle(tributes)
                     damageone = randint(1, 100)
                     damagetwo = randint(1, 100)
-                    #bot.say(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][3] + "(-" + damageone + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][3] + "(-" + damagetwo + "). ")
+                    bot.say(tributes[0,0] + " hits " + tributes[1,0] + " with a " + tributes[0,3] + "(-" + damageone + "). " + tributes[1,0] + " hits " + tributes[0,0] + " with a " + tributes[1,3] + "(-" + damagetwo + "). ")
                     tributes[0][2] = tributes[0][2] - damageone
                     tributes[1][2] = tributes[1][2] - damageone
                     if tributes[0][2] <= 0:
