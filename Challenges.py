@@ -666,7 +666,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     targetcurse = get_curse_check(bot, target)
                     targetshield = get_curse_check(bot, target)
                     mana = get_database_value(bot, instigator, 'mana')
-                    bot.say(str(mana))
                     if magicusage == 'attack':
                         manarequired = 250
                         damage = -200
@@ -689,11 +688,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             manarequired = manarequired * 250
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
-                    bot.say(str(manarequired))
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
                         manarequired = manarequired * .9
-                    bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif int(manarequired) > int(mana):
