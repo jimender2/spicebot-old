@@ -1482,7 +1482,7 @@ def getwinner(bot, instigator, target, manualweapon):
     instigatorfight = max(instigatorfightarray)
     while int(targetfight) > 0:
         if targetyourclass == 'rogue':
-            targetfightroll = diceroll(21)
+            targetfightroll = randint(10, 22)
         else:
             targetfightroll = diceroll(19)
         targetfightarray.append(targetfightroll)
