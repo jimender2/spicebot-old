@@ -309,7 +309,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif setclass == 'scavenger':
                         abilities = "has a higher chance of finding loot in a duel, and is better at trading, buying, and selling."
                     elif setclass == 'rogue':
-                        abilities = "does not take damage in fights against themself or the bot."
+                        abilities = "does not take damage in fights against themself or the bot. Additionally, gains an advantage in winner selection."
                     elif setclass == 'ranger':
                         abilities = "gains XP at an accelerated rate and does not lose their backpack items upon death."
                     else:
@@ -1417,6 +1417,13 @@ def getwinner(bot, instigator, target, manualweapon):
     ## each person gets one diceroll
     instigatorfight = 1
     targetfight = 1
+    
+    instigatoryourclass = get_database_value(bot, instigator, 'class') or ''
+    if instigatoryourclass == 'rogue':
+        instigatorfight = instigatorfight + 1
+    targetyourclass = get_database_value(bot, instigator, 'class') or ''
+    if targetyourclass == 'rogue':
+        targetfight = targetfight + 1
     
     ## Random Number
     flip = randint(0, 1)
