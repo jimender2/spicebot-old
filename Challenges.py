@@ -110,10 +110,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 targetcantoptarray.append(u)
             # Users with duels enabled
             disenable = get_database_value(bot, u, 'disenable')
-            if u != bot.nick and targetdisenable:
+            if u != bot.nick and disenable:
                 dueloptedinarray.append(u)
             # Target passes all duel checks
-            canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+            canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, channel, dowedisplay)
             if canduel:
                 canduelarray.append(u)
             ## Bot Owner (probably will only ever be one)
@@ -126,7 +126,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if bot.privileges[channel.lower()][u.lower()] == VOICE:
                 voicearray.append(u)
             ## Bot Admins
-            if nametarget in bot.config.core.admins:
+            if u in bot.config.core.admins:
                 adminsarray.append(u)
             classtime = get_timesince_duels(bot, u, 'classtimeout')
             if classtime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
