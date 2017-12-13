@@ -688,10 +688,12 @@ def execute_main(bot, trigger, triggerargsarray):
                             manarequired = manarequired * 250
                         damage = -abs(targethealthstart)
                     damagetext = abs(damage)
+                    bot.say(str(manarequired))
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
                         manarequired = manarequired * .9
                     manarequired = -abs(manarequired)
+                    bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif mana < manarequired:
