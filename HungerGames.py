@@ -1,6 +1,7 @@
 import sopel
 from sopel import module, tools
 import random
+from random import randint
 import sys
 import os
 moduledir = os.path.dirname(__file__)
