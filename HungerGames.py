@@ -50,9 +50,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     tributerow = [tribute, 100, 'knive']
                     tributes.append(tributerow)
                 totaltributes = len(tributes)
-                bot.say(str(totaltributes))
+                bot.say(tributes)
                 while totaltributes > 1:
                     tributes = random.shuffle(tributes)
+                    
                     damageone = randint(1, 100)
                     damagetwo = randint(1, 100)
                     bot.say(tributes[0,0] + " hits " + tributes[1,0] + " with a " + tributes[0,3] + "(-" + str(damageone) + "). " + tributes[1,0] + " hits " + tributes[0,0] + " with a " + tributes[1,3] + "(-" + str(damagetwo) + "). ")
