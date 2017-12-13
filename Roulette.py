@@ -31,7 +31,7 @@ def execute_main(bot, trigger, arg):
 		elif str(arg[0])=='betitall':
 			bot.say(trigger.nick + ' is going all in')
 			spicebucks = bot.db.get_nick_value(trigger.nick, 'spicebucks_bank') or 0
-			bot.say(spicebucks)
+			bot.say(str(spicebucks))
 			inputcheck=0
 		elif not arg[0].isdigit():
 			bot.say('Please enter your bet followed by number and/or the color you wish to bet on')
