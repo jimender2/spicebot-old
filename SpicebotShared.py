@@ -9,6 +9,8 @@ import sys, re
 import fnmatch
 from os.path import exists
 
+botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+
 JOINTIMEOUT = 60
 LASTTIMEOUT = 60
 TOOMANYTIMES = 15
