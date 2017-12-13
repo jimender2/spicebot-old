@@ -99,12 +99,11 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Build User/channel Arrays
     for c in bot.channels:
-        channel = c
         channelarray.append(c)
         inchannel = "#bypass"
         dowedisplay = 0
         ## All Users in channel
-        for u in bot.channels[channel.lower()].users:
+        for u in bot.channels[c.lower()].users:
             allusersinroomarray.append(u)
             ## Users that can opt in/out of duels
             opttime = get_timesince_duels(bot, u, 'opttime')
@@ -146,7 +145,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channelarraytotal = len(channelarray)
         
 ###### Channel (assumes only one channel,,, need to fix somehow someday)
-    channel = get_trigger_arg(channelarray, 0)
+    channel = get_trigger_arg(channelarray, 1)
     inchannel = trigger.sender
     
     ## Time when Module use started
