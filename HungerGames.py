@@ -42,11 +42,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 random.shuffle(randomtargetarray)
                 bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 
-                weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
                 tributes = []
                 for tribute in randomtargetarray:
-                    weapon = random.shuffle(weapon)[0]
-                    tributerow = [tribute, 100, weapon]
+                    weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
+                    weapon = random.shuffle(weapon)
+                    tributerow = [tribute, 100, weapon[0]]
                     tributes.append(tributerow)
                 totaltributes = len(tributes)
                 while totaltributes > 1:
