@@ -697,7 +697,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
                     elif int(manarequired) > int(mana):
-                        manamath = int(manarequired - mana)
+                        manamath = int(int(manarequired) - int(mana))
                         bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
                     elif magicusage == 'curse' and targetcurse:
                         bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
