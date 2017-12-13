@@ -318,7 +318,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         abilities = "does not lose their backpack items upon death."
                     else:
                         abilities = "do not have any abilities."
-                    bot.say('The' + setclass + " " + abilities)
+                    bot.say('The ' + setclass + " " + abilities)
                 elif subcommand == 'set':
                     if yourclass:
                         bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
