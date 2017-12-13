@@ -45,8 +45,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
                 tributes = []
                 for tribute in randomtargetarray:
-                    weapon = random.shuffle(weapon)
-                    tributerow = [tribute, 100, weapon[0]]
+                    weapon = random.shuffle(weapon)[0]
+                    tributerow = [tribute, 100, weapon]
                     tributes.append(tributerow)
                 totaltributes = len(tributes)
                 while totaltributes > 1:
