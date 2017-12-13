@@ -50,6 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     tributerow = [tribute, 100, 'knive']
                     tributes.append(tributerow)
                 totaltributes = len(tributes)
+                bot.say(str(totaltributes))
                 while totaltributes > 1:
                     tributes = random.shuffle(tributes)
                     damageone = randint(1, 100)
