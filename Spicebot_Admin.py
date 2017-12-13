@@ -27,7 +27,7 @@ def spicebotadmin(bot, trigger):
         if commandused == 'chanaction':
             message = get_trigger_arg(triggerargsarray, '2+')
             if message:
-                bot.action(channel,message)
+                bot.action(message,channel)
         if commandused == 'chanmsg':
             message = get_trigger_arg(triggerargsarray, '2+')
             if message:
