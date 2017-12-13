@@ -1109,7 +1109,7 @@ def whatsyourname(bot, trigger, nick, channel):
     if nick in botownerarray:
         nickname = str("The Legendary " + nickname)
     elif nick in botdevteam:
-        nickname = str("The  Extraordinary" + nickname)
+        nickname = str("The Extraordinary " + nickname)
     elif nick in operatorarray:
         nickname = str("The Magnificent " + nickname)
     elif nick in voicearray:
