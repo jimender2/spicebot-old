@@ -7,9 +7,6 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
-selfdeath = ['starvation', 'drowning', 'hypothermia']
-
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
@@ -45,6 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 random.shuffle(randomtargetarray)
                 bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 
+                weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
                 tributes = []
                 for tribute in randomtargetarray:
                     weapon = random.shuffle(weapon)
