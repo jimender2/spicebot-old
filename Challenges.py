@@ -27,7 +27,7 @@ backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion'
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger','rogue','ranger','smuggler']
+classarray = ['barbarian','mage','scavenger','rogue','ranger']
 
 ####################
 ## Main Operation ##
@@ -313,9 +313,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif setclass == 'rogue':
                         abilities = "does not take damage in fights against themself or the bot."
                     elif setclass == 'ranger':
-                        abilities = "gains XP at an accelerated rate."
-                    elif setclass == 'smuggler':
-                        abilities = "does not lose their backpack items upon death."
+                        abilities = "gains XP at an accelerated rate and does not lose their backpack items upon death."
                     else:
                         abilities = "do not have any abilities."
                     bot.say('The ' + setclass + " " + abilities)
@@ -1044,7 +1042,7 @@ def whokilledwhom(bot, winner, loser):
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
     yourclass = get_database_value(bot, loser, 'class') or 'notclassy'
-    if yourclass != 'smuggler':
+    if yourclass != 'ranger':
         for x in lootitemsarray:
             gethowmany = get_database_value(bot, loser, x)
             adjust_database_value(bot, winner, x, gethowmany)
