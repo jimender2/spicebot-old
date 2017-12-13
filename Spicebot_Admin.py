@@ -23,7 +23,11 @@ def spicebotadmin(bot, trigger):
         bot.say("Options Are: " + options)
     else:
         commandused = trigger.group(3)
-        if commandused == 'update':
+        if commandused == 'chanmsg':
+            message = trigger.group(2)
+            if message:
+                bot.msg(channel,message)
+        elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
             #cleandir(bot, trigger)
