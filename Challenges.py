@@ -901,6 +901,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
 ## 30 minute automation
 # health regen
 # mysterypotion
+# coins
 # reset last instigator
 @sopel.module.interval(1800)
 def healthregen(bot):
@@ -924,6 +925,9 @@ def healthregen(bot):
             target = u
             targetdisenable = get_database_value(bot, target, 'disenable')
             if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
+                ## award 5 coins to everyone
+                adjust_database_value(bot, target, 'coins', 10)
+                
                 health = get_database_value(bot, target, 'health')
                 if health < 500:
                     adjust_database_value(bot, target, 'health', '50')
