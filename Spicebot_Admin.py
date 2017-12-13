@@ -24,7 +24,7 @@ def spicebotadmin(bot, trigger):
     else:
         commandused = trigger.group(3)
         if commandused == 'chanmsg':
-            message = trigger.group(2)
+            message = str(trigger.group(2).split(trigger.group(3), 1)[0])
             if message:
                 bot.msg(channel,message)
         elif commandused == 'update':
