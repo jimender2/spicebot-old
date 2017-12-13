@@ -742,9 +742,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(str(magicsay))
                         if not inchannel.startswith("#") and target != instigator:
                             bot.notice(str(magicnotice), target)
-               mana = get_database_value(bot, instigator, 'mana')
-               if mana <= 0:
-                    set_database_value(bot, instigator, 'mana', '')
+            mana = get_database_value(bot, instigator, 'mana')
+            if mana <= 0:
+                set_database_value(bot, instigator, 'mana', '')
             
         ## If not a command above, invalid
         else:
