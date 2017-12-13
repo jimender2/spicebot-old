@@ -60,7 +60,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if tributes[0][1] <= 0:
                         bot.notice(tributes[1][0] + " killed " + tributes[0][0])
                     if tributes[1][1] <= 0:
-                        if len(tributes) > 1:
+                        if len(tributes) > 2:
                             bot.notice(tributes[0][0] + " killed " + tributes[1][0])
                     if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
                         tributes.pop(1)
