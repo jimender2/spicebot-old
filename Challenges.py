@@ -401,6 +401,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
+                        if x == 'winlossratio':
+                            gethowmany = format(gethowmany, '.3f')
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
                 if stats != '':
