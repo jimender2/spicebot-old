@@ -23,7 +23,8 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
 	inputcheck=0	
-	if not (len(arg)>3 or len(arg)<=1):	
+	if not (len(arg)>3 or len(arg)<=1):
+		bot.say(str(arg[0])
 		if str(arg[0])=='payout':
 			bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
 			inputcheck=0
