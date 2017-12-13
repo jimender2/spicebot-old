@@ -44,8 +44,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 
                 tributes = []
+                weapons = ['dagger', 'sword', 'knife', 'bow and arrow']
                 for tribute in randomtargetarray:
-                    weapons = ['dagger', 'sword', 'knife', 'bow and arrow']
                     #randomweapon = random.shuffle(weapon)
                     #tributerow = [tribute, 100, weapon[0]]
                     #tributes.append(tributerow)
