@@ -118,7 +118,7 @@ def transfer(bot, channel, instigator, target, amount):
     
     if success == 1:
         if amount <= 0:
-            bot.say("You gave no spicefucks about " + target + ".")
+            bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
         else:
             if target.lower() not in bot.privileges[channel.lower()]:
                  bot.say("I'm sorry, I do not know who you want to transfer money to.")
