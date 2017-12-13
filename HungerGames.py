@@ -37,19 +37,21 @@ def execute_main(bot, trigger, triggerargsarray):
             elif totaltributes == 3:
                 bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
             else:
-                safetribute = str(randomtargetarray[2])
-                volunteer = str(randomtargetarray[3])
-                randomtargetarray.pop(2)
-                random.shuffle(randomtargetarray)
-                bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
+                #safetribute = str(randomtargetarray[2])
+                #volunteer = str(randomtargetarray[3])
+                #randomtargetarray.pop(2)
+                #random.shuffle(randomtargetarray)
+                #bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 
                 tributes = []
                 weapons = ['dagger','sword','knife','bow and arrow']
-                for tribute in randomtargetarray:
-                    randomweapon = random.shuffle(weapons)
-                    #tributerow = [tribute, 100, weapon[0]]
-                    #tributes.append(tributerow)
-                    bot.say(randomweapon)
+                bot.say("Tributes " + str(len(randomtargetarray)))
+                bot.say("Weapons " + str(len(weapons)))
+                #for tribute in randomtargetarray:
+                #    randomweapon = random.shuffle(weapons)
+                #    #tributerow = [tribute, 100, weapon[0]]
+                #    #tributes.append(tributerow)
+                #    bot.say(randomweapon)
                 #totaltributes = len(tributes)
                 
                 #while totaltributes > 1:
