@@ -14,3 +14,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     if trigger.group(2):
         bot.say("Stop trying to make " + trigger.group(2) + " happen. It's not going to happen")
+    else
+        bot.say("Stop trying to make stuff happen. It's not going to happen")
