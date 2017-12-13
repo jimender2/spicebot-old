@@ -24,6 +24,10 @@ def spicebotadmin(bot, trigger):
         bot.say("Options Are: " + options)
     else:
         commandused = trigger.group(3)
+        if commandused == 'chanaction':
+            message = get_trigger_arg(triggerargsarray, '2+')
+            if message:
+                bot.action(channel,message)
         if commandused == 'chanmsg':
             message = get_trigger_arg(triggerargsarray, '2+')
             if message:
