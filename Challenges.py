@@ -941,11 +941,11 @@ def healthregen(bot):
                 yourclass = get_database_value(bot, target, 'class') or 'notclassy'
                 if yourclass == 'mage':
                     mana = get_database_value(bot, target, 'mana')
-                    if health < 1000:
+                    if int(mana) < 1000:
                         adjust_database_value(bot, target, 'mana', '50')
                 
                 health = get_database_value(bot, target, 'health')
-                if health < 500:
+                if int(health) < 500:
                     adjust_database_value(bot, target, 'health', '50')
                 randomtargetarray.append(target)
         if randomtargetarray == []:
