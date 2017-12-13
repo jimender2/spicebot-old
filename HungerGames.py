@@ -46,8 +46,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 tributes = []
                 weapons = ['dagger','sword','knife','bow and arrow']
                 for tribute in randomtargetarray:
-                    weapon = random.shuffle(weapons)[0]
-                    bot.say(weapon)
+                    random.shuffle(weapons)
+                    bot.say(weapons[0])
                     #tributerow = [tribute, 100, weapon[0]]
                     #tributes.append(tributerow)
                 #    bot.say(randomweapon)
