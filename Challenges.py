@@ -22,6 +22,7 @@ OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
+changeclasscost = 100 ## ## how many coins to change class
 
 ############
 ## Arrays ##
@@ -49,6 +50,7 @@ displaymsg = ''
 dowedisplay = 0
 disenablevalue = ''
 targets = ''
+classes = ''
 
 #################
 ## null arrays ##
@@ -64,6 +66,7 @@ dueloptedinarray = []
 channelarray = []
 targetcantoptarray = []
 canduelarray = []
+classcantchangearray = []
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -86,50 +89,46 @@ def execute_main(bot, trigger, triggerargsarray):
         ## All Users in channel
         for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
-            
             ## Users that can opt in/out of duels
             opttime = get_timesince_duels(bot, u, 'opttime')
             if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
                 targetcantoptarray.append(u)
-            targetcantoptarraytotal = len(targetcantoptarray)
-            
             # Users with duels enabled
             disenable = get_database_value(bot, u, 'disenable')
             if u != bot.nick and targetdisenable:
                 dueloptedinarray.append(u)
-                
-                # Target passes all duel checks
-                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
-                if canduel:
-                    canduelarray.append(u)
-                canduelarraytotal = len(canduelarray)
-                
-                ## Bot Owner (probably will only ever be one)
-                if u.lower() in bot.config.core.owner.lower():
-                    botownerarray.append(u)
-                botownerarraytotal = len(botownerarray)
-                
-                ## Channel OP
-                if bot.privileges[channel.lower()][u] == OP:
-                    operatorarray.append(u)
-                operatorarraytotal = len(operatorarray)
-                
-                ## Channel VOICE
-                if bot.privileges[channel.lower()][u.lower()] == VOICE:
-                    voicearray.append(u)
-                voicearraytotal = len(voicearray)
-                
-                ## Bot Admins
-                if nametarget in bot.config.core.admins:
-                    adminsarray.append(u)
-                adminsarraytotal = len(adminsarray)
+            # Target passes all duel checks
+            canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, channel, dowedisplay)
+            if canduel:
+                canduelarray.append(u)
+            ## Bot Owner (probably will only ever be one)
+            if u.lower() in bot.config.core.owner.lower():
+                botownerarray.append(u)
+            ## Channel OP
+            if bot.privileges[channel.lower()][u] == OP:
+                operatorarray.append(u)
+            ## Channel VOICE
+            if bot.privileges[channel.lower()][u.lower()] == VOICE:
+                voicearray.append(u)
+            ## Bot Admins
+            if nametarget in bot.config.core.admins:
+                adminsarray.append(u)
+            classtime = get_timesince_duels(bot, u, 'classtimeout')
+            if classtime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
+                classcantchangearray.append(u)
             
-############## has to sit outside ############################
-            dueloptedinarraytotal = len(dueloptedinarray)   ##
-        allusersinroomarraytotal = len(allusersinroomarray) ##
-    channelarraytotal = len(channelarray)                   ##
+## Array Totals
+    targetcantoptarraytotal = len(targetcantoptarray)
+    canduelarraytotal = len(canduelarray)
+    botownerarraytotal = len(botownerarray)
+    operatorarraytotal = len(operatorarray)
+    voicearraytotal = len(voicearray)
+    adminsarraytotal = len(adminsarray)
+    dueloptedinarraytotal = len(dueloptedinarray)
+    allusersinroomarraytotal = len(allusersinroomarray)
+    channelarraytotal = len(channelarray)
         
-###### Channel (assumes only one channel,,, need to fix someday)
+###### Channel (assumes only one channel,,, need to fix somehow someday)
     channel = get_trigger_arg(channelarray, 0)
     inchannel = trigger.sender
     
@@ -143,6 +142,8 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or USERTIMEOUT
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
+    instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
+    instigatorclass = get_database_value(bot, instigator, 'class')
 
     ## Channel Information
     channeltime = get_timesince_duels(bot, channel, 'timeout') or CHANTIMEOUT
@@ -155,7 +156,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: " + GITWIKIURL, instigator)
     
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in bot.privileges[channel.lower()]:
+    elif commandortarget.lower() not in dueloptedinarray:
         
         #target = get_trigger_arg(triggerargsarray, 2) or instigator
         #targettext = get_trigger_arg(triggerargsarray, 2) or "that person"
@@ -329,68 +330,40 @@ def execute_main(bot, trigger, triggerargsarray):
 
             ## Class
             elif commandortarget == 'class':
-                classes = ''
+                subcommandarray = ['set','change']
                 for x in classarray:
                     if classes != '':
                         classes = str(classes + ", " + x)
                     else:
                         classes = str(x)
-                gethowmanycoins = get_database_value(bot, instigator, 'coins')
-                yourclass = get_database_value(bot, instigator, 'class')
-                yourclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
                 subcommand = get_trigger_arg(triggerargsarray, 2)
-                subcommandarray = ['set','change']
-                cost = 100
-                if not yourclass and not subcommand:
-                    bot.say("You don't appear to have a class set. Options are : " + classes +". Run .duel class set    to set your class.")
+                setclass = get_trigger_arg(triggerargsarray, 3)
+                if not instigatorclass and not subcommand:
+                    bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
                 elif not subcommand:
-                    bot.say("Your class is currently set to " + str(yourclass))
-                elif subcommand == 'info':
-                    abilities = ''
-                    setclass = get_trigger_arg(triggerargsarray, 3) or 'classless'
-                    if setclass == 'barbarian':
-                        abilities = "has a minimum damage of 40, and a chance at stealing a loot item when losing a duel."
-                    elif setclass == 'mage':
-                        abilities = "has lower mana costs for magic, and regenerates mana over time."
-                    elif setclass == 'scavenger':
-                        abilities = "has a higher chance of finding loot in a duel, and is better at trading, buying, and selling."
-                    elif setclass == 'rogue':
-                        abilities = "does not take damage in fights against themself or the bot. Additionally, gains an advantage in winner selection."
-                    elif setclass == 'ranger':
-                        abilities = "gains XP at an accelerated rate and does not lose their backpack items upon death."
-                    else:
-                        abilities = "do not have any abilities."
-                    bot.say('The ' + setclass + " " + abilities)
-                elif yourclasstime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+                elif instigator in classcantchangearray and not bot.nick.endswith('dev'):
                     bot.say("You may not change your class more than once per day.")
-                elif subcommand == 'set':
-                    if yourclass:
-                        bot.say("You appear to have a class set already. You can change your class for " + str(cost) + " coins. Run .duel class change    to set your class. Options are : " + classes +".")
-                    else:
-                        setclass = get_trigger_arg(triggerargsarray, 3)
-                        if setclass not in classarray:
-                            bot.say("Invalid class. Options are: " + classes +".")
-                        else:
-                            set_database_value(bot, instigator, 'class', setclass)
-                            bot.say('Your class is now set to ' +  setclass)
-                            set_database_value(bot, instigator, 'classtimeout', now)
                 elif subcommand not in subcommandarray:
                     bot.say("Invalid command. Options are set or change.")
-                elif subcommand == 'change':
-                    if gethowmanycoins < cost:
-                        bot.say("Changing class costs " + str(cost) + " coins.")
+                elif not setclass:
+                    bot.say("Which class would you like to use? Options are: " + classes +".")
+                elif subcommand == 'set' and instigatorclass:
+                    bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+                elif subcommand == 'change' and instigatorcoins < changeclasscost:
+                    bot.say("Changing class costs " + str(changeclasscost) + " coins.")
+                elif subcommand == 'change' and setclass == instigatorclass:
+                    bot.say('Your class is already set to ' +  setclass)
+                else:
+                    if setclass not in classarray:
+                        bot.say("Invalid class. Options are: " + classes +".")
                     else:
-                        setclass = get_trigger_arg(triggerargsarray, 3)
-                        if setclass not in classarray:
-                            bot.say("Invalid class. Options are: " + classes +".")
-                        elif setclass == yourclass:
-                            bot.say('Your class is already set to ' +  setclass)
-                        else:
-                            set_database_value(bot, instigator, 'class', setclass)
-                            adjust_database_value(bot, instigator, 'coins', -abs(cost))
-                            bot.say('Your class is now set to ' +  setclass)
-                            set_database_value(bot, instigator, 'classtimeout', now)
-                
+                        set_database_value(bot, instigator, 'class', setclass)
+                        bot.say('Your class is now set to ' +  setclass)
+                        set_database_value(bot, instigator, 'classtimeout', now)
+                        if subcommand == 'change':
+                            adjust_database_value(bot, instigator, 'coins', -abs(changeclasscost))
+
             ## Streaks
             elif commandortarget == 'streaks':
                 script = ''
