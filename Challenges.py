@@ -170,11 +170,9 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: " + GITWIKIURL, instigator)
     
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in dueloptedinarray:
+    elif commandortarget.lower() not in allusersinroomarray:
 
-
- 
-## Fix Me!
+## Fix Me! Doesn't make any sense any more for this to be outside the "subcommands"
 ########## Random Target
         #if get_trigger_arg(triggerargsarray, 2) == 'random':
         #    if canduelarray == []:
@@ -664,94 +662,98 @@ def execute_main(bot, trigger, triggerargsarray):
                     message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                     bot.say(message)
         
-            ## Magic Attack
-            elif commandortarget == 'magic':
-                magicoptions = ['attack','instakill','health','curse','shield']
-                magicusage = get_trigger_arg(triggerargsarray, 2)
-                if magicusage not in magicoptions:
-                    bot.say('Magic uses include: attack, instakill, health, curse')
-                else:
-                    target = get_trigger_arg(triggerargsarray, 3)
-                    if not target:
-                        target = trigger.nick
-                    targetcurse = get_curse_check(bot, target)
-                    targetshield = get_curse_check(bot, target)
-                    mana = get_database_value(bot, instigator, 'mana')
-                    if magicusage == 'attack':
-                        manarequired = 250
-                        damage = -200
-                    elif magicusage == 'shield':
-                        manarequired = 500
-                        damage = 80
-                    elif magicusage == 'curse':
-                        manarequired = 500
-                        damage = -80
-                    elif magicusage == 'health':
-                        manarequired = 200
-                        damage = 200
-                    elif magicusage == 'instakill':
-                        targethealthstart = get_database_value(bot, target, 'health')
-                        targethealthstart = int(targethealthstart)
-                        if int(targethealthstart) < 200:
-                            manarequired = 200
-                        else:
-                            manarequired = targethealthstart / 200
-                            manarequired = manarequired * 250
-                        damage = -abs(targethealthstart)
-                    damagetext = abs(damage)
-                    yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
-                    if yourclass == 'mage':
-                        manarequired = manarequired * .9
-                    if not mana:
-                        bot.notice(instigator + " you don't have any mana.", instigator)
-                    elif int(manarequired) > int(mana):
-                        manamath = int(int(manarequired) - int(mana))
-                        bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
-                    elif magicusage == 'curse' and targetcurse:
-                        bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
-                    elif magicusage == 'shield' and targetshield:
-                        bot.notice(instigator + " it looks like " + target + " is already shielded.", instigator)
-                    else:
-                        manarequired = -abs(manarequired)
-                        if target.lower() not in bot.privileges[channel.lower()]:
-                            bot.say("I'm not sure who that is.")
-                        elif target == bot.nick:
-                            bot.say("I am immune to that kind of attack.")
-                        else:
-                            targethealthstart = get_database_value(bot, target, 'health')
-                            adjust_database_value(bot, instigator, 'mana', manarequired)
-                            adjust_database_value(bot, target, 'health', damage)
-                            targethealth = get_database_value(bot, target, 'health')
-                            if targethealth <= 0:
-                                whokilledwhom(bot, instigator, target)
-                                magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
-                                magicnotice = str(instigator + " used a magic on you that killed you")
-                            elif magicusage == 'curse':
-                                curseduration = 4
-                                magicsay = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
-                                magicnotice = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
-                                set_database_value(bot, target, 'curse', curseduration)
-                            elif magicusage == 'shield':
-                                shieldduration = 4
-                                magicsay = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
-                                magicnotice = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
-                                set_database_value(bot, target, 'shield', shieldduration)
-                            elif magicusage == 'health':
-                                healthmath = int(int(targethealth) - int(targethealthstart))
-                                magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
-                                magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
-                            else:
-                                magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
-                                magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
-                            bot.say(str(magicsay))
-                            if not inchannel.startswith("#") and target != instigator:
-                                bot.notice(str(magicnotice), target)
-                    mana = get_database_value(bot, instigator, 'mana')
-                    if mana <= 0:
-                        set_database_value(bot, instigator, 'mana', '')
-                                
+        ## Magic Attack
+        elif commandortarget == 'magic':
+            magicoptions = ['attack','instakill','health','curse','shield']
+            magicusage = get_trigger_arg(triggerargsarray, 2)
+            if magicusage not in magicoptions:
+                bot.say('Magic uses include: attack, instakill, health, curse')
             else:
-                bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
+                target = get_trigger_arg(triggerargsarray, 3) or instigator
+                targetcurse = get_curse_check(bot, target)
+                targetshield = get_shield_check(bot, target)
+                mana = get_database_value(bot, instigator, 'mana')
+                if magicusage == 'attack':
+                    manarequired = 250
+                    damage = -200
+                elif magicusage == 'shield':
+                    manarequired = 500
+                    damage = 80
+                elif magicusage == 'curse':
+                    manarequired = 500
+                    damage = -80
+                elif magicusage == 'health':
+                    manarequired = 200
+                    damage = 200
+                elif magicusage == 'instakill':
+                    targethealthstart = get_database_value(bot, target, 'health')
+                    targethealthstart = int(targethealthstart)
+                    if int(targethealthstart) < 200:
+                        manarequired = 200
+                    else:
+                        manarequired = targethealthstart / 200
+                        manarequired = manarequired * 250
+                    damage = -abs(targethealthstart)
+                damagetext = abs(damage)
+                yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
+                if yourclass == 'mage':
+                    manarequired = manarequired * .9
+                if not mana:
+                    bot.notice(instigator + " you don't have any mana.", instigator)
+                elif int(manarequired) > int(mana):
+                    manamath = int(int(manarequired) - int(mana))
+                    bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+                elif magicusage == 'curse' and targetcurse:
+                    bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
+                elif magicusage == 'shield' and targetshield:
+                    bot.notice(instigator + " it looks like " + target + " is already shielded.", instigator)
+                else:
+                    manarequired = -abs(manarequired)
+                    if target.lower() not in bot.privileges[channel.lower()]:
+                        bot.say("I'm not sure who that is.")
+                    elif target == bot.nick:
+                        bot.say("I am immune to that kind of attack.")
+                    else:
+                        targethealthstart = get_database_value(bot, target, 'health')
+                        adjust_database_value(bot, instigator, 'mana', manarequired)
+                        adjust_database_value(bot, target, 'health', damage)
+                        targethealth = get_database_value(bot, target, 'health')
+                        if targethealth <= 0:
+                            whokilledwhom(bot, instigator, target)
+                            magicsay = str(instigator + ' uses magic on ' + target + ', killing ' + target)
+                            magicnotice = str(instigator + " used a magic on you that killed you")
+                        elif magicusage == 'curse':
+                            curseduration = 4
+                            magicsay = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
+                            magicnotice = str(instigator + " uses magic on " + target + ", dealing " + str(damagetext) + " damage AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
+                            set_database_value(bot, target, 'curse', curseduration)
+                        elif magicusage == 'shield':
+                            shieldduration = 4
+                            magicsay = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
+                            magicnotice = str(instigator + " uses magic on " + target + ", restoring " + str(damagetext) + " health AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
+                            set_database_value(bot, target, 'shield', shieldduration)
+                        elif magicusage == 'health':
+                            healthmath = int(int(targethealth) - int(targethealthstart))
+                            magicsay = str(instigator + ' uses magic on ' + target + ' that increased health by ' + str(healthmath))
+                            magicnotice = str(instigator + " used a magic on you that increased health by " + str(healthmath))
+                        else:
+                            magicsay = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
+                            magicnotice = str(instigator + ' uses magic on ' + target + ', dealing ' + str(damagetext) + ' damage.')
+                        bot.say(str(magicsay))
+                        if not inchannel.startswith("#") and target != instigator:
+                            bot.notice(str(magicnotice), target)
+               mana = get_database_value(bot, instigator, 'mana')
+               if mana <= 0:
+                    set_database_value(bot, instigator, 'mana', '')
+            
+        ## If not a command above, invalid
+        else:
+            bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
+    
+    ## warning if user doesn't have duels enabled
+    elif commandortarget.lower() not in dueloptedinarray:
+        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+      
     else:
         OSDTYPE = 'say'
         target = get_trigger_arg(triggerargsarray, 1)
