@@ -114,17 +114,17 @@ def execute_main(bot, trigger, triggerargsarray):
             if u != bot.nick and disenable:
                 dueloptedinarray.append(u)
             # Target passes all duel checks
-            canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, channel, dowedisplay)
+            canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, c, dowedisplay)
             if canduel:
                 canduelarray.append(u)
             ## Bot Owner (probably will only ever be one)
             if u.lower() in bot.config.core.owner.lower():
                 botownerarray.append(u)
             ## Channel OP
-            if bot.privileges[channel.lower()][u] == OP:
+            if bot.privileges[c.lower()][u] == OP:
                 operatorarray.append(u)
             ## Channel VOICE
-            if bot.privileges[channel.lower()][u.lower()] == VOICE:
+            if bot.privileges[c.lower()][u.lower()] == VOICE:
                 voicearray.append(u)
             ## Bot Admins
             if u in bot.config.core.admins:
