@@ -265,7 +265,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(" Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
                 for x in canduelarray:
-                   if targets != '':
+                    if targets != '':
                         targets = str(targets + ", " + x)
                     else:
                         targets = str(x)
