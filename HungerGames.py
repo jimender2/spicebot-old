@@ -47,28 +47,27 @@ def execute_main(bot, trigger, triggerargsarray):
                 for tribute in randomtargetarray:
                     weapon = ['dagger', 'sword', 'knife', 'bow and arrow']
                     weapon = random.shuffle(weapon)
-                    tributerow = [tribute, 100, 'knive']
+                    tributerow = [tribute, 100, weapon[0]]
                     tributes.append(tributerow)
-                    bot.say(tributerow)
                 totaltributes = len(tributes)
                 
-                while totaltributes > 1:
-                    tributes = random.shuffle(tributes)
-                    
-                    damageone = randint(1, 100)
-                    damagetwo = randint(1, 100)
-                    bot.say(tributes[0,0] + " hits " + tributes[1,0] + " with a " + tributes[0,3] + "(-" + str(damageone) + "). " + tributes[1,0] + " hits " + tributes[0,0] + " with a " + tributes[1,3] + "(-" + str(damagetwo) + "). ")
-                    tributes[0][2] = tributes[0][2] - damageone
-                    tributes[1][2] = tributes[1][2] - damageone
-                    if tributes[0][2] <= 0:
-                        bot.say(tributes[1][0] + " killed " + tributes[0][0])
-                    if tributes[1][2] <= 0:
-                        bot.say(tributes[0][0] + " killed " + tributes[1][0])
-                    if tributes[1][2] <= 0: #remove second tribute first is killed to not mess up order if first is killed
-                        tributes.pop(1)
-                    if tributes[0][2] <= 0:
-                        tributes.pop(0)
-                    totaltributes = len(tributes)
-                bot.say("The victor is " + tributes[0][0])
+                #while totaltributes > 1:
+                #    tributes = random.shuffle(tributes)
+                #    
+                #    damageone = randint(1, 100)
+                #    damagetwo = randint(1, 100)
+                #    bot.say(tributes[0,0] + " hits " + tributes[1,0] + " with a " + tributes[0,3] + "(-" + str(damageone) + "). " + tributes[1,0] + " hits " + tributes[0,0] + " with a " + tributes[1,3] + "(-" + str(damagetwo) + "). ")
+                #    tributes[0][2] = tributes[0][2] - damageone
+                #    tributes[1][2] = tributes[1][2] - damageone
+                #    if tributes[0][2] <= 0:
+                #        bot.say(tributes[1][0] + " killed " + tributes[0][0])
+                #    if tributes[1][2] <= 0:
+                #        bot.say(tributes[0][0] + " killed " + tributes[1][0])
+                #    if tributes[1][2] <= 0: #remove second tribute first is killed to not mess up order if first is killed
+                #        tributes.pop(1)
+                #    if tributes[0][2] <= 0:
+                #        tributes.pop(0)
+                #    totaltributes = len(tributes)
+                #bot.say("The victor is " + tributes[0][0])
                         
                         
