@@ -692,7 +692,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
                     if yourclass == 'mage':
                         manarequired = manarequired * .9
-                    manarequired = -abs(manarequired)
                     bot.say(str(manarequired))
                     if not mana:
                         bot.notice(instigator + " you don't have any mana.", instigator)
@@ -704,6 +703,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif magicusage == 'shield' and targetshield:
                         bot.notice(instigator + " it looks like " + target + " is already shielded.", instigator)
                     else:
+                        manarequired = -abs(manarequired)
                         if target.lower() not in bot.privileges[channel.lower()]:
                             bot.say("I'm not sure who that is.")
                         elif target == bot.nick:
