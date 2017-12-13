@@ -99,6 +99,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Build User/channel Arrays
     for c in bot.channels:
+        channel = c
         channelarray.append(c)
         ## All Users in channel
         for u in bot.channels[channel.lower()].users:
