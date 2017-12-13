@@ -29,12 +29,13 @@ changeclasscost = 100 ## ## how many coins to change class
 ############
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
+backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
 classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
+statsbypassarray = ['winlossratio','timeout']
 
 # deprecate these
 nontargetarray = ['info','shield','change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
@@ -51,7 +52,20 @@ dowedisplay = 0
 disenablevalue = ''
 targets = ''
 classes = ''
-
+script = ''
+stats = ''
+leaderboardscript = ''
+currentwlrleader = ''
+currentkillsleader = ''
+currentrespawnsleader = ''
+currenthealthleader = ''
+currentstreaksleader = ''
+currentwlrleadernumber = 0
+currentkillsleadernumber = 0
+currentrespawnsleadernumber = 0
+currenthealthleadernumber = 9999999999
+currentstreaksleadernumber = 0
+                
 #################
 ## null arrays ##
 #################
@@ -157,217 +171,199 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in dueloptedinarray:
-        
-        #target = get_trigger_arg(triggerargsarray, 2) or instigator
-        #targettext = get_trigger_arg(triggerargsarray, 2) or "that person"
-        #targetdisenable = get_database_value(bot, target, 'disenable')
 
-        ## Must clear these challenges to do the below functions
-        #if target.lower() not in bot.privileges[channel.lower()] and target not in transactiontypesarray and target not in lootitemsarray and target not in nontargetarray and commandortarget not in ['random','everyone','canifight'] and target != 'random' and not target.isdigit():
-        #    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
-        #elif not trigger.admin and commandortarget in adminonlyarray:
-        #    bot.notice(instigator + "This is an admin only function.", instigator)
-        #elif target != instigator and not trigger.admin and commandortarget in privilegedarray:
-        #    bot.notice(instigator + "This is an admin only function.", instigator)
-        #elif not targetdisenable and target != instigator and target not in lootitemsarray and target not in transactiontypesarray and commandortarget != 'on' and commandortarget != 'off' and target not in nontargetarray and commandortarget != 'random' and commandortarget != 'everyone' and commandortarget != 'statsadmin' and target != 'random':
-        #    bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-        #elif commandortarget in inchannelarray and not inchannel.startswith("#"):
-        #    bot.notice(instigator + " Duels must be in channel.", instigator)
-        #elif target == bot.nick and not trigger.admin:
-        #    bot.notice(instigator + " I cannot do that.", instigator)
-            
-        ## and, continue
-        else:
-            
-            ## target
-            #if target not in nontargetarray:
-            #    targetopttime = get_timesince_duels(bot, target, 'opttime')
-            #    targettime = get_timesince_duels(bot, target, 'timeout')
+
  
 ## Fix Me!
-############## Random Target
-            #if get_trigger_arg(triggerargsarray, 2) == 'random':
-            #    if canduelarray == []:
-            #        bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-            #    else:
-            #        randomselected = random.randint(0,len(canduelarray) - 1)
-            #        target = str(canduelarray [randomselected])
-                    
-            ## Docs
-            if commandortarget == 'docs' or commandortarget == 'help':
-                target = get_trigger_arg(triggerargsarray, 2)
-                if not target:
-                    bot.say("Online Docs: " + GITWIKIURL)
-                elif target.lower() not in allusersinroomarray:
-                    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
-                else:
-                    bot.notice("Online Docs: " + GITWIKIURL, target)
-            
-            ## On/off
-            elif commandortarget == 'on' or commandortarget == 'off':
-                if commandortarget == 'on':
-                    disenablevalue = 1
-                target = get_trigger_arg(triggerargsarray, 2) or instigator
-                if target.lower() not in allusersinroomarray:
-                    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
-                elif target != instigator and instigator not in adminsarray:
-                    bot.notice(instigator + "This is an admin only function.", instigator)
-                elif target == 'everyone':
-                    for u in allusersinroomarray:
-                        set_database_value(bot, u, 'disenable', disenablevalue)
-                elif target in targetcantoptarray:
-                    bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
-                elif commandortarget == 'on' and target.lower() in dueloptedinarray:
-                    bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
-                elif commandortarget == 'off' and target.lower() not in dueloptedinarray:
-                else:
-                    set_database_value(bot, target, 'disenable', disenablevalue)
-                    set_database_value(bot, target, 'opttime', now)
-                    bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
-                        
-            ## Random Dueling
-            elif commandortarget == 'random':
-                if canduelarray == []:
-                    bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-                else:
-                    randomselected = random.randint(0,len(canduelarray) - 1)
-                    target = str(canduelarray [randomselected])
-                    OSDTYPE = 'say'
-                    return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+########## Random Target
+        #if get_trigger_arg(triggerargsarray, 2) == 'random':
+        #    if canduelarray == []:
+        #        bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+        #    else:
+        #        randomselected = random.randint(0,len(canduelarray) - 1)
+        #        target = str(canduelarray [randomselected])
                 
-            ## Duel Everyone
-            elif commandortarget == 'everyone':
-                if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice("Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
-                elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                    bot.notice("You may not instigate a Full Channel Assault twice in a row.", instigator)
-                elif canduelarray == []:
-                    bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
-                else:
-                    OSDTYPE = 'notice'
-                    set_database_value(bot, channel, 'lastfullroomassult', now)
-                    set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
-                    lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                    for u in canduelarray:
-                        if u != instigator and u != bot.nick:
-                            targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
-                            getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
-                            time.sleep(5)
-                            bot.notice("  ", instigator)
-                            set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
-                    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+        ## Docs
+        if commandortarget == 'docs' or commandortarget == 'help':
+            target = get_trigger_arg(triggerargsarray, 2)
+            if not target:
+                bot.say("Online Docs: " + GITWIKIURL)
+            elif target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+            else:
+                bot.notice("Online Docs: " + GITWIKIURL, target)
+        
+        ## On/off
+        elif commandortarget == 'on' or commandortarget == 'off':
+            if commandortarget == 'on':
+                disenablevalue = 1
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            if target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+            elif target != instigator and instigator not in adminsarray:
+                bot.notice(instigator + "This is an admin only function.", instigator)
+            elif target == 'everyone':
+                for u in allusersinroomarray:
+                    set_database_value(bot, u, 'disenable', disenablevalue)
+            elif target in targetcantoptarray:
+                bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+            elif commandortarget == 'on' and target.lower() in dueloptedinarray:
+                bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
+            elif commandortarget == 'off' and target.lower() not in dueloptedinarray:
+                bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+            else:
+                set_database_value(bot, target, 'disenable', disenablevalue)
+                set_database_value(bot, target, 'opttime', now)
+                bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
+                        
+        ## Random Dueling
+        elif commandortarget == 'random':
+            if canduelarray == []:
+                bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+            else:
+                randomselected = random.randint(0,len(canduelarray) - 1)
+                target = str(canduelarray [randomselected])
+                OSDTYPE = 'say'
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+        
+        ## Duel Everyone
+        elif commandortarget == 'everyone':
+            if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
+                bot.notice("Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+            elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                bot.notice("You may not instigate a Full Channel Assault twice in a row.", instigator)
+            elif canduelarray == []:
+                bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
+            else:
+                OSDTYPE = 'notice'
+                set_database_value(bot, channel, 'lastfullroomassult', now)
+                set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
+                lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
+                for u in canduelarray:
+                    if u != instigator and u != bot.nick:
+                        targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
+                        getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                        time.sleep(5)
+                        bot.notice("  ", instigator)
+                        set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
+                set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
-            ## War Room
-            elif commandortarget == 'warroom':
-                subcommand = get_trigger_arg(triggerargsarray, 2)
-                if not subcommand:
-                    if instigator in canduelarray:
-                        bot.notice(instigator + ", It looks like you can challenge.", instigator)
-                    else:
-                        inchannel = "#bypass"
-                        dowedisplay = 1
-                        mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-                elif subcommand == 'assault':
-                    if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                        bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
-                    elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
-                        bot.notice(" Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
-                    else:
-                        bot.notice(" Full Channel Assault can be used.", instigator)
-                elif subcommand == 'list':
-                    for x in canduelarray:
-                        if targets != '':
-                            targets = str(targets + ", " + x)
-                        else:
-                            targets = str(x)
-                    bot.say(str(targets))
-                elif subcommand.lower() not in allusersinroomarray:
-                    bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
+        ## War Room
+        elif commandortarget == 'warroom':
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            if not subcommand:
+                if instigator in canduelarray:
+                    bot.notice(instigator + ", It looks like you can challenge.", instigator)
                 else:
-                    if subcommand in canduelarray:
-                        bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                    inchannel = "#bypass"
+                    dowedisplay = 1
+                    mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
+            elif subcommand == 'assault':
+                if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                    bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
+                elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
+                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                else:
+                    bot.notice(" Full Channel Assault can be used.", instigator)
+            elif subcommand == 'list':
+                for x in canduelarray:
+                   if targets != '':
+                        targets = str(targets + ", " + x)
                     else:
-                        dowedisplay = 1
-                        inchannel = "#bypass"
-                        mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                        targets = str(x)
+                bot.say(str(targets))
+            elif subcommand.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
+            else:
+                if subcommand in canduelarray:
+                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                else:
+                    dowedisplay = 1
+                    inchannel = "#bypass"
+                    mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
 
-            ## Stats Admin
-            elif commandortarget == 'statsadmin':
-                subcommand = get_trigger_arg(triggerargsarray, 2)
-                stat = get_trigger_arg(triggerargsarray, 3)
-                target = get_trigger_arg(triggerargsarray, 4)
-                newvalue = get_trigger_arg(triggerargsarray, 4) or ''
-                if not subcommand:
+        ## Stats Admin
+        elif commandortarget == 'statsadmin':
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            stat = get_trigger_arg(triggerargsarray, 3)
+            target = get_trigger_arg(triggerargsarray, 4)
+            newvalue = get_trigger_arg(triggerargsarray, 4) or ''
+            if not subcommand:
+                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+            elif subcommand not in statsadminchangearray:
+                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+            elif stat not in challengestatsadminarray:
+                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+            elif target.lower() not in allusersinroomarray and target != 'everyone':
+                bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+            elif instigator not in adminsarray:
+                bot.notice(instigator + "This is an admin only function.", instigator)
+            else:
+                if subcommand == 'reset':
+                    newvalue = ''
+                if subcommand == 'set' and newvalue != '':
                     bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-                elif subcommand not in statsadminchangearray:
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-                elif stat not in challengestatsadminarray:
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-                elif target.lower() not in allusersinroomarray and target != 'everyone':
-                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-                elif instigator not in adminsarray:
-                    bot.notice(instigator + "This is an admin only function.", instigator)
-                else:
-                    if subcommand == 'reset':
-                        newvalue = ''
-                    if subcommand == 'set' and newvalue != '':
-                        bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-                    elif target == 'everyone':
-                        for u in bot.channels[channel].users:
-                            if statset == 'all':
-                                for x in challengestatsadminarray:
-                                    set_database_value(bot, u, x, newvalue)
-                            else:
-                                set_database_value(bot, u, statset, newvalue)
-                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-                    else:
+                elif target == 'everyone':
+                    for u in bot.channels[channel].users:
                         if statset == 'all':
                             for x in challengestatsadminarray:
-                                set_database_value(bot, target, x, newvalue)
+                                set_database_value(bot, u, x, newvalue)
                         else:
-                            set_database_value(bot, target, statset, newvalue)
-                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-
-            ## Class
-            elif commandortarget == 'class':
-                subcommandarray = ['set','change']
-                for x in classarray:
-                    if classes != '':
-                        classes = str(classes + ", " + x)
-                    else:
-                        classes = str(x)
-                subcommand = get_trigger_arg(triggerargsarray, 2)
-                setclass = get_trigger_arg(triggerargsarray, 3)
-                if not instigatorclass and not subcommand:
-                    bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
-                elif not subcommand:
-                    bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-                elif instigator in classcantchangearray and not bot.nick.endswith('dev'):
-                    bot.say("You may not change your class more than once per day.")
-                elif subcommand not in subcommandarray:
-                    bot.say("Invalid command. Options are set or change.")
-                elif not setclass:
-                    bot.say("Which class would you like to use? Options are: " + classes +".")
-                elif subcommand == 'set' and instigatorclass:
-                    bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-                elif subcommand == 'change' and instigatorcoins < changeclasscost:
-                    bot.say("Changing class costs " + str(changeclasscost) + " coins.")
-                elif subcommand == 'change' and setclass == instigatorclass:
-                    bot.say('Your class is already set to ' +  setclass)
+                            set_database_value(bot, u, statset, newvalue)
+                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                 else:
-                    if setclass not in classarray:
-                        bot.say("Invalid class. Options are: " + classes +".")
+                    if statset == 'all':
+                        for x in challengestatsadminarray:
+                            set_database_value(bot, target, x, newvalue)
                     else:
-                        set_database_value(bot, instigator, 'class', setclass)
-                        bot.say('Your class is now set to ' +  setclass)
-                        set_database_value(bot, instigator, 'classtimeout', now)
-                        if subcommand == 'change':
-                            adjust_database_value(bot, instigator, 'coins', -abs(changeclasscost))
+                        set_database_value(bot, target, statset, newvalue)
+                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
 
-            ## Streaks
-            elif commandortarget == 'streaks':
-                script = ''
-                streak_type = get_database_value(bot, target, 'currentstreaktype')
+        ## Class
+        elif commandortarget == 'class':
+            subcommandarray = ['set','change']
+            for x in classarray:
+                if classes != '':
+                    classes = str(classes + ", " + x)
+                else:
+                    classes = str(x)
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            setclass = get_trigger_arg(triggerargsarray, 3)
+            if not instigatorclass and not subcommand:
+                bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
+            elif not subcommand:
+                bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+            elif instigator in classcantchangearray and not bot.nick.endswith('dev'):
+                bot.say("You may not change your class more than once per day.")
+            elif subcommand not in subcommandarray:
+                bot.say("Invalid command. Options are set or change.")
+            elif not setclass:
+                bot.say("Which class would you like to use? Options are: " + classes +".")
+            elif subcommand == 'set' and instigatorclass:
+                bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+            elif subcommand == 'change' and instigatorcoins < changeclasscost:
+                bot.say("Changing class costs " + str(changeclasscost) + " coins.")
+            elif subcommand == 'change' and setclass == instigatorclass:
+                bot.say('Your class is already set to ' +  setclass)
+            else:
+                if setclass not in classarray:
+                    bot.say("Invalid class. Options are: " + classes +".")
+                else:
+                    set_database_value(bot, instigator, 'class', setclass)
+                    bot.say('Your class is now set to ' +  setclass)
+                    set_database_value(bot, instigator, 'classtimeout', now)
+                    if subcommand == 'change':
+                        adjust_database_value(bot, instigator, 'coins', -abs(changeclasscost))
+
+        ## Streaks
+        elif commandortarget == 'streaks':
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            if target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+            elif target.lower() not in dueloptedinarray:
+                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+            else:
+                streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
                 best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
                 worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
                 if streak_type == 'win':
@@ -389,16 +385,19 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say(target + "'s streaks: " + script)
             
-            ## Backpack
-            elif commandortarget == 'backpack':
-                stats = ''
-                arraytoscan = backpackarray
-                totalweapons = get_database_array_total(bot, target, 'weaponslocker')
-                if totalweapons:
-                    addstat = str(" weaponstotal" + "=" + str(totalweapons))
-                    stats = str(stats + addstat)
-                for x in arraytoscan:
-                    gethowmany = get_database_value(bot, target, x)
+        ## Backpack
+        elif commandortarget == 'backpack':
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            if target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+            elif target.lower() not in dueloptedinarray:
+                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+            else:
+                for x in backpackarray:
+                    if x == 'weaponstotal':
+                        gethowmany = get_database_array_total(bot, target, 'weaponslocker')
+                    else:
+                        gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
@@ -408,12 +407,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             
-            ## Stats
-            elif commandortarget == 'stats':
-                statsbypassarray = ['winlossratio','timeout']
-                stats = ''
-                arraytoscan = challengestatsarray
-                for x in arraytoscan:
+        ## Stats
+        elif commandortarget == 'stats':
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            if target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+            elif target.lower() not in dueloptedinarray:
+                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+            else:
+                for x in challengestatsarray:
                     if x in statsbypassarray:
                         scriptdef = str('get_' + x + '(bot,target)')
                         gethowmany = eval(scriptdef)
@@ -432,245 +434,235 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
 
-            ## Leaderboard
-            elif commandortarget == 'leaderboard':
-                leaderboardscript = ''
-                currentwlrleader = ''
-                currentkillsleader = ''
-                currentrespawnsleader = ''
-                currenthealthleader = ''
-                currentstreaksleader = ''
-                currentwlrleadernumber = 0
-                currentkillsleadernumber = 0
-                currentrespawnsleadernumber = 0
-                currenthealthleadernumber = 9999999999
-                currentstreaksleadernumber = 0
-                for u in bot.channels[channel].users:
-                    targetdisenable = get_database_value(bot, u, 'disenable')
-                    if targetdisenable and u != bot.nick:
-                        winlossratio = get_winlossratio(bot,u)
-                        if winlossratio > currentwlrleadernumber:
-                            currentwlrleader = u
-                            currentwlrleadernumber = winlossratio
-                        kills = get_database_value(bot, u, 'kills')
-                        if int(kills) > int(currentkillsleadernumber):
-                            currentkillsleader = u
-                            currentkillsleadernumber = int(kills)
-                        respawns = get_database_value(bot, u, 'respawns')
-                        if int(respawns) > int(currentrespawnsleadernumber):
-                            currentrespawnsleader = u
-                            currentrespawnsleadernumber = int(respawns)
-                        health = get_database_value(bot, u, 'health')
-                        if int(health) < int(currenthealthleadernumber) and int(health) != 0:
-                            currenthealthleader = u
-                            currenthealthleadernumber = int(health)
-                        streaks = get_database_value(bot, u, 'bestwinstreak')
-                        if int(streaks) > int(currentstreaksleadernumber):
-                            currentstreaksleader = u
-                            currentstreaksleadernumber = int(streaks)
-                if currentwlrleadernumber > 0:
-                    currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
-                    leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
-                if currentkillsleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
-                if currentrespawnsleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
-                if currenthealthleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
-                if currentstreaksleadernumber > 0:
-                    leaderboardscript = str(leaderboardscript + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
-                if leaderboardscript == '':
-                    leaderboardscript = str("Leaderboard appears to be empty")
-                bot.say(leaderboardscript)
+        ## Leaderboard
+        elif commandortarget == 'leaderboard':
+            for u in dueloptedinarray:
+                winlossratio = get_winlossratio(bot,u)
+                if winlossratio > currentwlrleadernumber:
+                    currentwlrleader = u
+                    currentwlrleadernumber = winlossratio
+                kills = get_database_value(bot, u, 'kills')
+                if int(kills) > int(currentkillsleadernumber):
+                    currentkillsleader = u
+                    currentkillsleadernumber = int(kills)
+                respawns = get_database_value(bot, u, 'respawns')
+                if int(respawns) > int(currentrespawnsleadernumber):
+                    currentrespawnsleader = u
+                    currentrespawnsleadernumber = int(respawns)
+                health = get_database_value(bot, u, 'health')
+                if int(health) < int(currenthealthleadernumber) and int(health) != 0:
+                    currenthealthleader = u
+                    currenthealthleadernumber = int(health)
+                streaks = get_database_value(bot, u, 'bestwinstreak')
+                if int(streaks) > int(currentstreaksleadernumber):
+                    currentstreaksleader = u
+                    currentstreaksleadernumber = int(streaks)
+            if currentwlrleadernumber > 0:
+                currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
+                leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
+            if currentkillsleadernumber > 0:
+                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
+            if currentrespawnsleadernumber > 0:
+                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
+            if currenthealthleadernumber > 0:
+                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
+            if currentstreaksleadernumber > 0:
+                leaderboardscript = str(leaderboardscript + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
+            if leaderboardscript == '':
+                leaderboardscript = str("Leaderboard appears to be empty")
+            bot.say(leaderboardscript)
 
-            ## Loot Items
-            elif commandortarget == 'loot':
-                yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
-                lootcommand = get_trigger_arg(triggerargsarray, 2)
-                lootitem = get_trigger_arg(triggerargsarray, 3)
-                lootitemb = get_trigger_arg(triggerargsarray, 4)
-                lootitemc = get_trigger_arg(triggerargsarray, 5)
-                gethowmanylootitem = get_database_value(bot, instigator, lootitem)
-                gethowmanycoins = get_database_value(bot, instigator, 'coins')
-                if lootcommand not in transactiontypesarray:
-                    bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
-                elif not lootitem:
-                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-                elif lootitem not in lootitemsarray:
-                    bot.notice(instigator + ", Invalid loot item.", instigator)
-                elif lootcommand == 'use':
-                    if lootitemb.isdigit():
-                        quantity = int(lootitemb)
-                        target = instigator
-                    elif lootitemb == 'all':
-                        target = instigator
-                        quantity = gethowmanylootitem
-                    elif not lootitemb:
-                        quantity = 1
-                        target = instigator
-                    else:
-                        target = lootitemb
-                        if not lootitemc:
-                            quantity = 1
-                        elif lootitemc == 'all':
-                            quantity = gethowmanylootitem
-                        else:
-                            quantity = int(lootitemc)
-                    if gethowmanylootitem < quantity:
-                        bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
-                    elif target.lower() not in bot.privileges[channel.lower()]:
-                        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                    else:   
-                        if int(quantity) == 1:
-                            saymsg = 'true'
-                            use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
-                        elif lootitem == 'mysterypotion' and int(quantity) > 1 and inchannel.startswith("#"):
-                            bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
-                        else:
-                            saymsg = 'false'
-                            if lootitem == 'mysterypotion' or not inchannel.startswith("#"):
-                                saymsg = 'true'
-                            while int(quantity) > 0:
-                                quantity = int(quantity) - 1
-                                use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
-                            bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                elif lootcommand == 'trade':
-                    quantity = lootitemc
-                    if not quantity:
-                        quantity = 1
-                    if yourclass == 'scavenger':
-                        quantitymath = 2 * int(quantity)
-                    else:
-                        quantitymath = 3 * int(quantity)
-                    if lootitemb not in lootitemsarray:
-                        bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                    elif lootitemb not in lootitemsarray:
-                        bot.notice(instigator + ", Invalid loot item.", instigator)
-                    elif lootitemb == lootitem:
-                        bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                    elif gethowmanylootitem < quantitymath:
-                        bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
-                    else:
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            if yourclass == 'scavenger':
-                                cost = -2
-                            else:
-                                cost = -3
-                            reward = 1
-                            itemtoexchange = lootitem
-                            itemexchanged = lootitemb
-                            adjust_database_value(bot, instigator, itemtoexchange, cost)
-                            adjust_database_value(bot, instigator, itemexchanged, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                elif lootcommand == 'buy':
-                    quantity = lootitemb
-                    if not quantity:
-                        quantity = 1
-                    elif quantity == 'all':
-                        quantity = 99999999999999999
-                    if yourclass == 'scavenger':
-                        coinsrequired = 90 * int(quantity)
-                    else:
-                        coinsrequired = 100 * int(quantity)
-                    if gethowmanycoins < coinsrequired:
-                        bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
-                    else:
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            if yourclass == 'scavenger':
-                                cost = -90
-                            else:
-                                cost = -100
-                            reward = 1
-                            itemtoexchange = 'coins'
-                            itemexchanged = lootitem
-                            adjust_database_value(bot, instigator, itemtoexchange, cost)
-                            adjust_database_value(bot, instigator, itemexchanged, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-                elif lootcommand == 'sell':
-                    quantity = lootitemb
-                    if not quantity:
-                        quantity = 1
-                    elif quantity == 'all':
-                        quantity = gethowmanylootitem
-                    if int(quantity) > gethowmanylootitem:
-                        bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
-                    else:
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            cost = -1
-                            if yourclass == 'scavenger':
-                                reward = 30
-                            else:
-                                reward = 25
-                            itemtoexchange = lootitem
-                            itemexchanged = 'coins'
-                            adjust_database_value(bot, instigator, itemtoexchange, cost)
-                            adjust_database_value(bot, instigator, itemexchanged, reward)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-
-            ## Konami
-            elif commandortarget == 'upupdowndownleftrightleftrightba':
-                konami = get_database_value(bot, target, 'konami')
-                if not konami:
-                    set_database_value(bot, instigator, 'konami', 1)
-                    bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-                    damage = 600
-                    adjust_database_value(bot, target, 'health', damage)
-                else:
-                    bot.notice(instigator + " you can only cheat once.", instigator)
-                
-            ## Weaponslocker
-            elif commandortarget == 'weaponslocker':
-                validdirectionarray = ['inv','add','del','reset']
-                if target in validdirectionarray:
+        ## Loot Items 
+        elif commandortarget == 'loot':
+            lootcommand = get_trigger_arg(triggerargsarray, 2)
+            lootitem = get_trigger_arg(triggerargsarray, 3)
+            lootitemb = get_trigger_arg(triggerargsarray, 4)
+            lootitemc = get_trigger_arg(triggerargsarray, 5)
+            gethowmanylootitem = get_database_value(bot, instigator, lootitem)
+            if lootcommand not in transactiontypesarray:
+                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+            elif not lootitem:
+                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+            elif lootitem not in lootitemsarray:
+                bot.notice(instigator + ", Invalid loot item.", instigator)
+            elif lootcommand == 'use':
+                if lootitemb.isdigit():
+                    quantity = int(lootitemb)
                     target = instigator
-                    adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
-                    weaponchange = get_trigger_arg(triggerargsarray, '3+')
+                elif lootitemb == 'all':
+                    target = instigator
+                    quantity = gethowmanylootitem
+                elif not lootitemb:
+                    quantity = 1
+                    target = instigator
                 else:
-                    adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
-                    weaponchange = get_trigger_arg(triggerargsarray, '4+')
-                weaponslist = get_database_value(bot, target, 'weaponslocker') or []
-                if not adjustmentdirection:
-                    bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif adjustmentdirection == 'inv':
-                    weapons = ''
-                    for x in weaponslist:
-                        weapon = x
-                        if weapons != '':
-                            weapons = str(weapons + ", " + weapon)
-                        else:
-                            weapons = str(weapon)
-                    chunks = weapons.split()
-                    per_line = 15
-                    weaponline = ''
-                    for i in range(0, len(chunks), per_line):
-                        weaponline = " ".join(chunks[i:i + per_line])
-                        bot.notice(str(weaponline), instigator)
-                    if weaponline == '':
-                        bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
-                elif target != instigator and not trigger.admin:
-                    bot.say("You may not adjust somebody elses locker.")
-                elif adjustmentdirection == 'reset':
-                    set_database_value(bot, target, 'weaponslocker', '')
-                    bot.say('Locker Reset.')
-                else:
-                    if not weaponchange:
-                        bot.say("What weapon would you like to add/remove?")
+                    target = lootitemb
+                    if not lootitemc:
+                        quantity = 1
+                    elif lootitemc == 'all':
+                        quantity = gethowmanylootitem
                     else:
-                        if weaponchange in weaponslist and adjustmentdirection == 'add':
-                            weaponlockerstatus = 'already'
-                        elif weaponchange not in weaponslist and adjustmentdirection == 'del':
-                            weaponlockerstatus = 'already not'
+                        quantity = int(lootitemc)
+                if gethowmanylootitem < quantity:
+                    bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
+                elif target.lower() not in allusersinroomarray:
+                    bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
+                elif target.lower() not in dueloptedinarray:
+                    bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+                else:   
+                    if int(quantity) == 1:
+                        saymsg = 'true'
+                        use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                    elif lootitem == 'mysterypotion' and int(quantity) > 1 and inchannel.startswith("#"):
+                        bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
+                    else:
+                        saymsg = 'false'
+                        if lootitem == 'mysterypotion' or not inchannel.startswith("#"):
+                            saymsg = 'true'
+                        while int(quantity) > 0:
+                            quantity = int(quantity) - 1
+                            use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+            elif lootcommand == 'trade':
+                quantity = lootitemc
+                if not quantity:
+                    quantity = 1
+                if yourclass == 'scavenger':
+                    quantitymath = 2 * int(quantity)
+                else:
+                    quantitymath = 3 * int(quantity)
+                if lootitemb not in lootitemsarray:
+                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                elif lootitemb not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif lootitemb == lootitem:
+                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                elif gethowmanylootitem < quantitymath:
+                    bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
+                else:
+                    while int(quantity) > 0:
+                        quantity = int(quantity) - 1
+                        if yourclass == 'scavenger':
+                            cost = -2
                         else:
-                            if adjustmentdirection == 'add':
-                                weaponlockerstatus = 'now'
-                            elif adjustmentdirection == 'del':
-                                weaponlockerstatus = 'no longer'
-                            adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
-                        message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
-                        bot.say(message)
+                            cost = -3
+                        reward = 1
+                        itemtoexchange = lootitem
+                        itemexchanged = lootitemb
+                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemexchanged, reward)
+                   bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+           elif lootcommand == 'buy':
+                quantity = lootitemb
+                if not quantity:
+                    quantity = 1
+                elif quantity == 'all':
+                    quantity = 99999999999999999
+                if yourclass == 'scavenger':
+                    coinsrequired = 90 * int(quantity)
+                else:
+                    coinsrequired = 100 * int(quantity)
+                if instigatorcoins < coinsrequired:
+                    bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                else:
+                    while int(quantity) > 0:
+                        quantity = int(quantity) - 1
+                        if yourclass == 'scavenger':
+                            cost = -90
+                        else:
+                            cost = -100
+                        reward = 1
+                        itemtoexchange = 'coins'
+                        itemexchanged = lootitem
+                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemexchanged, reward)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+            elif lootcommand == 'sell':
+                quantity = lootitemb
+                if not quantity:
+                    quantity = 1
+                elif quantity == 'all':
+                    quantity = gethowmanylootitem
+                if int(quantity) > gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
+                else:
+                    while int(quantity) > 0:
+                        quantity = int(quantity) - 1
+                        cost = -1
+                        if yourclass == 'scavenger':
+                            reward = 30
+                        else:
+                            reward = 25
+                        itemtoexchange = lootitem
+                        itemexchanged = 'coins'
+                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemexchanged, reward)
+                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+
+        ## Konami
+        elif commandortarget == 'upupdowndownleftrightleftrightba':
+            konami = get_database_value(bot, target, 'konami')
+            if not konami:
+                set_database_value(bot, instigator, 'konami', 1)
+                bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
+                damage = 600
+                adjust_database_value(bot, target, 'health', damage)
+            else:
+                bot.notice(instigator + " you can only cheat once.", instigator)
+                
+        ## Weaponslocker
+        elif commandortarget == 'weaponslocker':
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            validdirectionarray = ['inv','add','del','reset']
+            if target in validdirectionarray:
+                target = instigator
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                weaponchange = get_trigger_arg(triggerargsarray, '3+')
+            else:
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
+                weaponchange = get_trigger_arg(triggerargsarray, '4+')
+            weaponslist = get_database_value(bot, target, 'weaponslocker') or []
+            if not adjustmentdirection:
+                bot.say('Use .duel weaponslocker add/del to adjust Locker Inventory.')
+            elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
+                bot.say("Inventory can only be viewed in privmsg.")
+            elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
+                weapons = ''
+                for x in weaponslist:
+                    weapon = x
+                    if weapons != '':
+                        weapons = str(weapons + ", " + weapon)
+                    else:
+                        weapons = str(weapon)
+                chunks = weapons.split()
+                per_line = 15
+                weaponline = ''
+                for i in range(0, len(chunks), per_line):
+                    weaponline = " ".join(chunks[i:i + per_line])
+                    bot.notice(str(weaponline), instigator)
+                if weaponline == '':
+                    bot.say('There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.')
+            elif target != instigator and not trigger.admin:
+                bot.say("You may not adjust somebody elses locker.")
+            elif adjustmentdirection == 'reset':
+                set_database_value(bot, target, 'weaponslocker', '')
+                bot.say('Locker Reset.')
+            else:
+                if not weaponchange:
+                    bot.say("What weapon would you like to add/remove?")
+                else:
+                    if weaponchange in weaponslist and adjustmentdirection == 'add':
+                        weaponlockerstatus = 'already'
+                    elif weaponchange not in weaponslist and adjustmentdirection == 'del':
+                        weaponlockerstatus = 'already not'
+                    else:
+                        if adjustmentdirection == 'add':
+                            weaponlockerstatus = 'now'
+                        elif adjustmentdirection == 'del':
+                            weaponlockerstatus = 'no longer'
+                        adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
+                    message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
+                    bot.say(message)
         
             ## Magic Attack
             elif commandortarget == 'magic':
