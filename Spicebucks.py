@@ -109,7 +109,6 @@ def bank(bot, nick, target):
 
 def transfer(bot, channel, instigator, target, amount):
     validamount = 0
-    notenough = 0
     try:
         amount = int(amount)
         validamount = 1
@@ -126,11 +125,7 @@ def transfer(bot, channel, instigator, target, amount):
             if target == instigator:
                 bot.say("You cannot transfer spicebucks to yourself!")
             else:
-                try:
-                    spicebucks(bot, instigator, 'minus', amount)
-                except:
-                    notenough = 1
-                if notenough = 0:
+                if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
                     bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + "." + str(spicebucktotal)) 
         
