@@ -89,7 +89,7 @@ def globalvars():
 def execute_main(bot, trigger):
     
     ## Vars
-    return globalvars()
+    globalvars()
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
