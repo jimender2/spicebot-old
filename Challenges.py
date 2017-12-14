@@ -536,9 +536,15 @@ def execute_main(bot, trigger):
                             nulllootitemsarray = ['water','vinegar','mud']
                             nullloot = get_trigger_arg(nulllootitemsarray, 'random')
                             lootusemsg = str("It turned out to be just " + str(nullloot) + ' after all.')
+                        targethealth = get_database_value(bot, target, 'health')
+                        if targethealth <= 0:
+                            whokilledwhom(bot, instigator, target)
+                            mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
                         if lootitem == 'mysterypotion':
                             if lootusemsg == '':
                                 lootusemsg = str("It was a " + str(x) + "!")
+                            if targethealth <= 0:
+                                lootusemsg = str(lootusemsg + " This resulted in death.")
                             if target == instigator:
                                 bot.notice(instigator + " used a mysterypotion. " + lootusemsg, instigator)
                             else:
@@ -548,7 +554,7 @@ def execute_main(bot, trigger):
                     if lootitem != 'mysterypotion':
                         bot.say(mainlootusemessage)
                         if target != instigator and not inchannel.startswith("#"):
-                            bot.notice(instigator + " " + notifytargetmessage + " " + lootusemsg, target)
+                            bot.notice(instigator + " " + notifytargetmessage + " " + lootusemsg, target) 
             elif lootcommand == 'trade':
                 quantity = lootitemc
                 if not quantity:
