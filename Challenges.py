@@ -183,6 +183,8 @@ def execute_main(bot, trigger):
         ## Duel Everyone displaymessage
         elif commandortarget == 'everyone':
             fullchanassaultarray = canduelarray
+            for x in canduelarray:
+                bot.say(str(x))
             fullchanassaultarraytotal = len(fullchanassaultarray)
             if instigator in fullchanassaultarray:
                 fullchanassaultarray.remove(instigator)
@@ -210,6 +212,7 @@ def execute_main(bot, trigger):
                             bot.notice("  ", instigator)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+                bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
 
         ## War Room
         elif commandortarget == 'warroom':
