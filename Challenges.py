@@ -451,6 +451,8 @@ def execute_main(bot, trigger):
             elif lootitem not in lootitemsarray:
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
+                lootusedeaths = 0
+                killedmsg = ''
                 if lootitemb.isdigit():
                     quantity = int(lootitemb)
                     target = instigator
@@ -538,8 +540,12 @@ def execute_main(bot, trigger):
                             lootusemsg = str("It turned out to be just " + str(nullloot) + ' after all.')
                         targethealth = get_database_value(bot, target, 'health')
                         if targethealth <= 0:
+                            lootusedeaths = lootusedeaths + 1
                             whokilledwhom(bot, instigator, target)
-                            mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
+                            if lootusedeaths > 1:
+                                killedmsg = str("This resulted in " + str(lootusedeaths) +" deaths.")
+                            else:
+                                killedmsg = "This resulted in death."
                         if lootitem == 'mysterypotion':
                             if lootusemsg == '':
                                 lootusemsg = str("It was a " + str(x) + "!")
@@ -552,7 +558,7 @@ def execute_main(bot, trigger):
                             if target != instigator:
                                 bot.notice(instigator + " used a mysterypotion on you. " + lootusemsg, target)
                     if lootitem != 'mysterypotion':
-                        bot.say(mainlootusemessage)
+                        bot.say(mainlootusemessage + " " + killedmsg)
                         if target != instigator and not inchannel.startswith("#"):
                             bot.notice(instigator + " " + notifytargetmessage + " " + lootusemsg, target) 
             elif lootcommand == 'trade':
