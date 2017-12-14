@@ -12,69 +12,74 @@ import sys
 import os
 from os.path import exists
 
+#############
+## Globals ##
+#############
+def globalvars():
+
 ###################
 ## Configurables ##
 ###################
-defaultadjust = 1 ## The default number to increase a stat
-USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
-CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
-OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
-ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
-CLASSTIMEOUT = 86400 ## Time between changing class - One Day
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
-changeclasscost = 100 ## ## how many coins to change class
+    defaultadjust = 1 ## The default number to increase a stat
+    USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
+    CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
+    OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
+    ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
+    CLASSTIMEOUT = 86400 ## Time between changing class - One Day
+    GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
+    changeclasscost = 100 ## ## how many coins to change class
 
 ############
 ## Arrays ##
 ############
-botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
-lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-transactiontypesarray = ['buy','sell','trade','use']
-challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger','rogue','ranger']
-statsadminchangearray = ['set','reset']
-statsbypassarray = ['winlossratio','timeout']
+    botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+    lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
+    backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
+    transactiontypesarray = ['buy','sell','trade','use']
+    challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+    challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+    classarray = ['barbarian','mage','scavenger','rogue','ranger']
+    statsadminchangearray = ['set','reset']
+    statsbypassarray = ['winlossratio','timeout']
 
 #################
 ## null values ##
 #################
 
-displaymsg = ''
-dowedisplay = 0
-disenablevalue = ''
-targets = ''
-classes = ''
-script = ''
-stats = ''
-leaderboardscript = ''
-currentwlrleader = ''
-currentkillsleader = ''
-currentrespawnsleader = ''
-currenthealthleader = ''
-currentstreaksleader = ''
-currentwlrleadernumber = 0
-currentkillsleadernumber = 0
-currentrespawnsleadernumber = 0
-currenthealthleadernumber = 9999999999
-currentstreaksleadernumber = 0
+    displaymsg = ''
+    dowedisplay = 0
+    disenablevalue = ''
+    targets = ''
+    classes = ''
+    script = ''
+    stats = ''
+    leaderboardscript = ''
+    currentwlrleader = ''
+    currentkillsleader = ''
+    currentrespawnsleader = ''
+    currenthealthleader = ''
+    currentstreaksleader = ''
+    currentwlrleadernumber = 0
+    currentkillsleadernumber = 0
+    currentrespawnsleadernumber = 0
+    currenthealthleadernumber = 9999999999
+    currentstreaksleadernumber = 0
                 
 #################
 ## null arrays ##
 #################
 
-targetarray = []
-botownerarray = []
-operatorarray = []
-voicearray = []
-adminsarray = []
-allusersinroomarray = []
-dueloptedinarray = []
-channelarray = []
-targetcantoptarray = []
-canduelarray = []
-classcantchangearray = []
+    targetarray = []
+    botownerarray = []
+    operatorarray = []
+    voicearray = []
+    adminsarray = []
+    allusersinroomarray = []
+    dueloptedinarray = []
+    channelarray = []
+    targetcantoptarray = []
+    canduelarray = []
+    classcantchangearray = []
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -82,6 +87,9 @@ classcantchangearray = []
 
 @sopel.module.commands('challenge','duel')
 def execute_main(bot, trigger):
+    
+    ## Vars
+    return globalvars()
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
