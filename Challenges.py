@@ -130,7 +130,7 @@ def execute_main(bot, trigger):
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: " + GITWIKIURL, instigator)
     
     ## commands cannot be run if opted out
-    elif instigator not in dueloptedinarray and commandortarget in commandbypassarray:
+    elif instigator not in dueloptedinarray and commandortarget not in commandbypassarray:
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
     ## Determine if the arg after .duel is a target or a command
