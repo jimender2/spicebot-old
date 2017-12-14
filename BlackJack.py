@@ -8,7 +8,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+
 
 
 @sopel.module.commands('dealme')
@@ -19,7 +19,8 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
   bot.say('The dealer is not here right now')
-  myhand = deal()
+  deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+  myhand = deal(deck)
   bot.say(str(myhand))  
 
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
@@ -30,7 +31,7 @@ def payouts(mybet,mynumber,mycolor,winningnumber,color):
     mywinnings=mywinnings+(mybet*colorpayout)+mybet
   return mywinnings
 
-def deal():
+def deal(deck):
   hand = []
   for i in range(2):
     random.shuffle(deck)
