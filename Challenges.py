@@ -729,10 +729,10 @@ def execute_main(bot, trigger):
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+            elif target == bot.nick:
+                bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
             elif target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            elif target == bot.nick:
-                bot.notice(instigator + ", I am immune to that kind of attack.", instigator)
             elif not mana:
                 bot.notice(instigator + " you don't have any mana.", instigator)
             elif magicusage == 'curse' and targetcurse:
