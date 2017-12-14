@@ -760,7 +760,7 @@ def execute_main(bot, trigger):
                         manarequired = targethealthstart / 200
                         manarequired = manarequired * 250
                     damage = -abs(targethealthstart)
-                actualdamage = damage * quantity
+                actualdamage = int(damage) * int(quantity)
                 damagetext = abs(actualdamage)
                 if instigatorclass == 'mage':
                     manarequired = manarequired * .9
