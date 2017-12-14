@@ -180,7 +180,7 @@ def execute_main(bot, trigger):
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
-        ## Duel Everyone displaymessage
+        ## Duel Everyone
         elif commandortarget == 'everyone':
             fullchanassaultarray = []
             for x in canduelarray:
@@ -204,10 +204,10 @@ def execute_main(bot, trigger):
                     if u != instigator and u != bot.nick:
                         targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                         getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
-                        time.sleep(5)
                         fullchanassaultarraytotal = fullchanassaultarraytotal - 1
                         if fullchanassaultarraytotal > 0:
                             bot.notice("  ", instigator)
+                            time.sleep(5)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
