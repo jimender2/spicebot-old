@@ -243,25 +243,30 @@ def execute_main(bot, trigger):
 
         ## Stats Admin
         elif commandortarget == 'statsadmin':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            stat = get_trigger_arg(triggerargsarray, 3)
-            target = get_trigger_arg(triggerargsarray, 4)
-            newvalue = get_trigger_arg(triggerargsarray, 4) or None
-            if not subcommand:
-                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-            elif subcommand not in statsadminchangearray:
-                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
-            elif stat not in challengestatsadminarray:
-                bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+            incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
+            target = get_trigger_arg(triggerargsarray, 2)
+            subcommand = get_trigger_arg(triggerargsarray, 3)
+            stat = get_trigger_arg(triggerargsarray, 4)
+            newvalue = get_trigger_arg(triggerargsarray, 5) or None
+            if not target:
+                bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
             elif target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+            elif not subcommand:
+                bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
+            elif subcommand not in statsadminchangearray:
+                bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
+            elif not stat:
+                bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
+            elif stat not in challengestatsadminarray and stat != 'all':
+                bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
             elif instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             else:
                 if subcommand == 'reset':
                     newvalue = None
                 if subcommand == 'set' and newvalue != None:
-                    bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
+                    bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                 elif target == 'everyone':
                     for u in bot.channels[channel].users:
                         if statset == 'all':
