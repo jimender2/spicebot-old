@@ -231,7 +231,7 @@ def execute_main(bot, trigger):
                 else:
                     bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
-                displaymessage = get_trigger_arg(triggerargsarray, "list")
+                displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(str(displaymessage ))
             elif subcommand.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
