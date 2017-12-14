@@ -1285,61 +1285,7 @@ def get_lootitem_text(bot, nick, loottype):
     if loot_text != '':
         loot_text = str(loot_text + " Use .challenge loot use " + str(loottype) + " to consume.")
     return loot_text
-        
-def use_lootitem(bot, instigator, target, inchannel, loottype, saymsg):
-    targethealth = get_database_value(bot, target, 'health')
-    if not targethealth:
-        set_database_value(bot, target, 'health', '1000')
-        targethealth = get_database_value(bot, target, 'health')
-    gethowmany = get_database_value(bot, target, 'mana')
-    adjust_database_value(bot, instigator, loottype, -1)
-    mana = get_database_value(bot, target, 'mana')
-    if target == instigator:
-        mainlootusemessage = str(instigator + ' uses ' + loottype + '.')
-    else:
-        mainlootusemessage = str(instigator + ' uses ' + loottype + ' on ' + target + ". ")
-    if loottype == 'healthpotion':
-        adjust_database_value(bot, target, 'health', '100')
-    elif loottype == 'poisonpotion':
-        yourclass = get_database_value(bot, target, 'class') or 'notclassy'
-        if yourclass != 'rogue':
-            adjust_database_value(bot, target, 'health', '-50')
-    elif loottype == 'manapotion':
-        adjust_database_value(bot, target, 'mana', '100')
-    elif loottype == 'timepotion':
-        channellastinstigator = get_database_value(bot, channel, 'lastinstigator')
-        if not channellastinstigator:
-            channellastinstigator = bot.nick
-        if channellastinstigator == target:
-            set_database_value(bot, channel, 'lastinstigator', '')
-        set_database_value(bot, target, 'timeout', '')
-        set_database_value(bot, channel, 'timeout', '')
-    elif loottype == 'mysterypotion':
-        loot = random.randint(0,len(lootitemsarray) - 1)
-        loot = str(lootitemsarray [loot])
-        if loot != 'mysterypotion':
-            adjust_database_value(bot, instigator, loot, defaultadjust)
-            saymsg = 'false'
-            use_lootitem(bot, instigator, target, inchannel, loot, saymsg)
-            saymsg = 'true'
-            lootusemsg = str("a " + loot)
-        else:
-            nulllootitemsarray = ['water','vinegar','mud']
-            nullloot = random.randint(0,len(nulllootitemsarray) - 1)
-            nullloot = str(nulllootitemsarray [nullloot])
-            lootusemsg = str("just " + str(nullloot) + ' after all.')
-        mainlootusemessage = str(mainlootusemessage + ' It was ' + str(lootusemsg))
-    else:
-        mainlootusemessage = str(mainlootusemessage + '')
-    targethealth = get_database_value(bot, target, 'health')
-    if targethealth <= 0:
-        mainlootusemessage = str(mainlootusemessage + "This resulted in death.")
-        whokilledwhom(bot, instigator, target)
-    if saymsg == 'true':
-        bot.say(str(mainlootusemessage))
-        if not inchannel.startswith("#") and target != instigator:
-            bot.notice(str(mainlootusemessage), target)
-    
+
 ######################
 ## Weapon Selection ##
 ######################
