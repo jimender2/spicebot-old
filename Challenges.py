@@ -767,9 +767,10 @@ def execute_main(bot, trigger):
                     manarequired = manarequired * .9
                 if magicusage == 'instakill':
                     actualmanarequired = int(manarequired)
-                    if int(quantity) > 1:
-                        quantity = int(quantity) - 1
-                        quantityadjust = 1000 * int(quantity)
+                    instaquantity = int(quantity)
+                    if int(instaquantity) > 1:
+                        instaquantity = int(instaquantity) - 1
+                        quantityadjust = 1000 * int(instaquantity)
                         actualmanarequired = int(quantityadjust) + int(manarequired)
                 else:
                     actualmanarequired = int(manarequired) * int(quantity)
@@ -784,8 +785,10 @@ def execute_main(bot, trigger):
                     specialtext = ''
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
-                    adjust_database_value(bot, instigator, 'mana', -abs(actualmanarequired))
+                    manarequired = -abs(manarequired)
+                    adjust_database_value(bot, instigator, 'mana', manarequired)
                     while int(quantity) > 0:
+                        quantity = int(quantity) - 1
                         if magicusage == 'instakill':
                             targethealthcurrent = get_database_value(bot, target, 'health')
                             adjust_database_value(bot, target, 'health', -abs(int(targethealthcurrent)))
@@ -793,9 +796,14 @@ def execute_main(bot, trigger):
                         else:
                             adjust_database_value(bot, target, 'health', int(damage))
                             damagedealt = int(damagedealt) + int(abs(damage))
-                        quantity = int(quantity) - 1
-                        manarequired = -abs(manarequired)
-                        adjust_database_value(bot, target, 'health', damage)
+                        targethealth = get_database_value(bot, target, 'health')
+                        if int(targethealth) <= 0:
+                            magicdeaths = magicdeaths + 1
+                            whokilledwhom(bot, instigator, target)
+                            if int(magicdeaths) > 1:
+                                magickilled = str("This resulted in " + str(magicdeaths) +" deaths.")
+                            else:
+                                magickilled = "This resulted in death."
                         if magicusage == 'curse':
                             curseduration = 4
                             set_database_value(bot, target, 'curse', curseduration)
@@ -804,14 +812,6 @@ def execute_main(bot, trigger):
                             shieldduration = 4
                             set_database_value(bot, target, 'shield', shieldduration)
                             specialtext = str("AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
-                        targethealth = get_database_value(bot, target, 'health')
-                        if targethealth <= 0:
-                            magicdeaths = magicdeaths + 1
-                            whokilledwhom(bot, instigator, target)
-                            if magicdeaths > 1:
-                                magickilled = str("This resulted in " + str(magicdeaths) +" deaths.")
-                            else:
-                                magickilled = "This resulted in death."
                         if magicusage == 'health' or magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
