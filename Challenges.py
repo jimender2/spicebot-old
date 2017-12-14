@@ -51,6 +51,7 @@ def execute_main(bot, trigger):
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     dowedisplay = 0
+    displaymessage = ''
     
     ## Build User/channel Arrays
     targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
@@ -122,9 +123,15 @@ def execute_main(bot, trigger):
     lastfullroomassult = get_timesince_duels(bot, channel, 'lastfullroomassult') or ASSAULTTIMEOUT
     lastfullroomassultinstigator = get_database_value(bot, channel, 'lastfullroomassultinstigator') or bot.nick
     
+    commandbypassarray = ['on','off']
+    
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: " + GITWIKIURL, instigator)
+    
+    ## commands cannot be run if opted out
+    elif instigator not in dueloptedinarray and commandortarget in commandbypassarray:
+        bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray]:
@@ -173,31 +180,33 @@ def execute_main(bot, trigger):
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
-        ## Duel Everyone
+        ## Duel Everyone displaymessage
         elif commandortarget == 'everyone':
-            if instigator in canduelarray:
-                canduelarray.remove(instigator)
-                canduelarraytotal = canduelarraytotal - 1
+            fullchanassaultarray = canduelarray
+            fullchanassaultarraytotal = len(fullchanassaultarray)
+            if instigator in fullchanassaultarray:
+                fullchanassaultarray.remove(instigator)
+                fullchanassaultarraytotal = fullchanassaultarraytotal - 1
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-            elif canduelarray == []:
+            elif instigator not in canduelarray:
+                bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
+            elif fullchanassaultarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 OSDTYPE = 'notice'
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                bot.say(str(canduelarraytotal) + 'start')
-                for u in canduelarray:
-                    bot.say(str(canduelarraytotal) + u)
+                for u in fullchanassaultarray:
                     if u != instigator and u != bot.nick:
                         targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                         getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                         time.sleep(5)
-                        canduelarraytotal = canduelarraytotal - 1
-                        if canduelarraytotal > 0:
+                        fullchanassaultarraytotal = fullchanassaultarraytotal - 1
+                        if fullchanassaultarraytotal > 0:
                             bot.notice("  ", instigator)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
