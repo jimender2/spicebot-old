@@ -194,7 +194,7 @@ def execute_main(bot, trigger):
             else:
                 #randomselected = random.randint(0,len(canduelarray) - 1)
                 #target = str(canduelarray [randomselected])
-                target = get_trigger_arg(triggerargsarray, '$')
+                target = get_trigger_arg(canduelarray, '$')
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
