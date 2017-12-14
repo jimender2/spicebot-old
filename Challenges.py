@@ -128,19 +128,10 @@ def execute_main(bot, trigger):
     
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray]:
-    #elif commandortarget.lower() not in allusersinroomarray:
-
-## Fix Me! Doesn't make any sense any more for this to be outside the "subcommands"
-########## Random Target
-        #if get_trigger_arg(triggerargsarray, 2) == 'random':
-        #    if canduelarray == []:
-        #        bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-        #    else:
-        #        randomselected = random.randint(0,len(canduelarray) - 1)
-        #        target = str(canduelarray [randomselected])
+        commandortarget = commandortarget.lower()
                 
         ## Docs
-        if commandortarget == 'docs' or commandortarget == 'help':
+        if commandortarget == 'docs' or commandortarget == 'help' or commandortarget == 'help':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
@@ -185,9 +176,9 @@ def execute_main(bot, trigger):
         ## Duel Everyone
         elif commandortarget == 'everyone':
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
-                bot.notice("Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                bot.notice("You may not instigate a Full Channel Assault twice in a row.", instigator)
+                bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif canduelarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
@@ -196,11 +187,13 @@ def execute_main(bot, trigger):
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 for u in canduelarray:
+                    channelarraytotal = channelarraytotal - 1
                     if u != instigator and u != bot.nick:
                         targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                         getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                         time.sleep(5)
-                        bot.notice("  ", instigator)
+                        if channelarraytotal > 0:
+                            bot.notice("  ", instigator)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
