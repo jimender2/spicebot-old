@@ -156,6 +156,15 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
+    elif number == 'random':
+        randomselected = random.randint(0,len(triggerargsarray) - 1)
+        triggerarg = str(triggerargsarray [randomselected])
+    elif number == 'list':
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg  = str(triggerarg  + ", " + x)
+            else:
+                triggerarg  = str(x)
     else:
         number = int(number) - 1
         try:
@@ -163,6 +172,7 @@ def get_trigger_arg(triggerargsarray, number):
         except IndexError:
             triggerarg = ''
     return triggerarg
+
 
 ##############
 ## Database ##
