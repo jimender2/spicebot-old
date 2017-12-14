@@ -18,9 +18,9 @@ def execute_main(bot, trigger, arg):
   deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
   bot.say(str(len(deck)))
   myhand = deal(deck)
-  #dealerhand,dealerdeck = deal(deck)
+  dealerhand = deal(deck)
   bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-  bot.say(str(len(deck)))
+  bot.say('The dealer has a ' + str(dealerhand[0]) + ' showing')
 
 def deal(deck):
   hand = []
