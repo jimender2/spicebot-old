@@ -18,10 +18,10 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-  bot.say('The dealer is not here right now')
   deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
   myhand = deal(deck)
-  bot.say(str(myhand))  
+  dealerhand=deal(deck)
+  bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
 
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
   mywinnings=0
@@ -42,3 +42,15 @@ def deal(deck):
     if card == 14:card = "A"
     hand.append(card)
   return hand
+
+def total(hand):
+    total = 0
+    for card in hand:
+	    if card == "J" or card == "Q" or card == "K":
+	        total+= 10
+	    elif card == "A":
+	        if total >= 11: total+= 1
+	    else: total+= 11
+	    else:
+	    total += card
+    return total
