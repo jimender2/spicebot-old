@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-  bot.say("The dealer isn't here right now')
+  bot.say('The dealer is not here right now')
 
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
   mywinnings=0
