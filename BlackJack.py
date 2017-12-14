@@ -23,14 +23,6 @@ def execute_main(bot, trigger, arg):
   dealerhand=deal(deck)
   bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
 
-def payouts(mybet,mynumber,mycolor,winningnumber,color):
-  mywinnings=0
-  if mynumber == winningnumber:
-    mywinnings=mywinnings+(mybet*numberpayout)+mybet
-  elif mycolor == color:
-    mywinnings=mywinnings+(mybet*colorpayout)+mybet
-  return mywinnings
-
 def deal(deck):
   hand = []
   for i in range(2):
@@ -44,13 +36,15 @@ def deal(deck):
   return hand
 
 def total(hand):
-    total = 0
-    for card in hand:
-	    if card == "J" or card == "Q" or card == "K":
-	        total+= 10
-	    elif card == "A":
-	        if total >= 11: total+= 1
-	    else: total+= 11
+	total = 0
+		for card in hand:
+			if card == "J" or card == "Q" or card == "K":
+				total+= 10
+			elif card == "A":
+				if total >= 11:
+					total+= 1
+				else: 
+					total+= 11
 	    else:
-	    total += card
-    return total
+				total += card
+		return total
