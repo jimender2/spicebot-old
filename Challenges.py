@@ -539,7 +539,10 @@ def execute_main(bot, trigger):
                         if lootitem == 'mysterypotion':
                             if lootusemsg == '':
                                 lootusemsg = str("It was a " + str(x) + "!")
-                            bot.notice(instigator + ",  used a mysterypotion on " + target + " " + lootusemsg, instigator)
+                            if target == instigator:
+                                bot.notice(instigator + " used a mysterypotion on " + target + ". " + lootusemsg, instigator)
+                            else:
+                                bot.notice(instigator + " used a mysterypotion. " + lootusemsg, instigator)
                             if target != instigator:
                                 bot.notice(instigator + " used a mysterypotion on you. " + lootusemsg, target)
                     if lootitem != 'mysterypotion':
