@@ -8,6 +8,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
+cards= ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King']
 
 
 @sopel.module.commands('roulette', 'spin')
