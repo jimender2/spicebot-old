@@ -765,9 +765,13 @@ def execute_main(bot, trigger):
                 if instigatorclass == 'mage':
                     manarequired = manarequired * .9
                 if magicusage == 'instakill':
-                    actualmanarequired = manarequired + (1000 * quantity)
+                    actualmanarequired = int(manarequired)
+                    if int(quantity) > 1:
+                        quantity = int(quantity) -1
+                        actualmanarequired = 1000 * int(quantity)
+                        actualmanarequired = int(actualmanarequired) + int(manarequired)
                 else:
-                    actualmanarequired = manarequired * quantity
+                    actualmanarequired = int(manarequired) * int(quantity)
                 targethealthstart = get_database_value(bot, target, 'health')
                 if int(actualmanarequired) > int(mana):
                     manamath = int(int(actualmanarequired) - int(mana))
