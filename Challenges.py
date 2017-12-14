@@ -259,7 +259,7 @@ def execute_main(bot, trigger):
             subcommand = get_trigger_arg(triggerargsarray, 2)
             stat = get_trigger_arg(triggerargsarray, 3)
             target = get_trigger_arg(triggerargsarray, 4)
-            newvalue = get_trigger_arg(triggerargsarray, 4) or ''
+            newvalue = get_trigger_arg(triggerargsarray, 4) or None
             if not subcommand:
                 bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
             elif subcommand not in statsadminchangearray:
@@ -272,8 +272,8 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + "This is an admin only function.", instigator)
             else:
                 if subcommand == 'reset':
-                    newvalue = ''
-                if subcommand == 'set' and newvalue != '':
+                    newvalue = None
+                if subcommand == 'set' and newvalue != None:
                     bot.notice(instigator + ", A correct command use is .duel statsadmin set/reset stat target", instigator)
                 elif target == 'everyone':
                     for u in bot.channels[channel].users:
@@ -1647,6 +1647,9 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
+    elif str(number).endswith("$"):
+        randomselected = random.randint(0,len(triggerargsarray) - 1)
+        triggerarg = str(triggerargsarray [randomselected])
     else:
         number = int(number) - 1
         try:
