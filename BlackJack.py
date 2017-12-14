@@ -20,7 +20,7 @@ def execute_main(bot, trigger, arg):
   myhand,mydeck = deal(deck)
   dealerhand,dealerdeck = deal(deck)
   bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-  bot.say(str(len(mydeck))
+  bot.say(str(len(mydeck)))
 
 def deal(deck):
   hand = []
