@@ -265,7 +265,7 @@ def execute_main(bot, trigger):
             else:
                 if subcommand == 'reset':
                     newvalue = None
-                if subcommand == 'set' and newvalue != None:
+                if subcommand == 'set' and newvalue == None:
                     bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                 elif target == 'everyone':
                     for u in bot.channels[channel].users:
