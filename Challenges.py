@@ -38,30 +38,7 @@ challengestatsarray = ['class','health','curse','shield','mana','xp','wins','los
 classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
 statsbypassarray = ['winlossratio','timeout']
-
-#################
-## null values ##
-#################
-
-displaymsg = ''
-dowedisplay = 0
-disenablevalue = ''
-targets = ''
-classes = ''
-script = ''
-stats = ''
-leaderboardscript = ''
-currentwlrleader = ''
-currentkillsleader = ''
-currentrespawnsleader = ''
-currenthealthleader = ''
-currentstreaksleader = ''
-currentwlrleadernumber = 0
-currentkillsleadernumber = 0
-currentrespawnsleadernumber = 0
-currenthealthleadernumber = 9999999999
-currentstreaksleadernumber = 0
-                
+             
 #################
 ## null arrays ##
 #################
@@ -89,12 +66,12 @@ def execute_main(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
+    dowedisplay = 0
     
     ## Build User/channel Arrays
     for c in bot.channels:
         channelarray.append(c)
         inchannel = "#bypass"
-        dowedisplay = 0
         ## All Users in channel
         for u in bot.channels[c.lower()].users:
             allusersinroomarray.append(u)
@@ -188,6 +165,7 @@ def execute_main(bot, trigger):
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
+            disenablevalue = ''
             if commandortarget == 'on':
                 disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -243,6 +221,7 @@ def execute_main(bot, trigger):
 
         ## War Room
         elif commandortarget == 'warroom':
+            targets = ''
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if not subcommand:
                 if instigator in canduelarray:
@@ -315,6 +294,7 @@ def execute_main(bot, trigger):
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
+            classes = ''
             for x in classarray:
                 if classes != '':
                     classes = str(classes + ", " + x)
@@ -350,6 +330,7 @@ def execute_main(bot, trigger):
 
         ## Streaks
         elif commandortarget == 'streaks':
+            script = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
@@ -380,6 +361,7 @@ def execute_main(bot, trigger):
             
         ## Backpack
         elif commandortarget == 'backpack':
+            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
@@ -402,6 +384,7 @@ def execute_main(bot, trigger):
             
         ## Stats
         elif commandortarget == 'stats':
+            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
@@ -429,6 +412,9 @@ def execute_main(bot, trigger):
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
+            leaderboardscript, currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', '', ''
+            currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
+            currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
                 winlossratio = get_winlossratio(bot,u)
                 if winlossratio > currentwlrleadernumber:
@@ -976,6 +962,7 @@ def healthregen(bot):
 ######################
 
 def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay):
+    displaymsg = ''
     executedueling = 0
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
     instigatordisenable = get_database_value(bot, instigator, 'disenable') or ''
