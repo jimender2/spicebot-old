@@ -84,6 +84,8 @@ classcantchangearray = []
 @sopel.module.commands('challenge','duel')
 def execute_main(bot, trigger):
     
+    bot.say(str(classcantchangearray))
+    
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
