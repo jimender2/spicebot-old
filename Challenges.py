@@ -37,12 +37,6 @@ classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
 statsbypassarray = ['winlossratio','timeout']
 
-# deprecate these
-nontargetarray = ['info','shield','change','use','curse','list','everyone','reset','add','del','inv','health','attack','instakill','set','reset','lowest','highest','botadmin','random']
-adminonlyarray = ['statsadmin']
-privilegedarray = ['on','off']
-inchannelarray = ['random','everyone']
-
 #################
 ## null values ##
 #################
@@ -87,13 +81,10 @@ classcantchangearray = []
 ################################################################################
 
 @sopel.module.commands('challenge','duel')
-def mainfunction(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(2))
-    execute_main(bot, trigger, triggerargsarray)
-    
 def execute_main(bot, trigger, triggerargsarray):
     
     ## Initial ARGS of importance
+    triggerargsarray = create_args_array(trigger.group(2))
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     
