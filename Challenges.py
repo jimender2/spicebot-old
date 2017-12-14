@@ -760,22 +760,26 @@ def execute_main(bot, trigger):
                         manarequired = targethealthstart / 200
                         manarequired = manarequired * 250
                     damage = -abs(targethealthstart)
-                actualdamage = int(damage) * int(quantity)
-                damagetext = abs(actualdamage)
+                
                 if instigatorclass == 'mage':
                     manarequired = manarequired * .9
                 if magicusage == 'instakill':
                     actualmanarequired = int(manarequired)
+                    actualdamage = int(damage)
                     if int(quantity) > 1:
                         quantity = int(quantity) - 1
-                        actualmanarequired = 1000 * int(quantity)
-                        actualmanarequired = int(actualmanarequired) + int(manarequired)
+                        actualmanarequireda = 1000 * int(quantity)
+                        actualmanarequired = int(actualmanarequireda) + int(manarequired)
+                        actualdamagea = 1000 * int(quantity)
+                        actualdamage = int(actualdamagea) + int(actualdamage)
                 else:
+                    actualdamage = int(damage) * int(quantity)
                     actualmanarequired = int(manarequired) * int(quantity)
+                damagetext = abs(actualdamage)
                 targethealthstart = get_database_value(bot, target, 'health')
                 if int(actualmanarequired) > int(mana):
                     manamath = int(int(actualmanarequired) - int(mana))
-                    bot.notice(instigator + " you need " + str(manamath) + " more mana to do this attack.", instigator)
+                    bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
                 else:
                     magickilled = ''
                     magicdeaths = 0
