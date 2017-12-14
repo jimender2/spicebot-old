@@ -18,5 +18,8 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandused == 'killit':
         bot.say("Kill it with fire. Now.")
     elif commandused == 'terminate':
-        #bot.say("Terminate it with extreme prejudice.")
-        bot.action("terminates it with extreme prejudice.")
+        target = get_trigger_arg(triggerargsarray, 2)
+        if not target:
+            bot.say("Terminate it with extreme prejudice.")
+        elif target:
+            bot.action("terminates "+ target +" with extreme prejudice.")
