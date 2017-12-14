@@ -29,8 +29,8 @@ def execute_main(bot, trigger, arg):
 			bot.say('Picking the correct number gives 4 times your bet. Picking the correct color gives double your bet')
 			inputcheck=0
 		elif str(arg[0])=='cashout':
-			 Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1000)
-			 bot.say('You have received 1000')
+		 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1000)
+		 	bot.say('You have received 1000')
 		#elif str(arg[0])=='betitall':			
 			#spicebucks = bot.db.get_nick_value(trigger.nick, 'spicebucks_bank') or 0
 			#bot.say(trigger.nick + ' is going all in and letting ' + str(spicebucks) + ' ride.')
