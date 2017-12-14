@@ -28,6 +28,7 @@ changeclasscost = 100 ## ## how many coins to change class
 ############
 ## Arrays ##
 ############
+
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
@@ -187,7 +188,6 @@ def execute_main(bot, trigger):
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
-            disenablevalue = None
             if commandortarget == 'on':
                 disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
