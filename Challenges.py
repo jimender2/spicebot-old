@@ -487,10 +487,12 @@ def execute_main(bot, trigger):
                             quantity = quantity - 1
                             loot = get_trigger_arg(lootitemsarray, 'random')
                             uselootarray.append(loot)
+                            adjust_database_value(bot, instigator, lootitem, -1)
                     else:
                         while int(quantity) > 0:
                             quantity = quantity - 1
                             uselootarray.append(lootitem)
+                            adjust_database_value(bot, instigator, lootitem, -1)
                     uselootarraytotal = len(uselootarray)
                     if int(uselootarraytotal) == 1 and lootitem != 'mysterypotion':
                         if target == instigator:
