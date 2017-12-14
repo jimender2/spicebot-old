@@ -782,7 +782,7 @@ def execute_main(bot, trigger):
                     specialtext = ''
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
-                    adjust_database_value(bot, instigator, 'mana', actualmanarequired)
+                    adjust_database_value(bot, instigator, 'mana', -abs(actualmanarequired))
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
                         manarequired = -abs(manarequired)
