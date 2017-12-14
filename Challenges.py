@@ -785,7 +785,7 @@ def execute_main(bot, trigger):
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
                     adjust_database_value(bot, instigator, 'mana', -abs(actualmanarequired))
-                    while int(quantity) > 1:
+                    while int(quantity) > 0:
                         if magicusage == 'instakill':
                             if int(quantity) > 1:
                                 adjust_database_value(bot, target, 'health', -1250)
