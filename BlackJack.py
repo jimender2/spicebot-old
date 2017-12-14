@@ -34,17 +34,3 @@ def deal(deck):
     if card == 14:card = "A"
     hand.append(card)
   return hand
-
-def total(hand):
-	total = 0
-		for card in hand:
-			if card == "J" or card == "Q" or card == "K":
-				total+= 10
-			elif card == "A":
-				if total >= 11:
-					total+= 1
-				else: 
-					total+= 11
-	    else:
-				total += card
-		return total
