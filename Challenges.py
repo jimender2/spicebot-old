@@ -41,19 +41,19 @@ statsbypassarray = ['winlossratio','timeout']
 ## null values ##
 #################
 
-displaymsg = 0
+displaymsg = ''
 dowedisplay = 0
-disenablevalue = 0
-targets = 0
-classes = 0
-script = 0
-stats = 0
-leaderboardscript = 0
-currentwlrleader = 0
-currentkillsleader = 0
-currentrespawnsleader = 0
-currenthealthleader = 0
-currentstreaksleader = 0
+disenablevalue = ''
+targets = ''
+classes = ''
+script = ''
+stats = ''
+leaderboardscript = ''
+currentwlrleader = ''
+currentkillsleader = ''
+currentrespawnsleader = ''
+currenthealthleader = ''
+currentstreaksleader = ''
 currentwlrleadernumber = 0
 currentkillsleadernumber = 0
 currentrespawnsleadernumber = 0
