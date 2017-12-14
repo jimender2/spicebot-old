@@ -109,9 +109,14 @@ def bank(bot, nick, target):
 
 def transfer(bot, channel, instigator, target, amount):
     success = 0
+    spicebucks = bot.db.get_nick_value(instigator, 'spicebucks_bank') or 0
     try:
         amount = int(amount)
-        success = 1
+        if amount <= spicebucks:
+            success =0
+            bot.say("You do not have enough spicebucks to make this transfer.")
+        else:
+            success = 1
     except:
         bot.say("I'm sorry, the amount you entered does not appear to be a number.")
         success = 0
@@ -123,7 +128,7 @@ def transfer(bot, channel, instigator, target, amount):
             if target.lower() not in bot.privileges[channel.lower()]:
                  bot.say("I'm sorry, I do not know who you want to transfer money to.")
             if target == instigator:
-                bot.say("You cannot transfer money to yourself!")
+                bot.say("You cannot transfer spicebucks to yourself!")
             else:
                 spicebucks(bot, instigator, 'minus', amount)
                 spicebucks(bot, target, 'plus', amount)
