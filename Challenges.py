@@ -24,6 +24,7 @@ ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
 changeclasscost = 100 ## ## how many coins to change class
+devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 
 ############
 ## Arrays ##
@@ -63,7 +64,7 @@ def execute_main(bot, trigger):
             allusersinroomarray.append(u)
             ## Users that can opt in/out of duels
             opttime = get_timesince_duels(bot, u, 'opttime')
-            if opttime < OPTTIMEOUT and not bot.nick.endswith('dev'):
+            if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
                 targetcantoptarray.append(u)
             # Users with duels enabled
             disenable = get_database_value(bot, u, 'disenable')
@@ -86,7 +87,7 @@ def execute_main(bot, trigger):
             if u in bot.config.core.admins:
                 adminsarray.append(u)
             classtime = get_timesince_duels(bot, u, 'classtimeout')
-            if classtime < CLASSTIMEOUT and not bot.nick.endswith('dev'):
+            if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
                 classcantchangearray.append(u)
             
 ## Array Totals
@@ -188,9 +189,9 @@ def execute_main(bot, trigger):
                 if x != instigator and x != bot.nick:
                     fullchanassaultarray.append(x)
             fullchanassaultarraytotal = len(fullchanassaultarray)
-            if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
+            if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
-            elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+            elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
@@ -224,9 +225,9 @@ def execute_main(bot, trigger):
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
             elif subcommand == 'assault':
-                if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
+                if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-                elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
+                elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
                 else:
                     bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
@@ -293,7 +294,7 @@ def execute_main(bot, trigger):
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif instigator in classcantchangearray and not bot.nick.endswith('dev'):
+            elif instigator in classcantchangearray and not bot.nick.endswith(devbot):
                 bot.say("You may not change your class more than once per day.")
             elif subcommand not in subcommandarray:
                 bot.say("Invalid command. Options are set or change.")
@@ -1079,19 +1080,19 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
         displaymsg = str(instigator + " Duels must be in channel.")
     elif target == bot.nick and not targetdisenable:
         displaymsg = str(instigator + " I refuse to fight a biological entity!")
-    elif instigator == channellastinstigator and not bot.nick.endswith('dev'):
+    elif instigator == channellastinstigator and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
-    elif target == instigatorlastfought and not bot.nick.endswith('dev'):
+    elif target == instigatorlastfought and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif not instigatordisenable:
         displaymsg = str(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.")
     elif not targetdisenable:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Challenges.')
-    elif instigatortime <= USERTIMEOUT and not bot.nick.endswith('dev'):
+    elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You can't challenge for %d seconds." % (USERTIMEOUT - instigatortime))
-    elif targettime <= USERTIMEOUT and not bot.nick.endswith('dev'):
+    elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str(target + " can't challenge for %d seconds." % (USERTIMEOUT - targettime))
-    elif channeltime <= CHANTIMEOUT and not bot.nick.endswith('dev'):
+    elif channeltime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str(channel + " can't challenge for %d seconds." % (CHANTIMEOUT - channeltime))
     else:
         displaymsg = ''
