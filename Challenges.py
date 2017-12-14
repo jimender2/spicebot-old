@@ -774,7 +774,7 @@ def execute_main(bot, trigger):
                     if targethealth <= 0:
                         whokilledwhom(bot, instigator, target)
                         magickilled = "This resulted in death."
-                    if magicusage == 'health':
+                    if magicusage == 'health' or magicusage == 'shield':
                         damageorhealth = "healing"
                         damageorhealthb = 'health'
                     displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(damagetext) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
