@@ -185,8 +185,8 @@ def execute_main(bot, trigger):
             fullchanassaultarray = canduelarray
             for x in canduelarray:
                 bot.say(str(x))
-            for x in canduelarray:
-                bot.say(str(fullchanassaultarray))
+            for x in fullchanassaultarray:
+                bot.say(str(x))
             fullchanassaultarraytotal = len(fullchanassaultarray)
             if instigator in fullchanassaultarray:
                 fullchanassaultarray.remove(instigator)
