@@ -188,12 +188,14 @@ def execute_main(bot, trigger):
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
+                bot.say(str(canduelarraytotal) + 'start')
                 for u in canduelarray:
-                    canduelarraytotal = canduelarraytotal - 1
+                    bot.say(str(canduelarraytotal) + u)
                     if u != instigator and u != bot.nick:
                         targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                         getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                         time.sleep(5)
+                        canduelarraytotal = canduelarraytotal - 1
                         if canduelarraytotal > 0:
                             bot.notice("  ", instigator)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
