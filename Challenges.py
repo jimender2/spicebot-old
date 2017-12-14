@@ -123,6 +123,7 @@ def execute_main(bot, trigger):
     lastfullroomassult = get_timesince_duels(bot, channel, 'lastfullroomassult') or ASSAULTTIMEOUT
     lastfullroomassultinstigator = get_database_value(bot, channel, 'lastfullroomassultinstigator') or bot.nick
     
+    ## The only commands that should get through if instigator doesn't have duels enabled
     commandbypassarray = ['on','off']
     
     ## If Not a target or a command used
@@ -176,7 +177,7 @@ def execute_main(bot, trigger):
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
             else:
-                target = get_trigger_arg(canduelarray, '$')
+                target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
@@ -214,37 +215,30 @@ def execute_main(bot, trigger):
 
         ## War Room
         elif commandortarget == 'warroom':
-            targets = ''
+            inchannel = "#bypass"
+            dowedisplay = 1
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if not subcommand:
                 if instigator in canduelarray:
                     bot.notice(instigator + ", It looks like you can challenge.", instigator)
                 else:
-                    inchannel = "#bypass"
-                    dowedisplay = 1
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
             elif subcommand == 'assault':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
-                    bot.notice("You may not instigate an allchan duel twice in a row.", instigator)
+                    bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
-                    bot.notice(" Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
                 else:
-                    bot.notice(" Full Channel Assault can be used.", instigator)
+                    bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
-                for x in canduelarray:
-                    if targets != '':
-                        targets = str(targets + ", " + x)
-                    else:
-                        targets = str(x)
-                bot.say(str(targets))
+                displaymessage = get_trigger_arg(triggerargsarray, "list")
+                bot.say(str(displaymessage ))
             elif subcommand.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
                 if subcommand in canduelarray:
                     bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
                 else:
-                    dowedisplay = 1
-                    inchannel = "#bypass"
                     mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
 
         ## Stats Admin
@@ -1640,9 +1634,15 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
-    elif str(number).endswith("$"):
+    elif number == 'random':
         randomselected = random.randint(0,len(triggerargsarray) - 1)
         triggerarg = str(triggerargsarray [randomselected])
+    elif number == 'list':
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg  = str(triggerarg  + ", " + x)
+            else:
+                triggerarg  = str(x)
     else:
         number = int(number) - 1
         try:
