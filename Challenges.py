@@ -186,13 +186,7 @@ def execute_main(bot, trigger):
             for x in canduelarray:
                 if x != instigator and x != bot.nick:
                     fullchanassaultarray.append(x)
-                bot.say(str(x))
-            for x in fullchanassaultarray:
-                bot.say(str(x))
             fullchanassaultarraytotal = len(fullchanassaultarray)
-            if instigator in fullchanassaultarray:
-                fullchanassaultarray.remove(instigator)
-                fullchanassaultarraytotal = fullchanassaultarraytotal - 1
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
