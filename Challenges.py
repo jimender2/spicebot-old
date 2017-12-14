@@ -397,7 +397,7 @@ def execute_main(bot, trigger):
         ## Leaderboard
         elif commandortarget == 'leaderboard':
             leaderboardscript, currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = None, None, None, None, None, None
-            currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = None, None, None, None, None
+            currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
                 winlossratio = get_winlossratio(bot,u)
