@@ -767,7 +767,7 @@ def execute_main(bot, trigger):
                 if magicusage == 'instakill':
                     actualmanarequired = int(manarequired)
                     if int(quantity) > 1:
-                        quantity = int(quantity) -1
+                        quantity = int(quantity) - 1
                         actualmanarequired = 1000 * int(quantity)
                         actualmanarequired = int(actualmanarequired) + int(manarequired)
                 else:
@@ -800,7 +800,7 @@ def execute_main(bot, trigger):
                             magicdeaths = magicdeaths + 1
                             whokilledwhom(bot, instigator, target)
                             if magicdeaths > 1:
-                                magickilled = str("This resulted in " + str(lootusedeaths) +" deaths.")
+                                magickilled = str("This resulted in " + str(magicdeaths) +" deaths.")
                             else:
                                 magickilled = "This resulted in death."
                         if magicusage == 'health' or magicusage == 'shield':
