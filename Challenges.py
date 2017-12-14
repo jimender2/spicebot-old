@@ -473,6 +473,8 @@ def execute_main(bot, trigger):
                     bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                 elif target.lower() not in allusersinroomarray:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                elif target == bot.nick:
+                  bot.notice(instigator + ", I am immune to " + lootitem, instigator)
                 elif target.lower() not in dueloptedinarray:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                 else:
