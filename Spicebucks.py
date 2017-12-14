@@ -109,19 +109,23 @@ def bank(bot, nick, target):
 
 def transfer(bot, channel, instigator, target, amount):
     success = 0
-    spicebucks = bot.db.get_nick_value(instigator, 'spicebucks_bank') or 0
+    spicebucktotal = bot.db.get_nick_value(instigator, 'spicebucks_bank') or 0
     try:
         amount = int(amount)
-        if amount <= spicebucks:
-            success = 0
-            bot.say("You do not have enough spicebucks to make this transfer.")
-        else:
-            success = 1
+        success = 1
     except:
         bot.say("I'm sorry, the amount you entered does not appear to be a number.")
         success = 0
     
     if success == 1:
+        bot.say(spicebucktotal)
+        if amount <= spicebucktotal:
+            validamount = 0
+            bot.say("You do not have enough spicebucks to make this transfer.")
+        else:
+            validamount = 1
+    
+    if success == 1 and validamount = 1:
         if amount <= 0:
             bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
         else:
