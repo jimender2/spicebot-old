@@ -118,8 +118,8 @@ def transfer(bot, channel, instigator, target, amount):
         success = 0
     
     if success == 1:
-        bot.say(spicebucktotal)
-        if amount <= spicebucktotal:
+        bot.say(str(spicebucktotal))
+        if amount >= spicebucktotal:
             validamount = 0
             bot.say("You do not have enough spicebucks to make this transfer.")
         else:
