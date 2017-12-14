@@ -43,7 +43,7 @@ statsbypassarray = ['winlossratio','timeout']
 #################
 
 displaymsg = ''
-dowedisplay = ''
+dowedisplay = 0
 disenablevalue = ''
 targets = ''
 classes = ''
@@ -55,11 +55,11 @@ currentkillsleader = ''
 currentrespawnsleader = ''
 currenthealthleader = ''
 currentstreaksleader = ''
-currentwlrleadernumber = ''
-currentkillsleadernumber = ''
-currentrespawnsleadernumber = ''
+currentwlrleadernumber = 0
+currentkillsleadernumber = 0
+currentrespawnsleadernumber = 0
 currenthealthleadernumber = 9999999999
-currentstreaksleadernumber = ''
+currentstreaksleadernumber = 0
                 
 #################
 ## null arrays ##
@@ -187,10 +187,9 @@ def execute_main(bot, trigger):
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
+            disenablevalue = None
             if commandortarget == 'on':
                 disenablevalue = 1
-            else:
-                disenablevalue = None
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
