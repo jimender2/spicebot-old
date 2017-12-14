@@ -532,7 +532,7 @@ def execute_main(bot, trigger):
                             nullloot = get_trigger_arg(nulllootitemsarray, 'random')
                             lootusemsg = str("It turned out to be just " + str(nullloot) + ' after all.')
                         if lootitem == 'mysterypotion':
-                            if lootusemsg = ''
+                            if lootusemsg = '':
                                 lootusemsg = str("It was a " + str(x) + "!")
                             bot.notice(instigator + ",  used a mysterypotion on " + target + " " + lootusemsg, instigator)
                             if target != instigator:
