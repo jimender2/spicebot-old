@@ -494,15 +494,15 @@ def execute_main(bot, trigger):
                     uselootarraytotal = len(uselootarray)
                     if int(uselootarraytotal) == 1 and lootitem != 'mysterypotion':
                         if target == instigator:
-                            mainlootusemessage = str(instigator + ' uses ' + loottype + '.')
+                            mainlootusemessage = str(instigator + ' uses ' + lootitem + '.')
                         else:
-                            mainlootusemessage = str(instigator + ' uses ' + loottype + ' on ' + target + ".")
+                            mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + ".")
                         if target != instigator:
-                            notifytargetmessage = str(instigator + " used a " + loottype + " on you.")
+                            notifytargetmessage = str(instigator + " used a " + lootitem + " on you.")
                     elif int(uselootarraytotal) > 1 and lootitem != 'mysterypotion':
                         mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                         if target != instigator:
-                            notifytargetmessage = str(instigator + " used " + str(quantity) + " " + loottype + "s on you.")
+                            notifytargetmessage = str(instigator + " used " + str(quantity) + " " + lootitem + "s on you.")
                     else:
                         mainlootusemessage = ''
                         notifytargetmessage = ''
