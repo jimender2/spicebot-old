@@ -286,12 +286,7 @@ def execute_main(bot, trigger):
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
-            classes = ''
-            for x in classarray:
-                if classes != '':
-                    classes = str(classes + ", " + x)
-                else:
-                    classes = str(x)
+            classes = get_trigger_arg(classarray, "list")
             subcommand = get_trigger_arg(triggerargsarray, 2)
             setclass = get_trigger_arg(triggerargsarray, 3)
             if not instigatorclass and not subcommand:
@@ -322,7 +317,6 @@ def execute_main(bot, trigger):
 
         ## Streaks
         elif commandortarget == 'streaks':
-            script = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -341,19 +335,18 @@ def execute_main(bot, trigger):
                 else:
                     streak_count = 0
                 if streak_count > 1 and streak_type != 'none':
-                    script = str(script + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
+                    displaymessage = str(displaymessage + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
                 if int(best_wins) > 1:
-                    script = str(script + "Best Win streak= " + str(best_wins) + ".     ")
+                    displaymessage = str(displaymessage + "Best Win streak= " + str(best_wins) + ".     ")
                 if int(worst_losses) > 1:
-                    script = str(script + "Worst Losing streak= " + str(worst_losses) + ".     ")
-                if script == '':
+                    displaymessage = str(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".     ")
+                if displaymessage == '':
                     bot.say(target + " has no streaks.")
                 else:
-                    bot.say(target + "'s streaks: " + script)
+                    bot.say(target + "'s streaks: " + displaymessage)
             
         ## Backpack
         elif commandortarget == 'backpack':
-            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -367,16 +360,15 @@ def execute_main(bot, trigger):
                         gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                        stats = str(stats + addstat)
-                if stats != '':
-                    stats = str(target + "'s " + commandortarget + ":" + stats)
-                    bot.say(stats)
+                        displaymessage = str(displaymessage + addstat)
+                if displaymessage != '':
+                    displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
+                    bot.say(displaymessage)
                 else:
                     bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             
         ## Stats
         elif commandortarget == 'stats':
-            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -393,18 +385,18 @@ def execute_main(bot, trigger):
                         if x == 'winlossratio':
                             gethowmany = format(gethowmany, '.3f')
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                        stats = str(stats + addstat)
-                if stats != '':
+                        displaymessage = str(displaymessage + addstat)
+                if displaymessage != '':
                     pepper = get_pepper(bot, target)
                     targetname = str("(" + str(pepper) + ") " + target)
-                    stats = str(targetname + "'s " + commandortarget + ":" + stats)
-                    bot.say(stats)
+                    displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
+                    bot.say(displaymessage)
                 else:
                     bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
-            leaderboardscript, currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', '', ''
+            currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
@@ -430,18 +422,18 @@ def execute_main(bot, trigger):
                     currentstreaksleadernumber = int(streaks)
             if currentwlrleadernumber > 0:
                 currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
-                leaderboardscript = str(leaderboardscript + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
+                displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
             if currentkillsleadernumber > 0:
-                leaderboardscript = str(leaderboardscript + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
+                displaymessage = str(displaymessage + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
             if currentrespawnsleadernumber > 0:
-                leaderboardscript = str(leaderboardscript + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
+                displaymessage = str(displaymessage + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
             if currenthealthleadernumber > 0:
-                leaderboardscript = str(leaderboardscript + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
+                displaymessage = str(displaymessage + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
             if currentstreaksleadernumber > 0:
-                leaderboardscript = str(leaderboardscript + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
-            if leaderboardscript == '':
-                leaderboardscript = str("Leaderboard appears to be empty")
-            bot.say(leaderboardscript)
+                displaymessage = str(displaymessage + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
+            if displaymessage == '':
+                displaymessage = str("Leaderboard appears to be empty")
+            bot.say(displaymessage)
 
         ## Loot Items 
         elif commandortarget == 'loot':
@@ -450,7 +442,9 @@ def execute_main(bot, trigger):
             lootitemb = get_trigger_arg(triggerargsarray, 4)
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem)
-            if lootcommand not in transactiontypesarray:
+            if not lootcommand:
+                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+            elif lootcommand not in transactiontypesarray:
                 bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
             elif not lootitem:
                 bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
@@ -480,20 +474,73 @@ def execute_main(bot, trigger):
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target.lower() not in dueloptedinarray:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-                else:   
-                    if int(quantity) == 1:
-                        saymsg = 'true'
-                        use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
-                    elif lootitem == 'mysterypotion' and int(quantity) > 1 and inchannel.startswith("#"):
-                        bot.notice(instigator + ", Multiple mysterypotions must be used in privmsg.", instigator)
-                    else:
-                        saymsg = 'false'
-                        if lootitem == 'mysterypotion' or not inchannel.startswith("#"):
-                            saymsg = 'true'
+                else:
+                    targethealth = get_database_value(bot, target, 'health') or 0
+                    targetmana = get_database_value(bot, target, 'mana') or 0
+                    targetclass = get_database_value(bot, target, 'class') or 'notclassy'
+                    if not targethealth:
+                        set_database_value(bot, target, 'health', 1000)
+                        targethealth = get_database_value(bot, target, 'health')
+                    uselootarray = []
+                    if lootitem == 'mysterypotion':
                         while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            use_lootitem(bot, instigator, target, inchannel, lootitem, saymsg)
-                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                            quantity = quantity - 1
+                            loot = get_trigger_arg(lootitemsarray, 'random')
+                            uselootarray.append(loot)
+                    else:
+                        while int(quantity) > 0:
+                            quantity = quantity - 1
+                            uselootarray.append(lootitem)
+                    uselootarraytotal = len(uselootarray)
+                    if int(uselootarraytotal) == 1 and lootitem != 'mysterypotion':
+                        if target == instigator:
+                                mainlootusemessage = str(instigator + ' uses ' + loottype + '.')
+                            else:
+                                mainlootusemessage = str(instigator + ' uses ' + loottype + ' on ' + target + ".")
+                        if target != instigator:
+                            notifytargetmessage = str(instigator + " used a " + loottype + " on you.")
+                    elif int(uselootarraytotal) > 1 and lootitem != 'mysterypotion':
+                        mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                        if target != instigator:
+                            notifytargetmessage = str(instigator + " used " + str(quantity) + " " + loottype + "s on you.")
+                    else:
+                        mainlootusemessage = ''
+                        notifytargetmessage = ''
+                    for x in uselootarray:
+                        lootusemsg = ''
+                        if x == 'healthpotion':
+                            if targetclass == 'barbarian':
+                                adjust_database_value(bot, target, 'health', 125)
+                            else:
+                                adjust_database_value(bot, target, 'health', 100)
+                        elif x == 'poisonpotion':
+                            if targetclass != 'rogue':
+                                adjust_database_value(bot, target, 'health', -50)
+                        elif x == 'manapotion':
+                            if targetclass == 'mage':
+                                adjust_database_value(bot, target, 'mana', 125)
+                            else:
+                                adjust_database_value(bot, target, 'mana', 100)
+                        elif x == 'timepotion':
+                            channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or bot.nick
+                            if channellastinstigator == target:
+                                set_database_value(bot, channel, 'lastinstigator', None)
+                            set_database_value(bot, target, 'timeout', None)
+                            set_database_value(bot, channel, 'timeout', None)
+                        else:
+                            nulllootitemsarray = ['water','vinegar','mud']
+                            nullloot = get_trigger_arg(nulllootitemsarray, 'random')
+                            lootusemsg = str("It turned out to be just " + str(nullloot) + ' after all.')
+                        if lootitem == 'mysterypotion':
+                            if lootusemsg = ''
+                                lootusemsg = str("It was a " + str(x) + "!")
+                            bot.notice(instigator + ",  used a mysterypotion on " + target + " " + lootusemsg, instigator)
+                            if target != instigator:
+                                bot.notice(instigator + " used a mysterypotion on you. " + lootusemsg, target)
+                    if lootitem != 'mysterypotion':
+                        bot.say(mainlootusemessage)
+                        if target != instigator and not inchannel.startswith("#"):
+                            bot.notice(instigator + " " + notifytargetmessage + " " + lootusemsg, target)
             elif lootcommand == 'trade':
                 quantity = lootitemc
                 if not quantity:
