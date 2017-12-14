@@ -565,7 +565,7 @@ def execute_main(bot, trigger):
                 quantity = lootitemc
                 if not quantity:
                     quantity = 1
-                if yourclass == 'scavenger':
+                if instigatorclass == 'scavenger':
                     quantitymath = 2 * int(quantity)
                 else:
                     quantitymath = 3 * int(quantity)
@@ -580,7 +580,7 @@ def execute_main(bot, trigger):
                 else:
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
-                        if yourclass == 'scavenger':
+                        if instigatorclass == 'scavenger':
                             cost = -2
                         else:
                             cost = -3
@@ -596,7 +596,7 @@ def execute_main(bot, trigger):
                     quantity = 1
                 elif quantity == 'all':
                     quantity = 99999999999999999
-                if yourclass == 'scavenger':
+                if instigatorclass == 'scavenger':
                     coinsrequired = 90 * int(quantity)
                 else:
                     coinsrequired = 100 * int(quantity)
@@ -605,7 +605,7 @@ def execute_main(bot, trigger):
                 else:
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
-                        if yourclass == 'scavenger':
+                        if instigatorclass == 'scavenger':
                             cost = -90
                         else:
                             cost = -100
@@ -627,7 +627,7 @@ def execute_main(bot, trigger):
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
                         cost = -1
-                        if yourclass == 'scavenger':
+                        if instigatorclass == 'scavenger':
                             reward = 30
                         else:
                             reward = 25
@@ -1270,7 +1270,7 @@ def randominventory(bot, instigator):
     if yourclass == 'scavenger':
         randomfindchance = randint(40, 120)
     else:
-        randomfindchance = diceroll(120)
+        randomfindchance = randint(0, 120)
     randominventoryfind = 'false'
     if randomfindchance >= 90:
         randominventoryfind = 'true'
@@ -1498,7 +1498,7 @@ def getwinner(bot, instigator, target, manualweapon):
         if targetyourclass == 'rogue':
             instigatorfightroll = randint(10, 20)
         else:
-            instigatorfightroll = diceroll(20)
+            instigatorfightroll = randint(0, 20)
         instigatorfightarray.append(instigatorfightroll)
         instigatorfight = int(instigatorfight) - 1
     instigatorfight = max(instigatorfightarray)
@@ -1506,7 +1506,7 @@ def getwinner(bot, instigator, target, manualweapon):
         if targetyourclass == 'rogue':
             targetfightroll = randint(10, 22)
         else:
-            targetfightroll = diceroll(19)
+            targetfightroll = randint(0, 19)
         targetfightarray.append(targetfightroll)
         targetfight = int(targetfight) - 1
     targetfight = max(targetfightarray)
@@ -1584,14 +1584,6 @@ def get_winlossratio(bot,target):
     else:
         winlossratio = float(wins)/losses
     return winlossratio
-
-###########
-## Tools ##
-###########
-
-def diceroll(howmanysides):
-    diceroll = randint(0, howmanysides)
-    return diceroll
 
 ##########
 ## ARGS ##
