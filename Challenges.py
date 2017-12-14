@@ -396,30 +396,31 @@ def execute_main(bot, trigger):
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
-            currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
-            currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
-            currenthealthleadernumber = 9999999999
+            learderboardcheckarray = ['winlossratio','kills','respawns','health','bestwinstreak']
+            for x in learderboardcheckarray:
+                emptystatleader = str('current' + x + "leader = ''")
+                if x == 'health':
+                    emptystatvalue = str('current' + x + "leadernumber = 9999999999")
+                else:
+                    emptystatvalue = str('current' + x + "leadernumber = 0")
+                eval(emptystatleader)
+                eval(emptystatvalue)
             for u in dueloptedinarray:
-                winlossratio = get_winlossratio(bot,u)
-                if winlossratio > currentwlrleadernumber:
-                    currentwlrleader = u
-                    currentwlrleadernumber = winlossratio
-                kills = get_database_value(bot, u, 'kills')
-                if int(kills) > int(currentkillsleadernumber):
-                    currentkillsleader = u
-                    currentkillsleadernumber = int(kills)
-                respawns = get_database_value(bot, u, 'respawns')
-                if int(respawns) > int(currentrespawnsleadernumber):
-                    currentrespawnsleader = u
-                    currentrespawnsleadernumber = int(respawns)
-                health = get_database_value(bot, u, 'health')
-                if int(health) < int(currenthealthleadernumber) and int(health) != 0:
-                    currenthealthleader = u
-                    currenthealthleadernumber = int(health)
-                streaks = get_database_value(bot, u, 'bestwinstreak')
-                if int(streaks) > int(currentstreaksleadernumber):
-                    currentstreaksleader = u
-                    currentstreaksleadernumber = int(streaks)
+                for x in learderboardcheckarray:
+                    currentstatleader = eval(str('current' + x + "leader"))
+                    currentstatvalue = eval(str('current' + x + "leadernumber"))
+                    if x == 'winlossratio':
+                        stattocheck = get_winlossratio(bot,u)
+                    else:
+                        stattocheck = get_database_value(bot, u, x)
+                    if x == 'health':
+                        if int(stattocheck) < int(currentstatvalue):
+                            eval(str('current' + x + "leader = " + u))
+                            eval(str('current' + x + "leadernumber = " + stattocheck))
+                    else:
+                        if int(stattocheck) > int(currentstatvalue):
+                            eval(str('current' + x + "leader = " + u))
+                            eval(str('current' + x + "leadernumber = " + stattocheck))
             if currentwlrleadernumber > 0:
                 currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                 displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
