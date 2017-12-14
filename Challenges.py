@@ -205,7 +205,7 @@ def execute_main(bot, trigger):
 
         ## War Room
         elif commandortarget == 'warroom':
-            targets = None
+            targets = ''
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if not subcommand:
                 if instigator in canduelarray:
@@ -223,7 +223,7 @@ def execute_main(bot, trigger):
                     bot.notice(" Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
                 for x in canduelarray:
-                    if targets != None:
+                    if targets != '':
                         targets = str(targets + ", " + x)
                     else:
                         targets = str(x)
@@ -278,9 +278,9 @@ def execute_main(bot, trigger):
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
-            classes = None
+            classes = ''
             for x in classarray:
-                if classes != None:
+                if classes != '':
                     classes = str(classes + ", " + x)
                 else:
                     classes = str(x)
@@ -314,7 +314,7 @@ def execute_main(bot, trigger):
 
         ## Streaks
         elif commandortarget == 'streaks':
-            script = None
+            script = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -338,14 +338,14 @@ def execute_main(bot, trigger):
                     script = str(script + "Best Win streak= " + str(best_wins) + ".     ")
                 if int(worst_losses) > 1:
                     script = str(script + "Worst Losing streak= " + str(worst_losses) + ".     ")
-                if script == None:
+                if script == '':
                     bot.say(target + " has no streaks.")
                 else:
                     bot.say(target + "'s streaks: " + script)
             
         ## Backpack
         elif commandortarget == 'backpack':
-            stats = None
+            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -360,7 +360,7 @@ def execute_main(bot, trigger):
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
-                if stats != None:
+                if stats != '':
                     stats = str(target + "'s " + commandortarget + ":" + stats)
                     bot.say(stats)
                 else:
@@ -368,7 +368,7 @@ def execute_main(bot, trigger):
             
         ## Stats
         elif commandortarget == 'stats':
-            stats = None
+            stats = ''
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -386,7 +386,7 @@ def execute_main(bot, trigger):
                             gethowmany = format(gethowmany, '.3f')
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         stats = str(stats + addstat)
-                if stats != None:
+                if stats != '':
                     pepper = get_pepper(bot, target)
                     targetname = str("(" + str(pepper) + ") " + target)
                     stats = str(targetname + "'s " + commandortarget + ":" + stats)
@@ -396,7 +396,7 @@ def execute_main(bot, trigger):
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
-            leaderboardscript, currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = None, None, None, None, None, None
+            leaderboardscript, currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', '', ''
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
