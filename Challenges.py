@@ -113,7 +113,7 @@ def execute_main(bot, trigger):
     
     ## Instigator Information
     instigator = trigger.nick
-    adjust_botdatabase_value(bot, instigator, 'usage', 1)
+    adjust_database_value(bot, instigator, 'usage', 1)
     healthcheck(bot, instigator)
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or USERTIMEOUT
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
@@ -121,7 +121,7 @@ def execute_main(bot, trigger):
     instigatorclass = get_database_value(bot, instigator, 'class')
 
     ## Channel Information
-    adjust_botdatabase_value(bot, channel, 'usage', 1)
+    adjust_database_value(bot, channel, 'usage', 1)
     channeltime = get_timesince_duels(bot, channel, 'timeout') or CHANTIMEOUT
     channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or bot.nick
     lastfullroomassult = get_timesince_duels(bot, channel, 'lastfullroomassult') or ASSAULTTIMEOUT
