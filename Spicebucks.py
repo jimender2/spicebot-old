@@ -123,7 +123,7 @@ def transfer(bot, channel, instigator, target, amount):
             if target.lower() not in bot.privileges[channel.lower()]:
                  bot.say("I'm sorry, I do not know who you want to transfer money to.")
             if target == instigator:
-                bot.say("You cannot transfer money to yourself!"
+                bot.say("You cannot transfer money to yourself!")
             else:
                 spicebucks(bot, instigator, 'minus', amount)
                 spicebucks(bot, target, 'plus', amount)
