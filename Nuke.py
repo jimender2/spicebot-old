@@ -12,6 +12,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    commandused = trigger.group(1)
     if commandused == 'nuke':
         bot.say("Nuke it from orbit... it's the only way to be sure?")
     elif commandused == 'killit':
