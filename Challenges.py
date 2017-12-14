@@ -182,8 +182,10 @@ def execute_main(bot, trigger):
         
         ## Duel Everyone displaymessage
         elif commandortarget == 'everyone':
-            fullchanassaultarray = canduelarray
+            fullchanassaultarray = []
             for x in canduelarray:
+                if x != instigator and x != bot.nick:
+                    fullchanassaultarray.append(x)
                 bot.say(str(x))
             for x in fullchanassaultarray:
                 bot.say(str(x))
