@@ -246,7 +246,7 @@ def execute_main(bot, trigger):
             incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
             target = get_trigger_arg(triggerargsarray, 2)
             subcommand = get_trigger_arg(triggerargsarray, 3)
-            stat = get_trigger_arg(triggerargsarray, 4)
+            statset = get_trigger_arg(triggerargsarray, 4)
             newvalue = get_trigger_arg(triggerargsarray, 5) or None
             if not target:
                 bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
@@ -256,9 +256,9 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
             elif subcommand not in statsadminchangearray:
                 bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
-            elif not stat:
+            elif not statset:
                 bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
-            elif stat not in challengestatsadminarray and stat != 'all':
+            elif statset not in challengestatsadminarray and statset != 'all':
                 bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
             elif instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
