@@ -17,10 +17,10 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
   bot.say(str(len(deck)))
-  myhand,mydeck = deal(deck)
+  myhand = deal(deck)
   #dealerhand,dealerdeck = deal(deck)
   bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-  bot.say(str(len(mydeck)))
+  bot.say(str(len(deck)))
 
 def deal(deck):
   hand = []
@@ -32,4 +32,4 @@ def deal(deck):
     if card == 13:card = "K"
     if card == 14:card = "A"
     hand.append(card)
-  return hand, deck
+  return hand
