@@ -39,22 +39,6 @@ classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
 statsbypassarray = ['winlossratio','timeout']
              
-#################
-## null arrays ##
-#################
-
-targetarray = []
-botownerarray = []
-operatorarray = []
-voicearray = []
-adminsarray = []
-allusersinroomarray = []
-dueloptedinarray = []
-channelarray = []
-targetcantoptarray = []
-canduelarray = []
-classcantchangearray = []
-
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
 ################################################################################
@@ -69,6 +53,7 @@ def execute_main(bot, trigger):
     dowedisplay = 0
     
     ## Build User/channel Arrays
+    targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
     for c in bot.channels:
         channelarray.append(c)
         inchannel = "#bypass"
