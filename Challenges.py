@@ -789,7 +789,7 @@ def execute_main(bot, trigger):
                         if magicusage == 'instakill':
                             targethealthcurrent = get_database_value(bot, target, 'health')
                             adjust_database_value(bot, target, 'health', -abs(targethealthcurrent))
-                            damagedealt = int(damagedealt) + targethealthcurrent
+                            damagedealt = int(damagedealt) + int(targethealthcurrent)
                         else:
                             adjust_database_value(bot, target, 'health', int(damage))
                             damagedealt = int(damagedealt) + int(abs(damage))
