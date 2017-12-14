@@ -11,7 +11,7 @@ from SpicebotShared import *
 cards= ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King']
 
 
-@sopel.module.commands('roulette', 'spin')
+@sopel.module.commands('dealme')
 def mainfunction(bot, trigger):
   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
   if not enablestatus:
