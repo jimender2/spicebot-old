@@ -42,24 +42,24 @@ statsbypassarray = ['winlossratio','timeout']
 ## null values ##
 #################
 
-displaymsg = None
-dowedisplay = None
-disenablevalue = None
-targets = None
-classes = None
-script = None
-stats = None
-leaderboardscript = None
-currentwlrleader = None
-currentkillsleader = None
-currentrespawnsleader = None
-currenthealthleader = None
-currentstreaksleader = None
-currentwlrleadernumber = None
-currentkillsleadernumber = None
-currentrespawnsleadernumber = None
+displaymsg = ''
+dowedisplay = ''
+disenablevalue = ''
+targets = ''
+classes = ''
+script = ''
+stats = ''
+leaderboardscript = ''
+currentwlrleader = ''
+currentkillsleader = ''
+currentrespawnsleader = ''
+currenthealthleader = ''
+currentstreaksleader = ''
+currentwlrleadernumber = ''
+currentkillsleadernumber = ''
+currentrespawnsleadernumber = ''
 currenthealthleadernumber = 9999999999
-currentstreaksleadernumber = None
+currentstreaksleadernumber = ''
                 
 #################
 ## null arrays ##
@@ -83,8 +83,6 @@ classcantchangearray = []
 
 @sopel.module.commands('challenge','duel')
 def execute_main(bot, trigger):
-    
-    bot.say(str(classcantchangearray))
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
