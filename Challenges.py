@@ -767,16 +767,12 @@ def execute_main(bot, trigger):
                     manarequired = manarequired * .9
                 if magicusage == 'instakill':
                     actualmanarequired = int(manarequired)
-                    actualdamage = int(damage)
                     if int(quantity) > 1:
                         quantity = int(quantity) - 1
                         quantityadjust = 1000 * int(quantity)
                         actualmanarequired = int(quantityadjust) + int(manarequired)
-                        actualdamage = int(quantityadjust) + int(actualdamage)
                 else:
-                    actualdamage = int(damage) * int(quantity)
                     actualmanarequired = int(manarequired) * int(quantity)
-                damagetext = abs(actualdamage)
                 targethealthstart = get_database_value(bot, target, 'health')
                 if int(actualmanarequired) > int(mana):
                     manamath = int(int(actualmanarequired) - int(mana))
@@ -790,6 +786,17 @@ def execute_main(bot, trigger):
                     damageorhealthb = 'damage'
                     adjust_database_value(bot, instigator, 'mana', -abs(actualmanarequired))
                     while int(quantity) > 0:
+                        damagedealt = int(damagedealt) + int(damage)
+                        if magicusage == 'instakill':
+                            if int(quantity) > 1:
+                                adjust_database_value(bot, target, 'health', -1250)
+                                damagedealt = int(damagedealt) + 1250
+                            else:
+                                damagedealt = int(damagedealt) + int(abs(damage))
+                                adjust_database_value(bot, target, 'health', int(damage))
+                        else:
+                            adjust_database_value(bot, target, 'health', int(damage))
+                            damagedealt = int(damagedealt) + int(abs(damage))
                         quantity = int(quantity) - 1
                         manarequired = -abs(manarequired)
                         adjust_database_value(bot, target, 'health', damage)
@@ -812,8 +819,10 @@ def execute_main(bot, trigger):
                         if magicusage == 'health' or magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
-                        damagedealt = int(damagedealt) + int(damage)
-                    displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(damagedealt) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
+                    if instigator == target:
+                        displaymsg = str(instigator + " uses magic " + magicusage + " " + damageorhealth + " " + str(abs(damagedealt)) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
+                    else:
+                        displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(abs(damagedealt)) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
                     bot.say(str(displaymsg))
                     if not inchannel.startswith("#") and target != instigator:
                         bot.notice(str(displaymsg), target)
