@@ -503,9 +503,9 @@ def execute_main(bot, trigger):
                         if not inchannel.startswith("#"):
                             mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.")
                         else:
-                            mainlootusemessage = str(instigator + " used " + str(quantity) + " " + lootitem + "s on " + target +".")
+                            mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
                         if target != instigator:
-                            notifytargetmessage = str(instigator + " used " + str(quantity) + " " + lootitem + "s on you.")
+                            notifytargetmessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on you.")
                     else:
                         mainlootusemessage = ''
                         notifytargetmessage = ''
