@@ -714,11 +714,11 @@ def execute_main(bot, trigger):
             
         ## If not a command above, invalid
         else:
-            bot.notice(instigator + ", It looks like that is either not here, or not a valid person.", instigator)
+            bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
     
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in dueloptedinarray:
-        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+        bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
       
     else:
         OSDTYPE = 'say'
