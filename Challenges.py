@@ -127,7 +127,7 @@ def execute_main(bot, trigger):
         bot.notice(instigator + ", Who did you want to challenge? Online Docs: " + GITWIKIURL, instigator)
     
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in allusersinroomarray:
+    elif commandortarget.lower() not in allusersinroomarray.lower():
 
 ## Fix Me! Doesn't make any sense any more for this to be outside the "subcommands"
 ########## Random Target
