@@ -189,6 +189,8 @@ def execute_main(bot, trigger):
         elif commandortarget == 'on' or commandortarget == 'off':
             if commandortarget == 'on':
                 disenablevalue = 1
+            else:
+              disenablevalue = None
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             if target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + targettext + " is either not here, or not a valid person.", instigator)
