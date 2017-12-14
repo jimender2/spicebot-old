@@ -192,8 +192,9 @@ def execute_main(bot, trigger):
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
             else:
-                randomselected = random.randint(0,len(canduelarray) - 1)
-                target = str(canduelarray [randomselected])
+                #randomselected = random.randint(0,len(canduelarray) - 1)
+                #target = str(canduelarray [randomselected])
+                target = get_trigger_arg(triggerargsarray, '$')
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
