@@ -709,7 +709,10 @@ def execute_main(bot, trigger):
             mana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
             target = get_trigger_arg(triggerargsarray, 3)
-            if target.isdigit():
+            if not target:
+                target = instigator
+                quantity = 1
+            elif target.isdigit():
                 quantity = get_trigger_arg(triggerargsarray, 3)
                 target = instigator
             else:
@@ -760,7 +763,6 @@ def execute_main(bot, trigger):
                         manarequired = targethealthstart / 200
                         manarequired = manarequired * 250
                     damage = -abs(targethealthstart)
-                
                 if instigatorclass == 'mage':
                     manarequired = manarequired * .9
                 if magicusage == 'instakill':
@@ -768,10 +770,9 @@ def execute_main(bot, trigger):
                     actualdamage = int(damage)
                     if int(quantity) > 1:
                         quantity = int(quantity) - 1
-                        actualmanarequireda = 1000 * int(quantity)
-                        actualmanarequired = int(actualmanarequireda) + int(manarequired)
-                        actualdamagea = 1000 * int(quantity)
-                        actualdamage = int(actualdamagea) + int(actualdamage)
+                        quantityadjust = 1000 * int(quantity)
+                        actualmanarequired = int(quantityadjust) + int(manarequired)
+                        actualdamage = int(quantityadjust) + int(actualdamage)
                 else:
                     actualdamage = int(damage) * int(quantity)
                     actualmanarequired = int(manarequired) * int(quantity)
@@ -781,6 +782,7 @@ def execute_main(bot, trigger):
                     manamath = int(int(actualmanarequired) - int(mana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
                 else:
+                    damagedealt = 0
                     magickilled = ''
                     magicdeaths = 0
                     specialtext = ''
@@ -810,7 +812,8 @@ def execute_main(bot, trigger):
                         if magicusage == 'health' or magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
-                    displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(damagetext) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
+                        damagedealt = int(damagedealt) + int(damage)
+                    displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(damagedealt) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
                     bot.say(str(displaymsg))
                     if not inchannel.startswith("#") and target != instigator:
                         bot.notice(str(displaymsg), target)
