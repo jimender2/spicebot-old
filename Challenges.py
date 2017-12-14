@@ -84,8 +84,8 @@ def execute_main(bot, trigger):
             if u != bot.nick and disenable:
                 dueloptedinarray.append(u)
             # Target passes all duel checks
-            canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, c, dowedisplay)
-            if canduel:
+            canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, c, dowedisplay)
+            if canduel and u != bot.nick:
                 canduelarray.append(u)
             ## Bot Owner (probably will only ever be one)
             if u.lower() in bot.config.core.owner.lower():
@@ -192,8 +192,6 @@ def execute_main(bot, trigger):
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
             else:
-                #randomselected = random.randint(0,len(canduelarray) - 1)
-                #target = str(canduelarray [randomselected])
                 target = get_trigger_arg(canduelarray, '$')
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
