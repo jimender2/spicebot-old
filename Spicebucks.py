@@ -113,7 +113,7 @@ def transfer(bot, channel, instigator, target, amount):
     try:
         amount = int(amount)
         if amount <= spicebucks:
-            success =0
+            success = 0
             bot.say("You do not have enough spicebucks to make this transfer.")
         else:
             success = 1
