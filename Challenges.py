@@ -177,6 +177,7 @@ def execute_main(bot, trigger):
         elif commandortarget == 'everyone':
             if instigator in canduelarray:
                 canduelarray.remove(instigator)
+                canduelarraytotal = canduelarraytotal - 1
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
