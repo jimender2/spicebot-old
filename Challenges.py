@@ -788,7 +788,7 @@ def execute_main(bot, trigger):
                     while int(quantity) > 0:
                         if magicusage == 'instakill':
                             targethealthcurrent = get_database_value(bot, target, 'health')
-                            adjust_database_value(bot, target, 'health', -abs(targethealthcurrent))
+                            adjust_database_value(bot, target, 'health', -abs(int(targethealthcurrent)))
                             damagedealt = int(damagedealt) + int(targethealthcurrent)
                         else:
                             adjust_database_value(bot, target, 'health', int(damage))
@@ -1146,8 +1146,8 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 
 def whokilledwhom(bot, winner, loser):
     ## Reset mana and health
-    set_database_value(bot, loser, 'mana', '')
-    set_database_value(bot, loser, 'health', '1000')
+    set_database_value(bot, loser, 'mana', None)
+    set_database_value(bot, loser, 'health', 1000)
     ## update kills/deaths
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
