@@ -53,7 +53,7 @@ def execute_main(bot, trigger):
     dowedisplay = 0
     
     ## Build User/channel Arrays
-    targetarray, fullroomassultarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], [], []
+    targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
     for c in bot.channels:
         channelarray.append(c)
         inchannel = "#bypass"
@@ -72,8 +72,6 @@ def execute_main(bot, trigger):
             canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, c, dowedisplay)
             if canduel and u != bot.nick:
                 canduelarray.append(u)
-            if canduel and u != bot.nick and u != instigator:
-                fullroomassultarray..append(u)
             ## Bot Owner (probably will only ever be one)
             if u.lower() in bot.config.core.owner.lower():
                 botownerarray.append(u)
@@ -100,7 +98,6 @@ def execute_main(bot, trigger):
     dueloptedinarraytotal = len(dueloptedinarray)
     allusersinroomarraytotal = len(allusersinroomarray)
     channelarraytotal = len(channelarray)
-    fullroomassultarraytotal = len(channelarray)
         
 ###### Channel (assumes only one channel,,, need to fix somehow someday)
     channel = get_trigger_arg(channelarray, 1)
@@ -178,24 +175,26 @@ def execute_main(bot, trigger):
         
         ## Duel Everyone
         elif commandortarget == 'everyone':
+            if instigator in canduelarray:
+                canduelarray.remove(instigator)
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith('dev'):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-            elif fullroomassultarray == []:
+            elif canduelarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 OSDTYPE = 'notice'
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                for u in fullroomassultarray:
-                    fullroomassultarraytotal = fullroomassultarraytotal - 1
+                for u in canduelarray:
+                    canduelarraytotal = canduelarraytotal - 1
                     if u != instigator and u != bot.nick:
                         targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
                         getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                         time.sleep(5)
-                        if fullroomassultarraytotal > 0:
+                        if canduelarraytotal > 0:
                             bot.notice("  ", instigator)
                         set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
