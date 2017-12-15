@@ -13,6 +13,6 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
-    module = trigger.group(2)
-    target = trigger.group(3)
-    bot.say(commandused + " " + module + " " + target)
+    moduletocheck = trigger.group(2)
+    user = trigger.group(3)
+    bot.say(moduletocheck + " " + user)
