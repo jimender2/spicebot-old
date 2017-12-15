@@ -69,6 +69,10 @@ XPearnedloserranger = 5
 XPearnedwinnerstock = 5
 XPearnedloserstock = 3
 
+## other
+scavegerfindpercent = 40
+barbarianminimumdamge = 40
+
 ############
 ## Arrays ##
 ############
@@ -1038,7 +1042,7 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         else:
             adjust_database_value(bot, winner, loot, defaultadjust)
     
-    # Streaks B
+    # Streaks Text
     streaktext = ''
     if instigator != target:
         streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
@@ -1348,7 +1352,7 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
     if yourclass == 'scavenger':
-        randomfindchance = randint(40, 120)
+        randomfindchance = randint(scavegerfindpercent, 100)
     else:
         randomfindchance = randint(0, 120)
     randominventoryfind = 'false'
@@ -1363,21 +1367,21 @@ def determineloottype(bot, nick):
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
-        loot_text = ': worth 100 health.'
+        loot_text = str(": worth " + str(healthpotionworth) + " health.")
     elif loottype == 'poisonpotion':
-        loot_text = ': worth -50 health.'
+        loot_text = str(": worth " + str(poisonpotionworth) + " health.")
     elif loottype == 'manapotion':
-        loot_text = ': worth 100 mana.'
+        loot_text = str(": worth " + str(manapotionworth) + " health.")
     elif loottype == 'timepotion':
         loot_text = ': worth up to ' + str(USERTIMEOUT) + ' seconds of timeout.'
     elif loottype == 'mysterypotion':
-        loot_text = ': With unknown effects!'
+        loot_text = ': The label fell off. Use at your own risk!'
     else:
         loot_text = ''
     if loot_text != '':
         loot_text = str(loot_text + " Use .challenge loot use " + str(loottype) + " to consume.")
     return loot_text
-        
+  
 ######################
 ## Weapon Selection ##
 ######################
