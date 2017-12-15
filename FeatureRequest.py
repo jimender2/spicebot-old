@@ -8,15 +8,13 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-# Authentication for user filing issue (must have read/write access to
-# repository to add issue to)
-USERNAME = 'SpiceBot'
-#PASSWORD = ''
+## Creds
 config = ConfigParser.ConfigParser()
 config.read("/etc/spicecred.txt")
+USERNAME = config.get("configuration","username")
 PASSWORD = config.get("configuration","password")
     
-# The repository to add this issue to
+# Repo
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'sopel-modules'
 
@@ -34,19 +32,14 @@ def execute_main(bot, trigger, triggerargsarray):
         make_github_issue(bot, title)
 
 def make_github_issue(bot, title):
-    '''Create an issue on github.com using the given parameters.'''
     body=title
-    labels=['feature']
-    # Our url to create issues via POST
+    labels=['Feature Request']
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
-    # Create an authenticated session to create the issue
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
-    # Create our issue
     issue = {'title': title,
              'body': body,
              'labels': labels}
-    # Add the issue to our repository
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         bot.say('Successfully created Issue "%s"' % title)
