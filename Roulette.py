@@ -80,7 +80,7 @@ def execute_main(bot, trigger, arg):
 					        
 		if inputcheck==1:
 			if (mybet<=0 or mybet>maxbet):
-				bot.say('Please bet an amount between 1 and ' + maxbet)
+				bot.say('Please bet an amount between 1 and ' + str(maxbet))
 			else:
 				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
 					bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
