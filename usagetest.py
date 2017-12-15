@@ -25,9 +25,6 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         target = checktarget
         checkcmd = get_trigger_arg(triggerargsarray, 3)
-    if not checkcmd:
-        bot.say('what command')
-        return
     else:
         count = get_botdatabase_value(bot, usagefor, checkcmd+"usage")
         if count == 0:
