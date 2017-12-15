@@ -7,6 +7,7 @@ import time
 import os
 import sys, re
 import fnmatch
+import random
 from os.path import exists
 
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
