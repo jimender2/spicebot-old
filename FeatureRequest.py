@@ -37,7 +37,7 @@ def make_github_issue(bot, title):
     '''Create an issue on github.com using the given parameters.'''
     bot.say(title)
     body=title
-    labels=None
+    labels='feature'
     # Our url to create issues via POST
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     # Create an authenticated session to create the issue
