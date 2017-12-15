@@ -330,6 +330,7 @@ def execute_main(bot, trigger):
             elif instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             else:
+                bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coins for finding a bug in duels.")
                 adjust_database_value(bot, target, 'coins', bugbountycoinaward)
             
             
