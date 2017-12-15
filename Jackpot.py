@@ -19,7 +19,7 @@ def execute_main(bot, trigger, arg):
   if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
     #spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
     #Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1 + spicebanktotal)
-    Spicebucks.spicebucks(bot, 'spicebucksslots', 'plus', 1)
+    #Spicebucks.spicebucks(bot, 'spicebucksslots', 'plus', 1)
     bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
     wheel = ['Modem', 'BSOD'] 
     wheel1 = spin(wheel)
@@ -29,8 +29,8 @@ def execute_main(bot, trigger, arg):
     if(wheel1 == wheel2 and wheel2 == wheel3):
       bot.say(trigger.nick + ' got 3 ' + str(wheel1))
       if wheel1 == 'BSOD':     
-        spicebanktotal = bot.db.get_nick_value('spicebucksslots', 'spicebucks_bank')
-        bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(spicebanktotal) + '  spicebucks')
+        #spicebanktotal = bot.db.get_nick_value('spicebucksslots', 'spicebucks_bank')
+        bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(1) + '  spicebucks')
         Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1)
       else:
         bot.say('You get 25 spicebucks')
