@@ -20,7 +20,7 @@ def execute_main(bot, trigger, arg):
   wheel1 = pull(wheel)
   wheel2 = pull(wheel)
   wheel3 = pull(wheel)
- bot.say(wheel1 + wheel2 + wheel3)  
+  bot.say(wheel1 + wheel2 + wheel3)  
   
 
 def deal(wheel):
