@@ -18,10 +18,16 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
     checktarget = get_trigger_arg(triggerargsarray, 2)
+
+    
+    
     if checktarget:
-        usagefor = checktarget
+        if checktarget == 'channel':
+            usagefor = trigger.sender
+        else:
+            usagefor = checktarget
     elif not checktarget:
-        usagefor = trigger.nick
+        usagefor = str(trigger.nick)
     count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
     
     if count == 0:
