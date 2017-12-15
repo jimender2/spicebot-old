@@ -27,9 +27,9 @@ def execute_main(bot, trigger, triggerargsarray):
     if count == 0:
         message = str('It appears that ' + usagefor + ' has not run ' + moduletocheck + ' at all.')
     elif count == 1:
-        message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + count + ' time.')
+        message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' time.')
     else:
-        message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + count + ' times.')
+        message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' times.')
     ##says the variables
     #bot.action("checks usage of " + moduletocheck + " for " + usagefor + " " + str(count))
     bot.say(message)
