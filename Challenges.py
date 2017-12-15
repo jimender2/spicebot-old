@@ -948,6 +948,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
     ## clean empty stats
     assault_wins = 0
     assault_losses = 0
+    assault_potionswon = 0
+    assault_potionslost = 0
     
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
@@ -1076,7 +1078,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         if targetpeppernow != targetpepperstart and instigator != target:
             pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
             
-        ## Random Inventory gain
+        ## Random Loot 
         lootwinnermsg = ''
         lootwinnermsgb = ''
         randominventoryfind = randominventory(bot, instigator)
@@ -1089,12 +1091,17 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             barbarianstealroll = randint(0, 100)
             if loserclass == 'barbarian' and barbarianstealroll >= 50:
                 lootwinnermsgb = str(loser + " steals the " + str(loot))
-                adjust_database_value(bot, loser, loot, defaultadjust)
+                lootwinner = loser
             elif winner == target:
                 lootwinnermsgb = str(winner + " gains the " + str(loot))
-                adjust_database_value(bot, winner, loot, defaultadjust)
+                lootwinner = winner
             else:
-                adjust_database_value(bot, winner, loot, defaultadjust)
+                lootwinner = winner
+            adjust_database_value(bot, lootwinner, loot, defaultadjust)
+            if lootwinner == instigator:
+                assault_potionswon = assault_potionswon + 1
+            else:
+                assault_potionslost = assault_potionslost + 1
     
         ## Magic Attributes text
         magicattributestext = ''
@@ -1145,12 +1152,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             if targetarraytotal == 0:
                 bot.notice("  ", instigator)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
-                assaultstatsarray = ['wins','losses']
+                assaultstatsarray = ['wins','losses','potionswon','potionslost']
                 assaultdisplay = ''
                 for x in assaultstatsarray:
                     workingvar = eval("assault_"+x)
                     if workingvar > 0:
-                        newline = str(instigator + " had " + str(workingvar) + x + ".")
+                        newline = str(x + " = " + str(workingvar))
                         if assaultdisplay != '':
                             assaultdisplay = str(assaultdisplay + " " + newline)
                         else:
