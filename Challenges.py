@@ -1398,7 +1398,7 @@ def getallchanweaponsrandom(bot, channel):
 
 def weaponofchoice(bot, nick):
     weaponslistselect = []
-    weaponslist = get_database_value(bot, nick, 'weaponslocker') or ['fist']
+    weaponslist = get_database_value(bot, nick, 'weaponslocker')
     lastusedweaponarry = get_database_value(bot, nick, 'lastweaponusedarray') or []
     for x in weaponslist:
         if x not in lastusedweaponarry:
