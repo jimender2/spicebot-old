@@ -1259,13 +1259,7 @@ def get_timeout(bot, nick):
 
 def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
-    
-    ##  attributes
-    nickcurse = get_database_value(bot, nick, 'curse')
-    nickshield = get_database_value(bot, nick, 'shield')
-    nickcursed = ''
-    nickshielded = ''
-    
+
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
     
@@ -1288,13 +1282,7 @@ def whatsyourname(bot, trigger, nick, channel):
                 adminsarray.append(nametarget)
 
     ## Is nick Special?
-    if nickcurse or nickshield:
-        if nickcurse:
-            nickcursed = "(Cursed)"
-        if nickshield:
-            nickshielded = "(Shielded)"
-        nickname = str(nickname + " " + nickcursed + nickshielded)
-    elif nick in botownerarray:
+    if nick in botownerarray:
         nickname = str("The Legendary " + nickname)
     elif nick in botdevteam:
         nickname = str("The Extraordinary " + nickname)
@@ -1306,6 +1294,18 @@ def whatsyourname(bot, trigger, nick, channel):
         nickname = str("The Spectacular " + nickname)
     else:
         nickname = str(nickname)
+    
+    ##  attributes
+    nickcurse = get_database_value(bot, nick, 'curse')
+    nickshield = get_database_value(bot, nick, 'shield')
+    nickcursed = ''
+    nickshielded = ''
+    if nickcurse or nickshield:
+        if nickcurse:
+            nickcursed = "(Cursed)"
+        if nickshield:
+            nickshielded = "(Shielded)"
+        nickname = str(nickname + " " + nickcursed + nickshielded)
         
     ## Pepper Names
     if pepperstart != '':
