@@ -17,13 +17,13 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   #using computer terms instead of fruit
   wheel = ['CPU', 'Modem', 'RAM', 'BSOD', 'Power Cord']
-  wheel1 = pull(wheel)
-  wheel2 = pull(wheel)
-  wheel3 = pull(wheel)
+  wheel1 = spin(wheel)
+  wheel2 = spin(wheel)
+  wheel3 = spin(wheel)
   bot.say(wheel1 + wheel2 + wheel3)  
   
 
-def deal(wheel):
+def spin(wheel):
   selected=random.ranint(0,len(wheel))
   reel=wheel[selected]
   return reel
