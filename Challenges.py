@@ -165,6 +165,7 @@ def execute_main(bot, trigger):
             elif target == 'everyone':
                 for u in allusersinroomarray:
                     set_database_value(bot, u, 'disenable', disenablevalue)
+                bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
             elif target in targetcantoptarray:
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
             elif commandortarget == 'on' and target.lower() in dueloptedinarray:
