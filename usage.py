@@ -15,6 +15,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS of importance
     usagefor = ''
     querytype = 'specific'
+    instigator = trigger.nick
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
