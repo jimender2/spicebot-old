@@ -158,7 +158,7 @@ def execute_main(bot, trigger):
             if commandortarget == 'on':
                 disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
@@ -237,7 +237,7 @@ def execute_main(bot, trigger):
                     bot.notice(instigator + ", It looks like you can challenge.", instigator)
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-            elif subcommand == 'assault':
+            elif subcommand == 'everyone':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
