@@ -18,7 +18,6 @@ def execute_main(bot, trigger, triggerargsarray):
     checktarget = get_trigger_arg(triggerargsarray, 2)
     if not checktarget:
         bot.say('No target or command')
-        return
     elif checktarget.lower() not in bot.privileges[channel.lower()] and checktarget != 'channel':
         target = instigator
         checkcmd = checktarget
@@ -30,7 +29,6 @@ def execute_main(bot, trigger, triggerargsarray):
         checkcmd = get_trigger_arg(triggerargsarray, 3)
     if not checkcmd:
         bot.say('what command')
-        return
     else:
         count = get_botdatabase_value(bot, usagefor, checkcmd+"usage")
         if count == 0:
