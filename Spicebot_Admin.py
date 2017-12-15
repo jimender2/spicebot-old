@@ -33,7 +33,7 @@ def spicebotadmin(bot, trigger):
             if message:
                 bot.msg(channel,message)
         if commandused == 'resetcount':
-            bot.say(hi)
+            bot.say('hi')
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
