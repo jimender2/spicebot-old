@@ -1634,8 +1634,8 @@ def get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, ta
     attributetext = ''
     for j in nickarray:
         for x in magicattributesarray:
-            workingvarnow = j+x+"now"
-            workingvarstart = j+x+"start"
+            workingvarnow = eval(j+x+"now")
+            workingvarstart = eval(j+x+"start")
             bot.say(str(workingvarnow))
             bot.say(str(workingvarstart))
             #if j+x+"now" == 0 and j+x+"now" != j+x+"start":
