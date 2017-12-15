@@ -17,6 +17,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   #using computer terms instead of fruit
   wheel = ['CPU', 'Modem', 'RAM', 'BSOD', 'Power Cord']
+  bot.say(str(len(wheel))
   wheel1 = spin(wheel)
   wheel2 = spin(wheel)
   wheel3 = spin(wheel)
@@ -25,6 +26,5 @@ def execute_main(bot, trigger, arg):
 
 def spin(wheel):
   #selected=random.randint(0,len(wheel))
-  bot.say(str(len(wheel))
   reel=wheel[0]
   return reel
