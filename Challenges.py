@@ -1065,7 +1065,6 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     magicattributestext = ''
     if instigator != target:
         magicattributestext = get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
-        bot.say(str(magicattributestext))
 
     # Streaks Text
     streaktext = ''
