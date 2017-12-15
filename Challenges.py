@@ -1416,6 +1416,9 @@ def weaponofchoice(bot, nick):
     weaponslist = get_database_value(bot, nick, 'weaponslocker') or []
     lastusedweaponarry = get_database_value(bot, nick, 'lastweaponusedarray') or []
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused') or 'fist'
+    howmanyweapons = get_database_array_total(bot, nick, 'weaponslocker') or 0
+    if not howmanyweapons > 1:
+        set_database_value(bot, nick, 'lastweaponused', None)
     for x in weaponslist:
         if x not in lastusedweaponarry and x != lastusedweapon:
             weaponslistselect.append(x)
