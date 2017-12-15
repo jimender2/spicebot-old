@@ -221,6 +221,7 @@ def execute_main(bot, trigger):
             if commandortarget == 'on':
                 disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
+            targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and instigator not in adminsarray:
