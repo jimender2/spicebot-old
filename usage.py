@@ -19,14 +19,16 @@ def execute_main(bot, trigger, triggerargsarray):
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
-    checktarget = get_trigger_arg(triggerargsarray, 2) or 'total'
+    checktarget = get_trigger_arg(triggerargsarray, 2)
     for c in bot.channels:
         channel = c
 
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'
         usagefor = str(moduletocheck)
-    elif moduletocheck:
+        if not checktarget:
+            checktarget = 'total'
+    elif moduletocheck.lower() not in bot.privileges[channel.lower()]:
         if checktarget:
             if checktarget == 'channel':
                 usagefor = trigger.sender
@@ -34,6 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 usagefor = checktarget
         elif not checktarget:
             usagefor = str(trigger.nick)
+            
         
     ## get count
     count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
