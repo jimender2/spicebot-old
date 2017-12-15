@@ -23,8 +23,31 @@ OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
-changeclasscost = 100 ## ## how many coins to change class
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+changeclasscost = 100 ## ## how many coins to change class
+stockhealth = 1000
+healthpotionworthbarbarian = 125
+healthpotionworth = 100
+poisonpotionworth = -50
+manapotionworthmage = 125
+manapotionworth = 100
+traderatioscavenger = 2
+traderatio = 3
+lootbuycostscavenger = 90
+lootbuycost = 100
+lootsellrewardscavenger = 30
+lootsellreward = 25
+manarequiredmagicattack = 250
+manarequiredmagicshield = 500
+manarequiredmagiccurse = 500
+manarequiredmagichealth = 200
+magicattackdamage = -200
+magicshielddamage = 80
+magiccursedamage = -80
+magichealthrestore = 200
+curseduration = 4
+shieldduration = 4
+magemanamagiccut = .9
 
 ############
 ## Arrays ##
@@ -500,7 +523,7 @@ def execute_main(bot, trigger):
                     targetmana = get_database_value(bot, target, 'mana') or 0
                     targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                     if not targethealth:
-                        set_database_value(bot, target, 'health', 1000)
+                        set_database_value(bot, target, 'health', stockhealth)
                         targethealth = get_database_value(bot, target, 'health')
                     uselootarray = []
                     if lootitem == 'mysterypotion':
@@ -538,17 +561,17 @@ def execute_main(bot, trigger):
                         lootusemsg = ''
                         if x == 'healthpotion':
                             if targetclass == 'barbarian':
-                                adjust_database_value(bot, target, 'health', 125)
+                                adjust_database_value(bot, target, 'health', healthpotionworthbarbarian)
                             else:
-                                adjust_database_value(bot, target, 'health', 100)
+                                adjust_database_value(bot, target, 'health', healthpotionworth)
                         elif x == 'poisonpotion':
                             if targetclass != 'rogue':
-                                adjust_database_value(bot, target, 'health', -50)
+                                adjust_database_value(bot, target, 'health', poisonpotionworth)
                         elif x == 'manapotion':
                             if targetclass == 'mage':
-                                adjust_database_value(bot, target, 'mana', 125)
+                                adjust_database_value(bot, target, 'mana', manapotionworthmage)
                             else:
-                                adjust_database_value(bot, target, 'mana', 100)
+                                adjust_database_value(bot, target, 'mana', manapotionworth)
                         elif x == 'timepotion':
                             channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or bot.nick
                             if channellastinstigator == target:
@@ -587,9 +610,9 @@ def execute_main(bot, trigger):
                 if not quantity:
                     quantity = 1
                 if instigatorclass == 'scavenger':
-                    quantitymath = 2 * int(quantity)
+                    quantitymath = traderatioscavenger * int(quantity)
                 else:
-                    quantitymath = 3 * int(quantity)
+                    quantitymath = traderatio * int(quantity)
                 if lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                 elif lootitemb not in lootitemsarray:
@@ -602,13 +625,13 @@ def execute_main(bot, trigger):
                     while int(quantity) > 1:
                         quantity = int(quantity) - 1
                         if instigatorclass == 'scavenger':
-                            cost = -2
+                            cost = traderatioscavenger
                         else:
-                            cost = -3
+                            cost = traderatio
                         reward = 1
                         itemtoexchange = lootitem
                         itemexchanged = lootitemb
-                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemtoexchange, -abs(cost))
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'buy':
@@ -618,22 +641,22 @@ def execute_main(bot, trigger):
                 elif quantity == 'all':
                     quantity = 99999999999999999
                 if instigatorclass == 'scavenger':
-                    coinsrequired = 90 * int(quantity)
+                    coinsrequired = lootbuycostscavenger * int(quantity)
                 else:
-                    coinsrequired = 100 * int(quantity)
+                    coinsrequired = lootbuycost * int(quantity)
                 if instigatorcoins < coinsrequired:
                     bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
                 else:
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
                         if instigatorclass == 'scavenger':
-                            cost = -90
+                            cost = lootbuycostscavenger
                         else:
-                            cost = -100
+                            cost = lootbuycost
                         reward = 1
                         itemtoexchange = 'coins'
                         itemexchanged = lootitem
-                        adjust_database_value(bot, instigator, itemtoexchange, cost)
+                        adjust_database_value(bot, instigator, itemtoexchange, -abs(cost))
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'sell':
@@ -649,9 +672,9 @@ def execute_main(bot, trigger):
                         quantity = int(quantity) - 1
                         cost = -1
                         if instigatorclass == 'scavenger':
-                            reward = 30
+                            reward = lootsellrewardscavenger
                         else:
-                            reward = 25
+                            reward = lootsellreward
                         itemtoexchange = lootitem
                         itemexchanged = 'coins'
                         adjust_database_value(bot, instigator, itemtoexchange, cost)
@@ -664,8 +687,8 @@ def execute_main(bot, trigger):
             if not konami:
                 set_database_value(bot, instigator, 'konami', 1)
                 bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-                damage = 600
-                adjust_database_value(bot, target, 'health', damage)
+                konamiset = 600
+                adjust_database_value(bot, target, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
                 
@@ -763,34 +786,36 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + " You cannot apply a multi-shield.", instigator)
             else:
                 if magicusage == 'attack':
-                    manarequired = 250
-                    damage = -200
+                    manarequired = manarequiredmagicattack
+                    damage = magicattackdamage
                 elif magicusage == 'shield':
-                    manarequired = 500
-                    damage = 80
+                    manarequired = manarequiredmagicshield
+                    damage = magicshielddamage
                 elif magicusage == 'curse':
-                    manarequired = 500
-                    damage = -80
+                    manarequired = manarequiredmagiccurse
+                    damage = magiccursedamage
                 elif magicusage == 'health':
-                    manarequired = 200
-                    damage = 200
+                    manarequired = manarequiredmagichealth
+                    damage = magichealthrestore
                 elif magicusage == 'instakill':
                     targethealthstart = get_database_value(bot, target, 'health')
                     targethealthstart = int(targethealthstart)
                     if int(targethealthstart) < 200:
-                        manarequired = 200
+                        manarequired = manarequiredmagicattack
                     else:
                         manarequired = targethealthstart / 200
-                        manarequired = manarequired * 250
+                        manarequired = manarequired * manarequiredmagicattack
                     damage = -abs(targethealthstart)
                 if instigatorclass == 'mage':
-                    manarequired = manarequired * .9
+                    manarequired = manarequired * magemanamagiccut
                 if magicusage == 'instakill':
                     actualmanarequired = int(manarequired)
                     instaquantity = int(quantity)
                     if int(instaquantity) > 1:
                         instaquantity = int(instaquantity) - 1
-                        quantityadjust = 1000 * int(instaquantity)
+                        quantityadjust = stockhealth * int(instaquantity)
+                        quantityadjust = quantityadjust / 200
+                        quantityadjust = quantityadjust * manarequiredmagicattack
                         actualmanarequired = int(quantityadjust) + int(manarequired)
                 else:
                     actualmanarequired = int(manarequired) * int(quantity)
@@ -825,11 +850,9 @@ def execute_main(bot, trigger):
                             else:
                                 magickilled = "This resulted in death."
                         if magicusage == 'curse':
-                            curseduration = 4
                             set_database_value(bot, target, 'curse', curseduration)
                             specialtext = str("AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                         elif magicusage == 'shield':
-                            shieldduration = 4
                             set_database_value(bot, target, 'shield', shieldduration)
                             specialtext = str("AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
                         if magicusage == 'health' or magicusage == 'shield':
@@ -1054,11 +1077,11 @@ def healthregen(bot):
                 if yourclass == 'mage':
                     mana = get_database_value(bot, target, 'mana')
                     if int(mana) < 1000:
-                        adjust_database_value(bot, target, 'mana', '50')
+                        adjust_database_value(bot, target, 'mana', 50)
                 
                 health = get_database_value(bot, target, 'health')
                 if int(health) < 500:
-                    adjust_database_value(bot, target, 'health', '50')
+                    adjust_database_value(bot, target, 'health', 50)
                 randomtargetarray.append(target)
         if randomtargetarray == []:
             dummyvar = 1
@@ -1164,7 +1187,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 def whokilledwhom(bot, winner, loser):
     ## Reset mana and health
     set_database_value(bot, loser, 'mana', None)
-    set_database_value(bot, loser, 'health', 1000)
+    set_database_value(bot, loser, 'health', stockhealth)
     ## update kills/deaths
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
@@ -1179,7 +1202,7 @@ def whokilledwhom(bot, winner, loser):
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
-        set_database_value(bot, nick, 'health', '1000')
+        set_database_value(bot, nick, 'health', stockhealth)
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         set_database_value(bot, nick, 'mana', None)
