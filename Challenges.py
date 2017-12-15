@@ -945,11 +945,11 @@ def execute_main(bot, trigger):
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
+    assaultstatsarray = ['wins','losses','potionswon','potionslost']
     ## clean empty stats
-    assault_wins = 0
-    assault_losses = 0
-    assault_potionswon = 0
-    assault_potionslost = 0
+    assaultdisplay = ''
+    for x in assaultstatsarray:
+        workingemptyvar = eval("assault_"+x+"=0")
     
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
@@ -1146,14 +1146,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             bot.notice("  ", instigator)
             time.sleep(5)
         
-        ## Assaults revert changes to lastfought
+        ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
                 bot.notice("  ", instigator)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
-                assaultstatsarray = ['wins','losses','potionswon','potionslost']
-                assaultdisplay = ''
                 for x in assaultstatsarray:
                     workingvar = eval("assault_"+x)
                     if workingvar > 0:
