@@ -12,6 +12,11 @@ import sys
 import os
 from os.path import exists
 
+## not needed if using without spicebot
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
+from SpicebotShared import *
+
 ###################
 ## Configurables ##
 ###################
@@ -92,6 +97,7 @@ statsbypassarray = ['winlossratio','timeout']
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
 ################################################################################
 
+## not needed if using without spicebot
 @sopel.module.commands('challenge','duel')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
