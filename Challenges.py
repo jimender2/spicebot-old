@@ -93,7 +93,16 @@ statsbypassarray = ['winlossratio','timeout']
 ################################################################################
 
 @sopel.module.commands('challenge','duel')
-def execute_main(bot, trigger):
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
+
+## If using outside of spicebot
+#@sopel.module.commands('challenge','duel')
+#def execute_main(bot, trigger):
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
@@ -1510,6 +1519,9 @@ def get_pepper(bot, nick):
 ###################
 
 def getwinner(bot, instigator, target, manualweapon):
+    
+    ## classes
+    ## rogues get an extra roll and a loaded dice
     
     ## each person gets one diceroll
     instigatorfight = 1
