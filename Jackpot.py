@@ -15,11 +15,12 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-  wheel = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  #using computer terms instead of fruit
+  wheel = ['CPU', 'Modem', 'RAM', 'BSOD', 'Power Cord']
   wheel1 = pull(wheel)
   wheel2 = pull(wheel)
   wheel3 = pull(wheel)
-  #bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
+ bot.say(wheel1 + wheel2 + wheel3)  
   
 
 def deal(wheel):
