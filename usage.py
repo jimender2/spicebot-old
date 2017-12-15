@@ -12,6 +12,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    moduletocheck = trigger.group(2)
-    user = trigger.group(3)
+    ## Initial ARGS of importance
+    triggerargsarray = create_args_array(trigger.group(2))
+    commandused = get_trigger_arg(triggerargsarray, 0)
+    moduletocheck = get_trigger_arg(triggerargsarray, 1)
+    usagefor = get_trigger_arg(triggerargsarray, 2)
     bot.action("checks usage of " + moduletocheck + " for " + user)
