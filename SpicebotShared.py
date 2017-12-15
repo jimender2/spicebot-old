@@ -85,6 +85,12 @@ def spicebot_prerun(bot,trigger):
     if botchannel.startswith("#") and not bot.nick.endswith('dev'):
         set_botdatabase_value(bot, instigator, 'lastusagetime', now)
     
+    ## Add usage counter for individual/channel module counts
+    adjust_botdatabase_value(bot, channel, str(commandused + "usage"), 1)
+    adjust_botdatabase_value(bot, trigger.nick, str(commandused + "usage"), 1)
+    bot.say(bot + channel + str(commandused + "usage"))
+    bot.say(bot + trigger.nick + str(commandused + "usage"))
+    
     ## message, if any
     bot.notice(message, instigator)
     
