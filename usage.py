@@ -25,6 +25,10 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if moduletocheck == 'me':
         moduletocheck = trigger.nick
+    if moduletocheck == 'channel'
+        querytype = 'invalidmodule'
+    if moduletocheck == 'help':
+        querytype = 'help'
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'
         usagefor = str(moduletocheck)
@@ -48,6 +52,10 @@ def execute_main(bot, trigger, triggerargsarray):
             message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
         else:
             message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
+    elif querytype == 'invalidmodule':
+        message = str("I'm sorry, but that's not a valid module to check.")
+    elif querytype == 'help':
+        message = str("A wiki page for this is in progress."
     else:
         if count == 0:
             message = str('It appears that ' + usagefor + ' has not run ' + moduletocheck + ' at all.')
