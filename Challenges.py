@@ -1390,35 +1390,21 @@ def get_lootitem_text(bot, nick, loottype):
 def getallchanweaponsrandom(bot, channel):
     allchanweaponsarray = []
     for u in bot.channels[channel].users:
-        weaponslist = get_database_value(bot, u, 'weaponslocker') or []
-        if weaponslist != []:
-            for x in weaponslist:
-                allchanweaponsarray.append(x)
-    if allchanweaponsarray == []:
-        weapon = "fist"
-    else:
-        weaponselected = random.randint(0,len(allchanweaponsarray) - 1)
-        weapon = str(allchanweaponsarray [weaponselected])
+        weaponslist = get_database_value(bot, u, 'weaponslocker') or ['fist']
+        for x in weaponslist:
+            allchanweaponsarray.append(x)
+    weapon = get_trigger_arg(allchanweaponsarray, 'random')
     return weapon
 
 def weaponofchoice(bot, nick):
     weaponslistselect = []
-    weaponslist = get_database_value(bot, nick, 'weaponslocker') or []
-    lastusedweapon = get_database_value(bot, nick, 'lastweaponused')
-    if not lastusedweapon:
-        lastusedweapon = "fist"
-    if weaponslist == []:
-        weapon = "fist"
-    else:
-        for x in weaponslist:
-            if x != lastusedweapon:
-                weaponslistselect.append(x)
-        if weaponslistselect == []:
-            weapon = lastusedweapon
-        else:
-            weaponselected = random.randint(0,len(weaponslistselect) - 1)
-            weapon = str(weaponslistselect [weaponselected])
-    set_database_value(bot, nick, 'lastweaponused', weapon)
+    weaponslist = get_database_value(bot, nick, 'weaponslocker') or ['fist']
+    lastusedweaponarry = get_database_value(bot, nick, 'lastweaponusedarray') or []
+    for x in weaponslist:
+        if x not in lastusedweaponarry:
+            weaponslistselect.append(x)
+    weapon = get_trigger_arg(weaponslistselect, 'random') or 'fist'
+    adjust_database_array(bot, nick, weapon, 'lastweaponusedarray', 'add')
     return weapon
 
 def weaponformatter(bot, weapon):
