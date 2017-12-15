@@ -18,15 +18,11 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
-    moduletocheck = get_trigger_arg(triggerargsarray, 1)
-    checktarget = get_trigger_arg(triggerargsarray, 2) or instigator
+    moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
+    checktarget = get_trigger_arg(triggerargsarray, 2) or 'total'
     for c in bot.channels:
         channel = c
 
-    if not moduletocheck:
-        querytype = 'user'
-        moduletocheck = 'total'
-        usagefor = str(trigger.nick)
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'
         usagefor = str(moduletocheck)
