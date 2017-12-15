@@ -50,7 +50,7 @@ def make_github_issue(bot, title, body=None, assignee=None, milestone=None, labe
     if r.status_code == 201:
         bot.say('Successfully created Issue "%s"' % title)
     else:
-        bot.say('Could not create Issue "%s"' % title))
+        bot.say('Could not create Issue "%s"' % title)
         bot.say(str('Response:', r.content))
 
 
