@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if moduletocheck == 'me':
         moduletocheck = trigger.nick
-    if moduletocheck == 'channel'
+    if moduletocheck == 'channel':
         querytype = 'invalidmodule'
     if moduletocheck == 'help':
         querytype = 'help'
