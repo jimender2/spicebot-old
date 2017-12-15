@@ -1260,6 +1260,12 @@ def get_timeout(bot, nick):
 def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
     
+    ##  attributes
+    nickcurse = get_database_value(bot, nick, 'curse')
+    nickshield = get_database_value(bot, nick, 'shield')
+    nickcursed = ''
+    nickshielded = ''
+    
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
     
@@ -1280,9 +1286,15 @@ def whatsyourname(bot, trigger, nick, channel):
                 voicearray.append(nametarget)
             if nametarget in bot.config.core.admins:
                 adminsarray.append(nametarget)
-    
+
     ## Is nick Special?
-    if nick in botownerarray:
+    if nickcurse or nickshield:
+        if nickcurse:
+            nickcursed = "(Cursed)"
+        if nickshield:
+            nickshielded = "(Shielded)"
+        nickname = str(nickname + " " + nickcursed + nickshielded)
+    elif nick in botownerarray:
         nickname = str("The Legendary " + nickname)
     elif nick in botdevteam:
         nickname = str("The Extraordinary " + nickname)
@@ -1457,18 +1469,8 @@ def damagedone(bot, winner, loser):
 
 def get_pepper(bot, nick):
     xp = get_database_value(bot, nick, 'xp')
-    nickcurse = get_database_value(bot, nick, 'curse')
-    nickshield = get_database_value(bot, nick, 'shield')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
-    elif nickcurse or nickshield:
-        peppercurse = ''
-        peppershield = ''
-        if nickcurse:
-            peppercurse = 'Cursed '
-        if nickshield:
-            peppershield = 'Shield'
-        pepper = str(peppercurse + peppershield)
     elif not xp:
         pepper = ''
     elif xp > 0 and xp < 100:
