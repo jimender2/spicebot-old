@@ -1178,7 +1178,7 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'health', '1000')
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
-        set_database_value(bot, instigator, 'mana', None)
+        set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
     set_database_value(bot, bot.nick, 'disenable', 1)
