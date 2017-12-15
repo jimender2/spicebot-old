@@ -18,7 +18,7 @@ def execute_main(bot, trigger, arg):
   #using computer terms instead of fruit
   if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
     bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-    wheel = ['CPU', 'Modem', 'RAM', 'BSOD', 'Power Cord'] 
+    wheel = ['CPU', 'Modem', 'RAM', 'BSOD', 'PowerCord'] 
     wheel1 = spin(wheel)
     wheel2 = spin(wheel)
     wheel3 = spin(wheel)
