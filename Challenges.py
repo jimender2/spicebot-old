@@ -252,9 +252,9 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
                 if subcommand in canduelarray:
-                    bot.notice(instigator + ", It looks like you can challenge " + target + ".", instigator)
+                    bot.notice(instigator + ", It looks like you can challenge " + subcommand + ".", instigator)
                 else:
-                    mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+                    mustpassthesetoduel(bot, trigger, instigator, subcommand, inchannel, channel, dowedisplay)
 
         ## Stats Admin
         elif commandortarget == 'statsadmin':
