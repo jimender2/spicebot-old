@@ -943,6 +943,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     else:
         targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
+    ## Magic Attributes Start
+    instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
+
     ## Announce Combat
     announcecombatmsg = str(instigatorname + " versus " + targetname)
        
@@ -1058,6 +1061,11 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         else:
             adjust_database_value(bot, winner, loot, defaultadjust)
     
+    ## Magic Attributes text
+    magicattributestext = ''
+    if instigator != target:
+        get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
+
     # Streaks Text
     streaktext = ''
     if instigator != target:
@@ -1610,7 +1618,29 @@ def get_magic_attribute(bot, nick, attribute):
         adjust_database_value(bot, nick, 'curse', adjustment)
         afflicted = 1
     return afflicted
-    
+
+def get_current_magic_attributes(bot, instigator, target):
+    instigatorshield = get_database_value(bot, instigator, 'shield') or 0
+    instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
+    targetshield = get_database_value(bot, target, 'shield') or 0
+    targetcurse = get_database_value(bot, target, 'curse') or 0
+    return instigatorshield, targetshield, instigatorcurse, targetcurse
+
+def get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart):
+    instigatorshieldnow, targetshieldnow, instigatorcursenow, targetcursenow = get_current_magic_attributes(bot, instigator, target)
+    magicattributesarray = ['shield','curse']
+    nickarray = ['instigator','target']
+    attributetext = ''
+    for j in nickarray:
+        for x in magicattributesarray:
+            if j+x+"now" == 0 and j+x+"now" != j+x+"start":
+                newline = str(j + " is no longer affected by " + x + ".")
+                if attributetext != '':
+                    attributetext = str(attributetext + " " + newline)
+                else:
+                    attributetext = str(newline)
+    return attributetext
+
 ###############
 ## ScoreCard ##
 ###############
