@@ -38,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
         body = str(get_trigger_arg(triggerargsarray, 0))
         make_github_issue(bot, body, labels, title)
 
-def make_github_issue(bot, title, labels, title):
+def make_github_issue(bot, body, labels, title):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
