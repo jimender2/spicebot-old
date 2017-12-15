@@ -149,8 +149,11 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 'last':
-        totalarray = totalarray -2
-        triggerarg = str(triggerargsarray[totalarray])
+        if totalarray != 0:
+            totalarray = totalarray -2
+            triggerarg = str(triggerargsarray[totalarray])
+        else:
+            triggerarg = ''
     elif str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
         for i in range(1,totalarray):
