@@ -1080,6 +1080,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
             bot.say(str(streaktext) + str(pepperstatuschangemsg))
+        if magicattributestext != '':
+            bot.say(str(magicattributestext))
     elif OSDTYPE == 'notice':
         bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), winner)
         bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
@@ -1088,6 +1090,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
             bot.notice(str(streaktext) + str(pepperstatuschangemsg), winner)
             bot.notice(str(streaktext) + str(pepperstatuschangemsg), loser)
+        if magicattributestext != '':
+            bot.notice(str(magicattributestext), winner)
+            bot.notice(str(magicattributestext), loser)
         
         
 ## 30 minute automation
@@ -1633,11 +1638,15 @@ def get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, ta
     nickarray = ['instigator','target']
     attributetext = ''
     for j in nickarray:
+        if j == 'instigator':
+            scanningperson = instigator
+        else:
+            scanningperson = target
         for x in magicattributesarray:
             workingvarnow = eval(j+x+"now")
             workingvarstart = eval(j+x+"start")
             if workingvarnow == 0 and workingvarnow != workingvarstart:
-                newline = str(j + " is no longer affected by " + x + ".")
+                newline = str(scanningperson + " is no longer affected by " + x + ".")
                 if attributetext != '':
                     attributetext = str(attributetext + " " + newline)
                 else:
