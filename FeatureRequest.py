@@ -18,22 +18,26 @@ PASSWORD = config.get("configuration","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'sopel-modules'
 
-@sopel.module.commands('featurerequest')
+@sopel.module.commands('featurerequest','issuereport')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    maincommand = trigger.group(1)
+    if maincommand == 'featurerequest':
+        labels=['Feature Request']
+    else:
+        labels=['Issue Report']
     if not trigger.group(2):
-        bot.say("What feature do you want?")
+        bot.say("What feature/issue do you want to post?")
     else:
         title = str(get_trigger_arg(triggerargsarray, 0))
-        make_github_issue(bot, title)
+        make_github_issue(bot, title, labels)
 
-def make_github_issue(bot, title):
+def make_github_issue(bot, title, labels):
     body=title
-    labels=['Feature Request']
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
