@@ -751,6 +751,7 @@ def execute_main(bot, trigger):
         elif commandortarget == 'weaponslocker':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             validdirectionarray = ['inv','add','del','reset']
+            inchannel = trigger.sender
             if target in validdirectionarray:
                 target = instigator
                 adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
@@ -1133,6 +1134,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
+                bot.notice("  ", instigator)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
         
 ## End Of Duels ###################################################################################################################
