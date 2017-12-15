@@ -456,7 +456,7 @@ def execute_main(bot, trigger):
             lootitem = get_trigger_arg(triggerargsarray, 3)
             lootitemb = get_trigger_arg(triggerargsarray, 4)
             lootitemc = get_trigger_arg(triggerargsarray, 5)
-            gethowmanylootitem = get_database_value(bot, instigator, lootitem)
+            gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand:
                 bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
             elif lootcommand not in transactiontypesarray:
@@ -471,7 +471,7 @@ def execute_main(bot, trigger):
                     target = instigator
                 elif lootitemb == 'all':
                     target = instigator
-                    quantity = gethowmanylootitem
+                    quantity = int(gethowmanylootitem)
                 elif not lootitemb:
                     quantity = 1
                     target = instigator
@@ -480,10 +480,12 @@ def execute_main(bot, trigger):
                     if not lootitemc:
                         quantity = 1
                     elif lootitemc == 'all':
-                        quantity = gethowmanylootitem
+                        quantity = int(gethowmanylootitem)
                     else:
                         quantity = int(lootitemc)
-                if gethowmanylootitem < quantity:
+                if not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
+                elif int(gethowmanylootitem) < int(quantity):
                     bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                 elif target.lower() not in allusersinroomarray:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -524,7 +526,7 @@ def execute_main(bot, trigger):
                         if not inchannel.startswith("#"):
                             mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.")
                         elif target == instigator:
-                            mainlootusemessage = str(instigator + ' uses ' + " " + str(uselootarraytotal) + " " + lootitem + 's.')
+                            mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's.')
                         else:
                             mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
                         if target != instigator:
