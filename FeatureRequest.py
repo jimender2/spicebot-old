@@ -28,16 +28,17 @@ def execute_main(bot, trigger, triggerargsarray):
     maincommand = trigger.group(1)
     if maincommand == 'feature':
         labels=['Feature Request']
+        title='Feature Request'
     else:
         labels=['Issue Report']
+        title='Issue Report'
     if not trigger.group(2):
         bot.say("What feature/issue do you want to post?")
     else:
-        title = str(get_trigger_arg(triggerargsarray, 0))
-        make_github_issue(bot, title, labels)
+        body = str(get_trigger_arg(triggerargsarray, 0))
+        make_github_issue(bot, body, labels, title)
 
-def make_github_issue(bot, title, labels):
-    body=title
+def make_github_issue(bot, title, labels, title):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
