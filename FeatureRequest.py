@@ -30,14 +30,16 @@ def execute_main(bot, trigger, triggerargsarray):
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
+        action = " requested"
     else:
         labels=['Issue Report']
         title='Issue Report'
+        action = " found an issue"
     if not trigger.group(2):
         bot.say("What feature/issue do you want to post?")
     else:
         body = str(get_trigger_arg(triggerargsarray, 0))
-        body = str(instigator + " requested: " + body)
+        body = str(instigator + action + ": " + body)
         make_github_issue(bot, body, labels, title)
 
 def make_github_issue(bot, body, labels, title):
