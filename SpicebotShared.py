@@ -90,7 +90,7 @@ def spicebot_prerun(bot,trigger):
     adjust_botdatabase_value(bot, botchannel, str(commandused + "usage"), 1)
     adjust_botdatabase_value(bot, trigger.nick, str(commandused + "usage"), 1)
     ## add usage counter for total nick command count
-    adjust_botdatabase_value(bot, trigger.nick, str(trigger.nick + "usage"), 1)
+    #adjust_botdatabase_value(bot, trigger.nick, str(trigger.nick + "usage"), 1)
     
     ## message, if any
     bot.notice(message, instigator)
