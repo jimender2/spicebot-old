@@ -29,7 +29,7 @@ def execute_main(bot, trigger, arg):
       bot.say(trigger.nick + ' got 3 ' + str(wheel1))
       if wheel1 == 'BSOD':
         currentjackpot = spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-        bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' currentjackpot ' + spicebucks')
+        bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' str(currentjackpot) ' + spicebucks')
         Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1000)
       else:
         bot.say('You get 25 spicebucks')
