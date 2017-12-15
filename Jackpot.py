@@ -17,8 +17,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   #using computer terms instead of fruit
   if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-    spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-    Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1 + spicebanktotal)
+    #spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+    #Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1 + spicebanktotal)
+    Spicebucks.spicebucks(bot, bot.nick, 'plus', 1)
     bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
     wheel = ['Modem', 'BSOD'] 
     wheel1 = spin(wheel)
