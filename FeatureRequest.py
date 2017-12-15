@@ -12,7 +12,10 @@ from SpicebotShared import *
 # repository to add issue to)
 USERNAME = 'SpiceBot'
 #PASSWORD = ''
-
+config = ConfigParser.ConfigParser()
+config.read("/etc/spicecred.txt")
+PASSWORD = config.get("configuration","password")
+    
 # The repository to add this issue to
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'sopel-modules'
@@ -31,10 +34,10 @@ def execute_main(bot, trigger, triggerargsarray):
         make_github_issue(bot, title, body=None, assignee=None, milestone=None, labels=None)
 
 def make_github_issue(bot, title, body=None, assignee=None, milestone=None, labels=None):
-    config = ConfigParser.ConfigParser()
-    config.read("/etc/spicecred.txt")
-    PASSWORD = config.get("configuration","password")
+    '''Create an issue on github.com using the given parameters.'''
+    # Our url to create issues via POST
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
+    # Create an authenticated session to create the issue
     session = requests.session(auth=(USERNAME, PASSWORD))
     # Create our issue
     issue = {'title': title,
@@ -47,7 +50,7 @@ def make_github_issue(bot, title, body=None, assignee=None, milestone=None, labe
     if r.status_code == 201:
         bot.say('Successfully created Issue "%s"' % title)
     else:
-        bot.say('Could not create Issue "%s"' % title)
+        bot.say('Could not create Issue "%s"' % title))
         bot.say(str('Response:', r.content))
 
 
