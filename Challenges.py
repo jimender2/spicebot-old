@@ -197,7 +197,7 @@ def execute_main(bot, trigger):
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
         ## Duel Everyone
-        elif commandortarget == 'everyone':
+        elif commandortarget == 'assault':
             fullchanassaultarray = []
             for x in canduelarray:
                 if x != instigator and x != bot.nick:
@@ -238,7 +238,7 @@ def execute_main(bot, trigger):
                     bot.notice(instigator + ", It looks like you can challenge.", instigator)
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-            elif subcommand == 'everyone':
+            elif subcommand == 'assault':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
