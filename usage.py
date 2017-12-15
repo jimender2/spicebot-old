@@ -18,7 +18,7 @@ def execute_main(bot, trigger, triggerargsarray):
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
-    checktarget = get_trigger_arg(triggerargsarray, 2)
+    checktarget = get_trigger_arg(triggerargsarray, 2) or instigator
     for c in bot.channels:
         channel = c
 
