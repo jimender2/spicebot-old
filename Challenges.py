@@ -218,13 +218,13 @@ def execute_main(bot, trigger):
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 for u in fullchanassaultarray:
                     if u != instigator and u != bot.nick:
-                        targetlastfoughtstart = get_database_value(bot, x, 'lastfought')
-                        getreadytorumble(bot, trigger, instigator, x, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                        targetlastfoughtstart = get_database_value(bot, u, 'lastfought')
+                        getreadytorumble(bot, trigger, instigator, u, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                         fullchanassaultarraytotal = fullchanassaultarraytotal - 1
                         if fullchanassaultarraytotal > 0:
                             bot.notice("  ", instigator)
                             time.sleep(5)
-                        set_database_value(bot, x, 'lastfought', targetlastfoughtstart)
+                        set_database_value(bot, u, 'lastfought', targetlastfoughtstart)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
 
