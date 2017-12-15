@@ -523,6 +523,8 @@ def execute_main(bot, trigger):
                     elif int(uselootarraytotal) > 1 and lootitem != 'mysterypotion':
                         if not inchannel.startswith("#"):
                             mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.")
+                        elif target == instigator:
+                            mainlootusemessage = str(instigator + ' uses ' + " " + str(uselootarraytotal) + " " + lootitem + 's.')
                         else:
                             mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
                         if target != instigator:
