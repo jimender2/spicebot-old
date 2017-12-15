@@ -35,7 +35,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
 def make_github_issue(bot, title):
     '''Create an issue on github.com using the given parameters.'''
-    bot.say(title)
     body=title
     labels=['feature']
     # Our url to create issues via POST
