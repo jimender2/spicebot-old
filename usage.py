@@ -19,24 +19,27 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
     checktarget = get_trigger_arg(triggerargsarray, 2)
-
     for c in bot.channels:
         channel = c
+
     if not moduletocheck:
-        moduletocheck = 'total'
-    if checktarget:
-        if checktarget == 'channel':
-            usagefor = trigger.sender
-        else:
-            usagefor = checktarget
-    elif not checktarget:
-        usagefor = str(trigger.nick)
-    if moduletocheck == 'total':
-        usagefor = str(trigger.nick)
         querytype = 'user'
+        moduletocheck = 'total'
+        usagefor = str(trigger.nick)
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'
-        usagefor = str(moduletocheck.lower)
+        usagefor = str(moduletocheck)
+        bot.say(str(moduletocheck))
+    elif moduletocheck:
+        if checktarget:
+            if checktarget == 'channel':
+                usagefor = trigger.sender
+            else:
+                usagefor = checktarget
+        elif not checktarget:
+            usagefor = str(trigger.nick)
+        
+    ## get count
     count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
     
     if querytype == 'user':
