@@ -1616,7 +1616,7 @@ def get_magic_attribute(bot, nick, attribute):
     afflicted = 0
     nickattribute = get_database_value(bot, nick, attribute)
     if nickattribute:
-        adjust_database_value(bot, nick, 'curse', adjustment)
+        adjust_database_value(bot, nick, attribute, adjustment)
         afflicted = 1
     return afflicted
 
