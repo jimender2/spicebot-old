@@ -1400,16 +1400,18 @@ def weaponofchoice(bot, nick):
     weaponslistselect = []
     weaponslist = get_database_value(bot, nick, 'weaponslocker') or []
     lastusedweaponarry = get_database_value(bot, nick, 'lastweaponusedarray') or []
+    lastusedweapon = get_database_value(bot, nick, 'lastweaponused') or 'fist'
     for x in weaponslist:
-        if x not in lastusedweaponarry:
+        if x not in lastusedweaponarry and x != lastusedweapon:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
         set_database_value(bot, nick, 'lastweaponusedarray', None)
         return weaponofchoice(bot, nick)
     weapon = get_trigger_arg(weaponslistselect, 'random') or 'fist'
     adjust_database_array(bot, nick, weapon, 'lastweaponusedarray', 'add')
+    set_database_value(bot, nick, 'lastweaponused', weapon)
     return weapon
-
+  
 def weaponformatter(bot, weapon):
     if weapon == '':
         weapon = weapon
