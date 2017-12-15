@@ -24,6 +24,6 @@ def execute_main(bot, trigger, arg):
   
 
 def spin(wheel):
-  selected=random.ranint(0,len(wheel))
+  selected=random.randint(0,len(wheel))
   reel=wheel[selected]
   return reel
