@@ -1693,8 +1693,9 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 'last':
-        totalarray = totalarray -2
-        triggerarg = str(triggerargsarray[totalarray])
+        if totalarray > 1:
+            totalarray = totalarray -2
+            triggerarg = str(triggerargsarray[totalarray])
     elif str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
         for i in range(1,totalarray):
@@ -1705,8 +1706,9 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 'random':
-        randomselected = random.randint(0,len(triggerargsarray) - 1)
-        triggerarg = str(triggerargsarray [randomselected])
+        if totalarray > 1:
+            randomselected = random.randint(0,len(triggerargsarray) - 1)
+            triggerarg = str(triggerargsarray [randomselected])
     elif number == 'list':
         for x in triggerargsarray:
             if triggerarg != '':
