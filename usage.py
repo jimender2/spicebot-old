@@ -26,7 +26,6 @@ def execute_main(bot, trigger, triggerargsarray):
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'
         usagefor = str(moduletocheck)
-        bot.say(str(moduletocheck))
     elif moduletocheck:
         if checktarget:
             if checktarget == 'channel':
