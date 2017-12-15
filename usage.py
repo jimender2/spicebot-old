@@ -17,4 +17,4 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
     usagefor = get_trigger_arg(triggerargsarray, 2)
-    bot.action("checks usage of " + moduletocheck + " for " + user)
+    bot.action("checks usage of " + moduletocheck + " for " + usagefor)
