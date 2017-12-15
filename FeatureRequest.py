@@ -18,7 +18,7 @@ PASSWORD = config.get("configuration","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'sopel-modules'
 
-@sopel.module.commands('featurerequest','issuereport')
+@sopel.module.commands('feature','issue')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     maincommand = trigger.group(1)
-    if maincommand == 'featurerequest':
+    if maincommand == 'feature':
         labels=['Feature Request']
     else:
         labels=['Issue Report']
