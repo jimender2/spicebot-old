@@ -26,7 +26,7 @@ def execute_main(bot, trigger, arg):
     wheel2 = spin(wheel)
     wheel3 = spin(wheel)
     reel = [wheel1, wheel2, wheel3]
-    bot.say('The slot machine displays ' + reel)
+    bot.say('The slot machine displays ' + str(reel))
     if(wheel1 == wheel2 and wheel2 == wheel3):
       bot.say(trigger.nick + ' got 3 ' + str(wheel1))
       if wheel1 == 'BSOD':     
