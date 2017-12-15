@@ -26,6 +26,14 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" #
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 stockhealth = 1000 ## default health for new players and respawns
 changeclasscost = 100 ## ## how many coins to change class
+botonoffstatus = 1 ## does the bot paricipate in duels
+
+## Half hour timer
+halfhourcoinaward = 10
+magemanaregen = 50
+healthregen = 50
+magemanaregenmax = 500
+healthregenmax = 500
 
 ## Potion Potency
 healthpotionworthbarbarian = 125 ## health potion worth for barbarians
@@ -55,6 +63,12 @@ curseduration = 4 ## how long a curse lasts
 manarequiredmagichealth = 200 ## mana required for magic health
 magichealthrestore = 200 ## health restored by a magic health
 
+## XP points awarded
+XPearnedwinnerranger = 7
+XPearnedloserranger = 5
+XPearnedwinnerstock = 5
+XPearnedloserstock = 3
+
 ############
 ## Arrays ##
 ############
@@ -64,7 +78,7 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use']
 challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
-challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','backpackitems','lastfought','timeout']
+challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
 statsbypassarray = ['winlossratio','timeout']
@@ -933,8 +947,8 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     ## Damage Done (random)
     damage = damagedone(bot, winner, loser)
     
-    ## Streaks A
-    winner_loss_streak, loser_win_streak = get_streaktexta(bot, winner, loser)
+    ## Current Streaks
+    winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
     
     ## Weapon Select
     if manualweapon == 'false' or winner == target:
@@ -956,14 +970,14 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     ## Update XP points
     yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
     if yourclasswinner == 'ranger':
-        XPearnedwinner = '7'
+        XPearnedwinner = XPearnedwinnerranger
     else:
-        XPearnedwinner = '5'
+        XPearnedwinner = XPearnedwinnerstock
     yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
     if yourclassloser == 'ranger':
-        XPearnedloser = '5'
+        XPearnedloser = XPearnedloserranger
     else:
-        XPearnedloser = '3'
+        XPearnedloser = XPearnedloserstock
     if instigator != target:
         adjust_database_value(bot, winner, 'xp', XPearnedwinner)
         adjust_database_value(bot, loser, 'xp', XPearnedloser)
@@ -977,8 +991,9 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
     set_database_value(bot, channel, 'lastinstigator', instigator)
             
     ## Update Health Of Loser, respawn, allow winner to loot
-    yourclass = get_database_value(bot, loser, 'class') or 'notclassy'
-    if yourclass == 'rogue':
+    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    # rogues don't take damage from the bot or themselves
+    if loserclass == 'rogue':
         if instigator == target or target == bot.nick:
             damage = 0
     adjust_database_value(bot, loser, 'health', damage)
@@ -1011,11 +1026,12 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         loot = determineloottype(bot, winner)
         loot_text = get_lootitem_text(bot, winner, loot)
         lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-        targetclass = get_database_value(bot, target, 'class') or 'notclassy'
+        loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+        ## Barbarians get a 50/50 chance of getting loot even if they lose
         barbarianstealroll = randint(0, 100)
-        if winner != target and targetclass == 'barbarian' and barbarianstealroll >= 50:
-            lootwinnermsgb = str(target + " steals the " + str(loot))
-            adjust_database_value(bot, target, loot, defaultadjust)
+        if loserclass == 'barbarian' and barbarianstealroll >= 50:
+            lootwinnermsgb = str(loser + " steals the " + str(loot))
+            adjust_database_value(bot, loser, loot, defaultadjust)
         elif winner == target:
             lootwinnermsgb = str(winner + " gains the " + str(loot))
             adjust_database_value(bot, winner, loot, defaultadjust)
@@ -1023,13 +1039,12 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
             adjust_database_value(bot, winner, loot, defaultadjust)
     
     # Streaks B
+    streaktext = ''
     if instigator != target:
         streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
         if streaktext != '':
             streaktext = str(str(streaktext) + "       ")
-    else:
-        streaktext = ''
-    
+
     ## On Screen Text
     if OSDTYPE == 'say':
         bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
@@ -1044,56 +1059,53 @@ def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcom
         if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
             bot.notice(str(streaktext) + str(pepperstatuschangemsg), winner)
             bot.notice(str(streaktext) + str(pepperstatuschangemsg), loser)
-    else:
-        bot.say('Looks Like Something went wrong!')
         
         
 ## 30 minute automation
-# health regen
-# mysterypotion
-# coins
-# reset last instigator
 @sopel.module.interval(1800)
-def healthregen(bot):
+def halfhourtimer(bot):
     
     ## bot does not need stats or backpack items
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, None)
+    refreshbot(bot)
     
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', None)
     
     ## Who gets to win a mysterypotion?
     randomtargetarray = []
-    lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner')
-    if not lasttimedlootwinner:
-        lasttimedlootwinner = bot.nick
+    lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
-            target = u
-            targetdisenable = get_database_value(bot, target, 'disenable')
-            if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
-                ## award 10 coins to everyone
-                adjust_database_value(bot, target, 'coins', 10)
+            targetdisenable = get_database_value(bot, u, 'disenable')
+            if targetdisenable and target != lasttimedlootwinner and u != bot.nick:
+                
+                ## award coins to everyone
+                adjust_database_value(bot, u, 'coins', halfhourcoinaward)
                 
                 ## mages regen mana
-                yourclass = get_database_value(bot, target, 'class') or 'notclassy'
+                yourclass = get_database_value(bot, u, 'class') or 'notclassy'
                 if yourclass == 'mage':
-                    mana = get_database_value(bot, target, 'mana')
-                    if int(mana) < 1000:
-                        adjust_database_value(bot, target, 'mana', 50)
+                    mana = get_database_value(bot, u, 'mana')
+                    if int(mana) < magemanaregenmax:
+                        adjust_database_value(bot, u, 'mana', magemanaregen)
+                        mana = get_database_value(bot, u, 'mana')
+                        if int(mana) > magemanaregenmax:
+                            set_database_value(bot, u, 'mana', magemanaregenmax)
                 
-                health = get_database_value(bot, target, 'health')
-                if int(health) < 500:
-                    adjust_database_value(bot, target, 'health', 50)
-                randomtargetarray.append(target)
+                ## health regenerates for all
+                health = get_database_value(bot, u, 'health')
+                if int(health) < healthregenmax:
+                    adjust_database_value(bot, u, 'health', healthregen)
+                    health = get_database_value(bot, u, 'health')
+                    if int(health) > healthregenmax:
+                        set_database_value(bot, u, 'health', healthregenmax)
+                        
+        ########## select a winner
+                randomtargetarray.append(u)
         if randomtargetarray == []:
             dummyvar = 1
         else:
-            randomselected = random.randint(0,len(randomtargetarray) - 1)
-            target = str(randomtargetarray [randomselected])
+            target = get_trigger_arg(randomtargetarray, 'random')
             loot = 'mysterypotion'
             loot_text = get_lootitem_text(bot, target, loot)
             adjust_database_value(bot, target, loot, defaultadjust)
@@ -1117,9 +1129,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
     targettime = get_timesince_duels(bot, target, 'timeout') or ''
     channeltime = get_timesince_duels(bot, channel, 'timeout') or ''
-    channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or ''
-    if not channellastinstigator:
-        channellastinstigator = bot.nick
+    channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or bot.nick
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in channel.")
@@ -1158,7 +1168,7 @@ def set_database_value(bot, nick, databasekey, value):
     bot.db.set_nick_value(nick, databasecolumn, value)
     
 def adjust_database_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey)
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
    
@@ -1199,6 +1209,7 @@ def whokilledwhom(bot, winner, loser):
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    ## rangers don't lose their stuff
     if loserclass != 'ranger':
         for x in lootitemsarray:
             gethowmany = get_database_value(bot, loser, x)
@@ -1214,7 +1225,7 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
-    set_database_value(bot, bot.nick, 'disenable', 1)
+    set_database_value(bot, bot.nick, 'disenable', botonoffstatus)
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
@@ -1314,20 +1325,7 @@ def set_current_streaks(bot, nick, winlose):
     ## Clear current opposite streak
     set_database_value(bot, nick, oppositestreaktype, None)
     
-    
-def get_currentstreak(bot, nick):
-    streaks = ''
-    for x in streaksarray:
-        streak = get_database_value(bot, nick, x) or 0
-        if streak:
-            addstreak = str(str(x) + " = " + str(streak))
-            if streaks != '':
-                streaks = str(str(streaks) + str(addstreak))
-            else:
-                streaks = str(str(streaks) + ' ' + str(addstreak))
-    return streaks
-    
-def get_streaktexta(bot, winner, loser):
+def get_current_streaks(bot, winner, loser):
     winner_loss_streak = get_database_value(bot, winner, 'currentlosestreak') or 0
     loser_win_streak = get_database_value(bot, loser, 'currentwinstreak') or 0
     return winner_loss_streak, loser_win_streak
@@ -1346,13 +1344,6 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
 ###############
 ## Inventory ##
 ###############
-
-def get_backpackitems(bot, target):
-    totalbackpack = 0
-    for x in lootitemsarray:
-        gethowmany = get_database_value(bot, target, x)
-        totalbackpack = int(int(totalbackpack) + int(gethowmany))
-    return totalbackpack
 
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
