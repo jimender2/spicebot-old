@@ -15,4 +15,4 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
     moduletocheck = trigger.group(2)
     user = trigger.group(3)
-    bot.say(moduletocheck + " " + user)
+    bot.action("checks usage of "moduletocheck + " for " + user)
