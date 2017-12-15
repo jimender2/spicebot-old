@@ -948,8 +948,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
     assaultstatsarray = ['wins','losses','potionswon','potionslost']
     ## clean empty stats
     assaultdisplay = ''
-    for x in assaultstatsarray:
-        "assault_"+x = 0
+    assault_wins, assault_losses, assault_potionswon, assault_potionslost = 0, 0, 0, 0
     
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
