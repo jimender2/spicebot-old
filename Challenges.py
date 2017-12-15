@@ -1403,6 +1403,9 @@ def weaponofchoice(bot, nick):
     for x in weaponslist:
         if x not in lastusedweaponarry:
             weaponslistselect.append(x)
+    if weaponslistselect == [] and weaponslist != []:
+        set_database_value(bot, nick, 'lastweaponusedarray', None)
+        return weaponofchoice(bot, nick)
     weapon = get_trigger_arg(weaponslistselect, 'random') or 'fist'
     adjust_database_array(bot, nick, weapon, 'lastweaponusedarray', 'add')
     return weapon
