@@ -17,7 +17,7 @@ USERNAME = 'SpiceBot'
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'sopel-modules'
 
-@sopel.module.commands('featurerequest'')
+@sopel.module.commands('featurerequest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
