@@ -22,7 +22,9 @@ def execute_main(bot, trigger, triggerargsarray):
         usagefor = checktarget
     elif not checktarget:
         usagefor = trigger.nick
-    
+    bot.say(commandused)
+    bot.say(moduletocheck)
+    bot.say(checktarget)
     count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
     
     ##says the variables
