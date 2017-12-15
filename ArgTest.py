@@ -13,6 +13,16 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    arraytest = ['main','second']
+    if isinstance(arraytest, list):
+        bot.say('array is an array')
+    else:
+        bot.say('array is not an array')
+    notarraytest = "not an array"
+    if isinstance(notarraytest, list):
+        bot.say('notarray is an array')
+    else:
+        bot.say('notarray is not an array')
     channelarray = []
     for c in bot.channels:
         channelarray.append(c)
