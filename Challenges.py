@@ -1147,7 +1147,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
                 assaultstatsarray = ['wins','losses']
                 assaultdisplay = ''
-                for x in magicattributesarray:
+                for x in assaultstatsarray:
                     workingvar = eval("assault_"+x+"now")
                     if workingvarnow > 0:
                         newline = str(instigator + " had " + str(workingvarnow) + x + ".")
