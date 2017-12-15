@@ -78,6 +78,7 @@ XPearnedloserstock = 3
 scavegerfindpercent = 40
 barbarianminimumdamge = 40
 botdamage = 150
+bugbountycoinaward = 100
 
 ############
 ## Arrays ##
@@ -319,6 +320,19 @@ def execute_main(bot, trigger):
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, subcommand, inchannel, channel, dowedisplay)
 
+        ## Bug Bounty
+        elif commandortarget == 'bugbounty':
+            target = get_trigger_arg(triggerargsarray, 2)
+            if not target:
+                bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+            elif target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+            elif instigator not in adminsarray:
+                bot.notice(instigator + "This is an admin only function.", instigator)
+            else:
+                adjust_database_value(bot, target, 'coins', bugbountycoinaward)
+            
+            
         ## Stats Admin
         elif commandortarget == 'statsadmin':
             incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
