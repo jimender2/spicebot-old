@@ -277,6 +277,8 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 OSDTYPE = 'notice'
+                displaymessage = get_trigger_arg(fullchanassaultarray, "list")
+                bot.notice(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
