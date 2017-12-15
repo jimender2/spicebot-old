@@ -33,6 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
         usagefor = str(trigger.nick)
     if moduletocheck == 'total':
         usagefor = str(trigger.nick)
+        querytype = 'user'
     if moduletocheck.lower() in bot.privileges[channel.lower()]:
         querytype = 'user'    
     count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
