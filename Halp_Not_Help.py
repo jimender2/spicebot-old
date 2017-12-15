@@ -12,6 +12,6 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    commandused = trigger.options(1)
+    commandused = trigger.group(1)
     count = get_botdatabase_value(commandused + "usage")
     bot.say("If you need help using help you are truly lost." + str(count))
