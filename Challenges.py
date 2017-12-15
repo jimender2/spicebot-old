@@ -72,6 +72,7 @@ XPearnedloserstock = 3
 ## other
 scavegerfindpercent = 40
 barbarianminimumdamge = 40
+botdamage = 150
 
 ############
 ## Arrays ##
@@ -1118,7 +1119,7 @@ def halfhourtimer(bot):
             set_database_value(bot, channel, 'lasttimedlootwinner', target)
             
         
-## Functions######################################################################################################################
+## Functions ######################################################################################################################
 
 ######################
 ## Criteria to duel ##
@@ -1434,13 +1435,16 @@ def weaponformatter(bot, weapon):
 def damagedone(bot, winner, loser):
     shieldwinner = get_shield_check(bot, winner)
     shieldloser = get_shield_check(bot, loser)
-    yourclass = get_database_value(bot, winner, 'class') or 'notclassy'
+    winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
+    ## Bot deals a set amount
     if winner == bot.nick:
-        rando = 150
-    elif yourclass == 'barbarian':
-        rando = randint(40, 120)
+        rando = botdamage
+    ## Barbarians get extra damage
+    elif winnerclass == 'barbarian':
+        rando = randint(barbarianminimumdamge, 120)
     else:
         rando = randint(0, 120)
+    # magic shield
     if shieldloser:
         damage = 0
     else:
@@ -1454,10 +1458,17 @@ def damagedone(bot, winner, loser):
 def get_pepper(bot, nick):
     xp = get_database_value(bot, nick, 'xp')
     nickcurse = get_database_value(bot, nick, 'curse')
+    nickshield = get_database_value(bot, nick, 'shield')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
-    elif nickcurse:
-        pepper = 'Cursed'
+    elif nickcurse or nickshield:
+        peppercurse = ''
+        peppershield = ''
+        if nickcurse:
+            peppercurse = 'Cursed '
+        if nickshield:
+            peppershield = 'Shield'
+        pepper = str(peppercurse + peppershield)
     elif not xp:
         pepper = ''
     elif xp > 0 and xp < 100:
