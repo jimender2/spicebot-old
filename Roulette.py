@@ -14,6 +14,7 @@ maxwheel = 24
 numberpayout = 2
 colorpayout = 1
 evenpayout = 3
+maxbet = 100
 
 @sopel.module.commands('roulette', 'spin')
 def mainfunction(bot, trigger):
@@ -78,8 +79,8 @@ def execute_main(bot, trigger, arg):
 					inputcheck = 1
 					        
 		if inputcheck==1:
-			if mybet<=0:
-				bot.say('Please enter your bet followed by number and the color you wish to bet on')
+			if (mybet<=0 or mybet>maxbet):
+				bot.say('Please bet an amount between 1 and ' + maxbet)
 			else:
 				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
 					bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
