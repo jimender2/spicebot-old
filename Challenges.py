@@ -96,9 +96,9 @@ statsbypassarray = ['winlossratio','timeout']
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger)
     
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
 
 ## If using outside of spicebot
 #@sopel.module.commands('challenge','duel')
@@ -796,8 +796,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 quantity = get_trigger_arg(triggerargsarray, 4)
             if not quantity:
                 quantity = 1
-            targetcurse = get_curse_check(bot, target)
-            targetshield = get_shield_check(bot, target)
+            targetcurse = get_database_value(bot, target, 'curse') or 0
+            targetshield = get_database_value(bot, target, 'shield') or 0
             if not magicusage:
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif magicusage not in magicoptions:
@@ -1168,48 +1168,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, do
         bot.notice(displaymsg, instigator)
     return executedueling
 
-##############
-## Database ##
-##############
-
-def get_database_value(bot, nick, databasekey):
-    databasecolumn = str('challenges_' + databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return database_value
-
-def set_database_value(bot, nick, databasekey, value):
-    databasecolumn = str('challenges_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
-    
-def adjust_database_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey) or 0
-    databasecolumn = str('challenges_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-   
-def get_database_array_total(bot, nick, databasekey):
-    array = get_database_value(bot, nick, databasekey) or []
-    entriestotal = len(array)
-    return entriestotal
-
-def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
-    adjustarray = get_database_value(bot, nick, databasekey) or []
-    adjustarraynew = []
-    for x in adjustarray:
-        adjustarraynew.append(x)
-    set_database_value(bot, nick, databasekey, None)
-    adjustarray = []
-    if adjustmentdirection == 'add':
-        adjustarraynew.append(entry)
-    elif adjustmentdirection == 'del':
-        adjustarraynew.remove(entry)
-    for x in adjustarraynew:
-        if x not in adjustarray:
-            adjustarray.append(x)
-    if adjustarray == []:
-        set_database_value(bot, nick, databasekey, None)
-    else:
-        set_database_value(bot, nick, databasekey, adjustarray)
-    
 ###################
 ## Living Status ##
 ###################
@@ -1454,8 +1412,8 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, winner, loser):
-    shieldwinner = get_shield_check(bot, winner)
-    shieldloser = get_shield_check(bot, loser)
+    shieldwinner = get_magic_attribute(bot, winner, 'shield')
+    shieldloser = get_magic_attribute(bot, loser, 'shield')
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     ## Bot deals a set amount
     if winner == bot.nick:
@@ -1603,10 +1561,10 @@ def getwinner(bot, instigator, target, manualweapon):
 
     ## check for curses
     if instigator != target and instigator != bot.nick:
-        instigatorcurse = get_curse_check(bot, instigator)
+        instigatorcurse = get_magic_attribute(bot, instigator, 'curse')
         if instigatorcurse:
             instigatorfight = 0
-        targetcurse = get_curse_check(bot, target)
+        targetcurse = get_magic_attribute(bot, target, 'curse')
         if targetcurse:
             targetfight = 0
 
@@ -1634,31 +1592,18 @@ def getwinner(bot, instigator, target, manualweapon):
         loser = instigator
     return winner, loser
 
-############
-## cursed ##
-############
+#####################
+## Magic attributes ##
+######################
 
-def get_curse_check(bot, nick):
+def get_magic_attribute(bot, nick, attribute):
     adjustment = -1
-    cursed = 0
-    nickcurse = get_database_value(bot, nick, 'curse')
-    if nickcurse:
+    afflicted = 0
+    nickattribute = get_database_value(bot, nick, attribute)
+    if nickattribute:
         adjust_database_value(bot, nick, 'curse', adjustment)
-        cursed = 1
-    return cursed
-
-############
-## shield ##
-############
-
-def get_shield_check(bot, nick):
-    adjustment = -1
-    shield = 0
-    nickshield = get_database_value(bot, nick, 'shield')
-    if nickshield:
-        adjust_database_value(bot, nick, 'shield', adjustment)
-        shield = 1
-    return shield
+        afflicted = 1
+    return afflicted
     
 ###############
 ## ScoreCard ##
@@ -1674,6 +1619,48 @@ def get_winlossratio(bot,target):
     else:
         winlossratio = float(wins)/losses
     return winlossratio
+
+##############
+## Database ##
+##############
+
+def get_database_value(bot, nick, databasekey):
+    databasecolumn = str('challenges_' + databasekey)
+    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return database_value
+
+def set_database_value(bot, nick, databasekey, value):
+    databasecolumn = str('challenges_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
+    
+def adjust_database_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
+    databasecolumn = str('challenges_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+   
+def get_database_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    entriestotal = len(array)
+    return entriestotal
+
+def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
+    adjustarray = get_database_value(bot, nick, databasekey) or []
+    adjustarraynew = []
+    for x in adjustarray:
+        adjustarraynew.append(x)
+    set_database_value(bot, nick, databasekey, None)
+    adjustarray = []
+    if adjustmentdirection == 'add':
+        adjustarraynew.append(entry)
+    elif adjustmentdirection == 'del':
+        adjustarraynew.remove(entry)
+    for x in adjustarraynew:
+        if x not in adjustarray:
+            adjustarray.append(x)
+    if adjustarray == []:
+        set_database_value(bot, nick, databasekey, None)
+    else:
+        set_database_value(bot, nick, databasekey, adjustarray)
 
 ##########
 ## ARGS ##
