@@ -186,7 +186,6 @@ def execute_main(bot, trigger):
             totaluses = get_database_value(bot, target, 'usage')
             bot.say(targetname + " has used challenges " + str(totaluses) + " times.")
                 
-        
         ## Random Dueling
         elif commandortarget == 'random':
             if canduelarray == []:
