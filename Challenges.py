@@ -1148,7 +1148,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                 assaultstatsarray = ['wins','losses']
                 assaultdisplay = ''
                 for x in assaultstatsarray:
-                    workingvar = eval("assault_"+x+"now")
+                    workingvar = eval("assault_"+x)
                     if workingvarnow > 0:
                         newline = str(instigator + " had " + str(workingvarnow) + x + ".")
                         if assaultdisplay != '':
