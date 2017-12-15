@@ -117,7 +117,6 @@ def execute_main(bot, trigger):
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     dowedisplay = 0
     displaymessage = ''
-    bringontheduelsarray = []
     
     ## Build User/channel Arrays
     targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
@@ -266,33 +265,23 @@ def execute_main(bot, trigger):
             fullchanassaultarray = []
             for x in canduelarray:
                 if x != instigator and x != bot.nick:
-                    bringontheduelsarray.append(x)
-            bringontheduelsarraytotal = len(bringontheduelsarray)
+                    fullchanassaultarray.append(x)
+            fullchanassaultarraytotal = len(fullchanassaultarray)
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif bringontheduelsarray == []:
+            elif fullchanassaultarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 OSDTYPE = 'notice'
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                getreadytorumble(bot, trigger, instigator, bringontheduelsarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
-                #for u in fullchanassaultarray:
-                #    if u != instigator and u != bot.nick:
-                #        targetlastfoughtstart = get_database_value(bot, u, 'lastfought')
-                #        getreadytorumble(bot, trigger, instigator, u, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
-                #        fullchanassaultarraytotal = fullchanassaultarraytotal - 1
-                #        if fullchanassaultarraytotal > 0:
-                #            bot.notice("  ", instigator)
-                #            time.sleep(5)
-                #        set_database_value(bot, u, 'lastfought', targetlastfoughtstart)
+                getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
-                bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
 
         ## War Room
         elif commandortarget == 'warroom':
@@ -947,20 +936,22 @@ def execute_main(bot, trigger):
     refreshbot(bot)
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
-    
+
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
     if typeofduel != 'assault':
         typeofduel = 'target'
     
-    ## arraycheck
+    ## Target Array
     if not isinstance(targetarray, list):
         tempvar = targetarray
         targetarray = []
         targetarray.append(tempvar)
-    
-    ## If more than one target
+    targetarraytotal = len(targetarray)
     for target in targetarray:
+        targetarraytotal = targetarraytotal - 1
+        if typeofduel == 'assault':
+            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
     
         ## Update Time Of Combat
         set_database_value(bot, instigator, 'timeout', now)
@@ -1124,6 +1115,17 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             if magicattributestext != '':
                 bot.notice(str(magicattributestext), winner)
                 bot.notice(str(magicattributestext), loser)
+        
+        ## Pause Between duels
+        if targetarraytotal > 0:
+            bot.notice("  ", instigator)
+            time.sleep(5)
+        
+        ## Assaults revert changes to lastfought
+        if typeofduel == 'assault':
+            set_database_value(bot, u, 'lastfought', targetlastfoughtstart)
+            if targetarraytotal == 0:
+                bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
         
 ## End Of Duels ###################################################################################################################
         
