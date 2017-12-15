@@ -762,9 +762,9 @@ def execute_main(bot, trigger):
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
             if not adjustmentdirection:
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
-            elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
-                bot.notice(instigator + ", Inventory can only be viewed in privmsg.", instigator)
             elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
+                bot.notice(instigator + ", Inventory can only be viewed in privmsg.", instigator)
+            elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
                 weapons = ''
                 for x in weaponslist:
                     weapon = x
