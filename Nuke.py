@@ -12,6 +12,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+     ## Initial ARGS
+    triggerargsarray = create_args_array(trigger.group(2))
+    commandused = get_trigger_arg(triggerargsarray, 0)
+    target = get_trigger_arg(triggerargsarray, 1)
+    
+    
     commandused = trigger.group(1)
     target = trigger.group(2)
     if commandused == 'nuke':
