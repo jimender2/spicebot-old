@@ -24,30 +24,36 @@ ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+stockhealth = 1000 ## default health for new players and respawns
 changeclasscost = 100 ## ## how many coins to change class
-stockhealth = 1000
-healthpotionworthbarbarian = 125
-healthpotionworth = 100
-poisonpotionworth = -50
-manapotionworthmage = 125
-manapotionworth = 100
-traderatioscavenger = 2
-traderatio = 3
-lootbuycostscavenger = 90
-lootbuycost = 100
-lootsellrewardscavenger = 30
-lootsellreward = 25
-manarequiredmagicattack = 250
-manarequiredmagicshield = 500
-manarequiredmagiccurse = 500
-manarequiredmagichealth = 200
-magicattackdamage = -200
-magicshielddamage = 80
-magiccursedamage = -80
-magichealthrestore = 200
-curseduration = 4
-shieldduration = 4
-magemanamagiccut = .9
+
+## Potion Potency
+healthpotionworthbarbarian = 125 ## health potion worth for barbarians
+healthpotionworth = 100 ## normal health potion worth
+poisonpotionworth = -50 ## poisonpotion damage
+manapotionworthmage = 125 ## manapotion worth for mages
+manapotionworth = 100 ##normal mana potion worth
+
+## Buy/sell/trade rates
+traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
+traderatio = 3 ## normal trading ratio 3:1
+lootbuycostscavenger = 90 ## cost to buy a loot item for scavengers
+lootbuycost = 100 ## normal cost to buy a loot item
+lootsellrewardscavenger = 30 ## coins rewarded in selling loot for scavengers
+lootsellreward = 25 ## normal coins rewarded in selling loot
+
+## Magic usage
+magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
+manarequiredmagicattack = 250 ## mana required for magic attack
+magicattackdamage = -200 ## damage caused by a magic attack
+manarequiredmagicshield = 500 ## mana required for magic shield
+magicshielddamage = 80 ## damage caused by a magic shield usage
+shieldduration = 4 ## how long a shield lasts
+manarequiredmagiccurse = 500 ## mana required for magic curse
+magiccursedamage = -80 ## damage caused by a magic curse
+curseduration = 4 ## how long a curse lasts
+manarequiredmagichealth = 200 ## mana required for magic health
+magichealthrestore = 200 ## health restored by a magic health
 
 ############
 ## Arrays ##
