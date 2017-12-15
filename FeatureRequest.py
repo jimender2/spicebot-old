@@ -52,4 +52,4 @@ def make_github_issue(bot, title):
         bot.say('Successfully created Issue "%s"' % title)
     else:
         bot.say('Could not create Issue "%s"' % title)
-        bot.say('Response:' + r.content))
+        bot.say(str('Response:' + r.content))
