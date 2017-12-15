@@ -13,10 +13,16 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS of importance
+    usagefor = ''
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
-    usagefor = get_trigger_arg(triggerargsarray, 2)
+    checktarget = get_trigger_arg(triggerargsarray, 2)
+    if checktarget:
+        usagefor = checktarget
+    elif not checktarget:
+        usagefor = trigger.nick
+    
     count = get_database_value(bot, usagefor, moduletocheck+"usage")
     
     ##says the variables
