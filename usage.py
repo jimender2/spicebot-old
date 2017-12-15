@@ -12,9 +12,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-  commandused = trigger.group(1)
-  module = trigger.group(2)
-  target = trigger.group(3)
-  #if not target:
-    #target = bot.channel
-bot.say(commandused + module + target)
+    commandused = trigger.group(1)
+    module = trigger.group(2)
+    target = trigger.group(3)
+    #if not target:
+        #target = bot.channel
+    bot.say(commandused + module + target)
