@@ -1123,7 +1123,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         
         ## Assaults revert changes to lastfought
         if typeofduel == 'assault':
-            set_database_value(bot, u, 'lastfought', targetlastfoughtstart)
+            set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
         
