@@ -163,8 +163,9 @@ def get_trigger_arg(triggerargsarray, number):
                 else:
                     triggerarg = str(arg)
     elif number == 'random':
-        randomselected = random.randint(0,len(triggerargsarray) - 1)
-        triggerarg = str(triggerargsarray [randomselected])
+        if totalarray > 1:
+            randomselected = random.randint(0,len(triggerargsarray) - 1)
+            triggerarg = str(triggerargsarray [randomselected])
     elif number == 'list':
         for x in triggerargsarray:
             if triggerarg != '':
