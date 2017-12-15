@@ -979,7 +979,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
 
         ## Announce Combat
-       announcecombatmsg = str(instigatorname + " versus " + targetname)
+        announcecombatmsg = str(instigatorname + " versus " + targetname)
        
         ## Check for new player health
         healthcheck(bot, target)
