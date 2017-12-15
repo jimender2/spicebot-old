@@ -22,7 +22,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
     for c in bot.channels:
         channel = c
-    
+    if not moduletocheck:
+        moduletocheck = 'total'
     if checktarget:
         if checktarget == 'channel':
             usagefor = trigger.sender
