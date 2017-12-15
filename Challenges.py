@@ -944,7 +944,11 @@ def execute_main(bot, trigger):
     refreshbot(bot)
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
-
+    
+    ## clean empty stats
+    assault_wins = 0
+    assault_losses = 0
+    
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
     if typeofduel != 'assault':
@@ -1124,8 +1128,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                 bot.notice(str(magicattributestext), winner)
                 bot.notice(str(magicattributestext), loser)
         
+        ## update assault stats
+        if winner == instigator:
+            assault_wins = assault_wins + 1
+        if loser == instigator:
+            assault_losses = assault_losses + 1
+        
         ## Pause Between duels
-        if targetarraytotal > 0:
+        if targetarraytotal > 0 and typeofduel == 'assault':
             bot.notice("  ", instigator)
             time.sleep(5)
         
@@ -1135,6 +1145,17 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             if targetarraytotal == 0:
                 bot.notice("  ", instigator)
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
+                assaultstatsarray = ['wins','losses']
+                assaultdisplay = ''
+                for x in magicattributesarray:
+                    workingvar = eval("assault_"+x+"now")
+                    if workingvarnow > 0:
+                        newline = str(instigator + " had " + str(workingvarnow) + x + ".")
+                        if assaultdisplay != '':
+                            assaultdisplay = str(assaultdisplay + " " + newline)
+                        else:
+                            assaultdisplay = str(newline)
+                bot.say(instigator + "'s results: " + assaultdisplay)
         
 ## End Of Duels ###################################################################################################################
         
