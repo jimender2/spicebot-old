@@ -20,7 +20,8 @@ def execute_main(bot, trigger, triggerargsarray):
     moduletocheck = get_trigger_arg(triggerargsarray, 1)
     checktarget = get_trigger_arg(triggerargsarray, 2)
 
-    
+    for c in bot.channels:
+        channel = c
     
     if checktarget:
         if checktarget == 'channel':
