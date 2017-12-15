@@ -13,7 +13,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    arraytest = ['main','second']
+    arraytest = ['main']
     if isinstance(arraytest, list):
         bot.say('array is an array')
     else:
