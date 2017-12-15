@@ -15,6 +15,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS of importance
     usagefor = ''
     querytype = 'specific'
+    counter = 1
     instigator = trigger.nick
     triggerargsarray = create_args_array(trigger.group(2))
     commandused = get_trigger_arg(triggerargsarray, 0)
@@ -23,45 +24,49 @@ def execute_main(bot, trigger, triggerargsarray):
     for c in bot.channels:
         channel = c
 
-    if moduletocheck == 'me':
-        moduletocheck = trigger.nick
     if moduletocheck == 'channel':
         querytype = 'invalidmodule'
+        counter = 0
     if moduletocheck == 'help':
         querytype = 'help'
-    if moduletocheck.lower() in bot.privileges[channel.lower()]:
-        querytype = 'user'
-        usagefor = str(moduletocheck)
-        if not checktarget:
-            checktarget = 'total'
-    elif moduletocheck.lower() not in bot.privileges[channel.lower()]:
-        if checktarget:
-            if checktarget == 'channel':
-                usagefor = trigger.sender
+        counter = 0
+    
+    if counter == 1:
+        if moduletocheck.lower() in bot.privileges[channel.lower()]:
+            querytype = 'user'
+            usagefor = str(moduletocheck)
+            if not checktarget:
+                checktarget = 'total'
+        elif moduletocheck.lower() not in bot.privileges[channel.lower()]:
+            if checktarget:
+                if checktarget == 'channel':
+                    usagefor = trigger.sender
+                else:
+                    usagefor = checktarget
+            elif not checktarget:
+                usagefor = str(trigger.nick)
+
+        count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
+
+        if querytype == 'user':
+            if count == 0:
+                message = str('It appears that ' + usagefor + ' has not run any commands at all.')
+            elif count == 1:
+                message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
             else:
-                usagefor = checktarget
-        elif not checktarget:
-            usagefor = str(trigger.nick)
-            
-    count = get_botdatabase_value(bot, usagefor, moduletocheck+"usage")
-    
-    if querytype == 'user':
-        if count == 0:
-            message = str('It appears that ' + usagefor + ' has not run any commands at all.')
-        elif count == 1:
-            message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
+                message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
         else:
-            message = str(usagefor + ' has run a total of ' + str(count) + ' commands.')
-    elif querytype == 'invalidmodule':
-        message = str("I'm sorry, but that's not a valid module to check.")
-    elif querytype == 'help':
-        message = str("A wiki page for this is in progress."
-    else:
-        if count == 0:
-            message = str('It appears that ' + usagefor + ' has not run ' + moduletocheck + ' at all.')
-        elif count == 1:
-            message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' time.')
+            if count == 0:
+                message = str('It appears that ' + usagefor + ' has not run ' + moduletocheck + ' at all.')
+            elif count == 1:
+                message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' time.')
+            else:
+                message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' times.')
+    elif counter == 0:
+        if querytype == 'invalidmodule':
+            message = str("I'm sorry, but that's not a valid module to check.")
+        if querytype == 'help':
+            message = str('A wiki page for this is in progress.')
         else:
-            message = str(usagefor + ' has run ' + moduletocheck + ' a total of ' + str(count) + ' times.')
-    
+            message = str('An error occurred. Please try again later.')
     bot.say(message)
