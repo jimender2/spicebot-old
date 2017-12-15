@@ -88,16 +88,12 @@ def spicebot_prerun(bot,trigger):
     ## Add usage counter for individual/channel module counts
     adjust_botdatabase_value(bot, botchannel, str(commandused + "usage"), 1)
     adjust_botdatabase_value(bot, trigger.nick, str(commandused + "usage"), 1)
-    bot.say(bot + botchannel + str(commandused + "usage"))
-    bot.say(bot + trigger.nick + str(commandused + "usage"))
     
     ## message, if any
     bot.notice(message, instigator)
     
     ## Send Status Forward
     return enablestatus, triggerargsarray
-
-
 
 #####################################################################################################################################
 ## Below This Line are Shared Functions
