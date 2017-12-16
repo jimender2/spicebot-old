@@ -1207,7 +1207,7 @@ def halfhourtimer(bot, simulate=0):
             if udisenable and u != bot.nick:
                 
                 ## Random user gets a mysterypotion
-                lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
+                lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
                 if u != lasttimedlootwinner:
                     randomuarray.append(u)
                 
@@ -1236,7 +1236,7 @@ def halfhourtimer(bot, simulate=0):
             adjust_database_value(bot, target, 'mysterypotion', defaultadjust)
             lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
-            set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
+            set_database_value(bot, channel, 'lasttimedlootwinner', target)
             if simulate:
                 bot.msg(lootwinnermsg,lootwinnermsg)
     
