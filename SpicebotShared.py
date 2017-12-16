@@ -123,13 +123,8 @@ def greeting(bot, trigger):
     set_botdatabase_value(bot, target, 'jointime', now)
     lasttime = get_timesince(bot, target, 'lastusagetime')
     if not lasttime or lasttime < LASTTIMEOUTHOUR:
-        bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-        bot.db.set_nick_value(target, 'spicebothour_warn', '')
-    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
-    adjust_botdatabase_array(bot, channel, u, 'users', 'add')
-    ubotstatus = get_botdatabase_value(bot, u, 'disenable')
-    if ubotstatus and u not in botusers:
-        adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
+        bot.db.set_nick_value(target, 'spicebot_usertotal', None)
+        bot.db.set_nick_value(target, 'spicebothour_warn', None)
 
 @sopel.module.interval(3600)
 def autoblockhour(bot):
