@@ -137,7 +137,8 @@ def execute_main(bot, trigger):
                 dueloptedinarray.append(u)
                 adjust_database_array(bot, channel, u, 'duelusers', 'add')
             ## offline users
-            offlineusersarray.remove(u)
+            if u in offlineusersarray:
+                offlineusersarray.remove(u)
             # Target passes all duel checks
             canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, channel, dowedisplay)
             if canduel and u != bot.nick:
