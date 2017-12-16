@@ -1389,10 +1389,7 @@ def whatsyourname(bot, trigger, nick, channel):
     pepperstart = get_pepper(bot, nick)
     
     ## Is user Special?
-    botownerarray = []
-    operatorarray = []
-    voicearray = []
-    adminsarray = []
+    botownerarray, operatorarray, voicearray, adminsarray = [], [], [], []
     for u in bot.channels[channel.lower()].users:
         nametargetdisenable = get_database_value(bot, u, 'disenable')
         if u != bot.nick and nametargetdisenable:
