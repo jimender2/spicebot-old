@@ -153,8 +153,15 @@ def execute_main(bot, trigger):
             classtime = get_timesince_duels(bot, u, 'classtimeout')
             if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
                 classcantchangearray.append(u)
-            
-## Array Totals
+    
+    ## Offline users
+    offlineusersarray = []
+    duelusers = get_botdatabase_value(bot, channel, 'duelusers') or []
+    for x in duelusers:
+        if x not in allusersinroomarray:
+            offlineusersarray.append(x)
+        
+    ## Array Totals
     targetcantoptarraytotal = len(targetcantoptarray)
     canduelarraytotal = len(canduelarray)
     botownerarraytotal = len(botownerarray)
@@ -164,7 +171,7 @@ def execute_main(bot, trigger):
     dueloptedinarraytotal = len(dueloptedinarray)
     allusersinroomarraytotal = len(allusersinroomarray)
     channelarraytotal = len(channelarray)
-        
+
 ###### Channel (assumes only one channel,,, need to fix somehow someday)
     channel = get_trigger_arg(channelarray, 1)
     inchannel = trigger.sender
@@ -211,6 +218,8 @@ def execute_main(bot, trigger):
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
+            elif target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
             elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
@@ -223,7 +232,11 @@ def execute_main(bot, trigger):
                 disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
-            if target.lower() not in allusersinroomarray and target != 'everyone':
+            if target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
+            elif target.lower() not in allusersinroomarray:
+                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+            elif target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
@@ -305,6 +318,8 @@ def execute_main(bot, trigger):
             elif subcommand == 'list':
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(str(displaymessage ))
+            elif subcommand.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + str(subcommand) + " is offline right now.", instigator)
             elif subcommand.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
@@ -318,6 +333,8 @@ def execute_main(bot, trigger):
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+            elif target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
             elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
             elif instigator not in adminsarray:
@@ -355,6 +372,8 @@ def execute_main(bot, trigger):
             newvalue = get_trigger_arg(triggerargsarray, 5) or None
             if not target:
                 bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+            elif target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
             elif target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
             elif not subcommand:
@@ -423,7 +442,9 @@ def execute_main(bot, trigger):
         ## Streaks
         elif commandortarget == 'streaks':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
+            elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -453,7 +474,9 @@ def execute_main(bot, trigger):
         ## Backpack
         elif commandortarget == 'backpack':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
+            elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -475,7 +498,9 @@ def execute_main(bot, trigger):
         ## Stats
         elif commandortarget == 'stats':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
+            elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -578,6 +603,8 @@ def execute_main(bot, trigger):
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 elif int(gethowmanylootitem) < int(quantity):
                     bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
+                elif target.lower() in offlineusersarray:
+                    bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
                 elif target.lower() not in allusersinroomarray:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target == bot.nick:
@@ -836,6 +863,8 @@ def execute_main(bot, trigger):
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif magicusage not in magicoptions:
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
+            elif target.lower() in offlineusersarray:
+                bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
             elif target.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target == bot.nick:
@@ -938,12 +967,18 @@ def execute_main(bot, trigger):
                 set_database_value(bot, instigator, 'mana', None)
             
         ## If not a command above, invalid
+        elif commandortarget.lower() in offlineusersarray:
+            bot.notice(instigator + ", It looks like " + commandortarget + " is offline right now.", instigator)
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
     
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in dueloptedinarray:
         bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
+        
+    ## warning if user is offline
+    elif commandortarget.lower() in offlineusersarray:
+        bot.notice(instigator + ", It looks like " + commandortarget + " is offline right now.", instigator)
       
     else:
         OSDTYPE = 'say'
@@ -1194,6 +1229,7 @@ def halfhourtimer(bot, simulate=None):
     ## Who gets to win a mysterypotion?
     randomuarray = []
     for channel in bot.channels:
+        adjust_database_array(bot, channel, channel, 'channels', 'add')
         for u in bot.privileges[channel.lower()]:
             
             ## user stats
@@ -1202,6 +1238,11 @@ def halfhourtimer(bot, simulate=None):
             uclass = get_database_value(bot, u, 'class') or 'notclassy'
             mana = get_database_value(bot, u, 'mana') or 0
             health = get_database_value(bot, u, 'health') or 0
+            
+            ## track duel users that are on/off-line
+            duelusers = get_database_value(bot, channel, 'duelusers') or []
+            if udisenable and u not in duelusers and u != bot.nick:
+                adjust_database_array(bot, channel, u, 'duelusers', 'add')
             
             ## must have duels enabled
             if udisenable and u != bot.nick:
@@ -1240,7 +1281,7 @@ def halfhourtimer(bot, simulate=None):
                 bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
-    set_database_value(bot, channel, 'lastinstigator', '')
+    set_database_value(bot, channel, 'lastinstigator', None)
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
