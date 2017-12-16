@@ -340,6 +340,8 @@ def execute_main(bot, trigger):
                 elif subcommand == 'lastinstigator':
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
+                elif subcommand == 'halfhoursim':
+                    halfhourtimer(bot, simulate=1)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             
@@ -1183,7 +1185,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         
 ## 30 minute automation
 @sopel.module.interval(1800)
-def halfhourtimer(bot):
+def halfhourtimer(bot, simulate=0):
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1192,50 +1194,57 @@ def halfhourtimer(bot):
     set_database_value(bot, ALLCHAN, 'lastinstigator', '')
     
     ## Who gets to win a mysterypotion?
-    randomtargetarray = []
+    randomuarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
     for channel in bot.channels:
+        bot.msg(channel,channel)
         for u in bot.privileges[channel.lower()]:
-            target = u
-            targetdisenable = get_database_value(bot, target, 'disenable')
-            if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
+            bot.msg(channel,u)
+            
+            ## user stats
+            udisenable = get_database_value(bot, u, 'disenable')
+            uclass = get_database_value(bot, u, 'class') or 'notclassy'
+            mana = get_database_value(bot, u, 'mana') or 0
+            health = get_database_value(bot, u, 'health') or 0
+            
+            ## must have duels enabled
+            if udisenable and u != bot.nick:
+                
+                ## Random user gets a mysterypotion
+                if u != lasttimedlootwinner:
+                    randomuarray.append(u)
                 
                 ## award coins to everyone
                 adjust_database_value(bot, u, 'coins', halfhourcoinaward)
                 
-                ## mages regen mana
-                yourclass = get_database_value(bot, u, 'class') or 'notclassy'
-                if yourclass == 'mage':
-                    mana = get_database_value(bot, u, 'mana')
-                    if int(mana) < magemanaregenmax:
-                        adjust_database_value(bot, u, 'mana', magemanaregen)
-                        mana = get_database_value(bot, u, 'mana')
-                        if int(mana) > magemanaregenmax:
-                            set_database_value(bot, u, 'mana', magemanaregenmax)
-                
                 ## health regenerates for all
-                health = get_database_value(bot, u, 'health')
                 if int(health) < healthregenmax:
                     adjust_database_value(bot, u, 'health', healthregen)
                     health = get_database_value(bot, u, 'health')
                     if int(health) > healthregenmax:
                         set_database_value(bot, u, 'health', healthregenmax)
                 
-                randomtargetarray.append(target)
-        ########## select a winner
-                randomtargetarray.append(u)
-        if randomtargetarray == []:
-            dummyvar = 1
-        else:
-            randomselected = random.randint(0,len(randomtargetarray) - 1)
-            target = str(randomtargetarray [randomselected])
-            loot = 'mysterypotion'
-            loot_text = get_lootitem_text(bot, target, loot)
-            adjust_database_value(bot, target, loot, defaultadjust)
-            lootwinnermsg = str(target + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
+                ## mages regen mana
+                if uclass == 'mage':
+                    if int(mana) < magemanaregenmax:
+                        adjust_database_value(bot, u, 'mana', magemanaregen)
+                        mana = get_database_value(bot, u, 'mana')
+                        if int(mana) > magemanaregenmax:
+                            set_database_value(bot, u, 'mana', magemanaregenmax)
+
+        if randomuarray != []:
+            randomselected = random.randint(0,len(randomuarray) - 1)
+            target = str(randomuarray [randomselected])
+            loot_text = get_lootitem_text(bot, target, 'mysterypotion')
+            adjust_database_value(bot, target, 'mysterypotion', defaultadjust)
+            lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
-            bot.msg(channel,target)
+            if simulate:
+                bot.msg(lootwinnermsg,lootwinnermsg)
+    
+    ## bot does not need stats or backpack items
+    refreshbot(bot)
 
 ## Functions ######################################################################################################################
 
