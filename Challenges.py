@@ -1353,12 +1353,11 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
+    set_database_value(bot, bot.nick, 'disenable', '1')
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, None)
-        else:
-            set_database_value(bot, bot.nick, x, 1)
+            set_database_value(bot, bot.nick, x, '')
             
 ##########
 ## Time ##
