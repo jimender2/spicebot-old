@@ -158,6 +158,10 @@ def execute_main(bot, trigger):
             if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
                 classcantchangearray.append(u)
     
+    ###### Channel (assumes only one channel,,, need to fix somehow someday)
+    channel = get_trigger_arg(channelarray, 1)
+    inchannel = trigger.sender
+    
     ## Offline users
     offlineusersarray = []
     duelusers = get_botdatabase_value(bot, channel, 'duelusers') or []
@@ -176,10 +180,6 @@ def execute_main(bot, trigger):
     allusersinroomarraytotal = len(allusersinroomarray)
     channelarraytotal = len(channelarray)
     offlineusersarraytotal = len(offlineusersarray)
-
-###### Channel (assumes only one channel,,, need to fix somehow someday)
-    channel = get_trigger_arg(channelarray, 1)
-    inchannel = trigger.sender
     
     ## Time when Module use started
     now = time.time()
