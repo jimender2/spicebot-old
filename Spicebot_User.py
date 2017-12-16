@@ -249,39 +249,3 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_botdatabase_value(bot, target, 'lastopttime', now)
                     message = str(bot.nick + ' is ' + adjustment + ' ' + commandused + ' for '  + target)
                     bot.say(message)
-
-## Auto Mod
-@event('JOIN','PART','QUIT','NICK')
-@rule('.*')
-def greeting(bot, trigger):
-    now = time.time()
-    target = trigger.nick
-    set_botdatabase_value(bot, target, 'jointime', now)
-    lasttime = get_timesince(bot, target, 'lastusagetime')
-    if not lasttime or lasttime < LASTTIMEOUTHOUR:
-        bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-        bot.db.set_nick_value(target, 'spicebothour_warn', '')
-
-@sopel.module.interval(3600)
-def autoblockhour(bot):
-    for channel in bot.channels:
-        now = time.time()
-        bot.db.set_nick_value(channel, 'spicebothourstart_time', now)
-        for u in bot.privileges[channel.lower()]:
-            target = u
-            bot.db.set_nick_value(target, 'spicebot_usertotal', '')
-            bot.db.set_nick_value(target, 'spicebothour_warn', '')
-
-@sopel.module.interval(60)
-def autoblock(bot):
-    for channel in bot.channels:
-        for u in bot.privileges[channel.lower()]:
-            target = u
-            usertotal = get_botdatabase_value(bot, target, 'usertotal')
-            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-                set_timeout(bot, target)
-                set_botdatabase_value(bot, target, 'disenable', '')
-                warned = get_botdatabase_value(bot, target, 'hourwarned')
-                if not warned:
-                    bot.notice(target + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
-                    bot.db.set_nick_value(target, 'spicebothour_warn', 'true')
