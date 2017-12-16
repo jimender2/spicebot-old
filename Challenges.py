@@ -1192,7 +1192,6 @@ def halfhourtimer(bot, simulate=0):
     
     ## Who gets to win a mysterypotion?
     randomuarray = []
-    lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
     for channel in bot.channels:
         bot.msg(channel,channel)
         for u in bot.privileges[channel.lower()]:
@@ -1208,6 +1207,7 @@ def halfhourtimer(bot, simulate=0):
             if udisenable and u != bot.nick:
                 
                 ## Random user gets a mysterypotion
+                lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
                 if u != lasttimedlootwinner:
                     randomuarray.append(u)
                 
