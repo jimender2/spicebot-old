@@ -109,9 +109,10 @@ def halfhourdatacollection(bot):
         adjust_botdatabase_array(bot, channel, channel, 'channels', 'add')
         for u in bot.privileges[channel.lower()]:
             botusers = get_botdatabase_value(bot, channel, 'botusers') or []
-            adjust_botdatabase_array(bot, channel, u, 'users', 'add')
+            if u != bot.nick:
+                adjust_botdatabase_array(bot, channel, u, 'users', 'add')
             ubotstatus = get_botdatabase_value(bot, u, 'disenable')
-            if ubotstatus and u not in botusers:
+            if ubotstatus and u not in botusers and u != bot.nick:
                 adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
             
 ## Auto Mod
