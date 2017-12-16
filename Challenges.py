@@ -1235,6 +1235,7 @@ def halfhourtimer(bot):
             lootwinnermsg = str(target + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
+            bot.msg(channel,target)
 
 ## Functions ######################################################################################################################
 
