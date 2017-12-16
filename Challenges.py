@@ -119,12 +119,13 @@ def execute_main(bot, trigger):
     displaymessage = ''
     
     ## Build User/channel Arrays
+    offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
     targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
-    for c in bot.channels:
-        channelarray.append(c)
+    for channel in bot.channels:
+        channelarray.append(channel)
         inchannel = "#bypass"
         ## All Users in channel
-        for u in bot.channels[c.lower()].users:
+        for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
             ## Users that can opt in/out of duels
             opttime = get_timesince_duels(bot, u, 'opttime')
@@ -134,22 +135,21 @@ def execute_main(bot, trigger):
             disenable = get_database_value(bot, u, 'disenable')
             if u != bot.nick and disenable:
                 dueloptedinarray.append(u)
+                adjust_database_array(bot, channel, u, 'duelusers', 'add')
             ## offline users
-            duelusers = get_database_value(bot, c, 'duelusers') or []
-            if disenable and u not in duelusers and u != bot.nick:
-                adjust_database_array(bot, c, u, 'duelusers', 'add')
+            offlineusersarray.remove(u)
             # Target passes all duel checks
-            canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, c, dowedisplay)
+            canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, channel, dowedisplay)
             if canduel and u != bot.nick:
                 canduelarray.append(u)
             ## Bot Owner (probably will only ever be one)
             if u.lower() in bot.config.core.owner.lower():
                 botownerarray.append(u)
             ## Channel OP
-            if bot.privileges[c.lower()][u] == OP:
+            if bot.privileges[channel.lower()][u] == OP:
                 operatorarray.append(u)
             ## Channel VOICE
-            if bot.privileges[c.lower()][u.lower()] == VOICE:
+            if bot.privileges[channel.lower()][u.lower()] == VOICE:
                 voicearray.append(u)
             ## Bot Admins
             if u in bot.config.core.admins:
@@ -159,15 +159,8 @@ def execute_main(bot, trigger):
                 classcantchangearray.append(u)
     
     ###### Channel (assumes only one channel,,, need to fix somehow someday)
-    channel = get_trigger_arg(channelarray, 1)
+    channel = get_trigger_arg(channelarray, 'last')
     inchannel = trigger.sender
-    
-    ## Offline users
-    offlineusersarray = []
-    duelusers = get_botdatabase_value(bot, channel, 'duelusers') or []
-    for x in duelusers:
-        if x not in allusersinroomarray:
-            offlineusersarray.append(x)
         
     ## Array Totals
     targetcantoptarraytotal = len(targetcantoptarray)
