@@ -1353,12 +1353,13 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
-    set_database_value(bot, bot.nick, 'disenable', 1)
-    adjust_database_array(bot, channel, bot.nick, 'duelusers', 'del')
-    for x in challengestatsadminarray:
-        statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, None)
+    for channel in bot.channels:
+        set_database_value(bot, bot.nick, 'disenable', 1)
+        adjust_database_array(bot, channel, bot.nick, 'duelusers', 'del')
+        for x in challengestatsadminarray:
+            statset = x
+            if statset != 'disenable':
+                set_database_value(bot, bot.nick, x, None)
             
 ##########
 ## Time ##
