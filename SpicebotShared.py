@@ -99,11 +99,66 @@ def spicebot_prerun(bot,trigger):
     return enablestatus, triggerargsarray
 
 #####################################################################################################################################
+## Data collection
+#####################################################################################################################################
+
+## User data collection
+@sopel.module.interval(1800)
+def halfhourdatacollection(bot):
+    for channel in bot.channels:
+        adjust_botdatabase_array(bot, channel, channel, 'channels', 'add')
+        for u in bot.privileges[channel.lower()]:
+            botusers = get_botdatabase_value(bot, channel, 'botusers') or []
+            adjust_botdatabase_array(bot, channel, u, 'users', 'add')
+            ubotstatus = get_botdatabase_value(bot, u, 'disenable')
+            if ubotstatus and u not in botusers:
+                adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
+            
+## Auto Mod
+@event('JOIN','PART','QUIT','NICK')
+@rule('.*')
+def greeting(bot, trigger):
+    now = time.time()
+    target = trigger.nick
+    set_botdatabase_value(bot, target, 'jointime', now)
+    lasttime = get_timesince(bot, target, 'lastusagetime')
+    if not lasttime or lasttime < LASTTIMEOUTHOUR:
+        bot.db.set_nick_value(target, 'spicebot_usertotal', '')
+        bot.db.set_nick_value(target, 'spicebothour_warn', '')
+    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
+    adjust_botdatabase_array(bot, channel, u, 'users', 'add')
+    ubotstatus = get_botdatabase_value(bot, u, 'disenable')
+    if ubotstatus and u not in botusers:
+        adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
+
+@sopel.module.interval(3600)
+def autoblockhour(bot):
+    for channel in bot.channels:
+        now = time.time()
+        set_botdatabase_value(bot, u, 'hourstart', now)
+        for u in bot.privileges[channel.lower()]:
+            set_botdatabase_value(bot, u, 'usertotal', None)
+            set_botdatabase_value(bot, u, 'hourwarned', None)
+
+@sopel.module.interval(60)
+def autoblock(bot):
+    for channel in bot.channels:
+        for u in bot.privileges[channel.lower()]:
+            usertotal = get_botdatabase_value(bot, u, 'usertotal')
+            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
+                set_timeout(bot, u)
+                set_botdatabase_value(bot, u, 'disenable', None)
+                warned = get_botdatabase_value(bot, u, 'hourwarned')
+                if not warned:
+                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    set_botdatabase_value(bot, u, 'hourwarned', 'true')
+                    
+#####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
 
 ##########
-## Args ##
+## ARGS ##
 ##########
 
 def create_args_array(fullstring):
@@ -180,27 +235,47 @@ def get_trigger_arg(triggerargsarray, number):
             triggerarg = ''
     return triggerarg
 
-
 ##############
 ## Database ##
 ##############
 
-# Get a value
 def get_botdatabase_value(bot, nick, databasekey):
     databasecolumn = str('spicebot_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
-# Set a value
 def set_botdatabase_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
     
-# get current value and update it adding newvalue
 def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_botdatabase_value(bot, nick, databasekey)
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+   
+def get_botdatabase_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
+    entriestotal = len(array)
+    return entriestotal
+
+def adjust_botdatabase_array(bot, nick, entry, databasekey, adjustmentdirection):
+    adjustarray = get_database_value(bot, nick, databasekey) or []
+    adjustarraynew = []
+    for x in adjustarray:
+        adjustarraynew.append(x)
+    set_database_value(bot, nick, databasekey, None)
+    adjustarray = []
+    if adjustmentdirection == 'add':
+        adjustarraynew.append(entry)
+    elif adjustmentdirection == 'del':
+        adjustarraynew.remove(entry)
+    for x in adjustarraynew:
+        if x not in adjustarray:
+            adjustarray.append(x)
+    if adjustarray == []:
+        set_database_value(bot, nick, databasekey, None)
+    else:
+        set_database_value(bot, nick, databasekey, adjustarray)
 
 ############################
 ## Fix unicode in strings ##
