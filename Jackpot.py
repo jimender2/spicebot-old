@@ -28,9 +28,15 @@ def execute_main(bot, trigger, arg):
     wheel3 = spin(wheel)
     reel = [wheel1, wheel2, wheel3]
     bot.say('The slot machine displays ' + str(reel))
-    for x in reel:
-      if x=='BSOD':
-         mywinnings = mywinnings + 5      
+    for i in reel:
+      if i=='BSOD':
+         mywinnings = mywinnings + 5
+    seen = set()
+    seen_add = seen.add
+    # adds all elements it doesn't know yet to seen and all other to seen_twice
+    seen_twice = set( x for x in reel if x in seen or seen_add(x) )
+    bot.say(str(seen_twice))
+    # turn the set into a list (as requested)
     if(wheel1 == wheel2 and wheel2 == wheel3):
       bot.say(trigger.nick + ' got 3 ' + str(wheel1))
       if wheel1 == 'BSOD':     
