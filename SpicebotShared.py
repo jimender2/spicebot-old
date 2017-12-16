@@ -249,21 +249,21 @@ def set_botdatabase_value(bot, nick, databasekey, value):
     bot.db.set_nick_value(nick, databasecolumn, value)
     
 def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey) or 0
+    oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
    
 def get_botdatabase_array_total(bot, nick, databasekey):
-    array = get_database_value(bot, nick, databasekey) or []
+    array = get_botdatabase_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
 
 def adjust_botdatabase_array(bot, nick, entry, databasekey, adjustmentdirection):
-    adjustarray = get_database_value(bot, nick, databasekey) or []
+    adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
         adjustarraynew.append(x)
-    set_database_value(bot, nick, databasekey, None)
+    set_botdatabase_value(bot, nick, databasekey, None)
     adjustarray = []
     if adjustmentdirection == 'add':
         adjustarraynew.append(entry)
@@ -273,9 +273,9 @@ def adjust_botdatabase_array(bot, nick, entry, databasekey, adjustmentdirection)
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
-        set_database_value(bot, nick, databasekey, None)
+        set_botdatabase_value(bot, nick, databasekey, None)
     else:
-        set_database_value(bot, nick, databasekey, adjustarray)
+        set_botdatabase_value(bot, nick, databasekey, adjustarray)
 
 ############################
 ## Fix unicode in strings ##
