@@ -1190,9 +1190,6 @@ def halfhourtimer(bot, simulate=0):
     ## bot does not need stats or backpack items
     refreshbot(bot)
     
-    ## Clear Last Instigator
-    set_database_value(bot, ALLCHAN, 'lastinstigator', '')
-    
     ## Who gets to win a mysterypotion?
     randomuarray = []
     lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
@@ -1242,6 +1239,9 @@ def halfhourtimer(bot, simulate=0):
             set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
             if simulate:
                 bot.msg(lootwinnermsg,lootwinnermsg)
+    
+    ## Clear Last Instigator
+    set_database_value(bot, channel, 'lastinstigator', '')
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
