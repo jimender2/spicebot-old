@@ -336,9 +336,10 @@ def execute_main(bot, trigger):
                     bot.notice("Pick something to adjust.", instigator)
                 elif subcommand == 'lastassault':
                     set_database_value(bot, channel, 'lastfullroomassultinstigator', None)
-                    bot.notice("Last Fought Instigator removed.", instigator)
+                    bot.notice("Last Assault Instigator removed.", instigator)
                 elif subcommand == 'lastinstigator':
                     set_database_value(bot, channel, 'lastinstigator', None)
+                    bot.notice("Last Fought Instigator removed.", instigator)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             
