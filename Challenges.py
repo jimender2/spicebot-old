@@ -1354,6 +1354,7 @@ def healthcheck(bot, nick):
 
 def refreshbot(bot):
     set_database_value(bot, bot.nick, 'disenable', 1)
+    adjust_database_array(bot, channel, bot.nick, 'duelusers', 'del')
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
