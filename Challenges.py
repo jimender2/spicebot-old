@@ -1586,13 +1586,13 @@ def damagedone(bot, winner, loser):
         damage = 0
     ## Bot deals a set amount
     elif winner == bot.nick:
-        rando = botdamage
+        damage = botdamage
     ## Barbarians get extra damage
     elif winnerclass == 'barbarian':
-        rando = randint(barbarianminimumdamge, 120)
+        damage = randint(barbarianminimumdamge, 120)
     else:
-        rando = randint(0, 120)
-    damage = -abs(rando)
+        damage = randint(0, 120)
+    damage = -abs(damage)
     return damage
 
 ##################
