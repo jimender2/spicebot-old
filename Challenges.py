@@ -1238,9 +1238,7 @@ def halfhourtimer(bot, simulate=None):
             set_database_value(bot, channel, 'lasttimedlootwinner', target)
             if simulate:
                 bot.msg(channel,lootwinnermsg)
-            bot.msg(channel,lootwinnermsg + " nooope")
               
-    
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', '')
     
