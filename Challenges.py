@@ -1189,15 +1189,16 @@ def halfhourtimer(bot):
     refreshbot(bot)
     
     ## Clear Last Instigator
-    set_database_value(bot, channel, 'lastinstigator', None)
+    set_database_value(bot, ALLCHAN, 'lastinstigator', '')
     
     ## Who gets to win a mysterypotion?
     randomtargetarray = []
-    lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
+    lasttimedlootwinner = get_database_value(bot, ALLCHAN, 'lasttimedlootwinner') or bot.nick
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
-            targetdisenable = get_database_value(bot, u, 'disenable')
-            if targetdisenable and target != lasttimedlootwinner and u != bot.nick:
+            target = u
+            targetdisenable = get_database_value(bot, target, 'disenable')
+            if targetdisenable and target != lasttimedlootwinner and target != bot.nick:
                 
                 ## award coins to everyone
                 adjust_database_value(bot, u, 'coins', halfhourcoinaward)
@@ -1219,21 +1220,22 @@ def halfhourtimer(bot):
                     health = get_database_value(bot, u, 'health')
                     if int(health) > healthregenmax:
                         set_database_value(bot, u, 'health', healthregenmax)
-                        
+                
+                randomtargetarray.append(target)
         ########## select a winner
                 randomtargetarray.append(u)
         if randomtargetarray == []:
             dummyvar = 1
         else:
-            target = get_trigger_arg(randomtargetarray, 'random')
+            randomselected = random.randint(0,len(randomtargetarray) - 1)
+            target = str(randomtargetarray [randomselected])
             loot = 'mysterypotion'
             loot_text = get_lootitem_text(bot, target, loot)
             adjust_database_value(bot, target, loot, defaultadjust)
             lootwinnermsg = str(target + ' is awarded a ' + str(loot) + ' ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
-            set_database_value(bot, channel, 'lasttimedlootwinner', target)
-            
-        
+            set_database_value(bot, ALLCHAN, 'lasttimedlootwinner', target)
+
 ## Functions ######################################################################################################################
 
 ######################
