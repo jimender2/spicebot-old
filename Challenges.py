@@ -135,9 +135,9 @@ def execute_main(bot, trigger):
             if u != bot.nick and disenable:
                 dueloptedinarray.append(u)
             ## offline users
-            duelusers = get_database_value(bot, channel, 'duelusers') or []
+            duelusers = get_database_value(bot, c, 'duelusers') or []
             if disenable and u not in duelusers and u != bot.nick:
-                adjust_database_array(bot, channel, u, 'duelusers', 'add')
+                adjust_database_array(bot, c, u, 'duelusers', 'add')
             # Target passes all duel checks
             canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, c, dowedisplay)
             if canduel and u != bot.nick:
