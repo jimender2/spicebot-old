@@ -1550,7 +1550,7 @@ def weaponofchoice(bot, nick):
 def weaponformatter(bot, weapon):
     if weapon == '':
         weapon = weapon
-    elif weapon.lower().startswith('a ') or weapon.lower().startswith('an ') or weapon.lower().startswith('the '):
+    elif weapon.lower().startswith(('a ', 'an ', 'the ')):
         weapon = str('with ' + weapon)
     elif weapon.split(' ', 1)[0].endswith("'s"):
         weapon = str('with ' + weapon)
@@ -1575,19 +1575,24 @@ def damagedone(bot, winner, loser):
     shieldwinner = get_magic_attribute(bot, winner, 'shield')
     shieldloser = get_magic_attribute(bot, loser, 'shield')
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
+    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    ## Rogue can't be hurt by themselves or bot
+    if winner == loser and loserclass == 'rogue':
+        damage = 0
+    elif winner == bot.nick and loserclass == 'rogue':
+        damage = 0
+    # magic shield
+    elif shieldloser:
+        damage = 0
     ## Bot deals a set amount
-    if winner == bot.nick:
+    elif winner == bot.nick:
         rando = botdamage
     ## Barbarians get extra damage
     elif winnerclass == 'barbarian':
         rando = randint(barbarianminimumdamge, 120)
     else:
         rando = randint(0, 120)
-    # magic shield
-    if shieldloser:
-        damage = 0
-    else:
-        damage = -abs(rando)
+    damage = -abs(rando)
     return damage
 
 ##################
