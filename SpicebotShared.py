@@ -15,6 +15,10 @@ botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under
 JOINTIMEOUT = 60
 LASTTIMEOUT = 60
 TOOMANYTIMES = 15
+OPTTIMEOUT = 1800
+FINGERTIMEOUT = 1800
+LASTTIMEOUT = 60
+LASTTIMEOUTHOUR = 3600
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
