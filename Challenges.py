@@ -945,10 +945,10 @@ def execute_main(bot, trigger):
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
-    assaultstatsarray = ['wins','losses','potionswon','potionslost']
+    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths']
     ## clean empty stats
     assaultdisplay = ''
-    assault_wins, assault_losses, assault_potionswon, assault_potionslost = 0, 0, 0, 0
+    assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0
     
     ## type of duel
     typeofduel = get_trigger_arg(triggerargsarray, 1)
@@ -1055,6 +1055,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         if loserclass == 'rogue':
             if instigator == target or target == bot.nick:
                 damage = 0
+        if winner == instigator:
+            assault_damagedealt = assault_damagedealt + damage
+        else:
+            assault_damagetaken = assault_damagetaken + damage
         adjust_database_value(bot, loser, 'health', damage)
         damage = abs(damage)
         currenthealth = get_database_value(bot, loser, 'health')
@@ -1063,6 +1067,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
             if instigator == target:
                 loser = targetname
             winnermsg = str(winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
+            if winner == instigator:
+                assault_kills = assault_kills + 1
+            else:
+                assault_deaths = assault_deaths + 1
         else:
             if instigator == target:
                 loser = targetname
@@ -1074,12 +1082,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         targetpeppernow = get_pepper(bot, target)
         if instigatorpeppernow != instigatorpepperstart and instigator != target:
             pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
+            assault_levelups = assault_levelups + 1
         if targetpeppernow != targetpepperstart and instigator != target:
             pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
             
         ## Random Loot 
-        lootwinnermsg = ''
-        lootwinnermsgb = ''
+        lootwinnermsg, lootwinnermsgb = '', ''
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             loot = determineloottype(bot, winner)
