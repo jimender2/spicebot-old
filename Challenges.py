@@ -119,9 +119,9 @@ def execute_main(bot, trigger):
     displaymessage = ''
     
     ## Build User/channel Arrays
-    offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
     targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
     for channel in bot.channels:
+        offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
         channelarray.append(channel)
         inchannel = "#bypass"
         ## All Users in channel
