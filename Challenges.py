@@ -1554,8 +1554,13 @@ def weaponformatter(bot, weapon):
         weapon = str('with ' + weapon)
     elif weapon.split(' ', 1)[0].endswith("'s"):
         weapon = str('with ' + weapon)
-    elif weapon.lower().startswith('a') or weapon.lower().startswith('e') or weapon.lower().startswith('i') or weapon.lower().startswith('o') or weapon.lower().startswith('u'):
+    elif weapon.lower().startswith(('a', 'e', 'i', 'o', 'u')):
         weapon = str('with an ' + weapon)
+    elif weapon.lower().startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
+        if myline.endswith('s'):
+            weapon = str(weapon)
+        else:
+            weapon = str(weapon + "s")
     elif weapon.lower().startswith('with'):
         weapon = str(weapon)
     else:
