@@ -341,7 +341,8 @@ def execute_main(bot, trigger):
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif subcommand == 'halfhoursim':
-                    halfhourtimer(bot, simulate=1)
+                    simulate = 1
+                    halfhourtimer(bot, simulate)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             
@@ -1102,7 +1103,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         lootwinnermsg, lootwinnermsgb = '', ''
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
-            loot = determineloottype(bot, winner)
+            loot = get_trigger_arg(lootitemsarray, 'random')
             loot_text = get_lootitem_text(bot, winner, loot)
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
@@ -1185,7 +1186,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         
 ## 30 minute automation
 @sopel.module.interval(1800)
-def halfhourtimer(bot, simulate=0):
+def halfhourtimer(bot, simulate=None):
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1193,11 +1194,10 @@ def halfhourtimer(bot, simulate=0):
     ## Who gets to win a mysterypotion?
     randomuarray = []
     for channel in bot.channels:
-        bot.msg(channel,channel)
         for u in bot.privileges[channel.lower()]:
-            bot.msg(channel,u)
             
             ## user stats
+            healthcheck(bot, u)
             udisenable = get_database_value(bot, u, 'disenable')
             uclass = get_database_value(bot, u, 'class') or 'notclassy'
             mana = get_database_value(bot, u, 'mana') or 0
@@ -1230,15 +1230,16 @@ def halfhourtimer(bot, simulate=0):
                             set_database_value(bot, u, 'mana', magemanaregenmax)
 
         if randomuarray != []:
-            randomselected = random.randint(0,len(randomuarray) - 1)
-            target = str(randomuarray [randomselected])
+            target = get_trigger_arg(randomuarray, 'random')
             loot_text = get_lootitem_text(bot, target, 'mysterypotion')
             adjust_database_value(bot, target, 'mysterypotion', defaultadjust)
             lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
             set_database_value(bot, channel, 'lasttimedlootwinner', target)
             if simulate:
-                bot.msg(lootwinnermsg,lootwinnermsg)
+                bot.msg(channel,lootwinnermsg)
+            bot.msg(channel,lootwinnermsg + " nooope")
+              
     
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', '')
@@ -1457,11 +1458,6 @@ def randominventory(bot, instigator):
     if randomfindchance >= 90:
         randominventoryfind = 'true'
     return randominventoryfind
-
-def determineloottype(bot, nick):
-    loot = random.randint(0,len(lootitemsarray) - 1)
-    loot = str(lootitemsarray [loot])
-    return loot
 
 def get_lootitem_text(bot, nick, loottype):
     if loottype == 'healthpotion':
