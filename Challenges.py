@@ -1558,9 +1558,9 @@ def weaponformatter(bot, weapon):
         weapon = str('with an ' + weapon)
     elif weapon.lower().startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
         if weapon.endswith('s'):
-            weapon = str(weapon)
+            weapon = str("with " + weapon)
         else:
-            weapon = str(weapon + "s")
+            weapon = str("with " + weapon + "s")
     elif weapon.lower().startswith('with'):
         weapon = str(weapon)
     else:
