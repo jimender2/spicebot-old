@@ -31,7 +31,6 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" #
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 stockhealth = 1000 ## default health for new players and respawns
 changeclasscost = 100 ## ## how many coins to change class
-botonoffstatus = 1 ## does the bot paricipate in duels
 
 ## Half hour timer
 halfhourcoinaward = 10
@@ -1354,11 +1353,12 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
-    set_database_value(bot, bot.nick, 'disenable', botonoffstatus)
     for x in challengestatsadminarray:
         statset = x
         if statset != 'disenable':
             set_database_value(bot, bot.nick, x, None)
+        else:
+            set_database_value(bot, bot.nick, x, 1)
             
 ##########
 ## Time ##
