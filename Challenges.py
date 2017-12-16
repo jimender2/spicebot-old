@@ -328,10 +328,17 @@ def execute_main(bot, trigger):
             
         ## Chan settings
         elif commandortarget == 'chansettings':
+            subcommand = get_trigger_arg(triggerargsarray, 2)
             if instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             else:
-                bot.notice("WIP", instigator)
+                if not subcommand:
+                    bot.notice("Pick something to adjust.", instigator)
+                elif subcommand == 'lastassault':
+                    set_database_value(bot, channel, 'lastfullroomassultinstigator', None)
+                    bot.notice("Last Fought Instigator removed.", instigator)
+                else:
+                    bot.notice("Must be an invalid command.", instigator)
             
         ## Stats Admin
         elif commandortarget == 'statsadmin':
