@@ -70,19 +70,3 @@ def note(bot, trigger):
         bot.db.set_nick_value(trigger.nick, 'seen_channel', trigger.sender)
         bot.db.set_nick_value(trigger.nick, 'seen_message', trigger)
         bot.db.set_nick_value(trigger.nick, 'seen_action', 'intent' in trigger.tags)
-        
-        ## Auto Mod Anti-Flood
-        lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
-        if lastnicksubmit = instigator:
-            adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
-            lastnicksubmitcount = get_botdatabase_value(bot, channel, 'automod_antifloodcount')
-            if lastnicksubmitcount >= 5:
-                lastnicksubmitwarned = get_botdatabase_value(bot, channel, 'automod_antifloodnickwarned')
-                if lastnicksubmitwarned != instigator:
-                    set_botdatabase_value(bot, channel, 'automod_antifloodnickwarned', instigator)
-                    yellatyoumsg = str(instigator + ", Please do not flood the channel.")
-                    bot.msg(channel,yellatyoumsg)
-        else:
-            set_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
-            set_botdatabase_value(bot, channel, 'automod_antifloodnick', instigator)
-            set_botdatabase_value(bot, channel, 'automod_antifloodnickwarned', None)
