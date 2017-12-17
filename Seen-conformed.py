@@ -66,6 +66,10 @@ def execute_main(bot, trigger, triggerargsarray):
 @priority('low')
 def note(bot, trigger):
     if not trigger.is_privmsg:
+        channel = trigger.sender
+        bot.msg(channel,channel)
+        instigator = trigger.nick
+        bot.msg(channel,instigator)
         bot.db.set_nick_value(trigger.nick, 'seen_timestamp', time.time())
         bot.db.set_nick_value(trigger.nick, 'seen_channel', trigger.sender)
         bot.db.set_nick_value(trigger.nick, 'seen_message', trigger)
