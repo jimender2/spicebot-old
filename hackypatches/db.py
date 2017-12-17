@@ -61,7 +61,11 @@ class SopelDB(object):
         called per PEP 249."""
         with self.connect() as conn:
             cur = conn.cursor()
-            return cur.execute(*args, **kwargs)
+            try:
+                return cur.execute(*args, **kwargs)
+            except OperationalError:
+                time.sleep(5)
+                return cur.execute(*args, **kwargs)
 
     def _create(self):
         """Create the basic database structure."""
