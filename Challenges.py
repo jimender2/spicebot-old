@@ -1519,16 +1519,16 @@ def halfhourpotionwinner(bot, randomuarray, channel):
     lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
     howmanyusers = len(randomuarray)
     if not howmanyusers > 1:
-        set_database_value(bot, nick, 'lasttimedlootwinner', None)
+        set_database_value(bot, channel, 'lasttimedlootwinner', None)
     for x in randomuarray:
         if x not in recentwinnersarray and x != lasttimedlootwinner:
             winnerselectarray.append(x)
     if winnerselectarray == [] and randomuarray != []:
-        set_database_value(bot, nick, 'lasttimedlootwinners', None)
+        set_database_value(bot, channel, 'lasttimedlootwinners', None)
         return halfhourpotionwinner(bot, randomuarray)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
-    adjust_database_array(bot, nick, lootwinner, 'lasttimedlootwinners', 'add')
-    set_database_value(bot, nick, 'lasttimedlootwinner', lootwinner)
+    adjust_database_array(bot, channel, lootwinner, 'lasttimedlootwinners', 'add')
+    set_database_value(bot, channel, 'lasttimedlootwinner', lootwinner)
     return lootwinner
   
 ######################
