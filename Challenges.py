@@ -357,7 +357,7 @@ def execute_main(bot, trigger):
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif subcommand == 'halfhoursim':
                     simulate = 1
-                    halfhourtimer(bot, simulate)
+                    halfhourtimer(bot)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             
@@ -1219,7 +1219,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         
 ## 30 minute automation
 @sopel.module.interval(1800)
-def halfhourtimer(bot, simulate=None):
+def halfhourtimer(bot):
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
