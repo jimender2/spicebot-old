@@ -1525,7 +1525,7 @@ def halfhourpotionwinner(bot, randomuarray, channel):
             winnerselectarray.append(x)
     if winnerselectarray == [] and randomuarray != []:
         set_database_value(bot, channel, 'lasttimedlootwinners', None)
-        return halfhourpotionwinner(bot, randomuarray)
+        return halfhourpotionwinner(bot, randomuarray, channel)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
     adjust_database_array(bot, channel, lootwinner, 'lasttimedlootwinners', 'add')
     set_database_value(bot, channel, 'lasttimedlootwinner', lootwinner)
