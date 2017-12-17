@@ -356,7 +356,8 @@ def execute_main(bot, trigger):
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif subcommand == 'halfhoursim':
-                    halfhourtimer(bot)
+                    simulate = 1
+                    halfhourtimer(bot, simulate)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             
@@ -1218,7 +1219,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         
 ## 30 minute automation
 @sopel.module.interval(1800)
-def halfhourtimer(bot):
+def halfhourtimer(bot, simulate=None):
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1274,6 +1275,8 @@ def halfhourtimer(bot):
             lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
             set_database_value(bot, channel, 'lasttimedlootwinner', target)
+            if simulate:
+                bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', None)
