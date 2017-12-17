@@ -15,11 +15,11 @@ from SpicebotShared import *
 @rule('(.*)')
 @priority('low')
 def automod(bot, trigger):
-    if not trigger.is_privmsg:
+    instigator = trigger.nick
+    if not trigger.is_privmsg and instigator != bot.nick:
         
         ## vars
         channel = trigger.sender
-        instigator = trigger.nick
         currentmessage = trigger.group(1)
 
         ## Flooding is 5 lines in a row by the same person or 3 identical lines
