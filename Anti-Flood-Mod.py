@@ -14,7 +14,7 @@ from SpicebotShared import *
 @thread(False)
 @rule('(.*)')
 @priority('low')
-def note(bot, trigger):
+def automodspam(bot, trigger):
     channel = trigger.sender
     bot.msg(channel,channel)
     instigator = trigger.nick
