@@ -1269,12 +1269,13 @@ def halfhourtimer(bot, simulate=None):
                             set_database_value(bot, u, 'mana', magemanaregenmax)
 
         if randomuarray != []:
-            target = get_trigger_arg(randomuarray, 'random')
-            loot_text = get_lootitem_text(bot, target, 'mysterypotion')
-            adjust_database_value(bot, target, 'mysterypotion', defaultadjust)
-            lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
-            bot.notice(lootwinnermsg, target)
-            set_database_value(bot, channel, 'lasttimedlootwinner', target)
+            lootwinner = halfhourpotionwinner(bot, randomuarray)
+            #lootwinner = get_trigger_arg(randomuarray, 'random')
+            loot_text = get_lootitem_text(bot, lootwinner, 'mysterypotion')
+            adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
+            lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
+            bot.notice(lootwinnermsg, lootwinner)
+            #set_database_value(bot, channel, 'lasttimedlootwinner', lootwinner)
             if simulate:
                 bot.msg(channel,lootwinnermsg)
               
@@ -1511,6 +1512,24 @@ def get_lootitem_text(bot, nick, loottype):
     if loot_text != '':
         loot_text = str(loot_text + " Use .challenge loot use " + str(loottype) + " to consume.")
     return loot_text
+  
+def halfhourpotionwinner(bot, randomuarray):
+    winnerselectarray = []
+    recentwinnersarray = get_database_value(bot, channel, 'lasttimedlootwinners') or []
+    lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
+    howmanyusers = len(randomuarray)
+    if not howmanyusers > 1:
+        set_database_value(bot, nick, 'lasttimedlootwinner', None)
+    for x in randomuarray:
+        if x not in recentwinnersarray and x != lasttimedlootwinner:
+            winnerselectarray.append(x)
+    if winnerselectarray == [] and randomuarray != []:
+        set_database_value(bot, nick, 'lasttimedlootwinners', None)
+        return halfhourpotionwinner(bot, randomuarray)
+    lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
+    adjust_database_array(bot, nick, lootwinner, 'lasttimedlootwinners', 'add')
+    set_database_value(bot, nick, 'lasttimedlootwinner', lootwinner)
+    return lootwinner
   
 ######################
 ## Weapon Selection ##
