@@ -356,7 +356,6 @@ def execute_main(bot, trigger):
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif subcommand == 'halfhoursim':
-                    simulate = 1
                     halfhourtimer(bot)
                 else:
                     bot.notice("Must be an invalid command.", instigator)
@@ -1275,8 +1274,6 @@ def halfhourtimer(bot):
             lootwinnermsg = str(target + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, target)
             set_database_value(bot, channel, 'lasttimedlootwinner', target)
-            if simulate:
-                bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', None)
