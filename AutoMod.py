@@ -41,18 +41,15 @@ def automod(bot, trigger):
                 adjust_botdatabase_value(bot, channel, 'automod_antifloodmessagecount', 1)
                 getcurrentmessagecount = get_botdatabase_value(bot, channel, 'automod_antifloodmessagecount') or 1
                 if int(getcurrentmessagecount) >= 3:
-                    lastnicksubmitwarned = get_botdatabase_value(bot, channel, 'automod_antifloodnickwarned') or bot.nick
-                    if lastnicksubmitwarned != instigator:
-                        floodyell = 1
+                    floodyell = 1
             lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
             adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
             getcurrentcount = get_botdatabase_value(bot, channel, 'automod_antifloodcount') or 1
-            if int(getcurrentcount) > 6:
-                lastnicksubmitwarned = get_botdatabase_value(bot, channel, 'automod_antifloodnickwarned') or bot.nick
-                if lastnicksubmitwarned != instigator:
-                    set_botdatabase_value(bot, channel, 'automod_antifloodnickwarned', instigator)
-                    floodyell = 1 
-        if floodyell:
+            if int(getcurrentcount) > 5:
+                floodyell = 1
+        lastnicksubmitwarned = get_botdatabase_value(bot, channel, 'automod_antifloodnickwarned') or bot.nick
+        if lastnicksubmitwarned != instigator and floodyell:
+            set_botdatabase_value(bot, channel, 'automod_antifloodnickwarned', instigator)
             bot.msg(channel,antifloodwarning)
         
 
