@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sopel.module
 from sopel.module import OP
 from sopel.module import ADMIN
@@ -116,12 +115,15 @@ def duel_action(bot, trigger):
             allusersinroomarray.append(u)
             disenable = get_database_value(bot, u, 'disenable')
             if u != bot.nick and disenable:
+                adjust_database_array(bot, channel, u, 'duelusers', 'add')
                 dueloptedinarray.append(u)
-            ## offline users
+            canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, channel, dowedisplay)
+            if canduel and u != bot.nick:
+                canduelarray.append(u)
             if u in offlineusersarray:
                 offlineusersarray.remove(u)
     for x in triggerargsarray:
-        if x in allusersinroomarray or x in offlineusersarray:
+        if x in allusersinroomarray or x in offlineusersarray or x == 'everyone':
             target = x
     if not target:
         bot.notice(instigator + ", I don't know who you want to fight.", instigator)
@@ -129,6 +131,21 @@ def duel_action(bot, trigger):
         bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
     elif target not in dueloptedinarray:
         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+    elif not inchannel.startswith("#"):
+        bot.notice(instigator + " Duels must be in channel.", instigator)
+    elif target == 'everyone':
+        fullchanassaultarray = []
+        for x in canduelarray:
+            if x != instigator and x != bot.nick:
+                fullchanassaultarray.append(x)
+        OSDTYPE = 'notice'
+        displaymessage = get_trigger_arg(fullchanassaultarray, "list")
+        bot.say(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
+        set_database_value(bot, channel, 'lastfullroomassult', now)
+        set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
+        lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
+        getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+        set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     else:
         canduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if canduel:
@@ -295,7 +312,7 @@ def execute_main(bot, trigger):
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
             elif not inchannel.startswith("#"):
-                displaymsg = str(instigator + " Duels must be in channel.")
+                bot.notice(instigator + " Duels must be in channel.", instigator)
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
@@ -313,7 +330,7 @@ def execute_main(bot, trigger):
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif not inchannel.startswith("#"):
-                displaymsg = str(instigator + " Duels must be in channel.")
+                bot.notice(instigator + " Duels must be in channel.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
             elif fullchanassaultarray == []:
