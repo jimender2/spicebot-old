@@ -19,6 +19,9 @@ def automodspam(bot, trigger):
     instigator = trigger.nick
     if not trigger.is_privmsg:
         lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
+        if lastnicksubmit != instigator:
+            set_botdatabase_value(bot, channel, 'automod_antifloodnick', instigator)
+            
         bot.msg(channel,lastnicksubmit)
     
     #    if lastnicksubmit = instigator:
