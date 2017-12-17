@@ -21,8 +21,12 @@ def automodspam(bot, trigger):
         lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
         if lastnicksubmit != instigator:
             set_botdatabase_value(bot, channel, 'automod_antifloodnick', instigator)
-            
-        bot.msg(channel,lastnicksubmit)
+            set_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
+        else:
+            adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
+            getcurrentcount = get_botdatabase_value(bot, channel, 'automod_antifloodcount') or 1
+            bot.msg(channel,str(getcurrentcount))
+        
     
     #    if lastnicksubmit = instigator:
     #        adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
