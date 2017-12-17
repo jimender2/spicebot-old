@@ -1051,6 +1051,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
     
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
+        if winner == instigator:
+            assault_damagedealt = assault_damagedealt + damage
+        else:
+            assault_damagetaken = assault_damagetaken + damage
     
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
