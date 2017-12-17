@@ -319,7 +319,7 @@ def execute_main(bot, trigger):
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
         
         ## Duel Everyone
-        elif commandortarget == 'assault':
+        elif commandortarget == 'assault' or commandortarget == 'everyone':
             fullchanassaultarray = []
             for x in canduelarray:
                 if x != instigator and x != bot.nick:
