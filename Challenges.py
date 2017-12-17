@@ -991,7 +991,7 @@ def execute_main(bot, trigger):
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
     
-    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths']
+    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups']
     ## clean empty stats
     assaultdisplay = ''
     assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0
