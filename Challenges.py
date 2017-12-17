@@ -129,7 +129,7 @@ def duel_action(bot, trigger):
         bot.notice(instigator + ", I don't know who you want to fight.", instigator)
     elif target in offlineusersarray:
         bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
-    elif target not in dueloptedinarray:
+    elif target not in dueloptedinarray and target != 'everyone':
         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
     elif not inchannel.startswith("#"):
         bot.notice(instigator + " Duels must be in channel.", instigator)
