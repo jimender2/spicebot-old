@@ -1322,14 +1322,13 @@ def halfhourtimer(bot):
 
         if randomuarray != []:
             lootwinner = halfhourpotionwinner(bot, randomuarray, channel)
-            #lootwinner = get_trigger_arg(randomuarray, 'random')
             loot_text = get_lootitem_text(bot, lootwinner, 'mysterypotion')
             adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
             lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, lootwinner)
-            #set_database_value(bot, channel, 'lasttimedlootwinner', lootwinner)
             
-            bot.msg(channel,lootwinnermsg)
+            ## If you want it announced in channell
+            #bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', None)
