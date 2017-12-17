@@ -258,7 +258,7 @@ def get_botdatabase_array_total(bot, nick, databasekey):
     entriestotal = len(array)
     return entriestotal
 
-def adjust_botdatabase_array(bot, nick, entry, databasekey, adjustmentdirection):
+def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
@@ -266,9 +266,11 @@ def adjust_botdatabase_array(bot, nick, entry, databasekey, adjustmentdirection)
     set_botdatabase_value(bot, nick, databasekey, None)
     adjustarray = []
     if adjustmentdirection == 'add':
-        adjustarraynew.append(entry)
+        if entry not in adjustarraynew:
+            adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
-        adjustarraynew.remove(entry)
+        if entry in adjustarraynew:
+            adjustarraynew.remove(entry)
     for x in adjustarraynew:
         if x not in adjustarray:
             adjustarray.append(x)
