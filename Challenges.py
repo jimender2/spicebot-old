@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sopel.module
 from sopel.module import OP
 from sopel.module import ADMIN
