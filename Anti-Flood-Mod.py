@@ -15,10 +15,10 @@ from SpicebotShared import *
 @rule('(.*)')
 @priority('low')
 def note(bot, trigger):
+    channel = trigger.sender
+    bot.msg(channel,channel)
     instigator = trigger.nick
-    for channel in bot.channels:
-        channel = channel
-        bot.msg(channel,channel)
+    bot.msg(channel,instigator)
     if not trigger.is_privmsg:
         lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
         if lastnicksubmit = instigator:
