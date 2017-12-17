@@ -119,15 +119,26 @@ class SopelDB(object):
         if nick_id is None:
             if not create:
                 raise ValueError('No ID exists for the given nick')
-            with self.connect() as conn:
-                cur = conn.cursor()
-                cur.execute('INSERT INTO nick_ids VALUES (NULL)')
-                nick_id = cur.execute('SELECT last_insert_rowid()').fetchone()[0]
-                cur.execute(
-                    'INSERT INTO nicknames (nick_id, slug, canonical) VALUES '
-                    '(?, ?, ?)',
-                    [nick_id, slug, nick]
-                )
+            try:
+                with self.connect() as conn:
+                    cur = conn.cursor()
+                    cur.execute('INSERT INTO nick_ids VALUES (NULL)')
+                    nick_id = cur.execute('SELECT last_insert_rowid()').fetchone()[0]
+                    cur.execute(
+                        'INSERT INTO nicknames (nick_id, slug, canonical) VALUES '
+                        '(?, ?, ?)',
+                        [nick_id, slug, nick]
+                    )
+            except IntegrityError:
+                with self.connect() as conn:
+                    cur = conn.cursor()
+                    cur.execute('INSERT INTO nick_ids VALUES (NULL)')
+                    nick_id = cur.execute('SELECT last_insert_rowid()').fetchone()[0]
+                    cur.execute(
+                        'INSERT INTO nicknames (nick_id, slug, canonical) VALUES '
+                        '(?, ?, ?)',
+                        [nick_id, slug, nick]
+                    )
             nick_id = self.execute('SELECT nick_id from nicknames where slug = ?',
                                    [slug]).fetchone()
         return nick_id[0]
