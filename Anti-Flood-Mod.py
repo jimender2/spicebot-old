@@ -16,10 +16,10 @@ from SpicebotShared import *
 @priority('low')
 def automodspam(bot, trigger):
     channel = trigger.sender
-    bot.msg(channel,channel)
     instigator = trigger.nick
-    bot.msg(channel,instigator)
-    #if not trigger.is_privmsg:
+    if not trigger.is_privmsg:
+            bot.msg(channel,"not priv")
+    
     #    lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
     #    if lastnicksubmit = instigator:
     #        adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
