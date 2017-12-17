@@ -1269,7 +1269,7 @@ def halfhourtimer(bot, simulate=None):
                             set_database_value(bot, u, 'mana', magemanaregenmax)
 
         if randomuarray != []:
-            lootwinner = halfhourpotionwinner(bot, randomuarray)
+            lootwinner = halfhourpotionwinner(bot, randomuarray, channel)
             #lootwinner = get_trigger_arg(randomuarray, 'random')
             loot_text = get_lootitem_text(bot, lootwinner, 'mysterypotion')
             adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
@@ -1513,7 +1513,7 @@ def get_lootitem_text(bot, nick, loottype):
         loot_text = str(loot_text + " Use .challenge loot use " + str(loottype) + " to consume.")
     return loot_text
   
-def halfhourpotionwinner(bot, randomuarray):
+def halfhourpotionwinner(bot, randomuarray, channel):
     winnerselectarray = []
     recentwinnersarray = get_database_value(bot, channel, 'lasttimedlootwinners') or []
     lasttimedlootwinner = get_database_value(bot, channel, 'lasttimedlootwinner') or bot.nick
