@@ -97,18 +97,45 @@ statsbypassarray = ['winlossratio','timeout']
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
 ################################################################################
 
-## not needed if using without spicebot
-@sopel.module.commands('challenge','duel')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger)
-    
-def execute_main(bot, trigger):
+@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+@module.intent('ACTION')
+@module.require_chanmsg
+def duel_action(bot, trigger):
+    OSDTYPE = 'say'
+    dowedisplay = 1
+    now = time.time()
+    inchannel = trigger.sender
+    fullcommandused = trigger.group(1)
+    triggerargsarray = create_args_array(trigger.group(1))
+    instigator = trigger.nick
+    offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
+    allusersinroomarray, dueloptedinarray = [], []
+    for channel in bot.channels:
+        for u in bot.channels[channel.lower()].users:
+            allusersinroomarray.append(u)
+            disenable = get_database_value(bot, u, 'disenable')
+            if u != bot.nick and disenable:
+                dueloptedinarray.append(u)
+            ## offline users
+            if u in offlineusersarray:
+                offlineusersarray.remove(u)
+    for x in triggerargsarray:
+        if x in allusersinroomarray or x in offlineusersarray:
+            target = x
+    if not target:
+        bot.notice(instigator + ", I don't know who you want to fight.", instigator)
+    elif target in offlineusersarray:
+        bot.notice(instigator + ", It looks like " + target + " is offline right now.", instigator)
+    elif target not in dueloptedinarray:
+        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+    else:
+        canduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
+        if canduel:
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
 
-## If using outside of spicebot
-#@sopel.module.commands('challenge','duel')
-#def execute_main(bot, trigger):
+
+@sopel.module.commands('challenge','duel')
+def execute_main(bot, trigger):
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
@@ -266,6 +293,8 @@ def execute_main(bot, trigger):
         elif commandortarget == 'random':
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
+            elif not inchannel.startswith("#"):
+                displaymsg = str(instigator + " Duels must be in channel.")
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
@@ -282,6 +311,8 @@ def execute_main(bot, trigger):
                 bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
+            elif not inchannel.startswith("#"):
+                displaymsg = str(instigator + " Duels must be in channel.")
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
             elif fullchanassaultarray == []:
