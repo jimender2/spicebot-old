@@ -1221,6 +1221,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
 @sopel.module.interval(1800)
 def halfhourtimer(bot, simulate=None):
     
+    # dev
+    simulate = 1
+    
     ## bot does not need stats or backpack items
     refreshbot(bot)
     
