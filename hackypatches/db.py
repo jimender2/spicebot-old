@@ -130,6 +130,7 @@ class SopelDB(object):
                         [nick_id, slug, nick]
                     )
             except IntegrityError:
+                time.sleep(5)
                 with self.connect() as conn:
                     cur = conn.cursor()
                     cur.execute('INSERT INTO nick_ids VALUES (NULL)')
