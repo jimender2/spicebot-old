@@ -11,9 +11,9 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@thread(False)
+#@thread(False)
 @rule('(.*)')
-@priority('low')
+#@priority('low')
 def automodspam(bot, trigger):
     channel = trigger.sender
     bot.msg(channel,channel)
