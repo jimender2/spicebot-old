@@ -26,7 +26,8 @@ def automodspam(bot, trigger):
             adjust_botdatabase_value(bot, channel, 'automod_antifloodcount', 1)
             getcurrentcount = get_botdatabase_value(bot, channel, 'automod_antifloodcount') or 1
             if int(getcurrentcount) >= 5:
-                bot.msg(channel,"over 5")
+                antifloodwarning = str(instigator + ", Please do not flood the channel.")
+                bot.msg(channel,antifloodwarning)
         
     
     #    if lastnicksubmit = instigator:
