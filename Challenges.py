@@ -108,7 +108,7 @@ def duel_action(bot, trigger):
     fullcommandused = trigger.group(1)
     triggerargsarray = create_args_array(trigger.group(1))
     instigator = trigger.nick
-    allusersinroomarray, dueloptedinarray = [], []
+    targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
     for channel in bot.channels:
         offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
         for u in bot.channels[channel.lower()].users:
