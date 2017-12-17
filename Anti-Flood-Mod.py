@@ -18,6 +18,7 @@ def note(bot, trigger):
     instigator = trigger.nick
     for channel in bot.channels:
         channel = channel
+        bot.msg(channel,channel)
     if not trigger.is_privmsg:
         lastnicksubmit = get_botdatabase_value(bot, channel, 'automod_antifloodnick') or bot.nick
         if lastnicksubmit = instigator:
