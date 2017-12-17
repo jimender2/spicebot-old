@@ -20,7 +20,7 @@ def automod(bot, trigger):
         ## vars
         channel = trigger.sender
         instigator = trigger.nick
-        currentmessage = trigger.group(2)
+        currentmessage = trigger.group(1)
 
         ## Flooding is 5 lines in a row by the same person or 3 identical lines
         floodyell = 0
