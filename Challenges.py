@@ -103,6 +103,8 @@ statsbypassarray = ['winlossratio','timeout']
 @module.require_chanmsg
 def duel_action(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(1))
+    for x in triggerargsarray:
+        bot.say(str(x))
     execute_main(bot, trigger, triggerargsarray)
 
     
