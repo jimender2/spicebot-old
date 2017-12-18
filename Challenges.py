@@ -241,9 +241,9 @@ def execute_main(bot, trigger, triggerargsarray):
             currenthealth = get_database_value(bot, instigator, 'health')
             if currenthealth <= 0:
                 whokilledwhom(bot, bot.nick, instigator)
-                winnermsg = str(winner + ' killed ' + instigator + ', forcing a respawn!!')
+                winnermsg = str(bot.nick + ' killed ' + instigator + ', forcing a respawn!!')
             else:
-                winnermsg = str(winner + " hits " + instigator + ', dealing ' + str(botdamage) + ' damage.')
+                winnermsg = str(bot.nick + " hits " + instigator + ', dealing ' + str(botdamage) + ' damage.')
             bot.say(winnermsg)
         
         ## On/off
