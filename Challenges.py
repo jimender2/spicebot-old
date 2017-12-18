@@ -1742,7 +1742,7 @@ def selectwinner(bot, nickarray):
     winner = ''
     for u in nickarray:
         maxstat = get_database_value(bot, u, 'winnerselection') or 0
-        if int(max) > winnermax:
+        if int(maxstat) > winnermax:
             winner = u
             winnermax = maxstat
     
