@@ -1671,6 +1671,8 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
+    for c in nickarray:
+        bot.say(c)
     nickstatsarray = []
     ustatarray = ['health','xp','kills','respawns']
     for j in ustatarray:
