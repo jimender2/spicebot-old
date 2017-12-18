@@ -1685,6 +1685,7 @@ def selectwinner(bot, nickarray):
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
         jwinnerarray = []
         for a,b in zip(jwinners,nickarray):
+            winner = b
             jwinnerarray.append(winner)
         bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
         
