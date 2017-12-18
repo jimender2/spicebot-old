@@ -1670,8 +1670,11 @@ def selectwinner(bot, nickarray):
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
         value = max(jstatsarray)
-        jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
-        bot.say(str(j) + " " + str(jwinners) + " " + str(value))
+        winner = nickarray[jstatsarray.index(value)]
+        bot.say(str(winner))
+        
+        #jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
+        #bot.say(str(j) + " " + str(jwinners) + " " + str(value))
         
         #jwinnerarray = []
         #if len(jwinners) > 1:
