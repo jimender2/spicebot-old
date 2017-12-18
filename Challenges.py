@@ -277,6 +277,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
         
+        ## Colosseum
+        elif commandortarget == 'colosseum':
+            fullchanassaultarray = [instigator]
+            winner = selectwinner(bot, nickarray)
+            
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
             fullchanassaultarray = []
@@ -1663,6 +1668,26 @@ def get_pepper(bot, nick):
 ###################
 ## Select Winner ##
 ###################
+
+def selectwinner(bot, nickarray):
+    nickstatsarray = []
+    ustatarray = ['health','xp','kills','respawns']
+    for x in ustatarray:
+        xstatsarray = []
+        for u in nickarray:
+            xvalue = get_database_value(bot, instigator, x) or 0
+            xstatsarray.append(xvalue)
+        for x in xstatsarray:
+            bot.say(str(x))
+        if x == 'respawns':
+            value = min(xstatsarray)
+        else:
+            value = max(xstatsarray)
+        #bot.say(str(value))
+        
+
+        
+    
 
 def getwinner(bot, instigator, target, manualweapon):
     
