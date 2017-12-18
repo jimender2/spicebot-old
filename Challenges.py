@@ -27,6 +27,7 @@ USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
+COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Challenges" ## Wiki URL
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
@@ -199,6 +200,8 @@ def execute_main(bot, trigger, triggerargsarray):
     channellastinstigator = get_database_value(bot, channel, 'lastinstigator') or bot.nick
     lastfullroomassult = get_timesince_duels(bot, channel, 'lastfullroomassult') or ASSAULTTIMEOUT
     lastfullroomassultinstigator = get_database_value(bot, channel, 'lastfullroomassultinstigator') or bot.nick
+    lastfullroomcolosseum = get_timesince_duels(bot, channel, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
+    lastfullroomcolosseuminstigator = get_database_value(bot, channel, 'lastfullroomcolosseuminstigator') or bot.nick
     
     ## The only commands that should get through if instigator doesn't have duels enabled
     commandbypassarray = ['on','off']
@@ -279,9 +282,25 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Colosseum
         elif commandortarget == 'colosseum':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            nickarray = [instigator, target]
-            winner = selectwinner(bot, nickarray)
+            nickarray = []
+            for x in canduelarray:
+                if x != bot.nick:
+                    nickarray.append(x)
+            nickarraytotal = len(nickarray)
+            if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
+                bot.notice(instigator + ", colosseum can't be used for %d seconds." % (COLOSSEUMTIMEOUT - lastfullroomcolosseum), instigator)
+            elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
+                bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
+            elif not inchannel.startswith("#"):
+                bot.notice(instigator + " Duels must be in channel.", instigator)
+            elif instigator not in canduelarray:
+                bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
+            elif nickarray == []:
+                bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
+            else:
+                winner = selectwinner(bot, nickarray)
+            
+            
             
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
@@ -1696,44 +1715,6 @@ def selectwinner(bot, nickarray):
         bot.say(user + str(rolls))
         set_database_value(bot, user, 'winnerselection', None)
 
-    
-    
-    
-    #nickstatsarray = []
-    #ustatarray = ['health','xp','kills']
-    #for j in ustatarray:
-    #    jstatsarray = []
-    #    for u in nickarray:
-    #        jvalue = get_database_value(bot, u, j) or 0
-    #        jstatsarray.append(jvalue)
-    #    value = max(jstatsarray)
-    #    winner = nickarray[jstatsarray.index(value)]
-    #    bot.say(str(winner))
-        
-        #jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
-        #bot.say(str(j) + " " + str(jwinners) + " " + str(value))
-        
-        #jwinnerarray = []
-        #if len(jwinners) > 1:
-        #    for k in jwinners:
-        #        winnernum = int(k) + 1
-        #        winner = get_trigger_arg(nickarray, winnernum)
-        #        jwinnerarray.append(winner)
-        #else:
-        #    winner = get_trigger_arg(nickarray, 1)
-        #    jwinnerarray.append(winner)
-        #if len(jwinners) > 1:
-        #    for a,b in zip(jwinners,nickarray):
-        #        winner = b
-        #        jwinnerarray.append(winner)
-        #else:
-        #    winner = nickarray[0]
-        #    jwinnerarray.append(winner)
-        #bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
-        
-
-        
-    
 
 def getwinner(bot, instigator, target, manualweapon):
     
