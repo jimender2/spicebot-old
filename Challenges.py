@@ -299,6 +299,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
             else:
                 winner = selectwinner(bot, nickarray)
+                bot.say(str(winner))
             
             
             
@@ -1681,11 +1682,20 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
-    playerlist = []
     statcheckarray = ['health','xp','kills','respawns']
+    winner = bot.nick
+    
+    ## empty var to start
     for user in nickarray:
-        playerlist.append(user)
         set_database_value(bot, user, 'winnerselection', None)
+    
+    ## everyone gets a roll
+    for user in nickarray:
+        adjust_database_value(bot, user, 'winnerselection', 1)
+    
+    ## random roll
+    randomrollwinner = get_trigger_arg(nickarray, 'random')
+    adjust_database_value(bot, randomrollwinner, 'winnerselection', 1)
     
     ## Stats 
     for x in statcheckarray:
@@ -1693,7 +1703,7 @@ def selectwinner(bot, nickarray):
         if x == 'respawns':
             statscore = 99999999
         statleader = ''
-        for u in playerlist:
+        for u in nickarray:
             value = get_database_value(bot, u, x) or 0
             if x == 'respawns':
                 if int(value) < statscore:
@@ -1705,15 +1715,42 @@ def selectwinner(bot, nickarray):
                     statscore = int(value)
         adjust_database_value(bot, statleader, 'winnerselection', 1)
         
-    ## random roll
-    randomrollwinner = get_trigger_arg(nickarray, 'random')
-    adjust_database_value(bot, randomrollwinner, 'winnerselection', 1)
+    ## weaponslocker not empty
+    for user in nickarray:
+        weaponslist = get_database_value(bot, user, 'weaponslocker') or []
+        if weaponslist != []:
+            adjust_database_value(bot, user, 'winnerselection', 1)
+    
+    ## anybody rogue?
+    for user in nickarray:
+        nickclass = get_database_value(bot, user, 'class') or ''
+        if nickclass == 'rogue':
+            adjust_database_value(bot, user, 'winnerselection', 1)
+    
+    ## Dice rolling occurs now
+    for user in nickarray:
+        rolls = get_database_value(bot, user, 'winnerselection') or 0
+        maxroll = winnerdicerolling(bot, user, rolls)
+        set_database_value(bot, user, 'winnerselection', maxroll)
+    
+    ## curse check
+    for user in nickarray:
+        curse = get_magic_attribute(bot, user, 'curse')
+        if curse:
+            set_database_value(bot, user, 'winnerselection', None)
+    
+    ## who wins
+    winnermax = 0
+    for u in nickarray:
+        winnermax = get_database_value(bot, u, 'winnerselection') or 0
+        if int(winnermax) > winnermax:
+            winner = u
     
     ## Clear value
     for user in nickarray:
-        rolls = get_database_value(bot, user, 'winnerselection') or 0
-        bot.say(user + str(rolls))
         set_database_value(bot, user, 'winnerselection', None)
+        
+    return winner
 
 
 def getwinner(bot, instigator, target, manualweapon):
