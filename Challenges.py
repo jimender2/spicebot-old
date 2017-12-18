@@ -1678,10 +1678,10 @@ def selectwinner(bot, nickarray):
             xvalue = get_database_value(bot, u, x) or 0
             xstatsarray.append(xvalue)
         if x == 'respawns':
-            value = min(xstatsarray)
+            value_index = xstatsarray.index(min(xstatsarray))
         else:
-            value = max(xstatsarray)
-        bot.say(str(value))
+            value_index = xstatsarray.index(max(xstatsarray))
+        bot.say(str(value_index))
         
 
         
