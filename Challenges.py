@@ -1671,8 +1671,6 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
-    for c in nickarray:
-        bot.say(c)
     nickstatsarray = []
     ustatarray = ['health','xp','kills','respawns']
     for j in ustatarray:
@@ -1681,6 +1679,7 @@ def selectwinner(bot, nickarray):
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
         if j == 'respawns':
+            bot.say('test')
             value = min(jstatsarray)
         else:
             value = max(jstatsarray)
