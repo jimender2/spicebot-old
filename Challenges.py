@@ -1727,9 +1727,12 @@ def selectwinner(bot, nickarray):
     ## Dice rolling occurs now
     for user in nickarray:
         rolls = get_database_value(bot, user, 'winnerselection') or 0
-        bot.say(user + str(rolls))
         maxroll = winnerdicerolling(bot, user, rolls)
         set_database_value(bot, user, 'winnerselection', maxroll)
+    
+    for user in nickarray:
+        rolls = get_database_value(bot, user, 'winnerselection') or 0
+        bot.say(user + str(rolls))
     
     ## curse check
     for user in nickarray:
