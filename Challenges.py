@@ -1662,16 +1662,32 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
-    nickstatsarray = []
-    ustatarray = ['health','xp','kills']
-    for j in ustatarray:
-        jstatsarray = []
-        for u in nickarray:
-            jvalue = get_database_value(bot, u, j) or 0
-            jstatsarray.append(jvalue)
-        value = max(jstatsarray)
-        winner = nickarray[jstatsarray.index(value)]
-        bot.say(str(winner))
+    playerlist = []
+    higherstatarray = ['health','xp','kills']
+    for user in nickarray:
+        playerlist.append(user)
+    for x in higherstatarray:
+        statscore = 0
+        statleader = ''
+        for u in playerlist:
+            value = get_database_value(bot, u, j) or 0
+            if int(value) > statscore:
+                statleader = u
+                statscore = int(value)
+        bot.say(str(statleader) + " wins " + str(x) + " with " + str(statscore))
+    
+    
+    
+    #nickstatsarray = []
+    #ustatarray = ['health','xp','kills']
+    #for j in ustatarray:
+    #    jstatsarray = []
+    #    for u in nickarray:
+    #        jvalue = get_database_value(bot, u, j) or 0
+    #        jstatsarray.append(jvalue)
+    #    value = max(jstatsarray)
+    #    winner = nickarray[jstatsarray.index(value)]
+    #    bot.say(str(winner))
         
         #jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
         #bot.say(str(j) + " " + str(jwinners) + " " + str(value))
