@@ -1290,7 +1290,7 @@ def halfhourtimer(bot):
                 adjust_database_value(bot, u, 'coins', halfhourcoinaward)
                 
                 ## colosseum pot
-                adjust_database_value(bot, channel, 'colosseum_pot', 100)
+                adjust_database_value(bot, channel, 'colosseum_pot', 10)
                 
                 ## health regenerates for all
                 if int(health) < healthregenmax:
