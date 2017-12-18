@@ -1663,17 +1663,24 @@ def get_pepper(bot, nick):
 
 def selectwinner(bot, nickarray):
     playerlist = []
-    higherstatarray = ['health','xp','kills']
+    higherstatarray = ['health','xp','kills','respawns']
     for user in nickarray:
         playerlist.append(user)
     for x in higherstatarray:
         statscore = 0
+        if x == 'respawns':
+            statscore = 99999999
         statleader = ''
         for u in playerlist:
             value = get_database_value(bot, u, x) or 0
-            if int(value) > statscore:
-                statleader = u
-                statscore = int(value)
+            if x == 'respawns':
+                if int(value) < statscore:
+                    statleader = u
+                    statscore = int(value)
+            else:
+                if int(value) > statscore:
+                    statleader = u
+                    statscore = int(value)
         bot.say(str(statleader) + " wins " + str(x) + " with " + str(statscore))
     
     
