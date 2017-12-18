@@ -279,7 +279,7 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Colosseum
         elif commandortarget == 'colosseum':
-            fullchanassaultarray = [instigator]
+            nickarray = [instigator]
             winner = selectwinner(bot, nickarray)
             
         ## Duel Everyone
