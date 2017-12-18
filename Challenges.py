@@ -103,25 +103,17 @@ statsbypassarray = ['winlossratio','timeout']
 @module.require_chanmsg
 def duel_action(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(1))
-    #for x in triggerargsarray:
-    #    bot.say(str(x))
-    #if trigger.group(0):
-    #    bot.say(str(trigger.group(0)))
+    for x in triggerargsarray:
+        bot.say(str(x))
+    if trigger.group(0):
+        bot.say(str(trigger.group(0)))
     execute_main(bot, trigger, triggerargsarray)
 
-    
-## not needed if using without spicebot
+# use this instead if not using with spicebot
 @sopel.module.commands('challenge','duel')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-
-## use this instead if not using with spicebot
-#@sopel.module.commands('challenge','duel')
-#def mainfunction(bot, trigger):
-#    triggerargsarray = create_args_array(trigger.group(2))
-#    execute_main(bot, trigger, triggerargsarray)
+    triggerargsarray = create_args_array(trigger.group(2))
+    execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
     
