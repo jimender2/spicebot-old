@@ -1670,12 +1670,15 @@ def getwinner(bot, instigator, target, manualweapon):
     instigatorfight = 1
     targetfight = 1
     
+    bot.say("start " instigator + str(instigatorfight) + "     " + target + str(targetfight))
+    
     ## Random Number
     if randint(0, 100) > 50:
         instigatorfight = instigatorfight + 1
     else:
         targetfight = targetfight + 1
         
+    bot.say("random number " instigator + str(instigatorfight) + "     " + target + str(targetfight))
     ## compare stats
     higherstatarray = ['health','xp','kills']
     lowerstatarray = ['respawns']
@@ -1684,6 +1687,7 @@ def getwinner(bot, instigator, target, manualweapon):
     for x in lowerstatarray:
         instigatorfight, targetfight = rolladd(bot, instigator, target, x, 'low', instigatorfight, targetfight)
 
+    bot.say("stats " instigator + str(instigatorfight) + "     " + target + str(targetfight))
     # extra roll for using the weaponslocker or manual weapon usage
     instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
     targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
@@ -1691,10 +1695,11 @@ def getwinner(bot, instigator, target, manualweapon):
         instigatorfight = instigatorfight + 1
     if targetweaponslist != []:
         targetfight = targetfight + 1
-    
+    bot.say("weaponlocker " instigator + str(instigatorfight) + "     " + target + str(targetfight))
     ## Dice Roll
     instigatorfight = winnerdicerolling(bot, instigator, instigatorfight)
     targetfight = winnerdicerolling(bot, target, targetfight)
+    bot.say("max dice " instigator + str(instigatorfight) + "     " + target + str(targetfight))
 
     ## check for curses
     if instigator != target and target != bot.nick:
@@ -1705,13 +1710,14 @@ def getwinner(bot, instigator, target, manualweapon):
         if targetcurse:
             targetfight = 0
 
+    bot.say("curse " instigator + str(instigatorfight) + "     " + target + str(targetfight))
     ## tie breaker
     if instigatorfight == targetfight:
         if randint(0, 100) > 50:
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
-    
+    bot.say("tie breaker " instigator + str(instigatorfight) + "     " + target + str(targetfight))
     ## Winner
     if target == bot.nick:
         winner = bot.nick
