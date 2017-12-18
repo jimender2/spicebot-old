@@ -142,6 +142,7 @@ def autoblockhour(bot):
 
 @sopel.module.interval(60)
 def autoblock(bot):
+    now = time.time()
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
             usertotal = get_botdatabase_value(bot, u, 'usertotal')
