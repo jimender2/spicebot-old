@@ -1663,10 +1663,13 @@ def get_pepper(bot, nick):
 
 def selectwinner(bot, nickarray):
     playerlist = []
-    higherstatarray = ['health','xp','kills','respawns']
+    statcheckarray = ['health','xp','kills','respawns']
     for user in nickarray:
         playerlist.append(user)
-    for x in higherstatarray:
+        set_database_value(bot, user, 'winnerselection', None)
+    
+    ## Stats 
+    for x in statcheckarray:
         statscore = 0
         if x == 'respawns':
             statscore = 99999999
@@ -1681,7 +1684,18 @@ def selectwinner(bot, nickarray):
                 if int(value) > statscore:
                     statleader = u
                     statscore = int(value)
-        bot.say(str(statleader) + " wins " + str(x) + " with " + str(statscore))
+        adjust_database_value(bot, statleader, 'winnerselection', 1)
+        
+    ## random roll
+    randomrollwinner = get_trigger_arg(nickarray, 'random')
+    adjust_database_value(bot, randomrollwinner, 'winnerselection', 1)
+    
+    ## Clear value
+    for user in nickarray:
+        rolls = get_database_value(bot, user, 'winnerselection') or 0
+        bot.say(user + str(rolls))
+        set_database_value(bot, user, 'winnerselection', None)
+
     
     
     
