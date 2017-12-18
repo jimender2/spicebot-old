@@ -101,6 +101,7 @@ statsbypassarray = ['winlossratio','timeout']
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
+    target = None
     OSDTYPE = 'say'
     dowedisplay = 1
     now = time.time()
