@@ -78,7 +78,6 @@ scavegerfindpercent = 40
 barbarianminimumdamge = 40
 botdamage = 150
 bugbountycoinaward = 100
-typeofduel = 'target'
 
 ############
 ## Arrays ##
@@ -151,6 +150,7 @@ def duel_action(bot, trigger):
         getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
         set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     else:
+        typeofduel = 'target'
         canduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if canduel:
             return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
@@ -158,6 +158,8 @@ def duel_action(bot, trigger):
 
 @sopel.module.commands('challenge','duel')
 def execute_main(bot, trigger):
+    
+    typeofduel = 'target'
     
     ## Initial ARGS of importance
     triggerargsarray = create_args_array(trigger.group(2))
