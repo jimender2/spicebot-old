@@ -232,6 +232,10 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 bot.notice("Online Docs: " + GITWIKIURL, target)
         
+        ## Bot
+        elif commandortarget == bot.nick:
+            bot.say('wip')
+        
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
             disenablevalue = None
