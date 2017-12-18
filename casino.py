@@ -33,17 +33,19 @@ def execute_main(bot, trigger, arg):
 				for i in reel:
 					if i=='BSOD':
 				 		mywinnings = mywinnings + 5
-				# turn the set into a list (as requested)
+				
 				if(wheel1 == wheel2 and wheel2 == wheel3):
 					bot.say(trigger.nick + ' got 3 ' + str(wheel1))
-					if wheel1 == 'BSOD':  
+					if wheel1 == 'BSOD':
+						mywinnings = 1000
 						bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
-						Spicebucks.spicebucks(bot, trigger.nick, 'plus', 100)
+						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 					else:
 						bot.say('You get 25 spicebucks')
 				elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
+					mywinnings = 5
 					bot.say(trigger.nick + ' got 2 correct and ' + str(mywinnings) + ' spicebucks')
-					Spicebucks.spicebucks(bot, trigger.nick, 'plus', 5)
+					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 				else:
 					bot.say(trigger.nick + ' gets nothing')
 
