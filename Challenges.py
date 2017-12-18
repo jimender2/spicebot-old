@@ -1679,17 +1679,13 @@ def selectwinner(bot, nickarray):
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
         if j == 'respawns':
-            bot.say('test')
             value = min(jstatsarray)
         else:
             value = max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
-        winnum = 0
         jwinnerarray = []
-        for w in jwinners:
-            winner = nickarray[winnum]
+        for a,b in zip(jwinners,nickarray):
             jwinnerarray.append(winner)
-            winnum = winnum + 1
         bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
         
 
