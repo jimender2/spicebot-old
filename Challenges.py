@@ -1074,7 +1074,16 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                 weapon = str(target + "'s " + weapon)
         
         ## Select Winner
-        winner, loser = getwinner(bot, instigator, target, manualweapon)
+        if target == bot.nick:
+            winner = bot.nick
+            loser = instigator
+        else:
+            nickarray = [instigator, target]
+            winner = selectwinner(bot, nickarray)
+            if winner == instigator:
+                loser = target
+            else:
+                loser = instigator
     
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
@@ -1730,10 +1739,6 @@ def selectwinner(bot, nickarray):
         maxroll = winnerdicerolling(bot, user, rolls)
         set_database_value(bot, user, 'winnerselection', maxroll)
     
-    for user in nickarray:
-        rolls = get_database_value(bot, user, 'winnerselection') or 0
-        bot.say(user + str(rolls))
-    
     ## curse check
     for user in nickarray:
         curse = get_magic_attribute(bot, user, 'curse')
@@ -1754,82 +1759,6 @@ def selectwinner(bot, nickarray):
         set_database_value(bot, user, 'winnerselection', None)
         
     return winner
-
-
-def getwinner(bot, instigator, target, manualweapon):
-    
-    ## each person gets one diceroll
-    instigatorfight = 1
-    targetfight = 1
-    
-    ## Random Number
-    if randint(0, 100) > 50:
-        instigatorfight = instigatorfight + 1
-    else:
-        targetfight = targetfight + 1
-
-    ## compare stats
-    higherstatarray = ['health','xp','kills']
-    lowerstatarray = ['respawns']
-    for x in higherstatarray:
-        instigatorfight, targetfight = rolladd(bot, instigator, target, x, 'high', instigatorfight, targetfight)
-    for x in lowerstatarray:
-        instigatorfight, targetfight = rolladd(bot, instigator, target, x, 'low', instigatorfight, targetfight)
-
-    # extra roll for using the weaponslocker or manual weapon usage
-    instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
-    targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
-    if instigatorweaponslist != [] or manualweapon == 'true':
-        instigatorfight = instigatorfight + 1
-    if targetweaponslist != []:
-        targetfight = targetfight + 1
-
-    ## Dice Roll
-    instigatorfight = winnerdicerolling(bot, instigator, instigatorfight)
-    targetfight = winnerdicerolling(bot, target, targetfight)
-
-    ## check for curses
-    if instigator != target and target != bot.nick:
-        instigatorcurse = get_magic_attribute(bot, instigator, 'curse')
-        targetcurse = get_magic_attribute(bot, target, 'curse')
-        if instigatorcurse:
-            instigatorfight = 0
-        if targetcurse:
-            targetfight = 0
-
-    ## tie breaker
-    if instigatorfight == targetfight:
-        if randint(0, 100) > 50:
-            instigatorfight = int(instigatorfight) + 1
-        else:
-            targetfight = int(targetfight) + 1
-
-    ## Winner
-    if target == bot.nick:
-        winner = bot.nick
-        loser = instigator
-    elif int(instigatorfight) > int(targetfight):
-        winner = instigator
-        loser = target
-    else:
-        winner = target
-        loser = instigator
-    return winner, loser
-
-def rolladd(bot, instigator, target, stat, highlow, instigatorfight, targetfight):
-    instigatorvalue = get_database_value(bot, instigator, stat) or 0
-    targetvalue = get_database_value(bot, target, stat) or 0
-    if highlow == 'high':
-        if int(instigatorvalue) > int(targetvalue):
-            instigatorfight = instigatorfight + 1
-        elif int(instigatorvalue) < int(targetvalue):
-            targetfight = targetfight + 1
-    else:
-        if int(instigatorvalue) < int(targetvalue):
-            instigatorfight = instigatorfight + 1
-        elif int(instigatorvalue) > int(targetvalue):
-            targetfight = targetfight + 1
-    return instigatorfight, targetfight
 
 def winnerdicerolling(bot, nick, rolls):
     nickclass = get_database_value(bot, nick, 'class') or ''
