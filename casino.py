@@ -61,7 +61,7 @@ def execute_main(bot, trigger, arg):
 		maxwheel = 25
 		wheel = range(maxwheel + 1)		
 		colors = ['red', 'black']
-		if len(arg) < 2:
+		if len(arg) < 3:
 			bot.say('Please enter an amount to bet')
 			inputcheck = 0
 		else:
