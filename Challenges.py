@@ -217,7 +217,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
     ## Bot
-    elif commandortarget:
+    elif commandortarget == bot.nick:
         bot.say("I refuse to fight a biological entity!")
         
     ## yourself
