@@ -1670,7 +1670,7 @@ def selectwinner(bot, nickarray):
         statscore = 0
         statleader = ''
         for u in playerlist:
-            value = get_database_value(bot, u, j) or 0
+            value = get_database_value(bot, u, x) or 0
             if int(value) > statscore:
                 statleader = u
                 statscore = int(value)
