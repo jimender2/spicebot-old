@@ -70,8 +70,8 @@ def execute_main(bot, trigger, arg):
 				if inputcheck == 1:		
 					if arg[2].isdigit():
 						mynumber = int(arg[2])
-						if not (mynumber <= 0 or mynumber > maxwheel):
-							bot.say('Please pick a number between 0 and ' + maxwheel)
+						if(mynumber <= 0 or mynumber > maxwheel):
+							bot.say('Please pick a number between 0 and ' + str(maxwheel))
 							inputcheck=0
 						else:
 							if len(arg)>=4:
