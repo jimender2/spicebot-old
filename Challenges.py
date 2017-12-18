@@ -1679,9 +1679,9 @@ def selectwinner(bot, nickarray):
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
         if j == 'respawns':
-            value = np.min(a)
+            value = np.min(jstatsarray)
         else:
-            value = np.max(a)
+            value = np.max(jstatsarray)
         jwinners = [i for i, x in enumerate(a) if x == value]
         bot.say(str(jwinners))
         
