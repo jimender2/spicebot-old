@@ -103,10 +103,6 @@ statsbypassarray = ['winlossratio','timeout']
 @module.require_chanmsg
 def duel_action(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(1))
-    for x in triggerargsarray:
-        bot.say(str(x))
-    if trigger.group(0):
-        bot.say(str(trigger.group(0)))
     execute_main(bot, trigger, triggerargsarray)
 
 # use this instead if not using with spicebot
@@ -1286,7 +1282,7 @@ def halfhourtimer(bot):
             lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, lootwinner)
             
-            ## If you want it announced in channell
+            ## If you want it announced in channel
             #bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
@@ -1670,59 +1666,24 @@ def get_pepper(bot, nick):
 
 def getwinner(bot, instigator, target, manualweapon):
     
-    ## classes
-    ## rogues get an extra roll and a loaded dice
-    
     ## each person gets one diceroll
     instigatorfight = 1
     targetfight = 1
     
-    instigatoryourclass = get_database_value(bot, instigator, 'class') or ''
-    if instigatoryourclass == 'rogue':
-        instigatorfight = instigatorfight + 1
-    targetyourclass = get_database_value(bot, instigator, 'class') or ''
-    if targetyourclass == 'rogue':
-        targetfight = targetfight + 1
-    
     ## Random Number
-    flip = randint(0, 1)
-    if flip == 0:
+    if randint(0, 100) > 50:
         instigatorfight = instigatorfight + 1
     else:
         targetfight = targetfight + 1
-    
-    # Most Health Extra roll
-    instigatorhealth = get_database_value(bot, instigator, 'health')
-    targethealth = get_database_value(bot, target, 'health')
-    if int(instigatorhealth) > int(targethealth):
-        instigatorfight = instigatorfight + 1
-    elif int(instigatorhealth) < int(targethealth):
-        targetfight = targetfight + 1
-    
-    # Most XP gets an extra roll
-    instigatorxp = get_database_value(bot, instigator, 'xp')
-    targetxp = get_database_value(bot, target, 'xp')
-    if int(instigatorxp) > int(targetxp):
-        instigatorfight = instigatorfight + 1
-    elif int(instigatorxp) < int(targetxp):
-        targetfight = targetfight + 1
-    
-    ## More Kills Gets an extra roll
-    instigatorkills = get_database_value(bot, instigator, 'kills')
-    targetkills = get_database_value(bot, target, 'kills')
-    if int(instigatorkills) > int(targetkills):
-        instigatorfight = instigatorfight + 1
-    elif int(instigatorkills) < int(targetkills):
-        targetfight = targetfight + 1
         
-    ## Least Respawns Gets an extra roll
-    instigatorrespawns = get_database_value(bot, instigator, 'respawns')
-    targetrespawns = get_database_value(bot, target, 'respawns')
-    if int(instigatorrespawns) < int(targetrespawns):
-        instigatorfight = instigatorfight + 1
-    elif int(instigatorrespawns) > int(targetrespawns):
-        targetfight = targetfight + 1
-    
+    ## compare stats
+    higherstatarray = ['health','xp','kills']
+    lowerstatarray = ['respawns']
+    for x in higherstatarray:
+        instigatorfight, targetfight = rolladd(bot, instigator, target, x, 'high', instigatorfight, targetfight)
+    for x in lowerstatarray:
+        instigatorfight, targetfight = rolladd(bot, instigator, target, x, 'low', instigatorfight, targetfight)
+
     # extra roll for using the weaponslocker or manual weapon usage
     instigatorweaponslist = get_database_value(bot, instigator, 'weaponslocker') or []
     targetweaponslist = get_database_value(bot, target, 'weaponslocker') or []
@@ -1731,58 +1692,67 @@ def getwinner(bot, instigator, target, manualweapon):
     if targetweaponslist != []:
         targetfight = targetfight + 1
     
-    ## Dice Roll (instigator d20, target d19)
-    instigatorfightarray = []
-    targetfightarray = []
-    while int(instigatorfight) > 0:
-        if targetyourclass == 'rogue':
-            instigatorfightroll = randint(10, 20)
-        else:
-            instigatorfightroll = randint(0, 20)
-        instigatorfightarray.append(instigatorfightroll)
-        instigatorfight = int(instigatorfight) - 1
-    instigatorfight = max(instigatorfightarray)
-    while int(targetfight) > 0:
-        if targetyourclass == 'rogue':
-            targetfightroll = randint(10, 22)
-        else:
-            targetfightroll = randint(0, 19)
-        targetfightarray.append(targetfightroll)
-        targetfight = int(targetfight) - 1
-    targetfight = max(targetfightarray)
+    ## Dice Roll
+    instigatorfight = winnerdicerolling(bot, instigator, instigatorfight)
+    targetfight = winnerdicerolling(bot, target, targetfight)
 
     ## check for curses
-    if instigator != target and instigator != bot.nick:
+    if instigator != target and target != bot.nick:
         instigatorcurse = get_magic_attribute(bot, instigator, 'curse')
+        targetcurse = get_magic_attribute(bot, target, 'curse')
         if instigatorcurse:
             instigatorfight = 0
-        targetcurse = get_magic_attribute(bot, target, 'curse')
         if targetcurse:
             targetfight = 0
 
     ## tie breaker
     if instigatorfight == targetfight:
-        tiebreaker = randint(0, 1)
-        if (tiebreaker == 0):
+        if randint(0, 100) > 50:
             instigatorfight = int(instigatorfight) + 1
         else:
             targetfight = int(targetfight) + 1
     
-    ## Compare
-    if int(instigatorfight) > int(targetfight):
-        winner = instigator
-    else:
-        winner = target
-        
-    ## LOSER IS NOT WINNER
+    ## Winner
     if target == bot.nick:
         winner = bot.nick
         loser = instigator
-    elif winner == instigator:
+    elif int(instigatorfight) > int(targetfight):
+        winner = instigator
         loser = target
     else:
+        winner = target
         loser = instigator
     return winner, loser
+
+def rolladd(bot, instigator, target, stat, highlow, instigatorfight, targetfight):
+    instigatorvalue = get_database_value(bot, instigator, x) or 0
+    targetvalue = get_database_value(bot, target, x) or 0
+    if highlow == 'high':
+        if int(instigatorvalue) > int(targetvalue):
+            instigatorfight = instigatorfight + 1
+        elif int(instigatorvalue) < int(targetvalue):
+            targetfight = targetfight + 1
+    else:
+        if int(instigatorvalue) < int(targetvalue):
+            instigatorfight = instigatorfight + 1
+        elif int(instigatorvalue) > int(targetvalue):
+            targetfight = targetfight + 1
+    return instigatorfight, targetfight
+
+def winnerdicerolling(bot, nick, rolls):
+    class = get_database_value(bot, nick, 'class') or ''
+    rolla = 0
+    rollb = 20
+    if class == 'rogue':
+        rolla = 10
+        rollb = 22
+    fightarray = []
+    while int(rolls) > 0:
+        fightroll = randint(rolla, rollb)
+        fightarray.append(instigatorfightroll)
+        rolls = int(rolls) - 1
+    fight = max(fightarray)
+    return fight
 
 #####################
 ## Magic attributes ##
