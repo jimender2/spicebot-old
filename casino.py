@@ -39,7 +39,7 @@ def execute_main(bot, trigger, arg):
       seen_add = seen.add
       # adds all elements it doesn't know yet to seen and all other to seen_twice
       seen_twice = set( x for x in reel if x in seen or seen_add(x) )
-      bot.say(str(seen_twice))
+      
       # turn the set into a list (as requested)
       if(wheel1 == wheel2 and wheel2 == wheel3):
         bot.say(trigger.nick + ' got 3 ' + str(wheel1))
@@ -56,43 +56,48 @@ def execute_main(bot, trigger, arg):
         bot.say(trigger.nick + ' gets nothing')
   #__________Game 2 Roulette________________
   elif arg[0] == 'roulette':
-    mybet = arg[1]
-    if (mybet<=0 or mybet>maxbet):
-      bot.say('Please bet an amount between 1 and ' + str(maxbet))
-      inputcheck = 0
-    else:
-      mybet=int(mybet)
-      if arg[2].isdigit:
-        mynumber = int(arg[2])
-        if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
-          mycolor = arg[3]
-        else:
-          mycolor=''                      
-        inputcheck =1
-      elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
-        mycolor = arg[2]
-        mynumber=-1
-        inputcheck =1
-      else:
-        bot.say('Please pick either a color or number to bet on')
-        mycolor = ' '
-        mynumber=-1
-        inputcheck = 0
-      if inputcheck == 1:
-        if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-					bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
-					winningnumber,color = spinwheel()  	    						
-					bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
-					mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
-					if mywinnings >=1:
-						bot.say(trigger.nick + ' has won ' + str(mywinnings))
-						Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
+		if len(arg) < 2:
+			bot.say('Please enter an amount to bet')
+			inputcheck = 0
+		else:
+			mybet = arg[1]
+			if (mybet<=0 or mybet>maxbet):
+				bot.say('Please bet an amount between 1 and ' + str(maxbet))
+				inputcheck = 0
+			else:
+				maxwheel = 25
+			 	wheel = range(maxwheel + 1)
+				colors = [red, black]
+				mybet=int(mybet)
+				if arg[2].isdigit:
+					mynumber = int(arg[2])
+					if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
+						mycolor = arg[3]
 					else:
-						bot.say(trigger.nick + ' is a loser')      
-        
-      
-      
-        
+						mycolor=''                      
+					inputcheck =1
+				elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
+					mycolor = arg[2]
+					mynumber=-1
+					inputcheck =1
+				else:
+					bot.say('Please pick either a color or number to bet on')
+					mycolor = ' '
+					mynumber=-1
+					inputcheck = 0
+				if inputcheck == 1:
+					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
+						bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
+						winningnumber = spin(wheel)
+						color = spin(colors)
+						bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+						mywinnings=payouts(mybet,mynumber,mycolor,winningnumber,color)
+						if mywinnings >=1:
+							bot.say(trigger.nick + ' has won ' + str(mywinnings))
+							Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
+						else:
+							bot.say(trigger.nick + ' is a loser')            
+           
     
   
 #__________________________Shared Functions____________________
