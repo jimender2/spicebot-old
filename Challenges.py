@@ -323,7 +323,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like you can challenge.", instigator)
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, channel, dowedisplay)
-            elif subcommand == 'assault':
+            elif subcommand == 'assault' or subcommand == 'everyone':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
