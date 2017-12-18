@@ -15,6 +15,8 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
+  #shared varibles:
+  maxbet = 100 
   #_____________Game 1 slots____________
   if arg[0] == 'slots':
     #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
@@ -54,7 +56,33 @@ def execute_main(bot, trigger, arg):
         bot.say(trigger.nick + ' gets nothing')
   #__________Game 2 Roulette________________
   elif arg[0] == 'roulette':
-    bot.say('Step up and spin the wheel')
+    mybet = arg[1]
+    if (mybet<=0 or mybet>maxbet):
+      bot.say('Please bet an amount between 1 and ' + str(maxbet))
+      inputcheck = 0
+    else:
+      mybet=int(mybet)
+      if arg[2].isdigit:
+        mynumber = int(arg[2])
+        if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
+          mycolor = arg[3]
+        else:
+          mycolor=''                      
+        inputcheck =1
+      elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
+        mycolor = arg[2]
+        mynumber=-1
+        inputcheck =1
+      else:
+        bot.say('Please pick either a color or number to bet on')
+        mycolor = ' '
+        mynumber=-1
+        inputcheck = 0
+      if inputcheck == 1:
+        
+      
+      
+        
     
   
 #__________________________Shared Functions____________________
