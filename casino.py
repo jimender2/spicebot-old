@@ -75,7 +75,7 @@ def execute_main(bot, trigger, arg):
 				bot.say('Please bet an amount between 1 and ' + str(maxbet))				
 				inputcheck = 0
 			if inputcheck == 1:		
-				if arg[2].isdigit:
+				if arg[2].isdigit():
 					mynumber = int(arg[2])
 					if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
 						mycolor = arg[3]
