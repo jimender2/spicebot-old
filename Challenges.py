@@ -279,10 +279,9 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Colosseum
         elif commandortarget == 'colosseum':
-            #target = get_trigger_arg(triggerargsarray, 2) or instigator
-            #nickarray = [instigator, target]
-            #winner = selectwinner(bot, nickarray)
-            bot.say('wip')
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            nickarray = [instigator, target]
+            winner = selectwinner(bot, nickarray)
             
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
