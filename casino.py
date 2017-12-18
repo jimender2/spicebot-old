@@ -15,8 +15,9 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-  #using computer terms instead of fruit
+  #_____________Game 1 slots____________
   if arg[0] == 'slots':
+    #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
     if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
       #spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
       #Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1 + spicebanktotal)
@@ -50,10 +51,15 @@ def execute_main(bot, trigger, arg):
         bot.say(trigger.nick + ' got 2 correct and ' + str(mywinnings) + ' spicebucks')
         Spicebucks.spicebucks(bot, trigger.nick, 'plus', 5)
       else:
-        bot.say(trigger.nick + ' gets nothing')                   
+        bot.say(trigger.nick + ' gets nothing')
+  #__________Game 2 Roulette________________
+  elif arg[0] == 'roulette':
+    bot.say('Step up and spin the wheel')
+    
   
-
+#__________________________Shared Functions____________________
 def spin(wheel):
+  #selects a random element of an array and return one item
   selected=random.randint(0,(len(wheel)-1))
   reel=wheel[selected]
   return reel
