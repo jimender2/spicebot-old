@@ -68,11 +68,12 @@ def execute_main(bot, trigger, arg):
 				if inputcheck == 1:		
 					if arg[2].isdigit():
 						mynumber = int(arg[2])
-						if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
-							mycolor = arg[3]
-						else:
-							mycolor=''                      
-						inputcheck =1
+						if len(arg)>=4:
+							if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
+								mycolor = arg[3]
+							else:
+								mycolor=''                      
+							inputcheck =1
 					elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
 						mycolor = arg[2]
 						mynumber=-1
