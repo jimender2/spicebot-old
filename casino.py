@@ -27,7 +27,7 @@ def execute_main(bot, trigger, arg):
       #Spicebucks.spicebucks(bot, 'spicebucksslots', 'plus', 1)
       mywinnings = 0
       bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-      wheel = ['Modem', 'BSOD'] 
+      wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID5'] 
       wheel1 = spin(wheel)
       wheel2 = spin(wheel)
       wheel3 = spin(wheel)
