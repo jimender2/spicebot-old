@@ -1731,8 +1731,8 @@ def getwinner(bot, instigator, target, manualweapon):
     return winner, loser
 
 def rolladd(bot, instigator, target, stat, highlow, instigatorfight, targetfight):
-    instigatorvalue = get_database_value(bot, instigator, x) or 0
-    targetvalue = get_database_value(bot, target, x) or 0
+    instigatorvalue = get_database_value(bot, instigator, stat) or 0
+    targetvalue = get_database_value(bot, target, stat) or 0
     if highlow == 'high':
         if int(instigatorvalue) > int(targetvalue):
             instigatorfight = instigatorfight + 1
