@@ -1688,7 +1688,7 @@ def selectwinner(bot, nickarray):
         for w in jwinners:
             winner = nickarray[winnum]
             winnum = winnum + 1
-            bot.say(str(winner))
+            bot.say(str(winner) + " has the highest " +  str(x))
         
 
         
