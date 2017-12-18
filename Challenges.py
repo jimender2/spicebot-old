@@ -11,7 +11,6 @@ import datetime
 import re
 import sys
 import os
-import np
 from os.path import exists
 
 ## not needed if using without spicebot
@@ -1680,15 +1679,15 @@ def selectwinner(bot, nickarray):
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
         if j == 'respawns':
-            value = np.min(jstatsarray)
+            value = min(jstatsarray)
         else:
-            value = np.max(jstatsarray)
+            value = max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
         winnum = 0
         for w in jwinners:
             winner = nickarray[winnum]
             winnum = winnum + 1
-            bot.say(str(winner) + " has the highest " +  str(x))
+            bot.say(str(winner) + " wins " +  str(j) + " with " + str(value))
         
 
         
