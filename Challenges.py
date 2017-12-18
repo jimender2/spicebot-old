@@ -1663,26 +1663,24 @@ def get_pepper(bot, nick):
 
 def selectwinner(bot, nickarray):
     nickstatsarray = []
-    ustatarray = ['health','xp','kills','respawns']
+    ustatarray = ['health','xp','kills']
     for j in ustatarray:
         jstatsarray = []
         for u in nickarray:
             jvalue = get_database_value(bot, u, j) or 0
             jstatsarray.append(jvalue)
-        if j == 'respawns':
-            value = min(jstatsarray)
-        else:
-            value = max(jstatsarray)
-        jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
-        jwinnerarray = []
-        if len(jwinners) > 1:
-            for k in jwinners:
-                winnernum = int(k) + 1
-                winner = get_trigger_arg(nickarray, winnernum)
-                jwinnerarray.append(winner)
-        else:
-            winner = get_trigger_arg(nickarray, 1)
-            jwinnerarray.append(winner)
+        value = max(jstatsarray)
+        bot.say(str(value))
+        #jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
+        #jwinnerarray = []
+        #if len(jwinners) > 1:
+        #    for k in jwinners:
+        #        winnernum = int(k) + 1
+        #        winner = get_trigger_arg(nickarray, winnernum)
+        #        jwinnerarray.append(winner)
+        #else:
+        #    winner = get_trigger_arg(nickarray, 1)
+        #    jwinnerarray.append(winner)
         #if len(jwinners) > 1:
         #    for a,b in zip(jwinners,nickarray):
         #        winner = b
@@ -1690,7 +1688,7 @@ def selectwinner(bot, nickarray):
         #else:
         #    winner = nickarray[0]
         #    jwinnerarray.append(winner)
-        bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
+        #bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
         
 
         
