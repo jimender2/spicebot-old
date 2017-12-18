@@ -118,7 +118,6 @@ def execute_main(bot, trigger, triggerargsarray):
     typeofduel = 'target'
     
     ## Initial ARGS of importance
-    triggerargsarray = create_args_array(trigger.group(2))
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     dowedisplay = 0
