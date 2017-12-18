@@ -59,8 +59,7 @@ def execute_main(bot, trigger, arg):
   #__________Game 2 Roulette________________
   elif arg[0] == 'roulette':
 		maxwheel = 25
-		wheel = range(maxwheel + 1)
-		bot.say(str(wheel))
+		wheel = range(maxwheel + 1)		
 		colors = ['red', 'black']
 		if len(arg) < 2:
 			bot.say('Please enter an amount to bet')
@@ -75,7 +74,7 @@ def execute_main(bot, trigger, arg):
 			if (mybet<=0 or mybet>maxbet):
 				bot.say('Please bet an amount between 1 and ' + str(maxbet))				
 				inputcheck = 0
-			if inputchek == 1:		
+			if inputcheck == 1:		
 				if arg[2].isdigit:
 					mynumber = int(arg[2])
 					if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
