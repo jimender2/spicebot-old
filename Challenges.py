@@ -1675,12 +1675,14 @@ def selectwinner(bot, nickarray):
             value = max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
         jwinnerarray = []
-        for a,b in zip(jwinners,nickarray):
-            bot.say(str(a))
-            bot.say(str(b))
-            #winner = b
-            #jwinnerarray.append(winner)
-        #bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
+        if len(jwinners) > 1:
+            for a,b in zip(jwinners,nickarray):
+                winner = b
+                jwinnerarray.append(winner)
+        else:
+            winner = nickarray[0]
+            jwinnerarray.append(winner)
+        bot.say(str(jwinnerarray) + " wins " +  str(j) + " with " + str(value))
         
 
         
