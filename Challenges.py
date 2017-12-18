@@ -7,6 +7,7 @@ from sopel import module, tools
 import random
 from random import randint
 import time
+import datetime
 import re
 import sys
 import os
@@ -112,6 +113,12 @@ def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
+## use this instead if not using with spicebot
+#@sopel.module.commands('challenge','duel')
+#def mainfunction(bot, trigger):
+#    triggerargsarray = create_args_array(trigger.group(2))
+#    execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
     
@@ -1838,7 +1845,29 @@ def get_winlossratio(bot,target):
         winlossratio = float(wins)/losses
     return winlossratio
 
-##############
+####################
+# Day Of The Week ##
+####################
+
+def whatdayofweeknow():
+    whatistoday = str(datetime.datetime.today().weekday())
+    if whatistoday == '0':
+        whatdayofweek = "Monday"
+    elif whatistoday == '1':
+        whatdayofweek = "Tuesday"
+    elif whatistoday == '2':
+        whatdayofweek = "Wednesday"
+    elif whatistoday == '3':
+        whatdayofweek = "Thursday"
+    elif whatistoday == '4':
+        whatdayofweek = "Friday"
+    elif whatistoday == '5':
+        whatdayofweek = "Saturday"
+    elif whatistoday == '6':
+        whatdayofweek = "Sunday"
+    return whatistoday, whatdayofweek
+  
+##############  
 ## Database ##
 ##############
 
