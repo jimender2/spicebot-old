@@ -217,7 +217,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray] or commandortarget == bot.nick:
+    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray] or commandortarget == bot.nick or commandortarget == instigator:
         commandortarget = commandortarget.lower()
                 
         ## Docs
@@ -233,18 +233,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice("Online Docs: " + GITWIKIURL, target)
         
         ## Bot
-        elif commandortarget == bot.nick:
-            instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
-            targetname, targetpepperstart = whatsyourname(bot, trigger, bot.nick, channel)
-            bot.say(instigatorname + " versus " + targetname)
-            adjust_database_value(bot, instigator, 'health', -abs(botdamage))
-            currenthealth = get_database_value(bot, instigator, 'health')
-            if currenthealth <= 0:
-                whokilledwhom(bot, bot.nick, instigator)
-                winnermsg = str(bot.nick + ' killed ' + instigator + ', forcing a respawn!!')
-            else:
-                winnermsg = str(bot.nick + " hits " + instigator + ', dealing ' + str(botdamage) + ' damage.')
-            bot.say(winnermsg)
+        elif commandortarget == bot.nick or commandortarget == instigator:
+            if commandortarget == bot.nick:
+                bot.say("I refuse to fight a biological entity!")
+            elif commandortarget == instigator:
+                bot.say("If you are feeling self-destructive, there are places you can call.")
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
