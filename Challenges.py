@@ -1060,11 +1060,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
     
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
-        if winner == instigator:
-            assault_damagedealt = assault_damagedealt + int(damage)
-        else:
-            assault_damagetaken = assault_damagetaken + int(damage)
-    
+        
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
     
@@ -1195,8 +1191,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         ## update assault stats
         if winner == instigator:
             assault_wins = assault_wins + 1
+            assault_damagedealt = assault_damagedealt + int(damage)
         if loser == instigator:
             assault_losses = assault_losses + 1
+            assault_damagetaken = assault_damagetaken + int(damage)
         
         ## Pause Between duels
         if targetarraytotal > 0 and typeofduel == 'assault':
@@ -1217,7 +1215,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                             assaultdisplay = str(assaultdisplay + " " + newline)
                         else:
                             assaultdisplay = str(newline)
-                bot.say(instigator + "'s results: " + assaultdisplay)
+                bot.say("Full Channel Assault results: " + assaultdisplay)
         
 ## End Of Duels ###################################################################################################################
         
