@@ -235,7 +235,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Bot
         elif commandortarget == bot.nick:
             instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
-            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, bot.nick, channel)
             bot.say(instigatorname + " versus " + targetname)
             adjust_database_value(bot, loser, 'health', -abs(botdamage))
             currenthealth = get_database_value(bot, instigator, 'health')
