@@ -1061,9 +1061,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
         if winner == instigator:
-            assault_damagedealt = assault_damagedealt + damage
+            assault_damagedealt = assault_damagedealt + int(damage)
         else:
-            assault_damagetaken = assault_damagetaken + damage
+            assault_damagetaken = assault_damagetaken + int(damage)
     
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1109,15 +1109,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         set_database_value(bot, channel, 'lastinstigator', instigator)
             
         ## Update Health Of Loser, respawn, allow winner to loot
-        loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
-        # rogues don't take damage from the bot or themselves
-        if loserclass == 'rogue':
-            if instigator == target or target == bot.nick:
-                damage = 0
-        if winner == instigator:
-            assault_damagedealt = assault_damagedealt + damage
-        else:
-            assault_damagetaken = assault_damagetaken + damage
         adjust_database_value(bot, loser, 'health', damage)
         damage = abs(damage)
         currenthealth = get_database_value(bot, loser, 'health')
