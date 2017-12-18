@@ -1675,7 +1675,7 @@ def selectwinner(bot, nickarray):
             value = max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
         jwinnerarray = []
-        if len(jwinners) > 0:
+        if len(jwinners) > 1:
             for k in jwinners:
                 winnernum = int(k) + 1
                 winner = get_trigger_arg(nickarray, winnernum)
