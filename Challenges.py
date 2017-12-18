@@ -1675,7 +1675,7 @@ def selectwinner(bot, nickarray):
     for x in ustatarray:
         xstatsarray = []
         for u in nickarray:
-            xvalue = get_database_value(bot, instigator, x) or 0
+            xvalue = get_database_value(bot, u, x) or 0
             xstatsarray.append(xvalue)
         for x in xstatsarray:
             bot.say(str(x))
