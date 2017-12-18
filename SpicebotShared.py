@@ -151,7 +151,7 @@ def autoblock(bot):
                 set_botdatabase_value(bot, u, 'disenable', None)
                 warned = get_botdatabase_value(bot, u, 'hourwarned')
                 if not warned:
-                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", target)
+                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
                     set_botdatabase_value(bot, u, 'hourwarned', 'true')
                     
 #####################################################################################################################################
