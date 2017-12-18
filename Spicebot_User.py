@@ -176,7 +176,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     message = str(target + " should be able to use SpiceBot")
             else:
-                message = str(target + ", you can't check other's timeouts.")
+                message = str(instigator + ", you can't check other's timeouts.")
             bot.notice(message, instigator)
         
         ## How many times in the past hour has the user used the bot
@@ -185,7 +185,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 usertotal = get_botdatabase_value(bot, target, 'usertotal')
                 message = str(target + " has used " + str(usertotal) + " commands this hour.")
             else:
-                message = str(target + ", you can't check other's usage.")
+                message = str(instigator + ", you can't check other's usage.")
             bot.notice(message, instigator)
             
         ## Enable/Disable status
