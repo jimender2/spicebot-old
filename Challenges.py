@@ -301,8 +301,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 winner = selectwinner(bot, nickarray)
                 bot.say(str(winner))
             
-            
-            
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
             fullchanassaultarray = []
@@ -1683,7 +1681,6 @@ def get_pepper(bot, nick):
 
 def selectwinner(bot, nickarray):
     statcheckarray = ['health','xp','kills','respawns']
-    winner = bot.nick
     
     ## empty var to start
     for user in nickarray:
@@ -1730,6 +1727,7 @@ def selectwinner(bot, nickarray):
     ## Dice rolling occurs now
     for user in nickarray:
         rolls = get_database_value(bot, user, 'winnerselection') or 0
+        bot.say(user + str(rolls))
         maxroll = winnerdicerolling(bot, user, rolls)
         set_database_value(bot, user, 'winnerselection', maxroll)
     
