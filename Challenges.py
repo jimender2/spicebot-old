@@ -1746,10 +1746,10 @@ def rolladd(bot, instigator, target, stat, highlow, instigatorfight, targetfight
     return instigatorfight, targetfight
 
 def winnerdicerolling(bot, nick, rolls):
-    class = get_database_value(bot, nick, 'class') or ''
+    nickclass = get_database_value(bot, nick, 'class') or ''
     rolla = 0
     rollb = 20
-    if class == 'rogue':
+    if nickclass == 'rogue':
         rolla = 10
         rollb = 22
     fightarray = []
