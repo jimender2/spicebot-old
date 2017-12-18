@@ -10,13 +10,13 @@ from SpicebotShared import *
 
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
-  enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-  if not enablestatus:
-    execute_main(bot, trigger, triggerargsarray)
+	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+  	if not enablestatus:
+    		execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-  #shared varibles:
-  maxbet = 100
+	#shared varibles:
+	maxbet = 100
 	if len(arg)>=1:
 	#_____________Game 1 slots___________
 		if arg[0] == 'slots':
@@ -94,8 +94,8 @@ def execute_main(bot, trigger, arg):
 								Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 							else:
 								bot.say(trigger.nick + ' is a loser')
-		else:
-			bot.say('Please select a game')
+	else:
+		bot.say('Please select a game')
 						
 
            
@@ -103,10 +103,10 @@ def execute_main(bot, trigger, arg):
   
 #__________________________Shared Functions____________________
 def spin(wheel):
-  #selects a random element of an array and return one item
-  selected=random.randint(0,(len(wheel)-1))
-  reel=wheel[selected]
-  return reel
+	#selects a random element of an array and return one item
+  	selected=random.randint(0,(len(wheel)-1))
+  	reel=wheel[selected]
+  	return reel
 
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
 	mywinnings=0
