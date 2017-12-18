@@ -114,6 +114,8 @@ def duel_action(bot, trigger):
         offlineusersarray = get_database_value(bot, channel, 'duelusers') or []
         for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
+            
+        for u in allusersinroomarray:
             disenable = get_database_value(bot, u, 'disenable')
             if u != bot.nick and disenable:
                 adjust_database_array(bot, channel, u, 'duelusers', 'add')
