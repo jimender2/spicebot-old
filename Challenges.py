@@ -237,7 +237,7 @@ def execute_main(bot, trigger, triggerargsarray):
             instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
             targetname, targetpepperstart = whatsyourname(bot, trigger, bot.nick, channel)
             bot.say(instigatorname + " versus " + targetname)
-            adjust_database_value(bot, loser, 'health', -abs(botdamage))
+            adjust_database_value(bot, instigator, 'health', -abs(botdamage))
             currenthealth = get_database_value(bot, instigator, 'health')
             if currenthealth <= 0:
                 whokilledwhom(bot, winner, loser)
