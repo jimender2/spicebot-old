@@ -20,11 +20,8 @@ def execute_main(bot, trigger, arg):
 	if len(arg)>=1:
 	#_____________Game 1 slots___________
 		if arg[0] == 'slots':
-			#slot machine that uses computer terms with a jackpot tied to how much money has been gambled
+		#slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 			if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-				#spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-				#Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1 + spicebanktotal)
-				#Spicebucks.spicebucks(bot, 'spicebucksslots', 'plus', 1)
 				mywinnings = 0
 				bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
 				wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID5'] 
@@ -35,17 +32,11 @@ def execute_main(bot, trigger, arg):
 				bot.say('The slot machine displays ' + str(reel))
 				for i in reel:
 					if i=='BSOD':
-						 mywinnings = mywinnings + 5
-				seen = set()
-				seen_add = seen.add
-				# adds all elements it doesn't know yet to seen and all other to seen_twice
-				seen_twice = set( x for x in reel if x in seen or seen_add(x) )
-
+				 		mywinnings = mywinnings + 5
 				# turn the set into a list (as requested)
 				if(wheel1 == wheel2 and wheel2 == wheel3):
 					bot.say(trigger.nick + ' got 3 ' + str(wheel1))
-					if wheel1 == 'BSOD':     
-						#spicebanktotal = bot.db.get_nick_value('spicebucksslots', 'spicebucks_bank')
+					if wheel1 == 'BSOD':  
 						bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
 						Spicebucks.spicebucks(bot, trigger.nick, 'plus', 100)
 					else:
@@ -77,7 +68,6 @@ def execute_main(bot, trigger, arg):
 				if inputcheck == 1:		
 					if arg[2].isdigit():
 						mynumber = int(arg[2])
-
 						if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
 							mycolor = arg[3]
 						else:
