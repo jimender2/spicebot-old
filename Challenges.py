@@ -1699,7 +1699,7 @@ def getwinner(bot, instigator, target, manualweapon):
     ## Dice Roll
     instigatorfight = winnerdicerolling(bot, instigator, instigatorfight)
     targetfight = winnerdicerolling(bot, target, targetfight)
-    bot.say("max dice " + nstigator + str(instigatorfight) + "     " + target + str(targetfight))
+    bot.say("max dice " + instigator + str(instigatorfight) + "     " + target + str(targetfight))
 
     ## check for curses
     if instigator != target and target != bot.nick:
