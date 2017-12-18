@@ -298,8 +298,13 @@ def execute_main(bot, trigger, triggerargsarray):
             elif nickarray == []:
                 bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
             else:
+                displaymessage = get_trigger_arg(nickarray, "list")
+                bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
+                channelpot = get_database_array_total(bot, channel, 'colosseum_pot') or 0
                 winner = selectwinner(bot, nickarray)
-                bot.say(str(winner))
+                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins!")
+                adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
+                set_database_value(bot, channel, 'colosseum_pot', None)
             
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
@@ -1283,6 +1288,9 @@ def halfhourtimer(bot):
                 
                 ## award coins to everyone
                 adjust_database_value(bot, u, 'coins', halfhourcoinaward)
+                
+                ## colosseum pot
+                adjust_database_value(bot, channel, 'colosseum_pot', 100)
                 
                 ## health regenerates for all
                 if int(health) < healthregenmax:
