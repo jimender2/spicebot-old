@@ -131,6 +131,8 @@ def execute_main(bot, trigger, triggerargsarray):
         ## All Users in channel
         for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
+            
+        for u in allusersinroomarray:
             ## Users that can opt in/out of duels
             opttime = get_timesince_duels(bot, u, 'opttime')
             if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
