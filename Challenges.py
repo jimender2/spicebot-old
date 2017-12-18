@@ -1005,10 +1005,10 @@ def execute_main(bot, trigger, triggerargsarray):
         
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel):
     
-    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups']
+    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
     assaultdisplay = ''
-    assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0
+    assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     
     ## Target Array
     if not isinstance(targetarray, list):
@@ -1192,9 +1192,11 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         if winner == instigator:
             assault_wins = assault_wins + 1
             assault_damagedealt = assault_damagedealt + int(damage)
+            assault_xp = assault_xp + XPearnedwinner
         if loser == instigator:
             assault_losses = assault_losses + 1
             assault_damagetaken = assault_damagetaken + int(damage)
+            assault_xp = assault_xp + XPearnedloser
         
         ## Pause Between duels
         if targetarraytotal > 0 and typeofduel == 'assault':
@@ -1215,7 +1217,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
                             assaultdisplay = str(assaultdisplay + " " + newline)
                         else:
                             assaultdisplay = str(newline)
-                bot.say("Full Channel Assault results: " + assaultdisplay)
+                bot.say(instigator + "'s Full Channel Assault results: " + assaultdisplay)
         
 ## End Of Duels ###################################################################################################################
         
