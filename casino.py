@@ -17,9 +17,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
   #shared varibles:
   maxbet = 100
+	
 	if len(arg)>=1:
 		#_____________Game 1 slots____________
-		
 		if arg[0] == 'slots':
 			#slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 			if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
