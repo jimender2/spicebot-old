@@ -11,6 +11,7 @@ import datetime
 import re
 import sys
 import os
+import np
 from os.path import exists
 
 ## not needed if using without spicebot
