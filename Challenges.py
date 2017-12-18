@@ -217,7 +217,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray]:
+    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray] or commandortarget == bot.nick:
         commandortarget = commandortarget.lower()
                 
         ## Docs
