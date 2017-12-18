@@ -16,7 +16,8 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
   #shared varibles:
-  maxbet = 100 
+  maxbet = 100
+	
   #_____________Game 1 slots____________
   if arg[0] == 'slots':
     #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
@@ -54,12 +55,13 @@ def execute_main(bot, trigger, arg):
         Spicebucks.spicebucks(bot, trigger.nick, 'plus', 5)
       else:
         bot.say(trigger.nick + ' gets nothing')
+				
   #__________Game 2 Roulette________________
   elif arg[0] == 'roulette':
 		maxwheel = 25
 		wheel = range(maxwheel + 1)
 		bot.say(str(wheel))
-		colors = [red, black]
+		colors = ['red', 'black']
 		if len(arg) < 2:
 			bot.say('Please enter an amount to bet')
 			inputcheck = 0
