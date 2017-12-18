@@ -1672,16 +1672,17 @@ def get_pepper(bot, nick):
 def selectwinner(bot, nickarray):
     nickstatsarray = []
     ustatarray = ['health','xp','kills','respawns']
-    for x in ustatarray:
-        xstatsarray = []
+    for j in ustatarray:
+        jstatsarray = []
         for u in nickarray:
-            xvalue = get_database_value(bot, u, x) or 0
-            xstatsarray.append(xvalue)
-        if x == 'respawns':
-            value_index = xstatsarray.index(min(xstatsarray))
+            jvalue = get_database_value(bot, u, j) or 0
+            jstatsarray.append(jvalue)
+        if j == 'respawns':
+            value = np.min(a)
         else:
-            value_index = xstatsarray.index(max(xstatsarray))
-        bot.say(str(value_index))
+            value = np.max(a)
+        jwinners = [i for i, x in enumerate(a) if x == value]
+        bot.say(str(jwinners))
         
 
         
