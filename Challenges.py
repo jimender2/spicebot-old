@@ -1684,8 +1684,11 @@ def selectwinner(bot, nickarray):
         else:
             value = np.max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
-        
-        bot.say(str(jwinners))
+        winnum = 0
+        for w in jwinners:
+            winner = jwinners[winnum]
+            winnum = winnum + 1
+            bot.say(str(winner))
         
 
         
