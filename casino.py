@@ -72,8 +72,10 @@ def execute_main(bot, trigger, arg):
 							if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
 								mycolor = arg[3]
 							else:
-								mycolor=''                      
-							inputcheck =1
+								mycolor='' 
+						else:
+							mycolor = ' '
+						inputcheck =1
 					elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
 						mycolor = arg[2]
 						mynumber=-1
