@@ -300,7 +300,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 displaymessage = get_trigger_arg(nickarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                channelpot = get_database_array_total(bot, channel, 'colosseum_pot') or 0
+                channelpot = get_database_value(bot, channel, 'colosseum_pot') or 0
                 winner = selectwinner(bot, nickarray)
                 bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins!")
                 adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
