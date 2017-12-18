@@ -78,6 +78,7 @@ scavegerfindpercent = 40
 barbarianminimumdamge = 40
 botdamage = 150
 bugbountycoinaward = 100
+typeofduel = 'target'
 
 ############
 ## Arrays ##
@@ -144,12 +145,13 @@ def duel_action(bot, trigger):
         set_database_value(bot, channel, 'lastfullroomassult', now)
         set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
         lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-        getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+        typeofduel = 'assault'
+        getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
         set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     else:
         canduel = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if canduel:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
 
 
 @sopel.module.commands('challenge','duel')
@@ -316,7 +318,7 @@ def execute_main(bot, trigger):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
         
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
@@ -342,7 +344,8 @@ def execute_main(bot, trigger):
                 set_database_value(bot, channel, 'lastfullroomassult', now)
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+                typeofduel = 'assault'
+                getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -1032,22 +1035,17 @@ def execute_main(bot, trigger):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
         
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray):
+def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel):
     
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups']
     ## clean empty stats
     assaultdisplay = ''
     assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0
-    
-    ## type of duel
-    typeofduel = get_trigger_arg(triggerargsarray, 1)
-    if typeofduel != 'assault':
-        typeofduel = 'target'
     
     ## Target Array
     if not isinstance(targetarray, list):
