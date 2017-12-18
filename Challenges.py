@@ -216,8 +216,16 @@ def execute_main(bot, trigger, triggerargsarray):
     elif instigator not in dueloptedinarray and commandortarget not in commandbypassarray:
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
     
+    ## Bot
+    elif commandortarget:
+        bot.say("I refuse to fight a biological entity!")
+        
+    ## yourself
+    elif commandortarget == instigator:
+        bot.say("If you are feeling self-destructive, there are places you can call.")
+    
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray] or commandortarget == bot.nick or commandortarget == instigator:
+    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray]:
         commandortarget = commandortarget.lower()
                 
         ## Docs
@@ -231,14 +239,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
                 bot.notice("Online Docs: " + GITWIKIURL, target)
-        
-        ## Bot
-        elif commandortarget == bot.nick or commandortarget == instigator:
-            if commandortarget == bot.nick:
-                bot.say("I refuse to fight a biological entity!")
-            elif commandortarget == instigator:
-                bot.say("If you are feeling self-destructive, there are places you can call.")
-        
+
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
             disenablevalue = None
