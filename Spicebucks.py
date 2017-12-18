@@ -127,5 +127,5 @@ def transfer(bot, channel, instigator, target, amount):
             else:
                 if spicebucks(bot, instigator, 'minus', amount) == 'true':
                     spicebucks(bot, target, 'plus', amount)
-                    bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + "." + str(spicebucktotal)) 
+                    bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
         
