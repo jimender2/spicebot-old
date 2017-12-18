@@ -116,7 +116,7 @@ def spin(wheel):
 def payouts(mybet,mynumber,mycolor,winningnumber,color):
 	mywinnings=0
 	if mynumber == winningnumber:
-		mywinnings=mywinnings+(mybet*numberpayout)+mybet
+		mywinnings=mywinnings+(mybet*2)+mybet
 	elif mycolor == color:
-		mywinnings=mywinnings+(mybet*colorpayout)+mybet
+		mywinnings=mywinnings+(mybet*1)+mybet
 	return mywinnings
