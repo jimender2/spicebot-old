@@ -234,7 +234,17 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Bot
         elif commandortarget == bot.nick:
-            bot.say('wip')
+            instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+            bot.say(instigatorname + " versus " + targetname)
+            adjust_database_value(bot, loser, 'health', -abs(botdamage))
+            currenthealth = get_database_value(bot, instigator, 'health')
+            if currenthealth <= 0:
+                whokilledwhom(bot, winner, loser)
+                winnermsg = str(winner + ' killed ' + instigator + ', forcing a respawn!!')
+            else:
+                winnermsg = str(winner + " hits " + instigator + ', dealing ' + str(botdamage) + ' damage.')
+            bot.say(winnermsg)
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
