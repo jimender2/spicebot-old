@@ -146,7 +146,7 @@ def autoblock(bot):
         for u in bot.privileges[channel.lower()]:
             usertotal = get_botdatabase_value(bot, u, 'usertotal')
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-                set_timeout(bot, u)
+                set_botdatabase_value(bot, u, 'lastopttime', now)
                 set_botdatabase_value(bot, u, 'disenable', None)
                 warned = get_botdatabase_value(bot, u, 'hourwarned')
                 if not warned:
