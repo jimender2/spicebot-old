@@ -108,8 +108,6 @@ def duel_action(bot, trigger):
 # use this instead if not using with spicebot
 @sopel.module.commands('challenge','duel')
 def mainfunction(bot, trigger):
-    testing = tools.Identifier(trigger.nick)
-    bot.say(str(testing))
     triggerargsarray = create_args_array(trigger.group(2))
     execute_main(bot, trigger, triggerargsarray)
     
