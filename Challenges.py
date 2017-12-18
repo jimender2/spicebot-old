@@ -280,7 +280,8 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Colosseum
         elif commandortarget == 'colosseum':
-            nickarray = [instigator]
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            nickarray = [instigator, target]
             winner = selectwinner(bot, nickarray)
             
         ## Duel Everyone
@@ -1683,6 +1684,7 @@ def selectwinner(bot, nickarray):
         else:
             value = np.max(jstatsarray)
         jwinners = [i for i, x in enumerate(jstatsarray) if x == value]
+        
         bot.say(str(jwinners))
         
 
