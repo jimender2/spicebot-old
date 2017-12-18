@@ -11,12 +11,14 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
+devbot = 'dev'
+
 @thread(False)
 @rule('(.*)')
 @priority('low')
 def automod(bot, trigger):
     instigator = trigger.nick
-    if not trigger.is_privmsg and instigator != bot.nick:
+    if not trigger.is_privmsg and instigator != bot.nick and not bot.nick.endswith(devbot):
         
         ## vars
         channel = trigger.sender
