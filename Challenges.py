@@ -1755,7 +1755,7 @@ def winnerdicerolling(bot, nick, rolls):
     fightarray = []
     while int(rolls) > 0:
         fightroll = randint(rolla, rollb)
-        fightarray.append(instigatorfightroll)
+        fightarray.append(fightroll)
         rolls = int(rolls) - 1
     fight = max(fightarray)
     return fight
