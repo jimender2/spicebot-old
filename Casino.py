@@ -114,7 +114,7 @@ def execute_main(bot, trigger, arg):
 			else:
 				picks = []
 				success = 0				
-				checkpicks = get_trigger_arg(arg, 'list')
+				checkpicks = arg
 				del checkpicks[0]
 				bot.say('You picked ' + str(checkpicks))
 		  		try:
