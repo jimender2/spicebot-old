@@ -14,5 +14,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    rando = randint(2, 666)
+    rando = randint(2, 22)
     bot.say("Please insert " + str(rando) + " bitcoins, for that kind of service.")
