@@ -12,7 +12,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if  not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 0)
+    if not target:
         bot.say("Trust Doesn't Rust.")
-    elif not trigger.group(2).strip() == bot.nick:
-        bot.say("I just can't ever bring myself to trust " + trigger.group(2).strip() + " again. I can never forgive " + trigger.group(2).strip() + " for the death of my boy.")
+    elif target == bot.nick:
+        bot.say("Why don't you trust me?")
+    else:
+        bot.say("I just can't ever bring myself to trust " + target + " again. I can never forgive " + target + " for the death of my boy.")
