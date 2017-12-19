@@ -14,8 +14,17 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    rando = randint(2, 50)
-    if not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not target:
         bot.say('You must choose a Person.')
-    elif not trigger.group(2).strip() == bot.nick:
-        bot.say(trigger.group(2).strip() + ' was never wanted as a child, but now is wanted in ' + str(rando) + ' states!')
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
+    elif target == bot.nick:
+        bot.say("Well, thanks for thinking of me!")
+    else:
+        rando = randint(0, 50)
+        if rando == 0:
+            bot.say(target + " was never wanted as a child, and still isn't wanted!")
+        else:
+            bot.say(target + ' was never wanted as a child, but now is wanted in ' + str(rando) + ' states!')
+   
