@@ -13,7 +13,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
-     for c in bot.channels:
+    for c in bot.channels:
         channel = c
     if target:
         statement = str("Yo Dawg! I heard you liked " + target + ", So I put a " + target + " in/on your " + target + "!!!")
