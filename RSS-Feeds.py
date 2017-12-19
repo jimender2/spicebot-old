@@ -13,7 +13,7 @@ urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss']
 childarray = [2]
 
 @sopel.module.require_admin
-@sopel.module.commands(resetcommand)
+@sopel.module.commands('rssreset')
 def reset(bot,trigger):
     for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
         lastbuilddatabase = str(feedname + '_lastbuildcurrent')
