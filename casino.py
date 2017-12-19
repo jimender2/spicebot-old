@@ -103,6 +103,60 @@ def execute_main(bot, trigger, arg):
 								Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 							else:
 								bot.say(trigger.nick + ' is a loser')
+		#______Game 3 Lottery________
+		elif arg[0] == 'lottery':
+			maxnumber=25
+			if(len(arg)<6 or len(arg)>6):
+				bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
+				success = 0
+			else:
+				checkpicks=arg
+				checkpicks.pop[0]				
+		  		try:
+            				for mypick in checkpicks:
+                				mypicks.append(int(pick))
+            					success = 1
+        			except:
+            				bot.say("One of the numbers you entered does not appear to be a number.")
+		 			success = 0
+				pickstemp = picks
+        			picks = []
+        			for pick in pickstemp:
+			 		if pick not in picks:
+                				picks.append(pick)
+       				 if len(picks) < 5:
+           				 bot.say("You must have a duplicate in your picks.")
+            				success = 0
+					
+				if success == 1:
+			 		for pick in picks:
+                				if(pick > maxnumber or pick < 1):
+                    				valid = 0
+            				if valid == 0:
+                				bot.say("One of the numbers you entered does is not within the 1 to ' + maxnumber + ' range.")
+					else:
+						if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
+							winningnumbers = random.sample(range(1, maxnumber), 5) 
+                    					bot.say('The winning numbers are ' + str(winningnumbers))
+							correct = 0
+                    					for pick in picks:
+                        					if pick in winningnumbers:
+                            						correct = correct + 1
+                    						payout = 0
+                   					 if correct == 1:
+                        					payout = 1
+                    					elif correct == 2:
+                        					payout = 2
+                    					elif correct == 3:
+                        					payout = 5
+                    					elif correct == 4:
+                        					payout = 20
+                    					elif correct == 5:
+                        					payout = 50
+                    					Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+                    					bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+				
+				
 	else:
 		bot.say('Please select a game')
 						
