@@ -12,8 +12,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not  target:
         item = "sniffing glue"
     else:
-        item = trigger.group(2)
+        item = target
     bot.say("Looks like " + trigger.nick + " picked the wrong week to stop " + str(item) + "?")
