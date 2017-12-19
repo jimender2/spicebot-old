@@ -122,12 +122,11 @@ def execute_main(bot, trigger, arg):
 				pickstemp = picks
         			picks = []
         			for pick in pickstemp:
-			 		if pick not in picks:
-                				picks.append(pick)
-       				 if len(picks) < 5:
-           				 bot.say("You must have a duplicate in your picks.")
-            				success = 0
-					
+					if pick not in picks:
+						picks.append(pick)
+				if len(picks) < 5:
+					bot.say("You must have a duplicate in your picks.")
+					success = 0					
 				if success == 1:
 			 		for pick in picks:
                 				if(pick > maxnumber or pick < 1):
