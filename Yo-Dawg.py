@@ -12,6 +12,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        statement = str("Yo Dawg! I heard you liked " + trigger.group(2) + ", So I put a " + trigger.group(2) + " in/on your " + trigger.group(2) + "!!!")
+    target = get_trigger_arg(triggerargsarray, 1)
+     for c in bot.channels:
+        channel = c
+    if target:
+        statement = str("Yo Dawg! I heard you liked " + target + ", So I put a " + target + " in/on your " + target + "!!!")
         bot.say(statement)
+    else:
+        bot.say("I'm not sure who that is.")
