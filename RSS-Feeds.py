@@ -14,12 +14,13 @@ header = {'User-Agent': str(ua.chrome)}
 
 feednamearray = ['Spiceworks Contests','TechTarget News','iT News']
 urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss','http://whatis.techtarget.com/rss/Enterprise-IT-news-roundup.xml','https://www.itnews.com.au/RSS/rss.ashx']
+parentarray = [2,2,1]
 childarray = [2,1,1]
 
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
-    for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
+    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
 	trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
         lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
@@ -30,7 +31,7 @@ def reset(bot,trigger):
 ## Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
+    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
         trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
         lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
@@ -39,7 +40,7 @@ def autorss(bot):
             page = requests.get(url, headers=header)
             if page.status_code == 200:
                 try:
-                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase)
+                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parent)
                 except TypeError:
                     return
                 if title and link:
@@ -48,7 +49,7 @@ def autorss(bot):
 @sopel.module.require_admin
 @sopel.module.commands('manualrss')
 def manrss(bot,trigger):
-    for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
+    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
         trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
         lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
@@ -57,20 +58,20 @@ def manrss(bot,trigger):
             page = requests.get(url, headers=header)
             if page.status_code == 200:
                 try:
-                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase)
+                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parent)
                 except TypeError:
                     return
                 if title and link:
                     bot.msg(channel, messagestring + title + ': ' + link)
                 
-def checkfornew(bot, page, childnumber, lastbuilddatabase):
+def checkfornew(bot, page, childnumber, lastbuilddatabase, parent):
     xml = page.text
     xml = xml.encode('ascii', 'ignore').decode('ascii')
     xmldoc = minidom.parseString(xml)
     newcontent = checkLastBuildDate(bot, xmldoc, lastbuilddatabase)
     if newcontent == True:
         titles = xmldoc.getElementsByTagName('title')
-        title = titles[childnumber].childNodes[0].nodeValue
+        title = titles[parent].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
         link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
         return title, link
