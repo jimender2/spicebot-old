@@ -113,10 +113,10 @@ def execute_main(bot, trigger, arg):
 				success = 0
 			else:
 				picks = []
-				success = 0
+				success = 0				
 				checkpicks=arg
+				checkpicks.pop(0)
 				bot.say('You picked ' + str(checkpicks))
-				checkpicks.pop(0)				
 		  		try:
             				for picks in checkpicks:
                 				picks.append(int(pick))
