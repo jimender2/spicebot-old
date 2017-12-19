@@ -27,6 +27,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     maincommand = trigger.group(1)
     instigator = trigger.nick
+    inputtext = get_trigger_arg(triggerargsarray, 0)
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -35,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
         labels=['Issue Report']
         title='Issue Report'
         action = " found an issue"
-    if not trigger.group(2):
+    if not inputtext:
         bot.say("What feature/issue do you want to post?")
     else:
         body = str(get_trigger_arg(triggerargsarray, 0))
