@@ -68,7 +68,7 @@ def getPacktTitle():
         return title
 
 def getpackttimediff():
-    now = datetime.now(tz)
+    now = datetime.datetime.now(tz)
     packtnext = None
     day = timedelta(days=1)
     tomorrow = now + day
