@@ -45,24 +45,6 @@ def autorss(bot):
                     return
                 if title and link:
                     bot.msg(channel, messagestring + title + ': ' + link)
-		
-@sopel.module.require_admin
-@sopel.module.commands('manualrss')
-def manrss(bot,trigger):
-    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
-        trimmedname = feedname.replace(" ","").lower()
-	maincommand = str(trimmedname)
-        lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
-	messagestring = str("[" + feedname + "] ")
-        for channel in bot.channels:
-            page = requests.get(url, headers=header)
-            if page.status_code == 200:
-                try:
-                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parent)
-                except TypeError:
-                    return
-                if title and link:
-                    bot.msg(channel, messagestring + title + ': ' + link)
                 
 def checkfornew(bot, page, childnumber, lastbuilddatabase, parent):
     xml = page.text
