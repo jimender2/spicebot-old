@@ -12,6 +12,14 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        if not trigger.group(2).strip() == bot.nick:
-            bot.say(trigger.nick + " gives " + trigger.group(2).strip() + " a gold star for participation.")
+    target = get_trigger_arg(triggerargsarray, 1)
+    for c in bot.channels:
+        channel = c
+    if not target:
+        bot.say("Who deserves a gold star?")
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
+    elif target == bot.nick:
+        bot.action("blushes",channel)
+    else:
+        bot.say(trigger.nick + " gives " + target + " a gold star for participation.")
