@@ -42,7 +42,7 @@ def checkfornew(bot, page, childnumber, lastbuilddatabase):
     xmldoc = minidom.parseString(xml)
     newcontent = checkLastBuildDate(bot, xmldoc, lastbuilddatabase)
     if newcontent == True:
-	    titles = xmldoc.getElementsByTagName('title')
+        titles = xmldoc.getElementsByTagName('title')
         title = titles[childnumber].childNodes[0].nodeValue
         links = xmldoc.getElementsByTagName('link')
         link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
