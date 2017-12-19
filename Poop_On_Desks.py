@@ -12,15 +12,15 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not target:
         bot.say(trigger.nick + ' poops in the designated corner!')
-    elif trigger.group(2) == 'group':
-            bot.say(trigger.nick + ', get your poop in a group.')
-    elif trigger.group(2) == 'all' or trigger.group(2) == 'everyone' or trigger.group(2) == 'everyones':
-            bot.say(trigger.nick + " poops on everyone's desk, one at a time!")
-    elif not trigger.group(2) == bot.nick:
-        myline = trigger.group(2).strip()
+    elif target == 'group':
+        bot.say(trigger.nick + ', get your poop in a group.')
+    elif target == 'all' or target == 'everyone' or target == 'everyones':
+        bot.say(trigger.nick + " poops on everyone's desk, one at a time!")
+    elif target != bot.nick:
         if myline.endswith('desk'):
-            bot.say(trigger.nick + ' poops on ' + myline + ', maintaining eye contact the entire time!')
+            bot.say(trigger.nick + ' poops on ' + target + ", maintaining eye contact the entire time!")
         else:
-            bot.say(trigger.nick + ' poops on ' + myline + '\'s desk, maintaining eye contact the entire time!')
+            bot.say(trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")
