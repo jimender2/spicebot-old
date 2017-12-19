@@ -46,7 +46,7 @@ def autorss(bot):
 		
 @sopel.module.require_admin
 @sopel.module.commands('manualrss')
-def manrss(bot):
+def manrss(bot,trigger):
     for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
         trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
