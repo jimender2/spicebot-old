@@ -16,6 +16,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    for c in bot.channels:
+        channel = c
     target = get_trigger_arg(triggerargsarray, 1)
     suspect = get_trigger_arg(triggerargsarray, 2)
     players = []
