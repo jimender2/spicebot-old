@@ -12,16 +12,19 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    ## Initial ARGS of importance
+    ## Initial ARGS
+    triggerargsarray = create_args_array(trigger.group(3))
+    commandused = get_trigger_arg(triggerargsarray, 0)
+    target = get_trigger_arg(triggerargsarray, 1)
+    instigator = trigger.nick
     GITWIKIURL = 'https://github.com/deathbybandaid/sopel-modules/wiki/Usage'
+    ## Variable ARGS
+    moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
+    checktarget = get_trigger_arg(triggerargsarray, 2)
     usagefor = ''
     querytype = 'specific'
     counter = 1
-    instigator = trigger.nick
-    triggerargsarray = create_args_array(trigger.group(2))
-    commandused = get_trigger_arg(triggerargsarray, 0)
-    moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
-    checktarget = get_trigger_arg(triggerargsarray, 2)
+    
     for c in bot.channels:
         channel = c
 
