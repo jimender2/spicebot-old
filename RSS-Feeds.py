@@ -34,6 +34,7 @@ def autorss(bot):
         trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
         lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
+	messagestring = str("[" + feedname + "] ")
         for channel in bot.channels:
             page = requests.get(url, headers=header)
             if page.status_code == 200:
@@ -51,6 +52,7 @@ def manrss(bot,trigger):
         trimmedname = feedname.replace(" ","").lower()
 	maincommand = str(trimmedname)
         lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
+	messagestring = str("[" + feedname + "] ")
         for channel in bot.channels:
             page = requests.get(url, headers=header)
             if page.status_code == 200:
