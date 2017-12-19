@@ -1,7 +1,9 @@
 ## Shared Functions
 import sopel.module
 from sopel import module, tools
+from sopel.module import OP
 from sopel.module import ADMIN
+from sopel.module import VOICE
 from sopel.module import event, rule
 import time
 import os
