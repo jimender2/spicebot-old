@@ -119,7 +119,7 @@ def execute_main(bot, trigger, arg):
 		  		try:
             				for picks in arg:
                 				pick.append(int(pick))						
-            					success = 1
+					success = 1
         			except:
             				bot.say("One of the numbers you entered does not appear to be a number.")
 		 			success = 0
