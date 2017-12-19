@@ -15,17 +15,18 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, triggerargsarray): 
-    if trigger.group(2):
-        query = trigger.group(2).replace(' ', '%20')
+def execute_main(bot, trigger, triggerargsarray):
+    target = get_trigger_arg(triggerargsarray, 0)
+    if target:
+        query = target.replace(' ', '%20')
         query = str(query)
         gif,randno = getGif(query)
         if gif:
             bot.say("Result number " + str(randno) + ": " + gif)
         else:
-            bot.say('Hmm...Couldn\'t find a gif for that!')
+            bot.say("Hmm...Couldn't find a gif for that!")
     else:
-        bot.say('Tell me what you\'re looking for!')
+        bot.say("Tell me what you're looking for!")
             
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
