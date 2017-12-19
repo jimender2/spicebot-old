@@ -32,7 +32,8 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == 'Cipher-0':
         modelnumber = get_trigger_arg(modelnumbers, 'random')
         missiontype = get_trigger_arg(missiontypes, 'random')
-        mission = get_trigger_arg(missiontype+"_mission", 'random')
+        missionsarray = eval(missiontype+"_mission")
+        mission = get_trigger_arg(missionsarray, 'random')
         bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
         bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
         bot.say('ACTIVATING Cipher-0')
