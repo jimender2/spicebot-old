@@ -36,11 +36,13 @@ def execute_main(bot, trigger, triggerargsarray):
 	verify_ssl = bot.config.core.verify_ssl
 	latest=get_info(verify_ssl=verify_ssl)
 	maxcomics=latest['num']	
-	if not trigger.group(2):
+ 	target = get_trigger_arg(triggerargsarray, 1)
+    	
+	if not target:
 		mynumber =  getnumber(maxcomics)
 		bot.say('https://xkcd.com/' + str(mynumber))
 	else:
-		data = trigger.group(2).strip()
+		data = target.strip()
 		if data.isdigit():
 			mynumber=int(data)
 			if not mynumber<= int(maxcomics) and mynumber>=1:
