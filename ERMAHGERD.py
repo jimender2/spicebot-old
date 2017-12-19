@@ -14,8 +14,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        ernpert = trigger.group(2)
+    ernpert = get_trigger_arg(triggerargsarray, 0)
+    if ernpert:
         spertitert = trernslert(ernpert)
         bot.say('ERMAHGERD,' + str(spertitert))
     else:
