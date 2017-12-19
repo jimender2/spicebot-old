@@ -12,7 +12,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        bot.say(trigger.group(2))
+    echotext = get_trigger_arg(triggerargsarray, 1)
+    if echotext:
+        bot.say(echotext)
     else:
         bot.say('.echo')
