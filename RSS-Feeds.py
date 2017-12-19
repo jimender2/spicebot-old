@@ -12,9 +12,9 @@ from SpicebotShared import *
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
-feednamearray = ['Spiceworks Contests']
-urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss']
-childarray = [2]
+feednamearray = ['Spiceworks Contests','TechTarget News','iT News']
+urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss','http://whatis.techtarget.com/rss/Enterprise-IT-news-roundup.xml','https://www.itnews.com.au/RSS/rss.ashx']
+childarray = [2,1,1]
 
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
