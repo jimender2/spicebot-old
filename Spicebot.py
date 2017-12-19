@@ -36,6 +36,7 @@ def main_command(bot, trigger):
     now = time.time()
     service = bot.nick.lower()
     maincommandused = trigger.group(1)
+    triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 2)
     instigator = trigger.nick
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
