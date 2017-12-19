@@ -294,7 +294,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'colosseum':
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if subcommand == 'pot':
-                channelpot = get_database_value(bot, channel, 'colosseum_pot')
+                #channelpot = get_database_value(bot, channel, 'colosseum_pot')
+                channelpot = 100
                 bot.say("Current Pot/risk = " + str(channelpot))
             else:
                 nickarray = []
