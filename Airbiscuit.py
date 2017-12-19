@@ -19,5 +19,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(trigger.nick + " floats an air biscuit.")
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
+    elif target == bot.nick:
+        bot.say("Well, that was truly disgusting!")
     else:
         bot.say(trigger.nick + " floats an air biscuit in the general direction of " + target + ".")
