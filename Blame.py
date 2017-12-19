@@ -26,5 +26,5 @@ def execute_main(bot, trigger, triggerargsarray):
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
-            whotoblame = get_trigger_arg(blametargetarray, 'random
+            whotoblame = get_trigger_arg(blametargetarray, 'random)
     bot.say("It's " + whotoblame + "'s fault.")
