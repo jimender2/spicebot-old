@@ -22,11 +22,11 @@ botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under
 
 JOINTIMEOUT = 60
 LASTTIMEOUT = 60
-TOOMANYTIMES = 15
+TOOMANYTIMES = 7
 OPTTIMEOUT = 1800
 FINGERTIMEOUT = 1800
-LASTTIMEOUT = 60
-LASTTIMEOUTHOUR = 3600
+LASTTIMEOUT = 30
+LASTTIMEOUTHOUR = 1800
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
@@ -116,10 +116,12 @@ def spicebot_prerun(bot,trigger):
 
 ## User data collection
 @sopel.module.interval(1800)
-def halfhourdatacollection(bot):
+def halfhour(bot):
+    now = time.time()
     for channel in bot.channels:
-        adjust_botdatabase_array(bot, channel, channel, 'channels', 'add')
         for u in bot.privileges[channel.lower()]:
+            
+            ## Create Database of users
             botusers = get_botdatabase_value(bot, channel, 'botusers') or []
             if u != bot.nick:
                 adjust_botdatabase_array(bot, channel, u, 'users', 'add')
@@ -127,6 +129,12 @@ def halfhourdatacollection(bot):
             if ubotstatus and u not in botusers and u != bot.nick:
                 adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
             
+    ## reset usertotal and warn status
+    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
+    for u in botusers:
+        set_botdatabase_value(bot, u, 'usertotal', None)
+        set_botdatabase_value(bot, u, 'hourwarned', None)
+    
 ## Don't let users use the bot the first minute after they join the room
 @event('JOIN','PART','QUIT','NICK')
 @rule('.*')
@@ -139,28 +147,20 @@ def waitaminute(bot, trigger):
         bot.db.set_nick_value(target, 'spicebot_usertotal', None)
         bot.db.set_nick_value(target, 'spicebothour_warn', None)
 
-@sopel.module.interval(3600)
-def autoblockhour(bot):
-    for channel in bot.channels:
-        now = time.time()
-        set_botdatabase_value(bot, u, 'hourstart', now)
-        for u in bot.privileges[channel.lower()]:
-            set_botdatabase_value(bot, u, 'usertotal', None)
-            set_botdatabase_value(bot, u, 'hourwarned', None)
-
+## Autoblock users that 
 @sopel.module.interval(60)
 def autoblock(bot):
     now = time.time()
-    for channel in bot.channels:
-        for u in bot.privileges[channel.lower()]:
-            usertotal = get_botdatabase_value(bot, u, 'usertotal')
-            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-                set_botdatabase_value(bot, u, 'lastopttime', now)
-                set_botdatabase_value(bot, u, 'disenable', None)
-                warned = get_botdatabase_value(bot, u, 'hourwarned')
-                if not warned:
-                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
-                    set_botdatabase_value(bot, u, 'hourwarned', 'true')
+    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
+    for u in botusers:
+        usertotal = get_botdatabase_value(bot, u, 'usertotal')
+        if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
+            set_botdatabase_value(bot, u, 'lastopttime', now)
+            set_botdatabase_value(bot, u, 'disenable', None)
+            warned = get_botdatabase_value(bot, u, 'hourwarned')
+            if not warned:
+                bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
+                set_botdatabase_value(bot, u, 'hourwarned', 'true')
 
 @thread(False)
 @rule('(.*)')
@@ -168,7 +168,6 @@ def autoblock(bot):
 def antiflood(bot, trigger):
     instigator = trigger.nick
     if not trigger.is_privmsg and instigator != bot.nick and not bot.nick.endswith(devbot):
-        
         ## vars
         channel = trigger.sender
         currentmessage = trigger.group(1)
