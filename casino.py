@@ -155,7 +155,27 @@ def execute_main(bot, trigger, arg):
                     					Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
                     					bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
 				
-				
+		#____Game 4 Blackjack___
+		elif arg[0] == 'blackjack':
+			bot.say('The dealer is not here right now')
+		
+		#deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+		 # myhand = deal(deck)
+		  #dealerhand = deal(deck)
+		  #bot.say('You hand is ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
+		  #bot.say('The dealer has a ' + str(dealerhand[0]) + ' showing')
+
+			#def deal(deck):
+			 # hand = []
+			  #for i in range(2):
+			   # random.shuffle(deck)
+			    #card = deck.pop()
+			    #if card == 11:card = "J"
+			    #if card == 12:card = "Q"
+			    #if card == 13:card = "K"
+			    #if card == 14:card = "A"
+			    #hand.append(card)
+			  	#return hand
 	else:
 		bot.say('Please select a game')
 						
