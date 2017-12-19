@@ -4,6 +4,7 @@ from lxml import html
 from fake_useragent import UserAgent
 from datetime import datetime, timedelta
 import datetime
+from datetime import datetime
 import arrow
 import time
 import sys
