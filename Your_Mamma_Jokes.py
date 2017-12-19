@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say('Hey, ' + target + '! ' + joke)
             else:
-                bot.say(target + ' is not here but ' + trigger.nick + joke )
+                bot.say(target + ' is not here but ' + trigger.nick + ' ' + joke )
     else:
         bot.say('Please leave the mothers out of it.')
 
