@@ -315,7 +315,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 for x in nickarray:
                     if x != winner:
                         adjust_database_value(bot, x, 'health', -abs(channelpot))
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins!")
+                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
                 adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
                 set_database_value(bot, channel, 'colosseum_pot', None)
                 set_database_value(bot, channel, 'lastfullroomcolosseum', now)
