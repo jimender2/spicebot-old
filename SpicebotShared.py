@@ -163,9 +163,10 @@ def autoblock(bot):
 ###################
 
 def special_users(bot):
-    botownerarray, operatorarray, voicearray, adminsarray = [], [], [], []
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = [], [], [], [], []
     for channel in bot.channels:
         for u in bot.channels[channel.lower()].users:
+            allusersinroomarray.append(u)
             udisenable = get_botdatabase_value(bot, u, 'disenable')
             if u != bot.nick and udisenable:
                 if u.lower() in bot.config.core.owner.lower():
@@ -176,7 +177,7 @@ def special_users(bot):
                     voicearray.append(u)
                 if u in bot.config.core.admins:
                     adminsarray.append(u)
-    return botownerarray, operatorarray, voicearray, adminsarray, channel
+    return botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel
 
 ##########
 ## ARGS ##
