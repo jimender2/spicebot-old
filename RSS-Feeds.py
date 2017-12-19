@@ -33,8 +33,8 @@ def autorss(bot):
                     title, link = checkfornew(bot, page, childnumber, lastbuilddatabase)
                 except TypeError:
                     return
-				if title and link:
-					bot.msg(channel, messagestring + title + ': ' + link)
+                if title and link:
+                    bot.msg(channel, messagestring + title + ': ' + link)
                 
 def checkfornew(bot, page, childnumber, lastbuilddatabase):
     xml = page.text
