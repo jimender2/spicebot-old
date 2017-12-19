@@ -15,11 +15,16 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     joke = getJoke()
+    target = get_trigger_arg(triggerargsarray, 1)
     if joke:
-        if not trigger.group(2):
+        if not target:
             bot.say(joke)
-        elif not trigger.group(2).strip() == bot.nick:
-            bot.say('Hey, ' + trigger.group(2).strip() + '! ' + joke)        
+        else:
+            if not target.lower() not in bot.privileges[channel.lower()]:
+                if target == bot.nick:        
+                    bot.say('I have no mother' )            
+                else:
+                    bot.say('Hey, ' + target + '! ' + joke) 
     else:
         bot.say('Please leave the mothers out of it.')
 
