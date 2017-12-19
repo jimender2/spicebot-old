@@ -317,7 +317,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 for x in nickarray:
                     if x != winner:
                         adjust_database_value(bot, x, 'health', -abs(channelpot))
-                        currenthealth = get_database_value(bot, loser, 'health')
+                        currenthealth = get_database_value(bot, x, 'health')
                         if currenthealth <= 0:
                             whokilledwhom(bot, winner, x)
                             diedinbattle.append(x)
