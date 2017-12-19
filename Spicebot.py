@@ -53,9 +53,13 @@ def main_command(bot, trigger):
     commandlist = get_trigger_arg(validsubcommandarray, "list")
     if not subcommand:
         bot.say("That's my name. Don't wear it out!")
-    elif subcommand not in validsubcommandarray or subcommand == 'options':
+    elif subcommand not in validsubcommandarray and instigator not in adminsarray:
         bot.say("Invalid command. Options are: " + commandlist +".")
     
+    ## Options
+    elif subcommand == 'options':
+        bot.say("Options are: " + commandlist +".")
+        
     ## Docs
     elif subcommand == 'help' or subcommand == 'docs':
         bot.notice(instigator + ", Online Docs: " + GITWIKIURL, instigator)
