@@ -85,10 +85,14 @@ def checkLastBuildDate(bot, xmldoc, lastbuilddatabase):
             newcontent = True
     else:
         newcontent = True
-    set_lastbuildcurrent(bot, lastBuildXML)
+    set_lastbuildcurrent(bot, lastBuildXML, lastbuilddatabase)
     return newcontent
 
 def get_lastbuildcurrent(bot, lastBuildXML, lastbuilddatabase):
     for channel in bot.channels:
         lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
     return lastbuildcurrent
+
+def set_lastbuildcurrent(bot, lastbuildcurrent, lastbuilddatabase):
+    for channel in bot.channels:
+        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
