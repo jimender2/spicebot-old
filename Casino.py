@@ -78,7 +78,9 @@ def execute_main(bot, trigger, arg):
 								if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
 									mycolor = arg[3]
 								else:
-									mycolor='' 
+									bot.say('Choose either red or black')
+									inputcheck=0
+									mycolor=''
 							else:
 								mycolor = ' '
 							inputcheck =1
