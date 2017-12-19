@@ -12,8 +12,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        item = trigger.group(2).strip()
+    item = get_trigger_arg(triggerargsarray, 0)
+    if not item:
+        bot.say("What is Oprah going to give to everyone?")
+    else:
         if item.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
             item = str('an ' + item)
         else:
