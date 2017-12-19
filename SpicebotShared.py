@@ -151,6 +151,8 @@ def waitaminute(bot, trigger):
 @sopel.module.interval(60)
 def autoblock(bot):
     now = time.time()
+    for c in bot.channels:
+        channel = c
     botusers = get_botdatabase_value(bot, channel, 'botusers') or []
     for u in botusers:
         usertotal = get_botdatabase_value(bot, u, 'usertotal')
