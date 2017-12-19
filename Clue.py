@@ -16,15 +16,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    
+    target = get_trigger_arg(triggerargsarray, 1)
+    suspect = get_trigger_arg(triggerargsarray, 2)
     players = []
-    for c in bot.channels:
-        channel = c
-    for u in bot.channels[channel].users:
-        target = u
-        disenable = get_botdatabase_value(bot, target, 'disenable')
-        if disenable:
-            players.append(target)
+    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
+    for u in botusers:
+        players.append(u)
     random.shuffle(rooms)
     random.shuffle(weapons)
     random.shuffle(players)
@@ -33,15 +30,15 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
     import Points
-    if trigger.group(3):
-        if trigger.group(4):
-            if trigger.group(4) == 'killer' and trigger.group(3) == players[0]:
+    if target:
+        if suspect:
+            if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
                 Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
-            elif trigger.group(4) == 'killed' and trigger.group(3) == players[1]:
+            elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
                 Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
-    elif trigger.group(3) and trigger.group(3) == players[0]:
+    elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
         Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
     if players[0] == trigger.nick:
