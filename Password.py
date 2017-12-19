@@ -12,9 +12,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        password = trigger.group(2).strip()
+    password = get_trigger_arg(triggerargsarray, 0)
+    if not password:
+        bot.say("If you type your password here, I will obscure it.")
+    else:
         amountofletters = len(password)
         mystring = "*" * amountofletters
-        
         bot.say("Your password is: " + str(mystring))
