@@ -37,7 +37,7 @@ def main_command(bot, trigger):
     service = bot.nick.lower()
     maincommandused = trigger.group(1)
     triggerargsarray = create_args_array(trigger.group(2))
-    subcommand = get_trigger_arg(triggerargsarray, 2)
+    subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
@@ -62,7 +62,7 @@ def main_command(bot, trigger):
         
     ## Warn against Bot abuse
     elif subcommand == 'warn':
-        target = get_trigger_arg(triggerargsarray, 3) or ''
+        target = get_trigger_arg(triggerargsarray, 2) or ''
         bot.msg(channel, target + "This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBotTest, or send Spicebot a PrivateMessage.")
         
     ## Channel
@@ -80,7 +80,7 @@ def main_command(bot, trigger):
         
     ## Bot Owner
     elif subcommand == 'isowner':
-        target = get_trigger_arg(triggerargsarray, 3) or instigator
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
         if target not in allusersinroomarray:
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target in botownerarray:
@@ -90,7 +90,7 @@ def main_command(bot, trigger):
     
     ## Bot Admin
     elif subcommand == 'isadmin':
-        target = get_trigger_arg(triggerargsarray, 3) or instigator
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
         if target not in allusersinroomarray:
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target in adminsarray:
@@ -100,7 +100,7 @@ def main_command(bot, trigger):
             
     ## Chan OP
     elif subcommand == 'isop':
-        target = get_trigger_arg(triggerargsarray, 3) or instigator
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
         if target not in allusersinroomarray:
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target in operatorarray:
@@ -110,7 +110,7 @@ def main_command(bot, trigger):
                         
     ## Chan VOICE
     elif subcommand == 'isvoice':
-        target = get_trigger_arg(triggerargsarray, 3) or instigator
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
         if target not in allusersinroomarray:
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target in voicearray:
@@ -266,7 +266,7 @@ def main_command(bot, trigger):
                 
     ## install a python pip package
     elif subcommand == 'pipinstall':
-        pippackage = get_trigger_arg(triggerargsarray, 2)
+        pippackage = get_trigger_arg(triggerargsarray, '2+')
         if not pippackage:
             bot.say("You must specify a pip package")
         else:
