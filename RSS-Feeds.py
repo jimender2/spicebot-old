@@ -29,10 +29,10 @@ def autorss(bot):
         for channel in bot.channels:
             page = requests.get(url, headers=header)
             if page.status_code == 200:
-				try:
-					title, link = checkfornew(bot, page, childnumber, lastbuilddatabase)
-				except TypeError:
-					return
+                try:
+                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase)
+                except TypeError:
+                    return
 				if title and link:
 					bot.msg(channel, messagestring + title + ': ' + link)
                 
