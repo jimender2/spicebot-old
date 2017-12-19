@@ -19,6 +19,8 @@ from SpicebotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
+devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+
 OPTTIMEOUT = 1800
 FINGERTIMEOUT = 1800
 TOOMANYTIMES = 15
