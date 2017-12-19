@@ -12,8 +12,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        item = trigger.group(2).upper()
-    else:
-        item = "SOUP"
+    item = get_trigger_arg(triggerargsarray, 1).upper() or "SOUP"
     bot.say("NO " + str(item) + " FOR YOU!!")
