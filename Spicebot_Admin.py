@@ -14,7 +14,9 @@ log_file_path = os.path.join(script_dir, log_path)
 @sopel.module.require_privmsg
 @sopel.module.commands('spicebotadmin')
 def spicebotadmin(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = create_args_array(trigger.group(4))
+    instigator = trigger.nick
+    target = get_trigger_arg(triggerargsarray, '4') or instigator
     for c in bot.channels:
         channel = c
     options = str("update, restart, debugreset, debug, pipinstall, countreset, timeoutreset")
@@ -33,14 +35,12 @@ def spicebotadmin(bot, trigger):
             if message:
                 bot.msg(channel,message)
         if commandused == 'countreset':
-            target = trigger.group(4)
             bot.msg(channel, trigger.nick + 'wants me to reset the count for ' + target)
         if commandused == 'timeoutreset':
-            target = trigger.group(4)
-            bot.msg(channel, trigger.nick + 'wants me to clear the timeout for ' + target)
+#            target = trigger.group(3)
+            bot.msg(channel, instigator + ' wants me to clear the timeout for ' + target)
             ## Update user's last use timestamp
-            if botchannel.startswith("#") and not bot.nick.endswith('dev'):
-                set_botdatabase_value(bot, instigator, 'lastusagetime', None)
+            set_botdatabase_value(bot, target, 'lastusagetime', None)
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
