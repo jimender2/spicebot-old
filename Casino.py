@@ -130,7 +130,7 @@ def execute_main(bot, trigger, arg):
 				if success == 1:
 			 		for pick in picks:
                 				if(pick > maxnumber or pick < 1):
-                    				valid = 0
+                    					valid = 0
             				if valid == 0:
                 				bot.say("One of the numbers you entered does is not within the 1 to ' + maxnumber + ' range.")
 					else:
@@ -141,9 +141,9 @@ def execute_main(bot, trigger, arg):
                     					for pick in picks:
                         					if pick in winningnumbers:
                             						correct = correct + 1
-                    						payout = 0
-                   					 if correct == 1:
-                        					payout = 1
+							payout = 0
+						 	if correct == 1:
+								payout = 1
                     					elif correct == 2:
                         					payout = 2
                     					elif correct == 3:
