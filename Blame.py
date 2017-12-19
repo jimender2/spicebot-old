@@ -14,9 +14,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    instigator = trigger.nick
     whotoblame = get_trigger_arg(triggerargsarray, 1)
     if not whotoblame:
-        instigator = trigger.nick
         blametargetarray = []
         for channel in bot.channels:
             for u in bot.channels[channel].users:
@@ -27,4 +27,8 @@ def execute_main(bot, trigger, triggerargsarray):
             whotoblame = str(instigator + "'s mom")
         else:
             whotoblame = get_trigger_arg(blametargetarray, 'random')
-    bot.say("It's " + whotoblame + "'s fault.")
+            bot.say("It's " + whotoblame + "'s fault.")
+    elif whotoblame.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
+    else:
+        bot.say("It's " + whotoblame + "'s fault.")
