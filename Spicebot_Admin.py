@@ -17,7 +17,7 @@ def spicebotadmin(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     for c in bot.channels:
         channel = c
-    options = str("update, restart, debugreset, debug, pipinstall, resetcount")
+    options = str("update, restart, debugreset, debug, pipinstall, countreset, timeoutreset")
     service = bot.nick.lower()
     if not trigger.group(2):
         bot.say("Which Command Do You want To run?")
@@ -32,9 +32,12 @@ def spicebotadmin(bot, trigger):
             message = get_trigger_arg(triggerargsarray, '2+')
             if message:
                 bot.msg(channel,message)
-        if commandused == 'resetcount':
-            bot.msg(channel, trigger.nick + 'wants me to do things here')
-            bot.action('will think about it')
+        if commandused == 'countreset':
+            target = trigger.group(4)
+            bot.msg(channel, trigger.nick + 'wants me to reset the count for ' + target)
+        if commandused == 'timeoutreset':
+            target = trigger.group(4)
+            bot.msg(channel, trigger.nick + 'wants me to clear the timeout for ' + target)            
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
