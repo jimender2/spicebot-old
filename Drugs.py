@@ -12,5 +12,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
-        bot.say(trigger.nick + " contemplates selling everything and moving somewhere tropical to sell drugs on a beach.")
+    bot.say(trigger.nick + " contemplates selling everything and moving somewhere tropical to sell drugs on a beach.")
