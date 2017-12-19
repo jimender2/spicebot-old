@@ -17,11 +17,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-  if not trigger.group(2):
-    bot.say('Please enter a term to search for')
-  else:
-    data = trigger.group(2).strip()
-    data.lower()
-    data=data.replace(' ', '%20').replace('site:', 'site%3A')
-    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
-    bot.say(str(var.url))	
+    searchterm = get_trigger_arg(triggerargsarray, 1)
+    if not searchterm:
+        bot.say('Please enter a term to search for')
+    else:
+        data = searchterm.strip().lower()
+        data=data.replace(' ', '%20').replace('site:', 'site%3A')
+        var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+        bot.say(str(var.url))
+    
