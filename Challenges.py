@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
 from sopel.module import OP
 from sopel.module import ADMIN
