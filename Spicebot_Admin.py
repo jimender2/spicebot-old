@@ -18,7 +18,7 @@ log_file_path = os.path.join(script_dir, log_path)
 def spicebotadmin(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(4))
     instigator = trigger.nick
-    target = get_trigger_arg(triggerargsarray, '4') or instigator
+    target = get_trigger_arg(triggerargsarray, '3') or instigator
     for c in bot.channels:
         channel = c
     options = str("update, restart, debugreset, debug, pipinstall, countreset, timeoutreset")
@@ -37,12 +37,12 @@ def spicebotadmin(bot, trigger):
             if message:
                 bot.msg(channel,message)
         if commandused == 'countreset':
-            bot.msg(channel, trigger.nick + 'wants me to reset the count for ' + target)
+            bot.msg(channel, trigger.nick + ' wants me to reset the count for ' + target)
         if commandused == 'timeoutreset':
-#            target = trigger.group(3)
-            bot.msg(channel, instigator + ' wants me to clear the timeout for ' + target)
+            lastusetime = get_botdatabase_value(bot, target, 'lastusagetime') ## get last usetime
+            #target = trigger.group(3)
+            bot.msg(channel, instigator + ', the last use time for ' + target + ' is ' + lastusetime)
             ## Update user's last use timestamp
-            set_botdatabase_value(bot, target, 'lastusagetime', None)
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
