@@ -5,6 +5,8 @@ import re
 from os.path import exists
 import git 
 
+from SpicebotShared import *
+
 script_dir = os.path.dirname(__file__)
 log_path = "data/templog.txt"
 log_pathc = "data/*.txt"
