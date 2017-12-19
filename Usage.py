@@ -20,7 +20,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     GITWIKIURL = 'https://github.com/deathbybandaid/sopel-modules/wiki/Usage'
     for c in bot.channels:
-    channel = c
+        channel = c
     ## Variable ARGS
     moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
     checktarget = get_trigger_arg(triggerargsarray, 2)
