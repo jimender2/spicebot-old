@@ -14,20 +14,17 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
-        blametargetarray = []
+    whotoblame = get_trigger_arg(triggerargsarray, 1)
+    if not whotoblame:
         instigator = trigger.nick
-        for c in bot.channels:
-            channel = c
-        for u in bot.channels[channel].users:
-            target = u
-            disenable = get_botdatabase_value(bot, target, 'disenable')
-            if disenable:
-                if target != instigator and target != bot.nick:
+        blametargetarray = []
+        for channel in bot.channels:
+            for u in bot.channels[channel].users:
+                disenable = get_botdatabase_value(bot, u, 'disenable')
+                if u != instigator and u != bot.nick:
                     blametargetarray.append(target)
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
-            blameselected = random.randint(0,len(blametargetarray) - 1)
-            whotoblame = str(blametargetarray [blameselected])
-        bot.say("It's " + whotoblame + "'s fault.")
+            whotoblame = get_trigger_arg(blametargetarray, 'random
+    bot.say("It's " + whotoblame + "'s fault.")
