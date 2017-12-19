@@ -310,11 +310,16 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 displaymessage = get_trigger_arg(nickarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                channelpot = get_database_value(bot, channel, 'colosseum_pot') or 0
+                channelpot = get_database_value(bot, channel, 'colosseum_pot') or 100
                 winner = selectwinner(bot, nickarray)
+                for x in nickarray:
+                    if x != winner:
+                        adjust_database_value(bot, x, 'health', -abs(channelpot))
                 bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins!")
                 adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
                 set_database_value(bot, channel, 'colosseum_pot', None)
+                set_database_value(bot, channel, 'lastfullroomcolosseum', now)
+                set_database_value(bot, channel, 'lastfullroomcolosseuminstigator', instigator)
             
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
@@ -400,6 +405,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif subcommand == 'lastassault':
                     set_database_value(bot, channel, 'lastfullroomassultinstigator', None)
                     bot.notice("Last Assault Instigator removed.", instigator)
+                elif subcommand == 'lastroman':
+                    set_database_value(bot, channel, 'lastfullroomcolosseuminstigator', None)
+                    bot.notice("Last Colosseum Instigator removed.", instigator)
                 elif subcommand == 'lastinstigator':
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
