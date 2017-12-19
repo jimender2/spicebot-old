@@ -110,8 +110,11 @@ def execute_main(bot, trigger, arg):
 				bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
 				success = 0
 			else:
+				picks = []
+				success = 0
 				checkpicks=arg
-				checkpicks.pop(0)				
+				checkpicks.pop(0)
+				bot.say(str(checkpicks))
 		  		try:
             				for mypick in checkpicks:
                 				mypicks.append(int(pick))
