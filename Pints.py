@@ -12,12 +12,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1) or "Everybody"
+    if target == 'all':
         winner = "Everybody"
-    else:
-        winner = trigger.group(2).strip()
-        if trigger.group(2) == 'all':
-            winner = "Everybody"
-        elif trigger.group(2) == trigger.nick:
-            winner = "him/her-self"
+    elif target == trigger.nick:
+        winner = "him/her-self"
     bot.say(trigger.nick + ' buys a pint for ' + winner)
