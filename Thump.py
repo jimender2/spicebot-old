@@ -12,7 +12,16 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    instigator = trigger.nick
+    target = get_trigger_arg(triggerargsarray, 1)
+    for c in bot.channels:
+        channel = c
+    if not target:
         bot.say("Did you mean to thump somebody?")
-    elif not trigger.group(2).strip() == bot.nick:
-        bot.action('thumps ' + trigger.group(2).strip() + ' on behalf of ' + trigger.nick)
+    elif target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("I'm not sure who that is.")
+    elif target == bot.nick:
+        bot.say("Well, that's not nice!")
+    else:
+        bot.action('thumps ' + target + ' on behalf of ' + instigator)
+
