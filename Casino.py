@@ -114,7 +114,7 @@ def execute_main(bot, trigger, arg):
 			else:
 				picks = []
 				success = 0				
-				checkpicks=[str(arg[1]), str(arg[2]), str(arg[3]), str(arg[4]), str(arg[5])]
+				checkpicks = get_trigger_arg(arg, 'list')
 				#checkpicks.pop(0)
 				bot.say('You picked ' + str(checkpicks))
 		  		try:
