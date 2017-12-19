@@ -23,9 +23,8 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 
 OPTTIMEOUT = 1800
 FINGERTIMEOUT = 1800
-TOOMANYTIMES = 15
-LASTTIMEOUT = 60
-LASTTIMEOUTHOUR = 3600
+TOOMANYTIMES = 7
+LASTTIMEOUT = 30
 
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
 
