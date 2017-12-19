@@ -115,11 +115,12 @@ def execute_main(bot, trigger, arg):
 				picks = []
 				success = 0				
 				checkpicks = get_trigger_arg(arg, 'list')
-				#checkpicks.pop(0)
+				checkpicks.pop(0)
 				bot.say('You picked ' + str(checkpicks))
 		  		try:
             				for picks in checkpicks:
-                				picks.append(int(pick))
+                				pick.append(int(pick))
+						bot.say(str(pick))
             					success = 1
         			except:
             				bot.say("One of the numbers you entered does not appear to be a number.")
