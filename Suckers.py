@@ -12,15 +12,16 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    myline = get_trigger_arg(triggerargsarray, 0)
+    if not myline:
         bot.say("Who/what are for suckers??")
+    elif bot.nick in myline:
+        bot.say("Do you really feel that way?")
     else:
-        myline = trigger.group(2).strip()
-        if not myline.lower() == bot.nick:
-            if myline.endswith('ing'):
-                myline = str(myline + " is")
-            elif not myline.endswith('s'):
-                myline = str(myline + "s are")
-            else:
-                myline = str(myline + " are")
-            bot.say(myline + ' for suckers!!')
+        if myline.endswith('ing'):
+            myline = str(myline + " is")
+        elif not myline.endswith('s'):
+            myline = str(myline + "s are")
+        else:
+            myline = str(myline + " are")
+        bot.say(myline + ' for suckers!!')
