@@ -2,11 +2,11 @@ import sopel.module
 import sys
 import os
 import random
-import Spicebucks
 import string
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
+import Spicebucks
 
 @sopel.module.commands('lottery')
 def mainfunction(bot, trigger):
