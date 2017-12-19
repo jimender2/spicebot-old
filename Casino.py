@@ -44,7 +44,7 @@ def execute_main(bot, trigger, arg):
 						bot.say('You get 25 spicebucks')
 				elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 					mywinnings = 5
-					bot.say(trigger.nick + ' got 2 correct and ' + str(mywinnings) + ' spicebucks')
+					bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
 					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 				else:
 					bot.say(trigger.nick + ' gets nothing')
