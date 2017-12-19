@@ -125,7 +125,7 @@ def main_command(bot, trigger):
     ## On/off
     elif subcommand == 'on' or subcommand == 'off':
         disenablevalue = None
-        if commandortarget == 'on':
+        if subcommand == 'on':
             disenablevalue = 1
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         targetopttime = get_timesince(bot, target, 'opttime')
@@ -138,17 +138,17 @@ def main_command(bot, trigger):
         elif target == 'everyone':
             for u in allusersinroomarray:
                 set_botdatabase_value(bot, u, 'disenable', disenablevalue)
-            bot.notice(instigator + ", " + bot.nick + " should now be " +  commandortarget + ' for ' + target + '.', instigator)
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
         elif target in targetcantoptarray:
             bot.notice(instigator + " It looks like " + target + " can't enable/disable " + bot.nick + " for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
-        elif commandortarget == 'on' and target.lower() in optedinarray:
+        elif subcommand == 'on' and target.lower() in optedinarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " on.", instigator)
-        elif commandortarget == 'off' and target.lower() not in optedinarray:
+        elif subcommand == 'off' and target.lower() not in optedinarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
         else:
             set_botdatabase_value(bot, target, 'disenable', disenablevalue)
             set_botdatabase_value(bot, target, 'opttime', now)
-            bot.notice(instigator + ", " + bot.nick + " should now be " +  commandortarget + ' for ' + target + '.', instigator)
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
     ## who is the bot on for
     elif subcommand == 'isonforwho' and inchannel.startswith("#"):
