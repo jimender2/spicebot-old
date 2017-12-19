@@ -8,6 +8,10 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
+## user agent and header
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
+
 feednamearray = ['Spiceworks Contests']
 urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss']
 childarray = [2]
@@ -16,7 +20,9 @@ childarray = [2]
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
     for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
-        lastbuilddatabase = str(feedname + '_lastbuildcurrent')
+	trimmedname = feedname.replace(" ","").lower()
+	maincommand = str(trimmedname)
+        lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
         for channel in bot.channels:
     	    bot.say('Resetting LastBuildTime for ' + str(feedname))
     	    bot.db.set_nick_value(channel, lastbuilddatabase, '')
@@ -25,7 +31,9 @@ def reset(bot,trigger):
 @sopel.module.interval(60)
 def autorss(bot):
     for feedname,url,childnumber in zip(feednamearray,urlarray,childarray):
-        lastbuilddatabase = str(feedname + '_lastbuildcurrent')
+        trimmedname = feedname.replace(" ","").lower()
+	maincommand = str(trimmedname)
+        lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
         for channel in bot.channels:
             page = requests.get(url, headers=header)
             if page.status_code == 200:
