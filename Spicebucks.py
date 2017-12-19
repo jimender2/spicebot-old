@@ -21,7 +21,7 @@ def execute_main(bot, trigger, args):
     if len(args) == 0:
         bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank. (for now)")
     elif len(args) >= 1:
-        if args[0] == 'payday' or args[0] == 'upupdowndownleftrightleftrightbastart' or args[0] == 'makeitrain':
+        if args[0] == 'payday' or args[0] == 'makeitrain':
             checkpayday(bot,trigger.nick, args[0])
         elif args[0] == 'reset': #to be removed
             reset(bot,trigger.nick)
@@ -55,11 +55,9 @@ def checkpayday(bot, target, args):
     datetoday = int(now.strftime("%Y%j"))
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
-        paydayamount = 5
+        paydayamount = 15
         if args == 'makeitrain':
-            paydayamount = 150
-        else:
-            paydayamount = 15
+          paydayamount = 500
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', paydayamount)
         bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.") #change to notify
