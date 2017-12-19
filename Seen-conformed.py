@@ -29,36 +29,35 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     """Reports when and where the user was last seen."""
-    if not trigger.group(2):
+    nick = get_trigger_arg(triggerargsarray, 1)
+    if not nick:
         bot.say(".seen <nick> - Reports when <nick> was last seen.")
-        return
-    nick = trigger.group(2).strip()
-    if nick == bot.nick:
+    elif nick == bot.nick:
         bot.reply("I'm right here!")
-        return
-    timestamp = bot.db.get_nick_value(nick, 'seen_timestamp')
-    if timestamp:
-        channel = bot.db.get_nick_value(nick, 'seen_channel')
-        message = bot.db.get_nick_value(nick, 'seen_message')
-        action = bot.db.get_nick_value(nick, 'seen_action')
-
-        tz = get_timezone(bot.db, bot.config, None, trigger.nick,
-                          trigger.sender)
-        saw = datetime.datetime.utcfromtimestamp(timestamp)
-        timestamp = format_time(bot.db, bot.config, tz, trigger.nick,
-                                trigger.sender, saw)
-
-        msg = "I last saw {} at {}".format(nick, timestamp)
-        if Identifier(channel) == trigger.sender:
-            if action:
-                msg = msg + " in here, doing " + nick + " " + message
-            else:
-                msg = msg + " in here, saying " + message
-        else:
-            msg += " in another channel."
-        bot.say(str(trigger.nick) + ': ' + msg)
     else:
-        bot.say("Sorry, I haven't seen {} around.".format(nick))
+        timestamp = bot.db.get_nick_value(nick, 'seen_timestamp')
+        if timestamp:
+            channel = bot.db.get_nick_value(nick, 'seen_channel')
+            message = bot.db.get_nick_value(nick, 'seen_message')
+            action = bot.db.get_nick_value(nick, 'seen_action')
+
+            tz = get_timezone(bot.db, bot.config, None, trigger.nick,
+                              trigger.sender)
+            saw = datetime.datetime.utcfromtimestamp(timestamp)
+            timestamp = format_time(bot.db, bot.config, tz, trigger.nick,
+                                    trigger.sender, saw)
+
+            msg = "I last saw {} at {}".format(nick, timestamp)
+            if Identifier(channel) == trigger.sender:
+                if action:
+                    msg = msg + " in here, doing " + nick + " " + message
+                else:
+                    msg = msg + " in here, saying " + message
+            else:
+                msg += " in another channel."
+            bot.say(str(trigger.nick) + ': ' + msg)
+        else:
+            bot.say("Sorry, I haven't seen {} around.".format(nick))
 
 
 @thread(False)
