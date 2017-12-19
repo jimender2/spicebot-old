@@ -315,7 +315,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     displaymessage = get_trigger_arg(nickarray, "list")
                     bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                    channelpot = get_database_value(bot, channel, 'colosseum_pot')
+                    #channelpot = get_database_value(bot, channel, 'colosseum_pot')
+                    channelpot = 100
                     winner = selectwinner(bot, nickarray)
                     bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
                     diedinbattle = []
