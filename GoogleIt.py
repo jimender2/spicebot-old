@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    searchterm = get_trigger_arg(triggerargsarray, 1)
+    searchterm = get_trigger_arg(triggerargsarray, 0)
     if not searchterm:
         bot.say('Please enter a term to search for')
     else:
