@@ -17,8 +17,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    query = str(trigger.group(2))
-    if query != "None":
+    query = get_trigger_arg(triggerargsarray, 0)
+    if not query:
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
             if 'http://spice.dussed.com' in quote:
