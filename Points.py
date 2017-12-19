@@ -19,7 +19,7 @@ def execute_main(bot, trigger, triggerargsarray):
         channel = c
     commandused = trigger.group(1)
     inchannel = trigger.sender
-    target = trigger.group(3) or trigger.nick
+    target = get_trigger_arg(triggerargsarray, 1) or trigger.nick
     if commandused.endswith('points'):
         pointstype = 'points'
     else:
