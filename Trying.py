@@ -12,8 +12,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        phrase = trigger.group(2).strip()
+    target = get_trigger_arg(triggerargsarray, 1)
+    if target:
+        phrase = target.strip()
         if phrase.startswith('to'):
             parta = phrase
             partb = phrase.replace('to','').strip()
