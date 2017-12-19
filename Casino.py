@@ -105,7 +105,7 @@ def execute_main(bot, trigger, arg):
 								bot.say(trigger.nick + ' is a loser')
 		#______Game 3 Lottery________
 		elif arg[0] == 'lottery':
-			maxnumber=25
+			maxnumber=20
 			if(len(arg)<6 or len(arg)>6):
 				bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
 				success = 0
