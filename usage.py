@@ -5,7 +5,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-@sopel.module.commands('usage')
+@sopel.module.commands('usage','moduleusage','totalusage')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
@@ -13,6 +13,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS of importance
+    GITWIKIURL = 'https://github.com/deathbybandaid/sopel-modules/wiki/Usage'
     usagefor = ''
     querytype = 'specific'
     counter = 1
