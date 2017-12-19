@@ -14,7 +14,7 @@ header = {'User-Agent': str(ua.chrome)}
 
 feednamearray = ['Spiceworks Contests','TechTarget News','iT News']
 urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss','http://whatis.techtarget.com/rss/Enterprise-IT-news-roundup.xml','https://www.itnews.com.au/RSS/rss.ashx']
-parentarray = [2,2,1]
+parentarray = [2,0,1]
 childarray = [2,1,1]
 
 @sopel.module.require_admin
