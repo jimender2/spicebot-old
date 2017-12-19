@@ -12,19 +12,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        if trigger.group(2) == 'mx':
-            bot.say('MX     https://meraki.cisco.com/tc/freemx')
-        elif trigger.group(2) == 'switch':
-            bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
-        elif trigger.group(2) == 'ap':
-            bot.say('AP     https://meraki.cisco.com/tc/freeap')
-        else:
-            normalrun='true'
-    else:
-        normalrun='true'
-    try:
-        if normalrun:
-            bot.say('Please specify which product. Choices are MX , AP , or switch .')
-    except UnboundLocalError:
-        return
+    types = get_trigger_arg(triggerargsarray, 1)
+    if not types:
+        bot.say('Please specify which product. Choices are MX , AP , or switch .')
+    elif types == 'mx':
+        bot.say('MX     https://meraki.cisco.com/tc/freemx')
+    elif types == 'switch':
+        bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
+    elif types == 'ap':
+        bot.say('AP     https://meraki.cisco.com/tc/freeap')
