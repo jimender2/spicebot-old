@@ -12,5 +12,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not target:
         bot.say(trigger.nick + " floats an air biscuit.")
+    else:
+        bot.say(trigger.nick + " floats an air biscuit in the general direction of " + target + ".")
