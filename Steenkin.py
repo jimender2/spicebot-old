@@ -12,5 +12,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not target:
+        bot.say("What don't we need?")
+    else:
         bot.say(trigger.group(2) + "? weee dun neeeed no steenkin " + trigger.group(2) + "!!")
