@@ -292,42 +292,47 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Colosseum
         elif commandortarget == 'colosseum':
-            nickarray = []
-            for x in canduelarray:
-                if x != bot.nick:
-                    nickarray.append(x)
-            nickarraytotal = len(nickarray)
-            if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", colosseum can't be used for %d seconds." % (COLOSSEUMTIMEOUT - lastfullroomcolosseum), instigator)
-            elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
-            elif not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in channel.", instigator)
-            elif instigator not in canduelarray:
-                bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif nickarray == []:
-                bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
-            else:
-                displaymessage = get_trigger_arg(nickarray, "list")
-                bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            if subcommand == 'pot':
                 channelpot = get_database_value(bot, channel, 'colosseum_pot')
-                winner = selectwinner(bot, nickarray)
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
-                diedinbattle = []
-                for x in nickarray:
-                    if x != winner:
-                        adjust_database_value(bot, x, 'health', -abs(channelpot))
-                        currenthealth = get_database_value(bot, x, 'health')
-                        if currenthealth <= 0:
-                            whokilledwhom(bot, winner, x)
-                            diedinbattle.append(x)
-                displaymessage = get_trigger_arg(diedinbattle, "list")
-                if displaymessage:
-                    bot.say(displaymessage + " died in this event.")
-                adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
-                set_database_value(bot, channel, 'colosseum_pot', None)
-                set_database_value(bot, channel, 'lastfullroomcolosseum', now)
-                set_database_value(bot, channel, 'lastfullroomcolosseuminstigator', instigator)
+                bot.say("Current Pot/risk = " + str(channelpot))
+            else:
+                nickarray = []
+                for x in canduelarray:
+                    if x != bot.nick:
+                        nickarray.append(x)
+                nickarraytotal = len(nickarray)
+                if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", colosseum can't be used for %d seconds." % (COLOSSEUMTIMEOUT - lastfullroomcolosseum), instigator)
+                elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
+                elif not inchannel.startswith("#"):
+                    bot.notice(instigator + " Duels must be in channel.", instigator)
+                elif instigator not in canduelarray:
+                    bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
+                elif nickarray == []:
+                    bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
+                else:
+                    displaymessage = get_trigger_arg(nickarray, "list")
+                    bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
+                    channelpot = get_database_value(bot, channel, 'colosseum_pot')
+                    winner = selectwinner(bot, nickarray)
+                    bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
+                    diedinbattle = []
+                    for x in nickarray:
+                        if x != winner:
+                            adjust_database_value(bot, x, 'health', -abs(channelpot))
+                            currenthealth = get_database_value(bot, x, 'health')
+                            if currenthealth <= 0:
+                                whokilledwhom(bot, winner, x)
+                                diedinbattle.append(x)
+                    displaymessage = get_trigger_arg(diedinbattle, "list")
+                    if displaymessage:
+                        bot.say(displaymessage + " died in this event.")
+                    adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
+                    set_database_value(bot, channel, 'colosseum_pot', None)
+                    set_database_value(bot, channel, 'lastfullroomcolosseum', now)
+                    set_database_value(bot, channel, 'lastfullroomcolosseuminstigator', instigator)
             
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
