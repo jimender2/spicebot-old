@@ -201,6 +201,10 @@ def main_command(bot, trigger):
                 message = str(target + " does not have SpiceBot enabled")
             bot.say(message)
     
+    # can you see me
+    elif subcommand == 'canyouseeme':
+        bot.notice(instigator + ", I can see you.")
+    
 ###### admin only block 
     elif instigator not in adminsarray:
         bot.notice(instigator + "This is an admin only function.", instigator)
