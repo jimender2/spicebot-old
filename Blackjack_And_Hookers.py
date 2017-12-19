@@ -13,5 +13,5 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     myown = get_trigger_arg(triggerargsarray, 0)
-    if not myown and bot.nick not in myown:
+    if myown and bot.nick not in myown:
         bot.say("Fine! I'll start my own " + myown + ", with blackjack and hookers!")
