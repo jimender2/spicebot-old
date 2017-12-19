@@ -21,9 +21,10 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
     suspect = get_trigger_arg(triggerargsarray, 2)
     players = []
-    botusers = get_botdatabase_value(bot, channel, 'botusers') or []
-    for u in botusers:
-        players.append(u)
+    for u in bot.channels[channel].users:
+        disenable = get_botdatabase_value(bot, u, 'disenable')
+        if disenable:
+            players.append(u)
     random.shuffle(rooms)
     random.shuffle(weapons)
     random.shuffle(players)
