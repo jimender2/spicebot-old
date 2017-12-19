@@ -16,10 +16,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    requested = get_trigger_arg(triggerargsarray, 0)
+    if not requested:
         myline = randomfra()
     else:
-        rulenumber = int(trigger.group(2))
+        rulenumber = int(requested)
         htmlfile=urllib.urlopen(fra)
         lines=htmlfile.readlines()
         try:
