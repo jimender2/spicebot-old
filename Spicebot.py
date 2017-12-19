@@ -30,7 +30,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
 
 validsubcommandarray = ['options','docs','help','warn','channel','modulecount','isowner','isop','isvoice','isadmin','on','off','isonforwho','timeout','usage']
 
-statsadminarray = ['hourwarned','usertotal','lastopttime','disenable']
+statsadminchangearray = ['hourwarned','usertotal','lastopttime','disenable']
 
 @sopel.module.commands('spicebot','spicebotadmin')
 def main_command(bot, trigger):
