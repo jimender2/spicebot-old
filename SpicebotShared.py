@@ -1,4 +1,9 @@
 ## Shared Functions
+from __future__ import unicode_literals, absolute_import, print_function, division
+import datetime
+from sopel.tools import Identifier
+from sopel.tools.time import get_timezone, format_time
+from sopel.module import commands, rule, priority, thread
 import sopel.module
 from sopel import module, tools
 from sopel.module import OP
