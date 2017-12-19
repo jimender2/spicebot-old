@@ -312,10 +312,18 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
                 channelpot = get_database_value(bot, channel, 'colosseum_pot') or 100
                 winner = selectwinner(bot, nickarray)
+                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
+                diedinbattle = []
                 for x in nickarray:
                     if x != winner:
                         adjust_database_value(bot, x, 'health', -abs(channelpot))
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
+                        currenthealth = get_database_value(bot, loser, 'health')
+                        if currenthealth <= 0:
+                            whokilledwhom(bot, winner, x)
+                            diedinbattle.append(x)
+                displaymessage = get_trigger_arg(diedinbattle, "list")
+                if displaymessage:
+                    bot.say(displaymessage + " died in this event.")
                 adjust_database_value(bot, winner, 'colosseum_pot', channelpot)
                 set_database_value(bot, channel, 'colosseum_pot', None)
                 set_database_value(bot, channel, 'lastfullroomcolosseum', now)
