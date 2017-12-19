@@ -132,7 +132,7 @@ def execute_main(bot, trigger, arg):
                 				if(pick > maxnumber or pick < 1):
                     					valid = 0
             				if valid == 0:
-                				bot.say("One of the numbers you entered does is not within the 1 to ' + maxnumber + ' range.")
+                				bot.say("One of the numbers you entered does is not within the 1 to ' + str(maxnumber) + ' range.")
 					else:
 						if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 							winningnumbers = random.sample(range(1, maxnumber), 5) 
@@ -145,9 +145,9 @@ def execute_main(bot, trigger, arg):
 						 	if correct == 1:
 								payout = 1
                     					elif correct == 2:
-                        					payout = 2
+								payout = 2
                     					elif correct == 3:
-                        					payout = 5
+								payout = 5
                     					elif correct == 4:
                         					payout = 20
                     					elif correct == 5:
