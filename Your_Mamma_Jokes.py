@@ -26,7 +26,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 if target == bot.nick:        
                     bot.say('I have no mother' )            
                 else:
-                    bot.say('Hey, ' + target + '! ' + joke) 
+                    bot.say('Hey, ' + target + '! ' + joke)
+            else:
+                bot.say(target + ' is not here but ' + trigger.nick + joke )
     else:
         bot.say('Please leave the mothers out of it.')
 
