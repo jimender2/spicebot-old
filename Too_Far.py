@@ -12,8 +12,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if trigger.group(2):
-        item = trigger.group(2).strip()
+    item = get_trigger_arg(triggerargsarray, 0)
+    if not item:
+        bot.say("What can you risk going too far?")
+    else:
         if not item.endswith('ing'):
             itema = str(item + "ing")
             itemb = item
