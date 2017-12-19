@@ -16,10 +16,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
+    rulenumber = get_trigger_arg(triggerargsarray, 0)
+    if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
-        rulenumber = trigger.group(2)
         if not rulenumber[0].isdigit():
             rulenumber = w2n.word_to_num(str(rulenumber))
         else:
