@@ -43,7 +43,7 @@ def main_command(bot, trigger):
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
     optedinarray, targetcantoptarray = [], []
     for u in allusersinroomarray:
-        disenable = get_database_value(bot, u, 'disenable')
+        disenable = get_botdatabase_value(bot, u, 'disenable')
         if u != bot.nick and disenable:
             optedinarray.append(u)
         opttime = get_timesince(bot, u, 'opttime')
@@ -133,7 +133,7 @@ def main_command(bot, trigger):
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target == 'everyone':
             for u in allusersinroomarray:
-                set_database_value(bot, u, 'disenable', disenablevalue)
+                set_botdatabase_value(bot, u, 'disenable', disenablevalue)
             bot.notice(instigator + ", " + bot.nick + " should now be " +  commandortarget + ' for ' + target + '.', instigator)
         elif target in targetcantoptarray:
             bot.notice(instigator + " It looks like " + target + " can't enable/disable " + bot.nick + " for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
@@ -142,8 +142,8 @@ def main_command(bot, trigger):
         elif commandortarget == 'off' and target.lower() not in optedinarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
         else:
-            set_database_value(bot, target, 'disenable', disenablevalue)
-            set_database_value(bot, target, 'opttime', now)
+            set_botdatabase_value(bot, target, 'disenable', disenablevalue)
+            set_botdatabase_value(bot, target, 'opttime', now)
             bot.notice(instigator + ", " + bot.nick + " should now be " +  commandortarget + ' for ' + target + '.', instigator)
     
     ## who is the bot on for
