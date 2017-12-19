@@ -310,7 +310,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 displaymessage = get_trigger_arg(nickarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                channelpot = get_database_value(bot, channel, 'colosseum_pot') or 100
+                channelpot = get_database_value(bot, channel, 'colosseum_pot')
                 winner = selectwinner(bot, nickarray)
                 bot.say("The Winner is: " + winner + "! Total winnings: " + str(channelpot) + " coins! Losers took " + str(channelpot) + " damage")
                 diedinbattle = []
@@ -1316,7 +1316,7 @@ def halfhourtimer(bot):
                 adjust_database_value(bot, u, 'coins', halfhourcoinaward)
                 
                 ## colosseum pot
-                adjust_database_value(bot, channel, 'colosseum_pot', 10)
+                adjust_database_value(bot, channel, 'colosseum_pot', 5)
                 
                 ## health regenerates for all
                 if int(health) < healthregenmax:
