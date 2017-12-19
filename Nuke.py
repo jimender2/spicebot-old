@@ -13,9 +13,8 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS
+    triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused
     commandused = trigger.group(1)
-    triggerargsarray = create_args_array(trigger.group(2))
-    #commandused = get_trigger_arg(triggerargsarray, 0)
     target = get_trigger_arg(triggerargsarray, 1)
     if commandused == 'nuke':
         bot.say("Nuke it from orbit... it's the only way to be sure?")
