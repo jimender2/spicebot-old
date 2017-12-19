@@ -24,7 +24,7 @@ def execute_main(bot, trigger, arg):
 			if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 				mywinnings = 0
 				bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-				wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID5'] 
+				wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches'] 
 				wheel1 = spin(wheel)
 				wheel2 = spin(wheel)
 				wheel3 = spin(wheel)
