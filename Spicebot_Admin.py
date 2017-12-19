@@ -41,7 +41,7 @@ def spicebotadmin(bot, trigger):
         if commandused == 'timeoutreset':
             lastusetime = get_botdatabase_value(bot, target, 'lastusagetime') ## get last usetime
             #target = trigger.group(3)
-            bot.msg(channel, instigator + ', the last use time for ' + target + ' is ' + lastusetime)
+            bot.msg(channel, instigator + ', the last use time for ' + target + ' is ' + str(lastusetime))
             ## Update user's last use timestamp
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
