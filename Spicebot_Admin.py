@@ -37,7 +37,10 @@ def spicebotadmin(bot, trigger):
             bot.msg(channel, trigger.nick + 'wants me to reset the count for ' + target)
         if commandused == 'timeoutreset':
             target = trigger.group(4)
-            bot.msg(channel, trigger.nick + 'wants me to clear the timeout for ' + target)            
+            bot.msg(channel, trigger.nick + 'wants me to clear the timeout for ' + target)
+            ## Update user's last use timestamp
+            if botchannel.startswith("#") and not bot.nick.endswith('dev'):
+                set_botdatabase_value(bot, instigator, 'lastusagetime', None)
         elif commandused == 'update':
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
             update(bot, trigger)
