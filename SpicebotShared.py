@@ -119,7 +119,7 @@ def halfhourdatacollection(bot):
             if ubotstatus and u not in botusers and u != bot.nick:
                 adjust_botdatabase_array(bot, channel, u, 'botusers', 'add')
             
-## Auto Mod
+## Don't let users use the bot the first minute after they join the room
 @event('JOIN','PART','QUIT','NICK')
 @rule('.*')
 def greeting(bot, trigger):
@@ -157,6 +157,26 @@ def autoblock(bot):
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
+
+###################
+## Special Users ##
+###################
+
+def special_users(bot):
+    botownerarray, operatorarray, voicearray, adminsarray = [], [], [], []
+    for channel in bot.channels:
+        for u in bot.channels[channel.lower()].users:
+            udisenable = get_botdatabase_value(bot, u, 'disenable')
+            if u != bot.nick and udisenable:
+                if u.lower() in bot.config.core.owner.lower():
+                    botownerarray.append(u)
+                if bot.privileges[channel.lower()][u] == OP:
+                    operatorarray.append(u)
+                if bot.privileges[channel.lower()][u.lower()] == VOICE:
+                    voicearray.append(u)
+                if u in bot.config.core.admins:
+                    adminsarray.append(u)
+    return botownerarray, operatorarray, voicearray, adminsarray, channel
 
 ##########
 ## ARGS ##
