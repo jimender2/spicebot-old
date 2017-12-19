@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
             for u in bot.channels[channel].users:
                 disenable = get_botdatabase_value(bot, u, 'disenable')
                 if u != instigator and u != bot.nick:
-                    blametargetarray.append(target)
+                    blametargetarray.append(u)
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
