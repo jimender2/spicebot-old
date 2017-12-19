@@ -15,16 +15,15 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    target = get_trigger_arg(triggerargsarray, 1)
     joke = getJoke()
     if joke:
-        if not trigger.group(2):
-            bot.say(joke)
-        elif not trigger.group(2).strip() == bot.nick:
-            joke = joke.replace('Chuck Norris', trigger.group(2).strip())
-            joke = joke.replace('chuck norris', trigger.group(2).strip())
-            joke = joke.replace('Norris', trigger.group(2).strip())
-            joke = joke.replace('Chuck', trigger.group(2).strip())
-            bot.say(joke)        
+        if target and target != bot.nick:
+            joke = joke.replace('Chuck Norris', target)
+            joke = joke.replace('chuck norris', target)
+            joke = joke.replace('Norris', target)
+            joke = joke.replace('Chuck', target)
+        bot.say(joke)        
     else:
         bot.say('Chuck will find you.')
 
@@ -34,7 +33,6 @@ def getJoke():
       page = requests.get(url)
       result = page.content
       jsonjoke = json.loads(result)
-      #joke = html2text.html2text(jsonjoke['value']['joke'])
       joke = jsonjoke['value']['joke']
       joke = joke.replace('&quot;', '\"')
     except:
