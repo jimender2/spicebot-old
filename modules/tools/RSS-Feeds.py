@@ -44,29 +44,30 @@ def reset(bot,trigger):
 
 
 ## Automatic Run
-@sopel.module.interval(60)
+@sopel.module.interval(30)
 def autorss(bot):
     for c in bot.channels:
         channel = c
     for filename in os.listdir(RSSFEEDSDIR):
-        configfile = os.path.join(RSSFEEDSDIR, filename)
-        config = ConfigParser.ConfigParser()
-        config.read(configfile)
-        feedname = config.get("configuration","feedname")
-        url = str(config.get("configuration","url"))
-        parentnumber = int(config.get("configuration","parentnumber"))
-        childnumber = int(config.get("configuration","childnumber"))
-        trimmedname = feedname.replace(" ","").lower()
-        lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
-        messagestring = str("[" + feedname + "] ")
-        page = requests.get(url, headers=header)
-        if page.status_code == 200:
-            try:
-                title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
-            except TypeError:
-                return
-            if title and link:
-                bot.msg(channel, messagestring + title + ': ' + link)
+	bot.say(filename)
+        #configfile = os.path.join(RSSFEEDSDIR, filename)
+        #config = ConfigParser.ConfigParser()
+        #config.read(configfile)
+        #feedname = config.get("configuration","feedname")
+        #url = str(config.get("configuration","url"))
+        #parentnumber = int(config.get("configuration","parentnumber"))
+        #childnumber = int(config.get("configuration","childnumber"))
+        #trimmedname = feedname.replace(" ","").lower()
+        #lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
+        #messagestring = str("[" + feedname + "] ")
+        #page = requests.get(url, headers=header)
+        #if page.status_code == 200:
+        #    try:
+        #        title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
+        #    except TypeError:
+        #        return
+        #    if title and link:
+        #        bot.msg(channel, messagestring + title + ': ' + link)
                 
 def checkfornew(bot, page, childnumber, lastbuilddatabase, parent):
     xml = page.text
