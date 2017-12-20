@@ -89,6 +89,7 @@ def setup(self):
 @commands('tell', 'ask')
 @nickname_commands('tell', 'ask')
 @example('$nickname, tell Embolalia he broke something again.')
+def execute_main(bot, trigger):
     """Give someone a message the next time they're seen"""
     teller = trigger.nick
     verb = trigger.group(1)
