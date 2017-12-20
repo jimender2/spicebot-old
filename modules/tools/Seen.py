@@ -18,9 +18,6 @@ from sopel.module import commands, rule, priority, thread
 import sopel.module
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 @commands('seen')
 def execute_main(bot, trigger):
