@@ -60,13 +60,7 @@ def autorss(bot):
         lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
-	
-	#bot.say(str(feedname))
-	bot.say(str(url))
-	bot.say(str(parentnumber))
-	bot.say(str(childnumber))
-	bot.say(str(trimmedname))
-	
+
 	
         if page.status_code == 200:
             try:
