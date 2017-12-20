@@ -63,7 +63,7 @@ def autorss(bot):
             page = requests.get(url, headers=header)
             if page.status_code == 200:
                 try:
-                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parent)
+                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
                 except TypeError:
                     return
                 if title and link:
