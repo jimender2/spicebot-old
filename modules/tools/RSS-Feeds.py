@@ -29,7 +29,7 @@ def reset(bot,trigger):
             config = ConfigParser.ConfigParser()
             config.read(configfile)
             feedname = config.get("configuration","feedname")
-	    trimmedname = feedname.replace(" ","").lower()
+            trimmedname = feedname.replace(" ","").lower()
             lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
             bot.say('Resetting LastBuildTime for ' + str(feedname))
             bot.db.set_nick_value(channel, lastbuilddatabase, None)
@@ -62,6 +62,7 @@ def autorss(bot):
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         bot.msg(channel,str(page.status_code))
+        page = requests.get(url, headers=header)
         if page.status_code == 200:
             try:
                 title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
