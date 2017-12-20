@@ -8,6 +8,8 @@ from fake_useragent import UserAgent
 import sys
 import os
 
+RSSFEEDSDIR = "/home/sopel/spicebot/RSS-Feeds/"
+
 ## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
@@ -15,22 +17,47 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
-    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
-	trimmedname = feedname.replace(" ","").lower()
-	maincommand = str(trimmedname)
-        lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
-        for channel in bot.channels:
-    	    bot.say('Resetting LastBuildTime for ' + str(feedname))
-    	    bot.db.set_nick_value(channel, lastbuilddatabase, '')
+    feedselect = trigger.group(2)
+    for c in bot.channels:
+        channel = c
+    if not feedselect:
+        bot.say("Which Feed are we resetting?")
+    elif feedselect == 'all'
+        for filename in os.listdir(RSSFEEDSDIR):
+            configfile = os.path.join(RSSFEEDSDIR, filename)
+            config = ConfigParser.ConfigParser()
+            config.read(filename)
+            feedname = config.get("configuration","feedname")
+	        trimmedname = feedname.replace(" ","").lower()
+            lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
+            bot.say('Resetting LastBuildTime for ' + str(feedname))
+            bot.db.set_nick_value(channel, lastbuilddatabase, None)
+    else:
+        lastbuilddatabase = str(feedselect + '_lastbuildcurrent')
+        istherafeed = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+        if istherafeed:
+            bot.say('Resetting LastBuildTime for ' + str(feedname))
+            bot.db.set_nick_value(channel, lastbuilddatabase, None)
+        else:
+            bot.say("There doesn't appear to be record of that feed.")
+
 
 ## Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    for feedname,url,childnumber,parent in zip(feednamearray,urlarray,childarray,parentarray):
+    for c in bot.channels:
+        channel = c
+    for filename in os.listdir(RSSFEEDSDIR):
+        configfile = os.path.join(RSSFEEDSDIR, filename)
+        config = ConfigParser.ConfigParser()
+        config.read(filename)
+        feedname = config.get("configuration","feedname")
+        url = config.get("configuration","url")
+        parentnumber = config.get("configuration","parentnumber")
+        childnumber = config.get("configuration","childnumber")
         trimmedname = feedname.replace(" ","").lower()
-	maincommand = str(trimmedname)
-        lastbuilddatabase = str(maincommand + '_lastbuildcurrent')
-	messagestring = str("[" + feedname + "] ")
+        lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
+        messagestring = str("[" + feedname + "] ")
         for channel in bot.channels:
             page = requests.get(url, headers=header)
             if page.status_code == 200:
