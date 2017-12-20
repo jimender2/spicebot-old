@@ -22,7 +22,7 @@ def reset(bot,trigger):
         channel = c
     if not feedselect:
         bot.say("Which Feed are we resetting?")
-    elif feedselect == 'all'
+    elif feedselect == 'all':
         for filename in os.listdir(RSSFEEDSDIR):
             configfile = os.path.join(RSSFEEDSDIR, filename)
             config = ConfigParser.ConfigParser()
