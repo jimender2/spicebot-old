@@ -10,5 +10,5 @@ from sopel.module import OP
 @sopel.module.commands('msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
 def execute_main(bot, trigger):
     trigger = trigger.replace('.', '/', 1)
-    bot.say('"I believe you wanted to say ' + trigger)
+    bot.say('I believe you wanted to say ' + trigger)
                 
