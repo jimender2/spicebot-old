@@ -415,9 +415,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif subcommand == 'lastassault':
                     set_database_value(bot, channel, 'lastfullroomassultinstigator', None)
                     bot.notice("Last Assault Instigator removed.", instigator)
+                    set_database_value(bot, channel, 'lastfullroomassult', None)
                 elif subcommand == 'lastroman':
                     set_database_value(bot, channel, 'lastfullroomcolosseuminstigator', None)
                     bot.notice("Last Colosseum Instigator removed.", instigator)
+                    set_database_value(bot, channel, 'lastfullroomcolosseum', None)
                 elif subcommand == 'lastinstigator':
                     set_database_value(bot, channel, 'lastinstigator', None)
                     bot.notice("Last Fought Instigator removed.", instigator)
