@@ -51,7 +51,7 @@ def autorss(bot):
     for filename in os.listdir(RSSFEEDSDIR):
         configfile = os.path.join(RSSFEEDSDIR, filename)
         config = ConfigParser.ConfigParser()
-        config.read(filename)
+        config.read(configfile)
         feedname = config.get("configuration","feedname")
         url = config.get("configuration","url")
         parentnumber = config.get("configuration","parentnumber")
