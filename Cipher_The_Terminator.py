@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(triggerargsarray, 1)
-    if instigator == 'Cipher-0':
+    if instigator == 'Cipher-0' and not target:
         target = 'Cipher-0'
     if not target:
         bot.say('Pinging Cipher-0 with a WOL packet...')
