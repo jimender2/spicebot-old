@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding=utf-8
 """
 tell.py - Sopel Tell and Ask Module
