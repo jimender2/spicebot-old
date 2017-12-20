@@ -231,7 +231,7 @@ def deal(deck):
 
 def blackjackscore(hand):
 	myscore = 0
-	for card in hand
+	for card in hand:
 		if card.isdigit():
 			myscore = myscore + int(card)
 		elif(card == 'J' or card == 'Q' or card == 'K'):
