@@ -44,7 +44,7 @@ def reset(bot,trigger):
 
 
 ## Automatic Run
-@sopel.module.interval(30)
+@sopel.module.interval(60)
 def autorss(bot):
     for c in bot.channels:
         channel = c
