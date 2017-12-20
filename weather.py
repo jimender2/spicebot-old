@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding=utf-8
 # Based on the module by Sean B. Palmer, inamidst.com and Elsie Powell, embolalia.com
 # Licensed under the Eiffel Forum License 2.
