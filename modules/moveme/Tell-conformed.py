@@ -89,12 +89,6 @@ def setup(self):
 @commands('tell', 'ask')
 @nickname_commands('tell', 'ask')
 @example('$nickname, tell Embolalia he broke something again.')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
     """Give someone a message the next time they're seen"""
     teller = trigger.nick
     verb = trigger.group(1)
