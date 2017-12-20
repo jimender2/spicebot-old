@@ -7,18 +7,10 @@ from xml.dom import minidom
 from fake_useragent import UserAgent
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 ## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
-
-feednamearray = ['Spiceworks Contests','TechTarget News','iT News']
-urlarray = ['https://community.spiceworks.com/feed/forum/1550.rss','http://whatis.techtarget.com/rss/Enterprise-IT-news-roundup.xml','https://www.itnews.com.au/RSS/rss.ashx']
-parentarray = [2,0,1]
-childarray = [2,1,1]
 
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
