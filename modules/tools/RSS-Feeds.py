@@ -59,15 +59,22 @@ def autorss(bot):
         trimmedname = feedname.replace(" ","").lower()
         lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
-        for channel in bot.channels:
-            page = requests.get(url, headers=header)
-            if page.status_code == 200:
-                try:
-                    title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
-                except TypeError:
-                    return
-                if title and link:
-                    bot.msg(channel, messagestring + title + ': ' + link)
+        page = requests.get(url, headers=header)
+	
+	bot.say(str(feedname))
+	bot.say(str(url))
+	bot.say(str(parentnumber))
+	bot.say(str(childnumber))
+	bot.say(str(trimmedname))
+	
+	
+        if page.status_code == 200:
+            try:
+                title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
+            except TypeError:
+                return
+            if title and link:
+                bot.msg(channel, messagestring + title + ': ' + link)
                 
 def checkfornew(bot, page, childnumber, lastbuilddatabase, parent):
     xml = page.text
