@@ -62,8 +62,10 @@ def autorss(bot):
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
+	parentnumber = 0
+	childnumber = 1
         title, link = 'nope', 'nada'
-        if int(page.status_code) == 200:
+        if page.status_code == 200:
             title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
         bot.msg(channel, messagestring + title + ': ' + link)
                 
