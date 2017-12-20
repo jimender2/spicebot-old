@@ -289,7 +289,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
         
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -362,7 +362,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, channel, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -1055,12 +1055,12 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel)
+            return return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
         
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel):
+def return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray):
     
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
@@ -1084,12 +1084,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, channel, fu
         set_database_value(bot, channel, 'timeout', now)
     
         ## Naming and Initial pepper level
-        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
+        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel, botownerarray, operatorarray, voicearray, adminsarray)
         if instigator == target:
             targetname = "themself"
             targetpepperstart = ''
         else:
-            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel, botownerarray, operatorarray, voicearray, adminsarray)
 
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
@@ -1296,9 +1296,13 @@ def halfhourtimer(bot):
     
     ## Who gets to win a mysterypotion?
     randomuarray = []
+    allusersinroomarray = []
     for channel in bot.channels:
         adjust_database_array(bot, channel, channel, 'channels', 'add')
-        for u in bot.privileges[channel.lower()]:
+        for u in bot.channels[channel.lower()].users:
+            allusersinroomarray.append(u)
+            
+        for u in allusersinroomarray:
             
             ## user stats
             healthcheck(bot, u)
@@ -1347,9 +1351,6 @@ def halfhourtimer(bot):
             adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
             lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
             bot.notice(lootwinnermsg, lootwinner)
-            
-            ## If you want it announced in channel
-            #bot.msg(channel,lootwinnermsg)
               
     ## Clear Last Instigator
     set_database_value(bot, channel, 'lastinstigator', None)
@@ -1455,26 +1456,11 @@ def get_timeout(bot, nick):
 ## Names ##
 ###########
 
-def whatsyourname(bot, trigger, nick, channel):
+def whatsyourname(bot, trigger, nick, channel, botownerarray, operatorarray, voicearray, adminsarray):
     nickname = str(nick)
 
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
-    
-    ## Is user Special?
-    botownerarray, operatorarray, voicearray, adminsarray = [], [], [], []
-    for u in bot.channels[channel.lower()].users:
-        nametargetdisenable = get_database_value(bot, u, 'disenable')
-        if u != bot.nick and nametargetdisenable:
-            nametarget = u
-            if nametarget.lower() in bot.config.core.owner.lower():
-                botownerarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget] == OP:
-                operatorarray.append(nametarget)
-            if bot.privileges[channel.lower()][nametarget.lower()] == VOICE:
-                voicearray.append(nametarget)
-            if nametarget in bot.config.core.admins:
-                adminsarray.append(nametarget)
 
     ## Is nick Special?
     if nick in botownerarray:
