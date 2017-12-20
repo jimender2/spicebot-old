@@ -39,7 +39,7 @@ def spicebot_prerun(bot,trigger):
     now = time.time()
     
     ## used to circumvent
-    #commandused = trigger.group(1)
+    commandused = trigger.group(1)
     #allowedcommandsarray = ['duel','challenge']
     
     ## Get Name Of Channel
