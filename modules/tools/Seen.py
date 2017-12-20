@@ -23,14 +23,9 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 @commands('seen')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
     """Reports when and where the user was last seen."""
-    nick = get_trigger_arg(triggerargsarray, 1)
+    nick = trigger.group(3)
     if not nick:
         bot.say(".seen <nick> - Reports when <nick> was last seen.")
     elif nick == bot.nick:
