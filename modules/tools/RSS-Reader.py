@@ -63,7 +63,7 @@ def autorss(bot):
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
         title, link = 'nope', 'nada'
-        if page.status_code == 200:
+        if int(page.status_code) == 200:
             title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
         bot.msg(channel, messagestring + title + ': ' + link)
                 
