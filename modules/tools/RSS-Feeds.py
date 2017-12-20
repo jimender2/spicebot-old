@@ -8,7 +8,7 @@ from fake_useragent import UserAgent
 import sys
 import os
 
-RSSFEEDSDIR = "/home/sopel/spicebot/RSS-Feeds"
+RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/"
 
 ## user agent and header
 ua = UserAgent()
