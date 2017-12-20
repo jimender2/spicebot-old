@@ -20,9 +20,6 @@ from sopel.tools import Identifier, iterkeys
 from sopel.tools.time import get_timezone, format_time
 from sopel.module import commands, nickname_commands, rule, priority, example
 import sopel.module
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 maximum = 4
 
