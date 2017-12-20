@@ -49,7 +49,7 @@ def autorss(bot):
     for c in bot.channels:
         channel = c
     for filename in os.listdir(RSSFEEDSDIR):
-	bot.say(filename)
+	bot.say(str(filename))
         #configfile = os.path.join(RSSFEEDSDIR, filename)
         #config = ConfigParser.ConfigParser()
         #config.read(configfile)
