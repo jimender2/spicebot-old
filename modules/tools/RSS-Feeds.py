@@ -61,11 +61,10 @@ def autorss(bot):
         childnumber = int(config.get("configuration","childnumber"))
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
-        
         bot.msg(channel,str(feedname))
-	    bot.msg(channel,str(url))
-	    bot.msg(channel,str(parentnumber))
-	    bot.msg(channel,str(childnumber))
+        bot.msg(channel,str(url))
+        bot.msg(channel,str(parentnumber))
+        bot.msg(channel,str(childnumber))
         bot.msg(channel,str(lastbuilddatabase))
         bot.msg(channel,str(messagestring))
 
