@@ -39,7 +39,7 @@ def execute_main(bot, trigger):
 @sopel.module.interval(60)
 def getpackt(bot):
     for channel in bot.channels:
-        now = datetime.datetime.now(tz)
+        now = datetime.now(tz)
         if now.hour == int(packthour) and now.minute == int(packtminute):
             title = getPacktTitle()
             packttimediff = getpackttimediff()
@@ -63,7 +63,7 @@ def getPacktTitle():
         return title
 
 def getpackttimediff():
-    now = datetime.datetime.now(tz)
+    now = datetime.now(tz)
     packtnext = None
     day = timedelta(days=1)
     tomorrow = now + day
