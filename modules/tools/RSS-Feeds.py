@@ -61,7 +61,7 @@ def autorss(bot):
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
 	
-	bot.say(str(feedname))
+	#bot.say(str(feedname))
 	bot.say(str(url))
 	bot.say(str(parentnumber))
 	bot.say(str(childnumber))
