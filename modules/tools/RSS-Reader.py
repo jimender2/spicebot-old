@@ -80,7 +80,7 @@ def autorss(bot):
             bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
-                title = titles[parent].childNodes[0].nodeValue
+                title = titles[parentnumber].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 bot.msg(channel, messagestring + title + ': ' + link)
