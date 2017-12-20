@@ -120,8 +120,8 @@ def execute_main(bot, trigger, arg):
 					if pick.isdigit():						
 						picks.append(int(pick))
 					else: 
-						bot.say(pick + ' is not a number')
-				if len(pick)<5:
+						bot.say(str(pick) + ' is not a number')
+				if len(picks)<5:
 					bot.say("One of the numbers you entered does not appear to be a number.")
             				success = 0
 				else:
@@ -170,9 +170,26 @@ def execute_main(bot, trigger, arg):
 			#bot.say('The dealer is not here right now')
 			deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 		 	myhand = deal(deck)
-		  	dealerhand = deal(deck)
-		  	bot.say(trigger.nick + 'has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-		  	bot.say('The dealer has a ' + str(dealerhand[0]) + ' showing')
+		  	dealerhand = deal(deck)			
+		  	bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
+		  	bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(myhand[1]))
+			myscore = blackjackscore(myhand)
+			dealerscore=blackjackscore(dealerhand)
+			if myscore == 21:
+				bot.say(trigger.nick + ' got blackjack and is a winner')
+			elif myscore > 21:
+				bot.say(trigger.nick + ' busted and gets nothing')
+			elif myscore < 21
+				if dealerscore > 21:
+					bot.say('The dealer busted')
+				elif dealerscore < myscore:
+					bot.say(trigger.nick + ' wins')
+				elif dealerscore > myscore:
+					bot.say('The dealer wins')
+				elif dealerscorre==myscore
+					bot.say('It is a draw and no one is a winner')
+			
+						
 
 			
 	else:
@@ -208,3 +225,18 @@ def deal(deck):
 	    	if card == 14:card = "A"
 	    	hand.append(card)
 	return hand
+
+def blackjackscore(hand)
+	myscore = 0
+	for card in hand
+		if card.isdigit():
+			myscore = myscore + int(card)
+		elif(card == 'J' or card == 'Q' or card == 'K'):
+			myscore = myscore + 10
+		elif card='A':
+			testscore = myscore + 10
+			if testscore>21:
+				myscore = myscore + 1
+			else:
+				myscore = myscore + 10
+	return myscore
