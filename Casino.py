@@ -115,7 +115,7 @@ def execute_main(bot, trigger, arg):
 				picks = []
 				success = 0				
 				del arg[0]
-				bot.say('You picked ' + str(arg))
+				#bot.say('You picked ' + str(arg))
 			 	for pick in arg:
 					if pick.isdigit():						
 						picks.append(int(pick))
@@ -174,19 +174,19 @@ def execute_main(bot, trigger, arg):
 		  	bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
 		  	bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(myhand[1]))
 			myscore = blackjackscore(myhand)
-			dealerscore=blackjackscore(dealerhand)
+			dealerscore = blackjackscore(dealerhand)
 			if myscore == 21:
 				bot.say(trigger.nick + ' got blackjack and is a winner')
 			elif myscore > 21:
 				bot.say(trigger.nick + ' busted and gets nothing')
-			elif myscore < 21
+			elif myscore < 21:
 				if dealerscore > 21:
 					bot.say('The dealer busted')
 				elif dealerscore < myscore:
 					bot.say(trigger.nick + ' wins')
 				elif dealerscore > myscore:
 					bot.say('The dealer wins')
-				elif dealerscorre==myscore
+				elif dealerscore == myscore:
 					bot.say('It is a draw and no one is a winner')
 			
 						
@@ -233,7 +233,7 @@ def blackjackscore(hand)
 			myscore = myscore + int(card)
 		elif(card == 'J' or card == 'Q' or card == 'K'):
 			myscore = myscore + 10
-		elif card='A':
+		elif card=='A':
 			testscore = myscore + 10
 			if testscore>21:
 				myscore = myscore + 1
