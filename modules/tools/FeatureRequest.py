@@ -7,30 +7,22 @@ import os
 import json
 import requests
 import ConfigParser
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 ## Creds
 config = ConfigParser.ConfigParser()
-config.read("/etc/spicecred.txt")
+config.read("/home/sopel/spicecred.txt")
 USERNAME = config.get("configuration","username")
 PASSWORD = config.get("configuration","password")
     
 # Repo
 REPO_OWNER = 'deathbybandaid'
-REPO_NAME = 'sopel-modules'
+REPO_NAME = 'SpiceBot'
 
 @sopel.module.commands('feature','issue')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
 def execute_main(bot, trigger, triggerargsarray):
     maincommand = trigger.group(1)
     instigator = trigger.nick
-    inputtext = get_trigger_arg(triggerargsarray, 0)
+    inputtext = trigger.group(2)
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -42,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     else:
-        body = str(get_trigger_arg(triggerargsarray, 0))
+        body = inputtext
         body = str(instigator + action + ": " + body)
         make_github_issue(bot, body, labels, title)
 
