@@ -70,13 +70,11 @@ def autorss(bot):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
-            if lastbuildcurrent:
-                if lastBuildXML.strip() == lastbuildcurrent.strip():
-                    newcontent = False
-                else:
-                    newcontent = True
-            else:
-                newcontent = True
+            newcontent = True
+            bot.say(str(lastBuildXML.strip()))
+            bot.say(str(lastbuildcurrent.strip()))
+            if lastBuildXML.strip() == lastbuildcurrent.strip():
+                newcontent = False
             bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
