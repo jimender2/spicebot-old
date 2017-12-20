@@ -75,10 +75,11 @@ def autorss(bot):
             bot.msg(channel,str(lastbuildcurrent))
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
-            bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                lastbuildcurrent = lastBuildXML.strip()
+                bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
                 bot.msg(channel, messagestring + title + ': ' + link)
