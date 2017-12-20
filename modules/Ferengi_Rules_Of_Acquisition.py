@@ -10,7 +10,7 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-fra='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/ferengi_rules.txt'
+fra='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/ferengi_rules.txt'
 
 @sopel.module.commands('ferengi')
 def mainfunction(bot, trigger):
