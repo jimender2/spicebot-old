@@ -9,11 +9,6 @@ sys.path.append(moduledir)
 from SpicebotShared import *
 
 @sopel.module.commands('meraki','freemeraki')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
 def execute_main(bot, trigger, triggerargsarray):
     types = get_trigger_arg(triggerargsarray, 1)
     if not types:
