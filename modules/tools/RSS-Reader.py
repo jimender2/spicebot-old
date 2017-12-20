@@ -78,7 +78,6 @@ def autorss(bot):
             else:
                 newcontent = True
             bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
-            newcontent = checkLastBuildDate(bot, xmldoc, lastbuilddatabase)
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parent].childNodes[0].nodeValue
