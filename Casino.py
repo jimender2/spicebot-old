@@ -116,13 +116,18 @@ def execute_main(bot, trigger, arg):
 				success = 0				
 				del arg[0]
 				bot.say('You picked ' + str(arg))
-		  		try:
-            				for picks in arg:
-                				pick.append(int(pick))						
+			 	for pick in arg:
+					if pick.isdigit():						
+						picks.append(int(pick))
+					else: 
+						bot.say(pick + ' is not a number')
+				if len(pick)<5:
+					bot.say("One of the numbers you entered does not appear to be a number.")
+            				success = 0
+				else:
 					success = 1
-        			except:
-            				bot.say("One of the numbers you entered does not appear to be a number.")
-		 			success = 0
+					
+        			
 				if success == 1:
 					pickstemp = picks
         				picks = []
