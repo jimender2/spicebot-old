@@ -37,7 +37,7 @@ def reset(bot,trigger):
         lastbuilddatabase = str(feedselect + '_lastbuildcurrent')
         istherafeed = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
         if istherafeed:
-            bot.say('Resetting LastBuildTime for ' + str(feedname))
+            bot.say('Resetting LastBuildTime for ' + str(feedselect))
             bot.db.set_nick_value(channel, lastbuilddatabase, None)
         else:
             bot.say("There doesn't appear to be record of that feed.")
