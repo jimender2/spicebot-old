@@ -19,7 +19,7 @@ REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
 @sopel.module.commands('feature','issue')
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
