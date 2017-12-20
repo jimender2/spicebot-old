@@ -12,6 +12,10 @@ import os.path
 import sys
 from sopel.tools import Identifier
 
+## 
+## apt-get install python-mysqldb ## required
+import MySQLdb
+
 if sys.version_info.major >= 3:
     unicode = str
     basestring = str
