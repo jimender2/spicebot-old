@@ -62,45 +62,26 @@ def autorss(bot):
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
-	parentnumber = 0
-	childnumber = 1
-        title, link = 'nope', 'nada'
         if page.status_code == 200:
-            title, link = checkfornew(bot, page, childnumber, lastbuilddatabase, parentnumber)
-        bot.msg(channel, messagestring + title + ': ' + link)
-                
-def checkfornew(bot, page, childnumber, lastbuilddatabase, parent):
-    xml = page.text
-    xml = xml.encode('ascii', 'ignore').decode('ascii')
-    xmldoc = minidom.parseString(xml)
-    newcontent = checkLastBuildDate(bot, xmldoc, lastbuilddatabase)
-    if newcontent == True:
-        titles = xmldoc.getElementsByTagName('title')
-        title = titles[parent].childNodes[0].nodeValue
-        links = xmldoc.getElementsByTagName('link')
-        link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
-        return title, link
-
-def checkLastBuildDate(bot, xmldoc, lastbuilddatabase):
-    lastBuildXML = xmldoc.getElementsByTagName('pubDate')
-    lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
-    lastBuildXML = str(lastBuildXML)
-    lastbuildcurrent = get_lastbuildcurrent(bot, lastBuildXML, lastbuilddatabase)
-    if lastbuildcurrent:
-	if lastBuildXML.strip() == lastbuildcurrent.strip():
-	    newcontent = False
-        else:
-            newcontent = True
-    else:
-        newcontent = True
-    set_lastbuildcurrent(bot, lastBuildXML, lastbuilddatabase)
-    return newcontent
-
-def get_lastbuildcurrent(bot, lastBuildXML, lastbuilddatabase):
-    for channel in bot.channels:
-        lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
-    return lastbuildcurrent
-
-def set_lastbuildcurrent(bot, lastbuildcurrent, lastbuilddatabase):
-    for channel in bot.channels:
-        bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+            lastBuildXML = str(lastBuildXML)
+            lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+            if lastbuildcurrent:
+                if lastBuildXML.strip() == lastbuildcurrent.strip():
+                    newcontent = False
+                else:
+                    newcontent = True
+            else:
+                newcontent = True
+            bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
+            newcontent = checkLastBuildDate(bot, xmldoc, lastbuilddatabase)
+            if newcontent == True:
+                titles = xmldoc.getElementsByTagName('title')
+                title = titles[parent].childNodes[0].nodeValue
+                links = xmldoc.getElementsByTagName('link')
+                link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                bot.msg(channel, messagestring + title + ': ' + link)
