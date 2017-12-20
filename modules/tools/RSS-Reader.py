@@ -71,8 +71,6 @@ def autorss(bot):
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
             newcontent = True
-            bot.msg(channel,str(lastBuildXML.strip()))
-            bot.msg(channel,str(lastbuildcurrent))
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
             if newcontent == True:
