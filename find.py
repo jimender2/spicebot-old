@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding=utf-8
 """Sopel Spelling correction module
 
