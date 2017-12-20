@@ -7,8 +7,8 @@ moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
 
-party='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/jukebox_party.txt'
-friday='https://raw.githubusercontent.com/deathbybandaid/sopel-modules/dev/otherfiles/jukebox_friday.txt'
+party='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/jukebox_party.txt'
+friday='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/jukebox_friday.txt'
 
 @sopel.module.commands('dj')
 def mainfunction(bot, trigger):
