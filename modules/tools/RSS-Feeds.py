@@ -48,18 +48,27 @@ def reset(bot,trigger):
 def autorss(bot):
     for c in bot.channels:
         channel = c
+    rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
-	bot.msg(channel,str(filename))
-        #configfile = os.path.join(RSSFEEDSDIR, filename)
-        #config = ConfigParser.ConfigParser()
-        #config.read(configfile)
-        #feedname = config.get("configuration","feedname")
-        #url = str(config.get("configuration","url"))
-        #parentnumber = int(config.get("configuration","parentnumber"))
-        #childnumber = int(config.get("configuration","childnumber"))
-        #trimmedname = feedname.replace(" ","").lower()
-        #lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
-        #messagestring = str("[" + feedname + "] ")
+        rssarray.append(filename)
+	for rssfeed in rssarray:
+        configfile = os.path.join(RSSFEEDSDIR, rssfeed)
+        config = ConfigParser.ConfigParser()
+        config.read(configfile)
+        feedname = config.get("configuration","feedname")
+        url = str(config.get("configuration","url"))
+        parentnumber = int(config.get("configuration","parentnumber"))
+        childnumber = int(config.get("configuration","childnumber"))
+        lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
+        messagestring = str("[" + feedname + "] ")
+        
+        bot.msg(channel,str(feedname))
+	    bot.msg(channel,str(url))
+	    bot.msg(channel,str(parentnumber))
+	    bot.msg(channel,str(childnumber))
+        bot.msg(channel,str(lastbuilddatabase))
+        bot.msg(channel,str(messagestring))
+
         #page = requests.get(url, headers=header)
         #if page.status_code == 200:
         #    try:
