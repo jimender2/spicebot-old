@@ -28,7 +28,7 @@ def reset(bot,trigger):
             config = ConfigParser.ConfigParser()
             config.read(filename)
             feedname = config.get("configuration","feedname")
-	        trimmedname = feedname.replace(" ","").lower()
+	    trimmedname = feedname.replace(" ","").lower()
             lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
             bot.say('Resetting LastBuildTime for ' + str(feedname))
             bot.db.set_nick_value(channel, lastbuilddatabase, None)
