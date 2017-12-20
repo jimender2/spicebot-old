@@ -13,9 +13,6 @@ import sys
 import os
 from datetime import datetime
 from pytz import timezone
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 # new book is Midnight GMT/BST
 tz = timezone('Europe/London')
@@ -23,12 +20,7 @@ packthour = str(0)
 packtminute = str(10)
 
 @sopel.module.commands('packt')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
     packttimediff = getpackttimediff()
     if trigger.group(2):
         if trigger.group(2) == 'time':
