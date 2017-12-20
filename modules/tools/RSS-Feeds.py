@@ -27,7 +27,7 @@ def reset(bot,trigger):
         for filename in os.listdir(RSSFEEDSDIR):
             configfile = os.path.join(RSSFEEDSDIR, filename)
             config = ConfigParser.ConfigParser()
-            config.read(filename)
+            config.read(configfile)
             feedname = config.get("configuration","feedname")
 	    trimmedname = feedname.replace(" ","").lower()
             lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
