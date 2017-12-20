@@ -1,3 +1,5 @@
+## This is used by FeatureRequest.py
+
 [configuration]
 username = SpiceBot
 password = ********
