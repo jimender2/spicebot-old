@@ -67,7 +67,7 @@ def getpackttimediff():
     packtnext = None
     day = timedelta(days=1)
     tomorrow = now + day
-    packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
+    packtnext = datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
     a = arrow.get(now)
     b = arrow.get(packtnext)
     timecompare = (b.humanize(a, granularity='auto'))
