@@ -7,6 +7,7 @@ from xml.dom import minidom
 from fake_useragent import UserAgent
 import sys
 import os
+import ConfigParser
 
 RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/"
 
