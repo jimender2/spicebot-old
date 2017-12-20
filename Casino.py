@@ -229,7 +229,7 @@ def deal(deck):
 	    	hand.append(card)
 	return hand
 
-def blackjackscore(hand)
+def blackjackscore(hand):
 	myscore = 0
 	for card in hand
 		if card.isdigit():
