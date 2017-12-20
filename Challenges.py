@@ -1055,12 +1055,12 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, channel, dowedisplay)
         if executedueling:
-            return return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
         
-def return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray):
+def getreadytorumble(bot, trigger, instigator, target, OSDTYPE, channel, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray):
     
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
