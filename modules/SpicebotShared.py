@@ -46,7 +46,7 @@ def spicebot_prerun(bot,trigger):
     if botchannel.startswith("#"):
         channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
         if commandused not in channelmodulesarray:
-            bot.notice(instigator + ", it looks like this command has not been enabled in " + botchannel + ".",instigator)
+            bot.notice(instigator + ", it looks like the " + str(commandused) + " command has not been enabled in " + botchannel + ".",instigator)
             return enablestatus, triggerargsarray
     
     ## Bot Enabled Status (now in an array)
