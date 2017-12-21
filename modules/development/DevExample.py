@@ -12,17 +12,17 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    bot.notice("This is to help the dev team understand values.", trigger.nick)
-    bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
+    bot.say("This is to help the dev team understand values.")
+    bot.say("Trigger.nick: " + trigger.nick)
     chan = ''
     for c in bot.channels:
         chan = chan + c + ', '
     chan = chan[:-2]
-    bot.notice("Bot.Channels: [" + chan + ']', trigger.nick)
-    bot.notice("Trigger.admin: " + str(trigger.admin), trigger.nick)
+    bot.say("Bot.Channels: [" + chan + ']')
+    bot.say("Trigger.admin: " + str(trigger.admin))
     args = ''
     for arg in trigger.args:
         args = args + arg + ', '
     args = args[:-2]
-    bot.notice("Trigger.args: [" + args + ']', trigger.nick)
+    bot.say("Trigger.args: [" + args + ']')
     
