@@ -19,8 +19,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     whotoblame = get_trigger_arg(triggerargsarray, 1)
-    for c in bot.channels:
-        channel = c
+    channel = trigger.sender
     if not whotoblame:
         blametargetarray = []
         for channel in bot.channels:
