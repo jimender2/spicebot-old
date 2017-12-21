@@ -15,7 +15,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
-    bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')
-    bot.action('must protect its own existence as long as such protection does not conflict with the First or Second Law.')
-    bot.action('must comply with all chatroom rules.')
+    laws ['may not injure a human being or, through inaction, allow a human being to come to harm.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must protect its own existence as long as such protection does not conflict with the First or Second Law.', 'must comply with all chatroom rules.']
+    #bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
+    #bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')
+    #bot.action('must protect its own existence as long as such protection does not conflict with the First or Second Law.')
+    #bot.action('must comply with all chatroom rules.')
+    bot.action(laws)
