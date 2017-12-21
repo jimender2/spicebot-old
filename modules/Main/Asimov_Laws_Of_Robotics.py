@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -15,9 +16,22 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    requested = get_trigger_arg(triggerargsarray, 0)
     laws = ['may not injure a human being or, through inaction, allow a human being to come to harm.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must protect its own existence as long as such protection does not conflict with the First or Second Law.', 'must comply with all chatroom rules.']
+    if not requested:
+        myline = random.randint(0,(len(laws))
+    else:
+        if requested.isdigit():
+            requested=int(requested)
+            if requested>(len(laws)):
+                myline = random.randint(0,(len(laws)))
+           else:
+                myline=laws[(requested+1)]
+        else:
+            myline = random.randint(0,(len(laws)))        
+        
     #bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
     #bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')
     #bot.action('must protect its own existence as long as such protection does not conflict with the First or Second Law.')
     #bot.action('must comply with all chatroom rules.')
-    bot.action(laws)
+    bot.action(str(myline))
