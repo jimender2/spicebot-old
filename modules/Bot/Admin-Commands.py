@@ -46,21 +46,32 @@ def main_command(bot, trigger):
     instigator = trigger.nick
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
-    optedinarray, targetcantoptarray = [], []
-    for u in allusersinroomarray:
-        disenable = get_botdatabase_value(bot, u, 'disenable')
-        if u != bot.nick and disenable:
-            optedinarray.append(u)
-        opttime = get_timesince(bot, u, 'opttime')
-        if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
-            targetcantoptarray.append(u)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     inchannel = trigger.sender
     commandlist = get_trigger_arg(validsubcommandarray, "list")
-
+    botchannel = trigger.sender
     
 ###### admin only block 
     if instigator not in adminsarray:
         bot.notice(instigator + "This is an admin only function.", instigator)
+    
+    ## activate a module for a channel
+    elif subcommand == 'chanmodules' and botchannel.startswith("#"):
+        dircommand = get_trigger_arg(triggerargsarray, 1)
+        if not dircommand:
+            bot.say("Would you like to enable or disable a module?")
+        elif dircommand != "enable" or dircommand != "disable":
+            bot.say("Would you like to enable or disable a module?")
+        else:
+            commandtoenable = get_trigger_arg(triggerargsarray, 2)
+            if not commandtoenable:
+                bot.say("Would you like to enable or disable a module?")
+            elif dircommand == 'enable':
+                adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
+            else:
+                adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
+            
+            
     
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction':
