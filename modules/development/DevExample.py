@@ -14,5 +14,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger):
     bot.notice("This is to help the dev team understand values.", trigger.nick)
     bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
-    bot.notice("Trigger.args: " + trigger.args, trigger.nick)
+    bot.notice("Trigger.args: " + ''.join(trigger.args), trigger.nick)
     
