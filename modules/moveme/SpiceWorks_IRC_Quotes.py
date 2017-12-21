@@ -9,18 +9,10 @@ from pyparsing import anyOpenTag, anyCloseTag
 from xml.sax.saxutils import unescape as unescape
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 @sopel.module.commands('spicyquote')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
-    query = get_trigger_arg(triggerargsarray, 0)
+def execute_main(bot, trigger):
+    query = trigger.group(2)
     if not query:
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
@@ -65,8 +57,6 @@ def getQuote(query):
     try:
         soup = BeautifulSoup(urllib2.urlopen(url).read())
         txt = soup.find('td',{'class':'body'}).text
-        #txt = txt.replace("&lt;","<")
-        #txt = txt.replace("&gt;",">")
         txt = unescape_xml_entities(stripper.transformString(txt))
     except:
         txt = "Invalid quote"
