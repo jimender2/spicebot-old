@@ -7,8 +7,8 @@ import sys
 import os
 import random
 import Spicebucks
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('gamble', 'casino')
