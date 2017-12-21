@@ -43,10 +43,10 @@ def spicebot_prerun(bot,trigger):
     enablestatus = 1
     
     ## Bot Enabled Status (now in an array)
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     
     ## Bot warned Status (now in an array)
-    botwarnedarray = get_botdatabase_value(bot, bot.nick, 'botuserswarned')
+    botwarnedarray = get_botdatabase_value(bot, bot.nick, 'botuserswarned') or []
     
     if instigator not in botusersarray and instigator not in botwarnedarray:
         message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
