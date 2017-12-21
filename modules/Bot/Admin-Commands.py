@@ -34,9 +34,9 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
 
 validsubcommandarray = ['options','docs','help','warn','channel','modulecount','isowner','isop','isvoice','isadmin','on','off','isonforwho','timeout','usage']
 
-statsadminchangearray = ['hourwarned','usertotal','lastopttime','disenable']
+statsadminchangearray = ['hourwarned','usertotal','lastopttime']
 
-@sopel.module.commands('spicebot','spicebotadmin')
+@sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     now = time.time()
     service = bot.nick.lower()
@@ -44,7 +44,7 @@ def main_command(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    triggerargsarray = create_args_array(trigger.group(2))
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     inchannel = trigger.sender
