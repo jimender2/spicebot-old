@@ -6,20 +6,12 @@ import urllib
 from word2number import w2n
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
 @sopel.module.commands('rules','rule')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
-    rulenumber = get_trigger_arg(triggerargsarray, 0)
+def execute_main(bot, trigger):
+    rulenumber = trigger.group(2)
     if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
