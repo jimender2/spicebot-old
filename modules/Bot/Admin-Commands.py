@@ -31,6 +31,9 @@ def main_command(bot, trigger):
     subcommand = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     botchannel = trigger.sender
+    channelarray = []
+    for c in bot.channels:
+        channelarray.append(c)
     
 ###### admin only block 
     if not trigger.admin:
@@ -67,7 +70,7 @@ def main_command(bot, trigger):
         message = get_trigger_arg(triggerargsarray, '3+')
         if not channel:
             bot.say("What channel?")
-        elif channel not in bot.channels:
+        elif channel not in channelarray:
             bot.say("Invalid channel.")
         elif not message:
             bot.say("What message?")
