@@ -128,36 +128,23 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Build User/channel Arrays
     #targetarray, targetcantoptarray, canduelarray, classcantchangearray, botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, dueloptedinarray, channelarray = [], [], [], [], [], [], [], [], [], [], []
     
-    botusersarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    allusersinroomarray = []
+    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    allusersinroomarray, offlineusersarray = [], []
     for u in bot.users:
         allusersinroomarray.append(u)
         
+    
     for u in allusersinroomarray:
-        
+        if u in dueloptedinarray:
+            offlineusersarray.remove(u)
     
     
     
     for channel in bot.channels:
         inchannel = "#bypass"
-        ## All Users in channel
-        for u in bot.channels[channel.lower()].users:
-            allusersinroomarray.append(u)
+
             
-        for u in allusersinroomarray:
-            ## Users that can opt in/out of duels
-            opttime = get_timesince_duels(bot, u, 'opttime')
-            if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
-                targetcantoptarray.append(u)
-            # Users with duels enabled
-            disenable = get_database_value(bot, u, 'disenable')
-            if u != bot.nick and disenable:
-                dueloptedinarray.append(u)
-                adjust_database_array(bot, channel, u, 'duelusers', 'add')
-            ## offline users
-            if u in offlineusersarray:
-                offlineusersarray.remove(u)
-            # Target passes all duel checks
+
             canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, channel, dowedisplay)
             if canduel and u != bot.nick:
                 canduelarray.append(u)
@@ -269,17 +256,23 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + "This is an admin only function.", instigator)
             elif target == 'everyone':
                 for u in allusersinroomarray:
-                    set_database_value(bot, u, 'disenable', disenablevalue)
+                    if disenablevalue == 1:
+                        adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+                    else:
+                        adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif target in targetcantoptarray:
-                bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+            #elif target in targetcantoptarray:
+                #bot.notice(instigator + " It looks like " + target + " can't enable/disable challenges for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
             elif commandortarget == 'on' and target.lower() in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
             elif commandortarget == 'off' and target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
-                set_database_value(bot, target, 'disenable', disenablevalue)
-                set_database_value(bot, target, 'opttime', now)
+                if disenablevalue == 1:
+                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+                else:
+                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
+                #set_database_value(bot, target, 'opttime', now)
                 bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
         
         ## Usage
