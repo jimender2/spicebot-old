@@ -11,8 +11,8 @@ import ConfigParser
 ## Creds
 config = ConfigParser.ConfigParser()
 config.read("/home/sopel/spicebot.conf")
-USERNAME = config.get("configuration","username")
-PASSWORD = config.get("configuration","password")
+USERNAME = config.get("github","username")
+PASSWORD = config.get("github","password")
     
 # Repo
 REPO_OWNER = 'deathbybandaid'
