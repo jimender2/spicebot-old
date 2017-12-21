@@ -18,10 +18,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(triggerargsarray, 1) or ''
     joke = getJoke()
     if joke:
-        if target and target != bot.nick:
+        if target != bot.nick:
             joke = joke.replace('Chuck Norris', target)
             joke = joke.replace('chuck norris', target)
             joke = joke.replace('Norris', target)
