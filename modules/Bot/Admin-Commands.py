@@ -66,7 +66,6 @@ def main_command(bot, trigger):
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction' or subcommand == 'chanmsg':
         channel = get_trigger_arg(triggerargsarray, 2)
-        bot.say(channel)
         message = get_trigger_arg(triggerargsarray, '3+')
         if not channel:
             bot.say("What channel?")
