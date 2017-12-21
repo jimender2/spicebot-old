@@ -65,8 +65,13 @@ def main_command(bot, trigger):
             bot.say("A correct command is enable or disable.")
         else:
             commandtoenable = get_trigger_arg(triggerargsarray, 3)
+            channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+"?")
+            elif commandtoenable in channelmodulesarray and dircommand == 'enable':
+                bot.say("It looks like this module is already enabled.")
+            elif commandtoenable not in channelmodulesarray and dircommand == 'disable':
+                bot.say("It looks like this module is already disabled.")
             else:
                 if dircommand == 'enable':
                     adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
