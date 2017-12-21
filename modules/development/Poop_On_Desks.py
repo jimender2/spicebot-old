@@ -23,7 +23,4 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == 'all' or target == 'everyone' or target == 'everyones':
         bot.say(trigger.nick + " poops on everyone's desk, one at a time!")
     elif target != bot.nick:
-        if myline.endswith('desk'):
-            bot.say(trigger.nick + ' poops on ' + target + ", maintaining eye contact the entire time!")
-        else:
-            bot.say(trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")
+        bot.say(trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")
