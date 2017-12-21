@@ -38,11 +38,11 @@ def execute_main(bot, trigger):
     
 @sopel.module.interval(60)
 def getpackt(bot):
-    for channel in bot.channels:
-        now = datetime.now(tz)
-        if now.hour == int(packthour) and now.minute == int(packtminute):
-            title = getPacktTitle()
-            packttimediff = getpackttimediff()
+    now = datetime.now(tz)
+    if now.hour == int(packthour) and now.minute == int(packtminute):
+        title = getPacktTitle()
+        packttimediff = getpackttimediff()
+        for channel in bot.channels:
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
