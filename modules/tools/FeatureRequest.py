@@ -10,7 +10,7 @@ import ConfigParser
 
 ## Creds
 config = ConfigParser.ConfigParser()
-config.read("/home/sopel/spicecred.txt")
+config.read("/home/sopel/spicebot.conf")
 USERNAME = config.get("configuration","username")
 PASSWORD = config.get("configuration","password")
     
