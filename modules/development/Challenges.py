@@ -17,8 +17,8 @@ import os
 from os.path import exists
 
 ## not needed if using without spicebot
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 ###################
