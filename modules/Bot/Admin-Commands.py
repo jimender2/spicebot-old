@@ -23,36 +23,17 @@ from SpicebotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
-devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
-
-OPTTIMEOUT = 1800
-FINGERTIMEOUT = 1800
-TOOMANYTIMES = 7
-LASTTIMEOUT = 30
-
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
-
-validsubcommandarray = ['options','docs','help','warn','channel','modulecount','isowner','isop','isvoice','isadmin','on','off','isonforwho','timeout','usage']
-
-statsadminchangearray = ['hourwarned','usertotal','lastopttime']
-
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
-    now = time.time()
-    service = bot.nick.lower()
-    maincommandused = trigger.group(1)
-    triggerargsarray = create_args_array(trigger.group(2))
-    subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     triggerargsarray = create_args_array(trigger.group(2))
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
+    service = bot.nick.lower()
+    subcommand = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-    inchannel = trigger.sender
-    commandlist = get_trigger_arg(validsubcommandarray, "list")
     botchannel = trigger.sender
     
 ###### admin only block 
-    if instigator not in adminsarray:
+    if not trigger.admin:
         bot.notice(instigator + "This is an admin only function.", instigator)
     
     ## activate a module for a channel
@@ -78,71 +59,33 @@ def main_command(bot, trigger):
                 else:
                     adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
                 bot.say(commandtoenable + " should now be "+str(dircommand)+"d.")
-            
 
     ## do a /me action for the bot in channel
-    elif subcommand == 'chanaction':
-        message = get_trigger_arg(triggerargsarray, '2+')
-        if message:
+    elif subcommand == 'chanaction' or subcommand == 'chanmsg':
+        channel = get_trigger_arg(triggerargsarray, 2)
+        message = get_trigger_arg(triggerargsarray, '3+')
+        if not channel:
+            bot.say("What channel?")
+        elif channel not in bot.channels:
+            bot.say("Invalid channel.")
+        elif not message:
+            bot.say("What message?")
+        elif subcommand == 'chanaction':
             bot.action(message,channel)
-    
-    ## Make the bot talk in channel
-    elif subcommand == 'chanmsg':
-        message = get_trigger_arg(triggerargsarray, '2+')
-        if message:
+        elif subcommand == 'chanmsg':
             bot.msg(channel,message)
-    
-    ## set and reset values
-    elif subcommand == 'statsadmin':
-        incorrectdisplay = "A correct command use is .spicebotadmin statsadmin target set/reset stat"
-        target = get_trigger_arg(triggerargsarray, 2)
-        subcommand = get_trigger_arg(triggerargsarray, 3)
-        statset = get_trigger_arg(triggerargsarray, 4)
-        newvalue = get_trigger_arg(triggerargsarray, 5) or None
-        if not target:
-            bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-        elif target.lower() not in allusersinroomarray and target != 'everyone':
-            bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-        elif not subcommand:
-            bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
-        elif subcommand not in statsadminchangearray:
-            bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
-        elif not statset:
-            bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
-        elif statset not in statsadminarray and statset != 'all':
-            bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-        elif instigator not in adminsarray:
-            bot.notice(instigator + "This is an admin only function.", instigator)
-        else:
-            if subcommand == 'reset':
-                newvalue = None
-            if subcommand == 'set' and newvalue == None:
-                bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
-            elif target == 'everyone':
-                for u in bot.channels[channel].users:
-                    if statset == 'all':
-                        for x in statsadminarray:
-                            set_botdatabase_value(bot, u, x, newvalue)
-                    else:
-                        set_botdatabase_value(bot, u, statset, newvalue)
-                bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-            else:
-                if statset == 'all':
-                    for x in statsadminarray:
-                        set_botdatabase_value(bot, target, x, newvalue)
-                else:
-                    set_botdatabase_value(bot, target, statset, newvalue)
-                bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-
+            
     ## Update from github
     elif subcommand == 'update':
-        bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+        for channel in bot.channels:
+            bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
         update(bot, trigger)
         restart(bot, trigger, service)
     
     ## restart the bot's service
     elif subcommand == 'restart':
-        bot.msg(channel, trigger.nick + " Commanded me to restart. Be Back Soon!")
+        for channel in bot.channels:
+            bot.msg(channel, trigger.nick + " Commanded me to restart. Be Back Soon!")
         restart(bot, trigger, service)   
                 
     ## install a python pip package
