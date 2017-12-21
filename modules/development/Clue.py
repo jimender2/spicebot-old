@@ -5,8 +5,8 @@ import sopel.module
 import sys
 import os
 import random
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
