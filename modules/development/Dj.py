@@ -3,8 +3,8 @@ import random
 import urllib
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 party='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/jukebox_party.txt'
