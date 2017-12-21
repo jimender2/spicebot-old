@@ -9,7 +9,10 @@ from sopel.module import commands, example, NOLIMIT
 import sys
 import os
 
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
+
 import requests
 import xmltodict
 
