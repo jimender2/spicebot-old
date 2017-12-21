@@ -17,5 +17,5 @@ def execute_main(bot, trigger, triggerargsarray):
     #for channel in bot.channels:
     #    for u in bot.channels[channel.lower()].users:
     #        bot.say(str(u))
-    for u in bot.channels[].users:
+    for u in bot.channels[bot.channels.lower()].users:
         bot.say(str(u))
