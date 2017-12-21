@@ -26,22 +26,14 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
 
 @sopel.module.commands('spicebot')
 def main_command(bot, trigger):
-    ow = time.time()
+    now = time.time()
     service = bot.nick.lower()
     maincommandused = trigger.group(1)
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
-    optedinarray, targetcantoptarray = [], []
-    for u in allusersinroomarray:
-        disenable = get_botdatabase_value(bot, u, 'disenable')
-        if u != bot.nick and disenable:
-            optedinarray.append(u)
-        opttime = get_timesince(bot, u, 'opttime')
-        if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
-            targetcantoptarray.append(u)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')
     inchannel = trigger.sender
     commandlist = get_trigger_arg(validsubcommandarray, "list")
     
@@ -125,30 +117,27 @@ def main_command(bot, trigger):
         disenablevalue = None
         if subcommand == 'on':
             disenablevalue = 1
-        target = get_trigger_arg(triggerargsarray, 2) or instigator
-        targetopttime = get_timesince(bot, target, 'opttime')
-        if target.lower() not in allusersinroomarray:
-            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-        elif target.lower() not in allusersinroomarray and target != 'everyone':
+        target = get_trigger_arg(triggerargsarray, 2) or instigator 
+        if target.lower() not in allusersinroomarray and target != 'everyone':
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target != instigator and instigator not in adminsarray:
             bot.notice(instigator + "This is an admin only function.", instigator)
         elif target == 'everyone':
             for u in allusersinroomarray:
-                set_botdatabase_value(bot, u, 'disenable', disenablevalue)
+                if disenablevalue == 1:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'add')
+                else:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'del')
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
-        elif target in targetcantoptarray:
-            bot.notice(instigator + " It looks like " + target + " can't enable/disable " + bot.nick + " for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
-        elif subcommand == 'on' and target.lower() in optedinarray:
+        elif subcommand == 'on' and target.lower() in botusersarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " on.", instigator)
-        elif subcommand == 'off' and target.lower() not in optedinarray:
+        elif subcommand == 'off' and target.lower() not in botusersarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
         else:
             if disenablevalue == 1:
                 adjust_database_array(bot, bot.nick, target, 'botusers', 'add')
             else:
                 adjust_database_array(bot, bot.nick, target, 'botusers', 'del')
-            set_botdatabase_value(bot, target, 'opttime', now)
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
     ## who is the bot on for
