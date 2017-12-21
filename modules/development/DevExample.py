@@ -15,8 +15,8 @@ def execute_main(bot, trigger):
     bot.notice("This is to help the dev team understand values.", trigger.nick)
     bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
     chan = ''
-    for c in channels:
+    for c in bot.channels:
         chan = chan + c + ','
     args[:-1]
-    bot.notice("Channels: [" + chan + ']', trigger.nick)
+    bot.notice("Bot.Channels: [" + chan + ']', trigger.nick)
     
