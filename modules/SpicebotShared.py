@@ -30,24 +30,24 @@ def spicebot_prerun(bot,trigger):
     ## Get Name Of Current Channel
     botchannel = trigger.sender
     
-    ## Channel activated status
-    if botchannel.startswith("#"):
-        channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
-        if commandused not in channelmodulesarray:
-            bot.notice(instigator + ", it looks like this command has not been enabled in " + botchannel + ".",instigator)
-            return
-    
-    ## Nick of user operating command
-    instigator = trigger.nick
-    
     ## Custom args
     triggerargsarray = create_args_array(trigger.group(2))
     
+    ## Nick of user operating command
+    instigator = trigger.nick
+
     ## time
     now = time.time()
     
     ## Enable Status default is 1 = don't run
     enablestatus = 1
+    
+    ## Channel activated status
+    if botchannel.startswith("#"):
+        channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
+        if commandused not in channelmodulesarray:
+            bot.notice(instigator + ", it looks like this command has not been enabled in " + botchannel + ".",instigator)
+            return enablestatus, triggerargsarray
     
     ## Bot Enabled Status (now in an array)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
