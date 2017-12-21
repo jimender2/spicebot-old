@@ -144,7 +144,10 @@ def main_command(bot, trigger):
         elif subcommand == 'off' and target.lower() not in optedinarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
         else:
-            set_botdatabase_value(bot, target, 'disenable', disenablevalue)
+            if disenablevalue == 1:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'add')
+            else:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'del')
             set_botdatabase_value(bot, target, 'opttime', now)
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
