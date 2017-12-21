@@ -31,14 +31,14 @@ def execute_main(bot, trigger):
 def webbyauto(bot):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
-        for channel in bot.channels:
-            now = datetime.datetime.utcnow()
-            webbytime = getwebbytime()
-            if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
-                if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
-                    webbybonus = getwebbybonus()
-                    webbytitle = getwebbytitle()
-                    webbylink = getwebbylink()
+        now = datetime.datetime.utcnow()
+        webbytime = getwebbytime()
+        if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
+            if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
+                webbybonus = getwebbybonus()
+                webbytitle = getwebbytitle()
+                webbylink = getwebbylink()
+                for channel in bot.channels:
                     bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
                     if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
                         bot.msg(channel, str(webbybonus))
