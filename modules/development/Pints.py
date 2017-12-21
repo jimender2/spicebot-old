@@ -20,4 +20,6 @@ def execute_main(bot, trigger, triggerargsarray):
         winner = "Everybody"
     elif target == trigger.nick:
         winner = "him/her-self"
+    else:
+        winner = target
     bot.say(trigger.nick + ' buys a pint for ' + winner)
