@@ -58,9 +58,10 @@ def main_command(bot, trigger):
     ## activate a module for a channel
     elif subcommand == 'chanmodules' and botchannel.startswith("#"):
         dircommand = get_trigger_arg(triggerargsarray, 2)
+        validcommands = ['enable','disable']
         if not dircommand:
             bot.say("Would you like to enable or disable a module?")
-        elif dircommand != 'enable' or dircommand != 'disable':
+        elif dircommand not in validcommands:
             bot.say("A correct command is enable or disable.")
         else:
             commandtoenable = get_trigger_arg(triggerargsarray, 3)
