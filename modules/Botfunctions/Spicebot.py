@@ -16,7 +16,8 @@ import re
 import git 
 from os.path import exists
 moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 log_path = "data/templog.txt"
