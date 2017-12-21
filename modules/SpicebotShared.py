@@ -49,9 +49,9 @@ def spicebot_prerun(bot,trigger):
     botwarnedarray = get_botdatabase_value(bot, bot.nick, 'botuserswarned') or []
     
     if instigator not in botusersarray and instigator not in botwarnedarray:
-        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+        bot.notice(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.",instigator)
     elif instigator not in botusersarray and instigator in botwarnedarray:
-        message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBot and ##SpiceBotTest.")
+        bot.notice(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBot and ##SpiceBotTest.",instigator)
     
 
     ## Run Module if above checks pass
