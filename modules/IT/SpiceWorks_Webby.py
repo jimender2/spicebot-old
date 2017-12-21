@@ -11,6 +11,9 @@ import calendar
 import arrow
 import sys
 import os
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 url = 'https://community.spiceworks.com/calendar'
 
