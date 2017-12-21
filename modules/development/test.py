@@ -14,13 +14,6 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    for u in bot.channels[channel.lower() for channel in bot.channels].users:
-        bot.say(str(u))
-    
-    #for u in [channel.lower() for channel in bot.channels]:
-    #    bot.say(str(u))
-    
-    
-    #for channel in bot.channels:
-    #    for u in bot.channels[channel.lower()].users:
-    #        bot.say(str(u))
+    for channel in bot.channels:
+        for u in bot.channels[channel.lower()].users:
+            bot.say(str(u))
