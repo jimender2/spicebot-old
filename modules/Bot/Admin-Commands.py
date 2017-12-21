@@ -77,7 +77,7 @@ def main_command(bot, trigger):
                     adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
                 else:
                     adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
-                bot.say(commandtoenable = " should now be "+str(dircommand)+"d.")
+                bot.say(commandtoenable + " should now be "+str(dircommand)+"d.")
             
 
     ## do a /me action for the bot in channel
