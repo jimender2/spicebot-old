@@ -9,11 +9,10 @@ import html2text
 import requests
 import re
 import urllib2
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-
-
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
+
 ignored_sites = [
     # For google searching
     'almamater.xkcd.com',
