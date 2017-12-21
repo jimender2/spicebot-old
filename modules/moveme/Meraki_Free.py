@@ -4,13 +4,10 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-from SpicebotShared import *
 
 @sopel.module.commands('meraki','freemeraki')
 def execute_main(bot, trigger, triggerargsarray):
-    types = get_trigger_arg(triggerargsarray, 1)
+    types = trigger.group(3)
     if not types:
         bot.say('Please specify which product. Choices are MX , AP , or switch .')
     elif types == 'mx':
