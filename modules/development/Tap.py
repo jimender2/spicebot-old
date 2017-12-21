@@ -6,7 +6,7 @@ import sys
 import os
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
-sys.path.append(os.path.abspath("/home/sopel/.sopel/modules/shared"))
+sys.path.append("/home/sopel/.sopel/modules/shared")
 from SpicebotShared import *
 
 @sopel.module.commands('tap')
