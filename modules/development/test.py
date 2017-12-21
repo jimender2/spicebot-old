@@ -11,8 +11,8 @@ from SpicebotShared import *
 @sopel.module.commands('chantest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+    execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    
+    for u in bot.channels.users:
+        bot.say(str(u))
