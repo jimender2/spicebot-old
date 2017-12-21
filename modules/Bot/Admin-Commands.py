@@ -67,10 +67,13 @@ def main_command(bot, trigger):
             commandtoenable = get_trigger_arg(triggerargsarray, 3)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+"?")
-            elif dircommand == 'enable':
-                adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
             else:
-                adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
+                if dircommand == 'enable':
+                    adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
+                else:
+                    adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
+                bot.say(commandtoenable = " should now be "+str(dircommand)+"d.")
+            
 
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction':
