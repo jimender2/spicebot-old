@@ -16,8 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    for c in bot.channels:
-        channel = c
+    channel = trigger.sender
     target = get_trigger_arg(triggerargsarray, 1)
     inchannel = trigger.sender
     if not inchannel.startswith("#"):
