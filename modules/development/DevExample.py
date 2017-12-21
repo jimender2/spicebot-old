@@ -24,5 +24,9 @@ def execute_main(bot, trigger):
     for arg in trigger.args:
         args = args + arg + ', '
     args = args[:-2]
-    bot.say("Trigger.args: [" + args + ']')
-    
+    bot.say("Trigger.args: [" + args + "]")
+    users = ''
+    for u in bot.users:
+        users = users + u + ', '
+    users = users[:-2]
+    bot.say("Bot.users: [" + users + "]")
