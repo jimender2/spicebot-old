@@ -7,10 +7,8 @@ import sys
 import os
 import requests
 import urllib2
-
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('google','googleit')
