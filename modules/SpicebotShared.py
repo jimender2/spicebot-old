@@ -21,10 +21,17 @@ from os.path import exists
 devbot = 'dev'
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 
-## Prerun stripped down for now
-
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
+    
+    ## used to circumvent
+    commandused = trigger.group(1)
+    
+    ## Get Name Of Current Channel
+    botchannel = trigger.sender
+    
+    ## Nick of user operating command
+    instigator = trigger.nick
     
     ## Custom args
     triggerargsarray = create_args_array(trigger.group(2))
@@ -32,19 +39,25 @@ def spicebot_prerun(bot,trigger):
     ## time
     now = time.time()
     
-    ## used to circumvent
-    commandused = trigger.group(1)
-    
-    ## Get Name Of Channel
-    botchannel = trigger.sender
-    
-    ## Nick of user operating command
-    instigator = trigger.nick
-    
     ## Enable Status default is 1 = don't run
-    #enablestatus = 1
-    enablestatus = 0
+    enablestatus = 1
     
+    ## Bot Enabled Status (now in an array)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')
+    
+    ## Bot warned Status (now in an array)
+    botwarnedarray = get_botdatabase_value(bot, bot.nick, 'botuserswarned')
+    
+    if instigator not in botusersarray and instigator not in botwarnedarray:
+        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+    elif instigator not in botusersarray and instigator in botwarnedarray:
+        message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBot and ##SpiceBotTest.")
+    
+
+    ## Run Module if above checks pass
+    else:
+        enablestatus = 0
+
     ## Send Status Forward
     return enablestatus, triggerargsarray
 
