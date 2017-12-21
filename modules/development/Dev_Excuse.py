@@ -6,8 +6,8 @@ import urllib
 from xml.dom.minidom import parseString
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('devexcuse')
