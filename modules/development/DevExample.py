@@ -16,7 +16,8 @@ def execute_main(bot, trigger):
     bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
     chan = ''
     for c in bot.channels:
-        chan = chan + c + ','
-    chan[:-1]
+        chan = chan + c + ', '
+    chan = chan[:-2]
     bot.notice("Bot.Channels: [" + chan + ']', trigger.nick)
+    bot.notice("Trigger.admin: " + trigger.admin, trigger.nick)
     
