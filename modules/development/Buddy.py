@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    myline = get_trigger_arg(triggerargsarray, '0')
+    myline = get_trigger_arg(triggerargsarray, 0)
     if not myline:
         bot.say("What is your buddy good at?")
     else:
