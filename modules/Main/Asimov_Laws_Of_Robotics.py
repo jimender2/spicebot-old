@@ -5,6 +5,7 @@ import sopel.module
 import sys
 import os
 import random
+from word2number import w2n
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -22,9 +23,10 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = get_trigger_arg(laws, 'random')
     else:
         if requested.isdigit():
-            myline = get_trigger_arg(laws, requested)
+            myline = get_trigger_arg(laws, requested)            
         else:
-            myline = get_trigger_arg(laws, 'random')      
+            requested = w2n.word_to_num(str(requested))
+            myline = get_trigger_arg(laws, requested) 
         
     #bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
     #bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')
