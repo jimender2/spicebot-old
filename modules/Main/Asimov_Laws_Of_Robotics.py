@@ -22,11 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = get_trigger_arg(laws, 'random')
     else:
         if requested.isdigit():
-            requested=int(requested)
-            if requested>(len(laws)):
-                myline = get_trigger_arg(laws, 'random')
-            else:
-                myline=laws[(requested+1)]
+            myline = get_trigger_arg(laws, requested)
         else:
             myline = get_trigger_arg(laws, 'random')      
         
