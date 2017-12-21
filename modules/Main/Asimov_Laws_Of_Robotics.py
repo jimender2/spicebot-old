@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
             requested=int(requested)
             if requested>(len(laws)):
                 myline = get_trigger_arg(laws, 'random')
-           else:
+            else:
                 myline=laws[(requested+1)]
         else:
             myline = get_trigger_arg(laws, 'random')      
