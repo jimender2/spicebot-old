@@ -60,19 +60,17 @@ def main_command(bot, trigger):
         dircommand = get_trigger_arg(triggerargsarray, 1)
         if not dircommand:
             bot.say("Would you like to enable or disable a module?")
-        elif dircommand != "enable" or dircommand != "disable":
-            bot.say("Would you like to enable or disable a module?")
+        elif dircommand != 'enable' or dircommand != 'disable':
+            bot.say("A correct command is enable or disable.")
         else:
             commandtoenable = get_trigger_arg(triggerargsarray, 2)
             if not commandtoenable:
-                bot.say("Would you like to enable or disable a module?")
+                bot.say("What module do you want to enable?")
             elif dircommand == 'enable':
                 adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
             else:
                 adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
-            
-            
-    
+
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction':
         message = get_trigger_arg(triggerargsarray, '2+')
