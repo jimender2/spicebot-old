@@ -5,8 +5,8 @@ import sopel.module
 import datetime
 import sys
 import os
-moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('today')
