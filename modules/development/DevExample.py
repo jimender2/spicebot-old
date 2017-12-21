@@ -16,7 +16,7 @@ def execute_main(bot, trigger):
     bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
     args = ''
     for arg in trigger.args:
-        args = str(args) + ', '
+        args = args + str(arg) + ', '
     args[:-2]
     bot.notice("Trigger.args: [" + args + ']', trigger.nick)
     
