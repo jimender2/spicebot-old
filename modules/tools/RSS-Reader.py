@@ -19,8 +19,6 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
-    for c in bot.channels:
-        channel = c
     if not feedselect:
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':
@@ -32,13 +30,13 @@ def reset(bot,trigger):
             trimmedname = feedname.replace(" ","").lower()
             lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
             bot.say('Resetting LastBuildTime for ' + str(feedname))
-            bot.db.set_nick_value(channel, lastbuilddatabase, None)
+            bot.db.set_nick_value(bot.nick, lastbuilddatabase, None)
     else:
         lastbuilddatabase = str(feedselect + '_lastbuildcurrent')
-        istherafeed = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+        istherafeed = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
         if istherafeed:
             bot.say('Resetting LastBuildTime for ' + str(feedselect))
-            bot.db.set_nick_value(channel, lastbuilddatabase, None)
+            bot.db.set_nick_value(bot.nick, lastbuilddatabase, None)
         else:
             bot.say("There doesn't appear to be record of that feed.")
 
@@ -46,8 +44,6 @@ def reset(bot,trigger):
 ## Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    for c in bot.channels:
-        channel = c
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
@@ -69,7 +65,7 @@ def autorss(bot):
             lastBuildXML = xmldoc.getElementsByTagName('pubDate')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
-            lastbuildcurrent = bot.db.get_nick_value(channel, lastbuilddatabase) or 0
+            lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
             newcontent = True
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
@@ -79,5 +75,6 @@ def autorss(bot):
                 links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 lastbuildcurrent = lastBuildXML.strip()
-                bot.db.set_nick_value(channel, lastbuilddatabase, lastbuildcurrent)
-                bot.msg(channel, messagestring + title + ': ' + link)
+                bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
+                for channel in bot.channels:
+                    bot.msg(channel, messagestring + title + ': ' + link)
