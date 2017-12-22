@@ -42,6 +42,12 @@ def spicebot_prerun(bot,trigger):
     ## Enable Status default is 1 = don't run
     enablestatus = 1
     
+    ## User was Blocked by a bot.admin or an OP
+    blockedusersarray = get_botdatabase_value(bot, botchannel, 'blockedusers') or []
+    if instigator in blockedusersarray:
+        bot.notice(instigator + ", it looks like you have been blocked from using commands in " + botchannel,instigator)
+        return enablestatus, triggerargsarray
+    
     ## Channel activated status
     if botchannel.startswith("#"):
         channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
