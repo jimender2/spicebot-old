@@ -7,9 +7,8 @@ import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-from shareddir.Main.Nuke import *
+from Nuke import *
 #from shareddir.path.append(Main) import Nuke ##this line is wonky
-
 
 @sopel.module.commands('testimport')
 def mainfunction(bot, trigger):
