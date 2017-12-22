@@ -143,7 +143,7 @@ def main_command(bot, trigger):
         elif target not in bot.users:
             bot.say("I don't know who that is.")
         else:
-            if disenablevalue == 'add':
+            if adddel == 'add':
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
             else:
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
