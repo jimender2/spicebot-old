@@ -26,8 +26,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     cmdarray = []
     for cmds in bot.command_groups.items():
-        cmd = cmds[-1]
-        cmdarray.append(cmd)
-    cmdlist = get_trigger_arg(cmdarray, 'list')
-    bot.say(str(cmdlist))
+        cmdsall = cmds[-1]
+        for cmd in cmdsall:
+            cmdarray.append(cmd)
+    #cmdlist = get_trigger_arg(cmdarray, 'list')
+    bot.say(str(cmdarray))
     
