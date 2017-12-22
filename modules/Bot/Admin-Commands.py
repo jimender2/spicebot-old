@@ -34,12 +34,16 @@ def main_command(bot, trigger):
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     botchannel = trigger.sender
     channelarray = []
+    operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
+        for u in bot.users:
+            if bot.privileges[c.lower()][u] == OP:
+                operatorarray.append(u)
     
 ###### admin only block (and a trusted OP)
-    if not trigger.admin or trigger.nick in trustedoparray:
-        bot.notice(instigator + "This is an admin only function.", instigator)
+    if not trigger.admin and trigger.nick not in operatorarray:
+        bot.notice(instigator + ", This is an admin only function.", instigator)
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
