@@ -126,7 +126,28 @@ def main_command(bot, trigger):
             bot.action(message,channel)
         elif subcommand == 'chanmsg':
             bot.msg(channel,message)
-            
+    
+    ## Block users from using the bot
+    elif subcommand == 'block' and not botchannel.startswith("#"):
+        bot.say("blocks must be done in channel")
+    elif subcommand == 'block':
+        adddel = get_trigger_arg(triggerargsarray, 2)
+        target = get_trigger_arg(triggerargsarray, 3)
+        adddelarray = ['add','del']
+        if not adddel:
+            bot.say("would you like to add or del a user from the block list?")
+        elif adddel not in adddelarray:
+            bot.say("Invalid Command")
+        elif not target:
+            bot.say('Wh do you want to block?')
+        elif target not in bot.users:
+            bot.say("I don't know who that is.")
+        else:
+            if disenablevalue == 'add':
+                adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
+            else:
+                adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
+    
     ## Update from github
     elif subcommand == 'update':
         for channel in bot.channels:
