@@ -87,9 +87,15 @@ def main_command(bot, trigger):
                     bot.notice(str(cmdline), instigator)
         else:
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
-            
+            cmdarray = []
+            for cmds in bot.command_groups.items():
+                cmdsall = cmds[-1]
+                for cmd in cmdsall:
+                    cmdarray.append(cmd)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
+            elif dircommand == 'enable' and commandtoenable not in cmdarray:
+                bot.say("It looks like that is an invalid command to enable.")
             elif commandtoenable in channelmodulesarray and dircommand == 'enable':
                 bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + channel + ".")
             elif commandtoenable not in channelmodulesarray and dircommand == 'disable':
