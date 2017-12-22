@@ -25,7 +25,18 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     #cmdarray = []
     for cmd in bot.command_groups.items():
-        bot.say(str(cmd))
+        cmdarray.append(cmd)
+    for x in cmdarray:
+        dataset_array = []
+        for j in x.split(','):
+            bot.say(str(j))
+
+    
+    
+    #for cmd in bot.command_groups.items():
+    #    bot.say(str(cmd))
+    
+    
     #for cmds in collections.OrderedDict(sorted).items():
     #    for cmd in cmds:
     #        cmdarray.append(cmds)
