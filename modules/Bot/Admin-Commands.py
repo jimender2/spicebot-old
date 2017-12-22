@@ -43,7 +43,7 @@ def main_command(bot, trigger):
     
 ###### admin only block (and a trusted OP)
     if not trigger.admin and trigger.nick not in operatorarray:
-        bot.notice(instigator + "This is an admin only function.", instigator)
+        bot.notice(instigator + ", This is an admin only function.", instigator)
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
