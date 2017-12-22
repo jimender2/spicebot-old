@@ -37,7 +37,7 @@ def main_command(bot, trigger):
     operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
-        for u in c:
+        for u in bot.users:
             if bot.privileges[c.lower()][u] == OP:
                 operatorarray.append(u)
     
