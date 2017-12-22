@@ -38,6 +38,9 @@ def main_command(bot, trigger):
     for c in bot.channels:
         channelarray.append(c)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
+    userarray = []
+    for u in bot.users:
+        userarray.append(u)
     
 ###### admin only block and OP
     if not trigger.admin and trigger.nick not in operatorarray:
@@ -146,7 +149,7 @@ def main_command(bot, trigger):
             bot.say("Invalid Command")
         elif not target:
             bot.say('Wh do you want to block?')
-        elif target not in bot.users:
+        elif target not in userarray:
             bot.say("I don't know who that is.")
         else:
             if adddel == 'add':
