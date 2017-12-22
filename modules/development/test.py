@@ -18,8 +18,6 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
 
-import np
-
 @sopel.module.commands('chantest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
