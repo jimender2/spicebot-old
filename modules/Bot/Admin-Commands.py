@@ -86,6 +86,7 @@ def main_command(bot, trigger):
                     cmdline = " ".join(chunks[i:i + per_line])
                     bot.notice(str(cmdline), instigator)
         else:
+            channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
             cmdarray = []
             for cmds in bot.command_groups.items():
