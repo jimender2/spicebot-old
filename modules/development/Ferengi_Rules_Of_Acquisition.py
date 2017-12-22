@@ -23,15 +23,26 @@ def execute_main(bot, trigger, triggerargsarray):
     if not requested:
         myline = randomfra()
     else:
-        rulenumber = int(requested)
-        htmlfile=urllib.urlopen(fra)
-        lines=htmlfile.readlines()
-        try:
-            myline = str(lines[rulenumber-1])
-        except IndexError:
-            myline = 'That doesnt appear to be a rule number.'
-        if not myline or myline == '\n':
-            myline = 'There is no cannonized rule tied to this number.'
+        requested.lstrip("-")        
+        if (requested == '0' or requested.lower()) == 'zero':
+            myline = randomfra()
+        else:
+            htmlfile=urllib.urlopen(fra)
+            lines=htmlfile.readlines()
+            if (requested == '0' or requested.lower()) == 'zero':
+                myline = randomfra()
+            else:
+                if rulenumber.isdigit():
+                    rulenumber = int(requested)
+                    myline = get_trigger_arg(myline, rulenumber)
+                else:
+                    try:
+                        rulenumber = w2n.word_to_num(str(requested))
+                        myline = get_trigger_arg(myline, rulenumber)   
+                    except IndexError:
+                        myline = 'That doesnt appear to be a rule number.'
+    if not myline or myline == '\n':
+        myline = 'There is no cannonized rule tied to this number.'
     bot.say(myline)
        
 # random rule
