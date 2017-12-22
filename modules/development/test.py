@@ -23,8 +23,12 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    cmdarray = []
     for cmds in collections.OrderedDict(sorted(bot.command_groups.items())).items():
-        bot.say(str(cmds))
+        cmd = get_trigger_arg(cmds, 2)
+        cmdarray.append(cmd)
+    cmdlist = get_trigger_arg(cmdarray, 'list')
+    bot.say(str(cmdlist))
     
     #for u in bot.users:
     #    bot.say(u)
