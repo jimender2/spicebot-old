@@ -25,12 +25,12 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = randomfra()
     else:
         requested.lstrip("-")        
-        if (requested == '0' or requested.lower()) == 'zero'):
+        if (requested == '0' or requested.lower() == 'zero'):
             myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
             lines=htmlfile.readlines()
-            if (requested == '0' or requested.lower()) == 'zero':
+            if (requested == '0' or requested.lower() == 'zero'):
                 myline = randomfra()
             else:
                 if requested.isdigit():
