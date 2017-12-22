@@ -35,33 +35,38 @@ def main_command(bot, trigger):
     for c in bot.channels:
         channelarray.append(c)
     
-###### admin only block 
-    if not trigger.admin:
+###### admin only block (and a trusted OP)
+    if not trigger.admin or trigger.nick == 'Cipher-0':
         bot.notice(instigator + "This is an admin only function.", instigator)
     
     ## activate a module for a channel
-    elif subcommand == 'chanmodules' and botchannel.startswith("#"):
-        dircommand = get_trigger_arg(triggerargsarray, 2)
+    elif subcommand == 'chanmodules':
+        channel = get_trigger_arg(triggerargsarray, 2)
+        dircommand = get_trigger_arg(triggerargsarray, 3)
         validcommands = ['enable','disable']
-        if not dircommand:
-            bot.say("Would you like to enable or disable a module for " + botchannel + "?")
+        if not channel:
+            bot.say('What Channel are we adjuwsting modules for?')
+        elif channel not in channelarray:
+            bot.say('Invalid channel.')
+        elif not dircommand:
+            bot.say("Would you like to enable or disable a module for " + channel + "?")
         elif dircommand not in validcommands:
             bot.say("A correct command is enable or disable.")
         else:
-            commandtoenable = get_trigger_arg(triggerargsarray, 3)
-            channelmodulesarray = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
+            commandtoenable = get_trigger_arg(triggerargsarray, 4)
+            channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
             if not commandtoenable:
-                bot.say("What module do you want to "+str(dircommand)+" for " + botchannel + "?")
+                bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable in channelmodulesarray and dircommand == 'enable':
-                bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + botchannel + ".")
+                bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + channel + ".")
             elif commandtoenable not in channelmodulesarray and dircommand == 'disable':
-                bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + botchannel + ".")
+                bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + channel + ".")
             else:
                 if dircommand == 'enable':
-                    adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'add')
+                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'add')
                 else:
-                    adjust_database_array(bot, botchannel, commandtoenable, 'channelmodules', 'del')
-                bot.say(commandtoenable + " should now be "+str(dircommand)+"d for " + botchannel + ".")
+                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'del')
+                bot.say(commandtoenable + " should now be "+str(dircommand)+"d for " + channel + ".")
 
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction' or subcommand == 'chanmsg':
