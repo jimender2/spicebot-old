@@ -1299,12 +1299,11 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     displaymsg = ''
     executedueling = 0
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
-    instigatordisenable = get_database_value(bot, instigator, 'disenable') or ''
-    targetdisenable = get_database_value(bot, target, 'disenable') or ''
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
     targettime = get_timesince_duels(bot, target, 'timeout') or ''
     challengerecordusertime = get_timesince_duels(bot, challengerecorduser, 'timeout') or ''
     challengerecorduserlastinstigator = get_database_value(bot, challengerecorduser, 'lastinstigator') or bot.nick
+    dueloptedinarray = get_database_value(bot, challengerecorduser, 'duelusers') or []
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
@@ -1312,9 +1311,9 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == instigatorlastfought and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
-    elif not instigatordisenable:
+    elif instigator not in dueloptedinarray:
         displaymsg = str(instigator + ", It looks like you have disabled Challenges. Run .challenge on to re-enable.")
-    elif not targetdisenable:
+    elif target not in dueloptedinarray:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled Challenges.')
     elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You can't challenge for %d seconds." % (USERTIMEOUT - instigatortime))
