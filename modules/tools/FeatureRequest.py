@@ -51,3 +51,17 @@ def make_github_issue(bot, body, labels, title):
     else:
         bot.say("Could not create " + title)
         bot.say(str('Response:' + r.content))
+
+def make_github_feature(bot, body, title):
+    url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
+    session = requests.Session()
+    session.auth = (USERNAME, PASSWORD)
+    issue = {'title': title,
+             'body': body,
+             'labels': ['Feature Request']}
+    r = session.post(url, json.dumps(issue))
+    if r.status_code == 201:
+        bot.say("Successfully created " + title)
+    else:
+        bot.say("Could not create " + title)
+        bot.say(str('Response:' + r.content))
