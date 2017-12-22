@@ -28,9 +28,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     cmdarray = []
     for cmds in bot.command_groups.items():
-        arrayconvert = np.array(cmds)
-        for x in arrayconvert:
-            bot.say(str(x))
+        cmd = cmds[-1]
+        cmdarray.append(cmd)
+    bot.say(str(cmdarray))
         
         
         #cmdarray.append(cmd)
