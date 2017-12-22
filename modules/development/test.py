@@ -17,6 +17,9 @@ import requests
 from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
+
+import np
+
 @sopel.module.commands('chantest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
@@ -24,12 +27,17 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     cmdarray = []
-    for cmd in bot.command_groups.items():
-        cmdarray.append(cmd)
-    for x in cmdarray:
-        dataset_array = []
-        for j in x.split(','):
-            bot.say(str(j))
+    for cmds in bot.command_groups.items():
+        arrayconvert = np.array(cmds)
+        for x in arrayconvert:
+            bot.say(str(x))
+        
+        
+        #cmdarray.append(cmd)
+    #for x in cmdarray:
+    #    dataset_array = []
+    #    for j in x.split(','):
+    #        bot.say(str(j))
 
     
     
