@@ -35,11 +35,11 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 if requested.isdigit():
                     rulenumber = int(requested)
-                    myline = get_trigger_arg(myline, rulenumber)
+                    myline = get_trigger_arg(lines, rulenumber)
                 else:
                     try:
                         rulenumber = w2n.word_to_num(str(requested))
-                        myline = get_trigger_arg(myline, rulenumber)   
+                        myline = get_trigger_arg(lines, rulenumber)   
                     except IndexError:
                         myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
