@@ -221,7 +221,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + "This is an admin only function.", instigator)
             elif target == 'everyone':
                 for u in allusersinroomarray:
-                    if disenablevalue == 1:
+                    if commandortarget == 'on':
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                     else:
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
@@ -1357,12 +1357,9 @@ def healthcheck(bot, nick):
         set_database_value(bot, nick, 'mana', None)
 
 def refreshbot(bot):
-    set_database_value(bot, bot.nick, 'disenable', 1)
-    adjust_database_array(bot, challengerecorduser, bot.nick, 'duelusers', 'del')
     for x in challengestatsadminarray:
         statset = x
-        if statset != 'disenable':
-            set_database_value(bot, bot.nick, x, None)
+        set_database_value(bot, bot.nick, x, None)
             
 ##########
 ## Time ##
