@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = get_trigger_arg(laws, 'random')
     else:
         requested.lstrip("-")        
-        if requested == '0' or requested.lower() == 'zero':
+        if (requested == '0' or requested.lower()) == 'zero':
             myline=''
         else:
             if requested.isdigit():
