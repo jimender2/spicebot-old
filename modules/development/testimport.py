@@ -9,7 +9,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import nuke
 
-@sopel.module.commands('importtest')
+@sopel.module.commands('testimport')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
