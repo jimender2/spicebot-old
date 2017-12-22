@@ -97,6 +97,13 @@ def main_command(bot, trigger):
                     cmdarray.append(cmd)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
+            elif commandtoenable == 'all':
+                if dircommand == 'enable':
+                    for x in cmdarray:
+                        adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'add')
+                else:
+                    for x in cmdarray:
+                        adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'del')
             elif dircommand == 'enable' and commandtoenable not in cmdarray:
                 bot.say("It looks like that is an invalid command to enable.")
             elif commandtoenable in channelmodulesarray and dircommand == 'enable':
