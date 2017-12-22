@@ -11,7 +11,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('showdb')
+@sopel.module.commands('dbshow')
 def mainfunction(bot, trigger):
     triggerargsarray = spicebot_prerun(bot, trigger)
     execute_main(bot, triggerargsarray)
