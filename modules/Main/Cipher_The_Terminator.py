@@ -27,8 +27,14 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(triggerargsarray, 1)
     if instigator == 'Cipher-0' and not target:
-        target = 'Cipher-0'
-    if not target:
+        modelnumber = get_trigger_arg(modelnumbers, 'random')
+        missiontype = get_trigger_arg(missiontypes, 'random')
+        missionsarray = eval(missiontype+"_mission")
+        mission = get_trigger_arg(missionsarray, 'random')
+        bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
+        bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
+        bot.say('ACTIVATING Cipher-0')
+    elif not target:
         bot.say('Pinging Cipher-0 with a WOL packet...')
     elif target == 'story':
         bot.say('The machines rose from the ashes of the nuclear fire. Their war to exterminate mankind had raged on for decades. But the final battle will not be fought in the future. It would be fought in our present...tonight.')
