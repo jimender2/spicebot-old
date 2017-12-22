@@ -29,19 +29,16 @@ def execute_main(bot, trigger, triggerargsarray):
             myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
-            lines=htmlfile.readlines()
-            if (requested == '0' or requested.lower() == 'zero'):
-                myline = randomfra()
+            lines=htmlfile.readlines()            
+            if requested.isdigit():
+                rulenumber = int(requested)
+                myline = get_trigger_arg(lines, rulenumber)
             else:
-                if requested.isdigit():
-                    rulenumber = int(requested)
-                    myline = get_trigger_arg(lines, rulenumber)
-                else:
-                    try:
-                        rulenumber = w2n.word_to_num(str(requested))
-                        myline = get_trigger_arg(lines, rulenumber)   
-                    except ValueError:
-                        myline = 'That doesnt appear to be a rule number.'
+                try:
+                    rulenumber = w2n.word_to_num(str(requested))
+                    myline = get_trigger_arg(lines, rulenumber)   
+                except ValueError:
+                    myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
         myline = 'There is no cannonized rule tied to this number.'
     bot.say(myline)
