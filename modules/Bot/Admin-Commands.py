@@ -37,9 +37,7 @@ def main_command(bot, trigger):
     operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
-        for u in bot.users:
-            if bot.privileges[c.lower()][u] == OP:
-                operatorarray.append(u)
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
     
 ###### admin only block (and a trusted OP)
     if not trigger.admin and trigger.nick not in operatorarray:
