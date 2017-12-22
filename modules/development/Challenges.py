@@ -93,7 +93,7 @@ botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
 transactiontypesarray = ['buy','sell','trade','use']
-challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','disenable','poisonpotion','manapotion','lastfought','konami']
+challengestatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami']
 challengestatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 classarray = ['barbarian','mage','scavenger','rogue','ranger']
 statsadminchangearray = ['set','reset']
@@ -211,9 +211,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
-            disenablevalue = None
-            if commandortarget == 'on':
-                disenablevalue = 1
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in allusersinroomarray:
@@ -236,7 +233,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandortarget == 'off' and target.lower() not in dueloptedinarray:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
-                if disenablevalue == 1:
+                if commandortarget == 'on':
                     adjust_database_array(bot, challengerecorduser, target, 'duelusers', 'add')
                 else:
                     adjust_database_array(bot, challengerecorduser, target, 'duelusers', 'del')
