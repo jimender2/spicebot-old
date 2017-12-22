@@ -20,7 +20,7 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
     target = get_trigger_arg(triggerargsarray, 1)
     if commandused == 'nuke':
-        nukeit()
+        nukeit(bot, trigger, triggerargsarray)
     elif commandused == 'killit':
         bot.say("Kill it with fire. Now.")
     elif commandused == 'terminate':
@@ -29,8 +29,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif target:
             bot.action("terminates "+ target +" with extreme prejudice.")
 
-def nukeit()
+def nukeit(bot, trigger, triggerargsarray):
     bot.say("Nuke it from orbit... it's the only way to be sure?")
     
-def killitnow()
+def killitnow(bot, trigger, triggerargsarray):
     bot.say("Kill it with fire. Now.")
