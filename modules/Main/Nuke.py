@@ -24,12 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandused == 'killit':
         killitnow(bot, trigger, triggerargsarray)
     elif commandused == 'terminate':
-        bot.say(target)
         terminateit(bot, trigger, triggerargsarray, target)
-        #if not target:
-        #    bot.say("Terminate it with extreme prejudice.")
-        #elif target:
-        #    bot.action("terminates "+ target +" with extreme prejudice.")
 
 def nukeit(bot, trigger, triggerargsarray):
     bot.say("Nuke it from orbit... it's the only way to be sure?")
