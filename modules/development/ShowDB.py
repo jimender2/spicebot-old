@@ -21,5 +21,5 @@ def execute_main(bot, triggerargsarray):
     bot.say("nick: " + nick)
     dbkey = get_trigger_arg(triggerargsarray, 2)
     bot.say("dbkey: " + dbkey)
-    dbresult = get_database_value(bot, 
+    #dbresult = get_database_value(bot, 
     #get_database_value(bot, nick, databasekey):
