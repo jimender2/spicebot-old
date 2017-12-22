@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    #cmdarray = []
+    cmdarray = []
     for cmd in bot.command_groups.items():
         cmdarray.append(cmd)
     for x in cmdarray:
