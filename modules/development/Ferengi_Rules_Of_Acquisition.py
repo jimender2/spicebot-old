@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if (requested == '0' or requested.lower()) == 'zero':
                 myline = randomfra()
             else:
-                if rulenumber.isdigit():
+                if requested.isdigit():
                     rulenumber = int(requested)
                     myline = get_trigger_arg(myline, rulenumber)
                 else:
