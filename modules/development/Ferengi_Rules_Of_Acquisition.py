@@ -6,6 +6,7 @@ import random
 import urllib
 import sys
 import os
+from word2number import w2n
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
