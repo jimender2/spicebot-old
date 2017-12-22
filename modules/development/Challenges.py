@@ -128,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Build User/channel Arrays
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
-    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    dueloptedinarray = get_database_value(bot, challengerecorduser, 'duelusers') or []
     allusersinroomarray, classcantchangearray, canduelarray, targetarray, targetcantoptarray = [], [], [], [], []
     for u in bot.users:
         allusersinroomarray.append(u)
