@@ -25,7 +25,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     cmdarray = []
     for cmds in collections.OrderedDict(sorted(bot.command_groups.items())).items():
-        cmdarray.append(cmd)
+        cmdarray.append(cmds)
     cmdlist = get_trigger_arg(cmdarray, 'list')
     bot.say(str(cmdlist))
     
