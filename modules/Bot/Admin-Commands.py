@@ -35,7 +35,7 @@ def main_command(bot, trigger):
     operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     userarray = []
     for u in bot.users:
         userarray.append(u)
