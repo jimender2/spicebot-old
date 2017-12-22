@@ -12,11 +12,21 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger)
     
 def execute_main(bot, trigger):
-    bot.notice("This is to help the dev team understand values.", trigger.nick)
-    bot.notice("Trigger.nick: " + trigger.nick, trigger.nick)
+    bot.say("This is to help the dev team understand values.")
+    bot.say("Trigger.nick: " + trigger.nick)
+    chan = ''
+    for c in bot.channels:
+        chan = chan + c + ', '
+    chan = chan[:-2]
+    bot.say("Bot.Channels: [" + chan + ']')
+    bot.say("Trigger.admin: " + str(trigger.admin))
     args = ''
     for arg in trigger.args:
-        args = str(args) + ', '
-    args[:-2]
-    bot.notice("Trigger.args: [" + args + ']', trigger.nick)
-    
+        args = args + arg + ', '
+    args = args[:-2]
+    bot.say("Trigger.args: [" + args + "]")
+    users = ''
+    for u in bot.users:
+        users = users + u + ', '
+    users = users[:-2]
+    bot.say("Bot.users: [" + users + "]")

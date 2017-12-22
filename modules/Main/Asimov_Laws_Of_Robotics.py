@@ -22,11 +22,18 @@ def execute_main(bot, trigger, triggerargsarray):
     if not requested:
         myline = get_trigger_arg(laws, 'random')
     else:
-        if requested.isdigit():
-            myline = get_trigger_arg(laws, requested)            
+        requested.lstrip("-")        
+        if (requested == '0' or requested.lower()) == 'zero':
+            myline=''
         else:
-            requested = w2n.word_to_num(str(requested))
-            myline = get_trigger_arg(laws, requested) 
+            if requested.isdigit():
+                myline = get_trigger_arg(laws, requested)            
+            else:
+                try:
+                    requested = w2n.word_to_num(str(requested))
+                    myline = get_trigger_arg(laws, requested)             
+                except ValueError:
+                    myline=''
         
     #bot.action('may not injure a human being or, through inaction, allow a human being to come to harm.')
     #bot.action('must obey orders given it by human beings except where such orders would conflict with the First Law.')

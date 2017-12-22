@@ -8,12 +8,27 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+import textwrap
+import collections
+import json
+
+import requests
+
+from sopel.logger import get_logger
+from sopel.module import commands, rule, example, priority
+
+
 @sopel.module.commands('chantest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    for u in bot.users:
-        bot.say(u)
+    cmdarray = []
+    for cmds in bot.command_groups.items():
+        cmdsall = cmds[-1]
+        for cmd in cmdsall:
+            cmdarray.append(cmd)
+    cmdlist = get_trigger_arg(cmdarray, 'list')
+    bot.say(str(cmdlist))
     
