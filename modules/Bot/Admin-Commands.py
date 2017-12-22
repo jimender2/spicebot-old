@@ -23,6 +23,8 @@ from SpicebotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
+trustedoparray = ['Cipher-0']
+
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
@@ -36,25 +38,56 @@ def main_command(bot, trigger):
         channelarray.append(c)
     
 ###### admin only block (and a trusted OP)
-    if not trigger.admin or trigger.nick == 'Cipher-0':
+    if not trigger.admin or trigger.nick in trustedoparray:
         bot.notice(instigator + "This is an admin only function.", instigator)
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
         channel = get_trigger_arg(triggerargsarray, 2)
         dircommand = get_trigger_arg(triggerargsarray, 3)
-        validcommands = ['enable','disable']
+        validcommands = ['enable','disable','list']
         if not channel:
             bot.say('What Channel are we adjuwsting modules for?')
         elif channel not in channelarray:
             bot.say('Invalid channel.')
         elif not dircommand:
-            bot.say("Would you like to enable or disable a module for " + channel + "?")
+            bot.say("Would you like to enable/disable/list ?")
         elif dircommand not in validcommands:
             bot.say("A correct command is enable or disable.")
+        elif dircommand == 'list':
+            channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
+            validsubs = ['available','enabled','all']
+            subscom = get_trigger_arg(triggerargsarray, 4)
+            if not subscom:
+                bot.say('What list would you like? Options are all, available, enabled')
+            elif subscom not in validsubs:
+                bot.say('Invalid Option. Options are all, available, enabled')
+            else:
+                cmdarray = []
+                availarray = []
+                for cmds in bot.command_groups.items():
+                    cmdsall = cmds[-1]
+                    for cmd in cmdsall:
+                        cmdarray.append(cmd)
+                if subscom == 'all':
+                    cmdlist = cmdarray
+                elif subscom == 'enabled':
+                    cmdlist = channelmodulesarray
+                elif subscom == 'available':
+                    for x in cmdarray:
+                        if x not in channelmodulesarray:
+                            availarray.append(x)
+                    cmdlist = availarray
+                cmdlist = get_trigger_arg(cmdlist, 'list')
+                chunks = cmdlist.split()
+                per_line = 15
+                cmdline = ''
+                for i in range(0, len(chunks), per_line):
+                    cmdline = " ".join(chunks[i:i + per_line])
+                    bot.notice(str(cmdline), instigator)
         else:
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
-            channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
+            
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable in channelmodulesarray and dircommand == 'enable':
