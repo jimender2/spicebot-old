@@ -23,8 +23,6 @@ from SpicebotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
-trustedoparray = ['Cipher-0']
-
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
