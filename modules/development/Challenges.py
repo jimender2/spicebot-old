@@ -128,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Build User/channel Arrays
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
-    dueloptedinarray = get_database_value(bot, challengerecorduser, 'duelusers') or []
+    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     allusersinroomarray, classcantchangearray, canduelarray, targetarray, targetcantoptarray = [], [], [], [], []
     for u in bot.users:
         allusersinroomarray.append(u)
@@ -234,9 +234,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
                 if commandortarget == 'on':
-                    adjust_database_array(bot, challengerecorduser, target, 'duelusers', 'add')
+                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                 else:
-                    adjust_database_array(bot, challengerecorduser, target, 'duelusers', 'del')
+                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 set_database_value(bot, target, 'opttime', now)
                 bot.notice(instigator + ", Challenges should now be " +  commandortarget + ' for ' + target + '.', instigator)
         
