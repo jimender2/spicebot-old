@@ -15,18 +15,19 @@ def execute_main(bot, trigger):
     if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
-        if not rulenumber[0].isdigit():
-            rulenumber = w2n.word_to_num(str(rulenumber))
-        else:
-            rulenumber = int(rulenumber)
-    
+        rulenumber=lstrip("-")
+        if ( rulenumber == '0' or rulenumber.lower() == 'zero'):
+            myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+        else: 
+            if not rulenumber.isdigit():
+                rulenumber = w2n.word_to_num(str(rulenumber))
+            else:
+                rulenumber = int(rulenumber)    
         htmlfile=urllib.urlopen(rulesurl)
         lines=htmlfile.readlines()
         try:
             if str(rulenumber) != '0':
-                myline=lines[rulenumber-1]
-            else:
-                myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+                myline=lines[rulenumber-1]                          
         except IndexError or TypeError:
             if rulenumber == 69:
                 myline='giggles'
