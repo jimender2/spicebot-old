@@ -50,7 +50,7 @@ def main_command(bot, trigger):
         dircommand = get_trigger_arg(triggerargsarray, 3)
         validcommands = ['enable','disable','list']
         if not channel:
-            bot.say('What Channel are we adjuwsting modules for?')
+            bot.say('What Channel are we adjusting modules for?')
         elif channel not in channelarray:
             bot.say('Invalid channel.')
         elif not dircommand:
