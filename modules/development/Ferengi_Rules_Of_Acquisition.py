@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     try:
                         rulenumber = w2n.word_to_num(str(requested))
                         myline = get_trigger_arg(lines, rulenumber)   
-                    except IndexError:
+                    except ValueError:
                         myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
         myline = 'There is no cannonized rule tied to this number.'
