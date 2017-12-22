@@ -1311,7 +1311,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
-    elif instigator == channellastinstigator and not bot.nick.endswith(devbot):
+    elif instigator == challengerecorduserlastinstigator and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == instigatorlastfought and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
