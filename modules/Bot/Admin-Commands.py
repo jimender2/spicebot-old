@@ -34,8 +34,12 @@ def main_command(bot, trigger):
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     botchannel = trigger.sender
     channelarray = []
+    operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
+        for u in c:
+            if bot.privileges[c.lower()][u] == OP:
+                operatorarray.append(u)
     
 ###### admin only block (and a trusted OP)
     if not trigger.admin or trigger.nick in trustedoparray:
