@@ -145,8 +145,11 @@ def main_command(bot, trigger):
         else:
             if adddel == 'add':
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
+                adddelword = "added"
             else:
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
+                adddelword = "deleted"
+            bot.say(target + " has been" + adddelword + " from the " + botchannel + " block list.")
     
     ## Update from github
     elif subcommand == 'update':
