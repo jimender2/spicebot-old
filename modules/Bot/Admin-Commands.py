@@ -39,9 +39,9 @@ def main_command(bot, trigger):
         channelarray.append(c)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
     
-###### admin only block (and a trusted OP)
+###### admin only block and OP
     if not trigger.admin and trigger.nick not in operatorarray:
-        bot.notice(instigator + ", This is an admin only function.", instigator)
+        bot.notice(instigator + ", This is an admin/OP only function.", instigator)
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
@@ -148,6 +148,10 @@ def main_command(bot, trigger):
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
                 adddelword = "deleted"
             bot.say(target + " has been " + adddelword + " from the " + botchannel + " block list.")
+    
+###### admin only block
+    if not trigger.admin:
+        bot.notice(instigator + ", This is an admin only function.", instigator)
     
     ## Update from github
     elif subcommand == 'update':
