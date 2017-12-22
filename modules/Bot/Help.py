@@ -8,8 +8,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
 @sopel.module.commands('help')
 def mainfunction(bot, trigger):
   bot.say("Online Docs: " + GITWIKIURL)
+  
