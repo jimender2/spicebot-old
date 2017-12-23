@@ -20,24 +20,36 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused
-    commandused = trigger.group(1) 
     searchterm = get_trigger_arg(triggerargsarray, 1)
     query=''
     if not searchterm:
-        bot.say('Please enter a term to search for')
+        bot.say('Please enter a term to search for')        
     else:
-        if (commandused=='video' or commandused=='youtube'):
-            data = searchterm.strip().lower()
-            data+='site%3Ayoutube.com'
-            query=searchfor(data)
-        else:
-            data = searchterm.strip().lower()
-            data=data .replace('site:', 'site%3A')
-            query=searchfor(data)
+        data = searchterm.strip().lower()
+        data=data .replace('site:', 'site%3A')
+        query=searchfor(data)
         if not query:
             bot.say('I cannot find anything about that')
         else:
             bot.say(query)
+            
+@commands('youtube')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
+    triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused    
+    searchterm = get_trigger_arg(triggerargsarray, 1)
+    query=''
+    data = searchterm.strip().lower()
+    data+='site%3Ayoutube.com'
+    query=searchfor(data)
+    if not query:
+        bot.say('I cannot find anything about that')
+    else:
+        bot.say(query)
             
 def searchfor(data):
     data=data.replace(' ', '%20')
