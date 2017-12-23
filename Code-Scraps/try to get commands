@@ -1,0 +1,28 @@
+import sys
+import test_module # sample module for testing
+    
+# sample bot.callables for testing
+class Bot():
+    def __init__(self):
+        self._callables = {
+            "low": {"rule1": test_module.func1, "rule2": test_module.func2},
+            "medium": {"rule3": test_module.func3, "rule4": test_module.func4},
+            "high": {"rule5": test_module.func5, "rule6": test_module.func6}}
+bot = Bot()
+
+# Option1: Similar to the .reload command in sopel/reload.py
+print("Option1:")
+module_name = "test_module" # put whatever module you want to check here.
+my_module = sys.modules[module_name]
+for obj_name, obj in list(vars(my_module).items()):
+    if callable(obj) and hasattr(obj, "commands"):
+        print("{}.{} = {}".format(module_name, obj_name, obj.commands))
+
+print("")
+print("Option2:")
+# Option2: Get info from the callables list
+for rules in bot._callables.values():
+    for func in rules.values():
+        if hasattr(func, "commands"):
+            print("{}.{} = {}".format(func.__module__, func.__name__, func.commands))
+                    
