@@ -1913,8 +1913,14 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(arg)
     elif number == 'random':
         if totalarray > 1:
-            randomselected = random.randint(0,len(triggerargsarray) - 1)
-            triggerarg = str(triggerargsarray [randomselected])
+            try:
+                shuffledarray = random.shuffle(triggerargsarray)
+                randomselected = random.randint(0,len(shuffledarray) - 1)
+                triggerarg = str(shuffledarray [randomselected])
+            except TypeError:
+                triggerarg = get_trigger_arg(triggerargsarray, 1)
+        else:
+            triggerarg = get_trigger_arg(triggerargsarray, 1)
     elif number == 'list':
         for x in triggerargsarray:
             if triggerarg != '':
