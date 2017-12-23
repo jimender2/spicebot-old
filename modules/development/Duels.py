@@ -1305,7 +1305,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     targettime = get_timesince_duels(bot, target, 'timeout') or ''
     duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or ''
     duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
+    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
