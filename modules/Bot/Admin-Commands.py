@@ -158,6 +158,32 @@ def main_command(bot, trigger):
                 adddelword = "deleted"
             bot.say(target + " has been " + adddelword + " from the " + botchannel + " block list.")
     
+    ## On/off
+    elif subcommand == 'on' or subcommand == 'off':
+        disenablevalue = None
+        if subcommand == 'on':
+            disenablevalue = 1
+        target = get_trigger_arg(triggerargsarray, 2) or instigator 
+        if target.lower() not in allusersinroomarray and target != 'everyone':
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+        elif target == 'everyone':
+            for u in allusersinroomarray:
+                if disenablevalue == 1:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'add')
+                else:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'del')
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
+        elif subcommand == 'on' and target.lower() in botusersarray:
+            bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " on.", instigator)
+        elif subcommand == 'off' and target.lower() not in botusersarray:
+            bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
+        else:
+            if disenablevalue == 1:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'add')
+            else:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'del')
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
+    
 ###### admin only block
     if not trigger.admin:
         bot.notice(instigator + ", This is an admin only function.", instigator)
