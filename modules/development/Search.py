@@ -12,6 +12,12 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+def searchfor(data):
+    data=data.replace(' ', '%20')
+    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+    query=str(var.url)
+    return query
+
 @commands('google')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
@@ -26,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say('Please enter a term to search for')        
     else:
         data = searchterm.strip().lower()
-        data=data .replace('site:', 'site%3A')
+        data=data.replace('site:', 'site%3A')
         query=searchfor(data)
         if not query:
             bot.say('I cannot find anything about that')
@@ -51,9 +57,5 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(query)
             
-def searchfor(data):
-    data=data.replace(' ', '%20')
-    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
-    query=str(var.url)
-    return query
+
     
