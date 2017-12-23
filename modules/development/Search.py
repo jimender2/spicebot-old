@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if not searchterm:
         bot.say('Please enter a term to search for')
     else:
-        if (commandused=='video', or commandused=='youtube'):
+        if (commandused=='video' or commandused=='youtube'):
             data = searchterm.strip().lower()
             data.append('site%3Ayoutube.com')
              query=searchfor(data)
