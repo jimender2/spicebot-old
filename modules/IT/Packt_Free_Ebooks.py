@@ -2,42 +2,29 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+## These help parse the info from the webpage
 import requests
 from lxml import html
 from fake_useragent import UserAgent
+# new book is Midnight GMT/BST (does not follow UTC)
 from datetime import datetime, timedelta
-import datetime
-import arrow
 import time
+from pytz import timezone
+tz = timezone('Europe/London')
+packthour = str(0)
+packtminute = str(10)
+## SpiceBotShared
 import sys
 import os
-from datetime import datetime
-from pytz import timezone
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-# new book is Midnight GMT/BST
-tz = timezone('Europe/London')
-packthour = str(0)
-packtminute = str(10)
-
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
     packttimediff = getpackttimediff()
-    if trigger.group(2):
-        if trigger.group(2) == 'time':
-            bot.say(str(packttimediff))
-        else:
-            normalrun='true'
-    else:
-        normalrun='true'
-    try:
-        if normalrun:
-            title = getPacktTitle()
-            bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-    except UnboundLocalError:
-        return
+    title = getPacktTitle()
+    bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
     
 @sopel.module.interval(60)
 def getpackt(bot):
