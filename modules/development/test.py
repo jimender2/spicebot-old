@@ -31,4 +31,5 @@ def execute_main(bot, trigger, triggerargsarray):
             cmdarray.append(cmd)
     cmdlist = get_trigger_arg(cmdarray, 'list')
     bot.say(str(cmdlist))
+    bot.say('The data directory is ' + str(shareddir))
     

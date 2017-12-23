@@ -90,10 +90,9 @@ def spicebot_prerun(bot,trigger):
 def special_users(bot):
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = [], [], [], [], []
     for channel in bot.channels:
-        for u in bot.channels[channel.lower()].users:
+        for u in bot.users:
             allusersinroomarray.append(u)
-            udisenable = get_botdatabase_value(bot, u, 'disenable')
-            if u != bot.nick and udisenable:
+            if u != bot.nick:
                 if u.lower() in bot.config.core.owner.lower():
                     botownerarray.append(u)
                 if bot.privileges[channel.lower()][u] == OP:
@@ -102,7 +101,7 @@ def special_users(bot):
                     voicearray.append(u)
                 if u in bot.config.core.admins:
                     adminsarray.append(u)
-    return botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel
+    return botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray
 
 ##########
 ## ARGS ##

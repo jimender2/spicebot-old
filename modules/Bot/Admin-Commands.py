@@ -23,8 +23,6 @@ from SpicebotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
-trustedoparray = ['Cipher-0']
-
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
@@ -37,7 +35,7 @@ def main_command(bot, trigger):
     operatorarray = []
     for c in bot.channels:
         channelarray.append(c)
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     userarray = []
     for u in bot.users:
         userarray.append(u)
@@ -52,7 +50,7 @@ def main_command(bot, trigger):
         dircommand = get_trigger_arg(triggerargsarray, 3)
         validcommands = ['enable','disable','list']
         if not channel:
-            bot.say('What Channel are we adjuwsting modules for?')
+            bot.say('What Channel are we adjusting modules for?')
         elif channel not in channelarray:
             bot.say('Invalid channel.')
         elif not dircommand:
@@ -170,6 +168,11 @@ def main_command(bot, trigger):
             bot.msg(channel, trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
         update(bot, trigger)
         restart(bot, trigger, service)
+    
+    ## sometimes Update from github doesn't work because of file permissions
+    elif subcommand == 'permfix':
+        os.system("sudo chown -R sopel:sudo /home/sopel/.sopel/")
+        bot.say("Permissions should now be fixed")
     
     ## restart the bot's service
     elif subcommand == 'restart':

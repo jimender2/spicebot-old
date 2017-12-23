@@ -18,13 +18,22 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Initial ARGS
     triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused
     commandused = trigger.group(1)
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(triggerargsarray, 1) or 'notarget'
     if commandused == 'nuke':
-        bot.say("Nuke it from orbit... it's the only way to be sure?")
+        nukeit(bot, trigger, triggerargsarray)
     elif commandused == 'killit':
-        bot.say("Kill it with fire. Now.")
+        killitnow(bot, trigger, triggerargsarray)
     elif commandused == 'terminate':
-        if not target:
-            bot.say("Terminate it with extreme prejudice.")
-        elif target:
-            bot.action("terminates "+ target +" with extreme prejudice.")
+        terminateit(bot, trigger, triggerargsarray, target)
+
+def nukeit(bot, trigger, triggerargsarray):
+    bot.say("Nuke it from orbit... it's the only way to be sure?")
+    
+def killitnow(bot, trigger, triggerargsarray):
+    bot.say("Kill it with fire. Now.")
+
+def terminateit(bot, trigger, triggerargsarray, target):
+    if target == 'notarget':
+        bot.say("Terminate it with extreme prejudice.")
+    elif target:
+        bot.action("terminates "+ target +" with extreme prejudice.")

@@ -32,7 +32,7 @@ def main_command(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray, channel = special_users(bot)
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     inchannel = trigger.sender
     commandlist = get_trigger_arg(validsubcommandarray, "list")
