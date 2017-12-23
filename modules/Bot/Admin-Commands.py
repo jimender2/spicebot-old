@@ -63,10 +63,7 @@ def main_command(bot, trigger):
                     for cmd in cmds:
                         if str(cmd).endswith("]"):
                             for x in cmd:
-                                bot.say(str(x))
-                            #for r in (("[u'", ""), ("',", ""), ("u'", ""), ("']", "")):
-                                #cmd = str(cmd).replace(*r)
-                                #cmdarray.append(cmd)
+                                cmdarray.append(x)
                 if subscom == 'all':
                     cmdlist = cmdarray
                 elif subscom == 'enabled':
