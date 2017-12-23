@@ -10,5 +10,7 @@ from SpicebotShared import *
 
 @sopel.module.commands('warn')
 def mainfunction(bot, trigger):
-  
-  target = get_trigger_arg(triggerargsarray, 2) or ''
+    inchannel = trigger.sender
+    triggerargsarray = create_args_array(trigger.group(2))
+    target = get_trigger_arg(triggerargsarray, 2) or ''
+    bot.msg(inchannel, target + "This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBot or ##SpiceBotTest, or send Spicebot a PrivateMessage.")
