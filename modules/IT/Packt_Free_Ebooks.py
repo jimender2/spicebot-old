@@ -36,7 +36,7 @@ def getpackt(bot):
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
-    title = ''
+    title = "[No Book Today]"
     url = 'https://www.packtpub.com/packt/offers/free-learning'
     ua = UserAgent()
     header = {'User-Agent':str(ua.chrome)}
