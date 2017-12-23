@@ -8,6 +8,9 @@ from fake_useragent import UserAgent
 import sys
 import os
 import ConfigParser
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/"
 
