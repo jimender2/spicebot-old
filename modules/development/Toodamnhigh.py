@@ -17,6 +17,6 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     keyword = get_trigger_arg(triggerargsarray, 1)
-    if not happen:
+    if not keyword:
        keyword = 'rent'   
     bot.say('The ' + str(keyword) + ' IS TO DAMN HIGH!')
