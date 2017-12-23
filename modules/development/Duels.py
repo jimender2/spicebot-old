@@ -107,7 +107,6 @@ statsbypassarray = ['winlossratio','timeout']
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    trigger.group(2) = trigger.group(1)
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
