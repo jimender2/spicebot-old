@@ -31,7 +31,7 @@ def execute_main(bot, trigger):
                     rulenumber =0
             htmlfile=urllib.urlopen(rulesurl)
             lines=htmlfile.readlines()
-            if(str(rulenumber) = '0' or rulenumber <1):
+            if str(rulenumber) == '0':
                 myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
             elif rulenumber ==69:
                 myline='giggles'
