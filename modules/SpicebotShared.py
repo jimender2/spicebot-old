@@ -23,16 +23,16 @@ devbot = 'dev'
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 
 ## This runs for every custom module and decides if the module runs or not
-def spicebot_prerun(bot,trigger):
-    
-    ## used to circumvent
-    commandused = trigger.group(1)
+def spicebot_prerun(bot,trigger,commandused):
     
     ## Get Name Of Current Channel
     botchannel = trigger.sender
     
     ## Custom args
-    triggerargsarray = create_args_array(trigger.group(2))
+    try:
+        triggerargsarray = create_args_array(trigger.group(2))
+    except IndexError:
+        triggerargsarray = create_args_array(trigger.group(1))
     
     ## Nick of user operating command
     instigator = trigger.nick
@@ -166,8 +166,14 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(arg)
     elif number == 'random':
         if totalarray > 1:
-            randomselected = random.randint(0,len(triggerargsarray) - 1)
-            triggerarg = str(triggerargsarray [randomselected])
+            try:
+                shuffledarray = random.shuffle(triggerargsarray)
+                randomselected = random.randint(0,len(shuffledarray) - 1)
+                triggerarg = str(shuffledarray [randomselected])
+            except TypeError:
+                triggerarg = get_trigger_arg(triggerargsarray, 1)
+        else:
+            triggerarg = get_trigger_arg(triggerargsarray, 1)
     elif number == 'list':
         for x in triggerargsarray:
             if triggerarg != '':

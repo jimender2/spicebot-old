@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
-@sopel.module.commands('helpnew')
+@sopel.module.commands('help')
 def mainfunction(bot, trigger):
   bot.say("Online Docs: " + GITWIKIURL)
   

@@ -8,7 +8,7 @@ from SpicebotShared import *
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
     bot.say(str(channel))
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
-    simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!','random']
+    simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!','random','list']
     for i in range(0,totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
         bot.say("arg " + str(i) + " = " + str(arg))

@@ -8,7 +8,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('meraki','freemeraki')
+@sopel.module.commands('meraki')
 def execute_main(bot, trigger, triggerargsarray):
     types = trigger.group(3)
     if not types:

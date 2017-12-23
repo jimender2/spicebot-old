@@ -2,19 +2,10 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
-from sopel import module, tools
-from sopel.module import ADMIN
-from sopel.module import VOICE
-from sopel.module import event, rule
-from sopel.module import OP
-from sopel.tools.target import User, Channel
-import time
+import re
+import git
 import os
 import sys
-import fnmatch
-import re
-import git 
-from os.path import exists
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
@@ -49,6 +40,12 @@ def main_command(bot, trigger):
         channel = get_trigger_arg(triggerargsarray, 2)
         dircommand = get_trigger_arg(triggerargsarray, 3)
         validcommands = ['enable','disable','list']
+        cmdarray = []
+        for cmds in bot.command_groups.items():
+            for cmd in cmds:
+                if str(cmd).endswith("]"):
+                    for x in cmd:
+                        cmdarray.append(x)
         if not channel:
             bot.say('What Channel are we adjusting modules for?')
         elif channel not in channelarray:
@@ -66,17 +63,12 @@ def main_command(bot, trigger):
             elif subscom not in validsubs:
                 bot.say('Invalid Option. Options are all, available, enabled')
             else:
-                cmdarray = []
-                availarray = []
-                for cmds in bot.command_groups.items():
-                    cmdsall = cmds[-1]
-                    for cmd in cmdsall:
-                        cmdarray.append(cmd)
                 if subscom == 'all':
                     cmdlist = cmdarray
                 elif subscom == 'enabled':
                     cmdlist = channelmodulesarray
                 elif subscom == 'available':
+                    availarray = []
                     for x in cmdarray:
                         if x not in channelmodulesarray:
                             availarray.append(x)
@@ -91,11 +83,6 @@ def main_command(bot, trigger):
         else:
             channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
-            cmdarray = []
-            for cmds in bot.command_groups.items():
-                cmdsall = cmds[-1]
-                for cmd in cmdsall:
-                    cmdarray.append(cmd)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable == 'all':
@@ -103,9 +90,8 @@ def main_command(bot, trigger):
                     for x in cmdarray:
                         adjust_database_array(bot, channel, x, 'channelmodules', 'add')
                 else:
-                    for x in cmdarray:
-                        adjust_database_array(bot, channel, x, 'channelmodules', 'del')
-                bot.say(commandtoenable + " should now be "+str(dircommand)+"d for " + channel + ".")
+                    adjust_database_array(bot, channel, x, 'channelmodules', None)
+                bot.say("All Commands should now be "+str(dircommand)+"d for " + channel + ".")
             elif dircommand == 'enable' and commandtoenable not in cmdarray:
                 bot.say("It looks like that is an invalid command to enable.")
             elif commandtoenable in channelmodulesarray and dircommand == 'enable':
@@ -157,6 +143,32 @@ def main_command(bot, trigger):
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
                 adddelword = "deleted"
             bot.say(target + " has been " + adddelword + " from the " + botchannel + " block list.")
+    
+    ## On/off
+    elif subcommand == 'on' or subcommand == 'off':
+        disenablevalue = None
+        if subcommand == 'on':
+            disenablevalue = 1
+        target = get_trigger_arg(triggerargsarray, 2) or instigator 
+        if target.lower() not in allusersinroomarray and target != 'everyone':
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+        elif target == 'everyone':
+            for u in allusersinroomarray:
+                if disenablevalue == 1:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'add')
+                else:
+                    adjust_database_array(bot, bot.nick, u, 'botusers', 'del')
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
+        elif subcommand == 'on' and target.lower() in botusersarray:
+            bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " on.", instigator)
+        elif subcommand == 'off' and target.lower() not in botusersarray:
+            bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
+        else:
+            if disenablevalue == 1:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'add')
+            else:
+                adjust_database_array(bot, bot.nick, target, 'botusers', 'del')
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
 ###### admin only block
     if not trigger.admin:
