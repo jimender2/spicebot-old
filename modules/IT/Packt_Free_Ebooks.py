@@ -43,7 +43,8 @@ def getPacktTitle():
     page = requests.get(url,headers = header)
     if page.status_code == 200:
         tree = html.fromstring(page.content)
-        title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))title = title.replace("\\t","")
+        title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
+        title = title.replace("\\t","")
         title = title.replace("\\n","")
     return title
 
