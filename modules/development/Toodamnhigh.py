@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    keyword = triggerargsarray
+    keyword = trigger.group(2)
     if not keyword:
        keyword = 'rent'   
     bot.say('The ' + str(keyword) + ' IS TO DAMN HIGH!')
