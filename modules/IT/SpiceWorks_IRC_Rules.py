@@ -32,6 +32,7 @@ def execute_main(bot, trigger):
             htmlfile=urllib.urlopen(rulesurl)
             lines=htmlfile.readlines()
             try:
+                bot.say(str(rulenumber))
                 if str(rulenumber) != '0':
                     myline=lines[rulenumber-1]
                 else:
