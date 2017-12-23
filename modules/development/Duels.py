@@ -107,14 +107,17 @@ statsbypassarray = ['winlossratio','timeout']
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(1))
-    execute_main(bot, trigger, triggerargsarray)
+    trigger.group(2) = trigger.group(1)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
 
 # use this instead if not using with spicebot
 @sopel.module.commands('duel')
 def mainfunction(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(2))
-    execute_main(bot, trigger, triggerargsarray)
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
     
