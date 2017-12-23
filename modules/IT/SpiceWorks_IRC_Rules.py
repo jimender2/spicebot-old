@@ -6,6 +6,9 @@ import urllib
 from word2number import w2n
 import sys
 import os
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
