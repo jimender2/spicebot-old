@@ -12,7 +12,7 @@ rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 @sopel.module.commands('rules','rule')
 def execute_main(bot, trigger):
     rulenumber = trigger.group(2)
-    bot.say(str(rulenumber))
+    
     if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
@@ -26,7 +26,9 @@ def execute_main(bot, trigger):
                 except ValueError:
                     myline= 'That doesnt appear to be a rule number.'
             else:
-                rulenumber = int(rulenumber)    
+                rulenumber = int(rulenumber)
+                if rulenumber <1:
+                    rulenumber =0
             htmlfile=urllib.urlopen(rulesurl)
             lines=htmlfile.readlines()
             try:
