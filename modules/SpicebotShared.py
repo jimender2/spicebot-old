@@ -32,6 +32,7 @@ def spicebot_prerun(bot,trigger):
     botchannel = trigger.sender
     
     ## Custom args
+    #try:
     triggerargsarray = create_args_array(trigger.group(2))
     
     ## Nick of user operating command
