@@ -19,6 +19,10 @@ import sopel.module
 import sys
 import os
 
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
+
 @commands('seen')
 def execute_main(bot, trigger):
     """Reports when and where the user was last seen."""
