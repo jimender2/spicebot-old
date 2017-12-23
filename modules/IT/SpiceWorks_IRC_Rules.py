@@ -15,7 +15,7 @@ def execute_main(bot, trigger):
     if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
-        rulenumber=lstrip("-")
+        rulenumber.lstrip("-")
         if ( rulenumber == '0' or rulenumber.lower() == 'zero'):
             myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
         else: 
