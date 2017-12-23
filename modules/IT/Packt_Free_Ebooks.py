@@ -66,13 +66,9 @@ def getPacktTitle():
         return title
 
 def getpackttimediff():
-    now = datetime.now(tz)
-    packtnext = None
-    day = timedelta(days=1)
-    tomorrow = now + day
+    nowtime = datetime.now(tz)
+    tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
-    a = arrow.get(now)
-    b = arrow.get(packtnext)
-    timecompare = (b.humanize(a, granularity='auto'))
+    timecompare = get_timeuntil(bot, nowtime, packtnext)
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
