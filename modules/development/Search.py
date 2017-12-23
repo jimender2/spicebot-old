@@ -33,10 +33,10 @@ def execute_main(bot, trigger, triggerargsarray):
             data = searchterm.strip().lower()
             data=data .replace('site:', 'site%3A')
             query=searchfor(data)
-    if not query:
-        bot.say('I cannot find anything about that')
-    else:
-         bot.say(query)
+        if not query:
+            bot.say('I cannot find anything about that')
+        else:
+            bot.say(query)
             
 def searchfor(data):
     data=data.replace(' ', '%20')
