@@ -31,18 +31,16 @@ def execute_main(bot, trigger):
                     rulenumber =0
             htmlfile=urllib.urlopen(rulesurl)
             lines=htmlfile.readlines()
-            try:
-                bot.say(str(rulenumber))
-                if str(rulenumber) != '0':
-                    myline=lines[rulenumber-1]
-                else:
-                    myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
-            except (IndexError or TypeError or ValueError):
-                if rulenumber == 69:
-                    myline='giggles'
-                elif rulenumber == 34:
-                    myline='If it exists, there is porn of it.'
-                else:
+            if(str(rulenumber) = '0' or rulenumber <1):
+                myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
+            elif rulenumber ==69:
+                myline='giggles'
+            elif rulenumber == 34:
+                myline='If it exists, there is porn of it.'                
+            else:
+                try:
+                    myline=lines[rulenumber-1] 
+                except:
                     myline= 'That doesnt appear to be a rule number.'
         if myline == 'giggles':
             bot.action(myline)
