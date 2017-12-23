@@ -37,25 +37,8 @@ def execute_main(bot, trigger, triggerargsarray):
         if not query:
             bot.say('I cannot find anything about that')
         else:
-            bot.say(query)
-            
-@commands('youtube')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
-    triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused    
-    searchterm = get_trigger_arg(triggerargsarray, 1)
-    query=''
-    data = searchterm.strip().lower()
-    data+='site%3Ayoutube.com'
-    query=searchfor(data)
-    if not query:
-        bot.say('I cannot find anything about that')
-    else:
-        bot.say(query)
+            bot.say(query)       
+
             
 
     
