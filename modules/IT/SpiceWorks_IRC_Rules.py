@@ -12,7 +12,7 @@ rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 @sopel.module.commands('rules','rule')
 def execute_main(bot, trigger):
     rulenumber = trigger.group(2)
-    if rulenumber=='None':
+    if not rulenumber:
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
         rulenumber.lstrip("-")
@@ -41,7 +41,7 @@ def execute_main(bot, trigger):
                     myline=lines[rulenumber-1] 
                 except:
                     myline= 'That doesnt appear to be a rule number.'
-        if myline == 'giggles':
-            bot.action(myline)
-        else:
-            bot.say(myline)
+    if myline == 'giggles':
+        bot.action(myline)
+    else:
+        bot.say(myline)
