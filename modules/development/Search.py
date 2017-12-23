@@ -11,7 +11,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('video')
+@sopel.module.commands('video','google')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     if not enablestatus:
@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         if (commandused=='video' or commandused=='youtube'):
             data = searchterm.strip().lower()
-            data.append('site%3Ayoutube.com')
+            data+='site%3Ayoutube.com'
             query=searchfor(data)
         else:
             data = searchterm.strip().lower()
