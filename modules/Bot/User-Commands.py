@@ -30,7 +30,6 @@ def main_command(bot, trigger):
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     inchannel = trigger.sender
-    commandlist = get_trigger_arg(validsubcommandarray, "list")
     
     if not subcommand:
         bot.say("That's my name. Don't wear it out!")
