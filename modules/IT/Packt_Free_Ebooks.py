@@ -13,6 +13,9 @@ import sys
 import os
 from datetime import datetime
 from pytz import timezone
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 # new book is Midnight GMT/BST
 tz = timezone('Europe/London')
