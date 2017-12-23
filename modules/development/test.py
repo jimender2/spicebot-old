@@ -34,6 +34,9 @@ def execute_main(bot, trigger, triggerargsarray):
     #bot.say(str(cmdlist))
     #bot.say('The data directory is ' + str(shareddir))
     
-    for x in bot._command_groups:
-        bot.say(str(x))
+    #for x in bot._command_groups:
+    #    bot.say(str(x))
+    
+    for k, v in bot._command_groups.items():
+        bot.say("{}: {}".format(k, v))
     
