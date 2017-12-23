@@ -32,7 +32,7 @@ def main_command(bot, trigger):
         channelarray = []
         for c in bot.channels:
             channelarray.append(c)
-        chanlist = get_trigger_arg(triggerargsarray, 'list')
+        chanlist = get_trigger_arg(channelarray, 'list')
         bot.say("You can find me in " + chanlist)
         
     ## OP list
