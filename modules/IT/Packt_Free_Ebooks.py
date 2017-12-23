@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
     
 @sopel.module.interval(60)
 def getpackt(bot):
-    now = datetime.now(tz)
+    now = datetime.datetime.now(tz)
     if now.hour == int(packthour) and now.minute == int(packtminute):
         title = getPacktTitle()
         packttimediff = getpackttimediff()
