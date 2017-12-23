@@ -12,8 +12,7 @@ rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 @sopel.module.commands('rules','rule')
 def execute_main(bot, trigger):
     rulenumber = trigger.group(2)
-    
-    if not rulenumber:
+    if not trigger.group(2):
         myline='Chat Rules:     https://pastebin.com/Vrq9bHBD'
     else:
         rulenumber.lstrip("-")
