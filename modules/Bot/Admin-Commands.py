@@ -40,6 +40,12 @@ def main_command(bot, trigger):
         channel = get_trigger_arg(triggerargsarray, 2)
         dircommand = get_trigger_arg(triggerargsarray, 3)
         validcommands = ['enable','disable','list']
+        cmdarray = []
+        for cmds in bot.command_groups.items():
+            for cmd in cmds:
+                if str(cmd).endswith("]"):
+                    for x in cmd:
+                        cmdarray.append(x)
         if not channel:
             bot.say('What Channel are we adjusting modules for?')
         elif channel not in channelarray:
@@ -57,18 +63,12 @@ def main_command(bot, trigger):
             elif subscom not in validsubs:
                 bot.say('Invalid Option. Options are all, available, enabled')
             else:
-                cmdarray = []
-                availarray = []
-                for cmds in bot.command_groups.items():
-                    for cmd in cmds:
-                        if str(cmd).endswith("]"):
-                            for x in cmd:
-                                cmdarray.append(x)
                 if subscom == 'all':
                     cmdlist = cmdarray
                 elif subscom == 'enabled':
                     cmdlist = channelmodulesarray
                 elif subscom == 'available':
+                    availarray = []
                     for x in cmdarray:
                         if x not in channelmodulesarray:
                             availarray.append(x)
@@ -83,12 +83,6 @@ def main_command(bot, trigger):
         else:
             channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
-            cmdarray = []
-            for cmds in bot.command_groups.items():
-                for cmd in cmds:
-                    if str(cmd).endswith("]"):
-                        for x in cmd:
-                            cmdarray.append(x)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable == 'all':
