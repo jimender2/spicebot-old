@@ -18,7 +18,7 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
 
-@sopel.module.commands('chantest')
+@sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger)
     execute_main(bot, trigger, triggerargsarray)
@@ -37,6 +37,6 @@ def execute_main(bot, trigger, triggerargsarray):
     #for x in bot._command_groups:
     #    bot.say(str(x))
     
-    for k, v in bot._command_groups.items():
-        bot.say("{}: {}".format(k, v))
+    #for k, v in bot._command_groups.items():
+    #    bot.say("{}: {}".format(k, v))
     
