@@ -61,10 +61,12 @@ def main_command(bot, trigger):
                 availarray = []
                 for cmds in bot.command_groups.items():
                     for cmd in cmds:
-                        bot.say(str(cmd))
-                    #cmdsall = cmds[-1]
-                    #for cmd in cmdsall:
-                    #    cmdarray.append(cmd)
+                        if str(cmd).endswith("]"):
+                            for x in cmd:
+                                bot.say(str(x))
+                            #for r in (("[u'", ""), ("',", ""), ("u'", ""), ("']", "")):
+                                #cmd = str(cmd).replace(*r)
+                                #cmdarray.append(cmd)
                 if subscom == 'all':
                     cmdlist = cmdarray
                 elif subscom == 'enabled':
