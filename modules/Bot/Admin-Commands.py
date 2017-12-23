@@ -60,6 +60,7 @@ def main_command(bot, trigger):
                 cmdarray = []
                 availarray = []
                 for cmds in bot.command_groups.items():
+                    bot.say(str(cmds))
                     cmdsall = cmds[-1]
                     for cmd in cmdsall:
                         cmdarray.append(cmd)
