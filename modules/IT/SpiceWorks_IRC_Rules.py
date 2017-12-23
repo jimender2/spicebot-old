@@ -36,7 +36,7 @@ def execute_main(bot, trigger):
                     myline=lines[rulenumber-1]
                 else:
                     myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
-            except IndexError or TypeError:
+            except (IndexError or TypeError or ValueError):
                 if rulenumber == 69:
                     myline='giggles'
                 elif rulenumber == 34:
