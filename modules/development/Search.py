@@ -21,6 +21,7 @@ def execute_main(bot, trigger, triggerargsarray):
     triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused
     commandused = trigger.group(1) 
     searchterm = get_trigger_arg(triggerargsarray, 1)
+    query=''
     if not searchterm:
         bot.say('Please enter a term to search for')
     else:
