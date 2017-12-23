@@ -24,6 +24,7 @@ def mainfunction(bot, trigger):
     execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    bot.say("This is deathbybandaid's test module")
     #cmdarray = []
     #for cmds in bot.commands:
     #    for cmd in cmds:
