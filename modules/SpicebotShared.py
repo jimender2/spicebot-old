@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import datetime
+import arrow
 from sopel.tools import Identifier
 from sopel.tools.time import get_timezone, format_time
 from sopel.module import commands, rule, priority, thread
@@ -242,6 +243,13 @@ def get_timesince(bot, nick, databasekey):
     now = time.time()
     last = get_botdatabase_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
+
+def get_timeuntil(nowtime, futuretime):
+    a = arrow.get(nowtime)
+    b = arrow.get(futuretime)
+    timecompare = (b.humanize(a, granularity='auto'))
+    return timecompare
+
 
 ###########
 ## Tools ##

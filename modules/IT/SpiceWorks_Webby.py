@@ -85,13 +85,10 @@ def getwebbybonus():
     return webbybonus
 
 def getwebbytimeuntil():
-    now = datetime.datetime.utcnow()
+    nowtime = datetime.datetime.utcnow()
     webbytime = getwebbytime()
-    a = arrow.get(now)
-    b = arrow.get(webbytime)
-    timecompare = (b.humanize(a, granularity='auto'))
-    webbytimeuntil = str(timecompare)
-    return webbytimeuntil
+    timecompare = get_timeuntil(nowtime, webbytime)
+    return timecompare
 
 def gettree():
     page = requests.get(url,headers = None)

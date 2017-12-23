@@ -9,6 +9,9 @@ from pyparsing import anyOpenTag, anyCloseTag
 from xml.sax.saxutils import unescape as unescape
 import sys
 import os
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 @sopel.module.commands('spicyquote')
 def execute_main(bot, trigger):

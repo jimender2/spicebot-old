@@ -7,6 +7,9 @@ import os
 import json
 import requests
 import ConfigParser
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 ## Creds
 config = ConfigParser.ConfigParser()
