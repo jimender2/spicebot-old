@@ -25,10 +25,11 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     cmdarray = []
-    for cmds in bot.command_groups.items():
-        cmdsall = cmds[-1]
-        for cmd in cmdsall:
-            cmdarray.append(cmd)
+    for cmds in bot.commands:
+        for cmd in cmds:
+            if str(cmd).endswith("]"):
+                for x in cmd:
+                    cmdarray.append(x)
     cmdlist = get_trigger_arg(cmdarray, 'list')
     bot.say(str(cmdlist))
     bot.say('The data directory is ' + str(shareddir))
