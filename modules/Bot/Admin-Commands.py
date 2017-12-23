@@ -169,6 +169,11 @@ def main_command(bot, trigger):
         update(bot, trigger)
         restart(bot, trigger, service)
     
+    ## sometimes Update from github doesn't work because of file permissions
+    elif subcommand == 'permfix':
+        os.system("sudo chown -R sopel:sudo /home/sopel/.sopel/")
+        bot.say("Permissions should now be fixed")
+    
     ## restart the bot's service
     elif subcommand == 'restart':
         for channel in bot.channels:
