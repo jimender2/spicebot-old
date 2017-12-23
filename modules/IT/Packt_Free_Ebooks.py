@@ -36,21 +36,16 @@ def getpackt(bot):
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
-        url = 'https://www.packtpub.com/packt/offers/free-learning'
-
-        ua = UserAgent()
-        header = {'User-Agent':str(ua.chrome)}
-        page = requests.get(url,headers = header)
-
-        if page.status_code == 200:
-                tree = html.fromstring(page.content)
-                title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
-                title = title.replace("\\t","")
-                title = title.replace("\\n","")
-                return title
-        else:
-                title = 'Could not get Title. The status code was : ' + page.status_code
-        return title
+    title = ''
+    url = 'https://www.packtpub.com/packt/offers/free-learning'
+    ua = UserAgent()
+    header = {'User-Agent':str(ua.chrome)}
+    page = requests.get(url,headers = header)
+    if page.status_code == 200:
+        tree = html.fromstring(page.content)
+        title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))title = title.replace("\\t","")
+        title = title.replace("\\n","")
+    return title
 
 def getpackttimediff():
     nowtime = datetime.datetime.now(tz)
