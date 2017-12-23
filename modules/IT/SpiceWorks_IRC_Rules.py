@@ -30,7 +30,9 @@ def execute_main(bot, trigger):
                 lines=htmlfile.readlines()
                 try:
                     if str(rulenumber) != '0':
-                        myline=lines[rulenumber-1]                          
+                        myline=lines[rulenumber-1]
+                    else:
+                        myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
                 except IndexError or TypeError:
                     if rulenumber == 69:
                         myline='giggles'
@@ -38,7 +40,6 @@ def execute_main(bot, trigger):
                         myline='If it exists, there is porn of it.'
                     else:
                         myline= 'That doesnt appear to be a rule number.'
-
         if myline == 'giggles':
             bot.action(myline)
         else:
