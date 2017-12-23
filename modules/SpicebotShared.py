@@ -245,7 +245,7 @@ def get_timesince(bot, nick, databasekey):
     return abs(now - int(last))
 
 def get_timeuntil(nowtime, futuretime):
-    a = arrow.get(now)
+    a = arrow.get(nowtime)
     b = arrow.get(futuretime)
     timecompare = (b.humanize(a, granularity='auto'))
     return timecompare
