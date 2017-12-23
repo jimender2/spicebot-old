@@ -22,7 +22,7 @@ def execute_main(bot, trigger):
             if not rulenumber.isdigit():
                 try:
                     rulenumber = w2n.word_to_num(str(rulenumber))
-                 except ValueError:
+                except ValueError:
                     myline= 'That doesnt appear to be a rule number.'
             else:
                 rulenumber = int(rulenumber)    
