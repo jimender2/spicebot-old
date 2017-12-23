@@ -23,10 +23,7 @@ devbot = 'dev'
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 
 ## This runs for every custom module and decides if the module runs or not
-def spicebot_prerun(bot,trigger):
-    
-    ## used to circumvent
-    commandused = trigger.group(1)
+def spicebot_prerun(bot,trigger,commandused):
     
     ## Get Name Of Current Channel
     botchannel = trigger.sender
