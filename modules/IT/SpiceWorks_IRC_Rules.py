@@ -20,7 +20,10 @@ def execute_main(bot, trigger):
             myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
         else: 
             if not rulenumber.isdigit():
-                rulenumber = w2n.word_to_num(str(rulenumber))
+                try:
+                    rulenumber = w2n.word_to_num(str(rulenumber))
+                 except ValueError:
+                    myline= 'That doesnt appear to be a rule number.'
             else:
                 rulenumber = int(rulenumber)    
         htmlfile=urllib.urlopen(rulesurl)
