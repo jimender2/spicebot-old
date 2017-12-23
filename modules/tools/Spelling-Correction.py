@@ -16,6 +16,9 @@ from sopel.tools import Identifier, SopelMemory
 from sopel.module import rule, priority
 from sopel.formatting import bold
 
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
 def setup(bot):
     bot.memory['find_lines'] = SopelMemory()
