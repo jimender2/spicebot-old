@@ -16,6 +16,8 @@ from sopel.tools import Identifier, SopelMemory
 from sopel.module import rule, priority
 from sopel.formatting import bold
 
+import os
+import sys
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
