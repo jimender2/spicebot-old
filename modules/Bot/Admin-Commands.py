@@ -85,9 +85,10 @@ def main_command(bot, trigger):
             commandtoenable = get_trigger_arg(triggerargsarray, 4)
             cmdarray = []
             for cmds in bot.command_groups.items():
-                cmdsall = cmds[-1]
-                for cmd in cmdsall:
-                    cmdarray.append(cmd)
+                for cmd in cmds:
+                    if str(cmd).endswith("]"):
+                        for x in cmd:
+                            cmdarray.append(x)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable == 'all':
