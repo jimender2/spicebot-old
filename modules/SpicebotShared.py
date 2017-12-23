@@ -243,7 +243,7 @@ def get_timesince(bot, nick, databasekey):
     last = get_botdatabase_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
-def get_timeuntil(bot, nowtime, futuretime):
+def get_timeuntil(nowtime, futuretime):
     a = arrow.get(now)
     b = arrow.get(futuretime)
     timecompare = (b.humanize(a, granularity='auto'))
