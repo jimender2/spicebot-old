@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import datetime
+import arrow
 from sopel.tools import Identifier
 from sopel.tools.time import get_timezone, format_time
 from sopel.module import commands, rule, priority, thread
