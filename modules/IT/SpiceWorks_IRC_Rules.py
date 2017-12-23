@@ -31,13 +31,13 @@ def execute_main(bot, trigger):
                 try:
                     if str(rulenumber) != '0':
                         myline=lines[rulenumber-1]                          
-                    except IndexError or TypeError:
-                        if rulenumber == 69:
-                            myline='giggles'
-                        elif rulenumber == 34:
-                            myline='If it exists, there is porn of it.'
-                        else:
-                            myline= 'That doesnt appear to be a rule number.'
+                except IndexError or TypeError:
+                    if rulenumber == 69:
+                        myline='giggles'
+                    elif rulenumber == 34:
+                        myline='If it exists, there is porn of it.'
+                    else:
+                        myline= 'That doesnt appear to be a rule number.'
 
         if myline == 'giggles':
             bot.action(myline)
