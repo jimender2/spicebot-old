@@ -22,3 +22,26 @@ from SpicebotShared import *
 
 @sopel.module.commands('channel')
 def main_command(bot, trigger):
+    instigator = trigger.nick
+    triggerargsarray = create_args_array(trigger.group(2))
+    subcommand = get_trigger_arg(triggerargsarray, 1)
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+    
+    ## list channels
+    if not subcommand:
+        channelarray = []
+        for c in bot.channels:
+            channelarray.append(c)
+        chanlist = get_trigger_arg(triggerargsarray, 'list')
+        bot.say("You can find me in " + chanlist)
+        
+    ## OP list
+    elif subcommand.lower() == 'op':
+        oplist = get_trigger_arg(operatorarray, 'list')
+        bot.notice("Channel Operators are: " + oplist, instigator)
+        
+    ## Voice List
+    elif subcommand.lower() == 'voice':
+        voicelist = get_trigger_arg(voicearray, 'list')
+        bot.notice("Channel VOICE are: " + voicelist, instigator)
+  
