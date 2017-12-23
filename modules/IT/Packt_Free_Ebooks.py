@@ -36,7 +36,7 @@ def getpackt(bot):
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
 
 def getPacktTitle():
-    title = "[No Book Today]"
+    title = ''
     url = 'https://www.packtpub.com/packt/offers/free-learning'
     ua = UserAgent()
     header = {'User-Agent':str(ua.chrome)}
@@ -46,6 +46,8 @@ def getPacktTitle():
         title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
         title = title.replace("\\t","")
         title = title.replace("\\n","")
+        if title == []:
+            title = "[No Book Today]"
     return title
 
 def getpackttimediff():
