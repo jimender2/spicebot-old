@@ -169,7 +169,7 @@ def lottery(bot,trigger, arg):
 					if(pick > maxnumber or pick < 1):
 						valid = 0
 				if valid == 0:
-					bot.say("One of the numbers you entered does is not within the 1 to ' + str(maxnumber) + ' range.")
+					bot.say('One of the numbers you entered does is not within the 1 to ' + str(maxnumber) + ' range.')
 				else:
 					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 						winningnumbers = random.sample(range(1, maxnumber), 5) 
