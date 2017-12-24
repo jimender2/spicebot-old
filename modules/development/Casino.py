@@ -147,8 +147,7 @@ def lottery(bot,trigger, arg):
 		for pick in arg:
 			if pick.isdigit():						
 				picks.append(int(pick))
-			else: 
-				bot.say(str(pick) + ' is not a number')
+			
 		if len(picks)<5:
 			bot.say("One of the numbers you entered does not appear to be a number.")
 			success = 0
