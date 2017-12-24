@@ -241,9 +241,7 @@ def deal(deck):
 def blackjackscore(hand):
 	myscore = 0
 	for card in hand:
-		if card.isdigit():
-			myscore = myscore + int(card)
-		elif(card == 'J' or card == 'Q' or card == 'K'):
+		if(card == 'J' or card == 'Q' or card == 'K'):
 			myscore = myscore + 10
 		elif card=='A':
 			testscore = myscore + 10
@@ -251,4 +249,9 @@ def blackjackscore(hand):
 				myscore = myscore + 1
 			else:
 				myscore = myscore + 10
+		else:
+			try:
+				myscore = myscore + int(card)
+			execpt:
+				myscore=myscore
 	return myscore
