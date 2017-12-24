@@ -46,7 +46,7 @@ def slots(bot,trigger):
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
 		reel = [wheel1, wheel2, wheel3]
-		bot.say('The slot machine displays ' + str(reel))
+		bot.say('The slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
 		for i in reel:
 			if i=='BSOD':
 				mywinnings = mywinnings + 5 				
