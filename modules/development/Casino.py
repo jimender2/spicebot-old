@@ -64,6 +64,8 @@ def slots(bot,trigger):
 			Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 		else:
 			bot.say(trigger.nick + ' gets nothing')
+	else:
+		bot.say('You dont have enough Spicebucks')
 
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
@@ -192,6 +194,8 @@ def lottery(bot,trigger, arg):
 							payout = 50
 						Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
 						bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+					else:
+						bot.say('You dont have enough Spicebucks')
 
 							
 #____Game 4 Blackjack___
