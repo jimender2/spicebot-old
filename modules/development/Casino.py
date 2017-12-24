@@ -130,9 +130,9 @@ def roulette(bot,trigger,arg):
 				mywinnings=mywinnings+(mybet*1)+mybet			
 		 	if mywinnings >=1:
                 		bot.say(trigger.nick + ' has won ' + str(mywinnings))
-               			 Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
-           		 else:
-                		bot.say(trigger.nick + ' is a loser')
+			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
+		 	else:
+				bot.say(trigger.nick + ' is a loser')
 				
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg)
