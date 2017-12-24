@@ -164,6 +164,7 @@ def lottery(bot,trigger, arg)
 					bot.say("You must have a duplicate in your picks.")
 					success = 0					
 			if success == 1:
+				valid=1
 				for pick in picks:
 					if(pick > maxnumber or pick < 1):
 						valid = 0
