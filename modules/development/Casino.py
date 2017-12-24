@@ -50,20 +50,20 @@ def slots(bot,trigger):
 		for i in reel:
 			if i=='BSOD':
 				mywinnings = mywinnings + 5 				
-			if(wheel1 == wheel2 and wheel2 == wheel3):
-				bot.say(trigger.nick + ' got 3 ' + str(wheel1))
-				if wheel1 == 'BSOD':
-					mywinnings = 1000 #jackpot amount
-					bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
-					Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-				else:
-					bot.say('You get 25 spicebucks')
-			elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-				mywinnings = 5
-				bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
+		if(wheel1 == wheel2 and wheel2 == wheel3):
+			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
+			if wheel1 == 'BSOD':
+				mywinnings = 1000 #jackpot amount
+				bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 			else:
-				bot.say(trigger.nick + ' gets nothing')
+				bot.say('You get 25 spicebucks')
+		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
+			mywinnings = 5
+			bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
+			Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+		else:
+			bot.say(trigger.nick + ' gets nothing')
 
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
@@ -149,20 +149,20 @@ def lottery(bot,trigger, arg):
 				picks.append(int(pick))
 			else: 
 				bot.say(str(pick) + ' is not a number')
-			if len(picks)<5:
-				bot.say("One of the numbers you entered does not appear to be a number.")
-				success = 0
-			else:
-				success = 1					
-			if success == 1:
-				pickstemp = picks
-				picks = []
-				for pick in pickstemp:
-					if pick not in picks:
-						picks.append(pick)
-				if len(picks) < 5:
-					bot.say("You must have a duplicate in your picks.")
-					success = 0					
+		if len(picks)<5:
+			bot.say("One of the numbers you entered does not appear to be a number.")
+			success = 0
+		else:
+			success = 1					
+		if success == 1:
+			pickstemp = picks
+			picks = []
+			for pick in pickstemp:
+				if pick not in picks:
+					picks.append(pick)
+			if len(picks) < 5:
+				bot.say("You must have a duplicate in your picks.")
+				success = 0					
 			if success == 1:
 				valid=1
 				for pick in picks:
@@ -170,27 +170,27 @@ def lottery(bot,trigger, arg):
 						valid = 0
 				if valid == 0:
 					bot.say("One of the numbers you entered does is not within the 1 to ' + str(maxnumber) + ' range.")
-			else:
-				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-					winningnumbers = random.sample(range(1, maxnumber), 5) 
-					bot.say('The winning numbers are ' + str(winningnumbers))
-					correct = 0
-					for pick in picks:
-						if pick in winningnumbers:
-							correct = correct + 1
-					payout = 0
-					if correct == 1:
-						payout = 1
-					elif correct == 2:
-						payout = 2
-					elif correct == 3:
-						payout = 5
-					elif correct == 4:
-						payout = 20
-					elif correct == 5:
-						payout = 50
-					Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-					bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+				else:
+					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
+						winningnumbers = random.sample(range(1, maxnumber), 5) 
+						bot.say('The winning numbers are ' + str(winningnumbers))
+						correct = 0
+						for pick in picks:
+							if pick in winningnumbers:
+								correct = correct + 1
+						payout = 0
+						if correct == 1:
+							payout = 1
+						elif correct == 2:
+							payout = 2
+						elif correct == 3:
+							payout = 5
+						elif correct == 4:
+							payout = 20
+						elif correct == 5:
+							payout = 50
+						Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+						bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
 
 							
 #____Game 4 Blackjack___
