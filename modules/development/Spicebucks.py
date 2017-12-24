@@ -41,9 +41,12 @@ def execute_main(bot, trigger, args):
                 if args[1].lower() not in bot.privileges[channel.lower()]:
                     bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
-                    bank(bot, args[1], 'other')
+                    spicebucks=bank(bot, args[1])                                         
+                    bot.say(arg[1] + ' has '+ str(spicebucks) + " spicebucks in the bank.")
             else:
-                bank(bot, trigger.nick, 'self')
+                bank(bot, trigger.nick)
+                bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")       
+                     
         elif args[0] == 'transfer':
             if len(args) >= 3:
                 transfer(bot, channel, trigger.nick, args[1], args[2])
@@ -52,7 +55,31 @@ def execute_main(bot, trigger, args):
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
+    
+def bank(bot, nick):
+    spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
+    return spicebucks
 
+def spicebucks(bot, target, plusminus, amount):
+    success = 'false'
+    if type(amount) == int:
+        inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
+        if plusminus == 'plus':
+            bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
+            success = 'true'
+        elif plusminus == 'minus':
+            if inbank - amount < 0:
+                #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
+                success = 'false'
+            else:
+                bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
+                success = 'true'            
+    else:
+        #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
+        success = 'false'
+    return success
+    
+    
 def checkpayday(bot, target, args):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
@@ -80,33 +107,7 @@ def paytaxes(bot, target):
         bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
         bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
     else:
-        bot.say("Taxes already paid today.")
-        
-def spicebucks(bot, target, plusminus, amount):
-    success = 'false'
-    if type(amount) == int:
-        inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
-        if plusminus == 'plus':
-            bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
-            success = 'true'
-        elif plusminus == 'minus':
-            if inbank - amount < 0:
-                bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
-                success = 'false'
-            else:
-                bot.db.set_nick_value(target, 'spicebucks_bank', inbank - amount)
-                success = 'true'            
-    else:
-        bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
-        success = 'false'
-    return success
-
-def bank(bot, nick, target):
-    spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
-    identifier = "You have "
-    if target == 'other':
-        identifier = nick + ' has '
-    bot.say(identifier + str(spicebucks) + " spicebucks in the bank.")
+        bot.say("Taxes already paid today.")   
 
 def transfer(bot, channel, instigator, target, amount):
     validamount = 0
