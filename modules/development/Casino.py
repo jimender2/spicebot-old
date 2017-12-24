@@ -133,6 +133,8 @@ def roulette(bot,trigger,arg):
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 		 	else:
 				bot.say(trigger.nick + ' is a loser')
+		else:
+			bot.say('You dont have enough Spicebucks')
 				
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
