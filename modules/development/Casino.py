@@ -170,26 +170,26 @@ def lottery(bot,trigger, arg)
 				if valid == 0:
 					bot.say("One of the numbers you entered does is not within the 1 to ' + str(maxnumber) + ' range.")
 			else:
-						if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-							winningnumbers = random.sample(range(1, maxnumber), 5) 
-                    					bot.say('The winning numbers are ' + str(winningnumbers))
-							correct = 0
-                    					for pick in picks:
-                        					if pick in winningnumbers:
-                            						correct = correct + 1
-							payout = 0
-						 	if correct == 1:
-								payout = 1
-                    					elif correct == 2:
-								payout = 2
-                    					elif correct == 3:
-								payout = 5
-                    					elif correct == 4:
-                        					payout = 20
-                    					elif correct == 5:
-                        					payout = 50
-                    					Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-                    					bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
+					winningnumbers = random.sample(range(1, maxnumber), 5) 
+					bot.say('The winning numbers are ' + str(winningnumbers))
+					correct = 0
+					for pick in picks:
+						if pick in winningnumbers:
+							correct = correct + 1
+					payout = 0
+					if correct == 1:
+						payout = 1
+					elif correct == 2:
+						payout = 2
+					elif correct == 3:
+						payout = 5
+					elif correct == 4:
+						payout = 20
+					elif correct == 5:
+						payout = 50
+					Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+					bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
 
 							
 #____Game 4 Blackjack___
@@ -203,18 +203,18 @@ def blackjack(bot,trigger)
 	myscore = blackjackscore(myhand)
 	dealerscore = blackjackscore(dealerhand)
 	if myscore == 21:
-	bot.say(trigger.nick + ' got blackjack and is a winner')
+		bot.say(trigger.nick + ' got blackjack and is a winner')
 	elif myscore > 21:
-	bot.say(trigger.nick + ' busted and gets nothing')
+		bot.say(trigger.nick + ' busted and gets nothing')
 	elif myscore < 21:
-	if dealerscore > 21:
-		bot.say('The dealer busted')
-	elif dealerscore < myscore:
-		bot.say(trigger.nick + ' wins')
-	elif dealerscore > myscore:
-		bot.say('The dealer wins')
-	elif dealerscore == myscore:
-		bot.say('It is a draw and no one is a winner')	          
+		if dealerscore > 21:
+			bot.say('The dealer busted')
+		elif dealerscore < myscore:
+			bot.say(trigger.nick + ' wins')
+		elif dealerscore > myscore:
+			bot.say('The dealer wins')
+		elif dealerscore == myscore:
+			bot.say('It is a draw and no one is a winner')	          
     
   
 #__________________________Shared Functions____________________
