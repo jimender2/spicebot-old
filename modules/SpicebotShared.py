@@ -77,9 +77,6 @@ def spicebot_prerun(bot,trigger,commandused):
 
 
 
-
-
-
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
@@ -103,6 +100,19 @@ def special_users(bot):
                 if u in bot.config.core.admins:
                     adminsarray.append(u)
     return botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray
+
+#####################
+## Module Counters ##
+#####################
+
+def increment_counter(bot, triggerargsarray)
+    instigator = trigger.nick # Who to increment for
+    botchannel = trigger.sender # Channel to increment for
+    commandused = get_trigger_arg(triggerargsarray, 0) # Command to increment for
+    adjust_botdatabase_value(bot, botchannel, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
+    adjust_botdatabase_value(bot, botchannel, "spicebottotalusage", 1) ## Channel usage of bot overall
+    adjust_botdatabase_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
+    adjust_botdatabase_value(bot, instigator, "spicebottotalusage", 1) ## User usage of bot overall
 
 ##########
 ## ARGS ##
