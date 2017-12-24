@@ -135,7 +135,7 @@ def roulette(bot,trigger,arg):
 				bot.say(trigger.nick + ' is a loser')
 				
 #______Game 3 Lottery________				
-def lottery(bot,trigger, arg)
+def lottery(bot,trigger, arg):
 	maxnumber=20
 	if(len(arg)<6 or len(arg)>6):
 		bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
@@ -194,7 +194,7 @@ def lottery(bot,trigger, arg)
 
 							
 #____Game 4 Blackjack___
-def blackjack(bot,trigger)				
+def blackjack(bot,trigger):				
 
 	deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 	myhand = deal(deck)
