@@ -258,6 +258,6 @@ def blackjackscore(hand):
 		else:
 			try:
 				myscore = myscore + int(card)
-			execpt:
+			except ValueError:
 				myscore=myscore
 	return myscore
