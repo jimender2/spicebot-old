@@ -32,8 +32,19 @@ def execute_main(bot, trigger, arg):
 		roulette(bot,trigger,arg)
 	elif mygame=='lottery':
 		lottery(bot,trigger,arg)
+	elif mygame= 'freebie':
+		freebie(bot,trigger)
     	else:
         	bot.say('Please choose a game')
+def freebie(bot,trigger):
+	bankbalance=Spicebucks.bank(bot,trigger.nick)
+	if bankbalance<1:
+		bot.say('The casino gives you 1 Spicebuck for use in the casino')
+		Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1)
+	else:
+		bot.say('Looks like you dont need a handout because your bank balance is ' + bankbalance)
+		
+
 	
 def slots(bot,trigger):
 #_____________Game 1 slots___________
