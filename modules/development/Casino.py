@@ -32,7 +32,7 @@ def execute_main(bot, trigger, arg):
 		roulette(bot,trigger,arg)
 	elif mygame=='lottery':
 		lottery(bot,trigger,arg)
-	elif mygame= 'freebie':
+	elif mygame== 'freebie':
 		freebie(bot,trigger)
     	else:
         	bot.say('Please choose a game')
