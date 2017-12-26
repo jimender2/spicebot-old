@@ -105,7 +105,7 @@ def special_users(bot):
 ## Module Counters ##
 #####################
 
-def increment_counter(bot, triggerargsarray)
+def increment_counter(bot, triggerargsarray):
     instigator = trigger.nick # Who to increment for
     botchannel = trigger.sender # Channel to increment for
     commandused = get_trigger_arg(triggerargsarray, 0) # Command to increment for
