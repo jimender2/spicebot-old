@@ -44,7 +44,7 @@ def execute_main(bot, trigger, args):
                     spicebucks=bank(bot, args[1])                                         
                     bot.say(arg[1] + ' has '+ str(spicebucks) + " spicebucks in the bank.")
             else:
-                bank(bot, trigger.nick)
+                spicebucks=bank(bot, trigger.nick)
                 bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")       
                      
         elif args[0] == 'transfer':
