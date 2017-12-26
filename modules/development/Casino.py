@@ -42,7 +42,7 @@ def freebie(bot,trigger):
 		bot.say('The casino gives you 1 Spicebuck for use in the casino')
 		Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1)
 	else:
-		bot.say('Looks like you dont need a handout because your bank balance is ' + bankbalance)
+		bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
 		
 
 	
