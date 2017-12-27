@@ -80,9 +80,7 @@ def autorss(bot):
                 #links = xmldoc.getElementsByTagName(linktype)
                 #link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 links = xmldoc.getElementsByTagName('link')
-                link = links[childnumber].childNodes[0].nodeValue
-                bot.msg("##spicebottest",str(link))
-                link = link.getAttribute('href')
+                link = links.get('href')
                 bot.msg("##spicebottest",str(link))
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
