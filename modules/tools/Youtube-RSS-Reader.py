@@ -48,10 +48,11 @@ def reset(bot,trigger):
 @sopel.module.interval(60)
 def autorss(bot):
     rssarray = []
+    channel = "##SpiceBotTest"
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
     for rssfeed in rssarray:
-        bot.say(str(rssfeed))
+        bot.msg(channel,str(rssfeed))
         configfile = os.path.join(RSSFEEDSDIR, rssfeed)
         config = ConfigParser.ConfigParser()
         config.read(configfile)
@@ -62,10 +63,10 @@ def autorss(bot):
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         
-        bot.say(str(feedname))
-        bot.say(str(url))
-        bot.say(str(lastbuilddatabase))
-        bot.say(str(messagestring))
+        bot.msg(channel,str(feedname))
+        bot.msg(channel,str(url))
+        bot.msg(channel,str(lastbuilddatabase))
+        bot.msg(channel,str(messagestring))
         
         page = requests.get(url, headers=header)
         if page.status_code == 200:
