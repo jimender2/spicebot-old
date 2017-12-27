@@ -137,7 +137,7 @@ def execute_main(bot, trigger, triggerargsarray):
         allusersinroomarray.append(u)
     for u in allusersinroomarray:
         inchannel = "#bypass"
-        canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, dowedisplay)
+        canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
         if canduel and u != bot.nick:
             canduelarray.append(u)
         opttime = get_timesince_duels(bot, u, 'optime')
