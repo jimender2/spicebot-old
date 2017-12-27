@@ -79,11 +79,11 @@ def autorss(bot):
                 title = titles[parentnumber].childNodes[0].nodeValue
                 link = ''
                 links = xmldoc.getElementsByTagName('link')
-                results = []
-                for link in links.findall(ns + 'link'):
-                    if link.get('rel') == 'alternate':
-                        results.append(link.get('href'))
-                link = get_trigger_arg(results, 'last')
+                hrefs = []
+                for links in link:
+                if link.getAttribute('rel') == 'alternate':
+                    hrefs.append( link.getAttribute('href') )
+                link = get_trigger_arg(hrefs, 'last')
                 #link = links[childnumber].childNodes[1].nodeValue.split("?")[0]
                 
                 bot.msg("##spicebottest",str(link))
