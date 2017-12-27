@@ -78,6 +78,7 @@ def autorss(bot):
                 bot.msg("##SpiceBotTest",str(title))
                 links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                bot.msg("##SpiceBotTest",str(link))
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
