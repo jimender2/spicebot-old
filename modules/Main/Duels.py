@@ -1312,9 +1312,9 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
     elif target == instigatorlastfought and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
-    elif instigator not in dueloptedinarray:
+    elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ", It looks like you have disabled duels. Run .duel on to re-enable.")
-    elif target not in dueloptedinarray:
+    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled duels.')
     elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You can't duel for %d seconds." % (USERTIMEOUT - instigatortime))
