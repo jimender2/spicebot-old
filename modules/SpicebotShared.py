@@ -71,6 +71,7 @@ def spicebot_prerun(bot,trigger,commandused):
     ## Run Module if above checks pass
     else:
         enablestatus = 0
+        ## assuming we pass all the checks, this would be a good spot to put the usage tracking
 
     ## Send Status Forward
     return enablestatus, triggerargsarray
