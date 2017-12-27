@@ -19,7 +19,7 @@ import fnmatch
 import random
 from os.path import exists
 
-devbot = 'dev'
+devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 
 ## This runs for every custom module and decides if the module runs or not
@@ -71,6 +71,7 @@ def spicebot_prerun(bot,trigger,commandused):
     ## Run Module if above checks pass
     else:
         enablestatus = 0
+        increment_counter(bot, trigger,commandused)
 
     ## Send Status Forward
     return enablestatus, triggerargsarray
@@ -105,10 +106,9 @@ def special_users(bot):
 ## Module Counters ##
 #####################
 
-def increment_counter(bot, triggerargsarray):
+def increment_counter(bot, trigger, commandused):
     instigator = trigger.nick # Who to increment for
     botchannel = trigger.sender # Channel to increment for
-    commandused = get_trigger_arg(triggerargsarray, 0) # Command to increment for
     adjust_botdatabase_value(bot, botchannel, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
     adjust_botdatabase_value(bot, botchannel, "spicebottotalusage", 1) ## Channel usage of bot overall
     adjust_botdatabase_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module

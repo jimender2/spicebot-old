@@ -12,14 +12,14 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/main/"
+RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/youtube/"
 
 ## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
 @sopel.module.require_admin
-@sopel.module.commands('rssreset')
+@sopel.module.commands('ytrssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
     if not feedselect:
@@ -60,6 +60,12 @@ def autorss(bot):
         childnumber = int(config.get("configuration","childnumber"))
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
+        
+        bot.say(str(feedname))
+        bot.say(str(url))
+        bot.say(str(lastbuilddatabase))
+        bot.say(str(messagestring))
+        
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             xml = page.text
