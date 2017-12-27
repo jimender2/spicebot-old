@@ -114,9 +114,9 @@ def duel_action(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 ## Base command
-@sopel.module.commands('duel')
+@sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
