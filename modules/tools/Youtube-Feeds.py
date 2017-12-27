@@ -82,8 +82,6 @@ def autorss(bot):
                 for link in links:
                     if link.getAttribute('rel') == 'alternate':
                         endlink = link.getAttribute('href')
-                
-                bot.msg("##spicebottest",str(endlink))
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
