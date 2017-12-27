@@ -70,4 +70,4 @@ def main_command(bot, trigger):
                 adjust_database_array(bot, bot.nick, instigator, 'botusers', 'add')
             else:
                 adjust_database_array(bot, bot.nick, instigator, 'botusers', 'del')
-            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
+            bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + instigator + '.', instigator)
