@@ -51,6 +51,7 @@ def autorss(bot):
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
     for rssfeed in rssarray:
+        bot.say(str(rssfeed))
         configfile = os.path.join(RSSFEEDSDIR, rssfeed)
         config = ConfigParser.ConfigParser()
         config.read(configfile)
