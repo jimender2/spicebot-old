@@ -3,3 +3,5 @@ feedname = The Bitter IT Guy
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UC7lx9EQBwxPaRMlMom61-XQ
 parentnumber = 2
 childnumber = 2
+pubdatetype = published
+linktype = uri
