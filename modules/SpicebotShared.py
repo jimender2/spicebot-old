@@ -94,7 +94,7 @@ def special_users(bot):
             if u != bot.nick:
                 if u.lower() in bot.config.core.owner.lower():
                     botownerarray.append(u)
-                if bot.privileges[channel.lower()][u] == OP:
+                if bot.privileges[channel.lower()][u.lower()] == OP:
                     operatorarray.append(u)
                 if bot.privileges[channel.lower()][u.lower()] == VOICE:
                     voicearray.append(u)
