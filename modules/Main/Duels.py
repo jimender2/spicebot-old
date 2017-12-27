@@ -207,7 +207,7 @@ def execute_main(bot, trigger, triggerargsarray):
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
-            elif target.lower() not in allusersinroomarray:
+            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
                 bot.notice("Online Docs: " + GITWIKIURL, target)
@@ -216,7 +216,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'on' or commandortarget == 'off':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
-            if target.lower() not in allusersinroomarray and target != 'everyone':
+            if target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
@@ -229,9 +229,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
             elif target in targetcantoptarray:
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
-            elif commandortarget == 'on' and target.lower() in dueloptedinarray:
+            elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
-            elif commandortarget == 'off' and target.lower() not in dueloptedinarray:
+            elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
                 if commandortarget == 'on':
@@ -360,7 +360,7 @@ def execute_main(bot, trigger, triggerargsarray):
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-            elif target.lower() not in allusersinroomarray:
+            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
             elif instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
@@ -401,7 +401,7 @@ def execute_main(bot, trigger, triggerargsarray):
             newvalue = get_trigger_arg(triggerargsarray, 5) or None
             if not target:
                 bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-            elif target.lower() not in allusersinroomarray and target != 'everyone':
+            elif target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
             elif not subcommand:
                 bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
@@ -469,9 +469,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Streaks
         elif commandortarget == 'streaks':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in dueloptedinarray:
+            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
                 streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
@@ -499,9 +499,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Backpack
         elif commandortarget == 'backpack':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in dueloptedinarray:
+            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
                 for x in backpackarray:
@@ -521,9 +521,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Stats
         elif commandortarget == 'stats':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in allusersinroomarray:
+            if target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in dueloptedinarray:
+            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
                 for x in duelstatsarray:
@@ -624,11 +624,11 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 elif int(gethowmanylootitem) < int(quantity):
                     bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
-                elif target.lower() not in allusersinroomarray:
+                elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target == bot.nick:
                   bot.notice(instigator + ", I am immune to " + lootitem, instigator)
-                elif target.lower() not in dueloptedinarray:
+                elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                 else:
                     lootusedeaths = 0
@@ -882,11 +882,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif magicusage not in magicoptions:
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
-            elif target.lower() not in allusersinroomarray:
+            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target == bot.nick:
                 bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
-            elif target.lower() not in dueloptedinarray:
+            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             elif not mana:
                 bot.notice(instigator + " you don't have any mana.", instigator)
@@ -988,7 +988,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
 
     ## warning if user doesn't have duels enabled
-    elif commandortarget not in dueloptedinarray and commandortarget != bot.nick:
+    elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
         bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
 
     else:
