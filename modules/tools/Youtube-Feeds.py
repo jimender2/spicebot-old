@@ -79,8 +79,7 @@ def autorss(bot):
                 title = titles[parentnumber].childNodes[0].nodeValue
                 #endlink = ''
                 links = xmldoc.getElementsByTagName('link')
-                links = links[0].childNodes[0].nodeValue
-                endlink = links.getAttribute('href')
+                endlink = links[parentnumber].getAttribute('href')
                 #for link in links:
                 #    if link.getAttribute('rel') == 'alternate':
                 #        if endlink == '':
