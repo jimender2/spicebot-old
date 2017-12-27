@@ -62,15 +62,16 @@ def autorss(bot):
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
         if page.status_code == 200:
-            bot.msg("##SpiceBotTest",str(feedname))
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
-            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = xmldoc.getElementsByTagName('published')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
             newcontent = True
+            bot.msg("##SpiceBotTest",str(lastBuildXML))
+            bot.msg("##SpiceBotTest",str(lastbuildcurrent))
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
             if newcontent == True:
