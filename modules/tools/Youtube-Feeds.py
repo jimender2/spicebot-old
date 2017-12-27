@@ -77,17 +77,14 @@ def autorss(bot):
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
-                link = ''
+                endlink = ''
                 links = xmldoc.getElementsByTagName('link')
-                hrefs = []
-                for links in link:
-                if link.getAttribute('rel') == 'alternate':
-                    hrefs.append( link.getAttribute('href') )
-                link = get_trigger_arg(hrefs, 'last')
-                #link = links[childnumber].childNodes[1].nodeValue.split("?")[0]
+                for link in links:
+                    if link.getAttribute('rel') == 'alternate':
+                        endlink = link.getAttribute('href')
                 
-                bot.msg("##spicebottest",str(link))
+                bot.msg("##spicebottest",str(endlink))
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
-                    bot.msg(channel, messagestring + title + ': ' + link)
+                    bot.msg(channel, messagestring + title + ': ' + endlink)
