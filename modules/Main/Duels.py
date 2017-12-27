@@ -114,9 +114,9 @@ def duel_action(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 ## Base command
-@sopel.module.commands('duel')
+@sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -137,7 +137,7 @@ def execute_main(bot, trigger, triggerargsarray):
         allusersinroomarray.append(u)
     for u in allusersinroomarray:
         inchannel = "#bypass"
-        canduel = mustpassthesetoduel(bot, trigger, u, bot.nick, inchannel, dowedisplay)
+        canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
         if canduel and u != bot.nick:
             canduelarray.append(u)
         opttime = get_timesince_duels(bot, u, 'optime')
@@ -216,9 +216,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'on' or commandortarget == 'off':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
-            if target.lower() not in allusersinroomarray:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in allusersinroomarray and target != 'everyone':
+            if target.lower() not in allusersinroomarray and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and instigator not in adminsarray:
                 bot.notice(instigator + "This is an admin only function.", instigator)
