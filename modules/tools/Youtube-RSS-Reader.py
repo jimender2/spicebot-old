@@ -70,13 +70,12 @@ def autorss(bot):
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
             newcontent = True
-            bot.msg("##SpiceBotTest",str(lastBuildXML))
-            bot.msg("##SpiceBotTest",str(lastbuildcurrent))
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
+                bot.msg("##SpiceBotTest",str(title))
                 links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 lastbuildcurrent = lastBuildXML.strip()
