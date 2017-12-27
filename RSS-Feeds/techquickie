@@ -4,4 +4,4 @@ url = https://www.youtube.com/feeds/videos.xml?channel_id=UC0vBXGSyV14uvJ4hECDOl
 parentnumber = 2
 childnumber = 2
 pubdatetype = published
-linktupe = uri
+linktype = uri
