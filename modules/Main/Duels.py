@@ -988,7 +988,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
 
     ## warning if user doesn't have duels enabled
-    elif commandortarget.lower() not in dueloptedinarray and commandortarget != bot.nick:
+    elif commandortarget not in dueloptedinarray and commandortarget != bot.nick:
         bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
 
     else:
