@@ -19,7 +19,7 @@ ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
 @sopel.module.require_admin
-@sopel.module.commands('rssreset')
+@sopel.module.commands('ytrssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
     if not feedselect:
@@ -62,6 +62,7 @@ def autorss(bot):
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
         if page.status_code == 200:
+            bot.say(str(feedname))
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
