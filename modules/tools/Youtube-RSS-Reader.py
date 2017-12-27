@@ -60,9 +60,14 @@ def autorss(bot):
         childnumber = int(config.get("configuration","childnumber"))
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
+        
+        bot.say(str(feedname))
+        bot.say(str(url))
+        bot.say(str(lastbuilddatabase))
+        bot.say(str(messagestring))
+        
         page = requests.get(url, headers=header)
         if page.status_code == 200:
-            bot.say(str(feedname))
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
