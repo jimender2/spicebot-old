@@ -52,7 +52,7 @@ def slots(bot,trigger):
 	if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 		mywinnings = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches'] 
+		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches','Updates'] 
 		wheel1 = spin(wheel)
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
@@ -138,9 +138,10 @@ def roulette(bot,trigger,arg):
 		 	bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
             		mywinnings=0
 			if mynumber == winningnumber:
-				mywinnings=mywinnings+(mybet*2)+mybet
-			elif mycolor == color:
-				mywinnings=mywinnings+(mybet*1)+mybet			
+				mywinnings=mywinnings+mybet+mybet
+			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
+				colorwinnings = 5  
+				mywinnings=mywinnings+colorwinnings+mybet		
 		 	if mywinnings >=1:
                 		bot.say(trigger.nick + ' has won ' + str(mywinnings))
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
@@ -236,8 +237,9 @@ def blackjack(bot,trigger):
   
 #__________________________Shared Functions____________________
 def spin(wheel):
+	random.seed()
 	#selects a random element of an array and return one item
-  	selected=random.randint(0,(len(wheel)-1))
+  	selected=random.randint(,(len(wheel)-1))
   	reel=wheel[selected]
   	return reel
 
