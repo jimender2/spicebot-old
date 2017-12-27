@@ -76,7 +76,7 @@ def autorss(bot):
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
                 bot.msg("##SpiceBotTest",str(title))
-                links = xmldoc.getElementsByTagName('link')
+                links = xmldoc.getElementsByTagName('uri')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 bot.msg("##SpiceBotTest",str(link))
                 lastbuildcurrent = lastBuildXML.strip()
