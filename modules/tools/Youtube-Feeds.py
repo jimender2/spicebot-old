@@ -79,10 +79,10 @@ def autorss(bot):
                 title = titles[parentnumber].childNodes[0].nodeValue
                 endlink = ''
                 links = xmldoc.getElementsByTagName('link')
-                links = links[parentnumber].childNodes[0].nodeValue
                 for link in links:
                     if link.getAttribute('rel') == 'alternate':
-                        endlink = link.getAttribute('href')
+                        if endlink == '':
+                            endlink = link.getAttribute('href')
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
