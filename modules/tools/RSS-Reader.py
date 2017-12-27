@@ -12,7 +12,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/main/"
+RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/"
 
 ## user agent and header
 ua = UserAgent()
@@ -58,6 +58,8 @@ def autorss(bot):
         url = str(config.get("configuration","url"))
         parentnumber = int(config.get("configuration","parentnumber"))
         childnumber = int(config.get("configuration","childnumber"))
+        pubdatetype = int(config.get("configuration","pubdatetype"))
+        linktype = int(config.get("configuration","linktype"))
         lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
         messagestring = str("[" + feedname + "] ")
         page = requests.get(url, headers=header)
@@ -65,7 +67,7 @@ def autorss(bot):
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
-            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = xmldoc.getElementsByTagName(pubdatetype)
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
@@ -75,7 +77,7 @@ def autorss(bot):
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName('link')
+                links = xmldoc.getElementsByTagName(linktype)
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
