@@ -17,10 +17,10 @@ ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
 @sopel.module.require_admin
-@sopel.module.commands('rssreset')
+@sopel.module.commands('ytrssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
-    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/main/")
+    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
     if not feedselect:
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':
@@ -46,7 +46,7 @@ def reset(bot,trigger):
 ## Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/main/")
+    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
@@ -77,9 +77,14 @@ def autorss(bot):
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName(linktype)
-                link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                #endlink = ''
+                links = xmldoc.getElementsByTagName('link')
+                endlink = links[2].getAttribute('href')
+                #for link in links:
+                #    if link.getAttribute('rel') == 'alternate':
+                #        if endlink == '':
+                #            endlink = link.getAttribute('href')
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
-                    bot.msg(channel, messagestring + title + ': ' + link)
+                    bot.msg(channel, messagestring + title + ': ' + endlink)
