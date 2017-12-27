@@ -73,36 +73,38 @@ manarequiredmagichealth = 200 ## mana required for magic health
 magichealthrestore = 200 ## health restored by a magic health
 
 ## XP points awarded
-XPearnedwinnerranger = 7
-XPearnedloserranger = 5
-XPearnedwinnerstock = 5
-XPearnedloserstock = 3
+XPearnedwinnerranger = 7 ## xp earned as a winner and ranger
+XPearnedloserranger = 5 ## xp earned as a loser and ranger
+XPearnedwinnerstock = 5 ## default xp earned as a winner
+XPearnedloserstock = 3 ## default xp earned as a loser
 
 ## other
-scavegerfindpercent = 40
-barbarianminimumdamge = 40
-botdamage = 150
-bugbountycoinaward = 100
-duelrecorduser = 'duelrecorduser'
+scavegerfindpercent = 40 ## scavengers have a higher percent chance of finding loot
+barbarianminimumdamge = 40 ## Barbarians always strike a set value or above
+botdamage = 150 ## The bot deals a set damage
+bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
+duelrecorduser = 'duelrecorduser' ## just a database column to store values in
 
 ############
 ## Arrays ##
 ############
 
-botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
-lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion']
-transactiontypesarray = ['buy','sell','trade','use']
-duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami']
+botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
+lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## types of potions
+backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
-classarray = ['barbarian','mage','scavenger','rogue','ranger']
-statsadminchangearray = ['set','reset']
-statsbypassarray = ['winlossratio','timeout']
+statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
+transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
+classarray = ['barbarian','mage','scavenger','rogue','ranger'] ## Valid Classes
+duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+statsadminchangearray = ['set','reset'] ## valid admin subcommands
+
              
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
 ################################################################################
 
+## work with /me ACTION (does not work with manual weapon)
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
 @module.intent('ACTION')
 @module.require_chanmsg
@@ -111,7 +113,7 @@ def duel_action(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
-# use this instead if not using with spicebot
+## Base command
 @sopel.module.commands('duel')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -120,13 +122,12 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     
-    typeofduel = 'target'
-    
     ## Initial ARGS of importance
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     dowedisplay = 0
     displaymessage = ''
+    typeofduel = 'target'
     
     ## Build User/channel Arrays
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
