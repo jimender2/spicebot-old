@@ -12,8 +12,6 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-RSSFEEDSDIR = "/home/sopel/.sopel/spicebot/RSS-Feeds/"
-
 ## user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
@@ -22,6 +20,7 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
+    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick+"/RSS-Feeds/")
     if not feedselect:
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':
