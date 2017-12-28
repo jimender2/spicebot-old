@@ -76,7 +76,7 @@ def autorss(bot):
                 newcontent = False
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
-                title = titles[2].childNodes[0].nodeValue
+                title = titles[1].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
                 link = links[2].getAttribute('href')
                 lastbuildcurrent = lastBuildXML.strip()
