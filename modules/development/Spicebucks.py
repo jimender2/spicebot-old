@@ -26,10 +26,11 @@ def execute_main(bot, trigger, args):
     if len(args) == 0:
         bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank.")
     elif len(args) >= 1:
-		if args[0] == 'payday':  
+		if args[0] == 'payday':
+			paydayamount = 0
 			paydayamount=checkpayday(bot, trigger.nick, args[0])
 			if paydayamount > 0:
-				spicebucks(bot, target, 'plus', paydayamount)
+				spicebucks(bot, trigger.nick, 'plus', paydayamount)
 				bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
 			else:
 				bot.say("You've already been paid today. Now go do some work.")
