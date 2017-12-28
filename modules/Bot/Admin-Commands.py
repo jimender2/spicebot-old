@@ -171,7 +171,7 @@ def main_command(bot, trigger):
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
 ###### admin only block
-    if not trigger.admin:
+    elif not trigger.admin:
         bot.notice(instigator + ", This is an admin only function.", instigator)
     
     ## Update from github
