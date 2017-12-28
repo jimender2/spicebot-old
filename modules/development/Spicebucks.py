@@ -10,6 +10,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -26,8 +28,17 @@ def execute_main(bot, trigger, args):
     elif len(args) >= 1:
         if args[0] == 'payday' or args[0] == 'makeitrain':
             checkpayday(bot,trigger.nick, args[0])
-        elif args[0] == 'reset': #to be removed
-            reset(bot,trigger.nick)
+        elif args[0] == 'reset': #admin only command
+            if trigger.nick not in adminsarray
+                bot.say('You must be an admin to use this command')
+                if not args[1]:
+                    reset(bot,trigger.nick)
+                else:
+                    if args[1].lower() not in bot.privileges[channel.lower()]:
+                        bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+                    else:
+                        reset(bot,arg[1])             
+                
         elif args[0] == 'taxes':
             if len(args) > 1:
                 if args[1].lower() not in bot.privileges[channel.lower()]:
