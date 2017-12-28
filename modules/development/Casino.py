@@ -34,8 +34,12 @@ def execute_main(bot, trigger, arg):
 		lottery(bot,trigger,arg)
 	elif mygame== 'freebie':
 		freebie(bot,trigger)
+	elif mygame == 'bank':
+		bankbalance=Spicebucks.bank(bot,trigger.nick)
+		bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')		
     	else:
         	bot.say('Please choose a game')
+		
 def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick)
 	if bankbalance<1:
@@ -52,7 +56,7 @@ def slots(bot,trigger):
 	if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 		mywinnings = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches'] 
+		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 		wheel1 = spin(wheel)
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
@@ -67,8 +71,16 @@ def slots(bot,trigger):
 				mywinnings = 1000 #jackpot amount
 				bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+			elif wheel1 == 'Patches':
+				mywinnings=10
+				bot.say('You get ' + str(mywinnings) + ' spicebucks')
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
+			
 			else:
-				bot.say('You get 25 spicebucks')
+				mywinnings=15
+				bot.say('You get ' + mywinnings + ' spicebucks')
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
+				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 			mywinnings = 5
 			bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
@@ -81,6 +93,7 @@ def slots(bot,trigger):
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
 	maxwheel = 25
+	minbet=15 #requires at least one payday to play
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
@@ -90,13 +103,13 @@ def roulette(bot,trigger,arg):
 		inputcheck = 0
 	else:
 		if not arg[1].isdigit():
-			bot.say('Please bet an amount between 1 and ' + str(maxbet))
+			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:
 			mybet = int(arg[1])
 			inputcheck = 1
-    		if (mybet<=0 or mybet>maxbet):
-                	bot.say('Please bet an amount between 1 and ' + str(maxbet))				
+    		if (mybet<minbet or mybet>maxbet):
+                	bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
                 	inputcheck = 0
 	#setup what was bet on
     	if inputcheck == 1:	
@@ -138,11 +151,16 @@ def roulette(bot,trigger,arg):
 		 	bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
             		mywinnings=0
 			if mynumber == winningnumber:
-				mywinnings=mywinnings+(mybet*2)+mybet
-			elif mycolor == color:
-				mywinnings=mywinnings+(mybet*1)+mybet			
+				mywinnings=mywinnings+mybet+mybet
+			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
+				if mybet <=15:
+					colorwinnings = 5 + 5
+				else: 
+					newbet = int(mybet/2)
+					colorwinnings = 5 + newbet			
+				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
-                		bot.say(trigger.nick + ' has won ' + str(mywinnings))
+				bot.say(trigger.nick + ' has won ' + str(mywinnings))
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 		 	else:
 				bot.say(trigger.nick + ' is a loser')
@@ -151,9 +169,9 @@ def roulette(bot,trigger,arg):
 				
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
-	maxnumber=20
+	maxnumber=99
 	if(len(arg)<6 or len(arg)>6):
-		bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
+		bot.say("You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.")
 		success = 0
 	else:
 		picks = []
@@ -236,6 +254,7 @@ def blackjack(bot,trigger):
   
 #__________________________Shared Functions____________________
 def spin(wheel):
+	random.seed()
 	#selects a random element of an array and return one item
   	selected=random.randint(0,(len(wheel)-1))
   	reel=wheel[selected]
