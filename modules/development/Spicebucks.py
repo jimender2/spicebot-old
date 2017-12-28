@@ -43,7 +43,7 @@ def execute_main(bot, trigger, args):
 				else:
 					bot.say('Spicebucks rain on ' + args[1])
 		
-        elif args[0] == 'reset': #admin only command
+		elif args[0] == 'reset': #admin only command
             if trigger.nick not in adminsarray:
                 bot.say('You must be an admin to use this command')
                 if not args[1]:
