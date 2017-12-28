@@ -81,6 +81,7 @@ def slots(bot,trigger):
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
 	maxwheel = 25
+	minbet=15 #requires at least one payday to play
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
@@ -90,12 +91,12 @@ def roulette(bot,trigger,arg):
 		inputcheck = 0
 	else:
 		if not arg[1].isdigit():
-			bot.say('Please bet an amount between 1 and ' + str(maxbet))
+			bot.say('Please bet an amount between ' + minbet + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:
 			mybet = int(arg[1])
 			inputcheck = 1
-    		if (mybet<=0 or mybet>maxbet):
+    		if (mybet<=minbet or mybet>maxbet):
                 	bot.say('Please bet an amount between 1 and ' + str(maxbet))				
                 	inputcheck = 0
 	#setup what was bet on
