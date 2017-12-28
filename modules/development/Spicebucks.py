@@ -6,6 +6,7 @@ import datetime
 from sopel import module, tools
 import sys
 import os
+import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -41,8 +42,12 @@ def execute_main(bot, trigger, args):
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
 					bot.say('Spicebucks rain on ' + args[1])
+					winnings=random.randint(1,25)
+					bot.say(args[1] + ' manages to keep ' + winnings + ' spicebucks before they disappear. ')
+					spicebucks(bot, args[1], 'plus', winnings)
+		
 			else:
-				bot.say('Spicebucks rain on ' + trigger.nick)
+				bot.say('Spicebucks rain on down on everyone and disappear')
 		
 		elif args[0] == 'reset': #admin only command
 			if trigger.nick not in adminsarray:
@@ -162,4 +167,7 @@ def transfer(bot, allusersinroomarray, instigator, target, amount):
 					if spicebucks(bot, instigator, 'minus', amount) == 'true':
 						spicebucks(bot, target, 'plus', amount)
 						bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+						
+
+	
 
