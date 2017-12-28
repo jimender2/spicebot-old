@@ -33,11 +33,14 @@ def execute_main(bot, trigger, args):
                 bot.say('You must be an admin to use this command')
                 if not args[1]:
                     reset(bot,trigger.nick)
+                    bot.say('Payday reset for ' + trigger.nick)
                 else:
                     if args[1] not in allusersinroomarray:
                         bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                     else:
-                        reset(bot,arg[1])             
+                        reset(bot,arg[1])
+																								bot.say('Payday reset for ' + arg[1])
+                        
                 
         elif args[0] == 'taxes':
             if len(args) > 1:
