@@ -30,9 +30,8 @@ def execute_main(bot, trigger, args):
 			paydayamount = 0
 			paydayamount=checkpayday(bot, trigger.nick, args[0])
 			if paydayamount > 0:
-				addedbucks=spicebucks(bot, trigger.nick, 'plus', paydayamount)
-				if addedbucks=='true':
-					bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
+				spicebucks(bot, trigger.nick, 'plus', paydayamount)
+				bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
 			else:
 				bot.say("You've already been paid today. Now go do some work.")
 			
@@ -74,11 +73,11 @@ def execute_main(bot, trigger, args):
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
-					spicebucks=bank(bot, args[1])                                         
-					bot.say(args[1] + ' has '+ str(spicebucks) + " spicebucks in the bank.")
+					balance=bank(bot, args[1])                                         
+					bot.say(args[1] + ' has '+ str(balance) + " spicebucks in the bank.")
 			else:
-				spicebucks=bank(bot, trigger.nick)
-				bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")       
+				balance=bank(bot, trigger.nick)
+				bot.say("You have " + str(balance) + " spicebucks in the bank.")       
                      
 		elif args[0] == 'transfer':
 			if len(args) >= 3:
@@ -90,8 +89,8 @@ def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
     
 def bank(bot, nick):
-    spicebucks = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
-    return spicebucks
+    balance = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
+    return balance
 
 def spicebucks(bot, target, plusminus, amount):
 	#command for getting and adding money to account
