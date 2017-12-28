@@ -153,10 +153,10 @@ def transfer(bot, allusersinroomarray, instigator, target, amount):
 		else:
 			if target not in allusersinroomarray:
 				bot.say("I'm sorry, I do not know who you want to transfer money to.")
-			if target == instigator:
-				bot.say("You cannot transfer spicebucks to yourself!")
-			else:
-				if spicebucks(bot, instigator, 'minus', amount) == 'true':
-					spicebucks(bot, target, 'plus', amount)
-					bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+				if target == instigator:
+					bot.say("You cannot transfer spicebucks to yourself!")
+				else:
+					if spicebucks(bot, instigator, 'minus', amount) == 'true':
+						spicebucks(bot, target, 'plus', amount)
+						bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
 
