@@ -46,6 +46,7 @@ def execute_main(bot, trigger, args):
 		elif args[0] == 'reset': #admin only command
 			if trigger.nick not in adminsarray:
 				bot.say('You must be an admin to use this command')
+			else:
 				if not args[1]:
 					reset(bot,trigger.nick)
 					bot.say('Payday reset for ' + trigger.nick)
