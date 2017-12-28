@@ -123,7 +123,7 @@ def checkpayday(bot, target, args):
 	return paydayamount
      
 def paytaxes(bot, target):
-    now = datetime.datetime.now()
+	now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
     inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
