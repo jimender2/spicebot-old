@@ -121,7 +121,7 @@ def checkpayday(bot, target, args):
 	else: 		
 		paydayamount=0
 	return paydayamount
-     
+
 def paytaxes(bot, target):
 	now = datetime.datetime.now()
 	datetoday = int(now.strftime("%Y%j"))
@@ -138,24 +138,24 @@ def paytaxes(bot, target):
 		bot.say("Taxes already paid today.")   
 
 def transfer(bot, allusersinroomarray, instigator, target, amount):
-    validamount = 0
-    try:
-        amount = int(amount)
-        validamount = 1
-    except:
-        bot.say("I'm sorry, the amount you entered does not appear to be a number.")
-        validamount = 0
+	validamount = 0
+	try:
+		amount = int(amount)
+		validamount = 1
+	except:
+		bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+		validamount = 0
 
-    if validamount == 1:
-        if amount <= 0:
-            bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
-        else:
-            if target not in allusersinroomarray:
-                 bot.say("I'm sorry, I do not know who you want to transfer money to.")
-            if target == instigator:
-                bot.say("You cannot transfer spicebucks to yourself!")
-            else:
-                if spicebucks(bot, instigator, 'minus', amount) == 'true':
-                    spicebucks(bot, target, 'plus', amount)
-                    bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
-        
+	if validamount == 1:
+		if amount <= 0:
+			bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
+		else:
+			if target not in allusersinroomarray:
+				bot.say("I'm sorry, I do not know who you want to transfer money to.")
+			if target == instigator:
+				bot.say("You cannot transfer spicebucks to yourself!")
+			else:
+				if spicebucks(bot, instigator, 'minus', amount) == 'true':
+					spicebucks(bot, target, 'plus', amount)
+					bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+
