@@ -10,8 +10,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
-
+ 
 @sopel.module.commands('spicebucks')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -19,10 +18,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
-    for c in bot.channels:
-        channel = c
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+    #for c in bot.channels:
+        #channel = c
     commandused = trigger.group(3)
-    inchannel = trigger.sender
+    #inchannel = trigger.sender
     if len(args) == 0:
         bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank. (for now)")
     elif len(args) >= 1:
@@ -34,14 +34,14 @@ def execute_main(bot, trigger, args):
                 if not args[1]:
                     reset(bot,trigger.nick)
                 else:
-                    if args[1].lower() not in bot.privileges[channel.lower()]:
+                    if args[1] not in allusersinroomarray:
                         bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                     else:
                         reset(bot,arg[1])             
                 
         elif args[0] == 'taxes':
             if len(args) > 1:
-                if args[1].lower() not in bot.privileges[channel.lower()]:
+                if args[1] not in allusersinroomarray):
                     bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
                     paytaxes(bot, args[1])
@@ -49,7 +49,7 @@ def execute_main(bot, trigger, args):
                 paytaxes(bot, trigger.nick)
         elif args[0] == 'bank':
             if len(args) > 1:
-                if args[1].lower() not in bot.privileges[channel.lower()]:
+                if args[1] not in allusersinroomarray:
                     bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
                     spicebucks=bank(bot, args[1])                                         
@@ -60,7 +60,7 @@ def execute_main(bot, trigger, args):
                      
         elif args[0] == 'transfer':
             if len(args) >= 3:
-                transfer(bot, channel, trigger.nick, args[1], args[2])
+                transfer(bot, allusersinroomarray, trigger.nick, args[1], args[2])
             else:
                 bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
@@ -98,7 +98,7 @@ def checkpayday(bot, target, args):
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = 15
         if args == 'makeitrain':
-          paydayamount = 500
+          paydayamount = 100
         bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
         spicebucks(bot, target, 'plus', paydayamount)
         bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.") #change to notify
@@ -120,7 +120,7 @@ def paytaxes(bot, target):
     else:
         bot.say("Taxes already paid today.")   
 
-def transfer(bot, channel, instigator, target, amount):
+def transfer(bot, allusersinroomarray, instigator, target, amount):
     validamount = 0
     try:
         amount = int(amount)
@@ -133,7 +133,7 @@ def transfer(bot, channel, instigator, target, amount):
         if amount <= 0:
             bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
         else:
-            if target.lower() not in bot.privileges[channel.lower()]:
+            if target not in allusersinroomarray:
                  bot.say("I'm sorry, I do not know who you want to transfer money to.")
             if target == instigator:
                 bot.say("You cannot transfer spicebucks to yourself!")
