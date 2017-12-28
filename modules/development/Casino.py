@@ -249,7 +249,7 @@ def blackjack(bot,trigger):
 def spin(wheel):
 	random.seed()
 	#selects a random element of an array and return one item
-  	selected=random.randint(,(len(wheel)-1))
+  	selected=random.randint(0,(len(wheel)-1))
   	reel=wheel[selected]
   	return reel
 
