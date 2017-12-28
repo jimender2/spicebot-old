@@ -100,13 +100,13 @@ def roulette(bot,trigger,arg):
 		inputcheck = 0
 	else:
 		if not arg[1].isdigit():
-			bot.say('Please bet an amount between ' + minbet + ' and ' + str(maxbet))
+			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:
 			mybet = int(arg[1])
 			inputcheck = 1
     		if (mybet<=minbet or mybet>maxbet):
-                	bot.say('Please bet an amount between ' + minbet + ' and ' + str(maxbet))			
+                	bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
                 	inputcheck = 0
 	#setup what was bet on
     	if inputcheck == 1:	
