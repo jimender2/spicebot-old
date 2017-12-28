@@ -35,27 +35,28 @@ def execute_main(bot, trigger, args):
 				bot.say("You've already been paid today. Now go do some work.")
 			
 		elif args[0] == 'makeitrain':
-	 		if len(args) < 1:
-				bot.say('Spicebucks rain on ' + trigger.nick)
-			else:
+	 		if len(args) > 1:
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
 					bot.say('Spicebucks rain on ' + args[1])
+			else:
+				bot.say('Spicebucks rain on ' + trigger.nick)
 		
 		elif args[0] == 'reset': #admin only command
 			if trigger.nick not in adminsarray:
 				bot.say('You must be an admin to use this command')
 			else:
-				if len(args) < 1:
-					reset(bot,trigger.nick)
-					bot.say('Payday reset for ' + trigger.nick)
-				else:
+				if len(args) > 1:
 					if args[1] not in allusersinroomarray:
 						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					else:
 						reset(bot,arg[1])
-						bot.say('Payday reset for ' + arg[1])
+						bot.say('Payday reset for ' + arg[1])					
+				else:
+					reset(bot,trigger.nick)
+					bot.say('Payday reset for ' + trigger.nick)		
+					
                         
                 
 		elif args[0] == 'taxes':
