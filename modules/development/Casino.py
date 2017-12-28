@@ -36,6 +36,7 @@ def execute_main(bot, trigger, arg):
 		freebie(bot,trigger)
     	else:
         	bot.say('Please choose a game')
+		
 def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick)
 	if bankbalance<1:
@@ -52,7 +53,7 @@ def slots(bot,trigger):
 	if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 		mywinnings = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
-		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches','Updates'] 
+		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 		wheel1 = spin(wheel)
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
@@ -67,8 +68,15 @@ def slots(bot,trigger):
 				mywinnings = 1000 #jackpot amount
 				bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+			elif wheel1 == 'Patches'
+				mywinnings=10
+				bot.say('You get + ' mywinnings + ' spicebucks')
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+			
 			else:
-				bot.say('You get 25 spicebucks')
+				mywinnings=15
+				bot.say('You get + ' mywinnings + ' spicebucks')
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 			mywinnings = 5
 			bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
@@ -97,7 +105,7 @@ def roulette(bot,trigger,arg):
 			mybet = int(arg[1])
 			inputcheck = 1
     		if (mybet<=minbet or mybet>maxbet):
-                	bot.say('Please bet an amount between 1 and ' + str(maxbet))				
+                	bot.say('Please bet an amount between ' + minbet + ' and ' + str(maxbet))			
                 	inputcheck = 0
 	#setup what was bet on
     	if inputcheck == 1:	
