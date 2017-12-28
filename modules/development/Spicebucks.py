@@ -64,23 +64,23 @@ def execute_main(bot, trigger, args):
 				else:
 					paytaxes(bot, args[1])
 			else:
-                paytaxes(bot, trigger.nick)
-        elif args[0] == 'bank':
-            if len(args) > 1:
-                if args[1] not in allusersinroomarray:
-                    bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-                else:
-                    spicebucks=bank(bot, args[1])                                         
-                    bot.say(args[1] + ' has '+ str(spicebucks) + " spicebucks in the bank.")
-            else:
-                spicebucks=bank(bot, trigger.nick)
-                bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")       
+				paytaxes(bot, trigger.nick)
+		elif args[0] == 'bank':
+			if len(args) > 1:
+				if args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+				else:
+					spicebucks=bank(bot, args[1])                                         
+					bot.say(args[1] + ' has '+ str(spicebucks) + " spicebucks in the bank.")
+			else:
+				spicebucks=bank(bot, trigger.nick)
+				bot.say("You have " + str(spicebucks) + " spicebucks in the bank.")       
                      
-        elif args[0] == 'transfer':
-            if len(args) >= 3:
-                transfer(bot, allusersinroomarray, trigger.nick, args[1], args[2])
-            else:
-                bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+		elif args[0] == 'transfer':
+			if len(args) >= 3:
+				transfer(bot, allusersinroomarray, trigger.nick, args[1], args[2])
+			else:
+				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): ##### to be removed, verify payday
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
