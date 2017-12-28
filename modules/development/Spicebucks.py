@@ -44,21 +44,21 @@ def execute_main(bot, trigger, args):
 					bot.say('Spicebucks rain on ' + args[1])
 		
 		elif args[0] == 'reset': #admin only command
-            if trigger.nick not in adminsarray:
-                bot.say('You must be an admin to use this command')
-                if not args[1]:
-                    reset(bot,trigger.nick)
-                    bot.say('Payday reset for ' + trigger.nick)
-                else:
-                    if args[1] not in allusersinroomarray:
-                        bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-                    else:
-                        reset(bot,arg[1])
+			if trigger.nick not in adminsarray:
+				bot.say('You must be an admin to use this command')
+				if not args[1]:
+					reset(bot,trigger.nick)
+					bot.say('Payday reset for ' + trigger.nick)
+				else:
+					if args[1] not in allusersinroomarray:
+						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+					else:
+						reset(bot,arg[1])
 						bot.say('Payday reset for ' + arg[1])
                         
                 
-        elif args[0] == 'taxes':
-            if len(args) > 1:
+		elif args[0] == 'taxes':
+			if len(args) > 1:
                 if args[1] not in allusersinroomarray:
                     bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                 else:
@@ -95,8 +95,8 @@ def spicebucks(bot, target, plusminus, amount):
     if type(amount) == int:
         inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
         if plusminus == 'plus':
-            bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
-            success = 'true'
+			bot.db.set_nick_value(target, 'spicebucks_bank', inbank + amount)
+			success = 'true'
         elif plusminus == 'minus':
             if inbank - amount < 0:
                 #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
@@ -116,10 +116,10 @@ def checkpayday(bot, target, args):
     datetoday = int(now.strftime("%Y%j"))
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
-        paydayamount = 15
+		paydayamount = 15
 		bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
     else: 		
-        paydayamount=0
+		paydayamount=0
 	return paydayamount
      
 def paytaxes(bot, target):
