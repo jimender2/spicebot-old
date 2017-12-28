@@ -124,18 +124,18 @@ def checkpayday(bot, target, args):
      
 def paytaxes(bot, target):
 	now = datetime.datetime.now()
-    datetoday = int(now.strftime("%Y%j"))
-    lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
-    inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
-    if lasttaxday == 0 or lasttaxday < datetoday:
-        taxtotal = int(inbank * .1)
-        spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-        spicebucks(bot, 'SpiceBank', 'plus', taxtotal + spicebanktotal)
-        spicebucks(bot, target, 'minus', taxtotal)
-        bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
-        bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
-    else:
-        bot.say("Taxes already paid today.")   
+	datetoday = int(now.strftime("%Y%j"))
+	lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
+	inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
+	if lasttaxday == 0 or lasttaxday < datetoday:
+		taxtotal = int(inbank * .1)
+		spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+		spicebucks(bot, 'SpiceBank', 'plus', taxtotal + spicebanktotal)
+		spicebucks(bot, target, 'minus', taxtotal)
+		bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
+		bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
+	else:
+		bot.say("Taxes already paid today.")   
 
 def transfer(bot, allusersinroomarray, instigator, target, amount):
     validamount = 0
