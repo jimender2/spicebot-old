@@ -29,10 +29,10 @@ def execute_main(bot, trigger, args):
 		if args[0] == 'payday':  
 			paydayamount=checkpayday(bot, trigger.nick, args[0])
 			if paydayamount > 0:
-				if spicebucks(bot, target, 'plus', paydayamount)=='true':
-        			bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
+				spicebucks(bot, target, 'plus', paydayamount)
+				bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
 			else:
-				 bot.say("You've already been paid today. Now go do some work.")
+				bot.say("You've already been paid today. Now go do some work.")
 			
 		elif args[0] == 'makeitrain':
 	 		if not args[1]:
