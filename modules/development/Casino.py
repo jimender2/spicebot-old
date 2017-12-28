@@ -34,6 +34,9 @@ def execute_main(bot, trigger, arg):
 		lottery(bot,trigger,arg)
 	elif mygame== 'freebie':
 		freebie(bot,trigger)
+	elif mygame == 'bank'
+		bankbalance=Spicebucks.bank(bot,trigger.nick)
+		bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')		
     	else:
         	bot.say('Please choose a game')
 		
