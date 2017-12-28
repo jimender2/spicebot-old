@@ -111,16 +111,16 @@ def spicebucks(bot, target, plusminus, amount):
     
     
 def checkpayday(bot, target, args):
+paydayamount=0
+now = datetime.datetime.now()
+datetoday = int(now.strftime("%Y%j"))
+lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
+if lastpayday == 0 or lastpayday < datetoday:
+	paydayamount = 15
+	bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
+else: 		
 	paydayamount=0
-	now = datetime.datetime.now()
-    datetoday = int(now.strftime("%Y%j"))
-    lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
-    if lastpayday == 0 or lastpayday < datetoday:
-		paydayamount = 15
-		bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
-    else: 		
-		paydayamount=0
-	return paydayamount
+return paydayamount
      
 def paytaxes(bot, target):
     now = datetime.datetime.now()
