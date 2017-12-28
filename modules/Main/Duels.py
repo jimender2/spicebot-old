@@ -802,7 +802,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, instigator, 'konami', 1)
                 bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
                 konamiset = 600
-                adjust_database_value(bot, target, 'health', konamiset)
+                adjust_database_value(bot, instigator, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
 
