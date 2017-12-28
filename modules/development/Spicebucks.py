@@ -156,6 +156,7 @@ def transfer(bot, allusersinroomarray, instigator, target, amount):
 		else:
 			if target not in allusersinroomarray:
 				bot.say("I'm sorry, I do not know who you want to transfer money to.")
+			else:
 				if target == instigator:
 					bot.say("You cannot transfer spicebucks to yourself!")
 				else:
