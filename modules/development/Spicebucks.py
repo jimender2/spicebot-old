@@ -29,7 +29,7 @@ def execute_main(bot, trigger, args):
         if args[0] == 'payday' or args[0] == 'makeitrain':
             checkpayday(bot,trigger.nick, args[0])
         elif args[0] == 'reset': #admin only command
-            if trigger.nick not in adminsarray
+            if trigger.nick not in adminsarray:
                 bot.say('You must be an admin to use this command')
                 if not args[1]:
                     reset(bot,trigger.nick)
