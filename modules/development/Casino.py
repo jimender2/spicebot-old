@@ -155,7 +155,7 @@ def roulette(bot,trigger,arg):
 				else: 
 					newbet = int(mybet/2)
 					colorwinnings = 5 + newbet			
-					mywinnings=mywinnings+colorwinnings		
+				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
 				bot.say(trigger.nick + ' has won ' + str(mywinnings))
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
