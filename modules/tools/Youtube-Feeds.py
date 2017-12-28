@@ -67,8 +67,8 @@ def autorss(bot):
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
-            lastBuildXML = xmldoc.getElementsByTagName(pubdatetype)
-            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+            lastBuildXML = xmldoc.getElementsByTagName('published')
+            lastBuildXML = lastBuildXML[2].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
             newcontent = True
@@ -76,15 +76,10 @@ def autorss(bot):
                 newcontent = False
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
-                title = titles[parentnumber].childNodes[0].nodeValue
-                #endlink = ''
+                title = titles[1].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')
-                endlink = links[2].getAttribute('href')
-                #for link in links:
-                #    if link.getAttribute('rel') == 'alternate':
-                #        if endlink == '':
-                #            endlink = link.getAttribute('href')
+                link = links[2].getAttribute('href')
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
                 for channel in bot.channels:
-                    bot.msg(channel, messagestring + title + ': ' + endlink)
+                    bot.msg(channel, messagestring + title + ': ' + link)
