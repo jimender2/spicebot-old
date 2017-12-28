@@ -35,7 +35,7 @@ def execute_main(bot, trigger, args):
 				bot.say("You've already been paid today. Now go do some work.")
 			
 		elif args[0] == 'makeitrain':
-	 		if not args[1]:
+	 		if len(args) < 1:
 				bot.say('Spicebucks rain on ' + trigger.nick)
 			else:
 				if args[1] not in allusersinroomarray:
@@ -47,7 +47,7 @@ def execute_main(bot, trigger, args):
 			if trigger.nick not in adminsarray:
 				bot.say('You must be an admin to use this command')
 			else:
-				if not args[1]:
+				if len(args) < 1:
 					reset(bot,trigger.nick)
 					bot.say('Payday reset for ' + trigger.nick)
 				else:
