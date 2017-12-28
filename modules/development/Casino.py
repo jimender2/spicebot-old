@@ -150,10 +150,14 @@ def roulette(bot,trigger,arg):
 			if mynumber == winningnumber:
 				mywinnings=mywinnings+mybet+mybet
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-				colorwinnings = 5  
-				mywinnings=mywinnings+colorwinnings+mybet		
+				if mybet <=15:
+					colorwinnings = 5 + 5
+				else: 
+					newbet = int(mybet/2)
+					colorwinnings = 5 + newbet			
+					mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
-                		bot.say(trigger.nick + ' has won ' + str(mywinnings))
+				bot.say(trigger.nick + ' has won ' + str(mywinnings))
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 		 	else:
 				bot.say(trigger.nick + ' is a loser')
