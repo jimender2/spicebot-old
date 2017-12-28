@@ -21,13 +21,28 @@ def execute_main(bot, trigger, args):
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     #for c in bot.channels:
         #channel = c
-    commandused = trigger.group(3)
+    #commandused = trigger.group(3)
     #inchannel = trigger.sender
     if len(args) == 0:
-        bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank. (for now)")
+        bot.say("Welcome to the #Spiceworks Bank.  Your options are payday and bank.")
     elif len(args) >= 1:
-        if args[0] == 'payday' or args[0] == 'makeitrain':
-            checkpayday(bot,trigger.nick, args[0])
+		if args[0] == 'payday':  
+			paydayamount=checkpayday(bot, trigger.nick, args[0])
+			if paydayamount > 0:
+				if spicebucks(bot, target, 'plus', paydayamount)=='true':
+        			bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.")
+			else:
+				 bot.say("You've already been paid today. Now go do some work.")
+			
+		elif args[0] == 'makeitrain':
+	 		if not args[1]:
+				bot.say('Spicebucks rain on ' + trigger.nick)
+			else:
+				if args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+				else:
+					bot.say('Spicebucks rain on ' + args[1])
+		
         elif args[0] == 'reset': #admin only command
             if trigger.nick not in adminsarray:
                 bot.say('You must be an admin to use this command')
@@ -39,7 +54,7 @@ def execute_main(bot, trigger, args):
                         bot.say("I'm sorry, I do not know who " + args[1] + " is.")
                     else:
                         reset(bot,arg[1])
-																								bot.say('Payday reset for ' + arg[1])
+						bot.say('Payday reset for ' + arg[1])
                         
                 
         elif args[0] == 'taxes':
@@ -75,6 +90,7 @@ def bank(bot, nick):
     return spicebucks
 
 def spicebucks(bot, target, plusminus, amount):
+	#command for getting and adding money to account
     success = 'false'
     if type(amount) == int:
         inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
@@ -91,22 +107,20 @@ def spicebucks(bot, target, plusminus, amount):
     else:
         #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
         success = 'false'
-    return success
+    return success #returns simple true or false so modules can check the if tranaction was a success
     
     
 def checkpayday(bot, target, args):
+	paydayamount=0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lastpayday = bot.db.get_nick_value(target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = 15
-        if args == 'makeitrain':
-          paydayamount = 100
-        bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
-        spicebucks(bot, target, 'plus', paydayamount)
-        bot.say("You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks.") #change to notify
-    elif lastpayday == datetoday:
-        bot.say("You've already been paid today. Now go do some work.")
+		bot.db.set_nick_value(target, 'spicebucks_payday', datetoday)
+    else: 		
+        paydayamount=0
+	return paydayamount
      
 def paytaxes(bot, target):
     now = datetime.datetime.now()
