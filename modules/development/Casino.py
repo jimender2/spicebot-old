@@ -169,9 +169,9 @@ def roulette(bot,trigger,arg):
 				
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
-	maxnumber=20
+	maxnumber=99
 	if(len(arg)<6 or len(arg)>6):
-		bot.say("You must enter 5 lottery numbers from 1 to 20 to play.")
+		bot.say("You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.")
 		success = 0
 	else:
 		picks = []
