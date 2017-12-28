@@ -105,7 +105,7 @@ def roulette(bot,trigger,arg):
 		else:
 			mybet = int(arg[1])
 			inputcheck = 1
-    		if (mybet<=minbet or mybet>maxbet):
+    		if (mybet<minbet or mybet>maxbet):
                 	bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
                 	inputcheck = 0
 	#setup what was bet on
