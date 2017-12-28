@@ -797,7 +797,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Konami
         elif commandortarget == 'upupdowndownleftrightleftrightba':
-            konami = get_database_value(bot, target, 'konami')
+            konami = get_database_value(bot, instigator, 'konami')
             if not konami:
                 set_database_value(bot, instigator, 'konami', 1)
                 bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
