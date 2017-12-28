@@ -51,7 +51,7 @@ def execute_main(bot, trigger, args):
 					if args[1] not in allusersinroomarray:
 						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					else:
-						reset(bot,arg[1])
+						reset(bot,args[1])
 						bot.say('Payday reset for ' + arg[1])					
 				else:
 					reset(bot,trigger.nick)
