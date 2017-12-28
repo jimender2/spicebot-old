@@ -171,7 +171,7 @@ def roulette(bot,trigger,arg):
 def lottery(bot,trigger, arg):
 	maxnumber=99
 	if(len(arg)<6 or len(arg)>6):
-		bot.say("You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.")
+		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
 	else:
 		picks = []
@@ -182,7 +182,7 @@ def lottery(bot,trigger, arg):
 				picks.append(int(pick))
 			
 		if len(picks)<5:
-			bot.say("One of the numbers you entered does not appear to be a number.")
+			bot.say('One of the numbers you entered does not appear to be a number.')
 			success = 0
 		else:
 			success = 1					
@@ -193,7 +193,7 @@ def lottery(bot,trigger, arg):
 				if pick not in picks:
 					picks.append(pick)
 			if len(picks) < 5:
-				bot.say("You must have a duplicate in your picks.")
+				bot.say('You must have a duplicate in your picks.')
 				success = 0					
 			if success == 1:
 				valid=1
