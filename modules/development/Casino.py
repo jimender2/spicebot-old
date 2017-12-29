@@ -72,17 +72,17 @@ def slots(bot,trigger):
 				bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 			elif wheel1 == 'Patches':
-				mywinnings=10
+				mywinnings= mywinnings +10
 				bot.say('You get ' + str(mywinnings) + ' spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
 			
 			else:
-				mywinnings=15
+				mywinnings= mywinnings +15
 				bot.say('You get ' + mywinnings + ' spicebucks')
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-			mywinnings = 5
+			mywinnings =  mywinnings + 5
 			bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
 			Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
 		else:
