@@ -251,6 +251,7 @@ def blackjack(bot,trigger,arg):
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
+					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore)
 					if myscore == 21:
 						payout=100
 						bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
@@ -267,7 +268,7 @@ def blackjack(bot,trigger,arg):
 						elif dealerscore > myscore:
 							bot.say('The dealer wins')
 						elif dealerscore == myscore:
-							payout = mybet
+							payout
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
 							bot.say('It is a draw and no one is a winner or loser')
 				else:
