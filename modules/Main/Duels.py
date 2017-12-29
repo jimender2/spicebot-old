@@ -34,11 +34,11 @@ COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 
 ## Half hour timer
-halfhourcoinaward = 10
-magemanaregen = 50
-healthregen = 50
-magemanaregenmax = 500
-healthregenmax = 500
+halfhourcoinaward = 10 ## coin gain per half hour
+magemanaregen = 50 ## mages regenerate mana: rate
+magemanaregenmax = 500 ## mages regenerate mana: limit
+healthregen = 50 ## health regen rate
+healthregenmax = 500 ## health regen limit
 
 ## Potion Potency
 healthpotionworthbarbarian = 125 ## health potion worth for barbarians
