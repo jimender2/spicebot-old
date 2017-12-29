@@ -154,10 +154,11 @@ def roulette(bot,trigger,arg):
 				mywinnings=mywinnings+mybet+mybet
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
 				if mybet <=15:
-					colorwinnings = 5 + 5
+					newbet = 2
+					colorwinnings = mybet + newbet					
 				else: 
-					newbet = int(mybet/2)
-					colorwinnings = 5 + newbet			
+					newbet = 2
+					colorwinnings = mybet + newbet			
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
 				bot.say(trigger.nick + ' has won ' + str(mywinnings))
