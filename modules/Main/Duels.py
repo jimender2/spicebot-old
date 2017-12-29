@@ -175,6 +175,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
     instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
     instigatorclass = get_database_value(bot, instigator, 'class')
+    instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
 
     ## Information
     adjust_database_value(bot, duelrecorduser, 'usage', 1)
@@ -450,8 +451,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif instigator in classcantchangearray and not bot.nick.endswith(devbot):
-                bot.say("You may not change your class more than once per day.")
+            elif instigator in classcantchangearray:# and not bot.nick.endswith(devbot):
+                bot.say("You may not change your class more than once per 24 hours. Please wait %d seconds to change." % (CLASSTIMEOUT - instigatorclasstime))
             elif subcommand not in subcommandarray:
                 bot.say("Invalid command. Options are set or change.")
             elif not setclass:
