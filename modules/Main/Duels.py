@@ -359,7 +359,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'bugbounty':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
-                bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+                bot.notice(instigator + ", Target Missing. ", instigator)
             elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                 bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
             elif instigator not in adminsarray:
