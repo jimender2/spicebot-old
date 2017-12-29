@@ -25,17 +25,13 @@ from SpicebotShared import *
 ## Configurables ##
 ###################
 
-defaultadjust = 1 ## The default number to increase a stat
+## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
-devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
-stockhealth = 1000 ## default health for new players and respawns
-changeclasscost = 100 ## ## how many coins to change class
 
 ## Half hour timer
 halfhourcoinaward = 10
@@ -58,6 +54,7 @@ lootbuycostscavenger = 90 ## cost to buy a loot item for scavengers
 lootbuycost = 100 ## normal cost to buy a loot item
 lootsellrewardscavenger = 30 ## coins rewarded in selling loot for scavengers
 lootsellreward = 25 ## normal coins rewarded in selling loot
+changeclasscost = 100 ## ## how many coins to change class
 
 ## Magic usage
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
@@ -78,12 +75,20 @@ XPearnedloserranger = 5 ## xp earned as a loser and ranger
 XPearnedwinnerstock = 5 ## default xp earned as a winner
 XPearnedloserstock = 3 ## default xp earned as a loser
 
-## other
+## Class advantages
 scavegerfindpercent = 40 ## scavengers have a higher percent chance of finding loot
 barbarianminimumdamge = 40 ## Barbarians always strike a set value or above
+
+## Bot
 botdamage = 150 ## The bot deals a set damage
-bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 duelrecorduser = 'duelrecorduser' ## just a database column to store values in
+devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+
+## other
+bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
+defaultadjust = 1 ## The default number to increase a stat
+GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
+stockhealth = 1000 ## default health for new players and respawns
 
 ############
 ## Arrays ##
@@ -120,6 +125,7 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+## The Command Process
 def execute_main(bot, trigger, triggerargsarray):
 
     ## Initial ARGS of importance
@@ -737,7 +743,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif gethowmanylootitem < quantitymath:
                     bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
                 else:
-                    while int(quantity) > 1:
+                    while int(quantity) > 0:
                         quantity = int(quantity) - 1
                         if instigatorclass == 'scavenger':
                             cost = traderatioscavenger
