@@ -551,7 +551,7 @@ def execute_main(bot, trigger, triggerargsarray):
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
-                if u.lower() not in [x.lower() for x in allusersinroomarray]:
+                if u.lower() in [x.lower() for x in allusersinroomarray]:
                     winlossratio = get_winlossratio(bot,u)
                     if winlossratio > currentwlrleadernumber:
                         currentwlrleader = u
