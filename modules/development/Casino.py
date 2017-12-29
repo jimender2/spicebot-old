@@ -239,7 +239,7 @@ def blackjack(bot,trigger,arg):
 			bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
 		else:
 			mybet=int(arg[1])
-			if not (mybet<minbet or mybet>maxbet):
+			if (mybet<minbet or mybet>maxbet):
 				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			else:			
 				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
