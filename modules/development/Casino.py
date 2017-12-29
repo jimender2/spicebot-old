@@ -27,7 +27,7 @@ def execute_main(bot, trigger, arg):
 	if mygame =='slots':
 		slots(bot,trigger)
 	elif mygame=='blackjack':
-		blackjack(bot,trigger)
+		blackjack(bot,trigger,arg)
 	elif mygame=='roulette':
 		roulette(bot,trigger,arg)
 	elif mygame=='lottery':
@@ -229,28 +229,47 @@ def lottery(bot,trigger, arg):
 
 							
 #____Game 4 Blackjack___
-def blackjack(bot,trigger):				
-
-	deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-	myhand = deal(deck)
-	dealerhand = deal(deck)			
-	bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-	bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(myhand[1]))
-	myscore = blackjackscore(myhand)
-	dealerscore = blackjackscore(dealerhand)
-	if myscore == 21:
-		bot.say(trigger.nick + ' got blackjack and is a winner')
-	elif myscore > 21:
-		bot.say(trigger.nick + ' busted and gets nothing')
-	elif myscore < 21:
-		if dealerscore > 21:
-			bot.say('The dealer busted')
-		elif dealerscore < myscore:
-			bot.say(trigger.nick + ' wins')
-		elif dealerscore > myscore:
-			bot.say('The dealer wins')
-		elif dealerscore == myscore:
-			bot.say('It is a draw and no one is a winner')	          
+def blackjack(bot,trigger,arg):
+	minbet=30
+	maxbet=1000
+	if len(arg)<2:
+		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
+	else:
+		if not arg[1].isdigit():
+			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
+		else:
+			mybet=int(arg[1])
+			if not (mybet<minbet or mybet>maxbet):
+				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
+			else:			
+				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
+					deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+					myhand = deal(deck)
+					dealerhand = deal(deck)			
+					bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
+					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(myhand[1]))
+					myscore = blackjackscore(myhand)
+					dealerscore = blackjackscore(dealerhand)
+					payout = mybet
+					if myscore == 21:
+						payout=100
+						bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
+						Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+					elif myscore > 21:
+						bot.say(trigger.nick + ' busted and gets nothing')
+					elif myscore < 21:
+						if dealerscore > 21:
+							bot.say('The dealer busted')
+						elif dealerscore < myscore:
+							payout=60
+							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+							bot.say(trigger.nick + ' wins ' + str(payout))
+						elif dealerscore > myscore:
+							bot.say('The dealer wins')
+						elif dealerscore == myscore:
+							bot.say('It is a draw and no one is a winner')
+				else:
+					bot.say('You must have at least ' + str(minbet) + ' to play blackjack.')
     
   
 #__________________________Shared Functions____________________
