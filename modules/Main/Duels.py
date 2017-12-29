@@ -150,7 +150,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
             targetcantoptarray.append(u)
         classtime = get_timesince_duels(bot, u, 'classtimeout')
-        if classtime < CLASSTIMEOUT:# and not bot.nick.endswith(devbot):
+        if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
             classcantchangearray.append(u)
             
     ###### Channel
@@ -451,7 +451,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif instigator in classcantchangearray:# and not bot.nick.endswith(devbot):
+            elif instigator in classcantchangearray and not bot.nick.endswith(devbot):
                 bot.say("You may not change your class more than once per 24 hours. Please wait %d seconds to change." % (CLASSTIMEOUT - instigatorclasstime))
             elif subcommand not in subcommandarray:
                 bot.say("Invalid command. Options are set or change.")
