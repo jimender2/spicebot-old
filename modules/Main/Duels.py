@@ -551,26 +551,27 @@ def execute_main(bot, trigger, triggerargsarray):
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
             for u in dueloptedinarray:
-                winlossratio = get_winlossratio(bot,u)
-                if winlossratio > currentwlrleadernumber:
-                    currentwlrleader = u
-                    currentwlrleadernumber = winlossratio
-                kills = get_database_value(bot, u, 'kills')
-                if int(kills) > int(currentkillsleadernumber):
-                    currentkillsleader = u
-                    currentkillsleadernumber = int(kills)
-                respawns = get_database_value(bot, u, 'respawns')
-                if int(respawns) > int(currentrespawnsleadernumber):
-                    currentrespawnsleader = u
-                    currentrespawnsleadernumber = int(respawns)
-                health = get_database_value(bot, u, 'health')
-                if int(health) < int(currenthealthleadernumber) and int(health) != 0:
-                    currenthealthleader = u
-                    currenthealthleadernumber = int(health)
-                streaks = get_database_value(bot, u, 'bestwinstreak')
-                if int(streaks) > int(currentstreaksleadernumber):
-                    currentstreaksleader = u
-                    currentstreaksleadernumber = int(streaks)
+                if u.lower() in [x.lower() for x in allusersinroomarray]:
+                    winlossratio = get_winlossratio(bot,u)
+                    if winlossratio > currentwlrleadernumber:
+                        currentwlrleader = u
+                        currentwlrleadernumber = winlossratio
+                    kills = get_database_value(bot, u, 'kills')
+                    if int(kills) > int(currentkillsleadernumber):
+                        currentkillsleader = u
+                        currentkillsleadernumber = int(kills)
+                    respawns = get_database_value(bot, u, 'respawns')
+                    if int(respawns) > int(currentrespawnsleadernumber):
+                        currentrespawnsleader = u
+                        currentrespawnsleadernumber = int(respawns)
+                    health = get_database_value(bot, u, 'health')
+                    if int(health) < int(currenthealthleadernumber) and int(health) != 0:
+                        currenthealthleader = u
+                        currenthealthleadernumber = int(health)
+                    streaks = get_database_value(bot, u, 'bestwinstreak')
+                    if int(streaks) > int(currentstreaksleadernumber):
+                        currentstreaksleader = u
+                        currentstreaksleadernumber = int(streaks)
             if currentwlrleadernumber > 0:
                 currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                 displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
