@@ -267,7 +267,9 @@ def blackjack(bot,trigger,arg):
 						elif dealerscore > myscore:
 							bot.say('The dealer wins')
 						elif dealerscore == myscore:
-							bot.say('It is a draw and no one is a winner')
+							payout = mybet
+							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+							bot.say('It is a draw and no one is a winner or loser')
 				else:
 					bot.say('You must have at least ' + str(minbet) + ' to play blackjack.')
     
