@@ -745,6 +745,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
+                        bot.say(instigatorclass)
                         if instigatorclass == 'scavenger':
                             cost = traderatioscavenger
                             bot.say('scav')
