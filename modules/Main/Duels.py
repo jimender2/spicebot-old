@@ -150,9 +150,9 @@ def execute_main(bot, trigger, triggerargsarray):
         if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
             targetcantoptarray.append(u)
         classtime = get_timesince_duels(bot, u, 'classtimeout')
-        if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
+        if classtime < CLASSTIMEOUT:# and not bot.nick.endswith(devbot):
             classcantchangearray.append(u)
-
+            
     ###### Channel
     inchannel = trigger.sender
 
