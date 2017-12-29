@@ -43,7 +43,7 @@ def execute_main(bot, trigger, args):
 				else:
 					bot.say('Spicebucks rain on ' + args[1])
 					winnings=random.randint(1,25)
-					bot.say(args[1] + ' manages to keep ' + winnings + ' spicebucks before they disappear. ')
+					bot.say(args[1] + ' manages to keep ' + str(winnings) + ' spicebucks before they disappear.')
 					spicebucks(bot, args[1], 'plus', winnings)
 		
 			else:
