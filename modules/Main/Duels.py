@@ -743,7 +743,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif gethowmanylootitem < quantitymath:
                     bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
                 else:
-                    while int(quantity) > 1:
+                    while int(quantity) > 0:
                         quantity = int(quantity) - 1
                         if instigatorclass == 'scavenger':
                             cost = traderatioscavenger
