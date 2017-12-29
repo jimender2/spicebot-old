@@ -747,7 +747,9 @@ def execute_main(bot, trigger, triggerargsarray):
                         quantity = int(quantity) - 1
                         if instigatorclass == 'scavenger':
                             cost = traderatioscavenger
+                            bot.say('scav')
                         else:
+                            bot.say('not scav')
                             cost = traderatio
                         reward = 1
                         itemtoexchange = lootitem
