@@ -375,72 +375,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coins for finding a bug in duels.")
                 adjust_database_value(bot, target, 'coins', bugbountycoinaward)
 
-        ## Chan settings
-        elif commandortarget == 'chansettings':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            if instigator not in adminsarray:
-                bot.notice(instigator + "This is an admin only function.", instigator)
-            else:
-                if not subcommand:
-                    bot.notice("Pick something to adjust.", instigator)
-                elif subcommand == 'lastassault':
-                    set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', None)
-                    bot.notice("Last Assault Instigator removed.", instigator)
-                    set_database_value(bot, duelrecorduser, 'lastfullroomassult', None)
-                elif subcommand == 'lastroman':
-                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', None)
-                    bot.notice("Last Colosseum Instigator removed.", instigator)
-                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', None)
-                elif subcommand == 'lastinstigator':
-                    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
-                    bot.notice("Last Fought Instigator removed.", instigator)
-                elif subcommand == 'halfhoursim':
-                    halfhourtimer(bot)
-                else:
-                    bot.notice("Must be an invalid command.", instigator)
-
-        ## Stats Admin
-        elif commandortarget == 'statsadmin':
-            incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
-            target = get_trigger_arg(triggerargsarray, 2)
-            subcommand = get_trigger_arg(triggerargsarray, 3)
-            statset = get_trigger_arg(triggerargsarray, 4)
-            newvalue = get_trigger_arg(triggerargsarray, 5) or None
-            if not target:
-                bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-            elif target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
-                bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-            elif not subcommand:
-                bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
-            elif subcommand not in statsadminchangearray:
-                bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
-            elif not statset:
-                bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
-            elif statset not in duelstatsadminarray and statset != 'all':
-                bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-            elif instigator not in adminsarray:
-                bot.notice(instigator + "This is an admin only function.", instigator)
-            else:
-                if subcommand == 'reset':
-                    newvalue = None
-                if subcommand == 'set' and newvalue == None:
-                    bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
-                elif target == 'everyone':
-                    for u in bot.users:
-                        if statset == 'all':
-                            for x in duelstatsadminarray:
-                                set_database_value(bot, u, x, newvalue)
-                        else:
-                            set_database_value(bot, u, statset, newvalue)
-                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-                else:
-                    if statset == 'all':
-                        for x in duelstatsadminarray:
-                            set_database_value(bot, target, x, newvalue)
-                    else:
-                        set_database_value(bot, target, statset, newvalue)
-                    bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
@@ -1015,8 +949,76 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'admin' and instigator not in adminsarray:
             bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
-            bot.say('wip')
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            settingchange = get_trigger_arg(triggerargsarray, 3)
+            if not subcommand:
+                bot.notice(instigator + ", What Admin change do you want to make?", instigator)
+            elif subcommand == 'channel':
+                if not settingchange:
+                    bot.notice(instigator + ", What channel setting do you want to change?", instigator)
+                elif settingchange == 'lastassault':
+                    set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', None)
+                    bot.notice("Last Assault Instigator removed.", instigator)
+                    set_database_value(bot, duelrecorduser, 'lastfullroomassult', None)
+                elif settingchange == 'lastroman':
+                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', None)
+                    bot.notice("Last Colosseum Instigator removed.", instigator)
+                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', None)
+                elif settingchange == 'lastinstigator':
+                    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
+                    bot.notice("Last Fought Instigator removed.", instigator)
+                elif settingchange == 'halfhoursim':
+                    bot.notice("Simulating the half hour automated events.", instigator)
+                    halfhourtimer(bot)
+                else:
+                    bot.notice("Must be an invalid command.", instigator)
+            elif subcommand == 'stats':
+                incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
+                target = get_trigger_arg(triggerargsarray, 3)
+                subcommand = get_trigger_arg(triggerargsarray, 4)
+                statset = get_trigger_arg(triggerargsarray, 5)
+                newvalue = get_trigger_arg(triggerargsarray, 6) or None
+                if not target:
+                    bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+                elif target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
+                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+                elif not subcommand:
+                    bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
+                elif subcommand not in statsadminchangearray:
+                    bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
+                elif not statset:
+                    bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
+                elif statset not in duelstatsadminarray and statset != 'all':
+                    bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
+                elif instigator not in adminsarray:
+                    bot.notice(instigator + "This is an admin only function.", instigator)
+                else:
+                    if subcommand == 'reset':
+                        newvalue = None
+                    if subcommand == 'set' and newvalue == None:
+                        bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
+                    elif target == 'everyone':
+                        for u in bot.users:
+                            if statset == 'all':
+                                for x in duelstatsadminarray:
+                                    set_database_value(bot, u, x, newvalue)
+                            else:
+                                set_database_value(bot, u, statset, newvalue)
+                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+                    else:
+                        if statset == 'all':
+                            for x in duelstatsadminarray:
+                                set_database_value(bot, target, x, newvalue)
+                        else:
+                            set_database_value(bot, target, statset, newvalue)
+                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+            
+            
+            
+            
+            elif subcommand == '':
         
+                elif settingchange == '':
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
