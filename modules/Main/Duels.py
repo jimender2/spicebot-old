@@ -52,9 +52,9 @@ traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
 traderatio = 3 ## normal trading ratio 3:1
 lootbuycostscavenger = 90 ## cost to buy a loot item for scavengers
 lootbuycost = 100 ## normal cost to buy a loot item
-lootsellrewardscavenger = 30 ## coins rewarded in selling loot for scavengers
-lootsellreward = 25 ## normal coins rewarded in selling loot
-changeclasscost = 100 ## ## how many coins to change class
+lootsellrewardscavenger = 30 ## coin rewarded in selling loot for scavengers
+lootsellreward = 25 ## normal coin rewarded in selling loot
+changeclasscost = 100 ## ## how many coin to change class
 
 ## Magic usage
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
@@ -96,12 +96,12 @@ stockhealth = 1000 ## default health for new players and respawns
 
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## types of potions
-backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
+backpackarray = ['coin','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use','inv'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger'] ## Valid Classes
-duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 
 
@@ -173,9 +173,15 @@ def execute_main(bot, trigger, triggerargsarray):
     healthcheck(bot, instigator)
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or USERTIMEOUT
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
-    instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
+    ##tempfix
+    instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
+    if instigatorcoins:
+        adjust_database_value(bot, instigator, 'coin', instigatorcoins)
+        set_database_value(bot, instigator, 'coins', None)
+    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+        
 
     ## Information
     adjust_database_value(bot, duelrecorduser, 'usage', 1)
@@ -290,7 +296,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
                 duelrecorduserpot = 100
                 winner = selectwinner(bot, nickarray)
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(duelrecorduserpot) + " coins! Losers took " + str(duelrecorduserpot) + " damage")
+                bot.say("The Winner is: " + winner + "! Total winnings: " + str(duelrecorduserpot) + " coin! Losers took " + str(duelrecorduserpot) + " damage")
                 diedinbattle = []
                 for x in nickarray:
                     if x != winner:
@@ -387,8 +393,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Which class would you like to use? Options are: " + classes +".")
             elif subcommand == 'set' and instigatorclass:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif subcommand == 'change' and instigatorcoins < changeclasscost:
-                bot.say("Changing class costs " + str(changeclasscost) + " coins.")
+            elif subcommand == 'change' and instigatorcoin < changeclasscost:
+                bot.say("Changing class costs " + str(changeclasscost) + " coin.")
             elif subcommand == 'change' and setclass == instigatorclass:
                 bot.say('Your class is already set to ' +  setclass)
             else:
@@ -399,7 +405,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('Your class is now set to ' +  setclass)
                     set_database_value(bot, instigator, 'classtimeout', now)
                     if subcommand == 'change':
-                        adjust_database_value(bot, instigator, 'coins', -abs(changeclasscost))
+                        adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
 
         ## Streaks
         elif commandortarget == 'streaks':
@@ -543,20 +549,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                 else:
                     for x in backpackarray:
-                        if x == 'weaponstotal':
-                            gethowmany = get_database_array_total(bot, target, 'weaponslocker')
-                        else:
-                            gethowmany = get_database_value(bot, target, x)
+                        gethowmany = get_database_value(bot, target, x)
                         if gethowmany:
-                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                            if gethowmany == 1:
+                                loottype = str(x)
+                            else:
+                                loottype = str(str(x)+"s")
+                            addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
                             displaymessage = str(displaymessage + addstat)
-                    if displaymessage != '':
-                        displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
-                        bot.say(displaymessage)
-                    else:
-                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-            elif not lootitem:
-                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif not lootitem:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
@@ -712,11 +714,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif quantity == 'all':
                     quantity = 99999999999999999
                 if instigatorclass == 'scavenger':
-                    coinsrequired = lootbuycostscavenger * int(quantity)
+                    coinrequired = lootbuycostscavenger * int(quantity)
                 else:
-                    coinsrequired = lootbuycost * int(quantity)
-                if instigatorcoins < coinsrequired:
-                    bot.notice(instigator + ", You do not have enough coins for this action.", instigator)
+                    coinrequired = lootbuycost * int(quantity)
+                if instigatorcoin < coinrequired:
+                    bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
                 else:
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
@@ -725,7 +727,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             cost = lootbuycost
                         reward = 1
-                        itemtoexchange = 'coins'
+                        itemtoexchange = 'coin'
                         itemexchanged = lootitem
                         adjust_database_value(bot, instigator, itemtoexchange, -abs(cost))
                         adjust_database_value(bot, instigator, itemexchanged, reward)
@@ -747,7 +749,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             reward = lootsellreward
                         itemtoexchange = lootitem
-                        itemexchanged = 'coins'
+                        itemexchanged = 'coin'
                         adjust_database_value(bot, instigator, itemtoexchange, cost)
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
@@ -1015,8 +1017,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif instigator not in adminsarray:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
-                    bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coins for finding a bug in duels.")
-                    adjust_database_value(bot, target, 'coins', bugbountycoinaward)
+                    bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
+                    adjust_database_value(bot, target, 'coin', bugbountycoinaward)
             
                 
         ## If not a command above, invalid
@@ -1292,8 +1294,8 @@ def halfhourtimer(bot):
             if u != lasttimedlootwinner:
                 randomuarray.append(u)
 
-            ## award coins to everyone
-            adjust_database_value(bot, u, 'coins', halfhourcoinaward)
+            ## award coin to everyone
+            adjust_database_value(bot, u, 'coin', halfhourcoinaward)
 
             ## colosseum pot
             #adjust_database_value(bot, duelrecorduser, 'colosseum_pot', 5)
