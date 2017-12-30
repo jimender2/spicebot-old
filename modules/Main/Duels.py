@@ -980,7 +980,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.notice("Must be an invalid command.", instigator)
             elif subcommand == 'stats':
-                incorrectdisplay = "A correct command use is .duel statsadmin target set/reset stat"
+                incorrectdisplay = "A correct command use is .duel admin stats target set/reset stat"
                 target = get_trigger_arg(triggerargsarray, 3)
                 subcommand = get_trigger_arg(triggerargsarray, 4)
                 statset = get_trigger_arg(triggerargsarray, 5)
