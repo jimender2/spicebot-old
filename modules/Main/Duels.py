@@ -779,15 +779,11 @@ def execute_main(bot, trigger, triggerargsarray):
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
             if not adjustmentdirection:
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
-            elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
+            elif adjustmentdirection == 'total':
                 gethowmany = get_database_array_total(bot, target, 'weaponslocker')
-                bot.say(instigator + ' has ' + str(gethowmany) + "weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv view")
-            elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
-                if not weaponchange:
-                    gethowmany = get_database_array_total(bot, target, 'weaponslocker')
-                    bot.say(instigator + ' has ' + str(gethowmany) + "weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv view")
-                elif weaponchange == 'view':
-                    weapons = get_trigger_arg(weaponslist, 'list')
+                bot.say(instigator + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv")
+            elif adjustmentdirection == 'inv':
+                weapons = get_trigger_arg(weaponslist, 'list')
                 chunks = weapons.split()
                 per_line = 20
                 weaponline = ''
