@@ -442,7 +442,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 for x in backpackarray:
                     gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
-                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                        if gethowmany == 1:
+                            loottype = str(x)
+                        else:
+                            loottype = str(str(x)+"s")
+                        addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
                         displaymessage = str(displaymessage + addstat)
                 if displaymessage != '':
                     displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
