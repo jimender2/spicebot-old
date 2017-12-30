@@ -344,6 +344,13 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like you can duel.", instigator)
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, dowedisplay)
+            elif subcommand == 'colosseum':
+                if lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
+                elif lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", colosseum event can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                else:
+                    bot.notice(instigator + ", colosseum event can be used.", instigator)
             elif subcommand == 'assault' or subcommand == 'everyone':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
@@ -353,7 +360,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
                 displaymessage = get_trigger_arg(canduelarray, "list")
-                bot.say(str(displaymessage ))
+                bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
             elif subcommand.lower() not in allusersinroomarray:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
