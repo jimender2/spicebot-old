@@ -603,13 +603,9 @@ def execute_main(bot, trigger, triggerargsarray):
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
             elif lootcommand not in transactiontypesarray:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
-            elif not lootitem:
-                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-            elif lootitem not in lootitemsarray:
-                bot.notice(instigator + ", Invalid loot item.", instigator)
+                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
             elif lootcommand == 'inv':
                 target = get_trigger_arg(triggerargsarray, 3) or instigator
                 if target.lower() not in [x.lower() for x in allusersinroomarray]:
@@ -630,6 +626,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(displaymessage)
                     else:
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            elif not lootitem:
+                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+            elif lootitem not in lootitemsarray:
+                bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
                 if lootitemb.isdigit():
                     quantity = int(lootitemb)
