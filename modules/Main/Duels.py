@@ -1339,12 +1339,18 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or ''
     duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    totalduelusersarray = []
+    for u in bot.users:
+        if u in dueloptedinarray and u != bot.nick:
+            totalduelusersarray.append(u)
+    howmanyduelsers = lens(totalduelusersarray)
+    bot.notice(str(howmanyduelsers) + " users",instigator)
 
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
     elif instigator == duelrecorduserlastinstigator and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
-    elif target == instigatorlastfought and not bot.nick.endswith(devbot):
+    elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ", It looks like you have disabled duels. Run .duel on to re-enable.")
