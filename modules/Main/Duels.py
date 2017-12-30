@@ -770,7 +770,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
             elif adjustmentdirection == 'total':
                 gethowmany = get_database_array_total(bot, target, 'weaponslocker')
-                bot.say(instigator + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv")
+                bot.say(target + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv")
             elif adjustmentdirection == 'inv':
                 weapons = get_trigger_arg(weaponslist, 'list')
                 chunks = weapons.split()
