@@ -96,7 +96,7 @@ stockhealth = 1000 ## default health for new players and respawns
 
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## types of potions
-backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
+backpackarray = ['coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use','inv'] ## valid commands for loot
@@ -369,19 +369,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, subcommand, inchannel, dowedisplay)
 
-        ## Bug Bounty
-        elif commandortarget == 'bugbounty':
-            target = get_trigger_arg(triggerargsarray, 2)
-            if not target:
-                bot.notice(instigator + ", Target Missing. ", instigator)
-            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
-                bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-            elif instigator not in adminsarray:
-                bot.notice(instigator + "This is an admin only function.", instigator)
-            else:
-                bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coins for finding a bug in duels.")
-                adjust_database_value(bot, target, 'coins', bugbountycoinaward)
-
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
@@ -453,10 +440,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
                 for x in backpackarray:
-                    if x == 'weaponstotal':
-                        gethowmany = get_database_array_total(bot, target, 'weaponslocker')
-                    else:
-                        gethowmany = get_database_value(bot, target, x)
+                    gethowmany = get_database_value(bot, target, x)
                     if gethowmany:
                         addstat = str(' ' + str(x) + "=" + str(gethowmany))
                         displaymessage = str(displaymessage + addstat)
@@ -790,17 +774,16 @@ def execute_main(bot, trigger, triggerargsarray):
             if not adjustmentdirection:
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
             elif adjustmentdirection == 'inv' and inchannel.startswith("#"):
-                bot.notice(instigator + ", Inventory can only be viewed in privmsg.", instigator)
+                gethowmany = get_database_array_total(bot, target, 'weaponslocker')
+                bot.say(instigator + ' has ' + str(gethowmany) + "weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv view")
             elif adjustmentdirection == 'inv' and not inchannel.startswith("#"):
-                weapons = ''
-                for x in weaponslist:
-                    weapon = x
-                    if weapons != '':
-                        weapons = str(weapons + ", " + weapon)
-                    else:
-                        weapons = str(weapon)
+                if not weaponchange:
+                    gethowmany = get_database_array_total(bot, target, 'weaponslocker')
+                    bot.say(instigator + ' has ' + str(gethowmany) + "weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv view")
+                elif weaponchange == 'view':
+                    weapons = get_trigger_arg(weaponslist, 'list')
                 chunks = weapons.split()
-                per_line = 15
+                per_line = 20
                 weaponline = ''
                 for i in range(0, len(chunks), per_line):
                     weaponline = " ".join(chunks[i:i + per_line])
@@ -1019,7 +1002,19 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-
+            elif subcommand == 'bugbounty':
+                target = get_trigger_arg(triggerargsarray, 3)
+                if not target:
+                    bot.notice(instigator + ", Target Missing. ", instigator)
+                elif target.lower() not in [x.lower() for x in allusersinroomarray]:
+                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+                elif instigator not in adminsarray:
+                    bot.notice(instigator + "This is an admin only function.", instigator)
+                else:
+                    bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coins for finding a bug in duels.")
+                    adjust_database_value(bot, target, 'coins', bugbountycoinaward)
+            
+                
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
