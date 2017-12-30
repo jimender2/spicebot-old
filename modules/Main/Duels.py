@@ -754,21 +754,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
 
-        ## Konami
-        elif commandortarget == 'upupdowndownleftrightleftrightba':
-            konami = get_database_value(bot, instigator, 'konami')
-            if not konami:
-                set_database_value(bot, instigator, 'konami', 1)
-                bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-                konamiset = 600
-                adjust_database_value(bot, instigator, 'health', konamiset)
-            else:
-                bot.notice(instigator + " you can only cheat once.", instigator)
-
         ## Weaponslocker
         elif commandortarget == 'weaponslocker':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            validdirectionarray = ['inv','add','del','reset']
+            validdirectionarray = ['total','inv','add','del','reset']
             if target in validdirectionarray:
                 target = instigator
                 adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
@@ -1015,6 +1004,17 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
                     adjust_database_value(bot, target, 'coin', bugbountycoinaward)
+                    
+        ## Konami
+        elif commandortarget == 'upupdowndownleftrightleftrightba':
+            konami = get_database_value(bot, instigator, 'konami')
+            if not konami:
+                set_database_value(bot, instigator, 'konami', 1)
+                bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
+                konamiset = 600
+                adjust_database_value(bot, instigator, 'health', konamiset)
+            else:
+                bot.notice(instigator + " you can only cheat once.", instigator)
             
                 
         ## If not a command above, invalid
