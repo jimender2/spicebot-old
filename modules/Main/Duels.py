@@ -99,7 +99,7 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 backpackarray = ['weaponstotal','coins','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
-transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
+transactiontypesarray = ['buy','sell','trade','use','inv'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger'] ## Valid Classes
 duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coins','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
@@ -603,9 +603,29 @@ def execute_main(bot, trigger, triggerargsarray):
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
             elif lootcommand not in transactiontypesarray:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
+            elif lootcommand == 'inv':
+                target = get_trigger_arg(triggerargsarray, 3) or instigator
+                if target.lower() not in [x.lower() for x in allusersinroomarray]:
+                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                elif target.lower() not in [x.lower() for x in dueloptedinarray]:
+                    bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+                else:
+                    for x in backpackarray:
+                        if x == 'weaponstotal':
+                            gethowmany = get_database_array_total(bot, target, 'weaponslocker')
+                        else:
+                            gethowmany = get_database_value(bot, target, x)
+                        if gethowmany:
+                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                            displaymessage = str(displaymessage + addstat)
+                    if displaymessage != '':
+                        displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
+                        bot.say(displaymessage)
+                    else:
+                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             elif not lootitem:
                 bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
@@ -991,6 +1011,12 @@ def execute_main(bot, trigger, triggerargsarray):
             if mana <= 0:
                 set_database_value(bot, instigator, 'mana', None)
 
+        ## Admin Commands
+        elif commandortarget == 'admin' and instigator not in adminsarray:
+            bot.notice(instigator + ", This is an admin only functionality.", instigator)
+        elif commandortarget == 'admin':
+            bot.say('wip')
+        
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
@@ -1313,12 +1339,17 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or ''
     duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    totalduelusersarray = []
+    for u in bot.users:
+        if u in dueloptedinarray and u != bot.nick:
+            totalduelusersarray.append(u)
+    howmanyduelsers = len(totalduelusersarray)
 
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
     elif instigator == duelrecorduserlastinstigator and not bot.nick.endswith(devbot):
         displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
-    elif target == instigatorlastfought and not bot.nick.endswith(devbot):
+    elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ", It looks like you have disabled duels. Run .duel on to re-enable.")
