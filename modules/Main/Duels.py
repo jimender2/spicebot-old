@@ -1344,7 +1344,6 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
         if u in dueloptedinarray and u != bot.nick:
             totalduelusersarray.append(u)
     howmanyduelsers = len(totalduelusersarray)
-    bot.notice(str(howmanyduelsers) + " users",instigator)
 
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
