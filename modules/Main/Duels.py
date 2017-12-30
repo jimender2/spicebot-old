@@ -1012,13 +1012,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-            
-            
-            
-            
-            elif subcommand == '':
-        
-                elif settingchange == '':
+
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
