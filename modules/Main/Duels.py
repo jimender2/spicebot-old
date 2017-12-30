@@ -557,8 +557,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 loottype = str(str(x)+"s")
                             addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
                             displaymessage = str(displaymessage + addstat)
-                elif not lootitem:
-                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+            elif not lootitem:
+                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
