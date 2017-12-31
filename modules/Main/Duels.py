@@ -99,7 +99,7 @@ lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','myste
 backpackarray = ['coin','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
-transactiontypesarray = ['buy','sell','trade','use','inv'] ## valid commands for loot
+transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger'] ## Valid Classes
 duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
@@ -175,7 +175,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
-    ##tempfix
+    ## Bank Change
     instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
     if instigatorcoins:
         adjust_database_value(bot, instigator, 'coin', instigatorcoins)
@@ -437,29 +437,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say(target + "'s streaks: " + displaymessage)
 
-        ## Backpack
-        elif commandortarget == 'backpack':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in [x.lower() for x in allusersinroomarray]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            else:
-                for x in backpackarray:
-                    gethowmany = get_database_value(bot, target, x)
-                    if gethowmany:
-                        if gethowmany == 1:
-                            loottype = str(x)
-                        else:
-                            loottype = str(str(x)+"s")
-                        addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
-                        displaymessage = str(displaymessage + addstat)
-                if displaymessage != '':
-                    displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
-                    bot.say(displaymessage)
-                else:
-                    bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-
         ## Stats
         elif commandortarget == 'stats':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -531,23 +508,21 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
         ## Loot Items
+        elif commandortarget == 'backpack':
+            bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
             lootcommand = get_trigger_arg(triggerargsarray, 2)
             lootitem = get_trigger_arg(triggerargsarray, 3)
             lootitemb = get_trigger_arg(triggerargsarray, 4)
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
-            if not lootcommand:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
-            elif lootcommand not in transactiontypesarray:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, inv, or use?", instigator)
-            elif lootcommand == 'inv':
-                target = get_trigger_arg(triggerargsarray, 3) or instigator
+            if not lootcommand or lootcommand not in transactiontypesarray:
+                target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-                else:
+                elif target.lower() in [x.lower() for x in dueloptedinarray]:
                     for x in backpackarray:
                         gethowmany = get_database_value(bot, target, x)
                         if gethowmany:
@@ -562,6 +537,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(displaymessage)
                     else:
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+                else:
+                    bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
             elif not lootitem:
                 bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
@@ -794,17 +771,16 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 if not weaponchange:
                     bot.notice(instigator + ", What weapon would you like to add/remove?", instigator)
+                elif adjustmentdirection == 'add' and weaponchange in weaponslist:
+                    bot.notice(weaponchange + " is already in weapons locker.", instigator)
+                elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
+                    bot.notice(weaponchange + " is already not in weapons locker.", instigator)
                 else:
-                    if weaponchange in weaponslist and adjustmentdirection == 'add':
-                        weaponlockerstatus = 'already'
-                    elif weaponchange not in weaponslist and adjustmentdirection == 'del':
-                        weaponlockerstatus = 'already not'
-                    else:
-                        if adjustmentdirection == 'add':
-                            weaponlockerstatus = 'now'
-                        elif adjustmentdirection == 'del':
-                            weaponlockerstatus = 'no longer'
-                        adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
+                    if adjustmentdirection == 'add':
+                        weaponlockerstatus = 'now'
+                    elif adjustmentdirection == 'del':
+                        weaponlockerstatus = 'no longer'
+                    adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
                     message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                     bot.notice(instigator + ", " + message, instigator)
 
