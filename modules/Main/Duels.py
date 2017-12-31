@@ -34,7 +34,7 @@ COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 
 ## Half hour timer
-halfhourcoinaward = 10 ## coin gain per half hour
+scavengercoinaward = 15 ## coin gain per half hour for scavengers
 magemanaregen = 50 ## mages regenerate mana: rate
 magemanaregenmax = 500 ## mages regenerate mana: limit
 healthregen = 50 ## health regen rate
@@ -50,9 +50,9 @@ manapotionworth = 100 ##normal mana potion worth
 ## Buy/sell/trade rates
 traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
 traderatio = 3 ## normal trading ratio 3:1
-lootbuycostscavenger = 90 ## cost to buy a loot item for scavengers
+lootbuycostscavenger = 80 ## cost to buy a loot item for scavengers
 lootbuycost = 100 ## normal cost to buy a loot item
-lootsellrewardscavenger = 30 ## coin rewarded in selling loot for scavengers
+lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
 lootsellreward = 25 ## normal coin rewarded in selling loot
 changeclasscost = 100 ## ## how many coin to change class
 
@@ -76,7 +76,7 @@ XPearnedwinnerstock = 5 ## default xp earned as a winner
 XPearnedloserstock = 3 ## default xp earned as a loser
 
 ## Class advantages
-scavegerfindpercent = 40 ## scavengers have a higher percent chance of finding loot
+scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
 barbarianminimumdamge = 40 ## Barbarians always strike a set value or above
 
 ## Bot
@@ -1290,8 +1290,9 @@ def halfhourtimer(bot):
             if u != lasttimedlootwinner:
                 randomuarray.append(u)
 
-            ## award coin to everyone
-            adjust_database_value(bot, u, 'coin', halfhourcoinaward)
+            ## award coin to scavengers
+            if uclass == 'scavenger':
+                adjust_database_value(bot, u, 'coin', scavengercoinaward)
 
             ## colosseum pot
             #adjust_database_value(bot, duelrecorduser, 'colosseum_pot', 5)
