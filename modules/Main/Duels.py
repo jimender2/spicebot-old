@@ -557,6 +557,11 @@ def execute_main(bot, trigger, triggerargsarray):
                                 loottype = str(str(x)+"s")
                             addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
                             displaymessage = str(displaymessage + addstat)
+                    if displaymessage != '':
+                        displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
+                        bot.say(displaymessage)
+                    else:
+                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             elif not lootitem:
                 bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
