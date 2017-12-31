@@ -516,13 +516,13 @@ def execute_main(bot, trigger, triggerargsarray):
             lootitemb = get_trigger_arg(triggerargsarray, 4)
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
-            if not lootcommand:
+            if not lootcommand or lootcommand not in transactiontypesarray:
                 target = get_trigger_arg(triggerargsarray, 3) or instigator
                 if target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-                else:
+                elif target.lower() in [x.lower() for x in dueloptedinarray]:
                     for x in backpackarray:
                         gethowmany = get_database_value(bot, target, x)
                         if gethowmany:
@@ -537,8 +537,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(displaymessage)
                     else:
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-            elif lootcommand not in transactiontypesarray:
-                bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
+                else:
+                    bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
             elif not lootitem:
                 bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
             elif lootitem not in lootitemsarray:
