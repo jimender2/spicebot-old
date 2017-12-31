@@ -517,7 +517,7 @@ def execute_main(bot, trigger, triggerargsarray):
             lootitemc = get_trigger_arg(triggerargsarray, 5)
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand or lootcommand not in transactiontypesarray:
-                target = get_trigger_arg(triggerargsarray, 3) or instigator
+                target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
