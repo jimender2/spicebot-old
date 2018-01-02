@@ -574,6 +574,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                 elif target.lower() != instigator.lower() and targetclass == 'fiend':
                     bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
+                    while int(quantity) > 0:
+                        quantity = int(quantity) - 1
+                        adjust_database_value(bot, instigator, lootitem, -1)
                 else:
                     lootusedeaths = 0
                     killedmsg = ''
@@ -824,8 +827,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " You cannot apply a multi-curse.", instigator)
             elif magicusage == 'shield' and quantity > 1:
                 bot.notice(instigator + " You cannot apply a multi-shield.", instigator)
-            elif target.lower() != instigator.lower() and targetclass == 'fiend':
-                bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
             else:
                 if magicusage == 'attack':
                     manarequired = manarequiredmagicattack
@@ -865,6 +866,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 if int(actualmanarequired) > int(mana):
                     manamath = int(int(actualmanarequired) - int(mana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
+                elif target.lower() != instigator.lower() and targetclass == 'fiend':
+                    bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
+                    manarequired = -abs(manarequired)
+                    adjust_database_value(bot, instigator, 'mana', manarequired)
                 else:
                     damagedealt = 0
                     magickilled = ''
