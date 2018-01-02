@@ -98,6 +98,7 @@ def execute_main(bot, trigger, args):
             
 def reset(bot, target): #admin command reset user values
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
+	bot.db.set_nick_value(target, 'spicebucks_taxday', 0)
 	
     
 def bank(bot, nick):
