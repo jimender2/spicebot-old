@@ -96,7 +96,7 @@ def execute_main(bot, trigger, args):
 			if len(args) >= 3:
 				target = args[1]
 				instigator = trigger.nick
-				amount=arg[2]
+				amount=args[2]
 				if not amount.isdigit():
 					bot.say('Please enter an amount you wish to transfer')
 				else:	
@@ -172,7 +172,7 @@ def paytaxes(bot, target):
 		spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
 		spicebucks(bot, target, 'minus', taxtotal)
 		bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
-		bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
+		bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
 	else:
 		bot.say("Taxes already paid today.")   
 
