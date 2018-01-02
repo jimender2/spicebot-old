@@ -100,7 +100,7 @@ backpackarray = ['coin','healthpotion','manapotion','poisonpotion','timepotion',
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['barbarian','mage','scavenger','rogue','ranger'] ## Valid Classes
+classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend'] ## Valid Classes
 duelstatsadminarray = ['shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 
@@ -561,6 +561,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         quantity = int(gethowmanylootitem)
                     else:
                         quantity = int(lootitemc)
+                targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                 if not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 elif int(gethowmanylootitem) < int(quantity):
@@ -571,12 +572,13 @@ def execute_main(bot, trigger, triggerargsarray):
                   bot.notice(instigator + ", I am immune to " + lootitem, instigator)
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+                elif target.lower() != instigator.lower() and targetclass == 'fiend':
+                    bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
                 else:
                     lootusedeaths = 0
                     killedmsg = ''
                     targethealth = get_database_value(bot, target, 'health') or 0
                     targetmana = get_database_value(bot, target, 'mana') or 0
-                    targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                     if not targethealth:
                         set_database_value(bot, target, 'health', stockhealth)
                         targethealth = get_database_value(bot, target, 'health')
@@ -620,8 +622,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             else:
                                 adjust_database_value(bot, target, 'health', healthpotionworth)
                         elif x == 'poisonpotion':
-                            if targetclass != 'rogue':
-                                adjust_database_value(bot, target, 'health', poisonpotionworth)
+                            adjust_database_value(bot, target, 'health', poisonpotionworth)
                         elif x == 'manapotion':
                             if targetclass == 'mage':
                                 adjust_database_value(bot, target, 'mana', manapotionworthmage)
@@ -802,6 +803,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 quantity = 1
             targetcurse = get_database_value(bot, target, 'curse') or 0
             targetshield = get_database_value(bot, target, 'shield') or 0
+            targetclass = get_database_value(bot, target, 'class') or 'notclassy'
             if not magicusage:
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif magicusage not in magicoptions:
@@ -822,6 +824,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " You cannot apply a multi-curse.", instigator)
             elif magicusage == 'shield' and quantity > 1:
                 bot.notice(instigator + " You cannot apply a multi-shield.", instigator)
+            elif target.lower() != instigator.lower() and targetclass == 'fiend':
+                bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
             else:
                 if magicusage == 'attack':
                     manarequired = manarequiredmagicattack
