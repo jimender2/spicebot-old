@@ -55,7 +55,7 @@ def slots(bot,trigger):
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 	if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
 		#add bet to spicebank		
-		spicebucks(bot, 'SpiceBank', 'plus', 1)
+		Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1)
 		mywinnings = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
 		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
@@ -147,7 +147,7 @@ def roulette(bot,trigger,arg):
 	# user input now setup game will run
 	if inputcheck == 1:
 		if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-			spicebucks(bot, 'SpiceBank', 'plus', mybet)
+			Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
 			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
             		winningnumber = spin(wheel)
             		color = spin(colors)
@@ -208,7 +208,7 @@ def lottery(bot,trigger, arg):
 					bot.say('One of the numbers you entered is not within the valid range of  1 to ' + str(maxnumber))
 				else:
 					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-						spicebucks(bot, 'SpiceBank', 'plus', 1)
+						Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1)
 						winningnumbers = random.sample(range(1, maxnumber), 5) 
 						bot.say('The winning numbers are ' + str(winningnumbers))
 						correct = 0
