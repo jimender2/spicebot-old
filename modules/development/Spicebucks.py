@@ -94,16 +94,30 @@ def execute_main(bot, trigger, args):
                      
 		elif args[0] == 'transfer':
 			if len(args) >= 3:
-				if target not in allusersinroomarray:
-					bot.say("I'm sorry, I do not know who you want to transfer money to.")
-				else:
-					if target == instigator:
-						bot.say("You cannot transfer spicebucks to yourself!")
+				target = args[1]
+				instigator = trigger.nick
+				amount=arg[2]
+				if not amount.isdigit():
+					bot.say('Please enter an amount you wish to transfer')
+				else:	
+					amount=int(amount)		
+					if target not in allusersinroomarray:
+						bot.say("I'm sorry, I do not know who you want to transfer money to.")
 					else:
-						success = transfer(bot,  trigger.nick, args[1], args[2])
-						if success = 1
-						bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
-				else:
+						if target == instigator:
+							bot.say("You cannot transfer spicebucks to yourself!")
+						else:
+							balance=bank(bot, trigger.nick)
+							if amount <= balance:
+								success = transfer(bot,  trigger.nick, target, amount)
+								if success = 1:
+									bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+								else:
+									bot.say('The transfer was unsuccesfully check the amount and try again')
+							else:
+								bot.say('Insufficient funds to transfer')
+
+			else:
 				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): #admin command reset user values
@@ -164,21 +178,13 @@ def paytaxes(bot, target):
 
 def transfer(bot, instigator, target, amount):
 	validamount = 0
-	try:
-		amount = int(amount)
-		validamount = 1
-	except:
-		bot.say("I'm sorry, the amount you entered does not appear to be a number.")
+	if amount <= 0:
+		bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
 		validamount = 0
-
-	if validamount == 1:
-		if amount <= 0:
-			bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
-			validamount = 0
-		else:				
-			if spicebucks(bot, instigator, 'minus', amount) == 'true':
-				spicebucks(bot, target, 'plus', amount)
-				validamount = 1
+	else:				
+		if spicebucks(bot, instigator, 'minus', amount) == 'true':
+			spicebucks(bot, target, 'plus', amount)
+			validamount = 1
 	return validamount
 				
 						
