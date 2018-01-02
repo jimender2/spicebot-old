@@ -253,7 +253,7 @@ def blackjack(bot,trigger,arg):
 					payout = mybet
 					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore))
 					x=0
-					while dealscore < 18:
+					while dealerscore < 18:
 						dealerhits=deal(deck)
 						dealerhand=dealerhand.append(dealerhits[0])
 						bot.say('The dealers takes a card and now has ' + str(dealerhand))
