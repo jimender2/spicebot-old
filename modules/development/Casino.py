@@ -36,7 +36,10 @@ def execute_main(bot, trigger, arg):
 		freebie(bot,trigger)
 	elif mygame == 'bank':
 		bankbalance=Spicebucks.bank(bot,trigger.nick)
-		bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')		
+		bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')	
+	elif mygame == 'jackpot'
+		bankbalance=Spicebucks.bank(bot,'SpiceBank')
+		bot.say('The current jackpot is: ' +str(bankbalance)) 
     	else:
         	bot.say('Please choose a game')
 		
@@ -56,6 +59,7 @@ def slots(bot,trigger):
 	if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
 		#add bet to spicebank
 		mywinnings = 0
+		jackpot = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
 		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 		wheel1 = spin(wheel)
@@ -69,25 +73,35 @@ def slots(bot,trigger):
 		if(wheel1 == wheel2 and wheel2 == wheel3):
 			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
-				mywinnings = 1000 #jackpot amount
-				bot.say('You hit the Jackpot!!! ' + trigger.nick + ' gets ' + str(mywinnings) + '  spicebucks')
-				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+				bankbalance=Spicebucks.bank(bot,'SpiceBank')
+				if bankbalance <=500:
+					bankbalance=500					
+				bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
+				mywinnings=bankbalance						
 			elif wheel1 == 'Patches':
-				mywinnings= mywinnings +10
-				bot.say('You get ' + str(mywinnings) + ' spicebucks')
-				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
-			
+				bot.say('You got 3 matches')
+				mywinnings= mywinnings +10		
 			else:
 				mywinnings= mywinnings +15
-				bot.say('You get ' + mywinnings + ' spicebucks')
-				Spicebucks.spicebucks(bot, trigger.nick, 'plus', str(mywinnings))
+				bot.say('You got 3 matches')
+				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 			mywinnings =  mywinnings + 5
-			bot.say(trigger.nick + ' got 2 matches and ' + str(mywinnings) + ' spicebucks')
-			Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-		else:
+			bot.say(trigger.nick + ' got 2 matches')	
+							
+		if mywinnings <=0:
 			bot.say(trigger.nick + ' gets nothing')
+		else:
+			bankbalance=Spicebucks.bank(bot,'SpiceBank')
+			if mywinnings > bankbalance:
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)					
+			else:					
+				if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
+					bot.say(trigger.nick ' is paid ' + str(mywinnings))
+				
+					
+				
 	else:
 		bot.say('You dont have enough Spicebucks')
 
@@ -258,14 +272,15 @@ def blackjack(bot,trigger,arg):
 					x=0
 					if dealerscore <18:
 						
-						while dealerscore < 18:
-							dealerhits=deal(deck, 1)
-							dealerhand=dealerhand.append(dealerhits)						
-							dealerscore=blackjackscore(dealerhand)
-							x=x+1
-							if x>3:
-								dealerscore=19
-						bot.say('The dealers takes a card and now has ' + str(dealerhand))					
+						#while dealerscore < 18:
+						dealerhits=deal(deck, 1)
+						bot.say('The dealer takes a hit and gets ' + str(dealerhits)						
+						dealerhand=dealerhand.append(dealerhits)						
+						dealerscore=blackjackscore(dealerhand)
+							#x=x+1
+							#if x>3:
+								#dealerscore=19
+											
 						
 					if myscore == 21:
 						payout=100
