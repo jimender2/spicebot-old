@@ -53,9 +53,8 @@ def freebie(bot,trigger):
 def slots(bot,trigger):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
-	if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-		#add bet to spicebank		
-		Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1)
+	if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
+		#add bet to spicebank
 		mywinnings = 0
 		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
 		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
