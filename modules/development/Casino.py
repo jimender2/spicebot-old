@@ -37,7 +37,7 @@ def execute_main(bot, trigger, arg):
 	elif mygame == 'bank':
 		bankbalance=Spicebucks.bank(bot,trigger.nick)
 		bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')	
-	elif mygame == 'jackpot'
+	elif mygame == 'jackpot':
 		bankbalance=Spicebucks.bank(bot,'SpiceBank')
 		bot.say('The current jackpot is: ' +str(bankbalance)) 
     	else:
@@ -95,10 +95,13 @@ def slots(bot,trigger):
 		else:
 			bankbalance=Spicebucks.bank(bot,'SpiceBank')
 			if mywinnings > bankbalance:
-				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)					
+				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+				bot.say(trigger.nick ' is paid ' + str(mywinnings))
 			else:					
 				if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
 					bot.say(trigger.nick ' is paid ' + str(mywinnings))
+				else:
+					bot.say('Error in banking system')
 				
 					
 				
