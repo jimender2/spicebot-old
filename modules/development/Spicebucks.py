@@ -94,8 +94,16 @@ def execute_main(bot, trigger, args):
                      
 		elif args[0] == 'transfer':
 			if len(args) >= 3:
-				transfer(bot, allusersinroomarray, trigger.nick, args[1], args[2])
-			else:
+				if target not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who you want to transfer money to.")
+				else:
+					if target == instigator:
+						bot.say("You cannot transfer spicebucks to yourself!")
+					else:
+						success = transfer(bot,  trigger.nick, args[1], args[2])
+						if success = 1
+						bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+				else:
 				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
 def reset(bot, target): #admin command reset user values
@@ -154,7 +162,7 @@ def paytaxes(bot, target):
 	else:
 		bot.say("Taxes already paid today.")   
 
-def transfer(bot, allusersinroomarray, instigator, target, amount):
+def transfer(bot, instigator, target, amount):
 	validamount = 0
 	try:
 		amount = int(amount)
@@ -166,16 +174,13 @@ def transfer(bot, allusersinroomarray, instigator, target, amount):
 	if validamount == 1:
 		if amount <= 0:
 			bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
-		else:
-			if target not in allusersinroomarray:
-				bot.say("I'm sorry, I do not know who you want to transfer money to.")
-			else:
-				if target == instigator:
-					bot.say("You cannot transfer spicebucks to yourself!")
-				else:
-					if spicebucks(bot, instigator, 'minus', amount) == 'true':
-						spicebucks(bot, target, 'plus', amount)
-						bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+			validamount = 0
+		else:				
+			if spicebucks(bot, instigator, 'minus', amount) == 'true':
+				spicebucks(bot, target, 'plus', amount)
+				validamount = 1
+	return validamount
+				
 						
 
 	
