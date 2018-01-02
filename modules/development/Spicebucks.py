@@ -77,7 +77,7 @@ def execute_main(bot, trigger, args):
 			if len(args) > 1:
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-				elif args[1] == 'spicebank'
+				elif args[1] == 'spicebank':
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
 					bot.say('There are ' + str(balance) + ' spicebucks in the Spicebank.')
 				else:
