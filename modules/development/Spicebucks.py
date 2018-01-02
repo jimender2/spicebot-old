@@ -75,11 +75,11 @@ def execute_main(bot, trigger, args):
 				paytaxes(bot, trigger.nick)
 		elif args[0] == 'bank':
 			if len(args) > 1:
-				if args[1] not in allusersinroomarray:
-					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-				elif args[1] == 'spicebank':
+				if args[1] == 'spicebank':
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
 					bot.say('There are ' + str(balance) + ' spicebucks in the Spicebank.')
+				elif args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")				
 				else:
 					balance=bank(bot, args[1])                                         
 					bot.say(args[1] + ' has '+ str(balance) + " spicebucks in the bank.")
