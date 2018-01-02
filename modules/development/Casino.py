@@ -18,7 +18,7 @@ maxbet = 100
 
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
-	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'casino')
   	if not enablestatus:
     		execute_main(bot, trigger, triggerargsarray)
         
