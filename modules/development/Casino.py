@@ -251,7 +251,7 @@ def blackjack(bot,trigger,arg):
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
-					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore)
+					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore))
 					if myscore == 21:
 						payout=100
 						bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
