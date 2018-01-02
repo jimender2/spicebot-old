@@ -13,7 +13,7 @@ from SpicebotShared import *
 
 @sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints','checkpoints','checkpants')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'points')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
