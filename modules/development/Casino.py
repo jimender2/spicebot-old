@@ -197,7 +197,7 @@ def lottery(bot,trigger, arg):
 				if pick not in picks:
 					picks.append(pick)
 			if len(picks) < 5:
-				bot.say('You must have a duplicate in your picks.')
+				bot.say('You must choose 5 different numbers.')
 				success = 0					
 			if success == 1:
 				valid=1
