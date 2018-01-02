@@ -54,7 +54,10 @@ def execute_main(bot, trigger, args):
 				bot.say('You must be an admin to use this command')
 			else:
 				if len(args) > 1:
-					if args[1] not in allusersinroomarray:
+					if args[1] == 'spicebank'
+						spicebalance = balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+						spicebucks(bot, 'SpiceBank', 'minus', spicebalance)
+					elif args[1] not in allusersinroomarray:
 						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					else:
 						reset(bot,args[1])
@@ -93,8 +96,9 @@ def execute_main(bot, trigger, args):
 			else:
 				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
             
-def reset(bot, target): ##### to be removed, verify payday
+def reset(bot, target): #admin command reset user values
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
+		bot.db.set_nick_value(target, 'spicebucks_taxday', 0)
     
 def bank(bot, nick):
     balance = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
@@ -140,8 +144,7 @@ def paytaxes(bot, target):
 	inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
 	if lasttaxday == 0 or lasttaxday < datetoday:
 		taxtotal = int(inbank * .1)
-		spicebanktotal = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-		spicebucks(bot, 'SpiceBank', 'plus', taxtotal + spicebanktotal)
+		spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
 		spicebucks(bot, target, 'minus', taxtotal)
 		bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
 		bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBot account.")
