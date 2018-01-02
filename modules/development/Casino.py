@@ -247,7 +247,7 @@ def blackjack(bot,trigger,arg):
 					myhand = deal(deck)
 					dealerhand = deal(deck)			
 					bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(myhand[1]))
+					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(dealerhand[1]))
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
