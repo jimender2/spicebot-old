@@ -96,10 +96,10 @@ def slots(bot,trigger):
 			bankbalance=Spicebucks.bank(bot,'SpiceBank')
 			if mywinnings > bankbalance:
 				Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-				bot.say(trigger.nick ' is paid ' + str(mywinnings))
+				bot.say(trigger.nick + ' is paid ' + str(mywinnings))
 			else:					
 				if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-					bot.say(trigger.nick ' is paid ' + str(mywinnings))
+					bot.say(trigger.nick + ' is paid ' + str(mywinnings))
 				else:
 					bot.say('Error in banking system')
 				
@@ -277,7 +277,7 @@ def blackjack(bot,trigger,arg):
 						
 						#while dealerscore < 18:
 						dealerhits=deal(deck, 1)
-						bot.say('The dealer takes a hit and gets ' + str(dealerhits)						
+						bot.say('The dealer takes a hit and gets ' + str(dealerhits))						
 						dealerhand=dealerhand.append(dealerhits)						
 						dealerscore=blackjackscore(dealerhand)
 							#x=x+1
