@@ -54,9 +54,11 @@ def execute_main(bot, trigger, args):
 				bot.say('You must be an admin to use this command')
 			else:
 				if len(args) > 1:
-					if args[1] == 'spicebank'
-						spicebalance = balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+					if args[1] == 'spicebank':
+						spicebalance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
 						spicebucks(bot, 'SpiceBank', 'minus', spicebalance)
+						balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+						bot.say('The spice bank has been robbed and has ' + str(balance) + ' left')
 					elif args[1] not in allusersinroomarray:
 						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					else:
