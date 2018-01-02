@@ -110,7 +110,7 @@ def execute_main(bot, trigger, args):
 							balance=bank(bot, trigger.nick)
 							if amount <= balance:
 								success = transfer(bot,  trigger.nick, target, amount)
-								if success = 1:
+								if success == 1:
 									bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
 								else:
 									bot.say('The transfer was unsuccesfully check the amount and try again')
