@@ -248,23 +248,25 @@ def blackjack(bot,trigger,arg):
 			else:			
 				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
 					deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-					myhand = deal(deck)
-					dealerhand = deal(deck)			
-					bot.say(trigger.nick + ' has an ' + str(myhand[0]) + ' and ' + str(myhand[1]))  
-					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and ' + str(dealerhand[1]))
+					myhand = deal(deck, 2)
+					dealerhand = deal(deck, 2)			
+					bot.say(trigger.nick + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]))  
+					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and a ' + str(dealerhand[1]))
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
 					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore))
 					x=0
-					while dealerscore < 18:
-						dealerhits=deal(deck)
-						dealerhand=dealerhand.append(dealerhits[0])
-						bot.say('The dealers takes a card and now has ' + str(dealerhand))
-						dealerscore=blackjackscore(dealerhand)
-						x=x+1
-						if x>3:
-							dealerscore=19
+					if dealscore <18:
+						
+						while dealerscore < 18:
+							dealerhits=deal(deck, 1)
+							dealerhand=dealerhand.append(dealerhits)						
+							dealerscore=blackjackscore(dealerhand)
+							x=x+1
+							if x>3:
+								dealerscore=19
+						bot.say('The dealers takes a card and now has ' + str(dealerhand))					
 						
 					if myscore == 21:
 						payout=100
@@ -298,10 +300,11 @@ def spin(wheel):
   	return reel
 
 
-def deal(deck):
+def deal(deck, cardcount):
 	#choose a random card from a deck and remove it from deck
 	hand = []
-	for i in range(2):
+	
+	for i in range(cardcount):
 		random.shuffle(deck)
 		card = deck.pop()
    		if card == 11:card = "J"
@@ -309,7 +312,7 @@ def deal(deck):
     		if card == 13:card = "K"
 	    	if card == 14:card = "A"
 	    	hand.append(card)
-	return hand
+	return hand	
 
 def blackjackscore(hand):
 	myscore = 0
