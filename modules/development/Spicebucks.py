@@ -107,15 +107,18 @@ def execute_main(bot, trigger, args):
 						if target == instigator:
 							bot.say("You cannot transfer spicebucks to yourself!")
 						else:
-							balance=bank(bot, trigger.nick)
-							if amount <= balance:
-								success = transfer(bot,  trigger.nick, target, amount)
-								if success == 1:
-									bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
-								else:
-									bot.say('The transfer was unsuccesfully check the amount and try again')
+							if amount <=0:								
+								bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
 							else:
-								bot.say('Insufficient funds to transfer')
+								balance=bank(bot, trigger.nick)
+								if amount <= balance:
+									success = transfer(bot,  trigger.nick, target, amount)
+									if success == 1:
+										bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+									else:
+										bot.say('The transfer was unsuccesfully check the amount and try again')
+								else:
+									bot.say('Insufficient funds to transfer')
 
 			else:
 				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
@@ -178,10 +181,7 @@ def paytaxes(bot, target):
 
 def transfer(bot, instigator, target, amount):
 	validamount = 0
-	if amount <= 0:
-		bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
-		validamount = 0
-	else:				
+	if amount>=0:
 		if spicebucks(bot, instigator, 'minus', amount) == 'true':
 			spicebucks(bot, target, 'plus', amount)
 			validamount = 1
