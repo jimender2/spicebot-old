@@ -1155,7 +1155,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
         if yourclasswinner == 'vampire':
-            adjust_database_value(bot, winner, 'health', damage)
+            adjust_database_value(bot, winner, 'health', abs(damage))
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
