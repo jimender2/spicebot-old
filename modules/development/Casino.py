@@ -278,9 +278,10 @@ def blackjack(bot,trigger,arg):
 						#while dealerscore < 18:
 						dealerhits=deal(deck, 1)
 						bot.say('The dealer takes a hit and gets ' + str(dealerhits))						
-						dealerhand=dealerhand.append(dealerhits)
-						bot.say(dealerhand)
-						#dealerscore=blackjackscore(dealerhand)
+						dealerhand.append(dealerhits)						
+						bot.say('The dealer hand is ' + str(dealerhand))
+						dealerscore=blackjackscore(dealerhand)
+						
 							#x=x+1
 							#if x>3:
 								#dealerscore=19
