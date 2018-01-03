@@ -841,7 +841,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     if adjustmentdirection == 'add':
                         weaponlockerstatus = 'now'
-                    elif adjustmentdirection == 'del':
+                    else:
                         weaponlockerstatus = 'no longer'
                     adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
                     message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
