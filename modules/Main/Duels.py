@@ -1497,7 +1497,7 @@ def hours_minutes_seconds(countdownseconds):
 ## Names ##
 ###########
 
-def whatsyourname(bot, trigger, nick, botownerarray, operatorarray, voicearray, adminsarray):
+def whatsyourname(bot, trigger, nick):
     nickname = str(nick)
     
     ## arrays
