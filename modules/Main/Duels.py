@@ -1466,7 +1466,7 @@ def get_timesince_duels(bot, nick, databasekey):
 def get_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout')
     if time_since < USERTIMEOUT:
-        timediff = int(USERTIMEOUT - time_since)
+        timediff = str(hours_minutes_seconds((USERTIMEOUT - time_since))
     else:
         timediff = 0
     return timediff
