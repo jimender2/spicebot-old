@@ -93,7 +93,7 @@ def execute_main(bot, trigger, args):
 						
                         
                 
-		elif args[0] == 'taxes':
+		elif (args[0] == 'taxes' or args[0] == 'tax'):
 			if len(args) > 1:
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
