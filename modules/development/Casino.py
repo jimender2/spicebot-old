@@ -267,25 +267,22 @@ def blackjack(bot,trigger,arg):
 					myhand = deal(deck, 2)
 					dealerhand = deal(deck, 2)			
 					bot.say(trigger.nick + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]))  
-					bot.say('The dealer has a ' + str(dealerhand[0]) +  ' and a ' + str(dealerhand[1]))
+					bot.say('The dealer has a ' + str(dealerhand[1]) + ' showing)
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
-					bot.say('Your score is ' + str(myscore) + ' the dealer has ' + str(dealerscore))
+					bot.say('Your score is ' + str(myscore))
 					x=0
-					if dealerscore <18:
-						
-						#while dealerscore < 18:
+					while dealerscore < 18:
 						dealerhits=deal(deck, 1)
-						dealerhits=str(dealerhits[0])
+						dealerhits=dealerhits[0]
 						bot.say('The dealer takes a hit and gets ' + str(dealerhits))						
-						dealerhand.append(dealerhits)						
-						bot.say('The dealer hand is ' + str(dealerhand))
+						dealerhand.append(dealerhits)				
 						dealerscore=blackjackscore(dealerhand)
-						
-							#x=x+1
-							#if x>3:
-								#dealerscore=19
+						x=x+1
+						if x>4:
+							dealerscore=18				
+							
 											
 						
 					if myscore == 21:
