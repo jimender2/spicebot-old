@@ -293,7 +293,7 @@ def blackjack(bot,trigger,arg):
 						if hitlist>1:						
 							bot.say('The dealer takes ' + str(hitlist)  + ' hits and gets ' + dealerhitlist)
 						else: 
-							bot.say('The dealer takes a hit and gets ' + dealerhitlist) 
+							bot.say('The dealer takes a hit and gets a  ' + dealerhitlist) 
 						
 					if myscore == 21:
 						payout=payout + 100
