@@ -171,20 +171,16 @@ def roulette(bot,trigger,arg):
 		 	bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
             		mywinnings=0
 			if mynumber == winningnumber:
-				mywinnings=mywinnings+mybet+mybet
+				mywinnings=mybet * maxwheel
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-				if mybet <=15:
-					newbet = mybet
-					colorwinnings = mybet + newbet					
-				else: 
-					newbet = maxwheel
-					colorwinnings = mybet * maxwheel			
+				newbet = int(mybet/2)
+				colorwinnings = mybet + newbet									
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
 				bot.say(trigger.nick + ' has won ' + str(mywinnings))
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 		 	else:
-				bot.say(trigger.nick + ' is a loser')
+				bot.say(trigger.nick + ' is not a winner')
 		else:
 			bot.say('You dont have enough Spicebucks')
 				
