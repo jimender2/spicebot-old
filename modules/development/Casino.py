@@ -251,7 +251,7 @@ def lottery(bot,trigger, arg):
 							
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
-	minbet=30
+	minbet=15
 	
 	if len(arg)<2:
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
