@@ -552,8 +552,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         return
                     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
                     for u in allusersinroomarray:
-                        canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
-                        if canduel and u != bot.nick and u != instigator:
+                        if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
                     if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
