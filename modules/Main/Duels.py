@@ -96,7 +96,7 @@ stockhealth = 1000 ## default health for new players and respawns
 
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## types of potions
-backpackarray = ['coin','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
+backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
@@ -175,6 +175,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
+    instigatorgrenade = get_database_value(bot, instigator, 'grenade')
     ## Bank Change
     instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
     if instigatorcoins:
@@ -274,6 +275,33 @@ def execute_main(bot, trigger, triggerargsarray):
                 OSDTYPE = 'say'
                 return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
 
+        ## Grenade
+        elif commandortarget == 'grenade':
+            nickarray = []
+            for x in canduelarray:
+                if x != bot.nick and x != instigator:
+                    nickarray.append(x)
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " grenades must be used in channel.", instigator)
+            elif nickarray == []:
+                bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
+            else:
+                fulltarget = get_trigger_arg(nickarray, "random")
+                displaymsg = str('full damage goes to ' + fulltarget)
+                nickarray.remove(fulltarget)
+                if nickarray != []:
+                    secondarytarget = get_trigger_arg(nickarray, "random")
+                    displaymsg = str('secondary damage goes to ' + secondarytarget)
+                    nickarray.remove(secondarytarget)
+                    if nickarray != []:
+                        thirdtarget = get_trigger_arg(nickarray, "random")
+                        displaymsg = str('third damage goes to ' + thirdtarget)
+                        nickarray.remove(thirdtarget)
+                        if nickarray != []:
+                            remainingarray = get_trigger_arg(nickarray, "list")
+                            displaymsg = str(remainingarray + ' duck out of the way')
+                        
+            
         ## Colosseum
         elif commandortarget == 'colosseum':
             nickarray = []
