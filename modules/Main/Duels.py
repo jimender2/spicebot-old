@@ -1287,6 +1287,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             assault_wins = assault_wins + 1
             assault_damagedealt = assault_damagedealt + int(damage)
             assault_xp = assault_xp + XPearnedwinner
+            if yourclasswinner == 'vampire':
+                assault_damagetaken = assault_damagetaken - int(damage)
         if loser == instigator:
             assault_losses = assault_losses + 1
             assault_damagetaken = assault_damagetaken + int(damage)
