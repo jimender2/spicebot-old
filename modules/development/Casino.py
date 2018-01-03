@@ -28,7 +28,7 @@ def execute_main(bot, trigger, arg):
 		slots(bot,trigger)
 	elif mygame=='blackjack':
 		blackjack(bot,trigger,arg)
-	elif mygame=='roulette':
+	elif (mygame=='roulette' or mygame=='spin'):
 		roulette(bot,trigger,arg)
 	elif mygame=='lottery':
 		lottery(bot,trigger,arg)
