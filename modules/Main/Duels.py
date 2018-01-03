@@ -468,8 +468,8 @@ def execute_main(bot, trigger, triggerargsarray):
             currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
-            for u in dueloptedinarray:
-                if u.lower() in [u.lower() for u in bot.users]:
+            for u in bot.users:
+                if u in dueloptedinarray:
                     winlossratio = get_winlossratio(bot,u)
                     if winlossratio > currentwlrleadernumber:
                         currentwlrleader = u
