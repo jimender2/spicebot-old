@@ -81,9 +81,9 @@ def slots(bot,trigger):
 				mywinnings=bankbalance						
 			elif wheel1 == 'Patches':
 				bot.say('You got 3 matches')
-				mywinnings= mywinnings +10		
+				mywinnings= mywinnings +1		
 			else:
-				mywinnings= mywinnings +15
+				mywinnings= mywinnings +1
 				bot.say('You got 3 matches')
 				
 				
