@@ -1476,7 +1476,7 @@ def hours_minutes_seconds(countdownseconds):
     timearray = ['hour','minute','second']
     for x in timearray:
         currenttimevar = eval(x)
-        if currenttimevar > 0:
+        if currenttimevar >= 1:
             timetype = x
             if currenttimevar > 1:
                 timetype = str(x+"s")
