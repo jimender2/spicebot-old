@@ -329,7 +329,6 @@ def execute_main(bot, trigger, triggerargsarray):
         ## War Room
         elif commandortarget == 'warroom':
             inchannel = "#bypass"
-            dowedisplay = 1
             subcommand = get_trigger_arg(triggerargsarray, 2)
             for u in allusersinroomarray:
                 canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
@@ -339,6 +338,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if instigator in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel.", instigator)
                 else:
+                    dowedisplay = 1
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, dowedisplay)
             elif subcommand == 'colosseum':
                 lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
@@ -369,6 +369,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if subcommand in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
                 else:
+                    dowedisplay = 1
                     mustpassthesetoduel(bot, trigger, instigator, subcommand, inchannel, dowedisplay)
 
         ## Class
