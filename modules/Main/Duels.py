@@ -562,10 +562,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         nickarrayorig = nickarray
                         for u in nickarrayorig:
-                            targethealth = get_database_value(bot, target, 'health') or 0
+                            targethealth = get_database_value(bot, u, 'health') or 0
                             if not targethealth:
-                                set_database_value(bot, target, 'health', stockhealth)
-                                targethealth = get_database_value(bot, target, 'health')
+                                set_database_value(bot, u, 'health', stockhealth)
+                                targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget = get_trigger_arg(nickarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
