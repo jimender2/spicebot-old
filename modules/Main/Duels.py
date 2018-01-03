@@ -244,7 +244,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif targetopttime < OPTTIMEOUT:
+            elif targetopttime < OPTTIMEOUT and instigator not in adminsarray and not bot.nick.endswith(devbot):
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
