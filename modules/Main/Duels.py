@@ -153,7 +153,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if canduel and u != bot.nick:
             canduelarray.append(u)
         opttime = get_timesince_duels(bot, u, 'optime')
-        if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
+        if opttime < OPTTIMEOUT:# and not bot.nick.endswith(devbot):
             targetcantoptarray.append(u)
         classtime = get_timesince_duels(bot, u, 'classtimeout')
         if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
@@ -248,7 +248,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
             elif target in targetcantoptarray:
-                bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+                bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
@@ -1475,6 +1475,16 @@ def get_timeout(bot, nick):
     else:
         timediff = 0
     return timediff
+
+def hours_minutes_seconds(countdownseconds):
+    time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minutes = time // 60
+    time %= 60
+    seconds = time
+    return "Hours: %d Minutes: %d Seconds: %d" % (hour, minutes, seconds)
 
 ###########
 ## Names ##
