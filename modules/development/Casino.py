@@ -80,16 +80,16 @@ def slots(bot,trigger):
 				bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
 				mywinnings=bankbalance						
 			elif wheel1 == 'Patches':
-				bot.say('You got 3 matches')
-				mywinnings= mywinnings +10		
+				#bot.say('You got 3 matches')
+				mywinnings= mywinnings +5		
 			else:
-				mywinnings= mywinnings +15
-				bot.say('You got 3 matches')
+				mywinnings= mywinnings +5
+				#bot.say('You got 3 matches')
 				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 			mywinnings =  mywinnings + 2
-			bot.say(trigger.nick + ' got 2 matches')	
+			bot.say(trigger.nick + ' a match')	
 							
 		if mywinnings <=0:
 			bot.say(trigger.nick + ' gets nothing')

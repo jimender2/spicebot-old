@@ -144,9 +144,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Build User/channel Arrays
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    allusersinroomarray, canduelarray, targetarray = [], [], []
-    for u in bot.users:
-        allusersinroomarray.append(u)
+    canduelarray, targetarray = [], []
             
     ###### Channel
     inchannel = trigger.sender
@@ -182,7 +180,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("If you are feeling self-destructive, there are places you can call.")
 
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [x.lower() for x in allusersinroomarray]:
+    elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
 
         ## Docs
@@ -190,7 +188,7 @@ def execute_main(bot, trigger, triggerargsarray):
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
-            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
+            elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
                 bot.notice("Online Docs: " + GITWIKIURL, target)
@@ -199,12 +197,12 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'on' or commandortarget == 'off':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
-            if target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
+            if target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target != instigator and not trigger.admin:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             elif target == 'everyone':
-                for u in allusersinroomarray:
+                for u in bot.users:
                     if commandortarget == 'on':
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                     else:
@@ -238,7 +236,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in a channel.", instigator)
                 return
-            for u in allusersinroomarray:
+            for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel:
                     canduelarray.append(u)
@@ -254,7 +252,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
-            for u in allusersinroomarray:
+            for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
@@ -294,7 +292,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
-            for u in allusersinroomarray:
+            for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
@@ -330,7 +328,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'warroom':
             inchannel = "#bypass"
             subcommand = get_trigger_arg(triggerargsarray, 2)
-            for u in allusersinroomarray:
+            for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
@@ -363,7 +361,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     canduelarray.remove(instigator)
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
-            elif subcommand.lower() not in allusersinroomarray:
+            elif subcommand.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
                 if subcommand in canduelarray:
@@ -411,7 +409,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Streaks
         elif commandortarget == 'streaks':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in [x.lower() for x in allusersinroomarray]:
+            if target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -441,7 +439,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Stats
         elif commandortarget == 'stats':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in [x.lower() for x in allusersinroomarray]:
+            if target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -470,8 +468,8 @@ def execute_main(bot, trigger, triggerargsarray):
             currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
-            for u in dueloptedinarray:
-                if u.lower() in [x.lower() for x in allusersinroomarray]:
+            for u in bot.users:
+                if u in dueloptedinarray:
                     winlossratio = get_winlossratio(bot,u)
                     if winlossratio > currentwlrleadernumber:
                         currentwlrleader = u
@@ -492,16 +490,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     if int(streaks) > int(currentstreaksleadernumber):
                         currentstreaksleader = u
                         currentstreaksleadernumber = int(streaks)
-            if currentwlrleadernumber > 0:
+            if currentwlrleadernumber > 0 and currentwlrleader != '':
                 currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                 displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
-            if currentkillsleadernumber > 0:
+            if currentkillsleadernumber > 0 and currentkillsleader != '':
                 displaymessage = str(displaymessage + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
-            if currentrespawnsleadernumber > 0:
+            if currentrespawnsleadernumber > 0 and currentrespawnsleader != '':
                 displaymessage = str(displaymessage + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
-            if currenthealthleadernumber > 0:
+            if currenthealthleadernumber > 0 and currenthealthleader != '':
                 displaymessage = str(displaymessage + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
-            if currentstreaksleadernumber > 0:
+            if currentstreaksleadernumber > 0 and currentstreaksleader != '':
                 displaymessage = str(displaymessage + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
             if displaymessage == '':
                 displaymessage = str("Leaderboard appears to be empty")
@@ -520,7 +518,7 @@ def execute_main(bot, trigger, triggerargsarray):
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand or lootcommand not in transactiontypesarray:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
-                if target.lower() not in [x.lower() for x in allusersinroomarray]:
+                if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
@@ -551,7 +549,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
                         return
                     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
-                    for u in allusersinroomarray:
+                    for u in bot.users:
                         if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
                     if canduelarray == []:
@@ -620,7 +618,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                     elif int(gethowmanylootitem) < int(quantity):
                         bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
-                    elif target.lower() not in [x.lower() for x in allusersinroomarray]:
+                    elif target.lower() not in [u.lower() for u in bot.users]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
                     elif target == bot.nick:
                       bot.notice(instigator + ", I am immune to " + lootitem, instigator)
@@ -872,7 +870,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
             elif magicusage not in magicoptions:
                 bot.say('Magic uses include: attack, instakill, health, curse, shield')
-            elif target.lower() not in [x.lower() for x in allusersinroomarray]:
+            elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target == bot.nick:
                 bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
@@ -1012,7 +1010,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 newvalue = get_trigger_arg(triggerargsarray, 6) or None
                 if not target:
                     bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-                elif target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
+                elif target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
                     bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
                 elif not subcommand:
                     bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
@@ -1048,7 +1046,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 3)
                 if not target:
                     bot.notice(instigator + ", Target Missing. ", instigator)
-                elif target.lower() not in [x.lower() for x in allusersinroomarray]:
+                elif target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
                 elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
@@ -1329,18 +1327,14 @@ def halfhourtimer(bot):
     #duelrecorduser
     ## Who gets to win a mysterypotion?
     randomuarray = []
-    allusersinroomarray = []
-    for u in bot.users:
-        allusersinroomarray.append(u)
     duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
-    for u in allusersinroomarray:
+    for u in bot.users:
         ## must have duels enabled
         if u in duelusersarray and u != bot.nick:
             healthcheck(bot, u)
             uclass = get_database_value(bot, u, 'class') or 'notclassy'
             mana = get_database_value(bot, u, 'mana') or 0
             health = get_database_value(bot, u, 'health') or 0
-
 
             ## Random user gets a mysterypotion
             lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
@@ -1350,9 +1344,6 @@ def halfhourtimer(bot):
             ## award coin to scavengers
             if uclass == 'scavenger':
                 adjust_database_value(bot, u, 'coin', scavengercoinaward)
-
-            ## colosseum pot
-            #adjust_database_value(bot, duelrecorduser, 'colosseum_pot', 5)
 
             ## health regenerates for all
             if int(health) < healthregenmax:
@@ -1375,9 +1366,6 @@ def halfhourtimer(bot):
         adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
-
-    ## Clear Last Instigator
-    #set_database_value(bot, duelrecorduser, 'lastinstigator', None)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1501,9 +1489,6 @@ def hours_minutes_seconds(countdownseconds):
 
 def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
-    
-    ## arrays
-    #botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)

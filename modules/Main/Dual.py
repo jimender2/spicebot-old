@@ -8,13 +8,17 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('myown')
+@sopel.module.commands('dual')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    myown = get_trigger_arg(triggerargsarray, 0)
-    if myown and bot.nick not in myown:
-        bot.say("Fine! I'll start my own " + myown + ", with blackjack and hookers!")
+    target = get_trigger_arg(triggerargsarray, 1)
+    if not target:
+        bot.say("Who do you want to clone?")
+    elif target.lower() not in [u.lower() for u in bot.users]:
+        bot.say("I'm not sure who that is.")
+    else:
+        bot.say("I think one " + target + " is enough for this world.")
