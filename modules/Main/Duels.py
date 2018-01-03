@@ -95,6 +95,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wik
 stockhealth = 1000 ## default health for new players and respawns
 grenadefull = -100
 grenadesec = -50
+weaponmaxlength = 50
 
 ############
 ## Arrays ##
@@ -835,7 +836,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(weaponchange + " is already in weapons locker.", instigator)
                 elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
                     bot.notice(weaponchange + " is already not in weapons locker.", instigator)
-                elif adjustmentdirection == 'add' and len(weaponchange) > 30:
+                elif adjustmentdirection == 'add' and len(weaponchange) > weaponmaxlength:
                     bot.notice("That weapon exceeds the character limit.", instigator)
                 else:
                     if adjustmentdirection == 'add':
@@ -1652,7 +1653,9 @@ def weaponofchoice(bot, nick):
     if not howmanyweapons > 1:
         set_database_value(bot, nick, 'lastweaponused', None)
     for x in weaponslist:
-        if x not in lastusedweaponarry and x != lastusedweapon:
+        if len(x) > weaponmaxlength:
+            adjust_database_array(bot, target, x, 'weaponslocker', 'del')
+        if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
         set_database_value(bot, nick, 'lastweaponusedarray', None)
