@@ -18,7 +18,7 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
     if not target:
         bot.say("Who do you want to clone?")
-    elif target.lower not in [u.lower() for u in bot.users]:
+    elif target.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     else:
         bot.say("I think one " + target + " is enough for this world.")
