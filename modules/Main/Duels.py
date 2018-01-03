@@ -560,6 +560,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif not instigatorgrenade:
                         bot.notice(instigator + ", It looks like you have no grenade.", instigator)
                     else:
+                        nickarrayorig = nickarray
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget = get_trigger_arg(nickarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
@@ -571,7 +572,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             nickarray.remove(secondarytarget)
                             if nickarray != []:
                                 thirdtarget = get_trigger_arg(nickarray, "random")
-                                displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                                displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
                                 adjust_database_value(bot, thirdtarget, 'health', grenadesec)
                                 nickarray.remove(thirdtarget)
                                 if nickarray != []:
@@ -579,8 +580,18 @@ def execute_main(bot, trigger, triggerargsarray):
                                     displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
                             else:
                                 displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                        deatharray = []
+                        for u in nickarrayorig:
+                            targethealth = get_database_value(bot, u, 'health')
+                            if targethealth <= 0:
+                                whokilledwhom(bot, instigator, u)
+                                deatharray.append(u)
+                        if deatharray != []:
+                            deadarray = get_trigger_arg(deatharray, "list")
+                            displaymsg = str(displaymsg + deadarray + " died by this grenade volley")
                         if displaymsg != '':
                             bot.say(displaymsg)
+                        
                 else:
                     if lootitemb.isdigit():
                         quantity = int(lootitemb)
