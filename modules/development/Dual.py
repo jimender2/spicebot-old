@@ -16,13 +16,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
-    for c in bot.channels:
-        channel = c
     if not target:
-        bot.say(trigger.nick + " floats an air biscuit.")
-    elif target.lower() not in bot.privileges[channel.lower()]:
+        bot.say("Who do you want to clone?")
+    elif target.lower not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
-    elif target == bot.nick:
-        bot.say("Well, that was truly disgusting!")
     else:
-        bot.say(trigger.nick + " floats an air biscuit in the general direction of " + target + ".")
+        bot.say("I think one " + target + " is enough for this world.")
