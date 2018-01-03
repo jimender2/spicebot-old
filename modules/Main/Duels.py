@@ -239,7 +239,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in a channel.", instigator)
                 return
             for u in allusersinroomarray:
-                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel:
                     canduelarray.append(u)
             if canduelarray == []:
@@ -255,7 +255,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in allusersinroomarray:
-                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
@@ -295,7 +295,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in allusersinroomarray:
-                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             fullchanassaultarray = []
@@ -331,7 +331,7 @@ def execute_main(bot, trigger, triggerargsarray):
             inchannel = "#bypass"
             subcommand = get_trigger_arg(triggerargsarray, 2)
             for u in allusersinroomarray:
-                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             if not subcommand:
@@ -552,7 +552,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         return
                     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
                     for u in allusersinroomarray:
-                        canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                        canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                         if canduel and u != bot.nick and u != instigator:
                             canduelarray.append(u)
                     if canduelarray == []:
