@@ -286,6 +286,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif nickarray == []:
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
+                displaymsg = ''
                 fulltarget = get_trigger_arg(nickarray, "random")
                 displaymsg = str(displaymsg + 'full damage goes to ' + fulltarget)
                 nickarray.remove(fulltarget)
