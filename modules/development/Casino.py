@@ -40,7 +40,7 @@ def execute_main(bot, trigger, arg):
 	elif mygame == 'jackpot':
 		bankbalance=Spicebucks.bank(bot,'SpiceBank')
 		bot.say('The current jackpot is: ' +str(bankbalance)) 
-	elif mygame == 'colors ':
+	elif mygame == 'colors':
 		currentcolors =bot.db.get_nick_value('ColorCount','colors') or 0
 		bot.say(currentcolors)
 		bot.db.set_nick_value('ColorCount','colors', 0)
