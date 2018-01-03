@@ -554,7 +554,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if x != bot.nick and x != instigator:
                             nickarray.append(x)
                     if not inchannel.startswith("#"):
-                        bot.notice(instigator + " grenades must be used in channel.", instigator)
+                        bot.notice(instigator + ", grenades must be used in channel.", instigator)
                     elif nickarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
                     elif not instigatorgrenade:
@@ -727,7 +727,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantitymath = traderatioscavenger * int(quantity)
                 else:
                     quantitymath = traderatio * int(quantity)
-                if lootitem == 'grenade':
+                if lootitem == 'grenade' or lootitemb == 'grenade':
                     bot.notice(instigator + ", You can't trade for grenades.", instigator)
                 elif lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
