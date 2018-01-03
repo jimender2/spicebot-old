@@ -174,11 +174,11 @@ def roulette(bot,trigger,arg):
 				mywinnings=mywinnings+mybet+mybet
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
 				if mybet <=15:
-					newbet = 3
+					newbet = mybet
 					colorwinnings = mybet + newbet					
 				else: 
-					newbet = 3
-					colorwinnings = mybet + newbet			
+					newbet = maxwheel
+					colorwinnings = mybet * maxwheel			
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
 				bot.say(trigger.nick + ' has won ' + str(mywinnings))
@@ -190,7 +190,7 @@ def roulette(bot,trigger,arg):
 				
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
-	maxnumber=99
+	maxnumber=50
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
