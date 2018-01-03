@@ -319,7 +319,7 @@ def blackjack(bot,trigger,arg):
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
 							bot.say('It is a draw and no one is a winner or loser')
 						if not dealerwins=='':						
-							bot.say('The dealer had and ' + dealerwins)
+							bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
 				else:
 					bot.say('You do not have enough spicebucks.')
     
