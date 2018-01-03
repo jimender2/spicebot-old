@@ -548,7 +548,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif lootitem not in lootitemsarray and lootitem != 'grenade':
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
-                if lootitem == grenade:
+                if lootitem == 'grenade':
                     nickarray = []
                     for x in canduelarray:
                         if x != bot.nick and x != instigator:
