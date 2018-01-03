@@ -282,6 +282,15 @@ def get_timeuntil(nowtime, futuretime):
     timecompare = (b.humanize(a, granularity='auto'))
     return timecompare
 
+def hours_minutes_seconds(countdownseconds):
+    time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minutes = time // 60
+    time %= 60
+    seconds = time
+    return "Hours: %d Minutes: %d Seconds: %d" % (hour, minutes, seconds)
 
 ###########
 ## Tools ##

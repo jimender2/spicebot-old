@@ -95,6 +95,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wik
 stockhealth = 1000 ## default health for new players and respawns
 grenadefull = -100
 grenadesec = -50
+weaponmaxlength = 50
 
 ############
 ## Arrays ##
@@ -142,30 +143,13 @@ def execute_main(bot, trigger, triggerargsarray):
     typeofduel = 'target'
     
     ## Build User/channel Arrays
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    allusersinroomarray, classcantchangearray, canduelarray, targetarray, targetcantoptarray = [], [], [], [], []
+    allusersinroomarray, canduelarray, targetarray = [], [], []
     for u in bot.users:
         allusersinroomarray.append(u)
-    for u in allusersinroomarray:
-        inchannel = "#bypass"
-        canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
-        if canduel and u != bot.nick:
-            canduelarray.append(u)
-        opttime = get_timesince_duels(bot, u, 'optime')
-        if opttime < OPTTIMEOUT and not bot.nick.endswith(devbot):
-            targetcantoptarray.append(u)
-        classtime = get_timesince_duels(bot, u, 'classtimeout')
-        if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
-            classcantchangearray.append(u)
             
     ###### Channel
     inchannel = trigger.sender
-
-    ## Array Totals
-    canduelarraytotal = len(canduelarray)
-    dueloptedinarraytotal = len(dueloptedinarray)
-    allusersinroomarraytotal = len(allusersinroomarray)
 
     ## Time when Module use started
     now = time.time()
@@ -173,31 +157,10 @@ def execute_main(bot, trigger, triggerargsarray):
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-    ## Instigator Information
+    ## Instigator
     instigator = trigger.nick
     adjust_database_value(bot, instigator, 'usage', 1)
     healthcheck(bot, instigator)
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or USERTIMEOUT
-    instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
-    instigatorclass = get_database_value(bot, instigator, 'class')
-    instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
-    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
-    ## Bank Change
-    instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
-    if instigatorcoins:
-        adjust_database_value(bot, instigator, 'coin', instigatorcoins)
-        set_database_value(bot, instigator, 'coins', None)
-    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        
-
-    ## Information
-    adjust_database_value(bot, duelrecorduser, 'usage', 1)
-    duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or CHANTIMEOUT
-    duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
-    lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
-    lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
-    lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
 
     ## The only commands that should get through if instigator doesn't have duels enabled
     commandbypassarray = ['on','off']
@@ -238,7 +201,7 @@ def execute_main(bot, trigger, triggerargsarray):
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target != instigator and instigator not in adminsarray:
+            elif target != instigator and not trigger.admin:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             elif target == 'everyone':
                 for u in allusersinroomarray:
@@ -247,8 +210,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif target in targetcantoptarray:
-                bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for %d seconds." % (OPTTIMEOUT - targetopttime), instigator)
+            elif targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+                bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
@@ -272,40 +235,47 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Random Dueling
         elif commandortarget == 'random':
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " Duels must be in a channel.", instigator)
+                return
+            for u in allusersinroomarray:
+                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                if canduel:
+                    canduelarray.append(u)
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-            elif not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in a channel.", instigator)
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
-            nickarray = []
-            for x in canduelarray:
-                if x != bot.nick:
-                    nickarray.append(x)
-            nickarraytotal = len(nickarray)
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " Duels must be in channel.", instigator)
+                return
+            for u in allusersinroomarray:
+                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                if canduel and u != bot.nick:
+                    canduelarray.append(u)
+            lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
+            lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
             if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", colosseum can't be used for %d seconds." % (COLOSSEUMTIMEOUT - lastfullroomcolosseum), instigator)
+                bot.notice(instigator + ", colosseum can't be used for " + str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))), instigator)
             elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
-            elif not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in channel.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif nickarray == []:
+            elif canduelarray == []:
                 bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
             else:
-                displaymessage = get_trigger_arg(nickarray, "list")
+                displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
                 duelrecorduserpot = 100
-                winner = selectwinner(bot, nickarray)
+                winner = selectwinner(bot, canduelarray)
                 bot.say("The Winner is: " + winner + "! Total winnings: " + str(duelrecorduserpot) + " coin! Losers took " + str(duelrecorduserpot) + " damage")
                 diedinbattle = []
-                for x in nickarray:
+                for x in canduelarray:
                     if x != winner:
                         adjust_database_value(bot, x, 'health', -abs(duelrecorduserpot))
                         currenthealth = get_database_value(bot, x, 'health')
@@ -321,22 +291,31 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Duel Everyone
         elif commandortarget == 'assault' or commandortarget == 'everyone':
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " Duels must be in channel.", instigator)
+                return
+            for u in allusersinroomarray:
+                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                if canduel and u != bot.nick:
+                    canduelarray.append(u)
             fullchanassaultarray = []
             for x in canduelarray:
                 if x != instigator and x != bot.nick:
                     fullchanassaultarray.append(x)
             fullchanassaultarraytotal = len(fullchanassaultarray)
+            lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
+            lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult)))+".", instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-            elif not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in a channel.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
             elif fullchanassaultarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
+                if instigator in canduelarray:
+                    canduelarray.remove(instigator)
                 OSDTYPE = 'notice'
                 displaymessage = get_trigger_arg(fullchanassaultarray, "list")
                 bot.say(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
@@ -344,7 +323,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -352,26 +331,36 @@ def execute_main(bot, trigger, triggerargsarray):
             inchannel = "#bypass"
             dowedisplay = 1
             subcommand = get_trigger_arg(triggerargsarray, 2)
+            for u in allusersinroomarray:
+                canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                if canduel and u != bot.nick:
+                    canduelarray.append(u)
             if not subcommand:
                 if instigator in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel.", instigator)
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, dowedisplay)
             elif subcommand == 'colosseum':
+                lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
+                lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
                 if lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
                 elif lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", colosseum event can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice(instigator + ", colosseum event can't be used for "+str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum)))+".", instigator)
                 else:
                     bot.notice(instigator + ", colosseum event can be used.", instigator)
             elif subcommand == 'assault' or subcommand == 'everyone':
+                lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
+                lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult)))+".", instigator)
                 else:
                     bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
+                if instigator in canduelarray:
+                    canduelarray.remove(instigator)
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
             elif subcommand.lower() not in allusersinroomarray:
@@ -388,12 +377,16 @@ def execute_main(bot, trigger, triggerargsarray):
             classes = get_trigger_arg(classarray, "list")
             subcommand = get_trigger_arg(triggerargsarray, 2)
             setclass = get_trigger_arg(triggerargsarray, 3)
+            classtime = get_timesince_duels(bot, instigator, 'classtimeout')
+            instigatorclass = get_database_value(bot, instigator, 'class')
+            instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
+            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             if not instigatorclass and not subcommand:
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif instigator in classcantchangearray and not bot.nick.endswith(devbot):
-                bot.say("You may not change your class more than once per 24 hours. Please wait %d seconds to change." % (CLASSTIMEOUT - instigatorclasstime))
+            elif classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
+                bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((CLASSTIMEOUT - instigatorclasstime)))+" to change.")
             elif subcommand not in subcommandarray:
                 bot.say("Invalid command. Options are set or change.")
             elif not setclass:
@@ -517,6 +510,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'backpack':
             bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
+            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             lootcommand = get_trigger_arg(triggerargsarray, 2)
             lootitem = get_trigger_arg(triggerargsarray, 3)
             lootitemb = get_trigger_arg(triggerargsarray, 4)
@@ -551,45 +545,47 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
                 if lootitem == 'grenade':
-                    nickarray = []
-                    for x in canduelarray:
-                        if x != bot.nick and x != instigator:
-                            nickarray.append(x)
                     if not inchannel.startswith("#"):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
-                    elif nickarray == []:
+                        return
+                    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
+                    for u in allusersinroomarray:
+                        canduel = mustpassthesetoduel(bot, trigger, instigator, u, inchannel, dowedisplay)
+                        if canduel and u != bot.nick and u != instigator:
+                            canduelarray.append(u)
+                    if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
                     elif not instigatorgrenade:
                         bot.notice(instigator + ", It looks like you have no grenade.", instigator)
                     else:
-                        nickarrayorig = []
-                        for u in nickarray:
-                            nickarrayorig.append(u)
+                        canduelarrayorig = []
+                        for u in canduelarray:
+                            canduelarrayorig.append(u)
                             targethealth = get_database_value(bot, u, 'health') or 0
                             if not targethealth:
                                 set_database_value(bot, u, 'health', stockhealth)
                                 targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
-                        fulltarget = get_trigger_arg(nickarray, "random")
+                        fulltarget = get_trigger_arg(canduelarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
                         adjust_database_value(bot, fulltarget, 'health', grenadefull)
-                        nickarray.remove(fulltarget)
-                        if nickarray != []:
-                            secondarytarget = get_trigger_arg(nickarray, "random")
+                        canduelarray.remove(fulltarget)
+                        if canduelarray != []:
+                            secondarytarget = get_trigger_arg(canduelarray, "random")
                             adjust_database_value(bot, secondarytarget, 'health', grenadesec)
-                            nickarray.remove(secondarytarget)
-                            if nickarray != []:
-                                thirdtarget = get_trigger_arg(nickarray, "random")
+                            canduelarray.remove(secondarytarget)
+                            if canduelarray != []:
+                                thirdtarget = get_trigger_arg(canduelarray, "random")
                                 displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
                                 adjust_database_value(bot, thirdtarget, 'health', grenadesec)
-                                nickarray.remove(thirdtarget)
-                                if nickarray != []:
-                                    remainingarray = get_trigger_arg(nickarray, "list")
+                                canduelarray.remove(thirdtarget)
+                                if canduelarray != []:
+                                    remainingarray = get_trigger_arg(canduelarray, "list")
                                     displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
                             else:
                                 displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
                         deatharray = []
-                        for u in nickarrayorig:
+                        for u in canduelarrayorig:
                             uhealth = get_database_value(bot, u, 'health') or 0
                             if int(uhealth) <= 0:
                                 whokilledwhom(bot, instigator, u)
@@ -840,6 +836,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(weaponchange + " is already in weapons locker.", instigator)
                 elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
                     bot.notice(weaponchange + " is already not in weapons locker.", instigator)
+                elif adjustmentdirection == 'add' and len(weaponchange) > weaponmaxlength:
+                    bot.notice("That weapon exceeds the character limit of "+str(weaponmaxlength)+".", instigator)
                 else:
                     if adjustmentdirection == 'add':
                         weaponlockerstatus = 'now'
@@ -978,7 +976,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, instigator, 'mana', None)
 
         ## Admin Commands
-        elif commandortarget == 'admin' and instigator not in adminsarray:
+        elif commandortarget == 'admin' and not trigger.admin:
             bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
             subcommand = get_trigger_arg(triggerargsarray, 2)
@@ -1022,7 +1020,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
                 elif statset not in duelstatsadminarray and statset != 'all':
                     bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-                elif instigator not in adminsarray:
+                elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
                     if subcommand == 'reset':
@@ -1050,7 +1048,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Target Missing. ", instigator)
                 elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-                elif instigator not in adminsarray:
+                elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
                     bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
@@ -1082,12 +1080,12 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray):
+def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
 
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
@@ -1111,12 +1109,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         set_database_value(bot, duelrecorduser, 'timeout', now)
 
         ## Naming and Initial pepper level
-        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, botownerarray, operatorarray, voicearray, adminsarray)
+        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
         if instigator == target:
             targetname = "themself"
             targetpepperstart = ''
         else:
-            targetname, targetpepperstart = whatsyourname(bot, trigger, target, botownerarray, operatorarray, voicearray, adminsarray)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
@@ -1406,7 +1404,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
     elif instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or %d seconds." % (INSTIGATORTIMEOUT - instigatortime))
+        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
@@ -1414,11 +1412,11 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled duels.')
     elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You can't duel for %d seconds." % (USERTIMEOUT - instigatortime))
+        displaymsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - instigatortime)))+".")
     elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(target + " can't duel for %d seconds." % (USERTIMEOUT - targettime))
+        displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime)))+".")
     elif duelrecordusertime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(inchannel + " can't duel for %d seconds." % (CHANTIMEOUT - duelrecordusertime))
+        displaymsg = str(inchannel + " can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - duelrecordusertime)))+".")
     else:
         displaymsg = ''
         executedueling = 1
@@ -1471,35 +1469,62 @@ def get_timesince_duels(bot, nick, databasekey):
 def get_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout')
     if time_since < USERTIMEOUT:
-        timediff = int(USERTIMEOUT - time_since)
+        timediff = str(hours_minutes_seconds((USERTIMEOUT - time_since)))
     else:
         timediff = 0
     return timediff
+
+def hours_minutes_seconds(countdownseconds):
+    time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['hour','minute','second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar > 0:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
 
 ###########
 ## Names ##
 ###########
 
-def whatsyourname(bot, trigger, nick, botownerarray, operatorarray, voicearray, adminsarray):
+def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
-
+    
+    ## arrays
+    #botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+    
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
-
-    ## Is nick Special?
-    if nick in botownerarray:
+    
+    ## bot.owner
+    if nick.lower() in bot.config.core.owner.lower():
         nickname = str("The Legendary " + nickname)
+    ## botdevteam
     elif nick in botdevteam:
         nickname = str("The Extraordinary " + nickname)
-    elif nick in operatorarray:
+    ## OP
+    elif bot.privileges[channel.lower()][nick.lower()] == OP:
         nickname = str("The Magnificent " + nickname)
-    elif nick in voicearray:
+    ## VOICE
+    elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
         nickname = str("The Incredible " + nickname)
-    elif nick in adminsarray:
+    ## bot.admin
+    elif nick in bot.config.core.admins:
         nickname = str("The Spectacular " + nickname)
+    ## else
     else:
         nickname = str(nickname)
-
+    
     ##  attributes
     nickcurse = get_database_value(bot, nick, 'curse')
     nickshield = get_database_value(bot, nick, 'shield')
@@ -1586,7 +1611,7 @@ def get_lootitem_text(bot, nick, loottype):
     elif loottype == 'manapotion':
         loot_text = str(": worth " + str(manapotionworth) + " health.")
     elif loottype == 'timepotion':
-        loot_text = ': worth up to ' + str(USERTIMEOUT) + ' seconds of timeout.'
+        loot_text = ': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.'
     elif loottype == 'mysterypotion':
         loot_text = ': The label fell off. Use at your own risk!'
     else:
@@ -1636,7 +1661,9 @@ def weaponofchoice(bot, nick):
     if not howmanyweapons > 1:
         set_database_value(bot, nick, 'lastweaponused', None)
     for x in weaponslist:
-        if x not in lastusedweaponarry and x != lastusedweapon:
+        if len(x) > weaponmaxlength:
+            adjust_database_array(bot, target, x, 'weaponslocker', 'del')
+        if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
         set_database_value(bot, nick, 'lastweaponusedarray', None)
