@@ -55,6 +55,8 @@ lootbuycost = 100 ## normal cost to buy a loot item
 lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
 lootsellreward = 25 ## normal coin rewarded in selling loot
 changeclasscost = 100 ## ## how many coin to change class
+grenadecost = 200
+grenadereward = 150
 
 ## Magic usage
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
@@ -175,7 +177,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
-    instigatorgrenade = get_database_value(bot, instigator, 'grenade')
+    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
     ## Bank Change
     instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
     if instigatorcoins:
@@ -277,33 +279,53 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Grenade
         elif commandortarget == 'grenade':
-            nickarray = []
-            for x in canduelarray:
-                if x != bot.nick and x != instigator:
-                    nickarray.append(x)
-            if not inchannel.startswith("#"):
-                bot.notice(instigator + " grenades must be used in channel.", instigator)
-            elif nickarray == []:
-                bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
-            else:
-                displaymsg = ''
-                fulltarget = get_trigger_arg(nickarray, "random")
-                displaymsg = str(displaymsg + 'full damage goes to ' + fulltarget)
-                nickarray.remove(fulltarget)
-                if nickarray != []:
-                    secondarytarget = get_trigger_arg(nickarray, "random")
-                    displaymsg = str(displaymsg + 'secondary damage goes to ' + secondarytarget)
-                    nickarray.remove(secondarytarget)
+            subcom = get_trigger_arg(triggerargsarray, 2)
+            if not subcom:
+                nickarray = []
+                for x in canduelarray:
+                    if x != bot.nick and x != instigator:
+                        nickarray.append(x)
+                if not inchannel.startswith("#"):
+                    bot.notice(instigator + " grenades must be used in channel.", instigator)
+                elif nickarray == []:
+                    bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
+                elif not instigatorgrenade:
+                    bot.notice(instigator + ", It looks like you have no grenade.", instigator)
+                else:
+                    fulltarget = get_trigger_arg(nickarray, "random")
+                    displaymsg = str(fulltarget + " takes the brunt of the grenade. ")
+                    adjust_database_value(bot, fulltarget, 'health', -100)
+                    nickarray.remove(fulltarget)
                     if nickarray != []:
-                        thirdtarget = get_trigger_arg(nickarray, "random")
-                        displaymsg = str(displaymsg + 'third damage goes to ' + thirdtarget)
-                        nickarray.remove(thirdtarget)
+                        secondarytarget = get_trigger_arg(nickarray, "random")
+                        adjust_database_value(bot, secondarytarget, 'health', -75)
+                        nickarray.remove(secondarytarget)
                         if nickarray != []:
-                            remainingarray = get_trigger_arg(nickarray, "list")
-                            displaymsg = str(displaymsg + remainingarray + ' duck out of the way')
-                if displaymsg != '':
-                    bot.say(displaymsg)
-                        
+                            thirdtarget = get_trigger_arg(nickarray, "random")
+                            displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jumps away but still takes damage. ")
+                            adjust_database_value(bot, thirdtarget, 'health', -50)
+                            nickarray.remove(thirdtarget)
+                            if nickarray != []:
+                                remainingarray = get_trigger_arg(nickarray, "list")
+                                displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
+                        else:
+                            displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes damage. ")
+                    if displaymsg != '':
+                        bot.say(displaymsg)
+            elif subcom == 'buy':
+                ####### quantity
+                if instigatorcoin < grenadecost:
+                    bot.notice(instigator + ", It looks like you don't have enough coin to buy a grenade.", instigator)
+                else:
+                    bot.say('cost is ' + str(grenadereward))
+            elif subcom == 'sell':
+                ####### quantity
+                if not instigatorgrenade:
+                    bot.notice(instigator + ", It looks like you have no grenade to sell.", instigator)
+                else:
+                    bot.say('reward is ' + str(grenadereward))
+            else:
+                bot.say("Invalid command. Options are buy or sell.")
             
         ## Colosseum
         elif commandortarget == 'colosseum':
