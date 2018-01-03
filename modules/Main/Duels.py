@@ -1478,10 +1478,19 @@ def hours_minutes_seconds(countdownseconds):
     time = time % (24 * 3600)
     hour = time // 3600
     time %= 3600
-    minutes = time // 60
+    minute = time // 60
     time %= 60
-    seconds = time
-    return "Hours: %d Minutes: %d Seconds: %d" % (hour, minutes, seconds)
+    second = time
+    displaymsg = ''
+    timearray = ['hour','minute','second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar > 0:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(currenttimevar) + " " + timetype + " ")
+    return displaymsg
 
 ###########
 ## Names ##
