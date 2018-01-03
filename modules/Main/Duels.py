@@ -1489,7 +1489,7 @@ def hours_minutes_seconds(countdownseconds):
             timetype = x
             if currenttimevar > 1:
                 timetype = str(x+"s")
-            displaymsg = str(displaymsg + str(int(currenttimevar() + " " + timetype + " ")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
     return displaymsg
 
 ###########
