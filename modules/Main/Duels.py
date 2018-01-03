@@ -490,16 +490,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     if int(streaks) > int(currentstreaksleadernumber):
                         currentstreaksleader = u
                         currentstreaksleadernumber = int(streaks)
-            if currentwlrleadernumber > 0:
+            if currentwlrleadernumber > 0 and currentwlrleader != '':
                 currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
                 displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
-            if currentkillsleadernumber > 0:
+            if currentkillsleadernumber > 0 and currentkillsleader != '':
                 displaymessage = str(displaymessage + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
-            if currentrespawnsleadernumber > 0:
+            if currentrespawnsleadernumber > 0 and currentrespawnsleader != '':
                 displaymessage = str(displaymessage + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
-            if currenthealthleadernumber > 0:
+            if currenthealthleadernumber > 0 and currenthealthleader != '':
                 displaymessage = str(displaymessage + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
-            if currentstreaksleadernumber > 0:
+            if currentstreaksleadernumber > 0 and currentstreaksleader != '':
                 displaymessage = str(displaymessage + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
             if displaymessage == '':
                 displaymessage = str("Leaderboard appears to be empty")
