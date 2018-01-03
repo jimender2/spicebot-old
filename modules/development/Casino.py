@@ -40,6 +40,9 @@ def execute_main(bot, trigger, arg):
 	elif mygame == 'jackpot':
 		bankbalance=Spicebucks.bank(bot,'SpiceBank')
 		bot.say('The current jackpot is: ' +str(bankbalance)) 
+	elif mygame == 'colors ':
+		currentcolors =bot.db.get_nick_value('ColorCount','colors') or 0
+		bot.say(currentcolors)
     	else:
         	bot.say('Please choose a game')
 		
@@ -168,6 +171,10 @@ def roulette(bot,trigger,arg):
 			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
             		winningnumber = spin(wheel)
             		color = spin(colors)
+			 if bot.nick.endswith('dev'): 					
+			 	currentcolors =bot.db.get_nick_value('ColorCount','colors') or 0
+				currentcolors = color+currentcolors
+				bot.db.set_nick_value('ColorCount','colors', currentcolors)
 		 	bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
             		mywinnings=0
 			if mynumber == winningnumber:
