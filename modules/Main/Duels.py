@@ -1662,7 +1662,7 @@ def weaponofchoice(bot, nick):
         set_database_value(bot, nick, 'lastweaponused', None)
     for x in weaponslist:
         if len(x) > weaponmaxlength:
-            adjust_database_array(bot, target, x, 'weaponslocker', 'del')
+            adjust_database_array(bot, nick, x, 'weaponslocker', 'del')
         if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
