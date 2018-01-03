@@ -834,6 +834,8 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 if not weaponchange:
                     bot.notice(instigator + ", What weapon would you like to add/remove?", instigator)
+                elif adjustmentdirection != 'add' and adjustmentdirection != 'del':
+                    bot.say('Invalid Command.')
                 elif adjustmentdirection == 'add' and weaponchange in weaponslist:
                     bot.notice(weaponchange + " is already in weapons locker.", instigator)
                 elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
