@@ -300,6 +300,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         if nickarray != []:
                             remainingarray = get_trigger_arg(nickarray, "list")
                             displaymsg = str(remainingarray + ' duck out of the way')
+                if displaymsg != '':
+                    bot.say(displaymsg)
                         
             
         ## Colosseum
