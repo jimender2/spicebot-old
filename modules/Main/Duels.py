@@ -144,7 +144,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Build User/channel Arrays
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    allusersinroomarray, classcantchangearray, canduelarray, targetarray, targetcantoptarray = [], [], [], [], []
+    allusersinroomarray, classcantchangearray, canduelarray, targetarray = [], [], [], []
     for u in bot.users:
         allusersinroomarray.append(u)
     for u in allusersinroomarray:
@@ -152,9 +152,6 @@ def execute_main(bot, trigger, triggerargsarray):
         canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
         if canduel and u != bot.nick:
             canduelarray.append(u)
-        opttime = get_timesince_duels(bot, u, 'optime')
-        if opttime < OPTTIMEOUT:# and not bot.nick.endswith(devbot):
-            targetcantoptarray.append(u)
         classtime = get_timesince_duels(bot, u, 'classtimeout')
         if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
             classcantchangearray.append(u)
@@ -247,7 +244,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif target in targetcantoptarray:
+            elif targetopttime < OPTTIMEOUT:
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
