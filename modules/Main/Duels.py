@@ -247,7 +247,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -323,7 +323,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -1080,12 +1080,12 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel):
+def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
 
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
@@ -1109,12 +1109,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         set_database_value(bot, duelrecorduser, 'timeout', now)
 
         ## Naming and Initial pepper level
-        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator)
+        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
         if instigator == target:
             targetname = "themself"
             targetpepperstart = ''
         else:
-            targetname, targetpepperstart = whatsyourname(bot, trigger, target)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
 
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
@@ -1497,29 +1497,34 @@ def hours_minutes_seconds(countdownseconds):
 ## Names ##
 ###########
 
-def whatsyourname(bot, trigger, nick):
+def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
     
     ## arrays
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+    #botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
-
-    ## Is nick Special?
-    if nick in botownerarray:
+    
+    ## bot.owner
+    if nick.lower() in bot.config.core.owner.lower():
         nickname = str("The Legendary " + nickname)
+    ## botdevteam
     elif nick in botdevteam:
         nickname = str("The Extraordinary " + nickname)
-    elif nick in operatorarray:
+    ## OP
+    elif bot.privileges[channel.lower()][nick.lower()] == OP:
         nickname = str("The Magnificent " + nickname)
-    elif nick in voicearray:
+    ## VOICE
+    elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
         nickname = str("The Incredible " + nickname)
-    elif nick in adminsarray:
+    ## bot.admin
+    elif nick in bot.config.core.admins:
         nickname = str("The Spectacular " + nickname)
+    ## else
     else:
         nickname = str(nickname)
-
+    
     ##  attributes
     nickcurse = get_database_value(bot, nick, 'curse')
     nickshield = get_database_value(bot, nick, 'shield')
