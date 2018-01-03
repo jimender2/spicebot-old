@@ -152,9 +152,6 @@ def execute_main(bot, trigger, triggerargsarray):
         canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
         if canduel and u != bot.nick:
             canduelarray.append(u)
-        classtime = get_timesince_duels(bot, u, 'classtimeout')
-        if classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
-            classcantchangearray.append(u)
             
     ###### Channel
     inchannel = trigger.sender
@@ -286,7 +283,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     nickarray.append(x)
             nickarraytotal = len(nickarray)
             if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", colosseum can't be used for %d seconds." % (COLOSSEUMTIMEOUT - lastfullroomcolosseum), instigator)
+                bot.notice(instigator + ", colosseum can't be used for "+str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))+".", instigator)
             elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
             elif not inchannel.startswith("#"):
@@ -324,7 +321,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     fullchanassaultarray.append(x)
             fullchanassaultarraytotal = len(fullchanassaultarray)
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult))+".", instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif not inchannel.startswith("#"):
@@ -358,14 +355,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 if lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
                 elif lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", colosseum event can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice(instigator + ", colosseum event can't be used for "+str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))+".", instigator)
                 else:
                     bot.notice(instigator + ", colosseum event can be used.", instigator)
             elif subcommand == 'assault' or subcommand == 'everyone':
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", Full Channel Assault can't be used for %d seconds." % (ASSAULTTIMEOUT - lastfullroomassult), instigator)
+                    bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult))+".", instigator)
                 else:
                     bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
             elif subcommand == 'list':
@@ -385,12 +382,13 @@ def execute_main(bot, trigger, triggerargsarray):
             classes = get_trigger_arg(classarray, "list")
             subcommand = get_trigger_arg(triggerargsarray, 2)
             setclass = get_trigger_arg(triggerargsarray, 3)
+            classtime = get_timesince_duels(bot, instigator, 'classtimeout')
             if not instigatorclass and not subcommand:
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
                 bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif instigator in classcantchangearray and not bot.nick.endswith(devbot):
-                bot.say("You may not change your class more than once per 24 hours. Please wait %d seconds to change." % (CLASSTIMEOUT - instigatorclasstime))
+            elif classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
+                bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((CLASSTIMEOUT - instigatorclasstime))+" to change.")
             elif subcommand not in subcommandarray:
                 bot.say("Invalid command. Options are set or change.")
             elif not setclass:
@@ -1403,7 +1401,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
     elif instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or %d seconds." % (INSTIGATORTIMEOUT - instigatortime))
+        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime))+" .")
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
@@ -1411,11 +1409,11 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled duels.')
     elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You can't duel for %d seconds." % (USERTIMEOUT - instigatortime))
+        displaymsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - instigatortime))+".")
     elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(target + " can't duel for %d seconds." % (USERTIMEOUT - targettime))
+        displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime))+".")
     elif duelrecordusertime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(inchannel + " can't duel for %d seconds." % (CHANTIMEOUT - duelrecordusertime))
+        displaymsg = str(inchannel + " can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - duelrecordusertime))+".")
     else:
         displaymsg = ''
         executedueling = 1
@@ -1602,7 +1600,7 @@ def get_lootitem_text(bot, nick, loottype):
     elif loottype == 'manapotion':
         loot_text = str(": worth " + str(manapotionworth) + " health.")
     elif loottype == 'timepotion':
-        loot_text = ': worth up to ' + str(USERTIMEOUT) + ' seconds of timeout.'
+        loot_text = ': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT) + ' of timeout.'
     elif loottype == 'mysterypotion':
         loot_text = ': The label fell off. Use at your own risk!'
     else:
