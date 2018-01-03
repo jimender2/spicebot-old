@@ -69,8 +69,8 @@ def slots(bot,trigger):
 		bot.say('The slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
 		for i in reel:
 			if i=='BSOD':				
-				mywinnings = mywinnings + 5
-				bot.say('You got a bonus word, BSOD, worth 5 spicebucks')
+				mywinnings = mywinnings + 1
+				bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
 		if(wheel1 == wheel2 and wheel2 == wheel3):
 			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
@@ -88,7 +88,7 @@ def slots(bot,trigger):
 				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-			mywinnings =  mywinnings + 5
+			mywinnings =  mywinnings + 2
 			bot.say(trigger.nick + ' got 2 matches')	
 							
 		if mywinnings <=0:
