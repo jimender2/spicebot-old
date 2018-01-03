@@ -850,6 +850,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Magic Attack
         elif commandortarget == 'magic':
+            instigatorclass = get_database_value(bot, instigator, 'class')
             magicoptions = ['attack','instakill','health','curse','shield']
             mana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
