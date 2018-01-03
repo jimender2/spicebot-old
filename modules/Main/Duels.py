@@ -590,7 +590,6 @@ def execute_main(bot, trigger, triggerargsarray):
                         for u in nickarrayorig:
                             uhealth = get_database_value(bot, u, 'health') or 0
                             if int(uhealth) <= 0:
-                                bot.say('kachow')
                                 whokilledwhom(bot, instigator, u)
                                 deatharray.append(u)
                         if deatharray != []:
@@ -728,7 +727,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantitymath = traderatioscavenger * int(quantity)
                 else:
                     quantitymath = traderatio * int(quantity)
-                if lootitemb not in lootitemsarray:
+                if lootitem == 'grenade':
+                    bot.notice(instigator + ", You can't trade for grenades.", instigator)
+                elif lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
                 elif lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
