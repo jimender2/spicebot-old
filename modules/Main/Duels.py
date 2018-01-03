@@ -561,6 +561,11 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", It looks like you have no grenade.", instigator)
                     else:
                         nickarrayorig = nickarray
+                        for u in nickorigarray:
+                            targethealth = get_database_value(bot, target, 'health') or 0
+                            if not targethealth:
+                                set_database_value(bot, target, 'health', stockhealth)
+                                targethealth = get_database_value(bot, target, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget = get_trigger_arg(nickarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
@@ -583,7 +588,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         deatharray = []
                         for u in nickarrayorig:
                             uhealth = get_database_value(bot, u, 'health') or 0
-                            if uhealth <= 0:
+                            if int(uhealth) <= 0:
                                 bot.say('kachow')
                                 whokilledwhom(bot, instigator, u)
                                 deatharray.append(u)
