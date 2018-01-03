@@ -835,6 +835,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(weaponchange + " is already in weapons locker.", instigator)
                 elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
                     bot.notice(weaponchange + " is already not in weapons locker.", instigator)
+                elif adjustmentdirection == 'add' and len(weaponchange) > 30:
+                    bot.notice("That weapon exceeds the character limit.", instigator)
                 else:
                     if adjustmentdirection == 'add':
                         weaponlockerstatus = 'now'
