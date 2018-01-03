@@ -60,7 +60,7 @@ def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, p
                 channelpoints(bot, instigator, channel, rando, addminus)
         elif target == instigator:
             bot.say('You can\'t adjust your own ' + pointstype + '!!')
-        elif target.lower() not in bot.privileges[channel.lower()]:
+        elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
             bot.say(str(randopoints) + target)
