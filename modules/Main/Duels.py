@@ -143,7 +143,6 @@ def execute_main(bot, trigger, triggerargsarray):
     typeofduel = 'target'
     
     ## Build User/channel Arrays
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     allusersinroomarray, canduelarray, targetarray = [], [], []
     for u in bot.users:
@@ -151,10 +150,6 @@ def execute_main(bot, trigger, triggerargsarray):
             
     ###### Channel
     inchannel = trigger.sender
-
-    ## Array Totals
-    dueloptedinarraytotal = len(dueloptedinarray)
-    allusersinroomarraytotal = len(allusersinroomarray)
 
     ## Time when Module use started
     now = time.time()
@@ -206,7 +201,7 @@ def execute_main(bot, trigger, triggerargsarray):
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in [x.lower() for x in allusersinroomarray] and target != 'everyone':
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target != instigator and instigator not in adminsarray:
+            elif target != instigator and not trigger.admin:
                 bot.notice(instigator + "This is an admin only function.", instigator)
             elif target == 'everyone':
                 for u in allusersinroomarray:
@@ -215,7 +210,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif targetopttime < OPTTIMEOUT and instigator not in adminsarray and not bot.nick.endswith(devbot):
+            elif targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
@@ -252,7 +247,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -328,7 +323,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -981,7 +976,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, instigator, 'mana', None)
 
         ## Admin Commands
-        elif commandortarget == 'admin' and instigator not in adminsarray:
+        elif commandortarget == 'admin' and not trigger.admin:
             bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
             subcommand = get_trigger_arg(triggerargsarray, 2)
@@ -1025,7 +1020,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
                 elif statset not in duelstatsadminarray and statset != 'all':
                     bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-                elif instigator not in adminsarray:
+                elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
                     if subcommand == 'reset':
@@ -1053,7 +1048,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Target Missing. ", instigator)
                 elif target.lower() not in [x.lower() for x in allusersinroomarray]:
                     bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-                elif instigator not in adminsarray:
+                elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
                     bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
@@ -1085,12 +1080,12 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray)
+            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, botownerarray, operatorarray, voicearray, adminsarray):
+def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel):
 
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
@@ -1114,12 +1109,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         set_database_value(bot, duelrecorduser, 'timeout', now)
 
         ## Naming and Initial pepper level
-        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, botownerarray, operatorarray, voicearray, adminsarray)
+        instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator)
         if instigator == target:
             targetname = "themself"
             targetpepperstart = ''
         else:
-            targetname, targetpepperstart = whatsyourname(bot, trigger, target, botownerarray, operatorarray, voicearray, adminsarray)
+            targetname, targetpepperstart = whatsyourname(bot, trigger, target)
 
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
@@ -1504,7 +1499,10 @@ def hours_minutes_seconds(countdownseconds):
 
 def whatsyourname(bot, trigger, nick, botownerarray, operatorarray, voicearray, adminsarray):
     nickname = str(nick)
-
+    
+    ## arrays
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+    
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
 
