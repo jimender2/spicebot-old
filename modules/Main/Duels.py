@@ -511,6 +511,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'backpack':
             bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
+            instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             lootcommand = get_trigger_arg(triggerargsarray, 2)
             lootitem = get_trigger_arg(triggerargsarray, 3)
