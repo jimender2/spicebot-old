@@ -251,7 +251,7 @@ def lottery(bot,trigger, arg):
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
 	minbet=30
-	maxbet=1000
+	
 	if len(arg)<2:
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
 	else:
@@ -267,7 +267,7 @@ def blackjack(bot,trigger,arg):
 					myhand = deal(deck, 2)
 					dealerhand = deal(deck, 2)			
 					bot.say(trigger.nick + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]))  
-					bot.say('The dealer has a ' + str(dealerhand[1]) + ' showing)
+					bot.say('The dealer has a ' + str(dealerhand[1]) + ' showing')
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
@@ -292,8 +292,12 @@ def blackjack(bot,trigger,arg):
 					elif myscore > 21:
 						bot.say(trigger.nick + ' busted and gets nothing')
 					elif myscore < 21:
+						bot.say('The dealer has ' + dealerhand)
 						if dealerscore > 21:
+							payout=60
+							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
 							bot.say('The dealer busted')
+							bot.say(trigger.nick + ' wins ' + str(payout))
 						elif dealerscore < myscore:
 							payout=60
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
