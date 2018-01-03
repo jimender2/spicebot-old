@@ -582,8 +582,9 @@ def execute_main(bot, trigger, triggerargsarray):
                                 displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
                         deatharray = []
                         for u in nickarrayorig:
-                            targethealth = get_database_value(bot, u, 'health')
-                            if targethealth <= 0:
+                            uhealth = get_database_value(bot, u, 'health')
+                            if uhealth <= 0:
+                                bot.say('kachow')
                                 whokilledwhom(bot, instigator, u)
                                 deatharray.append(u)
                         if deatharray != []:
