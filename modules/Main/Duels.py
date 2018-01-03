@@ -562,7 +562,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget = get_trigger_arg(nickarray, "random")
-                        displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(grenadefull) + " damage. ")
+                        displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
                         adjust_database_value(bot, fulltarget, 'health', grenadefull)
                         nickarray.remove(fulltarget)
                         if nickarray != []:
@@ -571,14 +571,14 @@ def execute_main(bot, trigger, triggerargsarray):
                             nickarray.remove(secondarytarget)
                             if nickarray != []:
                                 thirdtarget = get_trigger_arg(nickarray, "random")
-                                displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jumps away but still takes " + str(grenadesec) + " damage. ")
+                                displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
                                 adjust_database_value(bot, thirdtarget, 'health', grenadesec)
                                 nickarray.remove(thirdtarget)
                                 if nickarray != []:
                                     remainingarray = get_trigger_arg(nickarray, "list")
                                     displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
                             else:
-                                displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(grenadesec) + " damage. ")
+                                displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
                         if displaymsg != '':
                             bot.say(displaymsg)
                 else:
