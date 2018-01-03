@@ -283,7 +283,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     nickarray.append(x)
             nickarraytotal = len(nickarray)
             if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", colosseum can't be used for "+str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))+".", instigator)
+                bot.notice(instigator + ", colosseum can't be used for " + str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum)), instigator)
             elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
             elif not inchannel.startswith("#"):
