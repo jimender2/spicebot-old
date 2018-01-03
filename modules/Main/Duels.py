@@ -168,31 +168,10 @@ def execute_main(bot, trigger, triggerargsarray):
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-    ## Instigator Information
+    ## Instigator
     instigator = trigger.nick
     adjust_database_value(bot, instigator, 'usage', 1)
     healthcheck(bot, instigator)
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or USERTIMEOUT
-    instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or instigator
-    instigatorclass = get_database_value(bot, instigator, 'class')
-    instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
-    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
-    ## Bank Change
-    instigatorcoins = get_database_value(bot, instigator, 'coins') or 0
-    if instigatorcoins:
-        adjust_database_value(bot, instigator, 'coin', instigatorcoins)
-        set_database_value(bot, instigator, 'coins', None)
-    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        
-
-    ## Information
-    adjust_database_value(bot, duelrecorduser, 'usage', 1)
-    duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or CHANTIMEOUT
-    duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
-    lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
-    lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
-    lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
 
     ## The only commands that should get through if instigator doesn't have duels enabled
     commandbypassarray = ['on','off']
@@ -283,6 +262,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if x != bot.nick:
                     nickarray.append(x)
             nickarraytotal = len(nickarray)
+            lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
+            lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
             if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", colosseum can't be used for " + str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))), instigator)
             elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
@@ -321,6 +302,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if x != instigator and x != bot.nick:
                     fullchanassaultarray.append(x)
             fullchanassaultarraytotal = len(fullchanassaultarray)
+            lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
+            lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult)))+".", instigator)
             elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
@@ -353,6 +336,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, dowedisplay)
             elif subcommand == 'colosseum':
+                lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
+                lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
                 if lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
                 elif lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
@@ -360,6 +345,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.notice(instigator + ", colosseum event can be used.", instigator)
             elif subcommand == 'assault' or subcommand == 'everyone':
+                lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
+                lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
                 if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
                 elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
@@ -384,6 +371,9 @@ def execute_main(bot, trigger, triggerargsarray):
             subcommand = get_trigger_arg(triggerargsarray, 2)
             setclass = get_trigger_arg(triggerargsarray, 3)
             classtime = get_timesince_duels(bot, instigator, 'classtimeout')
+            instigatorclass = get_database_value(bot, instigator, 'class')
+            instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
+            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             if not instigatorclass and not subcommand:
                 bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
             elif not subcommand:
@@ -513,6 +503,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'backpack':
             bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
+            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             lootcommand = get_trigger_arg(triggerargsarray, 2)
             lootitem = get_trigger_arg(triggerargsarray, 3)
             lootitemb = get_trigger_arg(triggerargsarray, 4)
@@ -547,6 +538,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", Invalid loot item.", instigator)
             elif lootcommand == 'use':
                 if lootitem == 'grenade':
+                    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
                     nickarray = []
                     for x in canduelarray:
                         if x != bot.nick and x != instigator:
