@@ -272,7 +272,7 @@ def blackjack(bot,trigger,arg):
 					myscore = blackjackscore(myhand)
 					dealerscore = blackjackscore(dealerhand)
 					payout = mybet
-					bot.say('Your score is ' + str(myscore))
+					#bot.say('Your score is ' + str(myscore))
 					x=0
 					while dealerscore < 18:
 						dealerhits=deal(deck, 1)
@@ -292,7 +292,7 @@ def blackjack(bot,trigger,arg):
 					elif myscore > 21:
 						bot.say(trigger.nick + ' busted and gets nothing')
 					elif myscore < 21:
-						bot.say('The dealer has ' + str(dealerhand))
+						bot.say('The dealer has ' + str(dealerscore))
 						if dealerscore > 21:
 							payout=payout + 30
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
