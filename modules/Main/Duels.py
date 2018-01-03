@@ -32,6 +32,7 @@ OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
+INSTIGATORTIMEOUT = 1800
 
 ## Half hour timer
 scavengercoinaward = 15 ## coin gain per half hour for scavengers
@@ -1374,7 +1375,7 @@ def halfhourtimer(bot):
         bot.notice(lootwinnermsg, lootwinner)
 
     ## Clear Last Instigator
-    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
+    #set_database_value(bot, duelrecorduser, 'lastinstigator', None)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1402,8 +1403,8 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
 
     if not inchannel.startswith("#"):
         displaymsg = str(instigator + " Duels must be in a channel.")
-    elif instigator == duelrecorduserlastinstigator and not bot.nick.endswith(devbot):
-        displaymsg = str(instigator + ', You may not instigate fights twice in a row within a half hour.')
+    elif instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
+        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or %d seconds." % (INSTIGATORTIMEOUT - instigatortime))
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
