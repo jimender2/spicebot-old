@@ -287,19 +287,19 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
                 fulltarget = get_trigger_arg(nickarray, "random")
-                displaymsg = str('full damage goes to ' + fulltarget)
+                displaymsg = str(displaymsg + 'full damage goes to ' + fulltarget)
                 nickarray.remove(fulltarget)
                 if nickarray != []:
                     secondarytarget = get_trigger_arg(nickarray, "random")
-                    displaymsg = str('secondary damage goes to ' + secondarytarget)
+                    displaymsg = str(displaymsg + 'secondary damage goes to ' + secondarytarget)
                     nickarray.remove(secondarytarget)
                     if nickarray != []:
                         thirdtarget = get_trigger_arg(nickarray, "random")
-                        displaymsg = str('third damage goes to ' + thirdtarget)
+                        displaymsg = str(displaymsg + 'third damage goes to ' + thirdtarget)
                         nickarray.remove(thirdtarget)
                         if nickarray != []:
                             remainingarray = get_trigger_arg(nickarray, "list")
-                            displaymsg = str(remainingarray + ' duck out of the way')
+                            displaymsg = str(displaymsg + remainingarray + ' duck out of the way')
                 if displaymsg != '':
                     bot.say(displaymsg)
                         
