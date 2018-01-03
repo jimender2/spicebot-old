@@ -727,7 +727,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     quantitymath = traderatioscavenger * int(quantity)
                 else:
                     quantitymath = traderatio * int(quantity)
-                if lootitem == 'grenade':
+                if lootitem == 'grenade' or lootitemb == 'grenade':
                     bot.notice(instigator + ", You can't trade for grenades.", instigator)
                 elif lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
