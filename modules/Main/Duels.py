@@ -561,7 +561,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", It looks like you have no grenade.", instigator)
                     else:
                         nickarrayorig = nickarray
-                        for u in nickorigarray:
+                        for u in nickarrayorig:
                             targethealth = get_database_value(bot, target, 'health') or 0
                             if not targethealth:
                                 set_database_value(bot, target, 'health', stockhealth)
