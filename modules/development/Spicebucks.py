@@ -81,7 +81,7 @@ def execute_main(bot, trigger, args):
 							if amount>=0:
 								bot.db.set_nick_value(target, 'spicebucks_bank', amount)
 								targetbalance = bank(bot,target)
-								bot.say(target.nick + ' now has ' + str(targetbalance) + ' in the bank')					
+								bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
 							else:
 								bot.say('Please enter a postive number')
 								
