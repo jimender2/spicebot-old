@@ -292,7 +292,7 @@ def blackjack(bot,trigger,arg):
 					elif myscore > 21:
 						bot.say(trigger.nick + ' busted and gets nothing')
 					elif myscore < 21:
-						bot.say('The dealer has ' + dealerhand)
+						bot.say('The dealer has ' + str(dealerhand))
 						if dealerscore > 21:
 							payout=60
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
