@@ -309,7 +309,7 @@ def blackjack(bot,trigger,arg):
 							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
 							bot.say('It is a draw and no one is a winner or loser')
 				else:
-					bot.say('You must have at least ' + str(minbet) + ' to play blackjack.')
+					bot.say('You do not have enough spicebucks.')
     
   
 #__________________________Shared Functions____________________
