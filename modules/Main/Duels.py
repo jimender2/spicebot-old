@@ -79,7 +79,8 @@ XPearnedloserstock = 3 ## default xp earned as a loser
 
 ## Class advantages
 scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
-barbarianminimumdamge = 40 ## Barbarians always strike a set value or above
+barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
+vampiremaximumdamge = 50
 
 ## Bot
 botdamage = 150 ## The bot deals a set damage
@@ -104,7 +105,7 @@ backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','ti
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend'] ## Valid Classes
+classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire'] ## Valid Classes
 duelstatsadminarray = ['grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 
@@ -1147,8 +1148,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             else:
                 loser = instigator
 
+        ## classes
+        yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
+        yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
+        
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
+        if yourclasswinner == 'vampire':
+            adjust_database_value(bot, winner, 'health', damage)
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1171,12 +1178,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_current_streaks(bot, loser, 'loss')
 
         ## Update XP points
-        yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
         if yourclasswinner == 'ranger':
             XPearnedwinner = XPearnedwinnerranger
         else:
             XPearnedwinner = XPearnedwinnerstock
-        yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
         if yourclassloser == 'ranger':
             XPearnedloser = XPearnedloserranger
         else:
@@ -1679,6 +1684,8 @@ def damagedone(bot, winner, loser):
     ## Barbarians get extra damage
     elif winnerclass == 'barbarian':
         damage = randint(barbarianminimumdamge, 120)
+    elif winnerclass == 'vampire':
+        damage = randint(0, vampiremaximumdamge)
     else:
         damage = randint(0, 120)
     damage = -abs(damage)
