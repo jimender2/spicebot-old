@@ -204,6 +204,9 @@ def roulette(bot,trigger,arg):
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
 	maxnumber=50
+	if bot.nick.endswith('dev'): 
+		maxnumber=15
+		
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
