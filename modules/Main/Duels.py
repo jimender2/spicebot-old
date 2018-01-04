@@ -1832,7 +1832,7 @@ def selectwinner(bot, nickarray):
 
     ## curse check
     for user in nickarray:
-        cursed = get_database_value(bot, loser, 'curse') or 0
+        cursed = get_database_value(bot, user, 'curse') or 0
         if cursed:
             set_database_value(bot, user, 'winnerselection', None)
             adjust_database_value(bot, user, 'curse', -1)
