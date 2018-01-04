@@ -28,7 +28,7 @@ def execute_main(bot, trigger, args):
             bot.say('I cannot find anything about that')
         else:
             bot.say(query)   
-    elif len(args)>2
+    elif len(args)>2:
         if not args[1]:
             bot.say('Please choose a type of search you want and what you want to search for')  
         else:
