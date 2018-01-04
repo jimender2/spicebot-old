@@ -176,12 +176,13 @@ def roulette(bot,trigger,arg):
 			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
             		winningnumber = spin(wheel)
             		color = spin(colors)
-			if bot.nick.endswith('dev'): 					
-				currentcolors =bot.db.get_nick_value('ColorCount','colors') or 'None'
-				currentcolors = color+str(currentcolors)
-				bot.db.set_nick_value('ColorCount','colors', currentcolors)
-		 	bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+			#if bot.nick.endswith('dev'): 					
+			#	currentcolors =bot.db.get_nick_value('ColorCount','colors') or 'None'
+			#	currentcolors = color+str(currentcolors)
+			#	bot.db.set_nick_value('ColorCount','colors', currentcolors)
+		 	
             		mywinnings=0
+			winner = ' '
 			if mynumber == winningnumber:
 				mywinnings=mybet * maxwheel
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
@@ -189,10 +190,11 @@ def roulette(bot,trigger,arg):
 				colorwinnings = mybet + newbet									
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
-				bot.say(trigger.nick + ' has won ' + str(mywinnings))
+				winner = ' has won ' + str(mywinnings)
 			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
 		 	else:
-				bot.say(trigger.nick + ' is not a winner')
+				winner =' is not a winner'
+			bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' and ' + trigger.nick + winner)
 		else:
 			bot.say('You dont have enough Spicebucks')
 				
@@ -232,8 +234,8 @@ def lottery(bot,trigger, arg):
 				if valid == 0:
 					bot.say('One of the numbers you entered is not within the valid range of  1 to ' + str(maxnumber))
 				else:
-					if Spicebucks.spicebucks(bot, trigger.nick, 'minus', 1) == 'true':
-						Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', 1)
+					if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
+						
 						winningnumbers = random.sample(range(1, maxnumber), 5) 
 						bot.say('The winning numbers are ' + str(winningnumbers))
 						correct = 0
@@ -241,17 +243,22 @@ def lottery(bot,trigger, arg):
 							if pick in winningnumbers:
 								correct = correct + 1
 						payout = 0
+						bankbalance=Spicebucks.bank(bot,'SpiceBank')
+						
 						if correct == 1:
-							payout = 1
-						elif correct == 2:
-							payout = 2
-						elif correct == 3:
 							payout = 5
+						elif correct == 2:
+							payout = 10
+						elif correct == 3:
+							payout = bankbalance * 0.03
 						elif correct == 4:
-							payout = 20
+							payout =  bankbalance * 0.05
 						elif correct == 5:
-							payout = 50
-						Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
+							payout = bankbalance
+						if bankbalance < payout:
+							bankbalance=payout							
+						Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
+													
 						bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
 					else:
 						bot.say('You dont have enough Spicebucks')
