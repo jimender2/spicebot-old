@@ -126,6 +126,7 @@ def roulette(bot,trigger,arg):
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
+	mybet=0
 	#set bet
     	if len(arg) < 3:
         	bot.say('Please enter an amount to bet')
