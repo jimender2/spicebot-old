@@ -28,7 +28,7 @@ def execute_main(bot, trigger, args):
             bot.say('I cannot find anything about that')
         else:
             bot.say(query)   
-    elif len(args)>2:
+    elif len(args)>=2:
         if not args[1]:
             bot.say('Please choose a type of search you want and what you want to search for')  
         else:
@@ -40,7 +40,7 @@ def execute_main(bot, trigger, args):
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
-                    bot.say('https://goo.gl/SsAhv')
+                    bot.say('I cannot find anything about that').
                 else:
                     if str(query).startswith(url):
                         bot.say(query)
@@ -53,7 +53,7 @@ def execute_main(bot, trigger, args):
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
-                    bot.say('https://goo.gl/SsAhv')
+                    bot.say('I cannot find anything about that')
                 else:
                     if str(query).startswith(url):
                         bot.say(query)
@@ -76,6 +76,8 @@ def execute_main(bot, trigger, args):
                         
                      
             else:
+                bot.say('Please choose a type of search you want and what you want to search for')
+     else:
                 bot.say('Please choose a type of search you want and what you want to search for')
              
                   
