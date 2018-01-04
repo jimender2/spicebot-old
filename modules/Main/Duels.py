@@ -63,14 +63,12 @@ grenadereward = 150
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
 manarequiredmagicattack = 250 ## mana required for magic attack
 magicattackdamage = -200 ## damage caused by a magic attack
-manarequiredmagicshield = 500 ## mana required for magic shield
+manarequiredmagicshield = 300 ## mana required for magic shield
 magicshielddamage = 80 ## damage caused by a magic shield usage
-shieldduration = 4 ## how long a shield lasts
+shieldduration = 200 ## how long a shield lasts
 manarequiredmagiccurse = 500 ## mana required for magic curse
 magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
-manarequiredmagichealth = 200 ## mana required for magic health
-magichealthrestore = 200 ## health restored by a magic health
 
 ## XP points awarded
 XPearnedwinnerranger = 7 ## xp earned as a winner and ranger
@@ -720,6 +718,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 quantity = lootitemc
                 if not quantity:
                     quantity = 1
+                elif quantity == 'all':
+                    bot.notice("Trading all does not work at this time.",instigator)
                 if instigatorclass == 'scavenger':
                     quantitymath = traderatioscavenger * int(quantity)
                 else:
@@ -849,7 +849,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Magic Attack
         elif commandortarget == 'magic':
             instigatorclass = get_database_value(bot, instigator, 'class')
-            magicoptions = ['attack','instakill','health','curse','shield']
+            magicoptions = ['attack','instakill','curse','shield']
             mana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
             target = get_trigger_arg(triggerargsarray, 3)
@@ -867,9 +867,9 @@ def execute_main(bot, trigger, triggerargsarray):
             targetshield = get_database_value(bot, target, 'shield') or 0
             targetclass = get_database_value(bot, target, 'class') or 'notclassy'
             if not magicusage:
-                bot.say('Magic uses include: attack, instakill, health, curse, shield')
+                bot.say('Magic uses include: attack, instakill, curse, shield')
             elif magicusage not in magicoptions:
-                bot.say('Magic uses include: attack, instakill, health, curse, shield')
+                bot.say('Magic uses include: attack, instakill, curse, shield')
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target == bot.nick:
@@ -880,12 +880,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " you don't have any mana.", instigator)
             elif magicusage == 'curse' and targetcurse:
                 bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
-            elif magicusage == 'shield' and targetshield:
-                bot.notice(instigator + " it looks like " + target + " is already shielded.", instigator)
-            elif magicusage == 'curse' and quantity > 1:
-                bot.notice(instigator + " You cannot apply a multi-curse.", instigator)
-            elif magicusage == 'shield' and quantity > 1:
-                bot.notice(instigator + " You cannot apply a multi-shield.", instigator)
             else:
                 if magicusage == 'attack':
                     manarequired = manarequiredmagicattack
@@ -896,9 +890,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif magicusage == 'curse':
                     manarequired = manarequiredmagiccurse
                     damage = magiccursedamage
-                elif magicusage == 'health':
-                    manarequired = manarequiredmagichealth
-                    damage = magichealthrestore
                 elif magicusage == 'instakill':
                     targethealthstart = get_database_value(bot, target, 'health')
                     targethealthstart = int(targethealthstart)
@@ -937,6 +928,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
                     manarequired = -abs(manarequired)
+                    actualshieldduration = int(quantity) * int(shieldduration)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
@@ -959,9 +951,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, 'curse', curseduration)
                             specialtext = str("AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                         elif magicusage == 'shield':
-                            set_database_value(bot, target, 'shield', shieldduration)
-                            specialtext = str("AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
-                        if magicusage == 'health' or magicusage == 'shield':
+                            adjust_database_value(bot, target, 'shield', shieldduration)
+                            specialtext = str("AND allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage.")
+                        if magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
                     if instigator == target:
@@ -1155,8 +1147,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
-        if yourclasswinner == 'vampire':
-            adjust_database_value(bot, winner, 'health', abs(damage))
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1200,8 +1190,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
 
         ## Update Health Of Loser, respawn, allow winner to loot
-        adjust_database_value(bot, loser, 'health', damage)
-        damage = abs(damage)
         currenthealth = get_database_value(bot, loser, 'health')
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
@@ -1476,7 +1464,7 @@ def hours_minutes_seconds(countdownseconds):
     timearray = ['hour','minute','second']
     for x in timearray:
         currenttimevar = eval(x)
-        if currenttimevar > 0:
+        if currenttimevar >= 1:
             timetype = x
             if currenttimevar > 1:
                 timetype = str(x+"s")
@@ -1685,29 +1673,50 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, winner, loser):
-    shieldwinner = get_magic_attribute(bot, winner, 'shield')
-    shieldloser = get_magic_attribute(bot, loser, 'shield')
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    shieldloser = get_database_value(bot, loser, 'shield') or 0
+    
     ## Rogue can't be hurt by themselves or bot
-    if winner == loser and loserclass == 'rogue':
+    roguearraynodamage = [bot.nick,loser]
+    if loserclass == 'rogue' and winner in roguearraynodamage:
         damage = 0
-    elif winner == bot.nick and loserclass == 'rogue':
-        damage = 0
-    # magic shield
-    elif shieldloser:
-        damage = 0
+    
     ## Bot deals a set amount
     elif winner == bot.nick:
         damage = botdamage
-    ## Barbarians get extra damage
+
+    ## Barbarians get extra damage (minimum)
     elif winnerclass == 'barbarian':
         damage = randint(barbarianminimumdamge, 120)
+    
+    ## vampires have a minimum damage
     elif winnerclass == 'vampire':
         damage = randint(0, vampiremaximumdamge)
+    
+    ## All Other Players
     else:
         damage = randint(0, 120)
-    damage = -abs(damage)
+    
+    
+    ## Vampires gain health from wins
+    if winnerclass == 'vampire':
+        adjust_database_value(bot, winner, 'health', damage)
+        
+    ## Shield resistance
+    if shieldloser and damage > 0:
+        damagemath = shieldloser - damage
+        if int(damagemath) > 0:
+            adjust_database_value(bot, loser, 'shield', -abs(damage))
+            damage = 0
+        else:
+            damage = abs(damagemath)
+            set_database_value(bot, loser, 'shield', None)
+
+    ## dish it out
+    if damage > 0:
+        adjust_database_value(bot, loser, 'health', -abs(damage))
+
     return damage
 
 ##################
@@ -1809,9 +1818,10 @@ def selectwinner(bot, nickarray):
 
     ## curse check
     for user in nickarray:
-        curse = get_magic_attribute(bot, user, 'curse')
-        if curse:
+        cursed = get_database_value(bot, user, 'curse') or 0
+        if cursed:
             set_database_value(bot, user, 'winnerselection', None)
+            adjust_database_value(bot, user, 'curse', -1)
 
     ## who wins
     winnermax = 0
@@ -1846,15 +1856,6 @@ def winnerdicerolling(bot, nick, rolls):
 #####################
 ## Magic attributes ##
 ######################
-
-def get_magic_attribute(bot, nick, attribute):
-    adjustment = -1
-    afflicted = 0
-    nickattribute = get_database_value(bot, nick, attribute)
-    if nickattribute:
-        adjust_database_value(bot, nick, attribute, adjustment)
-        afflicted = 1
-    return afflicted
 
 def get_current_magic_attributes(bot, instigator, target):
     instigatorshield = get_database_value(bot, instigator, 'shield') or 0

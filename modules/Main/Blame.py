@@ -19,20 +19,18 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     whotoblame = get_trigger_arg(triggerargsarray, 1)
-    channel = trigger.sender
     if not whotoblame:
+        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
         blametargetarray = []
-        for channel in bot.channels:
-            for u in bot.channels[channel].users:
-                disenable = get_botdatabase_value(bot, u, 'disenable')
-                if u != instigator and u != bot.nick:
-                    blametargetarray.append(u)
+        for u in bot.users:
+            if u in botusersarray and u != instigator and u != bot.nick:
+                blametargetarray.append(u) 
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
             whotoblame = get_trigger_arg(blametargetarray, 'random')
             bot.say("It's " + whotoblame + "'s fault.")
-    elif whotoblame.lower() not in bot.privileges[channel.lower()]:
+    elif whotoblame.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     else:
         bot.say("It's " + whotoblame + "'s fault.")

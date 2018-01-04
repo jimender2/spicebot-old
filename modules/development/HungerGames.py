@@ -19,13 +19,10 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     randomtargetarray = []
-    for c in bot.channels:
-        channel = c
-    for u in bot.channels[channel].users:
-        target = u
-        disenable = get_botdatabase_value(bot, target, 'disenable')
-        if disenable:
-            randomtargetarray.append(target)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    for u in bot.users:
+        if u in botusersarray and u != bot.nick:
+            randomtargetarray.append(u) 
     if randomtargetarray == []:
         bot.say("There is currently no one available to play the hunger games.")
     else:      

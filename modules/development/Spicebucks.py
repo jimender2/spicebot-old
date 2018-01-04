@@ -66,11 +66,34 @@ def execute_main(bot, trigger, args):
 						bot.say('Payday reset for ' + args[1])					
 				else:
 					reset(bot,trigger.nick)
-					bot.say('Payday reset for ' + trigger.nick)		
-					
+					bot.say('Payday reset for ' + trigger.nick)
+		elif args[0] == 'funds': #admin only command
+			if trigger.nick not in adminsarray:
+				bot.say('You must be an admin to use this command')
+			else:
+				if len(args) > 2: 
+					if args[1] not in allusersinroomarray:
+							bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+					else:
+						target = args[1]
+						if args[2].isdigit():
+							amount = int(args[2])
+							if amount>=0:
+								bot.db.set_nick_value(target, 'spicebucks_bank', amount)
+								targetbalance = bank(bot,target)
+								bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
+							else:
+								bot.say('Please enter a postive number')
+								
+						else:
+							bot.say('Please enter a valid a amount to set the bank account to')
+				else:
+					bot.say('Please enter a target and an amount to set their bank balance at')					
+										
+						
                         
                 
-		elif args[0] == 'taxes':
+		elif (args[0] == 'taxes' or args[0] == 'tax'):
 			if len(args) > 1:
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
