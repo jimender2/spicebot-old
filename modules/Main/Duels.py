@@ -1699,7 +1699,7 @@ def damagedone(bot, winner, loser):
         
     ## Shield resistance
     if shieldloser and damage > 0:
-        damagemath = shieldloser - damage
+        damagemath = int(shieldloser) - damage
         if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
             damage = 0
