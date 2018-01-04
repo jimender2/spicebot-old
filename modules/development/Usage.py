@@ -22,8 +22,6 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     GITWIKIURL = 'https://github.com/deathbybandaid/sopel-modules/wiki/Usage'
-    for c in bot.channels:
-        channel = c
     ## Variable ARGS
     moduletocheck = get_trigger_arg(triggerargsarray, 1) or instigator
     checktarget = get_trigger_arg(triggerargsarray, 2)
@@ -39,12 +37,12 @@ def execute_main(bot, trigger, triggerargsarray):
         counter = 0
     
     if counter == 1:
-        if moduletocheck.lower() in bot.privileges[channel.lower()]:
+        if moduletocheck.lower() in [u.lower() for u in bot.users]:
             querytype = 'user'
             usagefor = str(moduletocheck)
             if not checktarget:
                 checktarget = 'total'
-        elif moduletocheck.lower() not in bot.privileges[channel.lower()]:
+        elif moduletocheck.lower() not in [u.lower() for u in bot.users]:
             if checktarget:
                 if checktarget == 'channel':
                     usagefor = trigger.sender
