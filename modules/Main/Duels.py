@@ -951,7 +951,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, 'curse', curseduration)
                             specialtext = str("AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                         elif magicusage == 'shield':
-                            adjust_database_value(bot, loser, 'shield', shieldduration)
+                            adjust_database_value(bot, target, 'shield', shieldduration)
                             specialtext = str("AND allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage.")
                         if magicusage == 'shield':
                             damageorhealth = "healing"
