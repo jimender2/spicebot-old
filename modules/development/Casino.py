@@ -78,7 +78,7 @@ def slots(bot,trigger):
 		for i in reel:
 			if i=='BSOD':				
 				mywinnings = mywinnings + 1
-			If mywinnings>=1:
+			if mywinnings>=1:
 				bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
 				
 		if(wheel1 == wheel2 and wheel2 == wheel3):
