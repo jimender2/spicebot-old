@@ -1715,13 +1715,16 @@ def damagedone(bot, winner, loser):
         
     ## Shield resistance
     if shieldloser and damage > 0:
+        bot.say("shield"+str(shieldloser))
+        bot.say("damage"+str(damage))
         damagemath = shieldloser - damage
-        if damagemath <= 0:
-            damage = abs(damagemath)
-            set_database_value(bot, loser, 'shield', None)
-        else:
+        bot.say("shieldleft"+str(damagemath))
+        if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
             damage = 0
+        else:
+            damage = abs(damagemath)
+            set_database_value(bot, loser, 'shield', None)
 
     ## dish it out
     if damage > 0:
