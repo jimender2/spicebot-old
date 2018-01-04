@@ -1708,7 +1708,7 @@ def damagedone(bot, winner, loser):
     damage = -abs(damage)
     # magic shield
     if shieldloser:
-        adjust_database_value(bot, nick, 'shield', damage)
+        adjust_database_value(bot, loser, 'shield', damage)
         damage = 0
     return damage
 
@@ -1814,7 +1814,7 @@ def selectwinner(bot, nickarray):
         curse = get_magic_attribute(bot, user, 'curse')
         if curse:
             set_database_value(bot, user, 'winnerselection', None)
-            adjust_database_value(bot, nick, 'curse', -1)
+            adjust_database_value(bot, user, 'curse', -1)
 
     ## who wins
     winnermax = 0
