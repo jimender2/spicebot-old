@@ -1686,7 +1686,6 @@ def damagedone(bot, winner, loser):
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
-    shieldloser = get_magic_attribute(bot, loser, 'shield') or 0
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
