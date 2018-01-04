@@ -68,17 +68,19 @@ def slots(bot,trigger):
 		#add bet to spicebank
 		mywinnings = 0
 		jackpot = 0
-		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
+		
 		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 		wheel1 = spin(wheel)
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
 		reel = [wheel1, wheel2, wheel3]
-		bot.say('The slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
+		bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')	
 		for i in reel:
 			if i=='BSOD':				
 				mywinnings = mywinnings + 1
+			If mywinnings>=1:
 				bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
+				
 		if(wheel1 == wheel2 and wheel2 == wheel3):
 			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
