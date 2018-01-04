@@ -294,7 +294,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 return
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
-                if canduel and u != bot.nick and u != instigator:
+                if canduel and u != bot.nick:
                     canduelarray.append(u)
             lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
             lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
@@ -307,6 +307,8 @@ def execute_main(bot, trigger, triggerargsarray):
             elif canduelarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
+                if instigator in canduelarray:
+                    canduelarray.remove(instigator)
                 OSDTYPE = 'notice'
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
