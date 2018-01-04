@@ -189,6 +189,8 @@ def paytaxes(bot, target):
 	inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
 	if lasttaxday == 0 or lasttaxday < datetoday:
 		taxtotal = int(inbank * .1)
+		if inbank == 1:
+			taxtotal = 1			
 		if taxtotal>0:
 			spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
 			spicebucks(bot, target, 'minus', taxtotal)
