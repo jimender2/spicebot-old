@@ -12,33 +12,51 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-def searchfor(data):
-    data=data.replace(' ', '%20')
-    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
-    query=str(var.url)
-    return query
 
-@commands('google')
+
+@commands('google', 'search')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, triggerargsarray):
-    triggerargsarray = create_args_array(trigger.group(2)) ## triggerarg 0 = commandused
-    searchterm = get_trigger_arg(triggerargsarray, 1)
-    query=''
-    if not searchterm:
-        bot.say('Please enter a term to search for')        
-    else:
-        data = searchterm.strip().lower()
-        data=data.replace('site:', 'site%3A')
+def execute_main(bot, trigger, args):
+    if len(args)=1
+        data=args[0].strip().lower()       
         query=searchfor(data)
         if not query:
             bot.say('I cannot find anything about that')
         else:
-            bot.say(query)       
+            bot.say(query)   
+    elif len(args)>2
+        if not args[1]:
+            bot.say('Please choose a type of search you want and what you want to search for')  
+        else:
+            mysite =args[0].lower()
+            data=args[1].strip().lower()  
+            if (mysite == 'video' or mysite == 'youtube')
+                site = 'site%3Ayoutube.com'
+                url = 'https://youtube.com/'
+                searchterm = data+site
+                query=searchfor(searchterm)
+                if not query:
+                    bot.say('https://goo.gl/SsAhv')
+                else:
+                    if str(query).startswith(url):
+                        bot.say(query)
+                    else:
+                        bot.say('https://goo.gl/SsAhv')
+            else:
+                bot.say('Please choose a type of search you want and what you want to search for')
+             
+                  
+    
+     
 
-            
+def searchfor(data):
+    data=data.replace(' ', '%20')
+    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+    query=str(var.url)
+    return query            
 
     
