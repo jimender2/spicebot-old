@@ -43,7 +43,10 @@ def execute_main(bot, trigger, arg):
 	elif mygame == 'colors':
 		currentcolors =bot.db.get_nick_value('ColorCount','colors') or 0
 		bot.say(currentcolors)
+		
+	elif mygame == 'nocolors':
 		bot.db.set_nick_value('ColorCount','colors', ' ')
+		bot.say('Colors database emptied')
 		
     	else:
         	bot.say('Please choose a game')
