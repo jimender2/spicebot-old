@@ -1685,7 +1685,8 @@ def weaponformatter(bot, weapon):
 def damagedone(bot, winner, loser):
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
-    shieldloser = get_magic_attribute(bot, loser, 'shield')
+    shieldloser = get_database_value(bot, loser, 'shield') or 0
+    shieldloser = get_magic_attribute(bot, loser, 'shield') or 0
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
@@ -1831,8 +1832,8 @@ def selectwinner(bot, nickarray):
 
     ## curse check
     for user in nickarray:
-        curse = get_magic_attribute(bot, user, 'curse')
-        if curse:
+        cursed = get_database_value(bot, loser, 'curse') or 0
+        if cursed:
             set_database_value(bot, user, 'winnerselection', None)
             adjust_database_value(bot, user, 'curse', -1)
 
@@ -1869,13 +1870,6 @@ def winnerdicerolling(bot, nick, rolls):
 #####################
 ## Magic attributes ##
 ######################
-
-def get_magic_attribute(bot, nick, attribute):
-    afflicted = 0
-    nickattribute = get_database_value(bot, nick, attribute)
-    if nickattribute:
-        afflicted = 1
-    return afflicted
 
 def get_current_magic_attributes(bot, instigator, target):
     instigatorshield = get_database_value(bot, instigator, 'shield') or 0
