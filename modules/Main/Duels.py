@@ -720,6 +720,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 quantity = lootitemc
                 if not quantity:
                     quantity = 1
+                elif quantity == 'all':
+                    bot.notice("Trading all does not work at this time.",instigator)
                 if instigatorclass == 'scavenger':
                     quantitymath = traderatioscavenger * int(quantity)
                 else:
