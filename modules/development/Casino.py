@@ -209,7 +209,7 @@ def roulette(bot,trigger,arg):
 def lottery(bot,trigger, arg):
 	maxnumber=50
 	if bot.nick.endswith('dev'): 
-		maxnumber=15
+		maxnumber=10
 		
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
@@ -261,9 +261,9 @@ def lottery(bot,trigger, arg):
 						elif correct == 2:
 							payout = 4
 						elif correct == 3:
-							payout = int(bankbalance * 0.01)
+							payout = int(bankbalance * 0.001)
 						elif correct == 4:
-							payout =  int(bankbalance * 0.05)						     )
+							payout =  int(bankbalance * 0.03)						     )
 						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
