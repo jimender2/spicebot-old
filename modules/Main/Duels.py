@@ -65,7 +65,7 @@ manarequiredmagicattack = 250 ## mana required for magic attack
 magicattackdamage = -200 ## damage caused by a magic attack
 manarequiredmagicshield = 500 ## mana required for magic shield
 magicshielddamage = 80 ## damage caused by a magic shield usage
-shieldduration = 4 ## how long a shield lasts
+shieldduration = 400 ## how long a shield lasts
 manarequiredmagiccurse = 500 ## mana required for magic curse
 magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
@@ -962,7 +962,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             specialtext = str("AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                         elif magicusage == 'shield':
                             set_database_value(bot, target, 'shield', shieldduration)
-                            specialtext = str("AND allows " + target + " to take no damage for the next " + str(shieldduration) + " duels.")
+                            specialtext = str("AND allows " + target + " to take no damage for the duration of " + str(shieldduration) + " damage.")
                         if magicusage == 'health' or magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
@@ -1687,7 +1687,6 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, winner, loser):
-    shieldwinner = get_magic_attribute(bot, winner, 'shield')
     shieldloser = get_magic_attribute(bot, loser, 'shield')
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
@@ -1695,9 +1694,6 @@ def damagedone(bot, winner, loser):
     if winner == loser and loserclass == 'rogue':
         damage = 0
     elif winner == bot.nick and loserclass == 'rogue':
-        damage = 0
-    # magic shield
-    elif shieldloser:
         damage = 0
     ## Bot deals a set amount
     elif winner == bot.nick:
@@ -1710,6 +1706,10 @@ def damagedone(bot, winner, loser):
     else:
         damage = randint(0, 120)
     damage = -abs(damage)
+    # magic shield
+    if shieldloser:
+        adjust_database_value(bot, nick, 'shield', damage)
+        damage = 0
     return damage
 
 ##################
@@ -1814,6 +1814,7 @@ def selectwinner(bot, nickarray):
         curse = get_magic_attribute(bot, user, 'curse')
         if curse:
             set_database_value(bot, user, 'winnerselection', None)
+            adjust_database_value(bot, nick, 'curse', -1)
 
     ## who wins
     winnermax = 0
@@ -1850,11 +1851,9 @@ def winnerdicerolling(bot, nick, rolls):
 ######################
 
 def get_magic_attribute(bot, nick, attribute):
-    adjustment = -1
     afflicted = 0
     nickattribute = get_database_value(bot, nick, attribute)
     if nickattribute:
-        adjust_database_value(bot, nick, attribute, adjustment)
         afflicted = 1
     return afflicted
 
