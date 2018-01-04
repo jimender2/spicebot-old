@@ -63,14 +63,12 @@ grenadereward = 150
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
 manarequiredmagicattack = 250 ## mana required for magic attack
 magicattackdamage = -200 ## damage caused by a magic attack
-manarequiredmagicshield = 500 ## mana required for magic shield
+manarequiredmagicshield = 200 ## mana required for magic shield
 magicshielddamage = 80 ## damage caused by a magic shield usage
-shieldduration = 400 ## how long a shield lasts
+shieldduration = 200 ## how long a shield lasts
 manarequiredmagiccurse = 500 ## mana required for magic curse
 magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
-manarequiredmagichealth = 200 ## mana required for magic health
-magichealthrestore = 200 ## health restored by a magic health
 
 ## XP points awarded
 XPearnedwinnerranger = 7 ## xp earned as a winner and ranger
@@ -851,7 +849,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Magic Attack
         elif commandortarget == 'magic':
             instigatorclass = get_database_value(bot, instigator, 'class')
-            magicoptions = ['attack','instakill','health','curse','shield']
+            magicoptions = ['attack','instakill','curse','shield']
             mana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
             target = get_trigger_arg(triggerargsarray, 3)
@@ -869,9 +867,9 @@ def execute_main(bot, trigger, triggerargsarray):
             targetshield = get_database_value(bot, target, 'shield') or 0
             targetclass = get_database_value(bot, target, 'class') or 'notclassy'
             if not magicusage:
-                bot.say('Magic uses include: attack, instakill, health, curse, shield')
+                bot.say('Magic uses include: attack, instakill, curse, shield')
             elif magicusage not in magicoptions:
-                bot.say('Magic uses include: attack, instakill, health, curse, shield')
+                bot.say('Magic uses include: attack, instakill, curse, shield')
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target == bot.nick:
@@ -882,12 +880,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " you don't have any mana.", instigator)
             elif magicusage == 'curse' and targetcurse:
                 bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
-            elif magicusage == 'shield' and targetshield:
-                bot.notice(instigator + " it looks like " + target + " is already shielded.", instigator)
-            elif magicusage == 'curse' and quantity > 1:
-                bot.notice(instigator + " You cannot apply a multi-curse.", instigator)
-            elif magicusage == 'shield' and quantity > 1:
-                bot.notice(instigator + " You cannot apply a multi-shield.", instigator)
             else:
                 if magicusage == 'attack':
                     manarequired = manarequiredmagicattack
@@ -898,9 +890,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif magicusage == 'curse':
                     manarequired = manarequiredmagiccurse
                     damage = magiccursedamage
-                elif magicusage == 'health':
-                    manarequired = manarequiredmagichealth
-                    damage = magichealthrestore
                 elif magicusage == 'instakill':
                     targethealthstart = get_database_value(bot, target, 'health')
                     targethealthstart = int(targethealthstart)
@@ -939,6 +928,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
                     manarequired = -abs(manarequired)
+                    actualshieldduration = int(quantity * shieldduration)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
@@ -962,8 +952,8 @@ def execute_main(bot, trigger, triggerargsarray):
                             specialtext = str("AND forces " + target + " to lose the next " + str(curseduration) + " duels.")
                         elif magicusage == 'shield':
                             set_database_value(bot, target, 'shield', shieldduration)
-                            specialtext = str("AND allows " + target + " to take no damage for the duration of " + str(shieldduration) + " damage.")
-                        if magicusage == 'health' or magicusage == 'shield':
+                            specialtext = str("AND allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage.")
+                        if magicusage == 'shield':
                             damageorhealth = "healing"
                             damageorhealthb = 'health'
                     if instigator == target:
