@@ -263,7 +263,7 @@ def lottery(bot,trigger, arg):
 						elif correct == 3:
 							payout = int(bankbalance * 0.001)
 						elif correct == 4:
-							payout =  int(bankbalance * 0.03)						     )
+							payout = int(bankbalance * 0.03)						     )
 						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
