@@ -63,7 +63,7 @@ grenadereward = 150
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
 manarequiredmagicattack = 250 ## mana required for magic attack
 magicattackdamage = -200 ## damage caused by a magic attack
-manarequiredmagicshield = 200 ## mana required for magic shield
+manarequiredmagicshield = 300 ## mana required for magic shield
 magicshielddamage = 80 ## damage caused by a magic shield usage
 shieldduration = 200 ## how long a shield lasts
 manarequiredmagiccurse = 500 ## mana required for magic curse
@@ -928,7 +928,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
                     manarequired = -abs(manarequired)
-                    actualshieldduration = int(quantity * shieldduration)
+                    actualshieldduration = int(quantity) * int(shieldduration)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     while int(quantity) > 0:
                         quantity = int(quantity) - 1
