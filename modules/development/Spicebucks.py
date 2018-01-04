@@ -65,11 +65,18 @@ def execute_main(bot, trigger, args):
 				reset(bot,trigger.nick)
 				bot.say('Payday reset for ' + trigger.nick)
 		elif args[0] == 'funds' and trigger.admin: #admin only command
+			success = 0
 			if len(args) > 2: 
-				if args[1] not in allusersinroomarray:
-						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+				if args[1] == 'spicebank':
+					target = 'SpiceBank'
+					success = 1
+				elif args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+					success = 0
 				else:
 					target = args[1]
+					success = 1
+				if success = 1:
 					if args[2].isdigit():
 						amount = int(args[2])
 						if amount>=0 and amount <10000001:
@@ -78,7 +85,6 @@ def execute_main(bot, trigger, args):
 							bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
 						else:
 							bot.say('Please enter a postive number less then 1,000,000')
-
 					else:
 						bot.say('Please enter a valid a amount to set the bank account to')
 			else:
