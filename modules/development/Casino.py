@@ -244,7 +244,8 @@ def lottery(bot,trigger, arg):
 								correct = correct + 1
 						payout = 0
 						bankbalance=Spicebucks.bank(bot,'SpiceBank')
-						
+						if bankbalance <=500:
+							bankbalance=500						
 						if correct == 1:
 							payout = 2
 						elif correct == 2:
@@ -253,7 +254,7 @@ def lottery(bot,trigger, arg):
 							payout = bankbalance * 0.03
 						elif correct == 4:
 							payout =  bankbalance * 0.05
-						elif correct == 5:
+						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
 							bankbalance=payout							
