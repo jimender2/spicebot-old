@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
     players = []
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     for u in bot.users:
-        if u in botusersarray and u != instigator and u != bot.nick:
+        if u in botusersarray and u != bot.nick:
             players.append(u) 
     random.shuffle(rooms)
     random.shuffle(weapons)
