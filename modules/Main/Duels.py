@@ -1157,8 +1157,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Damage Done (random)
         damage = damagedone(bot, winner, loser)
-        if yourclasswinner == 'vampire':
-            adjust_database_value(bot, winner, 'health', abs(damage))
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1202,8 +1200,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
 
         ## Update Health Of Loser, respawn, allow winner to loot
-        adjust_database_value(bot, loser, 'health', damage)
-        damage = abs(damage)
         currenthealth = get_database_value(bot, loser, 'health')
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
@@ -1687,29 +1683,50 @@ def weaponformatter(bot, weapon):
 #################
 
 def damagedone(bot, winner, loser):
-    shieldloser = get_magic_attribute(bot, loser, 'shield')
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    shieldloser = get_magic_attribute(bot, loser, 'shield')
+    
     ## Rogue can't be hurt by themselves or bot
-    if winner == loser and loserclass == 'rogue':
+    roguearraynodamage = [bot.nick,instigator]
+    if loserclass == 'rogue' and winner in roguearraynodamage:
         damage = 0
-    elif winner == bot.nick and loserclass == 'rogue':
-        damage = 0
+    
     ## Bot deals a set amount
     elif winner == bot.nick:
         damage = botdamage
-    ## Barbarians get extra damage
+
+    ## Barbarians get extra damage (minimum)
     elif winnerclass == 'barbarian':
         damage = randint(barbarianminimumdamge, 120)
+    
+    ## vampires have a minimum damage
     elif winnerclass == 'vampire':
         damage = randint(0, vampiremaximumdamge)
+    
+    ## All Other Players
     else:
         damage = randint(0, 120)
-    damage = -abs(damage)
-    # magic shield
-    if shieldloser:
-        adjust_database_value(bot, loser, 'shield', damage)
-        damage = 0
+    
+    
+    ## Vampires gain health from wins
+    if winnerclass == 'vampire':
+        adjust_database_value(bot, winner, 'health', damage)
+        
+    ## Shield resistance
+    if shieldloser and damage > 0:
+        damagemath = shieldloser - damage
+        if damagemath <= 0:
+            damage = abs(damagemath)
+            set_database_value(bot, loser, 'shield', None)
+        else:
+            adjust_database_value(bot, loser, 'shield', -abs(damage))
+            damage = 0
+
+    ## dish it out
+    if damage > 0:
+        adjust_database_value(bot, loser, 'health', -abs(damage))
+
     return damage
 
 ##################
