@@ -45,6 +45,7 @@ def execute_main(bot, trigger, args):
                     if str(query).startswith(url):
                         bot.say(query)
                     else:
+                        bot.say(query)
                         bot.say('I cannot find a video about that')
                         
             elif mysite == 'meme':
