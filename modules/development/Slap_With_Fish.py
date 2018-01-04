@@ -16,11 +16,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
-    for c in bot.channels:
-        channel = c
     if not target:
         bot.say("Who would you like to slap with a fish?")
-    elif target.lower() not in bot.privileges[channel.lower()]:
+    elif target.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     elif target == bot.nick:
         bot.say("I will not do that!!")
