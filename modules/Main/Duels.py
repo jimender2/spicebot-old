@@ -158,15 +158,12 @@ def execute_main(bot, trigger, triggerargsarray):
     adjust_database_value(bot, instigator, 'usage', 1)
     healthcheck(bot, instigator)
 
-    ## The only commands that should get through if instigator doesn't have duels enabled
-    commandbypassarray = ['on','off']
-
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who did you want to duel? Online Docs: " + GITWIKIURL, instigator)
 
     ## commands cannot be run if opted out
-    elif instigator not in dueloptedinarray and commandortarget not in commandbypassarray:
+    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on':
         bot.notice(instigator + ", It looks like you have duels off.", instigator)
 
     ## Bot
@@ -243,7 +240,6 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                targetarray = []
                 targetarray.append(target)
                 getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
@@ -1069,7 +1065,6 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
-            targetarray = []
             targetarray.append(target)
             getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
