@@ -40,7 +40,7 @@ def execute_main(bot, trigger, args):
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
-                    bot.say('I cannot find anything about that').
+                    bot.say('I cannot find anything about that')
                 else:
                     if str(query).startswith(url):
                         bot.say(query)
