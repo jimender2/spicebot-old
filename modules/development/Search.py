@@ -78,7 +78,7 @@ def execute_main(bot, trigger, args):
             else:
                 bot.say('Please choose a type of search you want and what you want to search for')
      else:
-                bot.say('Please choose a type of search you want and what you want to search for')
+        bot.say('Please choose a type of search you want and what you want to search for')
              
                   
     
