@@ -40,7 +40,7 @@ def execute_main(bot, trigger, args):
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
-                    bot.say('I cannot find anything about that').
+                    bot.say('I cannot find anything about that')
                 else:
                     if str(query).startswith(url):
                         bot.say(query)
@@ -58,7 +58,7 @@ def execute_main(bot, trigger, args):
                     if str(query).startswith(url):
                         bot.say(query)
                     else:
-                        bot.say('https://goo.gl/SsAhv')
+                        bot.say('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
                         
             elif mysite == 'walmart':
                 site = 'site%3Apeopleofwalmart.com'
@@ -71,7 +71,7 @@ def execute_main(bot, trigger, args):
                     if str(query).startswith(url):
                         bot.say(query)
                     else:
-                        bot.say('https://goo.gl/SsAhv')                       
+                        bot.say('https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
                                             
                         
                      

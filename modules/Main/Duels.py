@@ -243,7 +243,9 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
-                return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                targetarray = []
+                targetarray.append(target)
+                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -294,11 +296,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
-            fullchanassaultarray = []
-            for x in canduelarray:
-                if x != instigator and x != bot.nick:
-                    fullchanassaultarray.append(x)
-            fullchanassaultarraytotal = len(fullchanassaultarray)
             lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
             lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
             if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
@@ -307,19 +304,19 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif fullchanassaultarray == []:
+            elif canduelarray == []:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 if instigator in canduelarray:
                     canduelarray.remove(instigator)
                 OSDTYPE = 'notice'
-                displaymessage = get_trigger_arg(fullchanassaultarray, "list")
+                displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
                 set_database_value(bot, duelrecorduser, 'lastfullroomassult', now)
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                return getreadytorumble(bot, trigger, instigator, fullchanassaultarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -1072,7 +1069,9 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
         if executedueling:
-            return getreadytorumble(bot, trigger, instigator, target, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+            targetarray = []
+            targetarray.append(target)
+            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1084,11 +1083,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     assaultdisplay = ''
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-    ## Target Array
-    if not isinstance(targetarray, list):
-        tempvar = targetarray
-        targetarray = []
-        targetarray.append(tempvar)
     targetarraytotal = len(targetarray)
     for target in targetarray:
         targetarraytotal = targetarraytotal - 1
@@ -1705,7 +1699,7 @@ def damagedone(bot, winner, loser):
         
     ## Shield resistance
     if shieldloser and damage > 0:
-        damagemath = shieldloser - damage
+        damagemath = int(shieldloser) - damage
         if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
             damage = 0
@@ -1843,8 +1837,7 @@ def winnerdicerolling(bot, nick, rolls):
     rolla = 0
     rollb = 20
     if nickclass == 'rogue':
-        rolla = 10
-        rollb = 22
+        rolla = 8
     fightarray = []
     while int(rolls) > 0:
         fightroll = randint(rolla, rollb)
