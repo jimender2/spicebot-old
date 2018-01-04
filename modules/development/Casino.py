@@ -132,7 +132,11 @@ def roulette(bot,trigger,arg):
         	bot.say('Please enter an amount to bet')
 		inputcheck = 0
 	else:
-		if not arg[1].isdigit():
+		if arg[1] == 'allin':
+			balance = Spicebucks.bank(bot, trigger.nick)
+			mybet=balance
+			inputcheck = 1
+		elif not arg[1].isdigit():
 			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:
