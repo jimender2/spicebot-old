@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
-    if len(args)=1
+    if len(args)==1:
         data=args[0].strip().lower()       
         query=searchfor(data)
         if not query:
@@ -34,7 +34,7 @@ def execute_main(bot, trigger, args):
         else:
             mysite =args[0].lower()
             data=args[1].strip().lower()  
-            if (mysite == 'video' or mysite == 'youtube')
+            if (mysite == 'video' or mysite == 'youtube'):
                 site = 'site%3Ayoutube.com'
                 url = 'https://youtube.com/'
                 searchterm = data+site
@@ -46,6 +46,35 @@ def execute_main(bot, trigger, args):
                         bot.say(query)
                     else:
                         bot.say('https://goo.gl/SsAhv')
+                        
+            elif mysite == 'meme':
+                site = 'site%3Aknowyourmeme.com'
+                url = 'knowyourmeme.com'
+                searchterm = data+site
+                query=searchfor(searchterm)
+                if not query:
+                    bot.say('https://goo.gl/SsAhv')
+                else:
+                    if str(query).startswith(url):
+                        bot.say(query)
+                    else:
+                        bot.say('https://goo.gl/SsAhv')
+                        
+            elif mysite == 'walmart':
+                site = 'site%3Apeopleofwalmart.com'
+                url = 'http://www.peopleofwalmart.com'
+                searchterm = data+site
+                query=searchfor(searchterm)
+                if not query:
+                    bot.say('https://goo.gl/SsAhv')
+                else:
+                    if str(query).startswith(url):
+                        bot.say(query)
+                    else:
+                        bot.say('https://goo.gl/SsAhv')                       
+                                            
+                        
+                     
             else:
                 bot.say('Please choose a type of search you want and what you want to search for')
              
