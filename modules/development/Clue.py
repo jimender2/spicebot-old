@@ -20,13 +20,16 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
+    if not channel.startswith("#"):
+        bot.notice(instigator + " Clue must be in a channel.", instigator)
+        return
     target = get_trigger_arg(triggerargsarray, 1)
     suspect = get_trigger_arg(triggerargsarray, 2)
     players = []
-    for u in bot.channels[channel].users:
-        disenable = get_botdatabase_value(bot, u, 'disenable')
-        if disenable:
-            players.append(u)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    for u in bot.users:
+        if u in botusersarray and u != instigator and u != bot.nick:
+            players.append(u) 
     random.shuffle(rooms)
     random.shuffle(weapons)
     random.shuffle(players)
