@@ -1688,7 +1688,7 @@ def damagedone(bot, winner, loser):
     shieldloser = get_magic_attribute(bot, loser, 'shield')
     
     ## Rogue can't be hurt by themselves or bot
-    roguearraynodamage = [bot.nick,instigator]
+    roguearraynodamage = [bot.nick,loser]
     if loserclass == 'rogue' and winner in roguearraynodamage:
         damage = 0
     
