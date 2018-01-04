@@ -76,7 +76,7 @@ def execute_main(bot, trigger, args):
 				else:
 					target = args[1]
 					success = 1
-				if success = 1:
+				if success == 1:
 					if args[2].isdigit():
 						amount = int(args[2])
 						if amount>=0 and amount <10000001:
