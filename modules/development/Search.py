@@ -38,16 +38,17 @@ def execute_main(bot, trigger, args):
             if (mysite == 'video' or mysite == 'youtube'):
                 site = 'site%3Ayoutube.com'
                 url = 'https://www.youtube.com/'
+                url2 = 'https://youtube.com/'
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
                     bot.say('I cannot find anything about that')
                 else:
-                    if str(query).startswith(url):
+                    if(str(query).startswith(url) or str(query).startswith(url2)):
                         bot.say(query)
                     else:
                         bot.say(query)
-                        bot.say('I cannot find a video about that')
+                        bot.say('Valid website not found')
                         
             elif mysite == 'meme':
                 site = 'site%3Aknowyourmeme.com'
