@@ -571,6 +571,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, u, 'health', stockhealth)
                                 targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
+                        fulltarget, secondarytarget, thirdtarget = '','',''
                         fulltarget = get_trigger_arg(canduelarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
                         #adjust_database_value(bot, fulltarget, 'health', grenadefull)
@@ -592,27 +593,27 @@ def execute_main(bot, trigger, triggerargsarray):
                         painarray = []
                         damagearray = []
                         deatharray = []
-                        if fulltarget:
+                        if fulltarget != '':
                             painarray.append(fulltarget)
                             damagearray.append(grenadefull)
-                        if secondarytarget:
+                        if secondarytarget != '':
                             painarray.append(secondarytarget)
                             damagearray.append(grenadesec)
-                        if thirdtarget:
+                        if thirdtarget != '':
                             painarray.append(thirdtarget)
                             damagearray.append(grenadesec)
                         for x, damage in zip(painarray, damagearray):
                             shieldloser = get_database_value(bot, x, 'shield') or 0
                             if shieldloser and damage > 0:
                                 damagemath = int(shieldloser) - damage
-                            if int(damagemath) > 0:
-                                adjust_database_value(bot, x, 'shield', -abs(damage))
-                                damage = 0
-                            else:
-                                damage = abs(damagemath)
-                                set_database_value(bot, x, 'shield', None)
-                            if damage > 0:
-                                adjust_database_value(bot, x, 'health', -abs(damage))
+                                if int(damagemath) > 0:
+                                    adjust_database_value(bot, x, 'shield', -abs(damage))
+                                    damage = 0
+                                else:
+                                    damage = abs(damagemath)
+                                    set_database_value(bot, x, 'shield', None)
+                                if damage > 0:
+                                    adjust_database_value(bot, x, 'health', -abs(damage))
                             xhealth = get_database_value(bot, x, 'health') or 0
                             if int(xhealth) <= 0:
                                 whokilledwhom(bot, instigator, x)
