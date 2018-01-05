@@ -266,12 +266,25 @@ def execute_main(bot, trigger, triggerargsarray):
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
                 duelrecorduserpot = 100
+                damage = duelrecorduserpot
                 winner = selectwinner(bot, canduelarray)
                 bot.say("The Winner is: " + winner + "! Total winnings: " + str(duelrecorduserpot) + " coin! Losers took " + str(duelrecorduserpot) + " damage")
                 diedinbattle = []
                 for x in canduelarray:
-                    if x != winner:
-                        adjust_database_value(bot, x, 'health', -abs(duelrecorduserpot))
+                    if x == winner:
+                        adjust_database_value(bot, x, 'coin', duelrecorduserpot)
+                    else:
+                        shieldloser = get_database_value(bot, x, 'shield') or 0
+                        if shieldloser and damage > 0:
+                            damagemath = int(shieldloser) - damage
+                            if int(damagemath) > 0:
+                                adjust_database_value(bot, x, 'shield', -abs(damage))
+                                damage = 0
+                            else:
+                                damage = abs(damagemath)
+                                set_database_value(bot, x, 'shield', None)
+                            if damage > 0:
+                                adjust_database_value(bot, x, 'health', -abs(damage))
                         currenthealth = get_database_value(bot, x, 'health')
                         if currenthealth <= 0:
                             whokilledwhom(bot, winner, x)
@@ -279,7 +292,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 displaymessage = get_trigger_arg(diedinbattle, "list")
                 if displaymessage:
                     bot.say(displaymessage + " died in this event.")
-                adjust_database_value(bot, winner, 'coin', duelrecorduserpot)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', now)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', instigator)
 
