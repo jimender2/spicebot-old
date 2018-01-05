@@ -603,6 +603,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             painarray.append(thirdtarget)
                             damagearray.append(grenadesec)
                         for x, damage in zip(painarray, damagearray):
+                            bot.say
                             shieldloser = get_database_value(bot, x, 'shield') or 0
                             if shieldloser and damage > 0:
                                 damagemath = int(shieldloser) - damage
@@ -612,8 +613,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     damage = abs(damagemath)
                                     set_database_value(bot, x, 'shield', None)
-                                if damage > 0:
-                                    adjust_database_value(bot, x, 'health', -abs(damage))
+                            if damage > 0:
+                                adjust_database_value(bot, x, 'health', -abs(damage))
                             xhealth = get_database_value(bot, x, 'health') or 0
                             if int(xhealth) <= 0:
                                 whokilledwhom(bot, instigator, x)
