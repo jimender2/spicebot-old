@@ -34,9 +34,10 @@ def execute_main(bot, trigger, args):
             bot.say('Please choose a type of search you want and what you want to search for')  
         else:
             mysite =args[0].lower()
-            data=args[1].lower()  
+            data=args[1].lower() 
+            bot.say('Data input: ' + data)
             if (mysite == 'video' or mysite == 'youtube'):
-                site = 'site%3Ayoutube.com'
+                site = '%20site%3Ayoutube.com'
                 url = 'https://www.youtube.com/'
                 url2 = 'https://youtube.com/'
                 searchterm = data+site
