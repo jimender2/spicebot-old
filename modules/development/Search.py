@@ -7,6 +7,7 @@ import random
 import sys
 import os
 import requests
+import re
 import urllib2
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
@@ -33,10 +34,10 @@ def execute_main(bot, trigger, args):
             bot.say('Please choose a type of search you want and what you want to search for')  
         else:
             mysite =args[0].lower()
-            data=args[1].strip().lower()  
+            data=args[1].lower()  
             if (mysite == 'video' or mysite == 'youtube'):
                 site = 'site%3Ayoutube.com'
-                url = 'https://youtube.com/'
+                url = 'https://www.youtube.com/'
                 searchterm = data+site
                 query=searchfor(searchterm)
                 if not query:
