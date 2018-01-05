@@ -226,10 +226,6 @@ def main_command(bot, trigger):
                     bot.say(line)
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
-
-    elif subcommand == 'clearlog':
-        bot.action('Is Removing Log')
-        os.system("sudo rm " + log_file_path)
         
 def restart(bot, trigger, service):
     bot.say('Restarting Service...')
