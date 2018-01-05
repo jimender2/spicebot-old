@@ -260,7 +260,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif canduelarray == []:
+            elif canduelarray == [] or len(canduelarray) == 1:
                 bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
             else:
                 displaymessage = get_trigger_arg(canduelarray, "list")
@@ -312,7 +312,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
             elif instigator not in canduelarray:
                 bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif canduelarray == []:
+            elif canduelarray == [] or len(canduelarray) == 1:
                 bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
             else:
                 if instigator in canduelarray:
