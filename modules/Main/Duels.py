@@ -265,10 +265,11 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                duelrecorduserpot = 100
-                damage = duelrecorduserpot
+                totalplayers = len(canduelarray)
+                riskcoins = int(totalplayers) * 30
+                damage = riskcoins
                 winner = selectwinner(bot, canduelarray)
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(duelrecorduserpot) + " coin! Losers took " + str(duelrecorduserpot) + " damage")
+                bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
                 diedinbattle = []
                 canduelarray.remove(winner)
                 for x in canduelarray:
@@ -290,7 +291,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 displaymessage = get_trigger_arg(diedinbattle, "list")
                 if displaymessage:
                     bot.say(displaymessage + " died in this event.")
-                adjust_database_value(bot, winner, 'coin', duelrecorduserpot)
+                adjust_database_value(bot, winner, 'coin', riskcoins)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', now)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', instigator)
 
