@@ -273,6 +273,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 diedinbattle = []
                 canduelarray.remove(winner)
                 for x in canduelarray:
+                    targethealth = get_database_value(bot, x, 'health') or 0
+                    if not targethealth:
+                        set_database_value(bot, x, 'health', stockhealth)
                     shieldloser = get_database_value(bot, x, 'shield') or 0
                     if shieldloser and damage > 0:
                         damagemath = int(shieldloser) - damage
@@ -570,34 +573,55 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget = get_trigger_arg(canduelarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
-                        adjust_database_value(bot, fulltarget, 'health', grenadefull)
+                        #adjust_database_value(bot, fulltarget, 'health', grenadefull)
                         canduelarray.remove(fulltarget)
                         if canduelarray != []:
                             secondarytarget = get_trigger_arg(canduelarray, "random")
-                            adjust_database_value(bot, secondarytarget, 'health', grenadesec)
+                            #adjust_database_value(bot, secondarytarget, 'health', grenadesec)
                             canduelarray.remove(secondarytarget)
                             if canduelarray != []:
                                 thirdtarget = get_trigger_arg(canduelarray, "random")
                                 displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
-                                adjust_database_value(bot, thirdtarget, 'health', grenadesec)
+                                #adjust_database_value(bot, thirdtarget, 'health', grenadesec)
                                 canduelarray.remove(thirdtarget)
                                 if canduelarray != []:
                                     remainingarray = get_trigger_arg(canduelarray, "list")
                                     displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
                             else:
                                 displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                        painarray = []
+                        damagearray = []
                         deatharray = []
-                        for u in canduelarrayorig:
-                            uhealth = get_database_value(bot, u, 'health') or 0
-                            if int(uhealth) <= 0:
-                                whokilledwhom(bot, instigator, u)
-                                deatharray.append(u)
+                        if fulltarget:
+                            painarray.append(fulltarget)
+                            damagearray.append(grenadefull)
+                        if secondarytarget:
+                            painarray.append(secondarytarget)
+                            damagearray.append(grenadesec)
+                        if thirdtarget:
+                            painarray.append(thirdtarget)
+                            damagearray.append(grenadesec)
+                        for x, damage in zip(painarray, damagearray):
+                            shieldloser = get_database_value(bot, x, 'shield') or 0
+                            if shieldloser and damage > 0:
+                                damagemath = int(shieldloser) - damage
+                            if int(damagemath) > 0:
+                                adjust_database_value(bot, x, 'shield', -abs(damage))
+                                damage = 0
+                            else:
+                                damage = abs(damagemath)
+                                set_database_value(bot, x, 'shield', None)
+                            if damage > 0:
+                                adjust_database_value(bot, x, 'health', -abs(damage))
+                            xhealth = get_database_value(bot, x, 'health') or 0
+                            if int(xhealth) <= 0:
+                                whokilledwhom(bot, instigator, x)
+                                deatharray.append(x)
                         if deatharray != []:
                             deadarray = get_trigger_arg(deatharray, "list")
                             displaymsg = str(displaymsg + deadarray + " died by this grenade volley")
                         if displaymsg != '':
-                            bot.say(displaymsg)
-                        
+                            bot.say(displaymsg) 
                 else:
                     if lootitemb.isdigit():
                         quantity = int(lootitemb)
