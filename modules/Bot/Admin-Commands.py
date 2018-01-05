@@ -201,7 +201,8 @@ def main_command(bot, trigger):
             bot.say("attempting to install " + pippackage)
             os.system("sudo pip install " + pippackage)
             bot.say('Possibly done installing ' + pippackage)      
-                
+               
+    ## Check the latest logs from the last time logs were checked or cleared
     elif subcommand == 'debug':
         debugloglinenumberarray = []
         bot.action('Is Copying Log')
@@ -226,6 +227,10 @@ def main_command(bot, trigger):
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
 
+    elif subcommand == 'clearlog'
+        bot.action('Is Removing Log')
+        os.system("sudo rm " + log_file_path)
+        
 def restart(bot, trigger, service):
     bot.say('Restarting Service...')
     os.system("sudo service " + str(service) + " restart")
