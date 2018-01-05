@@ -91,8 +91,8 @@ bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
 stockhealth = 1000 ## default health for new players and respawns
-grenadefull = -100
-grenadesec = -50
+grenadefull = 100
+grenadesec = 50
 weaponmaxlength = 50
 
 ############
@@ -603,6 +603,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             painarray.append(thirdtarget)
                             damagearray.append(grenadesec)
                         for x, damage in zip(painarray, damagearray):
+                            damage = int(damage)
                             bot.say(str(x)+str(damage))
                             shieldloser = get_database_value(bot, x, 'shield') or 0
                             if shieldloser and damage > 0:
