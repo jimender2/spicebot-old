@@ -68,17 +68,19 @@ def slots(bot,trigger):
 		#add bet to spicebank
 		mywinnings = 0
 		jackpot = 0
-		bot.say(trigger.nick + ' inserts 1 spicebuck and pulls the handle on the slot machine')  
+		
 		wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 		wheel1 = spin(wheel)
 		wheel2 = spin(wheel)
 		wheel3 = spin(wheel)
 		reel = [wheel1, wheel2, wheel3]
-		bot.say('The slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
+		bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')	
 		for i in reel:
 			if i=='BSOD':				
 				mywinnings = mywinnings + 1
+			if mywinnings>=1:
 				bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
+				
 		if(wheel1 == wheel2 and wheel2 == wheel3):
 			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
@@ -120,24 +122,33 @@ def slots(bot,trigger):
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
 	maxwheel = 25
-	minbet=5 #requires at least one payday to play
+	minbet=15 #requires at least one payday to play
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
+	mybet=0
 	#set bet
     	if len(arg) < 3:
         	bot.say('Please enter an amount to bet')
 		inputcheck = 0
 	else:
-		if not arg[1].isdigit():
+		if arg[1] == 'allin':
+			balance = Spicebucks.bank(bot, trigger.nick)
+			if balance > 0:
+				mybet=balance
+				inputcheck = 1
+			else:
+				bot.say('You do not have any spicebucks')
+				inputcheck = 0
+		elif not arg[1].isdigit():
 			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:
 			mybet = int(arg[1])
 			inputcheck = 1
-    		if (mybet<minbet or mybet>maxbet):
-                	bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
-                	inputcheck = 0
+			if (mybet<minbet or mybet>maxbet):
+				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
+				inputcheck = 0
 	#setup what was bet on
     	if inputcheck == 1:	
 		#check to see if a number was entered
@@ -201,6 +212,9 @@ def roulette(bot,trigger,arg):
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
 	maxnumber=50
+	if bot.nick.endswith('dev'): 
+		maxnumber=50
+		
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
@@ -251,9 +265,9 @@ def lottery(bot,trigger, arg):
 						elif correct == 2:
 							payout = 4
 						elif correct == 3:
-							payout = bankbalance * 0.03
+							payout = int((bankbalance * 0.001))
 						elif correct == 4:
-							payout =  bankbalance * 0.05
+							payout = int((bankbalance * 0.03))
 						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
@@ -267,7 +281,7 @@ def lottery(bot,trigger, arg):
 							
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
-	minbet=10
+	minbet=30
 	
 	if len(arg)<2:
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))

@@ -45,6 +45,7 @@ def execute_main(bot, trigger, args):
                     if str(query).startswith(url):
                         bot.say(query)
                     else:
+                        bot.say(query)
                         bot.say('I cannot find a video about that')
                         
             elif mysite == 'meme':
@@ -77,8 +78,8 @@ def execute_main(bot, trigger, args):
                      
             else:
                 bot.say('Please choose a type of search you want and what you want to search for')
-     else:
-                bot.say('Please choose a type of search you want and what you want to search for')
+    else:
+        bot.say('Please choose a type of search you want and what you want to search for')
              
                   
     

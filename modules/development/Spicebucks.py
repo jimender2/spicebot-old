@@ -49,46 +49,46 @@ def execute_main(bot, trigger, args):
 			else:
 				bot.say('Spicebucks rain on down on everyone and disappear')
 		
-		elif args[0] == 'reset': #admin only command
-			if trigger.nick not in adminsarray:
-				bot.say('You must be an admin to use this command')
-			else:
-				if len(args) > 1:
-					if args[1] == 'spicebank':
-						spicebalance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-						spicebucks(bot, 'SpiceBank', 'minus', spicebalance)
-						balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-						bot.say('The spice bank has been robbed and has ' + str(balance) + ' left')
-					elif args[1] not in allusersinroomarray:
-						bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-					else:
-						reset(bot,args[1])
-						bot.say('Payday reset for ' + args[1])					
+		elif args[0] == 'reset' and trigger.admin: #admin only command	
+			if len(args) > 1:
+				if args[1] == 'spicebank':
+					spicebalance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+					spicebucks(bot, 'SpiceBank', 'minus', spicebalance)
+					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
+					bot.say('The spice bank has been robbed and has ' + str(balance) + ' left')
+				elif args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
-					reset(bot,trigger.nick)
-					bot.say('Payday reset for ' + trigger.nick)
-		elif args[0] == 'funds': #admin only command
-			if trigger.nick not in adminsarray:
-				bot.say('You must be an admin to use this command')
+					reset(bot,args[1])
+					bot.say('Payday reset for ' + args[1])					
 			else:
-				if len(args) > 2: 
-					if args[1] not in allusersinroomarray:
-							bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-					else:
-						target = args[1]
-						if args[2].isdigit():
-							amount = int(args[2])
-							if amount>=0:
-								bot.db.set_nick_value(target, 'spicebucks_bank', amount)
-								targetbalance = bank(bot,target)
-								bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
-							else:
-								bot.say('Please enter a postive number')
-								
+				reset(bot,trigger.nick)
+				bot.say('Payday reset for ' + trigger.nick)
+		elif args[0] == 'funds' and trigger.admin: #admin only command
+			success = 0
+			if len(args) > 2: 
+				if args[1] == 'spicebank':
+					target = 'SpiceBank'
+					success = 1
+				elif args[1] not in allusersinroomarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
+					success = 0
+				else:
+					target = args[1]
+					success = 1
+				if success == 1:
+					if args[2].isdigit():
+						amount = int(args[2])
+						if amount>=0 and amount <10000001:
+							bot.db.set_nick_value(target, 'spicebucks_bank', amount)
+							targetbalance = bank(bot,target)
+							bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
 						else:
-							bot.say('Please enter a valid a amount to set the bank account to')
-				else:
-					bot.say('Please enter a target and an amount to set their bank balance at')					
+							bot.say('Please enter a postive number less then 1,000,000')
+					else:
+						bot.say('Please enter a valid a amount to set the bank account to')
+			else:
+				bot.say('Please enter a target and an amount to set their bank balance at')					
 										
 						
                         
@@ -195,10 +195,15 @@ def paytaxes(bot, target):
 	inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
 	if lasttaxday == 0 or lasttaxday < datetoday:
 		taxtotal = int(inbank * .1)
-		spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
-		spicebucks(bot, target, 'minus', taxtotal)
-		bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
-		bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
+		if inbank == 1:
+			taxtotal = 1			
+		if taxtotal>0:
+			spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
+			spicebucks(bot, target, 'minus', taxtotal)
+			bot.db.set_nick_value(target, 'spicebucks_taxday', datetoday)
+			bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
+		else:
+			bot.say(target + ' is broke and cannot pay taxes today')
 	else:
 		bot.say("Taxes already paid today.")   
 
