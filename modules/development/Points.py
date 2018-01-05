@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("You cannot award points to yourself!")
     elif commortarget == "check":
         target = get_trigger_arg(triggerargsarray, 1) or instigator
-        points = get_database_value(bot, bot.nick, 'points') or 0
+        points = get_botdatabase_value(bot, bot.nick, 'points') or 0
         if not points:
             bot.say(target + ' has no points history.')
         else:
