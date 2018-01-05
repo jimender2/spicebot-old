@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, args):
     if len(args)==1:
-        data=args[0].strip().lower()       
+        data=args[0].lower()       
         query=searchfor(data)
         if not query:
             bot.say('I cannot find anything about that')
