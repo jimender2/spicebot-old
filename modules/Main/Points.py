@@ -11,76 +11,62 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('points','takepoints','pants','takepants','minuspants','minuspoints','checkpoints','checkpants')
+@sopel.module.commands('points','pants')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'points')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    for c in bot.channels:
-        channel = c
-    commandused = trigger.group(1)
-    inchannel = trigger.sender
-    target = get_trigger_arg(triggerargsarray, 1) or trigger.nick
-    if commandused.endswith('points'):
-        pointstype = 'points'
-    else:
-        pointstype = 'pants'
-    if commandused.startswith('check'):
-        points = get_points(bot, target)
-        if not points:
-            bot.say(target + ' has no ' + pointstype + ' history.')
-        else:
-            bot.say(target + ' has ' + str(points) + ' ' + pointstype + '.')
-    else:
-        if commandused.startswith('take') or commandused.startswith('minus'):
-            giveortake = ' takes '
-            tofrom = ' from '
-            addminus = 'down'
-        else:
-            giveortake = ' gives '
-            tofrom = ' to '
-            addminus = 'up'      
-        return pointstask(bot, channel, trigger.nick, trigger.group(3) or '', giveortake, tofrom, addminus, pointstype, inchannel)
-
-def pointstask(bot, channel, instigator, target, giveortake, tofrom, addminus, pointstype, inchannel):
-    target = tools.Identifier(target or '')
+    channel = trigger.sender
+    instigator = trigger.nick
+    if not channel.startswith("#"):
+        bot.notice(instigator + " Points must be in a channel.", instigator)
+        return
     rando = randint(1, 666)
-    randopoints = (instigator + str(giveortake) + str(rando) + ' ' + pointstype + str(tofrom) + ' ')    
-    if not target:
-        bot.say(str(randopoints) + "everyone")
-        channelpoints(bot, instigator, channel, rando, addminus)
-    else:
-        if target == 'all' or target == 'everybody' or target == 'everyone':
-            if not inchannel.startswith("#"):
-                bot.say('you must be in the room to give everyone points')
-            else:
-                bot.say(str(randopoints) + "everyone")
-                channelpoints(bot, instigator, channel, rando, addminus)
-        elif target == instigator:
-            bot.say('You can\'t adjust your own ' + pointstype + '!!')
+    commortarget = get_trigger_arg(triggerargsarray, 1)
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    if not commortarget:
+        commortarget = 'everyone'
+    if commortarget == instigator:
+        bot.say("You cannot award points to yourself!")
+    elif commortarget == "check":
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        if target.lower() not in [u.lower() for u in bot.users]:
+            bot.say("I'm not sure who that is.")
+            return
+        points = get_botdatabase_value(bot, target, 'points') or 0
+        if not points:
+            bot.say(target + ' has no points history.')
+        else:
+            bot.say(target + ' has ' + str(points) + ' points.')
+    elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
+        randopoints = str(instigator + " awards " + str(rando) + ' points to everyone.')
+        bot.say(randopoints)
+        for u in bot.users:
+            if u in botusersarray and u != bot.nick and u != instigator:
+                adjust_botdatabase_value(bot, u, 'points', rando)
+    elif commortarget == 'take':
+        target = get_trigger_arg(triggerargsarray, 2)
+        if not target:
+            target = 'everyone'
+        if target == instigator:
+            bot.say("You cannot take points from yourself!")
+        elif target == 'all' or target == 'everybody' or target == 'everyone':
+            randopoints = str(instigator + " takes " + str(rando) + ' points from everyone.')
+            bot.say(randopoints)
+            for u in bot.users:
+                if u in botusersarray and u != bot.nick and u != instigator:
+                    adjust_botdatabase_value(bot, u, 'points', -abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
-            bot.say(str(randopoints) + target)
-            update_points(bot, target, rando, addminus)
-            if target != instigator and not inchannel.startswith("#"):
-                bot.notice(str(randopoints) + target, target)
-            
-def channelpoints(bot, instigator, channel, rando, addminus):
-    for u in bot.channels[channel].users:
-        errrbody = u
-        if errrbody != instigator:
-            update_points(bot, errrbody, rando, addminus)
-            
-def update_points(bot, nick, rando, addminus):
-    pointsgotten = get_points(bot, nick)
-    if addminus == 'up':
-        bot.db.set_nick_value(nick, 'points_points', pointsgotten + int(rando))
+            randopoints = str(instigator + " takes " + str(rando) + " points from " + target + ".")
+            bot.say(randopoints)
+            adjust_botdatabase_value(bot, target, 'points', -abs(rando))
+    elif commortarget.lower() not in [u.lower() for u in bot.users]:
+        bot.say("I'm not sure who that is.")
     else:
-        bot.db.set_nick_value(nick, 'points_points', pointsgotten - int(rando))
-
-def get_points(bot, nick):
-    points = bot.db.get_nick_value(nick, 'points_points') or 1
-    return points
+        randopoints = str(instigator + " awards " + str(rando) + ' points to '+commortarget+'.')
+        bot.say(randopoints)
+        adjust_botdatabase_value(bot, commortarget, 'points', rando)
