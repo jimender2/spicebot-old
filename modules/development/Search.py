@@ -89,7 +89,7 @@ def execute_main(bot, trigger, args):
      
 
 def searchfor(data):
-    data=data.replace(' ', '%20')
+    #data=data.replace(' ', '%20')
     var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
     query=str(var.url)
     return query            
