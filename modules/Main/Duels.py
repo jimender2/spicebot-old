@@ -279,7 +279,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 displaymessage = get_trigger_arg(diedinbattle, "list")
                 if displaymessage:
                     bot.say(displaymessage + " died in this event.")
-                adjust_database_value(bot, winner, 'colosseum_pot', duelrecorduserpot)
+                adjust_database_value(bot, winner, 'coin', duelrecorduserpot)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', now)
                 set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', instigator)
 
