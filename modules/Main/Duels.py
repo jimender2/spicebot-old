@@ -574,16 +574,13 @@ def execute_main(bot, trigger, triggerargsarray):
                         fulltarget, secondarytarget, thirdtarget = '','',''
                         fulltarget = get_trigger_arg(canduelarray, "random")
                         displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
-                        #adjust_database_value(bot, fulltarget, 'health', grenadefull)
                         canduelarray.remove(fulltarget)
                         if canduelarray != []:
                             secondarytarget = get_trigger_arg(canduelarray, "random")
-                            #adjust_database_value(bot, secondarytarget, 'health', grenadesec)
                             canduelarray.remove(secondarytarget)
                             if canduelarray != []:
                                 thirdtarget = get_trigger_arg(canduelarray, "random")
                                 displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
-                                #adjust_database_value(bot, thirdtarget, 'health', grenadesec)
                                 canduelarray.remove(thirdtarget)
                                 if canduelarray != []:
                                     remainingarray = get_trigger_arg(canduelarray, "list")
@@ -621,7 +618,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 deatharray.append(x)
                         if deatharray != []:
                             deadarray = get_trigger_arg(deatharray, "list")
-                            displaymsg = str(displaymsg + deadarray + " died by this grenade volley")
+                            displaymsg = str(displaymsg + "    " + deadarray + " died by this grenade volley")
                         if displaymsg != '':
                             bot.say(displaymsg) 
                 else:
