@@ -1506,22 +1506,25 @@ def whatsyourname(bot, trigger, nick, channel):
     pepperstart = get_pepper(bot, nick)
     
     ## bot.owner
-    if nick.lower() in bot.config.core.owner.lower():
-        nickname = str("The Legendary " + nickname)
+    try:
+        if nick.lower() in bot.config.core.owner.lower():
+            nickname = str("The Legendary " + nickname)
     ## botdevteam
-    elif nick in botdevteam:
-        nickname = str("The Extraordinary " + nickname)
+        elif nick in botdevteam:
+            nickname = str("The Extraordinary " + nickname)
     ## OP
-    elif bot.privileges[channel.lower()][nick.lower()] == OP:
-        nickname = str("The Magnificent " + nickname)
+        elif bot.privileges[channel.lower()][nick.lower()] == OP:
+            nickname = str("The Magnificent " + nickname)
     ## VOICE
-    elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
-        nickname = str("The Incredible " + nickname)
+        elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
+            nickname = str("The Incredible " + nickname)
     ## bot.admin
-    elif nick in bot.config.core.admins:
-        nickname = str("The Spectacular " + nickname)
+        elif nick in bot.config.core.admins:
+            nickname = str("The Spectacular " + nickname)
     ## else
-    else:
+        else:
+            nickname = str(nickname)
+    except KeyError:
         nickname = str(nickname)
     
     ##  attributes
