@@ -227,7 +227,7 @@ def main_command(bot, trigger):
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
 
-    elif subcommand == 'clearlog'
+    elif subcommand == 'clearlog':
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
         
