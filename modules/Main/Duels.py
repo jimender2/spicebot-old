@@ -603,7 +603,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             painarray.append(thirdtarget)
                             damagearray.append(grenadesec)
                         for x, damage in zip(painarray, damagearray):
-                            bot.say
+                            bot.say(str(x)+str(damage))
                             shieldloser = get_database_value(bot, x, 'shield') or 0
                             if shieldloser and damage > 0:
                                 damagemath = int(shieldloser) - damage
