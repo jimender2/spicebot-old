@@ -46,10 +46,10 @@ def execute_main(bot, trigger, triggerargsarray):
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
                 adjust_botdatabase_value(bot, u, 'points', rando)
-    elif commortarget == "take":
+    elif commortarget == 'take':
         target = get_trigger_arg(triggerargsarray, 2)
         if not target:
-            commortarget = 'everyone'
+            target = 'everyone'
         if target == instigator:
             bot.say("You cannot take points from yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
