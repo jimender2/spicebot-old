@@ -27,12 +27,15 @@ def execute_main(bot, trigger, triggerargsarray):
     commortarget = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     if not commortarget:
-        bot.say('Who would you like to award points to?')
-    elif commortarget == instigator:
+        commortarget = 'everyone'
+    if commortarget == instigator:
         bot.say("You cannot award points to yourself!")
     elif commortarget == "check":
         target = get_trigger_arg(triggerargsarray, 2) or instigator
-        points = get_botdatabase_value(bot, bot.nick, 'points') or 0
+        if target.lower() not in [u.lower() for u in bot.users]:
+            bot.say("I'm not sure who that is.")
+            return
+        points = get_botdatabase_value(bot, target, 'points') or 0
         if not points:
             bot.say(target + ' has no points history.')
         else:
@@ -46,8 +49,8 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commortarget == "take":
         target = get_trigger_arg(triggerargsarray, 2)
         if not target:
-            bot.say("Who Do you want to take points from?")
-        elif target == instigator:
+            commortarget = 'everyone'
+        if target == instigator:
             bot.say("You cannot take points from yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = str(instigator + " takes " + str(rando) + ' points from everyone.')
