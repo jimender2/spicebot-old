@@ -45,7 +45,7 @@ def execute_main(bot, trigger, triggerargsarray):
             site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
-            url3 = 'http://knowyourmeme.com'
+            url3 = 'https://knowyourmeme.com'
             searchterm = data+site
             query=searchfor(searchterm)
             if not query:
