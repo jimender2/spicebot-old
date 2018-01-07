@@ -13,17 +13,17 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-
-
 @commands('google', 'search')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, args):
+def execute_main(bot, trigger, args, triggerargsarray):
     if len(args)>=1:
-        mysite =args[0].lower()
+        mysite = args[0].lower()
+        querystring = get_trigger_arg(triggerargsarray, 1+)
+        bot.say(querystring)
         if (mysite == 'video' or mysite == 'youtube'):           
             data=args[1] 
             site = '%20site%3Ayoutube.com'
@@ -68,8 +68,6 @@ def execute_main(bot, trigger, args):
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
 
-
-
         else:
             data=args[0].lower()       
             query=searchfor(data)
@@ -77,9 +75,6 @@ def execute_main(bot, trigger, args):
                 bot.say('I cannot find anything about that')
             else:
                 bot.say(query)   
-   
-                  
-    
      
 
 def searchfor(data):
