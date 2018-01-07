@@ -45,13 +45,12 @@ def execute_main(bot, trigger, triggerargsarray):
             site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
-            url3 = 'https://knowyourmeme.com'
             searchterm = data+site
             query=searchfor(searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
-                if(str(query).startswith(url) or str(query).startswith(url2)) or str(query).startswith(url3)):
+                if(str(query).startswith(url) or str(query).startswith(url2)):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
