@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     if len(triggerargsarray)>=1:
         mysite = get_trigger_arg(triggerargsarray, 1).lower()
-        searchterm = get_trigger_arg(triggerargsarray, '1+'
+        searchterm = get_trigger_arg(triggerargsarray, '1+')
         querystring = get_trigger_arg(triggerargsarray, '2+')
         bot.say(querystring)
         if (mysite == 'video' or mysite == 'youtube'):           
