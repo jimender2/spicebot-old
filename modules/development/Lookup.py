@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(querystring)
         if (mysite == 'video' or mysite == 'youtube'):           
             data=querystring.replace(' ', '+')
-            site = '%20site%3Ayoutube.com'
+            site = '+site%3Ayoutube.com'
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
             searchterm = data+site
