@@ -79,7 +79,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(query)   
 
 def searchfor(data):
-    var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
+    lookfor = data.replace(':', '%3A')
+    var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
     query=str(var.url)
     return query            
 
