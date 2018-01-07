@@ -17,11 +17,11 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
-        execute_main(bot, trigger, args, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, args, triggerargsarray):
-    if len(args)>=1:
-        mysite = args[0].lower()
+def execute_main(bot, trigger, triggerargsarray):
+    if len(triggerargsarray)>=1:
+        mysite = get_trigger_arg(triggerargsarray, 1).lower()
         searchterm = get_trigger_arg(triggerargsarray, '1+')
         querystring = get_trigger_arg(triggerargsarray, '2+')
         if (mysite == 'video' or mysite == 'youtube'):           
