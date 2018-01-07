@@ -54,6 +54,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    bot.say(query)
 
         elif mysite == 'walmart':
             data=querystring.replace(' ', '+') 
@@ -69,6 +70,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
+                    bot.say(query)
 
         else:
             data=searchterm.replace(' ', '+')
