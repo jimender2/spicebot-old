@@ -17,7 +17,7 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, args, triggerargsarray)
     
 def execute_main(bot, trigger, args, triggerargsarray):
     if len(args)>=1:
