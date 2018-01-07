@@ -22,11 +22,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, args, triggerargsarray):
     if len(args)>=1:
         mysite = args[0].lower()
+        searchterm = get_trigger_arg(triggerargsarray, '1+')
         querystring = get_trigger_arg(triggerargsarray, '2+')
-        bot.say(querystring)
         if (mysite == 'video' or mysite == 'youtube'):           
-            data=args[1] 
-            site = '%20site%3Ayoutube.com'
+            data=querystring.replace(' ', '+')
+            site = '+site%3Ayoutube.com'
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
             searchterm = data+site
@@ -41,8 +41,8 @@ def execute_main(bot, trigger, args, triggerargsarray):
                     bot.say('Valid website not found')
 
         elif mysite == 'meme':
-            data=args[1] 
-            site = '%20site%3Aknowyourmeme.com'
+            data=querystring.replace(' ', '+') 
+            site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
             searchterm = data+site
             query=searchfor(searchterm)
@@ -55,8 +55,8 @@ def execute_main(bot, trigger, args, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'walmart':
-            data=args[1] 
-            site = '%20site%3Apeopleofwalmart.com'
+            data=querystring.replace(' ', '+') 
+            site = '+site%3Apeopleofwalmart.com'
             url = 'http://www.peopleofwalmart.com'
             searchterm = data+site
             query=searchfor(searchterm)
@@ -69,7 +69,7 @@ def execute_main(bot, trigger, args, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
 
         else:
-            data=args[0].lower()       
+            data=searchterm.replace(' ', '+')
             query=searchfor(data)
             if not query:
                 bot.say('I cannot find anything about that')
@@ -78,7 +78,6 @@ def execute_main(bot, trigger, args, triggerargsarray):
      
 
 def searchfor(data):
-    #data=data.replace(' ', '%20')
     var = requests.get(r'http://www.google.com/search?q=' + data + '&btnI')
     query=str(var.url)
     return query            
