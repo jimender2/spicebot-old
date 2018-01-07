@@ -25,9 +25,9 @@ def execute_main(bot, trigger, args):
     if len(args)>=1:
         mysite =args[0].lower()
         if (mysite == 'video' or mysite == 'youtube'):
-            numberofargs = len(args)
-            for i in numberofargs
-                data=args[1] 
+            #numberofargs = len(args)
+            #for i in numberofargs
+                #data=args[1] 
             site = '%20site%3Ayoutube.com'
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
