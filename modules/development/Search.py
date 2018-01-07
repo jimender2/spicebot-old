@@ -44,12 +44,13 @@ def execute_main(bot, trigger, triggerargsarray):
             data=querystring.replace(' ', '+') 
             site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
+            url2 = 'https://knowyourmeme.com'
             searchterm = data+site
             query=searchfor(searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
-                if str(query).startswith(url):
+                if(str(query).startswith(url) or str(query).startswith(url2)):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
@@ -58,12 +59,13 @@ def execute_main(bot, trigger, triggerargsarray):
             data=querystring.replace(' ', '+') 
             site = '+site%3Apeopleofwalmart.com'
             url = 'http://www.peopleofwalmart.com'
+            url2 = 'https://www.peopleofwalmart.com'
             searchterm = data+site
             query=searchfor(searchterm)
             if not query:
                 bot.say('https://goo.gl/SsAhv')
             else:
-                if str(query).startswith(url):
+                if(str(query).startswith(url) or str(query).startswith(url2)):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
