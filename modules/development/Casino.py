@@ -297,9 +297,10 @@ def lottery(bot,trigger, arg):
 							payout = bankbalance
 						if bankbalance < payout:
 							bankbalance=payout							
-						Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
-						if payout > 0							
+						
+						if payout > 0:							
 							bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+							Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
 						else:
 							bot.say('You are not a winner')
 						
