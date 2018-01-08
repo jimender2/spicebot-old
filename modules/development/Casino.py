@@ -333,7 +333,7 @@ def blackjack(bot,trigger,arg):
 						payout = mybet
 						if myscore == 21:
 							payout=payout + 100
-							bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
+							bot.say(trigger.nick + ' got blackjack and wins ' + str(payout))
 							Spicebucks.spicebucks(bot, player, 'plus', payout)
 						else:
 							#bot.say('Your score is ' + str(myscore))
