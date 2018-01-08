@@ -364,7 +364,7 @@ def blackjack(bot,trigger,arg):
 			playerhits=deal(deck, 1)
 			bot.say(trigger.nick + ' takes a hit and gets ' + playerhits)
 		else:
-			bot.say(Choose an option: deal, hit, or stand)
+			bot.say('Choose an option: deal, hit, or stand')
     
   
 #__________________________Shared Functions____________________
