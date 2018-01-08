@@ -393,7 +393,7 @@ def blackjack(bot,trigger,arg):
 					blackjackreset(bot,player)
 					
 		elif arg[1] == 'check':
-			if not arg[2]:
+			if len(arg)<3:
 				target = player
 			else:				
 				botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
@@ -479,7 +479,7 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 		if dealerscore > 21:
 			payout=payout + 30
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
-			dealerwins = 'the dealer busts '
+			bot.say('The dealer had ' + str(dealerscore) + ' and the dealer busts ')
 			bot.say(player + ' wins ' + str(payout))
 		elif dealerscore == 21:
 			dealerwins ='the dealer wins'
@@ -488,15 +488,13 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
 			bot.say(player + ' wins ' + str(payout))
 		elif dealerscore > myscore:
-			dealerwins ='the dealer wins'
+			bot.say('The dealer had ' + str(dealerscore) +  ' and the dealer wins')
 		elif dealerscore == myscore:			
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
 			bot.say('It is a draw and no one is a winner or loser')
 	else:
 		bot.say('No scores found start a new game')
-		
-	if not dealerwins=='':						
-		bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
+	
 
 def blackjackreset(bot,player):
 	myhand = []
