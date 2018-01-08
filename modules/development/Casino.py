@@ -378,11 +378,11 @@ def blackjackscore(hand):
 		if(card == 'J' or card == 'Q' or card == 'K'):
 			myscore = myscore + 10
 		elif card=='A':
-			testscore = myscore + 10
+			testscore = myscore + 11
 			if testscore>21:
 				myscore = myscore + 1
 			else:
-				myscore = myscore + 10
+				myscore = myscore + 11
 		else:
 			try:
 				myscore = myscore + int(card)
