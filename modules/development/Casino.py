@@ -93,7 +93,7 @@ def slots(bot,trigger):
 			bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
 				
 		if(wheel1 == wheel2 and wheel2 == wheel3):
-			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
+			#bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
 				bankbalance=Spicebucks.bank(bot,'SpiceBank')
 				if bankbalance <=500:
@@ -294,8 +294,11 @@ def lottery(bot,trigger, arg):
 						if bankbalance < payout:
 							bankbalance=payout							
 						Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
-													
-						bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+						if payout > 0							
+							bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+						else:
+							bot.say('You are not a winner')
+						
 					else:
 						bot.say('You dont have enough Spicebucks')
 
