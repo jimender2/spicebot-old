@@ -377,8 +377,8 @@ def blackjack(bot,trigger,arg):
 			if (myhand == [] or myhand ==0):
 				bot.say('Use deal to start a new game')
 			else:
-				bot.say(player + ' has ' + myhand)
-				bot.say('The dealer has ' + dealerhand)
+				bot.say(player + ' has ' + str(myhand))
+				bot.say('The dealer has ' + str(dealerhand))
 				playerhits=deal(deck, 1)
 				playerhits=playerhits[0]
 				bot.say(player + ' takes a hit and gets ' + playerhits)
@@ -389,13 +389,14 @@ def blackjack(bot,trigger,arg):
 		elif arg[1] == 'check':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
-			bot.say(player + ' has ' + myhand)
-			bot.say('The dealer has ' + dealerhand)
+			bot.say(player + ' has ' + str(myhand))
+			bot.say('The dealer has ' + str(dealerhand))
 				
 		elif arg[1] == 'stand':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
+			
 			if (myhand == [] or myhand ==0):
 				bot.say('Use deal to start a new game')
 			else:
@@ -403,6 +404,8 @@ def blackjack(bot,trigger,arg):
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
+				bot.say(player ' score ' + str(myscore))
+				bot.say('Dealer score ' + str(dealerscore))
 				myhand = []
 				dealerhand = []
 				mybet = 0
@@ -480,6 +483,9 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 		payout = payout
 		Spicebucks.spicebucks(bot, player, 'plus', payout)
 		bot.say('It is a draw and no one is a winner or loser')
+	else:
+		bot.say('No scores found start a new game')
+		
 	if not dealerwins=='':						
 		bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
 		
