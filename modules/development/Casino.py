@@ -404,7 +404,7 @@ def blackjack(bot,trigger,arg):
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
-				bot.say(player ' score ' + str(myscore))
+				bot.say(player + ' score ' + str(myscore))
 				bot.say('Dealer score ' + str(dealerscore))
 				myhand = []
 				dealerhand = []
