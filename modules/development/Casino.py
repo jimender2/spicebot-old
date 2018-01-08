@@ -314,6 +314,7 @@ def blackjack(bot,trigger,arg):
 	if len(arg)<2:
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
 	else:
+		deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 		if(arg[1] == 'deal' or arg[1] == 'start'):
 			if not arg[2].isdigit():
 				bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
@@ -324,7 +325,7 @@ def blackjack(bot,trigger,arg):
 					bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 				else:			
 					if Spicebucks.spicebucks(bot, player, 'minus', mybet) == 'true':
-						deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+						
 						myhand = deal(deck, 2)
 						dealerhand = deal(deck, 2)			
 						bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
@@ -415,14 +416,14 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 		bot.say(player + ' got blackjack and is a winner of ' + str(payout))
 		Spicebucks.spicebucks(bot, player, 'plus', payout)
 	elif myscore > 21:
-		bot.say(trigger.nick + ' busted and gets nothing')
+		bot.say(player + ' busted and gets nothing')
 	elif myscore < 21:
 		dealerwins=''
 		if dealerscore > 21:
 			payout=payout + 30
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
 			dealerwins = 'the dealer busts '
-			bot.say(trigger.nick + ' wins ' + str(payout))
+			bot.say(player + ' wins ' + str(payout))
 	elif dealerscore < myscore:
 		payout=payout + 30
 		Spicebucks.spicebucks(bot, player, 'plus', payout)
