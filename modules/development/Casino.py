@@ -361,15 +361,15 @@ def blackjack(bot,trigger,arg):
 									bot.say('The dealer takes a hit and gets a ' + dealerhitlist)
 							dealerscore=blackjackscore(dealerhand)
 							#update hand in the database
-							bot.db.set_nick_value(target, 'myhand', myhand)
-							bot.db.set_nick_value(target, 'dealerhand', dealerhand)
+							bot.db.set_nick_value(player, 'myhand', myhand)
+							bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 							
 						
 					else:
 						bot.say('You do not have enough spicebucks.')
 		elif arg[1] == 'hit':
-			myhand =  bot.db.get_nick_value(target, 'myhand', myhand)
-			dealerhand = bot.db.get_nick_value(target, 'dealerhand', dealerhand)
+			myhand =  bot.db.get_nick_value(player, 'myhand', myhand)
+			dealerhand = bot.db.get_nick_value(player, 'dealerhand', dealerhand)
 			if myhand == []:
 				bot.say('Use deal to start a new game')
 			else:
@@ -377,16 +377,22 @@ def blackjack(bot,trigger,arg):
 				bot.say('The dealer has ' + dealerhand)
 				playerhits=deal(deck, 1)
 				bot.say(player + ' takes a hit and gets ' + playerhits)
+				myhand.append(playerhits)
+				bot.db.set_nick_value(player, 'myhand', myhand)
 				
 		elif arg[1] == 'stand':
-			myhand =  bot.db.get_nick_value(target, 'myhand', myhand)
-			dealerhand = bot.db.get_nick_value(target, 'dealerhand', dealerhand)
+			myhand =  bot.db.get_nick_value(player, 'myhand', myhand)
+			dealerhand = bot.db.get_nick_value(player, 'dealerhand', dealerhand)
 			if myhand == []:
 				bot.say('Use deal to start a new game')
 			else:
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
+				myhand = []
+				dealerhand = []
+				bot.db.set_nick_value(player, 'myhand', myhand)
+				bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 
 		else:
 			bot.say('Choose an option: deal, hit, or stand')
