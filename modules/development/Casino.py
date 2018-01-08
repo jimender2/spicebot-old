@@ -320,7 +320,7 @@ def blackjack(bot,trigger,arg):
 		player=trigger.nick
 		payout = 0
 		if(arg[1] == 'deal' or arg[1] == 'start'):
-			if not arg[2]:
+			if len(arg)<3:
 				bot.say('Please enter an amount you would like to bet')
 			else:
 				if not arg[2].isdigit():
@@ -393,9 +393,18 @@ def blackjack(bot,trigger,arg):
 					blackjackreset(bot,player)
 					
 		elif arg[1] == 'check':
-			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
-			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
-			bot.say(player + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
+			if not arg[2]:
+				target = player
+			else:				
+				botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+				if arg[2] not in allusersinroomarray:
+					target = player
+				else:
+					target = arg[2]			
+				
+			myhand =  bot.db.get_nick_value(target, 'myhand') or 0
+			dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
+			bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 			
 		elif arg[1] == 'stand':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
@@ -407,7 +416,7 @@ def blackjack(bot,trigger,arg):
 			else:
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
-				bot.say(player + ' score is ' + str(myscore) + 'Dealer score is  ' + str(dealerscore))
+				bot.say('The ' + player + ' score  is ' + str(myscore) + ' The dealer score is  ' + str(dealerscore))
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
 				blackjackreset(bot,player)
 				
