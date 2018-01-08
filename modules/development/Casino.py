@@ -355,7 +355,7 @@ def blackjack(bot,trigger,arg):
 								else: 
 									bot.say('The dealer takes a hit and gets a ' + dealerhitlist)
 							dealerscore=blackjackscore(dealerhand)
-							blackjackwinner(bot,player,myscore,dealerscore)
+							blackjackwinner(bot,player,myscore,dealerscore,payout)
 
 						
 					else:
@@ -403,7 +403,8 @@ def blackjackscore(hand):
 				myscore=myscore
 	return myscore
 
-def blackjackwinner(bot,player,myscore,dealerscore):
+def blackjackwinner(bot,player,myscore,dealerscore,payout):
+	
 	if myscore == 21:
 		payout=payout + 100
 		bot.say(player + ' got blackjack and is a winner of ' + str(payout))
