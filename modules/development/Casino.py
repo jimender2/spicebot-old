@@ -64,6 +64,12 @@ def freebie(bot,trigger):
 def slots(bot,trigger):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
+#__payouts___
+	match3 = 15
+	match2 = 2
+	#match3jackpot = jackpot or 500
+	
+#start slots
 	if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
 		#add bet to spicebank
 		mywinnings = 0
@@ -91,14 +97,14 @@ def slots(bot,trigger):
 				mywinnings=bankbalance						
 			elif wheel1 == 'Patches':
 				#bot.say('You got 3 matches')
-				mywinnings= mywinnings +5		
+				mywinnings= mywinnings + match3		
 			else:
-				mywinnings= mywinnings +5
+				mywinnings= mywinnings + match3
 				#bot.say('You got 3 matches')
 				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-			mywinnings =  mywinnings + 2
+			mywinnings =  mywinnings + match2 = 2
 			#bot.say(trigger.nick + ' a match')	
 							
 		if mywinnings <=0:
@@ -127,6 +133,10 @@ def roulette(bot,trigger,arg):
     	colors = ['red', 'black']
 	inputcheck = 0
 	mybet=0
+#__payouts___
+	colorpayout = 2 #% of amount bet + amount bet
+	#numberpayout = amount bet * numbers of maxwheel
+	
 	#set bet
     	if len(arg) < 3:
         	bot.say('Please enter an amount to bet')
@@ -197,7 +207,7 @@ def roulette(bot,trigger,arg):
 			if mynumber == winningnumber:
 				mywinnings=mybet * maxwheel
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-				newbet = int(mybet/2)
+				newbet = int(mybet/colorpayout)
 				colorwinnings = mybet + newbet									
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
@@ -212,6 +222,12 @@ def roulette(bot,trigger,arg):
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
 	maxnumber=50
+#___payout table___
+	match1payout = 2
+	match2payout = 4
+	match3payout = 0.001 #% of jackpot
+	match4payout = 0.03 #% of jackpot
+	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
 		maxnumber=50
 		
@@ -261,13 +277,13 @@ def lottery(bot,trigger, arg):
 						if bankbalance <=500:
 							bankbalance=500						
 						if correct == 1:
-							payout = 2
+							payout = match1payout
 						elif correct == 2:
-							payout = 4
+							payout = match2payout
 						elif correct == 3:
-							payout = int((bankbalance * 0.001))
+							payout = int((bankbalance * match3payout))
 						elif correct == 4:
-							payout = int((bankbalance * 0.03))
+							payout = int((bankbalance * match4payout))
 						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
