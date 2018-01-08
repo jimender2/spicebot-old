@@ -316,7 +316,7 @@ def blackjack(bot,trigger,arg):
 					if not dealerhitlist == '':
 						hitlist=len(dealerhitlist)-1
 						if hitlist>1:						
-							bot.say('The dealer takes ' + str(hitlist)  + ' hits and gets ' + dealerhitlist)
+							bot.say('The dealer takes ' + str(hitlist)  + ' hits and gets' + dealerhitlist)
 						else: 
 							bot.say('The dealer takes a hit and gets a ' + dealerhitlist) 
 						
