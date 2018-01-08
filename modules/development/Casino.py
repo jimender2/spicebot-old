@@ -13,6 +13,11 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+#slot machine payouts line 70
+#roulette payouts line 139
+#lottery payouts line 229
+#blackjack payouts line 304
+
 #shared varibles:
 maxbet = 100
 
@@ -64,6 +69,12 @@ def freebie(bot,trigger):
 def slots(bot,trigger):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
+#__payouts___
+	match3 = 15
+	match2 = 2
+	#match3jackpot = jackpot or 500
+	
+#start slots
 	if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
 		#add bet to spicebank
 		mywinnings = 0
@@ -78,11 +89,11 @@ def slots(bot,trigger):
 		for i in reel:
 			if i=='BSOD':				
 				mywinnings = mywinnings + 1
-			if mywinnings>=1:
-				bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
+		if mywinnings>=1:
+			bot.say('You got a bonus word, BSOD, worth 1 spicebuck')
 				
 		if(wheel1 == wheel2 and wheel2 == wheel3):
-			bot.say(trigger.nick + ' got 3 ' + str(wheel1))
+			#bot.say(trigger.nick + ' got 3 ' + str(wheel1))
 			if wheel1 == 'BSOD':
 				bankbalance=Spicebucks.bank(bot,'SpiceBank')
 				if bankbalance <=500:
@@ -91,14 +102,14 @@ def slots(bot,trigger):
 				mywinnings=bankbalance						
 			elif wheel1 == 'Patches':
 				#bot.say('You got 3 matches')
-				mywinnings= mywinnings +5		
+				mywinnings= mywinnings + match3		
 			else:
-				mywinnings= mywinnings +5
+				mywinnings= mywinnings + match3
 				#bot.say('You got 3 matches')
 				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-			mywinnings =  mywinnings + 2
+			mywinnings =  mywinnings + match2 
 			#bot.say(trigger.nick + ' a match')	
 							
 		if mywinnings <=0:
@@ -127,6 +138,14 @@ def roulette(bot,trigger,arg):
     	colors = ['red', 'black']
 	inputcheck = 0
 	mybet=0
+	
+#__payouts___
+	colorpayout = 2 #% of amount bet + amount bet
+	#numberpayout = amount bet * numbers of maxwheel
+	
+	if bot.nick.endswith('dev'): 
+		maxwheel=15
+	
 	#set bet
     	if len(arg) < 3:
         	bot.say('Please enter an amount to bet')
@@ -197,7 +216,7 @@ def roulette(bot,trigger,arg):
 			if mynumber == winningnumber:
 				mywinnings=mybet * maxwheel
 			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-				newbet = int(mybet/2)
+				newbet = int(mybet/colorpayout)
 				colorwinnings = mybet + newbet									
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
@@ -212,8 +231,14 @@ def roulette(bot,trigger,arg):
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
 	maxnumber=50
+#___payout table___
+	match1payout = 2
+	match2payout = 4
+	match3payout = 0.001 #% of jackpot
+	match4payout = 0.03 #% of jackpot
+	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
-		maxnumber=50
+		maxnumber=20
 		
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
@@ -261,20 +286,23 @@ def lottery(bot,trigger, arg):
 						if bankbalance <=500:
 							bankbalance=500						
 						if correct == 1:
-							payout = 2
+							payout = match1payout
 						elif correct == 2:
-							payout = 4
+							payout = match2payout
 						elif correct == 3:
-							payout = int((bankbalance * 0.001))
+							payout = int((bankbalance * match3payout))
 						elif correct == 4:
-							payout = int((bankbalance * 0.03))
+							payout = int((bankbalance * match4payout))
 						elif correct == 5:							
 							payout = bankbalance
 						if bankbalance < payout:
 							bankbalance=payout							
 						Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
-													
-						bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+						if payout > 0							
+							bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
+						else:
+							bot.say('You are not a winner')
+						
 					else:
 						bot.say('You dont have enough Spicebucks')
 
@@ -282,71 +310,55 @@ def lottery(bot,trigger, arg):
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
 	minbet=30
-	
 	if len(arg)<2:
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
 	else:
-		if not arg[1].isdigit():
-			bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
-		else:
-			mybet=int(arg[1])
-			if (mybet<minbet or mybet>maxbet):
-				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
-			else:			
-				if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
-					deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-					myhand = deal(deck, 2)
-					dealerhand = deal(deck, 2)			
-					bot.say(trigger.nick + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
-					myscore = blackjackscore(myhand)
-					dealerscore = blackjackscore(dealerhand)
-					payout = mybet
-					#bot.say('Your score is ' + str(myscore))
-					x=0
-					dealerhitlist = ''						
-					while dealerscore < 18:
-						dealerhits=deal(deck, 1)
-						dealerhits=dealerhits[0]
-						dealerhitlist=dealerhitlist+str(dealerhits)
-						dealerhand.append(dealerhits)				
-						dealerscore=blackjackscore(dealerhand)
-						x=x+1
-						if x>4:
-							dealerscore=18
-					if not dealerhitlist == '':
-						hitlist=len(dealerhitlist)
-						if hitlist>1:						
-							bot.say('The dealer takes ' + str(hitlist)  + ' hits and gets ' + dealerhitlist)
-						else: 
-							bot.say('The dealer takes a hit and gets a  ' + dealerhitlist) 
+		if(arg[1] == 'deal' or arg[1] == 'start'):
+			if not arg[2].isdigit():
+				bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
+			else:
+				player=trigger.nick
+				mybet=int(arg[2])
+				if (mybet<minbet or mybet>maxbet):
+					bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
+				else:			
+					if Spicebucks.spicebucks(bot, player, 'minus', mybet) == 'true':
+						deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+						myhand = deal(deck, 2)
+						dealerhand = deal(deck, 2)			
+						bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
+						myscore = blackjackscore(myhand)
+						dealerscore = blackjackscore(dealerhand)
+						payout = mybet
+						if myscore == 21:
+							payout=payout + 100
+							bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
+							Spicebucks.spicebucks(bot, player, 'plus', payout)
+						else:
+							#bot.say('Your score is ' + str(myscore))
+							x=0
+							dealerhitlist = ''						
+							while dealerscore < 18:
+								dealerhits=deal(deck, 1)
+								dealerhits=dealerhits[0]
+								dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
+								dealerhand.append(dealerhits)				
+								dealerscore=blackjackscore(dealerhand)
+								x=x+1
+								if x>4:
+									dealerscore=18
+							if not dealerhitlist == '':
+								hitlist=len(dealerhitlist)-1
+								if hitlist>1:						
+									bot.say('The dealer takes ' + str(hitlist)  + ' hits and gets' + dealerhitlist)
+								else: 
+									bot.say('The dealer takes a hit and gets a ' + dealerhitlist)
+							dealerscore=blackjackscore(dealerhand)
+							blackjackwinner(bot,player,myscore,dealerscore)
+
 						
-					if myscore == 21:
-						payout=payout + 100
-						bot.say(trigger.nick + ' got blackjack and is a winner of ' + str(payout))
-						Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-					elif myscore > 21:
-						bot.say(trigger.nick + ' busted and gets nothing')
-					elif myscore < 21:
-						dealerwins=''
-						if dealerscore > 21:
-							payout=payout + 30
-							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-							dealerwins = 'the dealer busts '
-							bot.say(trigger.nick + ' wins ' + str(payout))
-						elif dealerscore < myscore:
-							payout=payout + 30
-							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-							bot.say(trigger.nick + ' wins ' + str(payout))
-						elif dealerscore > myscore:
-							dealerwins ='the dealer wins'
-						elif dealerscore == myscore:
-							payout = payout
-							Spicebucks.spicebucks(bot, trigger.nick, 'plus', payout)
-							bot.say('It is a draw and no one is a winner or loser')
-						if not dealerwins=='':						
-							bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
-				else:
-					bot.say('You do not have enough spicebucks.')
+					else:
+						bot.say('You do not have enough spicebucks.')
     
   
 #__________________________Shared Functions____________________
@@ -378,14 +390,42 @@ def blackjackscore(hand):
 		if(card == 'J' or card == 'Q' or card == 'K'):
 			myscore = myscore + 10
 		elif card=='A':
-			testscore = myscore + 10
+			testscore = myscore + 11
 			if testscore>21:
 				myscore = myscore + 1
 			else:
-				myscore = myscore + 10
+				myscore = myscore + 11
 		else:
 			try:
 				myscore = myscore + int(card)
 			except ValueError:
 				myscore=myscore
 	return myscore
+
+def blackjackwinner(bot,player,myscore,dealerscore):
+	if myscore == 21:
+		payout=payout + 100
+		bot.say(player + ' got blackjack and is a winner of ' + str(payout))
+		Spicebucks.spicebucks(bot, player, 'plus', payout)
+	elif myscore > 21:
+		bot.say(trigger.nick + ' busted and gets nothing')
+	elif myscore < 21:
+		dealerwins=''
+		if dealerscore > 21:
+			payout=payout + 30
+			Spicebucks.spicebucks(bot, player, 'plus', payout)
+			dealerwins = 'the dealer busts '
+			bot.say(trigger.nick + ' wins ' + str(payout))
+	elif dealerscore < myscore:
+		payout=payout + 30
+		Spicebucks.spicebucks(bot, player, 'plus', payout)
+		bot.say(trigger.nick + ' wins ' + str(payout))
+	elif dealerscore > myscore:
+		dealerwins ='the dealer wins'
+	elif dealerscore == myscore:
+		payout = payout
+		Spicebucks.spicebucks(bot, player, 'plus', payout)
+		bot.say('It is a draw and no one is a winner or loser')
+	if not dealerwins=='':						
+		bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
+		
