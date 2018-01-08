@@ -459,7 +459,7 @@ def blackjackscore(hand):
 	return myscore
 
 def blackjackwinner(bot,player,myscore,dealerscore,payout):
-	
+	dealerwins=''
 	if myscore == 21:
 		payout=payout + 50
 		bot.say(player + ' got blackjack and is a winner of ' + str(payout))
@@ -473,16 +473,17 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
 			dealerwins = 'the dealer busts '
 			bot.say(player + ' wins ' + str(payout))
-	elif dealerscore < myscore:
-		payout=payout + 30
-		Spicebucks.spicebucks(bot, player, 'plus', payout)
-		bot.say(trigger.nick + ' wins ' + str(payout))
-	elif dealerscore > myscore:
-		dealerwins ='the dealer wins'
-	elif dealerscore == myscore:
-		payout = payout
-		Spicebucks.spicebucks(bot, player, 'plus', payout)
-		bot.say('It is a draw and no one is a winner or loser')
+		elif dealerscore = 21:
+			dealerwins ='the dealer wins'
+		elif dealerscore < myscore:
+			payout=payout + 30
+			Spicebucks.spicebucks(bot, player, 'plus', payout)
+			bot.say(player + ' wins ' + str(payout))
+		elif dealerscore > myscore:
+			dealerwins ='the dealer wins'
+		elif dealerscore == myscore:			
+			Spicebucks.spicebucks(bot, player, 'plus', payout)
+			bot.say('It is a draw and no one is a winner or loser')
 	else:
 		bot.say('No scores found start a new game')
 		
