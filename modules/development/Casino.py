@@ -307,7 +307,7 @@ def blackjack(bot,trigger,arg):
 					while dealerscore < 18:
 						dealerhits=deal(deck, 1)
 						dealerhits=dealerhits[0]
-						dealerhitlist=dealerhitlist+str(dealerhits)
+						dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
 						dealerhand.append(dealerhits)				
 						dealerscore=blackjackscore(dealerhand)
 						x=x+1
