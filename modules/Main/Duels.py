@@ -56,8 +56,6 @@ lootbuycost = 100 ## normal cost to buy a loot item
 lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
 lootsellreward = 25 ## normal coin rewarded in selling loot
 changeclasscost = 100 ## ## how many coin to change class
-grenadecost = 200
-grenadereward = 150
 
 ## Magic usage
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
