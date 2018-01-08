@@ -317,11 +317,12 @@ def blackjack(bot,trigger,arg):
 		deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 		myhand = []
 		dealerhand = []
+		player=trigger.nick
 		if(arg[1] == 'deal' or arg[1] == 'start'):
 			if not arg[2].isdigit():
 				bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
 			else:
-				player=trigger.nick				
+								
 				mybet=int(arg[2])
 				if (mybet<minbet or mybet>maxbet):
 					bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
