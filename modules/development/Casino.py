@@ -138,9 +138,13 @@ def roulette(bot,trigger,arg):
     	colors = ['red', 'black']
 	inputcheck = 0
 	mybet=0
+	
 #__payouts___
 	colorpayout = 2 #% of amount bet + amount bet
 	#numberpayout = amount bet * numbers of maxwheel
+	
+	if bot.nick.endswith('dev'): 
+		maxwheel=15
 	
 	#set bet
     	if len(arg) < 3:
