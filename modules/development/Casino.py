@@ -378,7 +378,7 @@ def blackjack(bot,trigger,arg):
 				playerhits=deal(deck, 1)
 				bot.say(player + ' takes a hit and gets ' + playerhits)
 				
-		elif arg[1] == 'stand'
+		elif arg[1] == 'stand':
 			myhand =  bot.db.get_nick_value(target, 'myhand', myhand)
 			dealerhand = bot.db.get_nick_value(target, 'dealerhand', dealerhand)
 			if myhand == []:
