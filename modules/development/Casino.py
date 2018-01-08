@@ -325,8 +325,7 @@ def blackjack(bot,trigger,arg):
 			else:
 				if not arg[2].isdigit():
 					bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
-				else:
-								
+				else:							
 					mybet=int(arg[2])
 					if (mybet<minbet or mybet>maxbet):
 						bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
