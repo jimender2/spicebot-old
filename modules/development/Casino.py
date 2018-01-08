@@ -332,9 +332,7 @@ def blackjack(bot,trigger,arg):
 					else:			
 						if Spicebucks.spicebucks(bot, player, 'minus', mybet) == 'true':
 							#reset write blank hand
-							bot.db.set_nick_value(player, 'myhand', myhand)
-							bot.db.set_nick_value(player, 'dealerhand', dealerhand)
-							bot.db.set_nick_value(player, 'mybet', mybet)
+							blackjackreset(bot,player)
 							myhand = deal(deck, 2)
 							dealerhand = deal(deck, 2)			
 							bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
@@ -390,6 +388,10 @@ def blackjack(bot,trigger,arg):
 				myscore = blackjackscore(myhand)
 				if myscore < 21:				
 					bot.db.set_nick_value(player, 'myhand', myhand)
+				else:
+					bot.say(player + ' busted and gets nothing')
+					blackjackreset(bot,player)
+					
 		elif arg[1] == 'check':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
@@ -407,13 +409,8 @@ def blackjack(bot,trigger,arg):
 				dealerscore = blackjackscore(dealerhand)
 				bot.say(player + ' score is ' + str(myscore) + 'Dealer score is  ' + str(dealerscore))
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
+				blackjackreset(bot,player)
 				
-				myhand = []
-				dealerhand = []
-				mybet = 0
-				bot.db.set_nick_value(player, 'myhand', myhand)
-				bot.db.set_nick_value(player, 'dealerhand', dealerhand)
-				bot.db.set_nick_value(player, 'mybet', mybet)
 
 		else:
 			bot.say('Choose an option: deal, hit, or stand')
@@ -491,4 +488,12 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 		
 	if not dealerwins=='':						
 		bot.say('The dealer had ' + str(dealerscore) +  ' and ' + dealerwins)
+
+def blackjackreset(bot,player):
+	myhand = []
+	dealerhand = []
+	mybet = 0
+	bot.db.set_nick_value(player, 'myhand', myhand)
+	bot.db.set_nick_value(player, 'dealerhand', dealerhand)
+	bot.db.set_nick_value(player, 'mybet', mybet)
 		
