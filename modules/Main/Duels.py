@@ -285,8 +285,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             damage = abs(damagemath)
                             set_database_value(bot, x, 'shield', None)
-                        if damage > 0:
-                            adjust_database_value(bot, x, 'health', -abs(damage))
+                    if damage > 0:
+                        adjust_database_value(bot, x, 'health', -abs(damage))
                     currenthealth = get_database_value(bot, x, 'health')
                     if currenthealth <= 0:
                         whokilledwhom(bot, winner, x)
