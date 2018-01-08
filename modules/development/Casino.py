@@ -403,9 +403,9 @@ def blackjack(bot,trigger,arg):
 			if (myhand == [] or myhand ==0):
 				bot.say('Use deal to start a new game')
 			else:
-				bot.say(player + ' score is ' + str(myscore) + 'Dealer score is  ' + str(dealerscore))
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
+				bot.say(player + ' score is ' + str(myscore) + 'Dealer score is  ' + str(dealerscore))
 				blackjackwinner(bot,player,myscore,dealerscore,payout)
 				
 				myhand = []
