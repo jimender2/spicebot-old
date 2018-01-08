@@ -474,7 +474,7 @@ def blackjackwinner(bot,player,myscore,dealerscore,payout):
 			Spicebucks.spicebucks(bot, player, 'plus', payout)
 			dealerwins = 'the dealer busts '
 			bot.say(player + ' wins ' + str(payout))
-		elif dealerscore = 21:
+		elif dealerscore == 21:
 			dealerwins ='the dealer wins'
 		elif dealerscore < myscore:
 			payout=payout + 30
