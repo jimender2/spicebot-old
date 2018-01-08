@@ -234,7 +234,7 @@ def lottery(bot,trigger, arg):
 	match4payout = 0.03 #% of jackpot
 	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
-		maxnumber=50
+		maxnumber=20
 		
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
