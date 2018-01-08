@@ -13,6 +13,11 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+#slot machine payouts line 70
+#roulette payouts line 139
+#lottery payouts line 229
+#blackjack payouts line 304
+
 #shared varibles:
 maxbet = 100
 
