@@ -104,7 +104,7 @@ def slots(bot,trigger):
 				
 				
 		elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-			mywinnings =  mywinnings + match2 = 2
+			mywinnings =  mywinnings + match2 
 			#bot.say(trigger.nick + ' a match')	
 							
 		if mywinnings <=0:
