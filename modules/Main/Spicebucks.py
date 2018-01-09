@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = bot.users or []
     #for c in bot.channels:
         #channel = c
     #commandused = trigger.group(3)
@@ -47,7 +47,10 @@ def execute_main(bot, trigger, args):
 						bankbalance = 15
 					maxpayout = bankbalance
 					maxpeople = len(botusersarray)
-					randomperson =  botusersarray[(random.randint(1,maxpeople))]								
+					randomperson =  botusersarray[(random.randint(1,maxpeople))]
+					while randomperson == trigger.nick
+						randomperson =  botusersarray[(random.randint(1,maxpeople))]
+						
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winnings)
