@@ -48,7 +48,7 @@ def execute_main(bot, trigger, args):
 					maxpayout = bankbalance
 					maxpeople = len(botusersarray)
 					randomperson =  botusersarray[(random.randint(1,maxpeople))]
-					while randomperson == trigger.nick
+					while randomperson == trigger.nick:
 						randomperson =  botusersarray[(random.randint(1,maxpeople))]
 						
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
