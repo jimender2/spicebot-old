@@ -397,6 +397,13 @@ def blackjack(bot,trigger,arg):
 				bot.say('Use deal to start a new game')
 			else:
 				myscore = blackjackscore(myhand)
+				if myscore >21 and len(myhand) > 2:
+					if myhand[0] == 'A' 			
+						myhand[0]=1
+					if myhand[1] == 'A'
+						myhand[1] = 1
+					myscore= blackjackscore(myhand)				
+					
 				dealerscore = blackjackscore(dealerhand)				
 				dealerwins=''
 				if myscore == 21:
