@@ -33,6 +33,8 @@ ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 INSTIGATORTIMEOUT = 1800
+timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
+timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult','opttime','classtimeout']
 
 ## Half hour timer
 scavengercoinaward = 15 ## coin gain per half hour for scavengers
@@ -56,8 +58,6 @@ lootbuycost = 100 ## normal cost to buy a loot item
 lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
 lootsellreward = 25 ## normal coin rewarded in selling loot
 changeclasscost = 100 ## ## how many coin to change class
-grenadecost = 200
-grenadereward = 150
 
 ## Magic usage
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
@@ -333,7 +333,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## War Room
         elif commandortarget == 'warroom':
             inchannel = "#bypass"
-            subcommand = get_trigger_arg(triggerargsarray, 2)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
@@ -380,8 +380,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
             classes = get_trigger_arg(classarray, "list")
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            setclass = get_trigger_arg(triggerargsarray, 3)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            setclass = get_trigger_arg(triggerargsarray, 3).lower()
             classtime = get_timesince_duels(bot, instigator, 'classtimeout')
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
@@ -512,15 +512,13 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(displaymessage)
 
         ## Loot Items
-        elif commandortarget == 'backpack':
-            bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-            lootcommand = get_trigger_arg(triggerargsarray, 2)
-            lootitem = get_trigger_arg(triggerargsarray, 3)
-            lootitemb = get_trigger_arg(triggerargsarray, 4)
-            lootitemc = get_trigger_arg(triggerargsarray, 5)
+            lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            lootitem = get_trigger_arg(triggerargsarray, 3).lower()
+            lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+            lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand or lootcommand not in transactiontypesarray:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -710,10 +708,12 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     adjust_database_value(bot, target, 'mana', manapotionworth)
                             elif x == 'timepotion':
-                                duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-                                if duelrecorduserlastinstigator == target:
-                                    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
-                                set_database_value(bot, target, 'timeout', None)
+                                for x in timepotiontargetarray:
+                                    targetequalcheck = get_database_value(bot, duelrecorduser, x) or bot.nick
+                                    if x == target:
+                                        set_database_value(bot, duelrecorduser, x, None)
+                                for j in timepotiontimeoutarray:
+                                    set_database_value(bot, target, x, None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             else:
                                 nulllootitemsarray = ['water','vinegar','mud']
@@ -828,10 +828,10 @@ def execute_main(bot, trigger, triggerargsarray):
             validdirectionarray = ['total','inv','add','del','reset']
             if target in validdirectionarray:
                 target = instigator
-                adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 2).lower()
                 weaponchange = get_trigger_arg(triggerargsarray, '3+')
             else:
-                adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 3).lower()
                 weaponchange = get_trigger_arg(triggerargsarray, '4+')
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
             if not adjustmentdirection:
@@ -999,8 +999,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'admin' and not trigger.admin:
             bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            settingchange = get_trigger_arg(triggerargsarray, 3)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            settingchange = get_trigger_arg(triggerargsarray, 3).lower()
             if not subcommand:
                 bot.notice(instigator + ", What Admin change do you want to make?", instigator)
             elif subcommand == 'channel':
@@ -1056,6 +1056,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, u, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     else:
+                        if newvalue.isdigit():
+                            newvalue = int(newvalue)
                         if statset == 'all':
                             for x in duelstatsadminarray:
                                 set_database_value(bot, target, x, newvalue)
