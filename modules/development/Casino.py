@@ -462,9 +462,8 @@ def deal(deck, cardcount):
 	#choose a random card from a deck and remove it from deck
 	hand = []
 	
-	for i in range(cardcount):
-		random.shuffle(deck)
-		card = deck.pop()
+	for i in range(cardcount):		
+		card = get_trigger_arg(deck,'random')	
    		if card == 11:card = "J"
     		if card == 12:card = "Q"
     		if card == 13:card = "K"
