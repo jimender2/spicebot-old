@@ -57,10 +57,14 @@ def execute_main(bot, trigger, arg):
         	bot.say('Please choose a game')
 		
 def freebie(bot,trigger):
-	bankbalance=Spicebucks.bank(bot,trigger.nick)
+	bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
+	spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
 	if bankbalance<1:
 		bot.say('The casino gives you 1 Spicebuck for use in the casino')
-		Spicebucks.spicebucks(bot, trigger.nick, 'plus', 1)
+		if spicebalance >=1:
+			Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
+		else:
+			bot.say("The casino doesn't have any funds to provide")
 	else:
 		bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
 		
@@ -201,7 +205,7 @@ def roulette(bot,trigger,arg):
                     inputcheck = 0 
 	# user input now setup game will run
 	if inputcheck == 1:
-		if Spicebucks.spicebucks(bot, trigger.nick, 'minus', mybet) == 'true':
+		if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
 			Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
 			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
             		winningnumber = spin(wheel)
@@ -210,7 +214,7 @@ def roulette(bot,trigger,arg):
 			#	currentcolors =bot.db.get_nick_value('ColorCount','colors') or 'None'
 			#	currentcolors = color+str(currentcolors)
 			#	bot.db.set_nick_value('ColorCount','colors', currentcolors)
-		 	
+		 	spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
             		mywinnings=0
 			winner = ' '
 			if mynumber == winningnumber:
@@ -221,7 +225,10 @@ def roulette(bot,trigger,arg):
 				mywinnings=mywinnings+colorwinnings		
 		 	if mywinnings >=1:
 				winner = ' has won ' + str(mywinnings)
-			 	Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
+				if spicebankbalance < mywinnings:
+			 		Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
+				else:
+					Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings)
 		 	else:
 				winner =' is not a winner'
 			bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' and ' + trigger.nick + winner)
@@ -239,7 +246,11 @@ def lottery(bot,trigger, arg):
 	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
 		maxnumber=20
-		
+	bankbalance=Spicebucks.bank(bot,'SpiceBank')
+	if bankbalance <=500:
+		bankbalance=500		
+	if len(arg) >2 and arg[1] == 'payout':
+		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + int((bankbalance * match3payout))
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
@@ -282,9 +293,7 @@ def lottery(bot,trigger, arg):
 							if pick in winningnumbers:
 								correct = correct + 1
 						payout = 0
-						bankbalance=Spicebucks.bank(bot,'SpiceBank')
-						if bankbalance <=500:
-							bankbalance=500						
+										
 						if correct == 1:
 							payout = match1payout
 						elif correct == 2:
@@ -295,8 +304,7 @@ def lottery(bot,trigger, arg):
 							payout = int((bankbalance * match4payout))
 						elif correct == 5:							
 							payout = bankbalance
-						if bankbalance < payout:
-							bankbalance=payout							
+												
 						
 						if payout > 0:							
 							bot.say("You guessed " + str(correct) + " numbers correctly, and were paid " + str(payout) + " spicebucks.")
@@ -330,7 +338,7 @@ def blackjack(bot,trigger,arg):
 					if (mybet<minbet or mybet>maxbet):
 						bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 					else:			
-						if Spicebucks.spicebucks(bot, player, 'minus', mybet) == 'true':
+						if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
 							#reset write blank hand
 							blackjackreset(bot,player)
 							myhand = deal(deck, 2)
