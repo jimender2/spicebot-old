@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
-     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     #for c in bot.channels:
         #channel = c
     #commandused = trigger.group(3)
