@@ -48,10 +48,10 @@ def execute_main(bot, trigger, args):
 					maxpayout = bankbalance
 					randompersons = []
 					for u in bot.users:
-						randompersons.append(u)
+						if not u==trigger.nick or u==bot.nick:
+							randompersons.append(u)
 					randomperson = get_trigger_arg(randompersons,'random')	
-					while randomperson == trigger.nick:
-						randomperson = get_trigger_arg(randompersons,'random')
+					
 						
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
