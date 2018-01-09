@@ -331,7 +331,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## War Room
         elif commandortarget == 'warroom':
             inchannel = "#bypass"
-            subcommand = get_trigger_arg(triggerargsarray, 2)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
                 if canduel and u != bot.nick:
@@ -378,8 +378,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
             classes = get_trigger_arg(classarray, "list")
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            setclass = get_trigger_arg(triggerargsarray, 3)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            setclass = get_trigger_arg(triggerargsarray, 3).lower()
             classtime = get_timesince_duels(bot, instigator, 'classtimeout')
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
@@ -510,15 +510,13 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(displaymessage)
 
         ## Loot Items
-        elif commandortarget == 'backpack':
-            bot.say('This Command has been merged with    .duel loot')
         elif commandortarget == 'loot':
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-            lootcommand = get_trigger_arg(triggerargsarray, 2)
-            lootitem = get_trigger_arg(triggerargsarray, 3)
-            lootitemb = get_trigger_arg(triggerargsarray, 4)
-            lootitemc = get_trigger_arg(triggerargsarray, 5)
+            lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            lootitem = get_trigger_arg(triggerargsarray, 3).lower()
+            lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+            lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
             gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
             if not lootcommand or lootcommand not in transactiontypesarray:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -826,10 +824,10 @@ def execute_main(bot, trigger, triggerargsarray):
             validdirectionarray = ['total','inv','add','del','reset']
             if target in validdirectionarray:
                 target = instigator
-                adjustmentdirection = get_trigger_arg(triggerargsarray, 2)
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 2).lower()
                 weaponchange = get_trigger_arg(triggerargsarray, '3+')
             else:
-                adjustmentdirection = get_trigger_arg(triggerargsarray, 3)
+                adjustmentdirection = get_trigger_arg(triggerargsarray, 3).lower()
                 weaponchange = get_trigger_arg(triggerargsarray, '4+')
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
             if not adjustmentdirection:
@@ -997,8 +995,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'admin' and not trigger.admin:
             bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            settingchange = get_trigger_arg(triggerargsarray, 3)
+            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+            settingchange = get_trigger_arg(triggerargsarray, 3).lower()
             if not subcommand:
                 bot.notice(instigator + ", What Admin change do you want to make?", instigator)
             elif subcommand == 'channel':
