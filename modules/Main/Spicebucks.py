@@ -47,7 +47,7 @@ def execute_main(bot, trigger, args):
 						bankbalance = 15
 					maxpayout = bankbalance
 					maxpeople = len(allusersinroomarray)
-					randomperson = allusersinroomarry[(random.randint(1,maxpeople))]								
+					randomperson = allusersinroomarray[(random.randint(1,maxpeople))]								
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winngs)
