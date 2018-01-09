@@ -41,7 +41,17 @@ def execute_main(bot, trigger, args):
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				elif args[1] == trigger.nick:
-					bot.say(trigger.nick + ' rains Spicebucks down on everyone')
+					bankbalance = bank(bot,trigger.nick)
+					if bankbalance <=0:
+						spicebucks(bot, trigger.nick, 'plus', 15)
+						bankbalance = 15
+					maxpayout = bankbalance
+					maxpeople = len(allusersinroomarray)
+					randomperson = allusersinroomarry[(random.randint(1,maxpeople))]								
+					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
+					winnings=random.randint(1,maxpayout)
+					transfer(bot, trigger.nick, randomperson, winngs)
+					bot.say(randomperson + ' manages to keep ' + str(winnings) + ' of ' + trigger.nick + ' spicebucks.')
 				else:								
 					bot.action('rains Spicebucks on ' + args[1])
 					winnings=random.randint(1,15)
