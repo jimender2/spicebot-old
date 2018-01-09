@@ -38,9 +38,8 @@ def execute_main(bot, trigger, args):
 			
 		elif args[0] == 'makeitrain':
 	 		if len(args) > 1:
-				if args[1] not in  botusersarray:
-					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-				elif args[1] == trigger.nick or args[1] == 'random':
+				
+				if args[1] == trigger.nick or args[1] == 'random':
 					bankbalance = bank(bot,trigger.nick)
 					if bankbalance <=0:
 						spicebucks(bot, trigger.nick, 'plus', 15)
@@ -56,6 +55,9 @@ def execute_main(bot, trigger, args):
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winnings)
 					bot.say(randomperson + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
+					
+				elif args[1] not in  botusersarray:
+					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
 					target = args[1]
 					bankbalance = bank(bot,trigger.nick)
