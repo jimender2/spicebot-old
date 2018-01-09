@@ -398,9 +398,9 @@ def blackjack(bot,trigger,arg):
 			else:
 				myscore = blackjackscore(myhand)
 				if myscore >21 and len(myhand) > 2:
-					if myhand[0] == 'A' 			
+					if myhand[0] == 'A': 			
 						myhand[0]=1
-					if myhand[1] == 'A'
+					if myhand[1] == 'A':
 						myhand[1] = 1
 					myscore= blackjackscore(myhand)				
 					
