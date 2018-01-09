@@ -40,7 +40,7 @@ def execute_main(bot, trigger, args):
 	 		if len(args) > 1:
 				if args[1] not in  botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-				elif args[1] == trigger.nick:
+				elif args[1] == trigger.nick or args[1] == 'random':
 					bankbalance = bank(bot,trigger.nick)
 					if bankbalance <=0:
 						spicebucks(bot, trigger.nick, 'plus', 15)
@@ -50,18 +50,23 @@ def execute_main(bot, trigger, args):
 					for u in bot.users:
 						if not u==trigger.nick or u==bot.nick:
 							randompersons.append(u)
-					randomperson = get_trigger_arg(randompersons,'random')	
-					
+					randomperson = get_trigger_arg(randompersons,'random')			
 						
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winnings)
 					bot.say(randomperson + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-				else:								
-					bot.action('rains Spicebucks on ' + args[1])
-					winnings=random.randint(1,15)
-					bot.say(args[1] + ' manages to keep ' + str(winnings) + ' spicebucks before they disappear.')
-					spicebucks(bot, args[1], 'plus', winnings)				
+				else:
+					target = args[1]
+					bankbalance = bank(bot,trigger.nick)
+					if bankbalance <=0:
+						spicebucks(bot, trigger.nick, 'plus', 15)
+						bankbalance = 15
+					maxpayout = bankbalance
+					bot.action('rains Spicebucks on ' + target)
+					winnings=random.randint(1,maxpayout)
+					bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks")
+					transfer(bot, trigger.nick, target, winnings)				
 							
 			else:
 				bot.say(trigger.nick + ' rains Spicebucks on down everyone')
