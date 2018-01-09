@@ -47,7 +47,7 @@ def execute_main(bot, trigger, args):
 					maxpayout = bankbalance
 					randompersons = []
 					for u in bot.users:
-						if not u==trigger.nick or u==bot.nick:
+						if not u==trigger.nick or not u==bot.nick:
 							randompersons.append(u)
 					randomperson = get_trigger_arg(randompersons,'random')			
 						
