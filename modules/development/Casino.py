@@ -399,7 +399,7 @@ def blackjack(bot,trigger,arg):
 			else:
 				myscore = blackjackscore(myhand)
 				dealerscore = blackjackscore(dealerhand)
-				bot.say(player + "'s score  is " + str(myscore) + " The dealer's score is  " + str(dealerscore))
+				bot.say(player + "'s score is " + str(myscore) + " The dealer's score is " + str(dealerscore))
 				blackjackwinner(bot,player,myhand,dealerhand,myscore,dealerscore,payout)
 				blackjackreset(bot,player)
 				
