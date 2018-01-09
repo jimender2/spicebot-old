@@ -416,7 +416,7 @@ def blackjack(bot,trigger,arg):
 						dealerscore=blackjackscore(dealerhand)
 										
 					if not dealerhitlist == '':
-						hitlist=len(dealerhitlist)-1
+						hitlist=len(dealerhitlist)
 						if hitlist>1:						
 							bot.say('The dealer takes ' + str((hitlist-1))  + ' hits and gets' + dealerhitlist)
 						else: 
