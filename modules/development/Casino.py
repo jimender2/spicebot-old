@@ -397,8 +397,7 @@ def blackjack(bot,trigger,arg):
 				bot.say('Use deal to start a new game')
 			else:
 				myscore = blackjackscore(myhand)
-				dealerscore = blackjackscore(dealerhand)
-				bot.say(player + "'s score is " + str(myscore) + " The dealer's score is " + str(dealerscore))
+				dealerscore = blackjackscore(dealerhand)				
 				dealerwins=''
 				if myscore == 21:
 					payout=payout + 50
@@ -417,11 +416,11 @@ def blackjack(bot,trigger,arg):
 					dealerscore=blackjackscore(dealerhand)
 										
 					if not dealerhitlist == '':
-					hitlist=len(dealerhitlist)-1
-					if hitlist>1:						
-						bot.say('The dealer takes ' + str((hitlist-1))  + ' hits and gets' + dealerhitlist)
-					else: 
-						bot.say('The dealer takes a hit and gets a' + dealerhitlist)
+						hitlist=len(dealerhitlist)-1
+						if hitlist>1:						
+							bot.say('The dealer takes ' + str((hitlist-1))  + ' hits and gets' + dealerhitlist)
+						else: 
+							bot.say('The dealer takes a hit and gets a' + dealerhitlist)
 		
 					if dealerscore > 21:
 						payout=payout + 30
