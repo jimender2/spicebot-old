@@ -46,10 +46,12 @@ def execute_main(bot, trigger, args):
 						spicebucks(bot, trigger.nick, 'plus', 15)
 						bankbalance = 15
 					maxpayout = bankbalance
-					maxpeople = len(botusersarray)
-					randomperson =  botusersarray[(random.randint(1,maxpeople))]
+					randompersons = []
+					for u in bot.users:
+						randompersons.append(u)
+					randomperson = get_trigger_arg(randompersons,'random')	
 					while randomperson == trigger.nick:
-						randomperson =  botusersarray[(random.randint(1,maxpeople))]
+						randomperson = get_trigger_arg(randompersons,'random')
 						
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
