@@ -364,9 +364,8 @@ def blackjack(bot,trigger,arg):
 				#bot.say(player + ' has ' + str(myhand))
 				#bot.say('The dealer has ' + str(dealerhand))
 				playerhits=deal(deck, 1)
-				playerhits=playerhits[0]
-				playerhitlist=playerhitlist + ' ' + str(playerhits)
-				bot.say(player + ' takes a hit and gets ' + playerhitlist)
+				playerhits=playerhits[0]				
+				bot.say(player + ' takes a hit and gets ' + str(playerhit)
 				myhand.append(playerhits)
 				myscore = blackjackscore(myhand)
 				if myscore < 21:				
