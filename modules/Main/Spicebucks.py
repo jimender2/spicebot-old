@@ -44,7 +44,7 @@ def execute_main(bot, trigger, args):
 					bot.say(trigger.nick + ' rains Spicebucks down on everyone')
 				else:								
 					bot.action('rains Spicebucks on ' + args[1])
-					winnings=random.randint(1,25)
+					winnings=random.randint(1,15)
 					bot.say(args[1] + ' manages to keep ' + str(winnings) + ' spicebucks before they disappear.')
 					spicebucks(bot, args[1], 'plus', winnings)				
 							
