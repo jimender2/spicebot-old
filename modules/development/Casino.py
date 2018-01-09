@@ -354,7 +354,7 @@ def blackjack(bot,trigger,arg):
 									dealerhand.append(dealerhits)				
 									dealerscore=blackjackscore(dealerhand)
 									x=x+1
-									if x>4:
+									if x>6:
 										dealerscore=18
 								if not dealerhitlist == '':
 									hitlist=len(dealerhitlist)-1
