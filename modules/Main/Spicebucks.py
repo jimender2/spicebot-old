@@ -138,7 +138,7 @@ def execute_main(bot, trigger, args):
 				instigator = trigger.nick
 				amount=args[2]
 				if not amount.isdigit():
-					bot.say('Please enter an amount you wish to transfer')
+					bot.say('Please enter the person you wish to transfer to followed by an amount you wish to transfer')
 				else:	
 					amount=int(amount)		
 					if target not in  botusersarray:
@@ -154,7 +154,7 @@ def execute_main(bot, trigger, args):
 								if amount <= balance:
 									success = transfer(bot,  trigger.nick, target, amount)
 									if success == 1:
-										bot.say("You successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+										bot.say(trigger.nick + " successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
 									else:
 										bot.say('The transfer was unsuccesfully check the amount and try again')
 								else:
