@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, args):
-    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
+     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     #for c in bot.channels:
         #channel = c
     #commandused = trigger.group(3)
@@ -38,7 +38,7 @@ def execute_main(bot, trigger, args):
 			
 		elif args[0] == 'makeitrain':
 	 		if len(args) > 1:
-				if args[1] not in allusersinroomarray:
+				if args[1] not in  botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				elif args[1] == trigger.nick:
 					bankbalance = bank(bot,trigger.nick)
@@ -46,8 +46,8 @@ def execute_main(bot, trigger, args):
 						spicebucks(bot, trigger.nick, 'plus', 15)
 						bankbalance = 15
 					maxpayout = bankbalance
-					maxpeople = len(allusersinroomarray)
-					randomperson = allusersinroomarray[(random.randint(1,maxpeople))]								
+					maxpeople = len(botusersarray)
+					randomperson =  botusersarray[(random.randint(1,maxpeople))]								
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winnings)
@@ -68,7 +68,7 @@ def execute_main(bot, trigger, args):
 					spicebucks(bot, 'SpiceBank', 'minus', spicebalance)
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
 					bot.say('The spice bank has been robbed and has ' + str(balance) + ' left')
-				elif args[1] not in allusersinroomarray:
+				elif args[1] not in botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
 					reset(bot,args[1])
@@ -82,7 +82,7 @@ def execute_main(bot, trigger, args):
 				if args[1] == 'spicebank':
 					target = 'SpiceBank'
 					success = 1
-				elif args[1] not in allusersinroomarray:
+				elif args[1] not in botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					success = 0
 				else:
@@ -107,7 +107,7 @@ def execute_main(bot, trigger, args):
                 
 		elif (args[0] == 'taxes' or args[0] == 'tax'):
 			if len(args) > 1:
-				if args[1] not in allusersinroomarray:
+				if args[1] not in botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
 					paytaxes(bot, args[1])
@@ -118,7 +118,7 @@ def execute_main(bot, trigger, args):
 				if args[1] == 'spicebank':
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
 					bot.say('There are ' + str(balance) + ' spicebucks in the Spicebank.')
-				elif args[1] not in allusersinroomarray:
+				elif args[1] not in botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")				
 				else:
 					balance=bank(bot, args[1])                                         
@@ -136,7 +136,7 @@ def execute_main(bot, trigger, args):
 					bot.say('Please enter an amount you wish to transfer')
 				else:	
 					amount=int(amount)		
-					if target not in allusersinroomarray:
+					if target not in  botusersarray:
 						bot.say("I'm sorry, I do not know who you want to transfer money to.")
 					else:
 						if target == instigator:
