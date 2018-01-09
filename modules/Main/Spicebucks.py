@@ -56,7 +56,7 @@ def execute_main(bot, trigger, args):
 					bot.say(trigger.nick + ' rains Spicebucks down on ' + randomperson)
 					winnings=random.randint(1,maxpayout)
 					transfer(bot, trigger.nick, randomperson, winnings)
-					bot.say(randomperson + ' manages to keep ' + str(winnings) + ' of ' + trigger.nick + ' spicebucks.')
+					bot.say(randomperson + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
 				else:								
 					bot.action('rains Spicebucks on ' + args[1])
 					winnings=random.randint(1,15)
