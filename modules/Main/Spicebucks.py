@@ -40,14 +40,16 @@ def execute_main(bot, trigger, args):
 	 		if len(args) > 1:
 				if args[1] not in allusersinroomarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
-				else:
-					bot.say('Spicebucks rain on ' + args[1])
+				elif args[1] == trigger.nick:
+					bot.say(trigger.nick + ' rains Spicebucks down on everyone')
+				else:								
+					bot.action('rains Spicebucks on ' + args[1])
 					winnings=random.randint(1,25)
 					bot.say(args[1] + ' manages to keep ' + str(winnings) + ' spicebucks before they disappear.')
-					spicebucks(bot, args[1], 'plus', winnings)
-		
+					spicebucks(bot, args[1], 'plus', winnings)				
+							
 			else:
-				bot.say('Spicebucks rain on down on everyone and disappear')
+				bot.say(trigger.nick + ' rains Spicebucks on down everyone')
 		
 		elif args[0] == 'reset' and trigger.admin: #admin only command	
 			if len(args) > 1:
