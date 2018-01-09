@@ -33,6 +33,8 @@ ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 INSTIGATORTIMEOUT = 1800
+timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
+timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult','opttime','classtimeout']
 
 ## Half hour timer
 scavengercoinaward = 15 ## coin gain per half hour for scavengers
@@ -706,9 +708,17 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     adjust_database_value(bot, target, 'mana', manapotionworth)
                             elif x == 'timepotion':
-                                duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-                                if duelrecorduserlastinstigator == target:
-                                    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
+                                for x in timepotiontargetarray:
+                                    targetequalcheck = get_database_value(bot, duelrecorduser, x) or bot.nick
+                                    if x == target:
+                                        set_database_value(bot, duelrecorduser, x, None)
+                                for j in timepotiontimeoutarray:
+                                    set_database_value(bot, target, x, None)
+                                    targettimeoutcheck = get_database_value(bot, target, x)
+                                    if targettimeoutcheck:
+                                        
+
+                                
                                 set_database_value(bot, target, 'timeout', None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             else:
