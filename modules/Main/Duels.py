@@ -714,12 +714,6 @@ def execute_main(bot, trigger, triggerargsarray):
                                         set_database_value(bot, duelrecorduser, x, None)
                                 for j in timepotiontimeoutarray:
                                     set_database_value(bot, target, x, None)
-                                    targettimeoutcheck = get_database_value(bot, target, x)
-                                    if targettimeoutcheck:
-                                        
-
-                                
-                                set_database_value(bot, target, 'timeout', None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             else:
                                 nulllootitemsarray = ['water','vinegar','mud']
