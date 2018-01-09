@@ -349,7 +349,7 @@ def blackjack(bot,trigger,arg):
 								bot.db.set_nick_value(player, 'myhand', myhand)
 								bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 								bot.db.set_nick_value(player, 'mybet', mybet)
-								Bot.say('You can use say .gamble blackjack hit to take a card or stand to finish the game')
+								bot.say('You can use say .gamble blackjack hit to take a card or stand to finish the game')
 
 						
 						else:
