@@ -20,8 +20,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
+    pointsstring = trigger.group(1)
     if not channel.startswith("#"):
-        bot.notice(instigator + " Points must be in a channel.", instigator)
+        bot.notice(instigator + " " + pointsstring + " must be in a channel.", instigator)
         return
     rando = randint(1, 666)
     commortarget = get_trigger_arg(triggerargsarray, 1)
