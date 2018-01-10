@@ -20,7 +20,11 @@ def execute_main(bot, trigger, triggerargsarray):
     for c in bot.channels:
         channel = c
     if commandused == 'prod':
-        
+        parta = " prods "
+        partb = " with a big stick."
+    else:
+        parta = " pokes "
+        partb = " with a stick."
     if not target:
         bot.say(trigger.nick + " points awkwardly at nothing.")
     elif target.lower() not in bot.privileges[channel.lower()]:
@@ -28,4 +32,4 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == bot.nick:
         bot.say("I am not going to poke myself for your amusement.")
     else:
-bot.action(" pokes " + target + " with a stick.")
+        bot.action(parta + target + partb)
