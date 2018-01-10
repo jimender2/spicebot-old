@@ -25,6 +25,7 @@ REPO_NAME = 'SpiceBot'
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
+    targetmodule = 
     inputtext = trigger.group(2)
     if maincommand == 'feature':
         labels=['Feature Request']
@@ -43,6 +44,9 @@ def execute_main(bot, trigger):
         assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
+    if inputtext.startswith('duels') or inputtext.startswith('duel'):
+        labels = labels + "DUELS: "
+        assignee = "deathbybandaid"
     else:
         body = inputtext
         body = str(instigator + action + ": " + body)
