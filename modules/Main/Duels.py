@@ -874,7 +874,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                     bot.notice(instigator + ", " + message, instigator)
 
-        ## Magic Attack
+        ## Magic
         elif commandortarget == 'magic':
             instigatorclass = get_database_value(bot, instigator, 'class')
             magicoptions = ['attack','instakill','curse','shield']
@@ -955,7 +955,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     specialtext = ''
                     damageorhealth = 'dealing'
                     damageorhealthb = 'damage'
-                    manarequired = -abs(manarequired)
+                    manarequired = -abs(actualmanarequired)
                     actualshieldduration = int(quantity) * int(shieldduration)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     while int(quantity) > 0:
