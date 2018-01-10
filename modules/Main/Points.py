@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             bot.say(target + ' has ' + str(points) + ' ' + pointsstring + '.')
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
-        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring ' to everyone.')
+        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone.')
         bot.say(randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
