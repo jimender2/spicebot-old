@@ -16,14 +16,14 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
-    commandused = get_trigger_arg(triggerargsarray, 0)
+    commandused = trigger.group(1)
     for c in bot.channels:
         channel = c
     if commandused == 'prod':
-        parta = " prods "
+        parta = "prods "
         partb = " with a big stick."
     else:
-        parta = " pokes "
+        parta = "pokes "
         partb = " with a stick."
     if not target:
         bot.say(trigger.nick + " points awkwardly at nothing.")
