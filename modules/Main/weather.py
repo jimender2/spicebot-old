@@ -129,37 +129,40 @@ def weather(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     """.weather location - Show the weather at the given location."""
-
+    
     location = trigger.group(2)
-    woeid = ''
-    if not location:
-        woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
-        if not woeid:
-            return bot.msg(trigger.sender, "I don't know where you live. " +
-                           'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
+    if location == 'setlocation':
+        update_location(bot, trigger, triggerargsarray):
     else:
-        location = location.strip()
-        woeid = bot.db.get_nick_value(location, 'woeid')
-        if woeid is None:
-            first_result = woeid_search(location)
-            if first_result is not None:
-                woeid = first_result.get('woeid')
+        woeid = ''
+        if not location:
+            woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
+            if not woeid:
+                return bot.msg(trigger.sender, "I don't know where you live. " +
+                               'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
+        else:
+            location = location.strip()
+            woeid = bot.db.get_nick_value(location, 'woeid')
+            if woeid is None:
+                first_result = woeid_search(location)
+                if first_result is not None:
+                    woeid = first_result.get('woeid')
 
-    if not woeid:
-        return bot.reply("I don't know where that is.")
+        if not woeid:
+            return bot.reply("I don't know where that is.")
 
-    query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
-    body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
-    parsed = xmltodict.parse(body.text).get('query')
-    results = parsed.get('results')
-    if results is None:
-        return bot.reply("No forecast available. Try a more specific location.")
-    location = results.get('channel').get('title')
-    cover = get_cover(results)
-    temp = get_temp(results)
-    humidity = get_humidity(results)
-    wind = get_wind(results)
-    bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
+        query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
+        body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
+        parsed = xmltodict.parse(body.text).get('query')
+        results = parsed.get('results')
+        if results is None:
+            return bot.reply("No forecast available. Try a more specific location.")
+        location = results.get('channel').get('title')
+        cover = get_cover(results)
+        temp = get_temp(results)
+        humidity = get_humidity(results)
+        wind = get_wind(results)
+        bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
 
 
 @commands('setlocation', 'setwoeid')
