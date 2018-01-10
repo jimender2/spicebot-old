@@ -34,7 +34,7 @@ def execute_main(bot, trigger):
         labels=['Wiki Update']
         title='Wiki Update'
         action = " requested"
-        assignees = "Berserkir-Wolf"
+        assignee = "Berserkir-Wolf"
     else:
         labels=['Issue Report']
         title='Issue Report'
@@ -42,24 +42,24 @@ def execute_main(bot, trigger):
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     else:
-        if not assignees:
-            assignees = ''
+        if not assignee:
+            assignee = ''
         body = inputtext
         body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignees)
+        make_github_issue(bot, body, labels, title, assignee)
 
-def make_github_issue(bot, body, labels, title, assignees):
+def make_github_issue(bot, body, labels, title, assignee):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
-    if not assignees:
+    if assignee == '':
         issue = {'title': title,
                  'body': body,
                  'labels': labels}
     else:
         issue = {'title': title,
                  'body': body,
-                 'assignees': assignees,
+                 'assignee': assignee,
                  'labels': labels}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
