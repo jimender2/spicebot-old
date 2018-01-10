@@ -25,7 +25,6 @@ REPO_NAME = 'SpiceBot'
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
-    targetmodule = 
     inputtext = trigger.group(2)
     if maincommand == 'feature':
         labels=['Feature Request']
