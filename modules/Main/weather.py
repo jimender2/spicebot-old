@@ -130,7 +130,7 @@ def weather(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     """.weather location - Show the weather at the given location."""
     location = triggerargsarray[0]
-    if len(triggerargsarray)>=1        
+    if len(triggerargsarray)>=1:        
         if location == 'setlocation':
             if not triggerargsarray[1]:
                 bot.say("Enter a location to wish to set to")
