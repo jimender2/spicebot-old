@@ -23,9 +23,10 @@ def execute_main(bot, trigger, triggerargsarray):
             parta = phrase
             partb = action
         else:
-            parta = str("to " + action)
-            partb = action
+            parta = str("to " + phrase)
+            partb = phrase
         statement = str("Are you trying " + parta + "? 'Cuz that's how you " + partb + "!!!")
         bot.say(statement)
     else:
         bot.say("I haven't got the faintest idea what you are trying to do."
+
