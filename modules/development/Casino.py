@@ -60,8 +60,9 @@ def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
 	spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
 	if bankbalance<1:
-		bot.say('The casino gives you 1 Spicebuck for use in the casino')
+		
 		if spicebankbalance >=1:
+			bot.say('The casino gives you 1 Spicebuck for use in the casino')
 			Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
 		else:
 			bot.say("The casino doesn't have any funds to provide")
