@@ -47,6 +47,9 @@ def execute_main(bot, trigger):
         title = title + "DUELS: "
         labels = labels.append('Duel')
         assignee = "deathbybandaid"
+        body = inputtext
+        body = str(instigator + action + ": " + body)
+        make_github_issue(bot, body, labels, title, assignee)
     else:
         body = inputtext
         body = str(instigator + action + ": " + body)
