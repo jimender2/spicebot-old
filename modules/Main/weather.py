@@ -130,37 +130,41 @@ def weather(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
     success = 0
-    """.weather location - Show the weather at the given location."""
+    location = '' 
+   
     if len(triggerargsarray) > 1:
         location = triggerargsarray[0]
-    else:
-        location = ''        
+        success = 1
+##set trigger.nick location
     if location == 'setlocation':
+        success = 0
         if len(triggerargsarray)<2:
             bot.say("Enter a location to wish to set to")
+            
         else:
-            update_location(bot, triggerargsarray[1])
-            bot.say("Location set to: " + triggerargsarray[1])            
-    elif location == 'getlocation':            
+            update_location(bot, trigger, triggerargsarray[1])
+            bot.say("Location set to: " + triggerargsarray[1])    
+            
+###display target location
+    elif location == 'getlocation': 
+        success = 0
         target = ''
         if len(triggerargsarray)<2:
             target = trigger.nick
-            success = 1
         else:
             if triggerargsarray[1] not in  botusersarray:
-                bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
-                success = 0
+                bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
             else:
-                target = triggerargsarray[1]
-                success = 1
-        if success == 1:            
+                target = triggerargsarray[1]                      
+        if not target == '':            
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                bot.say("You must first set a location using .weather setloction <place>")
+                bot.say("You must first set a location using .weather setloction <place>")                
             else:
-                bot.say(target + "'s location is set to " +str(woeid))           
-
-    else:
+                bot.say(target + "'s location is set to " +str(woeid))               
+                
+###Output weather
+    if success==1:
         woeid = ''
         if not location:
             woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
