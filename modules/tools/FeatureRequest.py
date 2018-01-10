@@ -32,8 +32,8 @@ def execute_main(bot, trigger):
         action = " requested"
     elif maincommand == 'wiki':
         labels=['Wiki Update']
-        title='Wiki Update Needed'
-        action = " found a problem with a wiki entry"
+        title='Wiki Update'
+        action = " requested"
     else:
         labels=['Issue Report']
         title='Issue Report'
