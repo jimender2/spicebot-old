@@ -25,6 +25,6 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == bot.nick:
         bot.action("blushes",channel)
     elif target == trigger.nick:
-        bot.say("Awww. Why don't you pat yourself on the back while your at it.")
+        bot.say("Awww. Why don't you pat yourself on the back while you're at it?")
     else:
         bot.say(trigger.nick + " gives " + target + " a gold star for participation.")
