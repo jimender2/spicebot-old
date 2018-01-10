@@ -62,7 +62,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
-            randopoints = str(instigator + " takes " + str(rando) + " points from " + target + ".")
+            randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + ".")
             bot.say(randopoints)
             adjust_botdatabase_value(bot, target, 'points', -abs(rando))
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
