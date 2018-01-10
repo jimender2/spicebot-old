@@ -250,7 +250,7 @@ def lottery(bot,trigger, arg):
 	if bankbalance <=500:
 		bankbalance=500		
 	if len(arg) >2 and arg[1] == 'payout':
-		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + int((bankbalance * match3payout))
+		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
