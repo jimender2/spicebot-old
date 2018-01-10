@@ -45,7 +45,7 @@ def execute_main(bot, trigger):
         bot.say("What feature/issue do you want to post?")
     if inputtext.startswith('duels') or inputtext.startswith('duel'):
         title = "DUELS: " + title
-        labels = labels.extend('Duel')
+        labels = labels.append('Duel')
         assignee = "deathbybandaid"
         body = inputtext
         body = str(instigator + action + ": " + body)
