@@ -145,7 +145,7 @@ def execute_main(bot, trigger, triggerargsarray):
             target = trigger.nick
             success = 1
         else:
-           if triggerargsarray[1] not in  botusersarray:
+            if triggerargsarray[1] not in  botusersarray:
                 bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
                 success = 0
             else:
