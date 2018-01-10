@@ -16,13 +16,16 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
+    phrase = get_trigger_arg(triggerargsarray, '1+')
+    action = get_trigger_arg(triggerargsarray, '2+')
     if target:
-        phrase = target
-        if phrase.startswith('to '):
+        if target == 'to':
             parta = phrase
-            partb = phrase.replace('to ','').strip()
+            partb = action
         else:
-            parta = str("to " + phrase)
-            partb = phrase
+            parta = str("to " + action)
+            partb = action
         statement = str("Are you trying " + parta + "? 'Cuz that's how you " + partb + "!!!")
         bot.say(statement)
+    else:
+        bot.say("I haven't got the faintest idea what you are trying to do."
