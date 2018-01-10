@@ -131,7 +131,7 @@ def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
     success = 0
     """.weather location - Show the weather at the given location."""
-    if len(triggerargsarray) > 1
+    if len(triggerargsarray) > 1:
         location = triggerargsarray[0]
     else:
         location = ''        
