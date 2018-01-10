@@ -249,7 +249,7 @@ def lottery(bot,trigger, arg):
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500		
-	if len(arg) > 2
+	if len(arg) > 2:
 		if arg[1] == 'payout':
 			bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
 	if(len(arg)<6 or len(arg)>6):
@@ -262,7 +262,6 @@ def lottery(bot,trigger, arg):
 		for pick in arg:
 			if pick.isdigit():						
 				picks.append(int(pick))
-			
 		if len(picks)<5:
 			bot.say('One of the numbers you entered does not appear to be a number.')
 			success = 0
@@ -463,8 +462,8 @@ def blackjack(bot,trigger,arg):
 
 		else:
 			bot.say('Choose an option: deal, hit, or stand')
-    
-  
+
+			
 #__________________________Shared Functions____________________
 def spin(wheel):
 	random.seed()
@@ -472,7 +471,6 @@ def spin(wheel):
   	selected=random.randint(0,(len(wheel)-1))
   	reel=wheel[selected]
   	return reel
-
 
 def deal(deck, cardcount):
 	#choose a random card from a deck and remove it from deck
@@ -512,4 +510,3 @@ def blackjackreset(bot,player):
 	bot.db.set_nick_value(player, 'myhand', myhand)
 	bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 	bot.db.set_nick_value(player, 'mybet', mybet)
-		
