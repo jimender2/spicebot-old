@@ -17,10 +17,10 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
     if target:
-        phrase = target.strip()
-        if phrase.startswith('to'):
+        phrase = target
+        if phrase.startswith('to '):
             parta = phrase
-            partb = phrase.replace('to','').strip()
+            partb = phrase.replace('to ','').strip()
         else:
             parta = str("to " + phrase)
             partb = phrase
