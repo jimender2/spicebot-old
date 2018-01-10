@@ -132,7 +132,11 @@ def execute_main(bot, trigger, triggerargsarray):
     
     location = trigger.group(2)
     if location == 'setlocation':
-        update_location(bot, triggersarray[2])
+        if not triggerargsarray[2]:
+            bot.say("Enter a location to wish to set to")
+        else:
+            update_location(bot, triggerargsarray[2])
+            bot.say("Location set to: " + triggerargsarray[2])
     elif location == 'getlocation':
         woeid = bot.db.get_nick_value(trigger.nick, 'woeid') or 0
         if woeid == 0:
