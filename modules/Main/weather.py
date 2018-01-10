@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     location = trigger.group(2)
     if location == 'setlocation':
-        update_location(bot, trigger, triggerargsarray)
+        update_location(bot, triggersarray[2])
     else:
         woeid = ''
         if not location:
@@ -170,15 +170,15 @@ def execute_main(bot, trigger, triggerargsarray):
 def update_woeid(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        update_location(bot, trigger, triggerargsarray)
+        update_location(bot, trigger, triggerargsarray[0])
     
-def update_location(bot, trigger, triggerargsarray):
+def update_location(bot, trigger, data):
     """Set your default weather location."""
-    if not trigger.group(2):
+    if not data:
         bot.reply('Give me a location, like "Washington, DC" or "London".')
         return NOLIMIT
 
-    first_result = woeid_search(trigger.group(2))
+    first_result = woeid_search(data)
     if first_result is None:
         return bot.reply("I don't know where that is.")
 
