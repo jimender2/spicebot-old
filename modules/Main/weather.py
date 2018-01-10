@@ -150,7 +150,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 success = 0
             else:
                 target = triggerargsarray[1]
-                 success = 1
+                success = 1
         if success = 1            
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
