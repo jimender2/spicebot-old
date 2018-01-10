@@ -1056,8 +1056,11 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, u, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     else:
-                        if newvalue.isdigit():
-                            newvalue = int(newvalue)
+                        try:
+                            if newvalue.isdigit():
+                                newvalue = int(newvalue)
+                        except AttributeError:
+                            newvalue = newvalue
                         if statset == 'all':
                             for x in duelstatsadminarray:
                                 set_database_value(bot, target, x, newvalue)
