@@ -8,23 +8,28 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('goldstar')
+@sopel.module.commands('poke','prod')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'poke')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
+    commandused = trigger.group(1)
     for c in bot.channels:
         channel = c
+    if commandused == 'prod':
+        parta = "prods "
+        partb = " with a big stick."
+    else:
+        parta = "pokes "
+        partb = " with a stick."
     if not target:
-        bot.say("Who deserves a gold star?")
+        bot.say(trigger.nick + " points awkwardly at nothing.")
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
     elif target == bot.nick:
-        bot.action("blushes",channel)
-    elif target == trigger.nick:
-        bot.say("Awww. Why don't you pat yourself on the back while you're at it?")
+        bot.say("I am not going to poke myself for your amusement.")
     else:
-        bot.say(trigger.nick + " gives " + target + " a gold star for participation.")
+        bot.action(parta + target + partb)

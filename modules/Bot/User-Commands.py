@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki"
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
 @sopel.module.commands('spicebot')
 def main_command(bot, trigger):
@@ -34,7 +34,7 @@ def main_command(bot, trigger):
 
     ## Github Repo
     elif subcommand == 'github':
-        bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/sopel-modules')
+        bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
     
     ## Modules
     elif subcommand == 'modulecount':

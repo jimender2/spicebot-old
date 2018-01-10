@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 @sopel.module.commands('steenkin','dontneed')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'steenkin')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     

@@ -21,7 +21,7 @@ PASSWORD = config.get("github","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
-@sopel.module.commands('feature','issue')
+@sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
@@ -30,38 +30,43 @@ def execute_main(bot, trigger):
         labels=['Feature Request']
         title='Feature Request'
         action = " requested"
+        assignee = ''
+    elif maincommand == 'wiki':
+        labels=['Wiki Update']
+        title='Wiki Update'
+        action = " requested"
+        assignee = "Berserkir-Wolf"
     else:
         labels=['Issue Report']
         title='Issue Report'
         action = " found an issue"
+        assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
+    if inputtext.startswith('duels') or inputtext.startswith('duel'):
+        title = "DUELS: " + title
+        assignee = "deathbybandaid"
+        body = inputtext
+        body = str(instigator + action + ": " + body)
+        make_github_issue(bot, body, labels, title, assignee)
     else:
         body = inputtext
         body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title)
+        make_github_issue(bot, body, labels, title, assignee)
 
-def make_github_issue(bot, body, labels, title):
+def make_github_issue(bot, body, labels, title, assignee):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
-    issue = {'title': title,
-             'body': body,
-             'labels': labels}
-    r = session.post(url, json.dumps(issue))
-    if r.status_code == 201:
-        bot.say("Successfully created " + title)
+    if assignee == '':
+        issue = {'title': title,
+                 'body': body,
+                 'labels': labels}
     else:
-        bot.say("Could not create " + title)
-        bot.say(str('Response:' + r.content))
-
-def make_github_feature(bot, body, title):
-    url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
-    session = requests.Session()
-    session.auth = (USERNAME, PASSWORD)
-    issue = {'title': title,
-             'body': body,
-             'labels': ['Feature Request']}
+        issue = {'title': title,
+                 'body': body,
+                 'assignee': assignee,
+                 'labels': labels}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         bot.say("Successfully created " + title)
