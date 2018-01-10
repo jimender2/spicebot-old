@@ -151,7 +151,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 target = triggerargsarray[1]
                 success = 1
-        if success = 1:            
+        if success == 1:            
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
                 bot.say("You must first set a location using .weather setloction <place>")
