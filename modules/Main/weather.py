@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     location = trigger.group(2)
     if location == 'setlocation':
-        update_location(bot, trigger, triggerargsarray):
+        update_location(bot, trigger, triggerargsarray)
     else:
         woeid = ''
         if not location:
