@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     pill = get_trigger_arg(triggerargsarray, 1)
     if not pill:
-        bot.say('You have two choices. redpill Or bluepill')      
+        bot.say('You have two choices. redpill or bluepill')      
     elif pill == 'redpill':
         bot.say('You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.')
     elif pill == 'bluepill':
