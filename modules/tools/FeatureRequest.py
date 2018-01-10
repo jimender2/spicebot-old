@@ -21,7 +21,7 @@ PASSWORD = config.get("github","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
-@sopel.module.commands('feature','issue')
+@sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
@@ -30,6 +30,10 @@ def execute_main(bot, trigger):
         labels=['Feature Request']
         title='Feature Request'
         action = " requested"
+    elif maincommand == 'wiki':
+        labels=['Wiki Update']
+        title='Wiki Update Needed'
+        action = " found a problem with a wiki entry"
     else:
         labels=['Issue Report']
         title='Issue Report'
@@ -48,20 +52,6 @@ def make_github_issue(bot, body, labels, title):
     issue = {'title': title,
              'body': body,
              'labels': labels}
-    r = session.post(url, json.dumps(issue))
-    if r.status_code == 201:
-        bot.say("Successfully created " + title)
-    else:
-        bot.say("Could not create " + title)
-        bot.say(str('Response:' + r.content))
-
-def make_github_feature(bot, body, title):
-    url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
-    session = requests.Session()
-    session.auth = (USERNAME, PASSWORD)
-    issue = {'title': title,
-             'body': body,
-             'labels': ['Feature Request']}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         bot.say("Successfully created " + title)
