@@ -130,7 +130,7 @@ def weather(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     """.weather location - Show the weather at the given location."""
     
-    location = trigger.group(2)
+    location = triggerargsarray[0]
     if location == 'setlocation':
         if not triggerargsarray[2]:
             bot.say("Enter a location to wish to set to")
@@ -142,8 +142,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if woeid == 0:
             bot.say("You must first set a location using .weather setloction <place>")
         else:
-            bot.say(trigger.nick + "'s location is set to " +str(woeid))
-            
+            bot.say(trigger.nick + "'s location is set to " +str(woeid))           
         
     else:
         woeid = ''
