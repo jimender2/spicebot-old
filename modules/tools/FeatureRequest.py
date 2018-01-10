@@ -42,11 +42,13 @@ def execute_main(bot, trigger):
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     else:
+        if not assignees:
+            assignees = ''
         body = inputtext
         body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title)
+        make_github_issue(bot, body, labels, title, assignees)
 
-def make_github_issue(bot, body, labels, title):
+def make_github_issue(bot, body, labels, title, assignees):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
