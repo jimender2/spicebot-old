@@ -30,6 +30,7 @@ def execute_main(bot, trigger):
         labels=['Feature Request']
         title='Feature Request'
         action = " requested"
+        assignee = ''
     elif maincommand == 'wiki':
         labels=['Wiki Update']
         title='Wiki Update'
@@ -39,11 +40,10 @@ def execute_main(bot, trigger):
         labels=['Issue Report']
         title='Issue Report'
         action = " found an issue"
+        assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     else:
-        if not assignee:
-            assignee = ''
         body = inputtext
         body = str(instigator + action + ": " + body)
         make_github_issue(bot, body, labels, title, assignee)
