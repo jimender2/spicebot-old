@@ -27,6 +27,5 @@ def execute_main(bot, trigger, triggerargsarray):
             partb = phrase
         statement = str("Are you trying " + parta + "? 'Cuz that's how you " + partb + "!!!")
         bot.say(statement)
-    else:
-        bot.say("I haven't got the faintest idea what you are trying to do."
-
+    elif:
+        bot.say("I haven't got the faintest idea what you are trying to do.")
