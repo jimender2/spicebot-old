@@ -708,12 +708,12 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     adjust_database_value(bot, target, 'mana', manapotionworth)
                             elif x == 'timepotion':
-                                for x in timepotiontargetarray:
-                                    targetequalcheck = get_database_value(bot, duelrecorduser, x) or bot.nick
-                                    if x == target:
-                                        set_database_value(bot, duelrecorduser, x, None)
+                                for k in timepotiontargetarray:
+                                    targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
+                                    if k == target:
+                                        set_database_value(bot, duelrecorduser, k, None)
                                 for j in timepotiontimeoutarray:
-                                    set_database_value(bot, target, x, None)
+                                    set_database_value(bot, target, k, None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             else:
                                 nulllootitemsarray = ['water','vinegar','mud']
