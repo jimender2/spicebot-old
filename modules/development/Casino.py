@@ -61,7 +61,7 @@ def freebie(bot,trigger):
 	spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
 	if bankbalance<1:
 		bot.say('The casino gives you 1 Spicebuck for use in the casino')
-		if spicebalance >=1:
+		if spicebankbalance >=1:
 			Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
 		else:
 			bot.say("The casino doesn't have any funds to provide")
@@ -249,8 +249,9 @@ def lottery(bot,trigger, arg):
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500		
-	if len(arg) >2 and arg[1] == 'payout':
-		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
+	if len(arg) > 2
+		if arg[1] == 'payout':
+			bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
 	if(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
