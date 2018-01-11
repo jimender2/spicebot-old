@@ -59,7 +59,6 @@ def text(html):
 def wikt(word):
     bytes = requests.get(uri % quote(word))
     bytes = r_ul.sub('', bytes)
-
     mode = None
     etymology = None
     definitions = {}
@@ -109,7 +108,7 @@ def quote(string, safe='/'):
     if sys.version_info.major < 3:
         if isinstance(string, unicode):
             string = string.encode('utf8')
-        string = urllib.quote(string, safe.encode('utf8'))
+        string = urllib2.quote(string, safe.encode('utf8'))
     else:
-        string = urllib.parse.quote(str(string), safe)
+        string = urllib2.parse.quote(str(string), safe)
     return string
