@@ -12,7 +12,7 @@ import sys
 import os
 import requests
 import re
-import urllib
+import web
 import urllib2
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
@@ -57,7 +57,7 @@ def text(html):
     return text
 
 def wikt(word):
-    bytes = requests.get(uri % quote(word))
+    bytes = web.get(uri % web.quote(word))
     bytes = r_ul.sub('', bytes)
     mode = None
     etymology = None
@@ -102,13 +102,3 @@ def format(result, definitions, number=2):
             n = ['%s. %s' % (i + 1, e.strip(' .')) for i, e in enumerate(defs)]
             result += ', '.join(n)
     return result.strip(' .,')
-
-def quote(string, safe='/'):
-    """Like urllib2.quote but handles unicode properly."""
-    if sys.version_info.major < 3:
-        if isinstance(string, unicode):
-            string = string.encode('utf8')
-        string = urllib2.quote(string, safe.encode('utf8'))
-    else:
-        string = urllib2.parse.quote(str(string), safe)
-    return string
