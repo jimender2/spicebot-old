@@ -20,10 +20,11 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 0)
+    gifno = get_trgger_arg(triggerargsarray, 1) or 0
     if target:
         query = target.replace(' ', '%20')
         query = str(query)
-        gif,randno = getGif(query)
+        gif,randno = getGif(query, gifno)
         if gif:
             bot.say("Result number " + str(randno) + ": " + gif)
         else:
@@ -31,12 +32,15 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say("Tell me what you're looking for!")
             
-def getGif(query):
+def getGif(query, gifno):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'    
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,limit)
+    if gifno == 0:
+        randno = randint(0,limit)
+    else:
+        randno = gifno
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
