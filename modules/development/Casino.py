@@ -377,6 +377,12 @@ def blackjack(bot,trigger,arg):
 				bot.say(player + ' takes a hit and gets ' + str(playerhits))
 				myhand.append(playerhits)
 				myscore = blackjackscore(myhand)
+				if myscore >21 and len(myhand) > 2:
+					if myhand[0] == 'A': 			
+						myhand[0]=1
+					if myhand[1] == 'A':
+						myhand[1] = 1
+					myscore= blackjackscore(myhand)			
 				if myscore < 21:				
 					bot.db.set_nick_value(player, 'myhand', myhand)
 				else:
