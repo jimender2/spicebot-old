@@ -12,8 +12,6 @@ import sys
 import os
 import requests
 import re
-import web
-import urllib2
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -57,7 +55,7 @@ def text(html):
     return text
 
 def wikt(word):
-    bytes = web.get(uri % web.quote(word))
+    bytes = requests.get(uri % SpicebotShared.quote(word))
     bytes = r_ul.sub('', bytes)
     mode = None
     etymology = None
