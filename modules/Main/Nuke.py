@@ -33,5 +33,6 @@ def killitnow(bot, trigger, triggerargsarray):
 def terminateit(bot, trigger, triggerargsarray, target):
     if target == 'notarget':
         bot.say("Terminate it with extreme prejudice.")
+        bot.notice("Terminate it now. With extreme prejudice.", instigator)
     elif target:
         bot.action("terminates "+ target +" with extreme prejudice.")
