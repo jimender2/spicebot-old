@@ -1,5 +1,4 @@
 # coding=utf-8
-"""
 wiktionary.py - Sopel/SpiceBot Wiktionary Module
 Copyright 2009, Sean B. Palmer, inamidst.com
 Licensed under the Eiffel Forum License 2.
