@@ -48,13 +48,13 @@ def execute_main(bot, trigger):
         assignee = "deathbybandaid"
         body = inputtext
         body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee)
+        make_github_issue(bot, body, labels, title, assignee, instigator)
     else:
         body = inputtext
         body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee)
+        make_github_issue(bot, body, labels, title, assignee, instigator)
 
-def make_github_issue(bot, body, labels, title, assignee):
+def make_github_issue(bot, body, labels, title, assignee, instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
     session = requests.Session()
     session.auth = (USERNAME, PASSWORD)
@@ -70,7 +70,7 @@ def make_github_issue(bot, body, labels, title, assignee):
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
         bot.say("Successfully created " + title)
-        bot.notice("Successfully created " + title, trigger.nick)
+        bot.notice("Successfully created " + title, instigator)
     else:
         bot.say("Could not create " + title)
         bot.say(str('Response:' + r.content))
