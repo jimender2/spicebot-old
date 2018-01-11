@@ -56,7 +56,7 @@ def text(html):
     return text
 
 def wikt(word):
-    bytes = requests.get(uri % urllib2.quote(word))
+    bytes = requests.get(uri % .quote(word))
     bytes = r_ul.sub('', bytes)
 
     mode = None
@@ -102,3 +102,13 @@ def format(result, definitions, number=2):
             n = ['%s. %s' % (i + 1, e.strip(' .')) for i, e in enumerate(defs)]
             result += ', '.join(n)
     return result.strip(' .,')
+
+def quote(string, safe='/'):
+    """Like urllib2.quote but handles unicode properly."""
+    if sys.version_info.major < 3:
+        if isinstance(string, unicode):
+            string = string.encode('utf8')
+        string = urllib.quote(string, safe.encode('utf8'))
+    else:
+        string = urllib.parse.quote(str(string), safe)
+    return string
