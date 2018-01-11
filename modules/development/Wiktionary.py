@@ -1,8 +1,8 @@
 # coding=utf-8
-wiktionary.py - Sopel/SpiceBot Wiktionary Module
-Copyright 2009, Sean B. Palmer, inamidst.com
-Licensed under the Eiffel Forum License 2.
-Modified to conform to SpiceBot Prerun checks 2018, Dyson M. N. Parkes
+# wiktionary.py - Sopel/SpiceBot Wiktionary Module
+# Copyright 2009, Sean B. Palmer, inamidst.com
+# Licensed under the Eiffel Forum License 2.
+# Modified to conform to SpiceBot Prerun checks 2018, Dyson M. N. Parkes
 
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
