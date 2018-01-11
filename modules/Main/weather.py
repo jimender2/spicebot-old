@@ -128,38 +128,72 @@ def weather(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    """.weather location - Show the weather at the given location."""
+    botusersarray = bot.users or []
+    success = 0
+    location = '' 
+   
+    if len(triggerargsarray) > 1:
+        location = triggerargsarray[0]
+        success = 1
+##set trigger.nick location
+    if location == 'setlocation':
+        success = 0
+        if len(triggerargsarray)<2:
+            bot.say("Enter a location to wish to set to")
+            
+        else:
+            update_location(bot, trigger, triggerargsarray[1])
+            bot.say("Location set to: " + triggerargsarray[1])    
+            
+###display target location
+    elif location == 'getlocation': 
+        success = 0
+        target = ''
+        if len(triggerargsarray)<2:
+            target = trigger.nick
+        else:
+            if triggerargsarray[1] not in  botusersarray:
+                bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
+            else:
+                target = triggerargsarray[1]                      
+        if not target == '':            
+            woeid = bot.db.get_nick_value(target, 'woeid') or 0
+            if woeid == 0:
+                bot.say("You must first set a location using .weather setloction <place>")                
+            else:
+                bot.say(target + "'s location is set to " +str(woeid))               
+                
+###Output weather
+    if success==1:
+        woeid = ''
+        if not location:
+            woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
+            if not woeid:
+                return bot.msg(trigger.sender, "I don't know where you live. " +
+                               'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
+        else:
+            location = location.strip()
+            woeid = bot.db.get_nick_value(location, 'woeid')
+            if woeid is None:
+                first_result = woeid_search(location)
+                if first_result is not None:
+                    woeid = first_result.get('woeid')
 
-    location = trigger.group(2)
-    woeid = ''
-    if not location:
-        woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
         if not woeid:
-            return bot.msg(trigger.sender, "I don't know where you live. " +
-                           'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
-    else:
-        location = location.strip()
-        woeid = bot.db.get_nick_value(location, 'woeid')
-        if woeid is None:
-            first_result = woeid_search(location)
-            if first_result is not None:
-                woeid = first_result.get('woeid')
+            return bot.reply("I don't know where that is.")
 
-    if not woeid:
-        return bot.reply("I don't know where that is.")
-
-    query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
-    body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
-    parsed = xmltodict.parse(body.text).get('query')
-    results = parsed.get('results')
-    if results is None:
-        return bot.reply("No forecast available. Try a more specific location.")
-    location = results.get('channel').get('title')
-    cover = get_cover(results)
-    temp = get_temp(results)
-    humidity = get_humidity(results)
-    wind = get_wind(results)
-    bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
+        query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
+        body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
+        parsed = xmltodict.parse(body.text).get('query')
+        results = parsed.get('results')
+        if results is None:
+            return bot.reply("No forecast available. Try a more specific location.")
+        location = results.get('channel').get('title')
+        cover = get_cover(results)
+        temp = get_temp(results)
+        humidity = get_humidity(results)
+        wind = get_wind(results)
+        bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
 
 
 @commands('setlocation', 'setwoeid')
@@ -167,15 +201,15 @@ def execute_main(bot, trigger, triggerargsarray):
 def update_woeid(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        update_location(bot, trigger, triggerargsarray)
+        update_location(bot, trigger, triggerargsarray[0])
     
-def update_location(bot, trigger, triggerargsarray):
+def update_location(bot, trigger, data):
     """Set your default weather location."""
-    if not trigger.group(2):
+    if not data:
         bot.reply('Give me a location, like "Washington, DC" or "London".')
         return NOLIMIT
 
-    first_result = woeid_search(trigger.group(2))
+    first_result = woeid_search(data)
     if first_result is None:
         return bot.reply("I don't know where that is.")
 
