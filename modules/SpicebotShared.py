@@ -17,6 +17,7 @@ import os
 import sys, re
 import fnmatch
 import random
+import urllib
 from os.path import exists
 
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
@@ -265,6 +266,16 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 def unicode_string_cleanup(string):
     for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
         string = string.replace(*r)
+    return string
+
+def quote(string, safe='/'):
+    # modified urllib2.quote that handles unicode properly
+    if sys.version_info.major < 3:
+        if isinstance(string, unicode):
+            string = string.encode('utf8')
+        string = urllib.quote(string, safe.encode('utf8'))
+    else:
+        string = urllib.parse.quote(str(string), safe)
     return string
     
 ##########
