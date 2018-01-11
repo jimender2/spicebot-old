@@ -12,6 +12,7 @@ import sys
 import os
 import requests
 import re
+import urllib
 import urllib2
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
