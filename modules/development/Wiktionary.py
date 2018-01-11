@@ -56,7 +56,7 @@ def text(html):
     return text
 
 def wikt(word):
-    bytes = web.get(uri % web.quote(word))
+    bytes = requests.get(uri % requests.quote(word))
     bytes = r_ul.sub('', bytes)
 
     mode = None
