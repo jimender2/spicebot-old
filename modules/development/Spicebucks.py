@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
 	botusersarray = bot.users or []
 	commandused = get_trigger_arg(triggerargsarray, 1) or 'nocommand'
 
-	if commandused == nocommand:
+	if commandused == 'nocommand':
 		bot.say("Welcome to the #Spiceworks Bank.  Your options are payday, transfer and bank.")
 	else:
 		##PayDay
