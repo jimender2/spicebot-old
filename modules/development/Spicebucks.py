@@ -59,7 +59,7 @@ def execute_main(bot, trigger, args):
 				elif args[1] not in  botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
-					target = args[1]
+					target = args[1].lower()
 					bankbalance = bank(bot,trigger.nick)
 					if bankbalance <=0:
 						spicebucks(bot, trigger.nick, 'plus', 15)
@@ -98,14 +98,14 @@ def execute_main(bot, trigger, args):
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					success = 0
 				else:
-					target = args[1]
+					target = args[1].lower()
 					success = 1
 				if success == 1:
 					if args[2].isdigit():
 						amount = int(args[2])
 						if amount>=0 and amount <10000001:
-							bot.db.set_nick_value(target.lower(), 'spicebucks_bank', amount)
-							targetbalance = bank(bot,target.lower())
+							bot.db.set_nick_value(target, 'spicebucks_bank', amount)
+							targetbalance = bank(bot,target)
 							bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
 						else:
 							bot.say('Please enter a postive number less then 1,000,000')
@@ -113,9 +113,6 @@ def execute_main(bot, trigger, args):
 						bot.say('Please enter a valid a amount to set the bank account to')
 			else:
 				bot.say('Please enter a target and an amount to set their bank balance at')					
-										
-						
-                        
                 
 		elif (args[0] == 'taxes' or args[0] == 'tax'):
 			if len(args) > 1:
@@ -141,7 +138,7 @@ def execute_main(bot, trigger, args):
                      
 		elif args[0] == 'transfer':
 			if len(args) >= 3:
-				target = args[1]
+				target = args[1].lower()
 				instigator = trigger.nick
 				amount=args[2]
 				if not amount.isdigit():
