@@ -18,9 +18,9 @@ from SpicebotShared import *
 #lottery payouts line 229
 #blackjack payouts line 304
 
-#shared varibles:
+#shared variables:
 maxbet = 100
-
+wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
 	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'gamble')
@@ -29,7 +29,9 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
 	mygame = arg[0]
-	if mygame =='slots':
+	if mygame == 'docs' or mygame == 'help':
+		bot.say("For help with this module, see here: " + wikiurl)
+	elif mygame =='slots':
 		slots(bot,trigger)
 	elif mygame=='blackjack':
 		blackjack(bot,trigger,arg)
@@ -54,7 +56,7 @@ def execute_main(bot, trigger, arg):
 		bot.say('Colors database emptied')
 		
     	else:
-        	bot.say('Please choose a game')
+        	bot.say('Please choose a game. Options include: blackjack, roulette, and lottery.')
 		
 def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
