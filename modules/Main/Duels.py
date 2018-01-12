@@ -227,7 +227,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
 
         ## Random Dueling
-        elif commandortarget == 'random':
+        elif commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone':
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in a channel.", instigator)
                 return
