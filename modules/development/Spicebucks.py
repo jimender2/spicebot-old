@@ -40,7 +40,7 @@ def execute_main(bot, trigger, args):
 				bot.say("You've already been paid today. Now go do some work.")
 ####MakeitRain
 		elif commandused == 'makeitrain':		
-	 		target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
 				if (target == 'notarget' or target == 'random'):
 					target = randomuser(bot,trigger.nick)
 					if target == 'None':
