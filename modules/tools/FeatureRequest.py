@@ -43,7 +43,7 @@ def execute_main(bot, trigger):
         assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
-    if inputtext.startswith('duels') or inputtext.startswith('duel'):
+    if inputtext.startswith('duel'):
         title = "DUELS: " + title
         assignee = "deathbybandaid"
         body = inputtext
