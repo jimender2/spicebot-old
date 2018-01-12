@@ -113,9 +113,6 @@ def execute_main(bot, trigger, args):
 						bot.say('Please enter a valid a amount to set the bank account to')
 			else:
 				bot.say('Please enter a target and an amount to set their bank balance at')					
-										
-						
-                        
                 
 		elif (args[0] == 'taxes' or args[0] == 'tax'):
 			if len(args) > 1:

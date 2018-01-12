@@ -18,9 +18,9 @@ from SpicebotShared import *
 #lottery payouts line 229
 #blackjack payouts line 304
 
-#shared varibles:
+#shared variables:
 maxbet = 100
-
+wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
 	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'gamble')
@@ -29,7 +29,9 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
 	mygame = arg[0]
-	if mygame =='slots':
+	if mygame == 'docs' or mygame == 'help':
+		bot.say("For help with this module, see here: " + wikiurl)
+	elif mygame =='slots':
 		slots(bot,trigger)
 	elif mygame=='blackjack':
 		blackjack(bot,trigger,arg)
@@ -54,7 +56,7 @@ def execute_main(bot, trigger, arg):
 		bot.say('Colors database emptied')
 		
     	else:
-        	bot.say('Please choose a game')
+        	bot.say('Please choose a game. Options include: blackjack, roulette, and lottery.')
 		
 def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
@@ -250,10 +252,11 @@ def lottery(bot,trigger, arg):
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500		
-	if len(arg) > 2:
+	if len(arg) > 1:
 		if arg[1] == 'payout':
 			bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
-	if(len(arg)<6 or len(arg)>6):
+			success = 0
+	elif(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
 	else:
@@ -330,7 +333,7 @@ def blackjack(bot,trigger,arg):
 		payout = 0
 		if(arg[1] == 'deal' or arg[1] == 'start'):
 			if len(arg)<3:
-				bot.say('Please enter an amount you would like to bet')
+				bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
 			else:
 				if not arg[2].isdigit():
 					bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
@@ -358,7 +361,7 @@ def blackjack(bot,trigger,arg):
 								bot.db.set_nick_value(player, 'myhand', myhand)
 								bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 								bot.db.set_nick_value(player, 'mybet', mybet)
-								bot.say('You can use say .gamble blackjack hit to take a card or stand to finish the game')
+								bot.say( " You can say'.gamble blackjack hit' to take a card or '.gamble blackjack stand' to finish the game")
 
 						
 						else:
@@ -377,6 +380,12 @@ def blackjack(bot,trigger,arg):
 				bot.say(player + ' takes a hit and gets ' + str(playerhits))
 				myhand.append(playerhits)
 				myscore = blackjackscore(myhand)
+				if myscore >21 and len(myhand) > 2:
+					if myhand[0] == 'A': 			
+						myhand[0]=1
+					if myhand[1] == 'A':
+						myhand[1] = 1
+					myscore= blackjackscore(myhand)			
 				if myscore < 21:				
 					bot.db.set_nick_value(player, 'myhand', myhand)
 				else:
