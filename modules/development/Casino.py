@@ -14,7 +14,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 #Payout lines:
-#slots, 77 - roulette, 147 - lottery, 242 - blackjack, 351-353
+#slots, 77 - roulette, 147 - lottery, 242 - blackjack, 351
 
 #shared variables:
 maxbet = 100
