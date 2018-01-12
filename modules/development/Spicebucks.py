@@ -121,29 +121,31 @@ def execute_main(bot, trigger, args):
 				paytaxes(bot, trigger.nick)
 ##Bank
 		elif commandused == 'bank':
-			if len(args) > 1:
-				if args[1] == 'spicebank':
+			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			if not target == 'notarget':
+				if target == 'spicebank':
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
-					bot.say('There are ' + str(balance) + ' spicebucks in the Spicebank.')
-				elif args[1] not in botusersarray:
-					bot.say("I'm sorry, I do not know who " + args[1] + " is.")				
+					bot.say('The current casino jackpot is ' + str(balance))
+					
+				elif if not target.lower() in [u.lower() for u in bot.users]:
+					bot.say("I'm sorry, I do not know who " + target + " is.")				
 				else:
-					balance=bank(bot, args[1])                                         
-					bot.say(args[1] + ' has '+ str(balance) + " spicebucks in the bank.")
+					balance=bank(bot, target)                                         
+					bot.say(target + ' has '+ str(balance) + " spicebucks in the bank.")
 			else:
 				balance=bank(bot, trigger.nick)
 				bot.say("You have " + str(balance) + " spicebucks in the bank.")       
  ##Transfer
 		elif commandused == 'transfer':
-			if len(args) >= 3:
-				target = args[1]
-				instigator = trigger.nick
-				amount=args[2]
+			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			amount =get_trigger_arg(triggerargsarray, 3) or 'noamount'
+			if not (target=='notarget' or amount=='noamount'):				
+				instigator = trigger.nick				
 				if not amount.isdigit():
 					bot.say('Please enter the person you wish to transfer to followed by an amount you wish to transfer')
 				else:	
 					amount=int(amount)		
-					if target not in  botusersarray:
+					if not target.lower() in [u.lower() for u in bot.users]:
 						bot.say("I'm sorry, I do not know who you want to transfer money to.")
 					else:
 						if target == instigator:
@@ -152,11 +154,11 @@ def execute_main(bot, trigger, args):
 							if amount <=0:								
 								bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
 							else:
-								balance=bank(bot, trigger.nick)
+								balance=bank(bot, instigator)
 								if amount <= balance:
-									success = transfer(bot,  trigger.nick, target, amount)
+									success = transfer(bot,  instigator, target, amount)
 									if success == 1:
-										bot.say(trigger.nick + " successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+										bot.say(instigator + " successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
 									else:
 										bot.say('The transfer was unsuccesfully check the amount and try again')
 								else:
