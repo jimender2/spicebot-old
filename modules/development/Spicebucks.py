@@ -246,4 +246,3 @@ def randomuser(bot,nick):
 			randomperson ='None'
 			
 	return randomperson
-	
