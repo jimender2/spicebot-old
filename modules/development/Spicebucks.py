@@ -59,7 +59,7 @@ def execute_main(bot, trigger, args):
 				elif args[1] not in  botusersarray:
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 				else:
-					target = args[1].lower()
+					target = args[1]
 					bankbalance = bank(bot,trigger.nick)
 					if bankbalance <=0:
 						spicebucks(bot, trigger.nick, 'plus', 15)
@@ -98,7 +98,7 @@ def execute_main(bot, trigger, args):
 					bot.say("I'm sorry, I do not know who " + args[1] + " is.")
 					success = 0
 				else:
-					target = args[1].lower()
+					target = args[1]
 					success = 1
 				if success == 1:
 					if args[2].isdigit():
@@ -138,7 +138,7 @@ def execute_main(bot, trigger, args):
                      
 		elif args[0] == 'transfer':
 			if len(args) >= 3:
-				target = args[1].lower()
+				target = args[1]
 				instigator = trigger.nick
 				amount=args[2]
 				if not amount.isdigit():
