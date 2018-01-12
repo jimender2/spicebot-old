@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
 	if not enablestatus:
 		execute_main(bot, trigger, triggerargsarray)
 
-def execute_main(bot, trigger, args):
+def execute_main(bot, trigger, triggerargsarray):
 	botusersarray = bot.users or []
 	commandused = get_trigger_arg(triggerargsarray, 1) or 'nocommand'
 
