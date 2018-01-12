@@ -93,7 +93,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wik
 stockhealth = 1000 ## default health for new players and respawns
 grenadefull = 100
 grenadesec = 50
-weaponmaxlength = 50
+weaponmaxlength = 70
 
 ############
 ## Arrays ##
