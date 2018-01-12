@@ -104,8 +104,8 @@ def execute_main(bot, trigger, args):
 					if args[2].isdigit():
 						amount = int(args[2])
 						if amount>=0 and amount <10000001:
-							bot.db.set_nick_value(target, 'spicebucks_bank', amount)
-							targetbalance = bank(bot,target)
+							bot.db.set_nick_value(target.lower(), 'spicebucks_bank', amount)
+							targetbalance = bank(bot,target.lower())
 							bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')					
 						else:
 							bot.say('Please enter a postive number less then 1,000,000')
