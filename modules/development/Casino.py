@@ -164,6 +164,9 @@ def roulette(bot,trigger,arg):
     	if mybet == 'nobet':
         	bot.say('Please enter an amount to bet')
 		inputcheck = 0
+	elif mybet=='payout':
+		bot.say('Picking the winng number will get you ' + maxwheel + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+
 	else:
 		if mybet == 'allin':
 			balance = Spicebucks.bank(bot, trigger.nick)
@@ -254,6 +257,7 @@ def lottery(bot,trigger, arg):
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500	
+		Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
 	match1payout = 2
 	match2payout = 4
 	match3payout = int(0.1 * bankbalance)#% of jackpot
@@ -326,7 +330,9 @@ def lottery(bot,trigger, arg):
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
 	minbet=30
-	if len(arg)<2:
+	mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
+	mychoice2 = get_trigger_arg(arg, 2) or 'nocommand'
+	if mychoice == 'nocommand':
 		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
 	else:
 		deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
@@ -334,14 +340,14 @@ def blackjack(bot,trigger,arg):
 		dealerhand = []
 		player=trigger.nick
 		payout = 0
-		if(arg[1] == 'deal' or arg[1] == 'start'):
-			if len(arg)<3:
+		if(mychoice == 'deal' or mychoice == 'start'):
+			if mychoice2 == 'nocommand':
 				bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
 			else:
-				if not arg[2].isdigit():
+				if not mychoice2.isdigit():
 					bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
 				else:							
-					mybet=int(arg[2])
+					mybet=int(mychoice2)
 					if (mybet<minbet or mybet>maxbet):
 						bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 					else:			
@@ -369,7 +375,7 @@ def blackjack(bot,trigger,arg):
 						
 						else:
 							bot.say('You do not have enough spicebucks.')
-		elif arg[1] == 'hit':
+		elif mychoice == 'hit':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
 			if (myhand == [] or myhand ==0):
@@ -395,7 +401,7 @@ def blackjack(bot,trigger,arg):
 					bot.say(player + ' busted and gets nothing')
 					blackjackreset(bot,player)
 					
-		elif arg[1] == 'check':
+		elif mychoice == 'check':
 			if len(arg)<3:
 				target = player
 			else:				
@@ -409,7 +415,7 @@ def blackjack(bot,trigger,arg):
 			dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
 			bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 			
-		elif arg[1] == 'stand':
+		elif mychoice == 'stand':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
