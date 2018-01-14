@@ -190,13 +190,13 @@ def execute_main(bot, trigger, triggerargsarray):
         wind = get_wind(results)
         bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
 
-
-@commands('setlocation', 'setwoeid')
-@example('.setlocation Columbus, OH')
-def update_woeid(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
-    if not enablestatus:
-        update_location(bot, trigger, triggerargsarray[0])
+#An example of how to use a different command in the same module
+#@commands('setlocation', 'setwoeid')
+#@example('.setlocation Columbus, OH')
+#def update_woeid(bot, trigger):
+ #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+  #  if not enablestatus:
+   #     update_location(bot, trigger, triggerargsarray[0])
     
 def update_location(bot, trigger, data):
     """Set your default weather location."""
