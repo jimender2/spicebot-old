@@ -71,7 +71,7 @@ def freebie(bot,trigger):
 		
 
 	
-def slots(bot,trigger):
+def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 #__payouts___
@@ -90,7 +90,7 @@ def slots(bot,trigger):
 		if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
 			#add bet to spicebank
 			mywinnings = 0
-			jackpot = 0
+			
 
 			wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 			wheel1 = spin(wheel)
@@ -106,10 +106,7 @@ def slots(bot,trigger):
 
 			if(wheel1 == wheel2 and wheel2 == wheel3):
 				#bot.say(trigger.nick + ' got 3 ' + str(wheel1))
-				if wheel1 == keyword:
-					bankbalance=Spicebucks.bank(bot,'SpiceBank')
-					if bankbalance <=500:
-						bankbalance=500					
+				if wheel1 == keyword:							
 					bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
 					mywinnings=bankbalance						
 				elif wheel1 == 'Patches':
