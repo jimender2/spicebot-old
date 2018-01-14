@@ -44,20 +44,20 @@ def execute_main(bot, trigger, triggerargsarray):
             if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
                 bot.say(bot.nick + ' gives 40 points to ' + instigator)
-                addpoints(bot, instigator, '40')
+                addpoints(bot, instigator, 40)
                 #Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
             elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
                 bot.say(bot.nick + ' gives 40 points to ' + instigator)
-                addpoints(bot,instigator,'40')
+                addpoints(bot,instigator,40)
                 #Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
     elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
         bot.say(bot.nick + ' gives 40 points to ' + instigator)
-        addpoints(bot,instigator,'40')
+        addpoints(bot,instigator,40)
         #Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
         bot.say(bot.nick + ' takes 40 points to ' + instigator)
-        takepoints(bot,instigator,'40')
+        takepoints(bot,instigator,40)
         #Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' takes ', ' from', 'down', 'points', trigger.sender)
