@@ -37,12 +37,15 @@ def execute_main(bot, trigger, triggerargsarray):
 		####MakeitRain
 		elif commandused == 'makeitrain':		
 			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-			if (target == 'notarget' or target == 'random'):
+			if target=='notarget':
+				target = 'Everyone'
+				bot.action(' rains Spicebucks down on ' + target)
+			elif  (target == 'random' or target == trigger.nick):
 				target = randomuser(bot,trigger.nick)
 				if target == 'None':
 					target = randomuser(bot,trigger.nick)
 				bankbalance = bank(bot,trigger.nick)
-				if bankbalance <=0:
+				if bankbalance < 15:
 					spicebucks(bot, trigger.nick, 'plus', 15)
 					bankbalance = 15
 				maxpayout = bankbalance
@@ -54,7 +57,7 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.say("I'm sorry, I do not know who " + target + " is.")
 			else:
 				bankbalance = bank(bot,trigger.nick)
-				if bankbalance <=0:
+				if bankbalance <15:
 					spicebucks(bot, trigger.nick, 'plus', 15)
 					bankbalance = 15
 				maxpayout = bankbalance
