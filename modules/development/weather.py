@@ -162,13 +162,13 @@ def execute_main(bot, trigger, triggerargsarray):
 ###Output weather
     if success==1:
         woeid = ''
-        if location == 'nolocation'
+        if location == 'nolocation':
             woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
             if not woeid:
                 return bot.msg(trigger.sender, "I don't know where you live. " +
                                'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
         else:
-            location = get_trigger_arg(triggerargsarray, 0
+            location = get_trigger_arg(triggerargsarray, 0)
             woeid = bot.db.get_nick_value(location, 'woeid')
             if woeid is None:
                 first_result = woeid_search(location)
