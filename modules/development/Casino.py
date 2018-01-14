@@ -143,9 +143,9 @@ def roulette(bot,trigger,arg):
     	colors = ['red', 'black']
 	inputcheck = 0
 	
-	mybet = get_trigger_arg(triggerargsarray, 2) or 'nobet'
-	myitem = get_trigger_arg(triggerargsarray, 3) or 'noitem'
-	myitem2 = get_trigger_arg(triggerargsarray, 4) or 'noitem'
+	mybet = get_trigger_arg(arg, 2) or 'nobet'
+	myitem = get_trigger_arg(arg, 3) or 'noitem'
+	myitem2 = get_trigger_arg(arg, 4) or 'noitem'
 	
 #__payouts___
 	colorpayout = 2 #% of amount bet + amount bet
