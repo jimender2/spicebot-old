@@ -240,19 +240,20 @@ def roulette(bot,trigger,arg):
 def lottery(bot,trigger, arg):
 	maxnumber=50
 #___payout table___
-	match1payout = 2
-	match2payout = 4
-	match3payout = 0.001 #% of jackpot
-	match4payout = 0.03 #% of jackpot
+	
 	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
 		maxnumber=20
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500	
+	match1payout = 2
+	match2payout = 4
+	match3payout = int(0.001 * bankbalance)#% of jackpot
+	match4payout = int(0.03 * bankbalance) #% of jackpot
 	commandused = get_trigger_arg(arg, 2) or 'nocommand'
 	if commandused == 'payout':		
-		bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
+		bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(match4payout) + " and getting 3 correct = " + str(match3payout))
 		success = 0
 	elif(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
@@ -301,9 +302,9 @@ def lottery(bot,trigger, arg):
 						elif correct == 2:
 							payout = match2payout
 						elif correct == 3:
-							payout = int((bankbalance * match3payout))
+							payout =  match3payout
 						elif correct == 4:
-							payout = int((bankbalance * match4payout))
+							payout = match4payout
 						elif correct == 5:							
 							payout = bankbalance
 												
