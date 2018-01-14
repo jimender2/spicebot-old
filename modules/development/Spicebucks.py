@@ -45,9 +45,9 @@ def execute_main(bot, trigger, triggerargsarray):
 				if target == 'None':
 					target = randomuser(bot,trigger.nick)
 				bankbalance = bank(bot,trigger.nick)
-				if bankbalance < 15:
+				if bankbalance < 30:
 					spicebucks(bot, trigger.nick, 'plus', 15)
-					bankbalance = 15
+					bankbalance = 30
 				maxpayout = bankbalance
 				bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
 				winnings=random.randint(1,maxpayout)
@@ -57,9 +57,9 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.say("I'm sorry, I do not know who " + target + " is.")
 			else:
 				bankbalance = bank(bot,trigger.nick)
-				if bankbalance <15:
+				if bankbalance <30:
 					spicebucks(bot, trigger.nick, 'plus', 15)
-					bankbalance = 15
+					bankbalance = 30
 				maxpayout = bankbalance
 				bot.action('rains Spicebucks on ' + target)
 				winnings=random.randint(1,maxpayout)
