@@ -140,23 +140,22 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Enter a location to wish to set to")            
         else:
             update_location(bot, trigger,  mylocation)
-            bot.say("Location set to: " +  mylocation)    
+            
             
 ###display target location
     elif location == 'getlocation': 
         success = 0
         target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
         if target == 'notarget':
-            target = trigger.nick
-        else:
-            if target not in  botusersarray:
-                bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
-            else:           
-                woeid = bot.db.get_nick_value(target, 'woeid') or 0
-                if woeid == 0:
-                    bot.say("You must first set a location using .weather setloction <place>")                
-                else:
-                    bot.say(target + "'s location is set to " +str(woeid))
+            target = trigger.nick        
+        if target not in  botusersarray:
+            bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
+        else:           
+            woeid = bot.db.get_nick_value(target, 'woeid') or 0
+            if woeid == 0:
+                bot.say("You must first set a location using .weather setloction <place>")                
+            else:
+                bot.say(target + "'s location is set to " +str(woeid))
                 
                 
 ###Output weather
