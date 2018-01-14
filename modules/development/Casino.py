@@ -142,7 +142,10 @@ def roulette(bot,trigger,arg):
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
-	mybet=0
+	
+	mybet = get_trigger_arg(triggerargsarray, 2) or 'nobet'
+	myitem = get_trigger_arg(triggerargsarray, 3) or 'noitem'
+	myitem2 = get_trigger_arg(triggerargsarray, 4) or 'noitem'
 	
 #__payouts___
 	colorpayout = 2 #% of amount bet + amount bet
@@ -152,11 +155,11 @@ def roulette(bot,trigger,arg):
 		maxwheel=15
 	
 	#set bet
-    	if len(arg) < 3:
+    	if mybet == 'nobet':
         	bot.say('Please enter an amount to bet')
 		inputcheck = 0
 	else:
-		if arg[1] == 'allin':
+		if mybet == 'allin':
 			balance = Spicebucks.bank(bot, trigger.nick)
 			if balance > 0:
 				mybet=balance
@@ -164,11 +167,10 @@ def roulette(bot,trigger,arg):
 			else:
 				bot.say('You do not have any spicebucks')
 				inputcheck = 0
-		elif not arg[1].isdigit():
+		elif not mybet.isdigit():
 			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
-		else:
-			mybet = int(arg[1])
+		else:			
 			inputcheck = 1
 			if (mybet<minbet or mybet>maxbet):
 				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
@@ -176,16 +178,16 @@ def roulette(bot,trigger,arg):
 	#setup what was bet on
     	if inputcheck == 1:	
 		#check to see if a number was entered
-		if arg[2].isdigit(): 
-			mynumber = int(arg[2]) 
+		if myitem.isdigit(): 
+			mynumber = int(myitem) 
                     	if(mynumber <= 0 or mynumber > maxwheel):
                         	bot.say('Please pick a number between 0 and ' + str(maxwheel))
                         	inputcheck=0
 			#check to see if a color was selected
 			else: 
-				if len(arg)>=4:
-					if (str(arg[3]) == 'red' or str(arg[3]) == 'black'):          
-						mycolor = arg[3]
+				if not myitem2 == 'noitem':
+					if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
+						mycolor = myitem2
 					else:
 						bot.say('Choose either red or black')
 						inputcheck=0
@@ -194,15 +196,13 @@ def roulette(bot,trigger,arg):
                             		mycolor = ' '
                             		inputcheck =1
 		#was a color selected first
-		elif(str(arg[2]) == 'red' or str(arg[2]) == 'black'):
-	    		mycolor = arg[2]
-	    		mynumber=-1
+		elif(str(myitem == 'red' or str(myitem) == 'black'):
+	    		mycolor = myitem
+	    		mynumber=''
 			inputcheck =1
                 else:
 		#no valid choices
-                    bot.say('Please pick either a color or number to bet on')
-                    mycolor = ' '
-                    mynumber=-1
+                    bot.say('Please pick either a color or number to bet on')                    
                     inputcheck = 0 
 	# user input now setup game will run
 	if inputcheck == 1:
