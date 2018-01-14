@@ -59,5 +59,5 @@ def execute_main(bot, trigger, triggerargsarray):
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
         bot.say(bot.nick + ' takes 40 points to ' + instigator)
-        takepoints(bot,instigator,'40)
+        takepoints(bot,instigator,'40')
         #Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' takes ', ' from', 'down', 'points', trigger.sender)
