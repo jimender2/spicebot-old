@@ -168,7 +168,7 @@ def roulette(bot,trigger,arg):
 				bot.say('You do not have any spicebucks')
 				inputcheck = 0
 		elif not mybet.isdigit():
-			bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))
+			bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
 			inputcheck = 0
 		else:			
 			inputcheck = 1
