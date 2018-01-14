@@ -54,7 +54,7 @@ def execute_main(bot, trigger, arg):
 		bot.say('Colors database emptied')
 		
     	else:
-        	bot.say('Please choose a game. Options include: blackjack, roulette, and lottery.')
+        	bot.say('Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
 		
 def freebie(bot,trigger):
 	bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
@@ -252,7 +252,7 @@ def lottery(bot,trigger, arg):
 		bankbalance=500	
 	commandused = get_trigger_arg(arg, 2) or 'nocommand'
 	if commandused == 'payout':		
-		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
+		bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
 		success = 0
 	elif(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
