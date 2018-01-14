@@ -165,7 +165,7 @@ def roulette(bot,trigger,arg):
         	bot.say('Please enter an amount to bet')
 		inputcheck = 0
 	elif mybet=='payout':
-		bot.say('Picking the winng number will get you ' + maxwheel + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+		bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
 
 	else:
 		if mybet == 'allin':
