@@ -37,9 +37,9 @@ def execute_main(bot, trigger, triggerargsarray):
 		####MakeitRain
 		elif commandused == 'makeitrain':		
 			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-			if target=='notarget':
+			if (target=='notarget' or target=='everyone'):
 				target = 'Everyone'
-				bot.action(' rains Spicebucks down on ' + target)
+				bot.action(" rains " + trigger.nick + "'s Spicebucks down on " + target)
 			elif  (target == 'random' or target == trigger.nick):
 				target = randomuser(bot,trigger.nick)
 				if target == 'None':
