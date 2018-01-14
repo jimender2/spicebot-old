@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
     		execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-	mygame = arg[0]
+	mygame = get_trigger_arg(arg, 1) or 'nocommand'
 	if mygame == 'docs' or mygame == 'help':
 		bot.say("For help with this module, see here: " + wikiurl)
 	elif mygame =='slots':
@@ -249,11 +249,11 @@ def lottery(bot,trigger, arg):
 		maxnumber=20
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
-		bankbalance=500		
-	if len(arg) > 1:
-		if arg[1] == 'payout':
-			bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
-			success = 0
+		bankbalance=500	
+	commandused = get_trigger_arg(arg, 2) or 'nocommand'
+	if commandused == 'payout'		
+		bot.say("Current lottery jackpot is " + bankbalance + ". Getting 4 number correct pays " + str(int((bankbalance * match4payout))) + " and getting 3 correct = " + str(int((bankbalance * match3payout))))
+		success = 0
 	elif(len(arg)<6 or len(arg)>6):
 		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 		success = 0
