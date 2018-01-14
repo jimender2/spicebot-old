@@ -23,6 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     pointsworth = randint(1, 666)
+    pointsvalue = string(pointsworth)
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
         return
@@ -44,18 +45,18 @@ def execute_main(bot, trigger, triggerargsarray):
         if suspect:
             if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
-                bot.say(bot.nick + ' gives ' + pointsworth + ' points to ' + instigator)
+                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
                 addpoints(bot, instigator, pointsworth)
             elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
-                bot.say(bot.nick + ' gives ' + pointsworth + ' points to ' + instigator)
+                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
                 addpoints(bot,instigator,pointsworth)
     elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
-        bot.say(bot.nick + ' gives ' + pointsworth + ' points to ' + instigator)
+        bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
         addpoints(bot,instigator,pointsworth)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
-        bot.say(bot.nick + ' takes ' + pointsworth + ' points from ' + instigator)
+        bot.say(bot.nick + ' takes ' + pointsvalue + ' points from ' + instigator)
         takepoints(bot,instigator,pointsworth)
         
