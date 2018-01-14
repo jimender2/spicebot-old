@@ -155,7 +155,8 @@ def execute_main(bot, trigger, triggerargsarray):
             if woeid == 0:
                 bot.say("You must first set a location using .weather setloction <place>")                
             else:
-                bot.say(target + "'s location is set to " +str(woeid))
+                targetlocation = woeid_search(woeid)
+                bot.say(target + "'s location is set to " +str(targetlocation))
                 
                 
 ###Output weather
