@@ -331,9 +331,10 @@ def lottery(bot,trigger, arg):
 def blackjack(bot,trigger,arg):
 	minbet=30
 	mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
-	mychoice2 = get_trigger_arg(arg, 2) or 'nocommand'
+	mychoice2 = get_trigger_arg(arg, 3) or 'nocommand'
 	if mychoice == 'nocommand':
-		bot.say('You must place a bet at least ' + str(minbet) + ' and less then ' + str(maxbet))
+		bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
+		
 	else:
 		deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 		myhand = []
@@ -342,7 +343,7 @@ def blackjack(bot,trigger,arg):
 		payout = 0
 		if(mychoice == 'deal' or mychoice == 'start'):
 			if mychoice2 == 'nocommand':
-				bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
+				bot.say("Please enter an amount you wish to bet")
 			else:
 				if not mychoice2.isdigit():
 					bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
