@@ -249,24 +249,21 @@ def lottery(bot,trigger, arg):
 		bankbalance=500	
 	match1payout = 2
 	match2payout = 4
-	match3payout = int(0.001 * bankbalance)#% of jackpot
-	match4payout = int(0.03 * bankbalance) #% of jackpot
+	match3payout = int(0.1 * bankbalance)#% of jackpot
+	match4payout = int(0.3 * bankbalance) #% of jackpot
 	commandused = get_trigger_arg(arg, 2) or 'nocommand'
 	if commandused == 'payout':		
 		bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(match4payout) + " and getting 3 correct = " + str(match3payout))
-		success = 0
-	elif(len(arg)<6 or len(arg)>6):
-		bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
-		success = 0
+		success = 0	
 	else:
 		picks = []
 		success = 0				
-		del arg[0]		
-		for pick in arg:
+		mypicks=get_trigger_arg(arg,2+)		
+		for pick in mypicks:
 			if pick.isdigit():						
 				picks.append(int(pick))
 		if len(picks)<5:
-			bot.say('One of the numbers you entered does not appear to be a number.')
+			bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 			success = 0
 		else:
 			success = 1					
