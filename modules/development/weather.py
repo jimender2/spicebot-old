@@ -207,18 +207,19 @@ def display_location(bot, target, data):
     neighborhood =  first_result.get('locality2') or ''
     if neighborhood:
         neighborhood = neighborhood.get('#text') + ', '
+        bot.say("Neighorhood text")
     city =  first_result.get('locality1') or ''
     # This is to catch cases like 'Bawlf, Alberta' where the location is
     # thought to be a "LocalAdmin" rather than a "Town"
     if city:
         city = city.get('#text')
+        bot.say("City text")
     else:
         city =  first_result.get('name')
+        bot.say("City is name")
     state =  first_result.get('admin1').get('#text') or ''
     country =  first_result.get('country').get('#text') or ''
-    bot.reply(target + " is at at (%s%s, %s, %s)' %
-              (neighborhood, city, state, country))
-
+    bot.reply(target + " is at " + city + " " + " " state + " " + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
