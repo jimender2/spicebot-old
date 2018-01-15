@@ -154,9 +154,8 @@ def execute_main(bot, trigger, triggerargsarray):
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
                 bot.say(target +  " must first set a location using .weather setloction <place>")                
-            else:
-                targetlocation = woeid_search(woeid)
-                display_location(bot, target, targetlocation)
+            else:                
+                display_location(bot, target, woeid)
                 
                 
                 
@@ -199,6 +198,7 @@ def execute_main(bot, trigger, triggerargsarray):
  #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
   #  if not enablestatus:
    #     update_location(bot, trigger, triggerargsarray[0])
+    
 def display_location(bot, target, data):
 #data = woied
     first_result = woeid_search(data)
