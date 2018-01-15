@@ -201,10 +201,9 @@ def execute_main(bot, trigger, triggerargsarray):
    #     update_location(bot, trigger, triggerargsarray[0])
 def display_location(bot, target, data):
 #data = woied
- first_result = woeid_search(data)
+    first_result = woeid_search(data)
     if first_result is None:
         return bot.reply("I don't know where that is.")
-
     woeid = first_result.get('woeid')
     neighborhood = first_result.get('locality2') or ''
     if neighborhood:
