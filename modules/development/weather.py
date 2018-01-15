@@ -202,6 +202,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def display_location(bot, target, data):
 #data = woied
     first_result = woeid_search(data)
+    bot.say(data)
     if first_result is None:
         return bot.reply("I don't know where that is.")
     woeid = first_result.get('woeid')
