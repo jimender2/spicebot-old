@@ -201,11 +201,16 @@ def execute_main(bot, trigger, triggerargsarray):
     
 def display_location(bot, target, data):
 #data = woied
+    if not data:
+        bot.reply('Give me a location, like "Washington, DC" or "London".')
+        return NOLIMIT
+
     first_result = woeid_search(data)
-    
     if first_result is None:
         return bot.reply("I don't know where that is.")
-    woeid = first_result.get('woeid')
+
+    woeid = first_result.get('woeid')  
+
     neighborhood = first_result.get('locality2') or ''
     if neighborhood:
         neighborhood = neighborhood.get('#text') + ', '
@@ -218,7 +223,7 @@ def display_location(bot, target, data):
         city = first_result.get('name')
     state = first_result.get('admin1').get('#text') or ''
     country = first_result.get('country').get('#text') or ''
-    bot.reply(target, ' is at WOEID %s (%s%s, %s, %s)' %
+    bot.reply('I now have you at WOEID %s (%s%s, %s, %s)' %
               (woeid, neighborhood, city, state, country))
 
 
