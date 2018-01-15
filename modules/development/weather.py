@@ -202,8 +202,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def display_location(bot, target, data):
      
     first_result = woeid_search(data)
-    bot.say(str(first_result))
-        
+    #bot.say(str(first_result))       
         
     neighborhood =  first_result.get('locality2') or ''
     if neighborhood:
@@ -217,8 +216,8 @@ def display_location(bot, target, data):
         city =  first_result.get('name')
     state =  first_result.get('admin1').get('#text') or ''
     country =  first_result.get('country').get('#text') or ''
-    bot.reply('I now have you at WOEID %s (%s%s, %s, %s)' %
-              (woeid, neighborhood, city, state, country))
+    bot.reply(target + " is at at (%s%s, %s, %s)' %
+              (neighborhood, city, state, country))
 
 
 def update_location(bot, trigger, data):
