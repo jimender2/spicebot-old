@@ -219,7 +219,7 @@ def display_location(bot, target, data):
         bot.say("City is name")
     state =  first_result.get('admin1').get('#text') or ''
     country =  first_result.get('country').get('#text') or ''
-    bot.reply(target + " is at " + city + " " + " " state + " " + country)
+    bot.say(target + " is at " + city + " " + " " state + " " + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
