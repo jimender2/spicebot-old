@@ -143,7 +143,7 @@ def execute_main(bot, trigger, triggerargsarray):
             
             
 ###display target location
-    elif location == 'getlocation': 
+    elif location == 'getlocation' or location =='checklocation': 
         success = 0
         target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
         if target == 'notarget':
@@ -202,7 +202,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def display_location(bot, target, data):
 #data = woied
     first_result = woeid_search(data)
-    bot.say(data)
+    
     if first_result is None:
         return bot.reply("I don't know where that is.")
     woeid = first_result.get('woeid')
