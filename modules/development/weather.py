@@ -153,10 +153,10 @@ def execute_main(bot, trigger, triggerargsarray):
         else:           
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                bot.say("You must first set a location using .weather setloction <place>")                
+                bot.say(target +  " must first set a location using .weather setloction <place>")                
             else:
                 targetlocation = woeid_search(woeid)
-                display_location(bot, targetlocation)
+                display_location(bot, target, targetlocation)
                 
                 
                 
@@ -199,7 +199,7 @@ def execute_main(bot, trigger, triggerargsarray):
  #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
   #  if not enablestatus:
    #     update_location(bot, trigger, triggerargsarray[0])
-def display_location(bot, data)
+def display_location(bot, target, data):
 #data = woied
  first_result = woeid_search(data)
     if first_result is None:
@@ -218,7 +218,7 @@ def display_location(bot, data)
         city = first_result.get('name')
     state = first_result.get('admin1').get('#text') or ''
     country = first_result.get('country').get('#text') or ''
-    bot.reply('I now have you at WOEID %s (%s%s, %s, %s)' %
+    bot.reply(target, ' is at WOEID %s (%s%s, %s, %s)' %
               (woeid, neighborhood, city, state, country))
 
 
