@@ -202,7 +202,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def display_location(bot, target, data):
      
     first_result = woeid_search(data)
-    bot.say(str(first_result)
+    bot.say(str(first_result))
         
         
     neighborhood =  first_result.get('locality2') or ''
