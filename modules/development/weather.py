@@ -200,19 +200,23 @@ def execute_main(bot, trigger, triggerargsarray):
    #     update_location(bot, trigger, triggerargsarray[0])
     
 def display_location(bot, target, data):
+     
+    first_result = woeid_search(data)
+    bot.say(str(first_result)
         
-    neighborhood =  data.get('locality2') or ''
+        
+    neighborhood =  first_result.get('locality2') or ''
     if neighborhood:
         neighborhood = neighborhood.get('#text') + ', '
-    city =  data.get('locality1') or ''
+    city =  first_result.get('locality1') or ''
     # This is to catch cases like 'Bawlf, Alberta' where the location is
     # thought to be a "LocalAdmin" rather than a "Town"
     if city:
         city = city.get('#text')
     else:
-        city =  data.get('name')
-    state =  data.get('admin1').get('#text') or ''
-    country =  data.get('country').get('#text') or ''
+        city =  first_result.get('name')
+    state =  first_result.get('admin1').get('#text') or ''
+    country =  first_result.get('country').get('#text') or ''
     bot.reply('I now have you at WOEID %s (%s%s, %s, %s)' %
               (woeid, neighborhood, city, state, country))
 
