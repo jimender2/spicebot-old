@@ -1616,7 +1616,7 @@ def get_lootitem_text(bot, nick, loottype):
     elif loottype == 'poisonpotion':
         loot_text = str(": worth " + str(poisonpotionworth) + " health.")
     elif loottype == 'manapotion':
-        loot_text = str(": worth " + str(manapotionworth) + " health.")
+        loot_text = str(": worth " + str(manapotionworth) + " mana.")
     elif loottype == 'timepotion':
         loot_text = ': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.'
     elif loottype == 'mysterypotion':
