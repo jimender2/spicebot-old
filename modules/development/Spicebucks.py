@@ -46,7 +46,7 @@ def execute_main(bot, trigger, triggerargsarray):
 					target = randomuser(bot,trigger.nick)
 				bankbalance = bank(bot,trigger.nick)
 				if bankbalance < 30:
-					spicebucks(bot, trigger.nick, 'plus', 15)
+					spicebucks(bot, trigger.nick, 'plus', 30)
 					bankbalance = 30
 				maxpayout = bankbalance
 				bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
