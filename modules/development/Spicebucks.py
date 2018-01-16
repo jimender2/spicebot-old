@@ -232,8 +232,9 @@ def transfer(bot, instigator, target, amount):
 def randomuser(bot,nick):
 	randompersons = []
 	randomperson=''
+	botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
 	for u in bot.users:
-		if not(u==nick or u==bot.nick):
+		if u in botusersarray and u != bot.nick and u != nick:
 			randompersons.append(u)
 	randomperson = get_trigger_arg(randompersons,'random')		
 	return randomperson
