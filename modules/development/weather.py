@@ -211,7 +211,7 @@ def display_location(bot, target, woeid):
     if results is None:
         return bot.reply("Try a more specific location.")
     location = results.get('channel').get('title')
-    bot.say(target + " is at " + ;location)
+    bot.say(target + " is at " + location)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
