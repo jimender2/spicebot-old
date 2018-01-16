@@ -456,23 +456,25 @@ def blackjack(bot,trigger,arg):
 							bot.say('The dealer takes ' + str((hitlist))  + ' hits and gets' + dealerhitlist)
 						else: 
 							bot.say('The dealer takes a hit and gets a' + dealerhitlist)
-		
+					showdealerhand = ''
+					for card in dealerhand
+						showdealerhand = showdealerhand + ' ' + str(card)
 					if dealerscore > 21:
 						payout=payout + 30
 						Spicebucks.spicebucks(bot, player, 'plus', payout)
 						bot.say('The dealer busts ')
 						bot.say(player + ' wins ' + str(payout))
 					elif dealerscore == 21:
-						dealerwins ='the dealer wins'
+						bot.say("The dealer has" + showdealerhand + " and wins")
 					elif dealerscore < myscore:
 						payout=payout + 30
 						Spicebucks.spicebucks(bot, player, 'plus', payout)
-						bot.say(player + ' wins ' + str(payout))
+						bot.say("The dealer had" + showdealerhand + " " + player + " wins " + str(payout))
 					elif dealerscore > myscore:
-						bot.say('The dealer wins')
+						bot.say("The dealer has" + showdealerhand + " and wins")
 					elif dealerscore == myscore:			
 						Spicebucks.spicebucks(bot, player, 'plus', payout)
-						bot.say('It is a draw and ' + player + ' gets ' + str(payout) + ' bank')
+						bot.say('It is a draw and ' + player + ' gets ' + str(payout))
 					else:
 						bot.say('No scores found start a new game')
 	
