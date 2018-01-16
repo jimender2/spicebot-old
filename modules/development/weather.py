@@ -168,13 +168,16 @@ def execute_main(bot, trigger, triggerargsarray):
                 return bot.msg(trigger.sender, "I don't know where you live. " +
                                'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
         else:
-            location = get_trigger_arg(triggerargsarray, 0)
-            woeid = bot.db.get_nick_value(location, 'woeid')
+            if location.lower() in [u.lower() for u in bot.users]:
+                woeid = bot.db.get_nick_value(location, 'woeid')
+            else:
+                location = get_trigger_arg(triggerargsarray, 0)
+                woeid = bot.db.get_nick_value(location, 'woeid')
+                
             if woeid is None:
                 first_result = woeid_search(location)
                 if first_result is not None:
                     woeid = first_result.get('woeid')
-
         if not woeid:
             return bot.reply("I don't know where that is.")
 
@@ -202,7 +205,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def display_location(bot, target, data):
      
     first_result = woeid_search(data)
-    #bot.say(str(first_result))       
+    bot.say(str(first_result))       
         
     neighborhood =  first_result.get('locality2') or ''
     if neighborhood:
