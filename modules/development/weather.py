@@ -202,27 +202,16 @@ def execute_main(bot, trigger, triggerargsarray):
   #  if not enablestatus:
    #     update_location(bot, trigger, triggerargsarray[0])
     
-def display_location(bot, target, data):
+def display_location(bot, target, woeid):
      
-    first_result = woeid_search(data)
-    bot.say(str(first_result))       
-        
-    neighborhood =  first_result.get('locality2') or ''
-    if neighborhood:
-        neighborhood = neighborhood.get('#text') + ', '
-        bot.say("Neighorhood text")
-    city =  first_result.get('locality1') or ''
-    # This is to catch cases like 'Bawlf, Alberta' where the location is
-    # thought to be a "LocalAdmin" rather than a "Town"
-    if city:
-        city = city.get('#text')
-        bot.say("City text")
-    else:
-        city =  first_result.get('name')
-        bot.say("City is name")
-    state =  first_result.get('admin1').get('#text') or ''
-    country =  first_result.get('country').get('#text') or ''
-    bot.say(target + " is at " + city + " " + " " + state + " " + country)
+    query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
+    body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
+    parsed = xmltodict.parse(body.text).get('query')
+    results = parsed.get('results')
+    if results is None:
+        return bot.reply("Try a more specific location.")
+    location = results.get('channel').get('title')
+    bot.say(target + " is at " + ;location)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
