@@ -457,7 +457,7 @@ def blackjack(bot,trigger,arg):
 						else: 
 							bot.say('The dealer takes a hit and gets a' + dealerhitlist)
 					showdealerhand = ''
-					for card in dealerhand
+					for card in dealerhand:						
 						showdealerhand = showdealerhand + ' ' + str(card)
 					if dealerscore > 21:
 						payout=payout + 30
