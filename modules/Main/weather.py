@@ -166,7 +166,7 @@ def execute_main(bot, trigger, triggerargsarray):
             woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
             if not woeid:
                 return bot.msg(trigger.sender, "I don't know where you live. " +
-                               'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
+                               'Give me a location, like .weather London, or tell me where you live by saying .weather setlocation London, for example.')
         else:
             if location.lower() in [u.lower() for u in bot.users]:
                 woeid = bot.db.get_nick_value(location, 'woeid')
