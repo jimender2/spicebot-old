@@ -20,6 +20,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
 	botusersarray = bot.users or []
+	channel = trigger.sender
 	commandused = get_trigger_arg(triggerargsarray, 1) or 'nocommand'
 
 	if commandused == 'nocommand':
@@ -35,35 +36,38 @@ def execute_main(bot, trigger, triggerargsarray):
 			else:
 				bot.say("You've already been paid today. Now go do some work.")
 		####MakeitRain
-		elif commandused == 'makeitrain':		
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-			if (target=='notarget' or target=='everyone'):
-				target = 'Everyone'
-				bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
-			elif  (target == 'random' or target == trigger.nick):
-				target = randomuser(bot,trigger.nick)
-				if target == 'None':
-					target = randomuser(bot,trigger.nick)
-				spicebucks(bot, trigger.nick, 'plus', 30)
-				bankbalance = bank(bot,trigger.nick)								
-				maxpayout = bankbalance
-				bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
-				winnings=random.randint(1,maxpayout)
-				transfer(bot, trigger.nick, target, winnings)
-				bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")					
-			elif not target.lower() in [u.lower() for u in bot.users]:
-				bot.say("I'm sorry, I do not know who " + target + " is.")
+		elif commandused == 'makeitrain':
+			if not channel.startwith('#'): 
+				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				bankbalance = bank(bot,trigger.nick)
-				if bankbalance <30:
-					spicebucks(bot, trigger.nick, 'plus', 15)
-					bankbalance = 30
-				maxpayout = bankbalance
-				bot.action('rains Spicebucks on ' + target)
-				winnings=random.randint(1,maxpayout)
-				bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks")
-				transfer(bot, trigger.nick, target, winnings)											
-		##Reset
+				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+				if (target=='notarget' or target=='everyone'):
+					target = 'Everyone'
+					bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
+				elif  (target == 'random' or target == trigger.nick):
+					target = randomuser(bot,trigger.nick)
+					if target == 'None':
+						target = randomuser(bot,trigger.nick)
+					spicebucks(bot, trigger.nick, 'plus', 30)
+					bankbalance = bank(bot,trigger.nick)								
+					maxpayout = bankbalance
+					bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
+					winnings=random.randint(1,maxpayout)
+					transfer(bot, trigger.nick, target, winnings)
+					bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")					
+				elif not target.lower() in [u.lower() for u in bot.users]:
+					bot.say("I'm sorry, I do not know who " + target + " is.")
+				else:
+					bankbalance = bank(bot,trigger.nick)
+					if bankbalance <30:
+						spicebucks(bot, trigger.nick, 'plus', 15)
+						bankbalance = 30
+					maxpayout = bankbalance
+					bot.action('rains Spicebucks on ' + target)
+					winnings=random.randint(1,maxpayout)
+					bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks")
+					transfer(bot, trigger.nick, target, winnings)											
+			##Reset
 		elif commandused == 'reset' and trigger.admin: #admin only command
 			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
 			if not target == 'notarget':
@@ -108,14 +112,17 @@ def execute_main(bot, trigger, triggerargsarray):
 	
 		##Taxes
 		elif (commandused == 'taxes' or commandused == 'tax'):
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-			if not target == 'notarget':
-				if not target.lower() in [u.lower() for u in bot.users]:
-					bot.say("I'm sorry, I do not know who " + target + " is.")
-				else:
-					paytaxes(bot, target)
+			if not channel.startwith('#'): 
+				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				paytaxes(bot, trigger.nick)
+				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+				if not target == 'notarget':
+					if not target.lower() in [u.lower() for u in bot.users]:
+						bot.say("I'm sorry, I do not know who " + target + " is.")
+					else:
+						paytaxes(bot, target)
+				else:
+					paytaxes(bot, trigger.nick)
 		##Bank
 		elif commandused == 'bank':
 			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
@@ -133,34 +140,37 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.say("You have " + str(balance) + " spicebucks in the bank.")
 		##Transfer
 		elif commandused == 'transfer':
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-			amount =get_trigger_arg(triggerargsarray, 3) or 'noamount'
-			if not (target=='notarget' or amount=='noamount'):
-				instigator = trigger.nick
-				if not amount.isdigit():
-					bot.say('Please enter the person you wish to transfer to followed by an amount you wish to transfer')
-				else:
-					amount=int(amount)
-					if not target.lower() in [u.lower() for u in bot.users]:
-						bot.say("I'm sorry, I do not know who you want to transfer money to.")
-					else:
-						if target == instigator:
-							bot.say("You cannot transfer spicebucks to yourself!")
-						else:
-							if amount <=0:
-								bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
-							else:
-								balance=bank(bot, instigator)
-								if amount <= balance:
-									success = transfer(bot,  instigator, target, amount)
-									if success == 1:
-										bot.say(instigator + " successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
-									else:
-										bot.say('The transfer was unsuccesful. Please check the amount and try again.')
-								else:
-									bot.say('Insufficient funds to transfer')
+			if not channel.startwith('#'): 
+				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
+				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+				amount =get_trigger_arg(triggerargsarray, 3) or 'noamount'
+				if not (target=='notarget' or amount=='noamount'):
+					instigator = trigger.nick
+					if not amount.isdigit():
+						bot.say('Please enter the person you wish to transfer to followed by an amount you wish to transfer')
+					else:
+						amount=int(amount)
+						if not target.lower() in [u.lower() for u in bot.users]:
+							bot.say("I'm sorry, I do not know who you want to transfer money to.")
+						else:
+							if target == instigator:
+								bot.say("You cannot transfer spicebucks to yourself!")
+							else:
+								if amount <=0:
+									bot.say(instigator + " gave no spicefucks about " + target + "'s comment.")
+								else:
+									balance=bank(bot, instigator)
+									if amount <= balance:
+										success = transfer(bot,  instigator, target, amount)
+										if success == 1:
+											bot.say(instigator + " successfully transfered " + str(amount) + " spicebucks to " + target + ".") 
+										else:
+											bot.say('The transfer was unsuccesful. Please check the amount and try again.')
+									else:
+										bot.say('Insufficient funds to transfer')
+				else:
+					bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
 
 def reset(bot, target): #admin command reset user values
 	bot.db.set_nick_value(target, 'spicebucks_payday', 0)
