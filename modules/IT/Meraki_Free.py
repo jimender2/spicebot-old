@@ -9,7 +9,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('meraki')
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
     types = trigger.group(3)
     if not types:
         bot.say('Please specify which product. Choices are MX , AP , or switch .')
