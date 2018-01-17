@@ -211,8 +211,11 @@ def display_location(bot, target, woeid):
     if results is None:
         return bot.reply("Try a more specific location.")  
     
-    location = results['channel']['item']['yweather:condition']
-    bot.say(target + " is at " + str(location))
+    location = results['channel']['yweather:location']
+    city = str(location['@city'])
+    state = str(location['@region'])
+    country=str(location['@country'})
+    bot.say(target + " is at " + city + ", " + state + ", " + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
