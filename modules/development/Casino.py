@@ -272,7 +272,7 @@ def lottery(bot,trigger, arg):
 		
 		picklen=len(arg)		
 		for i in range(0,picklen):
-			picker = get_trigger_arg(triggerargsarray, i)
+			picker = get_trigger_arg(arg, i)
 			if picker.isdigit():
 				picks.append(int(picker))
 		
