@@ -19,9 +19,13 @@ def mainfunction(bot, trigger):
 		execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-	botusersarray = bot.users or []
+	botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
 	channel = trigger.sender
 	commandused = get_trigger_arg(triggerargsarray, 1) or 'nocommand'
+	botusers=[]
+	for u in bot.users:
+		if u in botusersarray and u != bot.nick:
+			botusers.append(u)
 
 	if commandused == 'nocommand':
 		bot.say("Welcome to the #Spiceworks Bank.  Your options are payday, transfer and bank.")
