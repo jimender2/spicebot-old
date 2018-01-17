@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.say("You've already been paid today. Now go do some work.")
 		####MakeitRain
 		elif commandused == 'makeitrain':
-			if not channel.startwith('#'): 
+			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
 				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
@@ -112,7 +112,7 @@ def execute_main(bot, trigger, triggerargsarray):
 	
 		##Taxes
 		elif (commandused == 'taxes' or commandused == 'tax'):
-			if not channel.startwith('#'): 
+			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
 				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
@@ -140,7 +140,7 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.say("You have " + str(balance) + " spicebucks in the bank.")
 		##Transfer
 		elif commandused == 'transfer':
-			if not channel.startwith('#'): 
+			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
 				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
