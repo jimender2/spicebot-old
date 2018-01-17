@@ -214,7 +214,7 @@ def display_location(bot, target, woeid):
     location = results['channel']['yweather:location']
     city = str(location['@city'])
     state = str(location['@region'])
-    country=str(location['@country'})
+    country=str(location['@country'])
     bot.say(target + " is at " + city + ", " + state + ", " + country)
 
 def update_location(bot, trigger, data):
