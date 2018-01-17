@@ -209,12 +209,9 @@ def display_location(bot, target, woeid):
     parsed = xmltodict.parse(body.text).get('query')
     results = parsed.get('results')
     if results is None:
-        return bot.reply("Try a more specific location.")
-    city = results.get('channel').get('city') 
-    state = results.get('channel').get('region') 
-    country = results.get('channel').get('country') 
+        return bot.reply("Try a more specific location.")  
     
-    location = city + ", " + state + ", " +country
+    location = results.get('location')
     bot.say(target + " is at " + location)
 
 def update_location(bot, trigger, data):
