@@ -276,7 +276,7 @@ def lottery(bot,trigger, arg):
 			if picker.isdigit():
 				picks.append(int(picker))
 		
-		bot.say(str(picks))
+		
 		if len(picks)!=5:
 			bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 			success = 0
