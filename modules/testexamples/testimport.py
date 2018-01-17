@@ -8,6 +8,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 from Nuke import *
+from Points import *
 #from shareddir.path.append(Main) import Nuke ##this line is wonky
 
 @sopel.module.commands('testimport')
@@ -23,5 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
      
     if subcommandused == 'nuke':
         nukeit(bot, trigger, triggerargsarray)
+    if subcommandused == 'addpoints':
+        addpoints(bot,trigger.nick,'40')
     else:
       bot.say('Module error')

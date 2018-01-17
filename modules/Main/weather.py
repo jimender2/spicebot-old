@@ -129,56 +129,55 @@ def weather(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
-    success = 0
-    location = '' 
-   
-    if len(triggerargsarray) > 1:
-        location = triggerargsarray[0]
-        success = 1
+    success = 1   
+    location = get_trigger_arg(triggerargsarray, 1) or 'nolocation'
+     
 ##set trigger.nick location
     if location == 'setlocation':
         success = 0
-        if len(triggerargsarray)<2:
-            bot.say("Enter a location to wish to set to")
-            
+        mylocation = get_trigger_arg(triggerargsarray, '2+') or 'nolocation'       
+        if mylocation == 'nolocation':
+            bot.say("Enter a location to wish to set to")            
         else:
-            update_location(bot, trigger, triggerargsarray[1])
-            bot.say("Location set to: " + triggerargsarray[1])    
+            update_location(bot, trigger,  mylocation)
+            
             
 ###display target location
-    elif location == 'getlocation': 
+    elif location == 'getlocation' or location =='checklocation': 
         success = 0
-        target = ''
-        if len(triggerargsarray)<2:
-            target = trigger.nick
-        else:
-            if triggerargsarray[1] not in  botusersarray:
-                bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
-            else:
-                target = triggerargsarray[1]                      
-        if not target == '':            
+        target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+        if target == 'notarget':
+            target = trigger.nick        
+        if target not in  botusersarray:
+            bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
+        else:           
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                bot.say("You must first set a location using .weather setloction <place>")                
-            else:
-                bot.say(target + "'s location is set to " +str(woeid))               
+                bot.say(target +  " must first set a location using .weather setloction <place>")                
+            else:                
+                display_location(bot, target, woeid)
+                
+                
                 
 ###Output weather
     if success==1:
         woeid = ''
-        if not location:
+        if location == 'nolocation':
             woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
             if not woeid:
                 return bot.msg(trigger.sender, "I don't know where you live. " +
-                               'Give me a location, like .weather London, or tell me where you live by saying .setlocation London, for example.')
+                               'Give me a location, like .weather London, or tell me where you live by saying .weather setlocation London, for example.')
         else:
-            location = location.strip()
-            woeid = bot.db.get_nick_value(location, 'woeid')
+            if location.lower() in [u.lower() for u in bot.users]:
+                woeid = bot.db.get_nick_value(location, 'woeid')
+            else:
+                location = get_trigger_arg(triggerargsarray, 0)
+                woeid = bot.db.get_nick_value(location, 'woeid')
+                
             if woeid is None:
                 first_result = woeid_search(location)
                 if first_result is not None:
                     woeid = first_result.get('woeid')
-
         if not woeid:
             return bot.reply("I don't know where that is.")
 
@@ -195,14 +194,29 @@ def execute_main(bot, trigger, triggerargsarray):
         wind = get_wind(results)
         bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
 
-
-@commands('setlocation', 'setwoeid')
-@example('.setlocation Columbus, OH')
-def update_woeid(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
-    if not enablestatus:
-        update_location(bot, trigger, triggerargsarray[0])
+#An example of how to use a different command in the same module
+#@commands('setlocation', 'setwoeid')
+#@example('.setlocation Columbus, OH')
+#def update_woeid(bot, trigger):
+ #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+  #  if not enablestatus:
+   #     update_location(bot, trigger, triggerargsarray[0])
     
+def display_location(bot, target, woeid):
+     
+    query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
+    body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
+    parsed = xmltodict.parse(body.text).get('query')
+    results = parsed.get('results')
+    if results is None:
+        return bot.reply("Try a more specific location.")  
+    
+    location = results['channel']['yweather:location']
+    city = str(location['@city'])
+    state = str(location['@region'])
+    country=str(location['@country'])
+    bot.say(target + " is at " + city + "," + state + "," + country)
+
 def update_location(bot, trigger, data):
     """Set your default weather location."""
     if not data:

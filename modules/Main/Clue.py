@@ -7,6 +7,7 @@ import os
 import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
+from Points import *
 from SpicebotShared import *
 
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
@@ -20,6 +21,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
+    instigator = trigger.nick
+    pointsworth = randint(1, 666)
+    pointsvalue = str(pointsworth)
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
         return
@@ -37,18 +41,22 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(players[2] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[1] + " with the " + weapons[0] + " instead.")    
     else:
         bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
-    import Points
     if target:
         if suspect:
             if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
-                Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
+                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
+                addpoints(bot, instigator, pointsworth)
             elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
-                Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
+                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
+                addpoints(bot,instigator,pointsworth)
     elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
-        Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' gives ', ' to', 'up', 'points', trigger.sender)
+        bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
+        addpoints(bot,instigator,pointsworth)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
-        Points.pointstask(bot, channel, 'SpiceBot', trigger.nick, ' takes ', ' from', 'down', 'points', trigger.sender)
+        bot.say(bot.nick + ' takes ' + pointsvalue + ' points from ' + instigator)
+        takepoints(bot,instigator,pointsworth)
+        

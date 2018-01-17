@@ -71,3 +71,9 @@ def execute_main(bot, trigger, triggerargsarray):
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+'.')
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
+
+def addpoints(bot, target, amount):
+    adjust_botdatabase_value(bot, target, 'points', abs(amount))
+    
+def takepoints(bot, target, amount):
+    adjust_botdatabase_value(bot, target, 'points', -abs(amount))

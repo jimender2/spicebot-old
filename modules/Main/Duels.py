@@ -227,7 +227,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
 
         ## Random Dueling
-        elif commandortarget == 'random':
+        elif commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone':
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in a channel.", instigator)
                 return
@@ -1616,7 +1616,7 @@ def get_lootitem_text(bot, nick, loottype):
     elif loottype == 'poisonpotion':
         loot_text = str(": worth " + str(poisonpotionworth) + " health.")
     elif loottype == 'manapotion':
-        loot_text = str(": worth " + str(manapotionworth) + " health.")
+        loot_text = str(": worth " + str(manapotionworth) + " mana.")
     elif loottype == 'timepotion':
         loot_text = ': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.'
     elif loottype == 'mysterypotion':
