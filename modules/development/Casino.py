@@ -269,7 +269,8 @@ def lottery(bot,trigger, arg):
 	else:
 		picks = []
 		success = 0				
-		mypicks=get_trigger_arg(arg,'2+')		
+		mypicks=get_trigger_arg(arg,'list')
+		bot.say(str(mypicks))
 		for pick in mypicks:
 			if pick.isdigit():						
 				picks.append(int(pick))
