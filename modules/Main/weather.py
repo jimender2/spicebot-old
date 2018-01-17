@@ -210,9 +210,9 @@ def display_location(bot, target, woeid):
     results = parsed.get('results')
     if results is None:
         return bot.reply("Try a more specific location.")
-    city = results.get('channel').get('city') or 'no city '
-    state = results.get('channel').get('region') or 'no state'
-    country = results.get('channel').get('country') or 'no country'
+    city = results.get('channel').get('city') 
+    state = results.get('channel').get('region') 
+    country = results.get('channel').get('country') 
     
     location = city + ", " + state + ", " +country
     bot.say(target + " is at " + location)
