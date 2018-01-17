@@ -269,11 +269,12 @@ def lottery(bot,trigger, arg):
 	else:
 		picks = []
 		success = 0				
-		mypicks=get_trigger_arg(arg,'list')
-		bot.say(str(mypicks))
+		mypicks=get_trigger_arg(arg,'2+')
+		bot.say(mypicks)
 		for pick in mypicks:
 			if pick.isdigit():						
 				picks.append(int(pick))
+		bot.say(str(picks))
 		if len(picks)<5:
 			bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 			success = 0
