@@ -215,7 +215,7 @@ def display_location(bot, target, woeid):
     city = str(location['@city'])
     state = str(location['@region'])
     country=str(location['@country'])
-    bot.say(target + " is at " + city + ", " + state + ", " + country)
+    bot.say(target + " is at " + city + "," + state + "," + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
