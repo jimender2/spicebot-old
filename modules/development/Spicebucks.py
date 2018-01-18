@@ -59,7 +59,7 @@ def execute_main(bot, trigger, triggerargsarray):
 						bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
 						winnings=random.randint(1,maxpayout)
 						transfer(bot, trigger.nick, target, winnings)
-						bot.say(trigger.nick + " gets " + str((30-winnings)) + " and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")					
+						bot.say(trigger.nick + " gets " + str((30-winnings)) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")					
 					elif not target.lower() in [u.lower() for u in botuseron]:
 						bot.say("I'm sorry, I do not know who " + target + " is.")
 					else:
@@ -70,7 +70,7 @@ def execute_main(bot, trigger, triggerargsarray):
 						maxpayout = bankbalance
 						bot.action('rains Spicebucks on ' + target)
 						winnings=random.randint(1,maxpayout)
-						bot.say(target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks")
+						bot.say(trigger.nick + " gets " + str((30-winnings)) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
 						transfer(bot, trigger.nick, target, winnings)
 				else:
 					bot.say("You have already been paid today")
