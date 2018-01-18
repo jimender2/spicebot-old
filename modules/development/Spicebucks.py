@@ -53,13 +53,13 @@ def execute_main(bot, trigger, triggerargsarray):
 						target = randomuser(bot,trigger.nick)
 						if target == 'None':
 							target = randomuser(bot,trigger.nick)
-						spicebucks(bot, trigger.nick, 'plus', 30)
+						spicebucks(bot, trigger.nick, 'plus', 50)
 						bankbalance = bank(bot,trigger.nick)								
 						maxpayout = bankbalance
 						bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
 						winnings=random.randint(1,maxpayout)
 						transfer(bot, trigger.nick, target, winnings)
-						mypayday = 30-winnings
+						mypayday = 50-winnings
 						if mypayday >= 0:
 							bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")					
 						else:
@@ -68,10 +68,9 @@ def execute_main(bot, trigger, triggerargsarray):
 					elif not target.lower() in [u.lower() for u in botuseron]:
 						bot.say("I'm sorry, I do not know who " + target + " is.")
 					else:
+												
+						spicebucks(bot, trigger.nick, 'plus', 50)
 						bankbalance = bank(bot,trigger.nick)
-						if bankbalance <30:
-							spicebucks(bot, trigger.nick, 'plus', 15)
-							bankbalance = 30
 						maxpayout = bankbalance
 						bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
 						winnings=random.randint(1,maxpayout)
