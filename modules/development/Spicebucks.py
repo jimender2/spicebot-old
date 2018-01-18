@@ -68,7 +68,7 @@ def execute_main(bot, trigger, triggerargsarray):
 							spicebucks(bot, trigger.nick, 'plus', 15)
 							bankbalance = 30
 						maxpayout = bankbalance
-						bot.action('rains Spicebucks on ' + target)
+						bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
 						winnings=random.randint(1,maxpayout)
 						bot.say(trigger.nick + " gets " + str((30-winnings)) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
 						transfer(bot, trigger.nick, target, winnings)
