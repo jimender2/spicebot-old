@@ -75,8 +75,8 @@ def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 #__payouts___
-	match3 = 15
-	match2 = 2
+	match3 = 25
+	match2 = 5
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500
