@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    failureodds =25
+    failureodds =10
     if bot.nick.endswith('dev'):
         failureodds = 2
     backfires= [" drops their pants and squats on targets desk, but all they manage to do is fart.", 
