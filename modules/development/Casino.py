@@ -75,8 +75,8 @@ def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
 #__payouts___
-	match3 = 15
-	match2 = 2
+	match3 = 25
+	match2 = 5
 	bankbalance=Spicebucks.bank(bot,'SpiceBank')
 	if bankbalance <=500:
 		bankbalance=500
@@ -268,12 +268,16 @@ def lottery(bot,trigger, arg):
 		success = 0	
 	else:
 		picks = []
-		success = 0				
-		mypicks=get_trigger_arg(arg,'2+')		
-		for pick in mypicks:
-			if pick.isdigit():						
-				picks.append(int(pick))
-		if len(picks)<5:
+		success = 0	
+		
+		picklen=len(arg)+1		
+		for i in range(0,picklen):
+			picker = get_trigger_arg(arg, i)
+			if picker.isdigit():
+				picks.append(int(picker))
+		
+		
+		if len(picks)!=5:
 			bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
 			success = 0
 		else:
