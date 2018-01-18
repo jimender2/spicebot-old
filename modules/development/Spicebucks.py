@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
 			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				if not checkpay(bot,trigger.nick)==0:					
+				if not checkpayday(bot,trigger.nick)==0:					
 					target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
 					if (target=='notarget' or target=='everyone'):
 						target = 'Everyone'
