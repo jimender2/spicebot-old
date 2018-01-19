@@ -334,6 +334,9 @@ def lottery(bot,trigger, arg):
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
 	minbet=30
+	blackjackpayout = 2
+	beatdealerpayout = 2
+	payouton21 = 1
 	mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
 	mychoice2 = get_trigger_arg(arg, 3) or 'nocommand'
 	if mychoice == 'nocommand':
@@ -345,7 +348,7 @@ def blackjack(bot,trigger,arg):
 		dealerhand = []
 		player=trigger.nick
 		payout = 0
-		if(mychoice == 'deal' or mychoice == 'start'):
+		if(mychoice == 'deal' or mychoice == 'start' or mychoice == '1'):
 			if mychoice2 == 'nocommand':
 				bot.say("Please enter an amount you wish to bet")
 			else:
@@ -366,7 +369,7 @@ def blackjack(bot,trigger,arg):
 							dealerscore = blackjackscore(dealerhand)
 							payout = mybet
 							if myscore == 21:
-								payout=payout + 100
+								payout=payout + (mybet*blackjackpayout) 
 								bot.say(player + ' got blackjack and wins ' + str(payout))
 								Spicebucks.spicebucks(bot, player, 'plus', payout)
 							else:							
@@ -375,12 +378,12 @@ def blackjack(bot,trigger,arg):
 								bot.db.set_nick_value(player, 'myhand', myhand)
 								bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 								bot.db.set_nick_value(player, 'mybet', mybet)
-								bot.say( " You can say'.gamble blackjack hit' to take a card or '.gamble blackjack stand' to finish the game")
+								bot.say( " You can say'.gamble blackjack 2' to take a card or '.gamble blackjack 3' to finish the game")
 
 						
 						else:
 							bot.say('You do not have enough spicebucks.')
-		elif mychoice == 'hit':
+		elif mychoice == 'hit' or mychoice == '2':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
 			if (myhand == [] or myhand ==0):
@@ -391,7 +394,7 @@ def blackjack(bot,trigger,arg):
 				#bot.say('The dealer has ' + str(dealerhand))
 				playerhits=deal(deck, 1)
 				playerhits=playerhits[0]				
-				bot.say(player + ' takes a hit and gets ' + str(playerhits))
+				
 				myhand.append(playerhits)
 				myscore = blackjackscore(myhand)
 				if myscore >21 and len(myhand) > 2:
@@ -402,8 +405,9 @@ def blackjack(bot,trigger,arg):
 					myscore= blackjackscore(myhand)			
 				if myscore < 21:				
 					bot.db.set_nick_value(player, 'myhand', myhand)
+					bot.say(player + " takes a hit and a gets " +  str(playerhits) + player + "'s score is now " + str(myscore))
 				else:
-					bot.say(player + ' busted and gets nothing')
+					bot.say(player + ' got ' + str(playerhits) + ' busted and gets nothing')
 					blackjackreset(bot,player)
 					
 		elif mychoice == 'check':
@@ -420,7 +424,7 @@ def blackjack(bot,trigger,arg):
 			dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
 			bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 			
-		elif mychoice == 'stand':
+		elif mychoice == 'stand' or mychoice == '3':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
@@ -439,7 +443,7 @@ def blackjack(bot,trigger,arg):
 				dealerscore = blackjackscore(dealerhand)				
 				dealerwins=''
 				if myscore == 21:
-					payout=payout + 50
+					payout=payout + payout
 					bot.say(player + ' got blackjack and is a winner of ' + str(payout))
 					Spicebucks.spicebucks(bot, player, 'plus', payout)
 				elif myscore > 21:
@@ -464,14 +468,14 @@ def blackjack(bot,trigger,arg):
 					for card in dealerhand:						
 						showdealerhand = showdealerhand + ' ' + str(card)
 					if dealerscore > 21:
-						payout=payout + 30
+						payout=payout + int((payout/2))
 						Spicebucks.spicebucks(bot, player, 'plus', payout)
 						bot.say('The dealer busts ')
 						bot.say(player + ' wins ' + str(payout))
 					elif dealerscore == 21:
 						bot.say("The dealer has" + showdealerhand + " and wins")
 					elif dealerscore < myscore:
-						payout=payout + 30
+						payout=payout + int((payout/2))
 						Spicebucks.spicebucks(bot, player, 'plus', payout)
 						bot.say("The dealer had" + showdealerhand + " " + player + " wins " + str(payout))
 					elif dealerscore > myscore:
@@ -484,6 +488,9 @@ def blackjack(bot,trigger,arg):
 	
 					
 				blackjackreset(bot,player)
+			
+		elif mychoice == 'payout':
+			bot.say("Getting blackjack pays 2x, getting 21 pays 1x, beating the dealer pays 1/2 your bet.")
 				
 
 		else:
