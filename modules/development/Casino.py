@@ -427,7 +427,9 @@ def blackjack(bot,trigger,arg):
 		elif mychoice == 'double' or mychoice == '4':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
-			if len(myhand)==2 and payout>0:
+			if (myhand == [] or myhand ==0):
+				bot.say('Use deal to start a new game')
+			else:
 				mybet=payout+payout
 				bot.db.set_nick_value(player, 'mybet', mybet)
 				playerhitlist = ''
@@ -437,7 +439,8 @@ def blackjack(bot,trigger,arg):
 				playerhits=playerhits[0]		
 				myhand.append(playerhits)
 				bot.db.set_nick_value(player, 'myhand', myhand)
-				blackjackstand(bot,player,myhand,dealerhand,mybet)
+				blackjackstand(bot,player,myhand,dealerhand,mybet)		 
+				
 			
 			
 		elif mychoice == 'stand' or mychoice == '3':
