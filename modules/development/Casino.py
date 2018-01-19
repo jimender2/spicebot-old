@@ -480,6 +480,7 @@ def deal(deck, cardcount):
 	return hand	
 
 def blackjackstand(bot,player,myhand,dealerhand,payout):
+	deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 	if (myhand == [] or myhand ==0):
 		bot.say('Use deal to start a new game')
 	else:
