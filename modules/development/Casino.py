@@ -430,19 +430,19 @@ def blackjack(bot,trigger,arg):
 			if (myhand == [] or myhand ==0):
 				bot.say('Use deal to start a new game')
 			else:
-				
-				mybet=payout+payout
-				bot.db.set_nick_value(player, 'mybet', mybet)
-				playerhitlist = ''
-				#bot.say(player + ' has ' + str(myhand))
-				#bot.say('The dealer has ' + str(dealerhand))
-				playerhits=deal(deck, 1)
-				playerhits=playerhits[0]		
-				myhand.append(playerhits)
-				bot.db.set_nick_value(player, 'myhand', myhand)
-				bot.say(player + " doubles down and gets " + str(playerhits))
-				blackjackstand(bot,player,myhand,dealerhand,mybet)		 
-				
+				if len(myhand) == 2:
+					mybet=payout+payout
+					bot.db.set_nick_value(player, 'mybet', mybet)
+					playerhitlist = ''
+					#bot.say(player + ' has ' + str(myhand))
+					#bot.say('The dealer has ' + str(dealerhand))
+					playerhits=deal(deck, 1)
+					playerhits=playerhits[0]		
+					myhand.append(playerhits)
+					bot.db.set_nick_value(player, 'myhand', myhand)
+					bot.say(player + " doubles down and gets " + str(playerhits))
+					blackjackstand(bot,player,myhand,dealerhand,mybet)
+					
 			
 			
 		elif mychoice == 'stand' or mychoice == '3':
