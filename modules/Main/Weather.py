@@ -16,7 +16,6 @@ from SpicebotShared import *
 import requests
 import xmltodict
 
-
 def woeid_search(query):
     """
     Find the first Where On Earth ID for the given query. Result is the etree
@@ -33,7 +32,6 @@ def woeid_search(query):
         return results.get('place')[0]
     return results.get('place')
 
-
 def get_cover(parsed):
     try:
         condition = parsed['channel']['item']['yweather:condition']
@@ -44,7 +42,6 @@ def get_cover(parsed):
     # TODO parse code to get those little icon thingies.
     return text
 
-
 def get_temp(parsed):
     try:
         condition = parsed['channel']['item']['yweather:condition']
@@ -54,14 +51,12 @@ def get_temp(parsed):
     f = round((temp * 1.8) + 32, 2)
     return (u'%d\u00B0C (%d\u00B0F)' % (temp, f))
 
-
 def get_humidity(parsed):
     try:
         humidity = parsed['channel']['yweather:atmosphere']['@humidity']
     except (KeyError, ValueError):
         return 'unknown'
     return "Humidity: %s%%" % humidity
-
 
 def get_wind(parsed):
     try:
@@ -72,7 +67,6 @@ def get_wind(parsed):
         degrees = int(wind_data['@direction'])
     except (KeyError, ValueError):
         return 'unknown'
-
     if speed < 1:
         description = 'Calm'
     elif speed < 4:
@@ -99,7 +93,6 @@ def get_wind(parsed):
         description = 'Violent storm'
     else:
         description = 'Hurricane'
-
     if (degrees <= 22.5) or (degrees > 337.5):
         degrees = u'\u2193'
     elif (degrees > 22.5) and (degrees <= 67.5):
@@ -116,9 +109,7 @@ def get_wind(parsed):
         degrees = u'\u2192'
     elif (degrees > 292.5) and (degrees <= 337.5):
         degrees = u'\u2198'
-
     return description + ' ' + str(m_s) + 'm/s (' + degrees + ')'
-
 
 @commands('weather', 'wea')
 @example('.weather London')
@@ -140,8 +131,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Enter a location to wish to set to")            
         else:
             update_location(bot, trigger,  mylocation)
-            
-            
+                        
 ###display target location
     elif location == 'getlocation' or location =='checklocation': 
         success = 0
@@ -155,9 +145,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if woeid == 0:
                 bot.say(target +  " must first set a location using .weather setloction <place>")                
             else:                
-                display_location(bot, target, woeid)
-                
-                
+                display_location(bot, target, woeid)                               
                 
 ###Output weather
     if success==1:
@@ -202,8 +190,7 @@ def execute_main(bot, trigger, triggerargsarray):
   #  if not enablestatus:
    #     update_location(bot, trigger, triggerargsarray[0])
     
-def display_location(bot, target, woeid):
-     
+def display_location(bot, target, woeid):     
     query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
     body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
     parsed = xmltodict.parse(body.text).get('query')
@@ -215,22 +202,18 @@ def display_location(bot, target, woeid):
     city = str(location['@city'])
     state = str(location['@region'])
     country=str(location['@country'])
-    bot.say(target + " is at " + city + "," + state + "," + country)
+    bot.say("I have " + target + " down as being near " + city + "," + state + "," + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""
     if not data:
         bot.reply('Give me a location, like "Washington, DC" or "London".')
         return NOLIMIT
-
     first_result = woeid_search(data)
     if first_result is None:
         return bot.reply("I don't know where that is.")
-
     woeid = first_result.get('woeid')
-
     bot.db.set_nick_value(trigger.nick, 'woeid', woeid)
-
     neighborhood = first_result.get('locality2') or ''
     if neighborhood:
         neighborhood = neighborhood.get('#text') + ', '
