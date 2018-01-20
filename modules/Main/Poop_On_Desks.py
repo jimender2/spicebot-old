@@ -17,12 +17,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    failureodds =4
+    failureodds = 4
     if bot.nick.endswith('dev'):
         failureodds = 2
-    backfires= [" drops their pants and squats on targets desk, but all they manage to do is fart.", 
+    backfires= [" drops their pants and squats on " + target + "'s desk, but all they manage to do is fart.", 
                 " overestimated their capabilities and poops themselves.",  
-                " halfway through pooping on the desk before realising that they are pooping on their own desk.", 
+                " gets halfway through pooping before realising that this is their own desk, not " + target + "'s.", 
                 " trips over taking their pants off and shits everywhere BUT the desk."]
 
     target = get_trigger_arg(triggerargsarray, 1)
