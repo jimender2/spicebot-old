@@ -285,6 +285,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
                 set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
                 if commandortarget == 'assault':
+                    OSDTYPE = 'notice'
                     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                     typeofduel = 'assault'
                     getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
