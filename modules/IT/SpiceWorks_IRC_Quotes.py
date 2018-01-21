@@ -15,8 +15,8 @@ from SpicebotShared import *
 
 @sopel.module.commands('spicyquote')
 def execute_main(bot, trigger):
-    query = trigger.group(2) or 12
-    if not query:
+    query = trigger.group(2)
+    if query:
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
             if 'http://spice.dussed.com' in quote:
