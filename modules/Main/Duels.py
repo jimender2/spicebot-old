@@ -99,8 +99,8 @@ weaponmaxlength = 70
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.')
-mysterypotiondispmsg = str(': The label fell off. Use at your own risk!')
+timepotiondispmsg = str(": worth up to ' + str(USERTIMEOUT) + ' seconds of timeout.")
+mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 
 ############
 ## Arrays ##
