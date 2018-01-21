@@ -411,7 +411,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, instigator, 'class', setclass)
                 bot.say('Your class is now set to ' +  setclass)
                 set_database_value(bot, instigator, 'classtimeout', now)
-                if not instigatorfreebie:
+                if instigatorfreebie:
                     adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
                 else:
                     set_database_value(bot, instigator, 'classfreebie', 1)
