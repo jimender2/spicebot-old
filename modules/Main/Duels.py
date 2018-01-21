@@ -95,6 +95,13 @@ grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
 
+## Potion Display Message
+healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
+poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
+manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
+timepotiondispmsg = str(': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.')
+mysterypotiondispmsg = str(': The label fell off. Use at your own risk!')
+
 ############
 ## Arrays ##
 ############
@@ -1249,7 +1256,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             loot = get_trigger_arg(lootitemsarray, 'random')
-            loot_text = get_lootitem_text(bot, winner, loot)
+            loot_text = str(eval(loot+"dispmsg")+ " Use .duel loot use " + str(loot) + " to consume.")
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
             ## Barbarians get a 50/50 chance of getting loot even if they lose
