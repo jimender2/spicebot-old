@@ -113,7 +113,7 @@ duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses',
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire'] ## Valid Classes
-duelstatsadminarray = ['grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 
 
