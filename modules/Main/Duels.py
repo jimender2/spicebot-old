@@ -252,7 +252,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
                 targetarray.append(target)
-                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -338,7 +338,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
@@ -1114,7 +1114,7 @@ def execute_main(bot, trigger, triggerargsarray):
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
         if executedueling:
             targetarray.append(target)
-            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
+            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
