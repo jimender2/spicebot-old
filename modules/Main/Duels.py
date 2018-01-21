@@ -169,15 +169,15 @@ def execute_main(bot, trigger, triggerargsarray):
     if not fullcommandused:
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
 
-    ## commands cannot be run if opted out
+    ## Commands cannot be run if opted out
     elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable':
         bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on/enable to enable.", instigator)
 
-    ## Bot
+    ## Instigator versus Bot
     elif commandortarget == bot.nick:
         bot.say("I refuse to fight a biological entity!")
 
-    ## yourself
+    ## Instigator versus Instigator
     elif commandortarget == instigator:
         bot.say("If you are feeling self-destructive, there are places you can call.")
 
@@ -186,7 +186,7 @@ def execute_main(bot, trigger, triggerargsarray):
         commandortarget = commandortarget.lower()
 
         ## Docs
-        if commandortarget == 'docs' or commandortarget == 'help' or commandortarget == 'help':
+        if commandortarget == 'docs' or commandortarget == 'help':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
@@ -236,26 +236,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = duelrecorduser
             totaluses = get_database_value(bot, target, 'usage')
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
-
-        ## Random Dueling
-        elif commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone':
-            if not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in a channel.", instigator)
-                return
-            for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
-                if canduel:
-                    canduelarray.append(u)
-            if canduelarray == []:
-                bot.notice(instigator + ", It looks like the random target finder has failed.", instigator)
-            else:
-                target = get_trigger_arg(canduelarray, 'random')
-                OSDTYPE = 'say'
-                targetarray.append(target)
-                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
-        ## Colosseum and Assault
-        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone':
+        ## Colosseum, Assault, and Random
+        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone' or commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone':
+            if commandortarget == 'anyone' or commandortarget == 'somebody':
+                commandortarget = 'random'
             if commandortarget == 'everyone':
                 commandortarget = 'assault'
             if not inchannel.startswith("#"):
@@ -263,8 +248,21 @@ def execute_main(bot, trigger, triggerargsarray):
                 return
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
-                if canduel and u != bot.nick:
+                if canduel:
                     canduelarray.append(u)
+            if instigator in canduelarray and commandortarget == 'assault':
+                canduelarray.remove(instigator)
+            if commandortarget != 'random' and bot.nick in canduelarray:
+                canduelarray.remove(bot.nick)
+            if canduelarray == [] or len(canduelarray) == 1:
+                bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+                return
+            if commandortarget == 'random':
+                target = get_trigger_arg(canduelarray, 'random')
+                OSDTYPE = 'say'
+                targetarray.append(target)
+                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                return
             timeouteval = eval(commandortarget.upper() + "TIMEOUT")
             getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
             getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
@@ -275,11 +273,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif instigator not in canduelarray:
                 dowedisplay = 1
                 mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
-            elif canduelarray == [] or len(canduelarray) == 1:
-                bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
             else:
-                if instigator in canduelarray and commandortarget == 'assault':
-                    canduelarray.remove(instigator)
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
                 set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
