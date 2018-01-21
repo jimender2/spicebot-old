@@ -15,7 +15,7 @@ from SpicebotShared import *
 
 @sopel.module.commands('spicyquote')
 def execute_main(bot, trigger):
-    query = trigger.group(2)
+    query = trigger.group(2) or 12
     if not query:
         quote = getQuote(query)
         if 'Invalid quote' not in quote:
