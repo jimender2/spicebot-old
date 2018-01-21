@@ -171,7 +171,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## commands cannot be run if opted out
     elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable':
-        bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on to enable.", instigator)
+        bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on/enable to enable.", instigator)
 
     ## Bot
     elif commandortarget == bot.nick:
@@ -254,8 +254,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 targetarray.append(target)
                 getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
             
-        ## Colosseum
-        elif commandortarget == 'colosseum':
+        ## Colosseum and Assault
+        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone':
+            if commandortarget == 'everyone':
+                commandortarget = 'assault'
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
@@ -263,83 +265,61 @@ def execute_main(bot, trigger, triggerargsarray):
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
-            lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
-            lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
-            if lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", colosseum can't be used for " + str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum))), instigator)
-            elif lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
+            timeouteval = eval(commandortarget.upper() + "TIMEOUT")
+            getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
+            getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+            if getlastusage < timeouteval and not bot.nick.endswith(devbot):
+                bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+            elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
+                bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
             elif instigator not in canduelarray:
-                bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
+                dowedisplay = 1
+                mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
             elif canduelarray == [] or len(canduelarray) == 1:
-                bot.notice(instigator + ", It looks like the colosseum target finder has failed.", instigator)
+                bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
             else:
-                displaymessage = get_trigger_arg(canduelarray, "list")
-                bot.say(instigator + " Initiated a colosseum event. Good luck to " + displaymessage)
-                totalplayers = len(canduelarray)
-                riskcoins = int(totalplayers) * 30
-                damage = riskcoins
-                winner = selectwinner(bot, canduelarray)
-                bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
-                diedinbattle = []
-                canduelarray.remove(winner)
-                for x in canduelarray:
-                    targethealth = get_database_value(bot, x, 'health') or 0
-                    if not targethealth:
-                        set_database_value(bot, x, 'health', stockhealth)
-                    shieldloser = get_database_value(bot, x, 'shield') or 0
-                    if shieldloser and damage > 0:
-                        damagemath = int(shieldloser) - damage
-                        if int(damagemath) > 0:
-                            adjust_database_value(bot, x, 'shield', -abs(damage))
-                            damage = 0
-                        else:
-                            damage = abs(damagemath)
-                            set_database_value(bot, x, 'shield', None)
-                    if damage > 0:
-                        adjust_database_value(bot, x, 'health', -abs(damage))
-                    currenthealth = get_database_value(bot, x, 'health')
-                    if currenthealth <= 0:
-                        whokilledwhom(bot, winner, x)
-                        diedinbattle.append(x)
-                displaymessage = get_trigger_arg(diedinbattle, "list")
-                if displaymessage:
-                    bot.say(displaymessage + " died in this event.")
-                adjust_database_value(bot, winner, 'coin', riskcoins)
-                set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', now)
-                set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', instigator)
-
-        ## Duel Everyone
-        elif commandortarget == 'assault' or commandortarget == 'everyone':
-            if not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in channel.", instigator)
-                return
-            for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
-                if canduel and u != bot.nick:
-                    canduelarray.append(u)
-            lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
-            lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
-            if lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult)))+".", instigator)
-            elif lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-            elif instigator not in canduelarray:
-                bot.notice(instigator + ", It looks like you can't duel right now.", instigator)
-            elif canduelarray == [] or len(canduelarray) == 1:
-                bot.notice(instigator + ", It looks like the Full Channel Assault target finder has failed.", instigator)
-            else:
-                if instigator in canduelarray:
+                if instigator in canduelarray and commandortarget == 'assault':
                     canduelarray.remove(instigator)
-                OSDTYPE = 'notice'
                 displaymessage = get_trigger_arg(canduelarray, "list")
-                bot.say(instigator + " Initiated a Full Channel Assault. Good luck to " + displaymessage)
-                set_database_value(bot, duelrecorduser, 'lastfullroomassult', now)
-                set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
-                lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                typeofduel = 'assault'
-                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
-                set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+                bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+                set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+                set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+                if commandortarget == 'assault':
+                    lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
+                    typeofduel = 'assault'
+                    getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+                elif commandortarget == 'colosseum':
+                    totalplayers = len(canduelarray)
+                    riskcoins = int(totalplayers) * 30
+                    damage = riskcoins
+                    winner = selectwinner(bot, canduelarray)
+                    bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+                    diedinbattle = []
+                    canduelarray.remove(winner)
+                    for x in canduelarray:
+                        targethealth = get_database_value(bot, x, 'health') or 0
+                        if not targethealth:
+                            set_database_value(bot, x, 'health', stockhealth)
+                        shieldloser = get_database_value(bot, x, 'shield') or 0
+                        if shieldloser and damage > 0:
+                            damagemath = int(shieldloser) - damage
+                            if int(damagemath) > 0:
+                                adjust_database_value(bot, x, 'shield', -abs(damage))
+                                damage = 0
+                            else:
+                                damage = abs(damagemath)
+                                set_database_value(bot, x, 'shield', None)
+                        if damage > 0:
+                            adjust_database_value(bot, x, 'health', -abs(damage))
+                            currenthealth = get_database_value(bot, x, 'health')
+                        if currenthealth <= 0:
+                            whokilledwhom(bot, winner, x)
+                            diedinbattle.append(x)
+                    displaymessage = get_trigger_arg(diedinbattle, "list")
+                    if displaymessage:
+                        bot.say(displaymessage + " died in this event.")
+                    adjust_database_value(bot, winner, 'coin', riskcoins)
 
         ## War Room
         elif commandortarget == 'warroom':
