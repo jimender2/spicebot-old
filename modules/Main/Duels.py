@@ -361,11 +361,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + subcommand)) or timeouteval
                 getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
                 if getlastinstigator == instigator and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", You may not instigate a full channel" + subcommand + " event twice in a row.", instigator)
+                    bot.notice(instigator + ", You may not instigate a full channel " + subcommand + " event twice in a row.", instigator)
                 elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", full channel" + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+                    bot.notice(instigator + ", full channel " + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
                 else:
-                    bot.notice(instigator + ", It looks like full channel" + subcommand + " event can be used.", instigator)
+                    bot.notice(instigator + ", It looks like full channel " + subcommand + " event can be used.", instigator)
             elif subcommand == 'list':
                 if instigator in canduelarray:
                     canduelarray.remove(instigator)
@@ -386,8 +386,9 @@ def execute_main(bot, trigger, triggerargsarray):
             classes = get_trigger_arg(classarray, "list")
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             setclass = get_trigger_arg(triggerargsarray, 3).lower()
-            classtime = get_timesince_duels(bot, instigator, 'classtimeout')
             instigatorclass = get_database_value(bot, instigator, 'class')
+            instigatorfreebie = get_database_value(bot, instigator, 'classfreebie') or 0
+            classtime = get_timesince_duels(bot, instigator, 'classtimeout')
             instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             if not instigatorclass and not subcommand:
@@ -400,21 +401,20 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Invalid command. Options are set or change.")
             elif not setclass:
                 bot.say("Which class would you like to use? Options are: " + classes +".")
-            elif subcommand == 'set' and instigatorclass:
-                bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif subcommand == 'change' and instigatorcoin < changeclasscost:
-                bot.say("Changing class costs " + str(changeclasscost) + " coin.")
-            elif subcommand == 'change' and setclass == instigatorclass:
+            elif instigatorcoin < changeclasscost and instigatorfreebie:
+                bot.say("Changing class costs " + str(changeclasscost) + " coin. You need more funding.")
+            elif setclass not in classarray:
+                bot.say("Invalid class. Options are: " + classes +".")
+            elif setclass == instigatorclass:
                 bot.say('Your class is already set to ' +  setclass)
             else:
-                if setclass not in classarray:
-                    bot.say("Invalid class. Options are: " + classes +".")
+                set_database_value(bot, instigator, 'class', setclass)
+                bot.say('Your class is now set to ' +  setclass)
+                set_database_value(bot, instigator, 'classtimeout', now)
+                if not instigatorfreebie:
+                    adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
                 else:
-                    set_database_value(bot, instigator, 'class', setclass)
-                    bot.say('Your class is now set to ' +  setclass)
-                    set_database_value(bot, instigator, 'classtimeout', now)
-                    if subcommand == 'change':
-                        adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+                    set_database_value(bot, instigator, 'classfreebie', 1)
 
         ## Streaks
         elif commandortarget == 'streaks':
