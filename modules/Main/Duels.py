@@ -1386,7 +1386,7 @@ def halfhourtimer(bot):
 
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
-        loot_text = get_lootitem_text(bot, lootwinner, 'mysterypotion')
+        loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
         adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
@@ -1616,23 +1616,6 @@ def randominventory(bot, instigator):
     if randomfindchance >= 90:
         randominventoryfind = 'true'
     return randominventoryfind
-
-def get_lootitem_text(bot, nick, loottype):
-    if loottype == 'healthpotion':
-        loot_text = str(": worth " + str(healthpotionworth) + " health.")
-    elif loottype == 'poisonpotion':
-        loot_text = str(": worth " + str(poisonpotionworth) + " health.")
-    elif loottype == 'manapotion':
-        loot_text = str(": worth " + str(manapotionworth) + " mana.")
-    elif loottype == 'timepotion':
-        loot_text = ': worth up to ' + str(hours_minutes_seconds(USERTIMEOUT)) + ' of timeout.'
-    elif loottype == 'mysterypotion':
-        loot_text = ': The label fell off. Use at your own risk!'
-    else:
-        loot_text = ''
-    if loot_text != '':
-        loot_text = str(loot_text + " Use .duel loot use " + str(loottype) + " to consume.")
-    return loot_text
 
 def halfhourpotionwinner(bot, randomuarray):
     winnerselectarray = []
