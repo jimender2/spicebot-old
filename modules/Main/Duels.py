@@ -1256,8 +1256,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             loot = get_trigger_arg(lootitemsarray, 'random')
-            loot_text = eval(str(loot)+"dispmsg")
-            loot_text = str(loot_text + " Use .duel loot use " + str(loot) + " to consume.")
+            loot_text = "poop"
+            #loot_text = eval(str(loot)+"dispmsg")
+            #loot_text = str(loot_text + " Use .duel loot use " + str(loot) + " to consume.")
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
             ## Barbarians get a 50/50 chance of getting loot even if they lose
@@ -1938,28 +1939,6 @@ def get_winlossratio(bot,target):
     else:
         winlossratio = float(wins)/losses
     return winlossratio
-
-####################
-# Day Of The Week ##
-####################
-
-def whatdayofweeknow():
-    whatistoday = str(datetime.datetime.today().weekday())
-    if whatistoday == '0':
-        whatdayofweek = "Monday"
-    elif whatistoday == '1':
-        whatdayofweek = "Tuesday"
-    elif whatistoday == '2':
-        whatdayofweek = "Wednesday"
-    elif whatistoday == '3':
-        whatdayofweek = "Thursday"
-    elif whatistoday == '4':
-        whatdayofweek = "Friday"
-    elif whatistoday == '5':
-        whatdayofweek = "Saturday"
-    elif whatistoday == '6':
-        whatdayofweek = "Sunday"
-    return whatistoday, whatdayofweek
 
 ##############
 ## Database ##
