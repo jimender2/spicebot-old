@@ -167,11 +167,11 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## If Not a target or a command used
     if not fullcommandused:
-        bot.notice(instigator + ", Who did you want to duel? Online Docs: " + GITWIKIURL, instigator)
+        bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
 
     ## commands cannot be run if opted out
     elif instigator not in dueloptedinarray and commandortarget.lower() != 'on':
-        bot.notice(instigator + ", It looks like you have duels off.", instigator)
+        bot.notice(instigator + ", It looks like you have duels off. Run .duel on to enable.", instigator)
 
     ## Bot
     elif commandortarget == bot.nick:
@@ -239,7 +239,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in a channel.", instigator)
                 return
             for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel:
                     canduelarray.append(u)
             if canduelarray == []:
@@ -248,7 +248,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
                 targetarray.append(target)
-                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
             
         ## Colosseum
         elif commandortarget == 'colosseum':
@@ -256,7 +256,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
@@ -311,7 +311,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
@@ -334,15 +334,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', instigator)
                 lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
                 typeofduel = 'assault'
-                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+                getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
                 set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
         ## War Room
         elif commandortarget == 'warroom':
-            inchannel = "#bypass"
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, inchannel, dowedisplay)
+                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
             if not subcommand:
@@ -350,25 +349,19 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like you can duel.", instigator)
                 else:
                     dowedisplay = 1
-                    mustpassthesetoduel(bot, trigger, instigator, instigator, inchannel, dowedisplay)
-            elif subcommand == 'colosseum':
-                lastfullroomcolosseum = get_timesince_duels(bot, duelrecorduser, 'lastfullroomcolosseum') or ASSAULTTIMEOUT
-                lastfullroomcolosseuminstigator = get_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator') or bot.nick
-                if lastfullroomcolosseuminstigator == instigator and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", You may not instigate a colosseum event twice in a row.", instigator)
-                elif lastfullroomcolosseum < COLOSSEUMTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", colosseum event can't be used for "+str(hours_minutes_seconds((COLOSSEUMTIMEOUT - lastfullroomcolosseum)))+".", instigator)
+                    mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+            elif subcommand == 'colosseum' or subcommand == 'assault' or subcommand == 'everyone':
+                if subcommand == 'everyone':
+                    subcommand = 'assault'
+                timeouteval = eval(subcommand.upper() + "TIMEOUT")
+                getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + subcommand)) or timeouteval
+                getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
+                if getlastinstigator == instigator and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", You may not instigate a full channel" + subcommand + " event twice in a row.", instigator)
+                elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", full channel" + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
                 else:
-                    bot.notice(instigator + ", colosseum event can be used.", instigator)
-            elif subcommand == 'assault' or subcommand == 'everyone':
-                lastfullroomassult = get_timesince_duels(bot, duelrecorduser, 'lastfullroomassult') or ASSAULTTIMEOUT
-                lastfullroomassultinstigator = get_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator') or bot.nick
-                if lastfullroomassultinstigator == instigator and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", You may not instigate a Full Channel Assault twice in a row.", instigator)
-                elif lastfullroomassult < ASSAULTTIMEOUT and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", Full Channel Assault can't be used for "+str(hours_minutes_seconds((ASSAULTTIMEOUT - lastfullroomassult)))+".", instigator)
-                else:
-                    bot.notice(instigator + ", Full Channel Assault can be used.", instigator)
+                    bot.notice(instigator + ", It looks like full channel" + subcommand + " event can be used.", instigator)
             elif subcommand == 'list':
                 if instigator in canduelarray:
                     canduelarray.remove(instigator)
@@ -381,7 +374,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
                 else:
                     dowedisplay = 1
-                    mustpassthesetoduel(bot, trigger, instigator, subcommand, inchannel, dowedisplay)
+                    mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
 
         ## Class
         elif commandortarget == 'class':
@@ -1105,15 +1098,19 @@ def execute_main(bot, trigger, triggerargsarray):
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
         bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
+    
+    ## Duels must be in a channel
+    elif not inchannel.startswith("#"):
+        displaymsg = str(instigator + " Duels must be in a channel.")
 
     else:
         OSDTYPE = 'say'
         target = get_trigger_arg(triggerargsarray, 1)
         dowedisplay = 1
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay)
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
         if executedueling:
             targetarray.append(target)
-            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -1400,7 +1397,7 @@ def halfhourtimer(bot):
 ## Criteria to duel ##
 ######################
 
-def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay):
+def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
     displaymsg = ''
     executedueling = 0
     instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
@@ -1415,9 +1412,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
             totalduelusersarray.append(u)
     howmanyduelsers = len(totalduelusersarray)
 
-    if not inchannel.startswith("#"):
-        displaymsg = str(instigator + " Duels must be in a channel.")
-    elif instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
+    if instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
@@ -1430,7 +1425,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, inchannel, dowedisplay
     elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime)))+".")
     elif duelrecordusertime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(inchannel + " can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - duelrecordusertime)))+".")
+        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - duelrecordusertime)))+".")
     else:
         displaymsg = ''
         executedueling = 1
