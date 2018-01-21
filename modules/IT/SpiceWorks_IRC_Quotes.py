@@ -24,9 +24,9 @@ def execute_main(bot, trigger):
             else:
                 bot.say(quote)
         else:
-            bot.say('Could not find that quote!')
+            bot.say("I can't seem to find that quote! Are you sure it exists?")
     else:
-        bot.say('Please provide a quote number and try again!')
+        bot.say("Please provide a quote number or search term and try again!")
 
 def getQuote(query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
