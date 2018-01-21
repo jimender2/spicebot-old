@@ -42,7 +42,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 #randomtargetarray.pop(2)
                 #random.shuffle(randomtargetarray)
                 #bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
-                
                 tributes = []
                 weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
                 for tribute in randomtargetarray:
@@ -54,6 +53,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     random.shuffle(tributes)
                     damageone = randint(50, 80)
                     damagetwo = randint(50, 80)
+                    if damagetwo == damageone:
+                        while damageone == damagetwo:
+                            damageone = randint(50, 80)
+                            damagetwo = randint(50, 80)
                     bot.notice(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ", trigger.nick)
                     tributes[0][1] = tributes[0][1] - damageone
                     tributes[1][1] = tributes[1][1] - damageone
@@ -69,6 +72,3 @@ def execute_main(bot, trigger, triggerargsarray):
                             tributes.pop(0)
                     totaltributes = len(tributes)
                 bot.say("The victor is " + tributes[0][0])
-
-                        
-                        
