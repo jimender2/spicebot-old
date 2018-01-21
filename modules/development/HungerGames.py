@@ -72,6 +72,3 @@ def execute_main(bot, trigger, triggerargsarray):
                             tributes.pop(0)
                     totaltributes = len(tributes)
                 bot.say("The victor is " + tributes[0][0])
-
-                        
-                        
