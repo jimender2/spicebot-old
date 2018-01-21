@@ -171,7 +171,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## commands cannot be run if opted out
     elif instigator not in dueloptedinarray and commandortarget.lower() != 'on':
-        bot.notice(instigator + ", It looks like you have duels off. Run .duel on to enable.", instigator)
+        bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on to enable.", instigator)
 
     ## Bot
     elif commandortarget == bot.nick:
@@ -196,7 +196,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
         ## On/off
-        elif commandortarget == 'on' or commandortarget == 'off':
+        elif commandortarget == 'on' or commandortarget == 'off' or commandortarget == 'enable' or commandortarget == 'disable':
+            if commandortarget == 'enable':
+                commandortarget = 'on'
+            if commandortarget == 'disable':
+                commandortarget = 'off'
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
