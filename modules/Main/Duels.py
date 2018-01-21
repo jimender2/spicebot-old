@@ -329,7 +329,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     dowedisplay = 1
                     mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
-            elif subcommand == 'colosseum' or subcommand == 'assault' or subcommand == 'everyone':
+            elif subcommand == 'colosseum' or subcommand == 'assault':
                 if subcommand == 'everyone':
                     subcommand = 'assault'
                 timeouteval = eval(subcommand.upper() + "TIMEOUT")
