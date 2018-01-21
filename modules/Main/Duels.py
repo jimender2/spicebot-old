@@ -1105,7 +1105,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Duels must be in a channel
     elif not inchannel.startswith("#"):
-        displaymsg = str(instigator + " Duels must be in a channel.")
+        bot.notice(instigator + " Duels must be in a channel.", instigator)
 
     else:
         OSDTYPE = 'say'
