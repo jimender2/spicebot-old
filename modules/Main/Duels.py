@@ -173,7 +173,7 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(str(getlastchanstatreset))
     getinstigatorlastreset = get_database_value(bot, instigator, 'chanstatsreset')
-    if getinstigatorlastreset > getlastchanstatreset:
+    if getinstigatorlastreset < getlastchanstatreset:
         bot.say("reset " + instigator + " stats")
         set_database_value(bot, instigator, 'chanstatsreset', now)
         bot.say(str(getinstigatorlastreset))
