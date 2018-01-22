@@ -468,7 +468,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if x != 'winlossratio':
                             statamount = get_database_value(bot, u, x)
                         else:
-                            scriptdef = str('get_' + x + '(bot,target)')
+                            scriptdef = str('get_' + x + '(bot,u)')
                             statamount = eval(scriptdef)
                         if x != 'respawns' and x != 'health':
                             if statamount > statleadernumber:
