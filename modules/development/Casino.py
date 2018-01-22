@@ -416,15 +416,13 @@ def blackjack(bot,trigger,arg):
 					blackjackreset(bot,player)
 					
 		elif mychoice == 'check':
-			if len(arg)<3:
-				target = player
-			else:				
-				if not target.lower() in [u.lower() for u in botuseron]:
-					bot.say("Target not found.")
-				else:					
-					myhand =  bot.db.get_nick_value(target, 'myhand') or 0
-					dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
-					bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
+			target = get_trigger_arg(arg, 3) or 'notarget'						
+			if not target.lower() in [u.lower() for u in botuseron]:
+				bot.say("Target not found.")
+			else:					
+				myhand =  bot.db.get_nick_value(target, 'myhand') or 0
+				dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
+				bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 
 		elif mychoice == 'double' or mychoice == '4':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
