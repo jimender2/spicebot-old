@@ -1694,7 +1694,9 @@ def damagedone(bot, winner, loser, weapon):
     else:
         damage = randint(0, 120)
     
-    if winnerclass != 'vampire':
+    if damage == 0:
+        damagetext = str(winner + " hits " + loser + weapon + ' but deals no damage. ')
+    elif winnerclass != 'vampire':
         damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
     else:
         damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + weapon + ". ")
