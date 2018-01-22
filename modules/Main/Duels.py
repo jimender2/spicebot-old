@@ -1154,6 +1154,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         announcecombatmsg = str(instigatorname + " versus " + targetname)
 
         ## Check for new player health
+        healthcheck(bot, instigator)
         healthcheck(bot, target)
 
         ## Manual weapon
