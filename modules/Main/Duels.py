@@ -253,6 +253,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in bot.users:
+                statreset(bot, u)
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel:
                     canduelarray.append(u)
@@ -295,8 +296,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     riskcoins = int(totalplayers) * 30
                     damage = riskcoins
                     winner = selectwinner(bot, canduelarray)
-                    for u in canduelarray:
-                        statreset(bot, target)
                     bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
                     diedinbattle = []
                     canduelarray.remove(winner)
@@ -328,7 +327,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'warroom':
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
-                statreset(bot, target)
+                statreset(bot, u)
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
@@ -475,7 +474,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     statleadernumber = 99999999
                 for u in bot.users:
-                    statreset(bot, target)
+                    statreset(bot, u)
                     if u in dueloptedinarray:
                         if x != 'winlossratio':
                             statamount = get_database_value(bot, u, x)
