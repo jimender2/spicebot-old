@@ -1690,6 +1690,7 @@ def weaponformatter(bot, weapon):
 ################
 
 def statreset(bot, nick):
+    now = time.time()
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
     if not getlastchanstatreset:
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
