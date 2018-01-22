@@ -419,16 +419,13 @@ def blackjack(bot,trigger,arg):
 			if len(arg)<3:
 				target = player
 			else:				
-				botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
-				if arg[2] not in allusersinroomarray:
-					target = player
-				else:
-					target = arg[2]			
-				
-			myhand =  bot.db.get_nick_value(target, 'myhand') or 0
-			dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
-			bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
-			
+				if not target.lower() in [u.lower() for u in botuseron]:
+					bot.say("Target not found.")
+				else:					
+					myhand =  bot.db.get_nick_value(target, 'myhand') or 0
+					dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
+					bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
+
 		elif mychoice == 'double' or mychoice == '4':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
@@ -461,9 +458,9 @@ def blackjack(bot,trigger,arg):
 						bot.say("You must have 2 matching cards to split")
 						
 		elif mychoice == 'adminset' and trigger.admin:
-			target = get_trigger_arg(arg, 2) or 'notarget'
-			card1 = get_trigger_arg(arg, 3) or 'nocard1'
-			card2 = get_trigger_arg(arg,4) or 'nocard2'
+			target = get_trigger_arg(arg, 3) or 'notarget'
+			card1 = get_trigger_arg(arg, 4) or 'nocard1'
+			card2 = get_trigger_arg(arg, 5) or 'nocard2'
 			myhand = []
 			dealerhand = []
 			mybet = 30
