@@ -169,13 +169,13 @@ def execute_main(bot, trigger, triggerargsarray):
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
     if not getlastchanstatreset:
         bot.say("setting")
-        set_database_value(bot, duelrecorduser, 'chanstatreset', now)
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
     else:
         bot.say(str(getlastchanstatreset))
     getinstigatorlastreset = get_database_value(bot, instigator, 'chanstatsreset')
     if not getinstigatorlastreset or getinstigatorlastreset > getlastchanstatreset:
         bot.say("reset " + instigator + " stats")
-        set_database_value(bot, instigator, 'chanstatreset', now)
+        #set_database_value(bot, instigator, 'chanstatsreset', now)
     else:
         bot.say("continue")
         
