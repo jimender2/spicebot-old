@@ -484,48 +484,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber))
                 leaderscript.append(msgtoadd)
             for msg in leaderscript:
-                bot.say(msg)
-        
-            
-            
-            
-            
-            currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
-            currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
-            currenthealthleadernumber = 9999999999
-            for u in bot.users:
-                if u in dueloptedinarray:
-                    winlossratio = get_winlossratio(bot,u)
-                    if winlossratio > currentwlrleadernumber:
-                        currentwlrleader = u
-                        currentwlrleadernumber = winlossratio
-                    kills = get_database_value(bot, u, 'kills')
-                    if int(kills) > int(currentkillsleadernumber):
-                        currentkillsleader = u
-                        currentkillsleadernumber = int(kills)
-                    respawns = get_database_value(bot, u, 'respawns')
-                    if int(respawns) > int(currentrespawnsleadernumber):
-                        currentrespawnsleader = u
-                        currentrespawnsleadernumber = int(respawns)
-                    health = get_database_value(bot, u, 'health')
-                    if int(health) < int(currenthealthleadernumber) and int(health) != 0:
-                        currenthealthleader = u
-                        currenthealthleadernumber = int(health)
-                    streaks = get_database_value(bot, u, 'bestwinstreak')
-                    if int(streaks) > int(currentstreaksleadernumber):
-                        currentstreaksleader = u
-                        currentstreaksleadernumber = int(streaks)
-            if currentwlrleadernumber > 0 and currentwlrleader != '':
-                currentwlrleadernumber = format(currentwlrleadernumber, '.3f')
-                displaymessage = str(displaymessage + "Wins/Losses: " + currentwlrleader + " at " + str(currentwlrleadernumber) + ".     ")
-            if currentkillsleadernumber > 0 and currentkillsleader != '':
-                displaymessage = str(displaymessage + "Top Killer: " + currentkillsleader + " with " + str(currentkillsleadernumber) + " kills.     ")
-            if currentrespawnsleadernumber > 0 and currentrespawnsleader != '':
-                displaymessage = str(displaymessage + "Top Killed: " + currentrespawnsleader + " with " + str(currentrespawnsleadernumber) + " respawns.     ")
-            if currenthealthleadernumber > 0 and currenthealthleader != '':
-                displaymessage = str(displaymessage + "Closest To Death: " + currenthealthleader + " with " + str(currenthealthleadernumber) + " health.     ")
-            if currentstreaksleadernumber > 0 and currentstreaksleader != '':
-                displaymessage = str(displaymessage + "Best Win Streak: " + currentstreaksleader + " with " + str(currentstreaksleadernumber) + ".     ")
+                displaymessage = str(msg+ ".     ")
             if displaymessage == '':
                 displaymessage = str("Leaderboard appears to be empty")
             bot.say(displaymessage)
