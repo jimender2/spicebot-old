@@ -249,6 +249,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 commandortarget = 'random'
             if commandortarget == 'everyone':
                 commandortarget = 'assault'
+            bot.say(commandortarget)
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
