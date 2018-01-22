@@ -452,16 +452,11 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'leaderboard':
             leaderscript = []
             leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak']
-            winlossratiodispmsg = "Wins/Losses:"
-            winlossratiodispmsgb = ""
-            killsdispmsg = "Top Killer:"
-            killsdispmsgb = "kills"
-            respawnsdispmsg = "Top Killed:"
-            respawnsdispmsgb = "respawns"
-            healthdispmsg = "Closest To Death:"
-            healthdispmsgb = "health"
-            bestwinstreakdispmsg = "Best Win Streak:"
-            bestwinstreakdispmsgb = ""
+            winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
+            killsdispmsg, killsdispmsgb = "Top Killer:", "kills"
+            respawnsdispmsg, respawnsdispmsgb = "Top Killed:", "respawns"
+            healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
+            bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
             for x in leaderboardarraystats:
                 statleadername = ''
                 if x != 'health':
@@ -485,9 +480,8 @@ def execute_main(bot, trigger, triggerargsarray):
                                 statleadername = u
                 if x == 'winlossratio':
                     statleadernumber = format(statleadernumber, '.3f')
-                msgstring = eval(x+"dispmsg")
-                msgstringb = eval(x+"dispmsgb")
-                msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ msgstringb)
+                if statleadername != '':
+                    msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
                 leaderscript.append(msgtoadd)
             for msg in leaderscript:
                 displaymessage = str(displaymessage+ msg+ "     ")
