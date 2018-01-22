@@ -536,7 +536,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     statleadernumber = statamount
                                     statleadername = u
                     if statleadername != '':
-                        bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statamount))
+                        bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
                     else:
                         bot.say("There doesn't apear to be a "+ subcommand + " amount for "+subcommanda+".")
 
