@@ -1161,7 +1161,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
         
         ## Damage Done (random)
-        damage, winnermsg = damagedone(bot, winner, loser)
+        damage, winnermsg = damagedone(bot, winner, loser, weapon)
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1667,7 +1667,7 @@ def weaponformatter(bot, weapon):
 ## Damage Done ##
 #################
 
-def damagedone(bot, winner, loser):
+def damagedone(bot, winner, loser, weapon):
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
@@ -1695,9 +1695,9 @@ def damagedone(bot, winner, loser):
         damage = randint(0, 120)
     
     if winnerclass != 'vampire':
-        damagetext = str(winner + " struck a blow of " + str(damage)+ " ")
+        damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage ')
     else:
-        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " ")
+        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " using " + weapon + " ")
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
@@ -1714,7 +1714,7 @@ def damagedone(bot, winner, loser):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + "however, "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetext = str(damagetext + "however, "+ loser + " absorbs " + str(absorbed) + " of the damage ")
 
     ## dish it out
     if damage > 0:
