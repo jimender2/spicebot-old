@@ -494,12 +494,13 @@ def execute_main(bot, trigger, triggerargsarray):
                     statleadernumber = format(statleadernumber, '.3f')
                 if statleadername != '':
                     msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                leaderscript.append(msgtoadd)
-            for msg in leaderscript:
-                displaymessage = str(displaymessage+ msg+ "  ")
-            if displaymessage == '':
+                    leaderscript.append(msgtoadd)
+            if leaderscript == []:
                 displaymessage = str("Leaderboard appears to be empty")
-            bot.say(displaymessage)
+            else:
+                for msg in leaderscript:
+                    displaymessage = str(displaymessage+ msg+ "  ")
+                bot.say(displaymessage)
 
         ## Loot Items
         elif commandortarget == 'loot':
