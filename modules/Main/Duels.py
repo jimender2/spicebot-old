@@ -173,11 +173,11 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(str(getlastchanstatreset))
     getinstigatorlastreset = get_database_value(bot, instigator, 'chanstatsreset')
-    if not getinstigatorlastreset or getinstigatorlastreset > getlastchanstatreset:
+    if getinstigatorlastreset > getlastchanstatreset:
         bot.say("reset " + instigator + " stats")
         set_database_value(bot, instigator, 'chanstatsreset', now)
     else:
-        bot.say("continue")
+        bot.say(str(getinstigatorlastreset))
         
     ## If Not a target or a command used
     if not fullcommandused:
