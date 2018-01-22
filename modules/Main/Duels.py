@@ -507,7 +507,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         displaymessage = str(displaymessage+ msg+ "  ")
                 bot.say(displaymessage)
             if subcommand == 'highest' or subcommand == 'lowest':
-                subcommanda = get_trigger_arg(triggerargsarray, 2)
+                subcommanda = get_trigger_arg(triggerargsarray, 3)
                 if not subcommanda:
                     bot.say("What stat do you want to check highest/losest?")
                 elif subcommanda not in duelstatsadminarray and subcommanda != 'class':
