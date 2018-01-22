@@ -453,7 +453,7 @@ def execute_main(bot, trigger, triggerargsarray):
             leaderscript = []
             leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak']
             winlossratiodispmsg = "Wins/Losses:"
-            winlossratiodispmsgb = "Wins/Losses:"
+            winlossratiodispmsgb = ""
             killsdispmsg = "Top Killer:"
             killsdispmsgb = "kills"
             respawnsdispmsg = "Top Killed:"
