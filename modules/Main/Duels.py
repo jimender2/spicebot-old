@@ -886,6 +886,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " you don't have any mana.", instigator)
             elif magicusage == 'curse' and targetcurse:
                 bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
+            elif targetshield and magicusage == 'attack':
+                bot.notice(instigator + " it looks like " + target + " is shielded.", instigator)
+            elif targetshield and magicusage == 'instakill':
+                bot.notice(instigator + " it looks like " + target + " is shielded.", instigator)
             else:
                 if magicusage == 'attack':
                     manarequired = manarequiredmagicattack
@@ -1157,7 +1161,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
         
         ## Damage Done (random)
-        damage = damagedone(bot, winner, loser)
+        damage, winnermsg = damagedone(bot, winner, loser)
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1202,19 +1206,15 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
         ## Update Health Of Loser, respawn, allow winner to loot
         currenthealth = get_database_value(bot, loser, 'health')
+        if instigator == target:
+            loser = targetname
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
-            if instigator == target:
-                loser = targetname
-            winnermsg = str(winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
+            winnermsg = str(winnermsg + winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
                 assault_deaths = assault_deaths + 1
-        else:
-            if instigator == target:
-                loser = targetname
-            winnermsg = str(winner + " hits " + loser + weapon + ', dealing ' + str(damage) + ' damage.')
 
         ## new pepper level?
         pepperstatuschangemsg = ''
@@ -1671,6 +1671,7 @@ def damagedone(bot, winner, loser):
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
+    damagetext = ''
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
@@ -1693,6 +1694,10 @@ def damagedone(bot, winner, loser):
     else:
         damage = randint(0, 120)
     
+    if winnerclass == 'vampire':
+        damagetext = str(winner + " struck a blow of " + str(damage)+ " ")
+    else:
+        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " ")
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
@@ -1707,12 +1712,13 @@ def damagedone(bot, winner, loser):
         else:
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
+        damagetext = str(damagetext + "but "+ loser + " absorbs " + str(damagemath) + " of the damage. ")
 
     ## dish it out
     if damage > 0:
         adjust_database_value(bot, loser, 'health', -abs(damage))
-
-    return damage
+    
+    return damage, damagetext
 
 ##################
 ## Pepper level ##
