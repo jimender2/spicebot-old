@@ -249,7 +249,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 commandortarget = 'random'
             if commandortarget == 'everyone':
                 commandortarget = 'assault'
-            bot.say(commandortarget)
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
@@ -274,6 +273,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timeouteval = eval(commandortarget.upper() + "TIMEOUT")
             getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
             getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+            bot.say(commandortarget)
             if getlastusage < timeouteval and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
             elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
