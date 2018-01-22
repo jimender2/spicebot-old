@@ -173,7 +173,7 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(str(getlastchanstatreset))
     getinstigatorlastreset = get_timesince_duels(bot, instigator, 'chanstatreset') or 0
-    if getinstigatorlastreset < getlastchanstatreset:
+    if int(getinstigatorlastreset) < int(getlastchanstatreset):
         bot.say(instigator + " needs a reset")
         #set_database_value(bot, instigator, 'chanstatreset', now)
         
