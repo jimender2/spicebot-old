@@ -441,19 +441,8 @@ def blackjack(bot,trigger,arg):
 					myhand.append(playerhits)
 					bot.db.set_nick_value(player, 'myhand', myhand)
 					bot.say(player + " doubles down and gets " + str(playerhits))
-					blackjackstand(bot,player,myhand,dealerhand,mybet)
-					
-		elif mychoice == 'split' or mychoice == '5':
-			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
-			payout = bot.db.get_nick_value(player, 'mybet') or 0
-			if (myhand == [] or myhand ==0):
-				bot.say('Use deal to start a new game')
-			else:
-				if len(myhand)==2:
-					if myhand[0] == myhand[1]:
-						bot.say(player + " spits on " + myhand[0])
-					else:
-						bot.say("You must have 2 matching cards to split")
+					blackjackstand(bot,player,myhand,dealerhand,mybet)					
+		
 						
 		elif mychoice == 'adminset' and trigger.admin:
 			target = get_trigger_arg(arg, 3) or 'notarget'
@@ -551,9 +540,9 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 				else: 
 					bot.say('The dealer takes a hit and gets a' + dealerhitlist)
 			showdealerhand = ''
-			#for card in dealerhand:						
-				#showdealerhand = showdealerhand + ' ' + str(card)
-			showdealerhand = str(dealerhand)
+			for i in dealerhand:						
+				showdealerhand = showdealerhand + " " + str(i)
+		
 			if dealerscore > 21:
 				payout=payout + int((payout/2))
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
