@@ -99,7 +99,7 @@ weaponmaxlength = 70
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(": worth up to ' + str(USERTIMEOUT) + ' seconds of timeout.")
+timepotiondispmsg = str(": worth up to ' + USERTIMEOUT + ' seconds of timeout.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 
 ############
@@ -1210,7 +1210,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             loser = targetname
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
-            winnermsg = str(winnermsg + ' killing ' + loser + ' forcing a respawn!!')
+            winnermsg = str(winnermsg +  loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
@@ -1695,9 +1695,9 @@ def damagedone(bot, winner, loser, weapon):
         damage = randint(0, 120)
     
     if winnerclass != 'vampire':
-        damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage ')
+        damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
     else:
-        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " using " + weapon + " ")
+        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " using " + weapon + ". ")
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
@@ -1714,7 +1714,7 @@ def damagedone(bot, winner, loser, weapon):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + "however, "+ loser + " absorbs " + str(absorbed) + " of the damage ")
+        damagetext = str(damagetext + ", "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## dish it out
     if damage > 0:
