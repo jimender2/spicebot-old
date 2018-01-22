@@ -461,7 +461,8 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Leaderboard
         elif commandortarget == 'leaderboard':
             leaderscript = []
-            leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak']
+            leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak']
+            worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
             winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
             killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
             respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
