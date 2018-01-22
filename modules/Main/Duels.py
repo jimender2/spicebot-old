@@ -1159,9 +1159,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## classes
         yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
         yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
-        
-        ## Damage Done (random)
-        damage, winnermsg = damagedone(bot, winner, loser, weapon)
 
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
@@ -1176,6 +1173,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if weapon != '':
             weapon = str(" " + weapon)
 
+        ## Damage Done (random)
+        damage, winnermsg = damagedone(bot, winner, loser, weapon)
+        
         ## Update Wins and Losses
         if instigator != target:
             adjust_database_value(bot, winner, 'wins', defaultadjust)
@@ -1210,7 +1210,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             loser = targetname
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
-            winnermsg = str(winnermsg + winner + ' killed ' + loser + weapon + ' forcing a respawn!!')
+            winnermsg = str(winnermsg + ' killing ' + loser + ' forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
