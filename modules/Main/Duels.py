@@ -450,6 +450,44 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
+            leaderscript = []
+            leaderboardarraystats = ['winlossratio','kills','respawns','health','streaks']
+            winlossratiodispmsg = "Wins/Losses: "
+            killsdispmsg = "Top Killer: "
+            respawnsdispmsg = "Top Killed: "
+            healthdispmsg = "Closest To Death: "
+            streaksdispmsg = "Best Win Streak: "
+            for x in leaderboardarraystats:
+                statleadername = ''
+                if x != 'respawns' and x != 'health':
+                    statleadernumber = 0
+                else:
+                    statleadernumber = 99999999
+                for u in bot.users:
+                    if u in dueloptedinarray:
+                        if x != 'winlossratio':
+                            statamount = get_database_value(bot, u, x)
+                        else:
+                            scriptdef = str('get_' + x + '(bot,target)')
+                            statamount = eval(scriptdef)
+                        if x != 'respawns' and x != 'health':
+                            if statamount > statleadernumber:
+                                statleadernumber = statamount
+                                statleadername = u
+                        else:
+                            if statamount < statleadernumber:
+                                statleadernumber = statamount
+                                statleadername = u
+                msgstring = eval(x+"dispmsg")
+                msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber))
+                leaderscript.append(msgtoadd)
+            for msg in leaderscript:
+                bot.say(msg)
+        
+            
+            
+            
+            
             currentwlrleader, currentkillsleader, currentrespawnsleader, currenthealthleader, currentstreaksleader  = '', '', '', '', ''
             currentwlrleadernumber, currentkillsleadernumber, currentrespawnsleadernumber, currentstreaksleadernumber, currentstreaksleadernumber  = 0, 0, 0, 0, 0
             currenthealthleadernumber = 9999999999
