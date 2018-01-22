@@ -484,7 +484,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
                 leaderscript.append(msgtoadd)
             for msg in leaderscript:
-                displaymessage = str(displaymessage+ msg+ " - ")
+                displaymessage = str(displaymessage+ msg+ "  ")
             if displaymessage == '':
                 displaymessage = str("Leaderboard appears to be empty")
             bot.say(displaymessage)
