@@ -99,7 +99,7 @@ weaponmaxlength = 70
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(": worth up to ' + USERTIMEOUT + ' seconds of timeout.")
+timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 
 ############
@@ -1697,7 +1697,7 @@ def damagedone(bot, winner, loser, weapon):
     if winnerclass != 'vampire':
         damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
     else:
-        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " using " + weapon + ". ")
+        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + weapon + ". ")
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
