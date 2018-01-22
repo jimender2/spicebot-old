@@ -453,10 +453,15 @@ def execute_main(bot, trigger, triggerargsarray):
             leaderscript = []
             leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak']
             winlossratiodispmsg = "Wins/Losses:"
+            winlossratiodispmsgb = "Wins/Losses:"
             killsdispmsg = "Top Killer:"
+            killsdispmsgb = "kills"
             respawnsdispmsg = "Top Killed:"
+            respawnsdispmsgb = "respawns"
             healthdispmsg = "Closest To Death:"
+            healthdispmsgb = "health"
             bestwinstreakdispmsg = "Best Win Streak:"
+            bestwinstreakdispmsgb = ""
             for x in leaderboardarraystats:
                 statleadername = ''
                 if x != 'health':
@@ -481,10 +486,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 if x == 'winlossratio':
                     statleadernumber = format(statleadernumber, '.3f')
                 msgstring = eval(x+"dispmsg")
-                msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber))
+                msgstringb = eval(x+"dispmsgb")
+                msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ msgstringb)
                 leaderscript.append(msgtoadd)
             for msg in leaderscript:
-                displaymessage = str(msg+ ".     ")
+                displaymessage = str(msg+ "     ")
             if displaymessage == '':
                 displaymessage = str("Leaderboard appears to be empty")
             bot.say(displaymessage)
