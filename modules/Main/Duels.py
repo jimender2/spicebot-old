@@ -176,7 +176,6 @@ def execute_main(bot, trigger, triggerargsarray):
     if getinstigatorlastreset < getlastchanstatreset:
         bot.say("reset " + instigator + " stats")
         set_database_value(bot, instigator, 'chanstatsreset', now)
-        bot.say(str(getinstigatorlastreset))
     else:
         bot.say(str(getinstigatorlastreset))
         
@@ -1045,6 +1044,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if subcommand == 'set' and newvalue == None:
                         bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                     elif target == 'everyone':
+                        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
                         for u in bot.users:
                             if statset == 'all':
                                 for x in duelstatsadminarray:
