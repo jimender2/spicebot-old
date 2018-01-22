@@ -500,7 +500,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 for msg in leaderscript:
                     displaymessage = str(displaymessage+ msg+ "  ")
-                bot.say(displaymessage)
+            bot.say(displaymessage)
 
         ## Loot Items
         elif commandortarget == 'loot':
