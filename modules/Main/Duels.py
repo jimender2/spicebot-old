@@ -166,14 +166,7 @@ def execute_main(bot, trigger, triggerargsarray):
     healthcheck(bot, instigator)
 
     ## Stat reset
-    getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
-    if not getlastchanstatreset:
-        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-    getinstigatorlastreset = get_database_value(bot, instigator, 'chanstatsreset')
-    if getinstigatorlastreset < getlastchanstatreset:
-        for x in duelstatsadminarray:
-            set_database_value(bot, instigator, x, None)
-        set_database_value(bot, instigator, 'chanstatsreset', now)
+    statreset(bot, instigator)
         
     ## If Not a target or a command used
     if not fullcommandused:
@@ -203,6 +196,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
+                statreset(bot, target)
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
         ## On/off
@@ -231,6 +225,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
+                statreset(bot, target)
                 if commandortarget == 'on':
                     adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                 else:
@@ -244,6 +239,7 @@ def execute_main(bot, trigger, triggerargsarray):
             targetname = target
             if target == 'channel':
                 target = duelrecorduser
+            statreset(bot, target)
             totaluses = get_database_value(bot, target, 'usage')
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
@@ -299,6 +295,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     riskcoins = int(totalplayers) * 30
                     damage = riskcoins
                     winner = selectwinner(bot, canduelarray)
+                    for u in canduelarray:
+                        statreset(bot, target)
                     bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
                     diedinbattle = []
                     canduelarray.remove(winner)
@@ -330,6 +328,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'warroom':
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
+                statreset(bot, target)
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
                     canduelarray.append(u)
@@ -409,6 +408,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
+                statreset(bot, target)
                 streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
                 best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
                 worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
@@ -439,6 +439,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
+                statreset(bot, target)
                 for x in duelstatsarray:
                     if x in statsbypassarray:
                         scriptdef = str('get_' + x + '(bot,target)')
@@ -474,6 +475,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     statleadernumber = 99999999
                 for u in bot.users:
+                    statreset(bot, target)
                     if u in dueloptedinarray:
                         if x != 'winlossratio':
                             statamount = get_database_value(bot, u, x)
@@ -515,6 +517,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                     bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                 elif target.lower() in [x.lower() for x in dueloptedinarray]:
+                    statreset(bot, target)
                     for x in backpackarray:
                         gethowmany = get_database_value(bot, target, x)
                         if gethowmany:
@@ -542,6 +545,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         return
                     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
                     for u in bot.users:
+                        statreset(bot, target)
                         if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
                     if canduelarray == []:
@@ -625,6 +629,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             quantity = int(gethowmanylootitem)
                         else:
                             quantity = int(lootitemc)
+                    statreset(bot, target)
                     targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                     if not gethowmanylootitem:
                         bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
@@ -822,6 +827,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjustmentdirection = get_trigger_arg(triggerargsarray, 3).lower()
                 weaponchange = get_trigger_arg(triggerargsarray, '4+')
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
+            statreset(bot, target)
             if not adjustmentdirection:
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
             elif adjustmentdirection == 'total':
@@ -882,6 +888,7 @@ def execute_main(bot, trigger, triggerargsarray):
             targetcurse = get_database_value(bot, target, 'curse') or 0
             targetshield = get_database_value(bot, target, 'shield') or 0
             targetclass = get_database_value(bot, target, 'class') or 'notclassy'
+            statreset(bot, target)
             if not magicusage:
                 bot.say('Magic uses include: attack, instakill, curse, shield')
             elif magicusage not in magicoptions:
@@ -1042,6 +1049,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif target == 'everyone':
                         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
                         for u in bot.users:
+                            statreset(bot, target)
                             if statset == 'all':
                                 for x in duelstatsadminarray:
                                     set_database_value(bot, u, x, newvalue)
@@ -1049,6 +1057,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, u, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     else:
+                        statreset(bot, target)
                         try:
                             if newvalue.isdigit():
                                 newvalue = int(newvalue)
@@ -1062,6 +1071,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             elif subcommand == 'bugbounty':
                 target = get_trigger_arg(triggerargsarray, 3)
+                statreset(bot, target)
                 if not target:
                     bot.notice(instigator + ", Target Missing. ", instigator)
                 elif target.lower() not in [u.lower() for u in bot.users]:
@@ -1117,6 +1127,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        statreset(bot, target)
         targetarraytotal = targetarraytotal - 1
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
@@ -1673,6 +1684,20 @@ def weaponformatter(bot, weapon):
     else:
         weapon = str('with a ' + weapon)
     return weapon
+
+################
+## Stat Reset ##
+################
+
+def statreset(bot, nick):
+    getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
+    if not getlastchanstatreset:
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+    getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
+    if getnicklastreset < getlastchanstatreset:
+        for x in duelstatsadminarray:
+            set_database_value(bot, nick, x, None)
+        set_database_value(bot, nick, 'chanstatsreset', now)
 
 #################
 ## Damage Done ##
