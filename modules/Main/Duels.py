@@ -150,12 +150,21 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Build User/channel Arrays
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     canduelarray, targetarray = [], []
-            
-    ###### Channel
-    inchannel = trigger.sender
 
     ## Time when Module use started
     now = time.time()
+    
+    ## Stat reset
+    getlastchanstatreset = get_timesince_duels(bot, duelrecorduser, 'chanstatreset') or 0
+    if not getlastchanstatreset:
+        set_database_value(bot, duelrecorduser, 'chanstatreset', now)
+    getinstigatorlastreset = get_timesince_duels(bot, instigator, 'chanstatreset') or 0
+    if getinstigatorlastreset < getlastchanstatreset:
+        bot.say(instigator + " needs a reset")
+        #set_database_value(bot, instigator, 'chanstatreset', now)
+    
+    ###### Channel
+    inchannel = trigger.sender
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
