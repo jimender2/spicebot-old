@@ -1709,10 +1709,12 @@ def damagedone(bot, winner, loser):
         if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
             damage = 0
+            absorbed = 'all'
         else:
+            absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + "but "+ loser + " absorbs " + str(damagemath) + " of the damage. ")
+        damagetext = str(damagetext + "however, "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## dish it out
     if damage > 0:
