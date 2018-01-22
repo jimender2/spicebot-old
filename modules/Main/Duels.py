@@ -253,9 +253,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             for u in bot.users:
-                statreset(bot, u)
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel:
+                    statreset(bot, u)
                     canduelarray.append(u)
             if instigator in canduelarray and commandortarget == 'assault':
                 canduelarray.remove(instigator)
