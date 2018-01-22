@@ -487,7 +487,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 statleadernumber = statamount
                                 statleadername = u
                         else:
-                            if statamount < statleadernumber:
+                            if statamount < statleadernumber and statamount > 0:
                                 statleadernumber = statamount
                                 statleadername = u
                 if x == 'winlossratio':
