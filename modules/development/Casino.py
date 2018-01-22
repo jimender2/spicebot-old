@@ -339,6 +339,11 @@ def blackjack(bot,trigger,arg):
 	payouton21 = 1
 	mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
 	mychoice2 = get_trigger_arg(arg, 3) or 'nocommand'
+	botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+	botuseron=[]
+	for u in bot.users:
+		if u in botusersarray and u != bot.nick:
+			botuseron.append(u)
 	if mychoice == 'nocommand':
 		bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
 		
@@ -443,6 +448,38 @@ def blackjack(bot,trigger,arg):
 					bot.say(player + " doubles down and gets " + str(playerhits))
 					blackjackstand(bot,player,myhand,dealerhand,mybet)
 					
+		elif mychoice == 'split' or mychoice == '5':
+			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
+			payout = bot.db.get_nick_value(player, 'mybet') or 0
+			if (myhand == [] or myhand ==0):
+				bot.say('Use deal to start a new game')
+			else:
+				if len(myhand)==2:
+					if myhand[0] == myhand[1]:
+						bot.say(player + " spits on " + myhand[0])
+					else:
+						bot.say("You must have 2 matching cards to split")
+						
+		elif mychoice == 'adminset' and trigger.admin:
+			target = get_trigger_arg(arg, 2) or 'notarget'
+			card1 = get_trigger_arg(arg, 3) or 'nocard1'
+			card2 = get_trigger_arg(arg,4) or 'nocard2'
+			myhand = []
+			dealerhand = []
+			mybet = 30
+			if not target.lower() in [u.lower() for u in botuseron]:
+				bot.say("Target not found.")
+			else:
+				if not (card1 == 'nocard1'and card2 == 'nocard2'):
+					myhand.append(card1)
+					myhand.append(card2)
+					dealerhand.append(card1)
+					dealerhand.append(card2)
+					bot.say(str(myhand))					
+					bot.db.set_nick_value(player, 'myhand', myhand)
+					bot.db.set_nick_value(player, 'dealerhand', dealerhand)
+					bot.db.set_nick_value(player, 'mybet', mybet)				
+									
 			
 			
 		elif mychoice == 'stand' or mychoice == '3':
