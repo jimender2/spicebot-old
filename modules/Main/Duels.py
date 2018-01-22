@@ -700,6 +700,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     adjust_database_value(bot, target, 'mana', manapotionworth)
                             elif x == 'timepotion':
+                                set_database_value(bot, target, 'lastfought', None)
                                 for k in timepotiontargetarray:
                                     targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
                                     if k == target:
