@@ -1694,7 +1694,7 @@ def damagedone(bot, winner, loser):
     else:
         damage = randint(0, 120)
     
-    if winnerclass == 'vampire':
+    if winnerclass != 'vampire':
         damagetext = str(winner + " struck a blow of " + str(damage)+ " ")
     else:
         damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + " ")
