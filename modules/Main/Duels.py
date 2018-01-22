@@ -166,8 +166,8 @@ def execute_main(bot, trigger, triggerargsarray):
     healthcheck(bot, instigator)
 
     ## Stat reset
-    getlastchanstatreset = get_timesince_duels(bot, duelrecorduser, 'chanstatsreset')
-    getinstigatorlastreset = get_timesince_duels(bot, instigator, 'chanstatsreset')
+    getlastchanstatreset = get_database_value(bot, target, 'chanstatsreset')
+    getinstigatorlastreset = get_database_value(bot, target, 'chanstatsreset')
     bot.say(str(getlastchanstatreset))
     bot.say(str(getinstigatorlastreset))
     #if not getlastchanstatreset:
