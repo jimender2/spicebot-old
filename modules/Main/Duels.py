@@ -482,7 +482,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             scriptdef = str('get_' + x + '(bot,u)')
                             statamount = eval(scriptdef)
-                        if statamount == statleadernumber:
+                        if statamount == statleadernumber and statamount > 0:
                             statleadername = str(statleadername+ " "+ u)
                         else:
                             if x != 'health':
