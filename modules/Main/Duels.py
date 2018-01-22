@@ -257,8 +257,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 if canduel:
                     statreset(bot, u)
                     canduelarray.append(u)
-            if instigator in canduelarray and commandortarget == 'assault':
-                canduelarray.remove(instigator)
             if commandortarget != 'random' and bot.nick in canduelarray:
                 canduelarray.remove(bot.nick)
             if canduelarray == [] or len(canduelarray) == 1:
@@ -275,15 +273,14 @@ def execute_main(bot, trigger, triggerargsarray):
             getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
             if getlastusage < timeouteval and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
-                bot.say(commandortarget + "1")
             elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
-                bot.say(commandortarget + "2")
             elif instigator not in canduelarray:
                 dowedisplay = 1
                 mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
-                bot.say(commandortarget + "3")
             else:
+                if instigator in canduelarray and commandortarget == 'assault':
+                    canduelarray.remove(instigator)
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
                 set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
@@ -330,9 +327,9 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'warroom':
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             for u in bot.users:
-                statreset(bot, u)
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
+                    statreset(bot, u)
                     canduelarray.append(u)
             if not subcommand:
                 if instigator in canduelarray:
