@@ -168,16 +168,12 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Stat reset
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
     if not getlastchanstatreset:
-        bot.say("setting")
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-    else:
-        bot.say(str(getlastchanstatreset))
     getinstigatorlastreset = get_database_value(bot, instigator, 'chanstatsreset')
     if getinstigatorlastreset < getlastchanstatreset:
-        bot.say("reset " + instigator + " stats")
+        for x in duelstatsadminarray:
+            set_database_value(bot, instigator, x, None)
         set_database_value(bot, instigator, 'chanstatsreset', now)
-    else:
-        bot.say(str(getinstigatorlastreset))
         
     ## If Not a target or a command used
     if not fullcommandused:
