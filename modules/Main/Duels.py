@@ -460,32 +460,74 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Leaderboard
         elif commandortarget == 'leaderboard':
-            leaderscript = []
-            leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak']
-            worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
-            winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
-            killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
-            respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
-            healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
-            bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
-            for x in leaderboardarraystats:
-                statleadername = ''
-                if x != 'health':
-                    statleadernumber = 0
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            if not subcommand:
+                leaderscript = []
+                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak']
+                worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
+                winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
+                killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
+                respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
+                healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
+                bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
+                for x in leaderboardarraystats:
+                    statleadername = ''
+                    if x != 'health':
+                        statleadernumber = 0
+                    else:
+                        statleadernumber = 99999999
+                    for u in bot.users:
+                        statreset(bot, u)
+                        if u in dueloptedinarray:
+                            if x != 'winlossratio':
+                                statamount = get_database_value(bot, u, x)
+                            else:
+                                scriptdef = str('get_' + x + '(bot,u)')
+                                statamount = eval(scriptdef)
+                            if statamount == statleadernumber and statamount > 0:
+                                statleadername = str(statleadername+ " "+ u)
+                            else:
+                                if x != 'health':
+                                    if statamount > statleadernumber:
+                                        statleadernumber = statamount
+                                        statleadername = u
+                                else:
+                                    if statamount < statleadernumber and statamount > 0:
+                                        statleadernumber = statamount
+                                        statleadername = u
+                    if x == 'winlossratio':
+                        statleadernumber = format(statleadernumber, '.3f')
+                    if statleadername != '':
+                        msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+                        leaderscript.append(msgtoadd)
+                if leaderscript == []:
+                    displaymessage = str("Leaderboard appears to be empty")
                 else:
-                    statleadernumber = 99999999
-                for u in bot.users:
-                    statreset(bot, u)
-                    if u in dueloptedinarray:
-                        if x != 'winlossratio':
-                            statamount = get_database_value(bot, u, x)
+                    for msg in leaderscript:
+                        displaymessage = str(displaymessage+ msg+ "  ")
+                bot.say(displaymessage)
+            if subcommand == 'highest' or subcommand == 'lowest':
+                subcommanda = get_trigger_arg(triggerargsarray, 2)
+                if not subcommanda:
+                    bot.say("What stat do you want to check highest/losest?")
+                elif subcommanda not in duelstatsadminarray and subcommanda != 'class':
+                    bot.say("This stat is either not comparable at the moment or invalid.")
+                else:
+                    statleadername = ''
+                    if subcommand == 'highest':
+                        statleadernumber = 0
+                    else:
+                        statleadernumber = 99999999
+                    for u in bot.users:
+                        if subcommanda != 'winlossratio':
+                            statamount = get_database_value(bot, u, subcommanda)
                         else:
-                            scriptdef = str('get_' + x + '(bot,u)')
+                            scriptdef = str('get_' + subcommanda + '(bot,u)')
                             statamount = eval(scriptdef)
                         if statamount == statleadernumber and statamount > 0:
                             statleadername = str(statleadername+ " "+ u)
                         else:
-                            if x != 'health':
+                            if subcommand == 'highest':
                                 if statamount > statleadernumber:
                                     statleadernumber = statamount
                                     statleadername = u
@@ -493,17 +535,10 @@ def execute_main(bot, trigger, triggerargsarray):
                                 if statamount < statleadernumber and statamount > 0:
                                     statleadernumber = statamount
                                     statleadername = u
-                if x == 'winlossratio':
-                    statleadernumber = format(statleadernumber, '.3f')
-                if statleadername != '':
-                    msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                    leaderscript.append(msgtoadd)
-            if leaderscript == []:
-                displaymessage = str("Leaderboard appears to be empty")
-            else:
-                for msg in leaderscript:
-                    displaymessage = str(displaymessage+ msg+ "  ")
-            bot.say(displaymessage)
+                    if statleadername != '':
+                        bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statamount))
+                    else:
+                        bot.say("There doesn't apear to be a "+ subcommand + " amount for "+subcommanda+".")
 
         ## Loot Items
         elif commandortarget == 'loot':
