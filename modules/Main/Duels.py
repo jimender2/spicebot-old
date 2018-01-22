@@ -482,14 +482,17 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             scriptdef = str('get_' + x + '(bot,u)')
                             statamount = eval(scriptdef)
-                        if x != 'health':
-                            if statamount > statleadernumber:
-                                statleadernumber = statamount
-                                statleadername = u
+                        if statamount == statleadernumber:
+                            statleadername = str(statleadername+ " "+ u)
                         else:
-                            if statamount < statleadernumber and statamount > 0:
-                                statleadernumber = statamount
-                                statleadername = u
+                            if x != 'health':
+                                if statamount > statleadernumber:
+                                    statleadernumber = statamount
+                                    statleadername = u
+                            else:
+                                if statamount < statleadernumber and statamount > 0:
+                                    statleadernumber = statamount
+                                    statleadername = u
                 if x == 'winlossratio':
                     statleadernumber = format(statleadernumber, '.3f')
                 if statleadername != '':
