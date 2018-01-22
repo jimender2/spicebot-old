@@ -454,7 +454,7 @@ def execute_main(bot, trigger, triggerargsarray):
             leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak']
             winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
             killsdispmsg, killsdispmsgb = "Top Killer:", "kills"
-            respawnsdispmsg, respawnsdispmsgb = "Top Killed:", "respawns"
+            respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
             healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
             bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
             for x in leaderboardarraystats:
