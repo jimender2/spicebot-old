@@ -519,21 +519,22 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 				else: 
 					bot.say('The dealer takes a hit and gets a' + dealerhitlist)
 			showdealerhand = ''
-			for card in dealerhand:						
-				showdealerhand = showdealerhand + ' ' + str(card)
+			#for card in dealerhand:						
+				#showdealerhand = showdealerhand + ' ' + str(card)
+			showdealerhand = str(dealerhand)
 			if dealerscore > 21:
 				payout=payout + int((payout/2))
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
-				bot.say("The dealer had " + dealerhand + " busts")
+				bot.say("The dealer had " + showdealerhand + " busts")
 				bot.say(player + ' wins ' + str(payout))
 			elif dealerscore == 21:
-				bot.say("The dealer has " + dealerhand + " and wins")
+				bot.say("The dealer has " + showdealerhand + " and wins")
 			elif dealerscore < myscore:
 				payout=payout + int((payout/2))
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
-				bot.say("The dealer had " + dealerhand + " " + player + " wins " + str(payout))
+				bot.say("The dealer had " + showdealerhand + " " + player + " wins " + str(payout))
 			elif dealerscore > myscore:
-				bot.say("The dealer had " +  dealerhand + " and wins")
+				bot.say("The dealer had " +  showdealerhand + " and wins")
 			elif dealerscore == myscore:			
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
 				bot.say('It is a draw and ' + player + ' gets ' + str(payout))
