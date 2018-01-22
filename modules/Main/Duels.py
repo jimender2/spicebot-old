@@ -478,7 +478,8 @@ def execute_main(bot, trigger, triggerargsarray):
                             if statamount < statleadernumber:
                                 statleadernumber = statamount
                                 statleadername = u
-                statleadernumber = format(statleadernumber, '.3f')
+                if x == 'winlossratio':
+                    statleadernumber = format(statleadernumber, '.3f')
                 msgstring = eval(x+"dispmsg")
                 msgtoadd = str(msgstring + " "+ statleadername + " at "+ str(statleadernumber))
                 leaderscript.append(msgtoadd)
