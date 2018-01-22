@@ -273,14 +273,16 @@ def execute_main(bot, trigger, triggerargsarray):
             timeouteval = eval(commandortarget.upper() + "TIMEOUT")
             getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
             getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
-            bot.say(commandortarget)
             if getlastusage < timeouteval and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+                bot.say(commandortarget + "1")
             elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
+                bot.say(commandortarget + "2")
             elif instigator not in canduelarray:
                 dowedisplay = 1
                 mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+                bot.say(commandortarget + "3")
             else:
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
