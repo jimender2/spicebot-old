@@ -820,7 +820,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_value(bot, instigator, 'coin', -abs(coinrequired))
                         adjust_database_value(bot, instigator, lootitem, quantity)
-                        bot.say(instigator + " bought " + str(quantity) + lootitem + "s for " +str(coinrequired)+ " coins.")
+                        bot.say(instigator + " bought " + str(quantity) + + " "lootitem + "s for " +str(coinrequired)+ " coins.")
             elif lootcommand == 'sell':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
@@ -844,7 +844,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             reward = lootsellreward * int(quantity)
                         adjust_database_value(bot, instigator, 'coin', reward)
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
-                        bot.say(instigator + " sold " + str(quantity) + lootitem + "s for " +str(reward)+ " coins.")
+                        bot.say(instigator + " sold " + str(quantity) + " "+ lootitem + "s for " +str(reward)+ " coins.")
             elif lootcommand == 'trade':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
@@ -874,7 +874,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_value(bot, instigator, lootitem, -abs(quantitymath))
                         adjust_database_value(bot, instigator, lootitemb, quantity)
-                        bot.say(instigator + " traded " + str(quantitymath) + lootitem + "s for " +str(quantity) + lootitemb+ "s.")
+                        bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
                     
         ## Weaponslocker
         elif commandortarget == 'weaponslocker':
