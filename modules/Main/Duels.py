@@ -1561,7 +1561,7 @@ def respawn_tiers(bot):
     if not currenttier:
         health = stockhealth
     else:
-        health = eval("health"+ numToWords(currenttier))
+        health = eval("health"+ num2words(currenttier))
         bot.say(str(health))
     return health
  
