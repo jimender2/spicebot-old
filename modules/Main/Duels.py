@@ -95,41 +95,24 @@ grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
 
-## Health Tiers
+## Tiers
 stockhealth = 1000
-healthone = 1000
-healthtwo = 1250
-healththree = 1500
-healthfour = 1750
-healthfive = 2000
-healthsix = 2250
-healthseven = 2500
-healtheight = 2750
-healthnine = 3000
-healthten = 3250
-healtheleven = 3500
-healthtwelve = 3750
-healththirteen = 4000
-healthfourteen = 4250
-healthfifteen = 4500
-
-## Damage Tiers
-stockdamage = 1
-damageone = 1.1
-damagetwo = 1.2
-damagethree = 1.3
-damagefour = 1.4
-damagefive = 1.5
-damagesix = 1.6
-damageseven = 1.7
-damageeight = 1.8
-damagenine = 1.9
-damageten = 2
-damageeleven = 2.1
-damagetwelve = 2.2
-damagethirteen = 2.3
-damagefourteen = 2.4
-damagefifteen = 2.5
+stocktierratio = 1
+tierratioone = 1.1
+tierratiotwo = 1.2
+tierratiothree = 1.3
+tierratiofour = 1.4
+tierratiofive = 1.5
+tierratiosix = 1.6
+tierratioseven = 1.7
+tierratioeight = 1.8
+tierrationine = 1.9
+tierratioten = 2
+tierratioeleven = 2.1
+tierratiotwelve = 2.2
+tierratiothirteen = 2.3
+tierratiofourteen = 2.4
+tierratiofifteen = 2.5
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -994,7 +977,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     actualmanarequired = int(manarequired)
                     instaquantity = int(quantity)
                     if int(instaquantity) > 1:
-                        healthtier = respawn_tiers(bot)
+                        healthtier = tierratio_level(bot)
+                        healthtier = healthtier * stockhealth
                         instaquantity = int(instaquantity) - 1
                         quantityadjust = healthtier * int(instaquantity)
                         quantityadjust = quantityadjust / 200
@@ -1521,12 +1505,11 @@ def whokilledwhom(bot, winner, loser):
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
-    if not health and nick != bot.nick:
-        currenthealthtier = respawn_tiers(bot)
-        set_database_value(bot, nick, 'health', currenthealthtier)
-    elif health < 0 and nick != bot.nick:
-        currenthealthtier = respawn_tiers(bot)
-        set_database_value(bot, nick, 'health', currenthealthtier)
+    if not health or health < 0:
+        if nick != bot.nick:
+            currenthealthtier = tierratio_level(bot)
+            currenthealthtier = currenthealthtier * stockhealth
+            set_database_value(bot, nick, 'health', currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
@@ -1536,15 +1519,6 @@ def refreshbot(bot):
     for x in duelstatsadminarray:
         statset = x
         set_database_value(bot, bot.nick, x, None)
-
-def respawn_tiers(bot):
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
-    if not currenttier:
-        health = stockhealth
-    else:
-        wordconvert = num2words(int(currenttier))
-        health = eval("health"+ wordconvert)
-    return health
  
 ##########
 ## Time ##
@@ -1780,21 +1754,25 @@ def statreset(bot, nick):
             set_database_value(bot, nick, x, None)
         set_database_value(bot, nick, 'chanstatsreset', now)
 
+################
+## Tier ratio ##
+################
+
+def tierratio_level(bot):
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    if not currenttier:
+        tierratio = stocktierratio
+    else:
+        wordconvert = num2words(int(currenttier))
+        tierratio = eval("tierratio"+ wordconvert)
+    return tierratio
+
 #################
 ## Damage Done ##
 #################
 
-def damage_tiers(bot):
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
-    if not currenttier:
-        damage = stockdamage
-    else:
-        wordconvert = num2words(int(currenttier))
-        damage = eval("damage"+ wordconvert)
-    return damage
-
 def damagedone(bot, winner, loser, weapon):
-    damagescale = damage_tiers(bot)
+    damagescale = tierratio_level(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
