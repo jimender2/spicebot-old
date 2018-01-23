@@ -319,7 +319,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     for x in canduelarray:
                         targethealth = get_database_value(bot, x, 'health') or 0
                         if not targethealth:
-                            set_database_value(bot, x, 'health', stockhealth)
+                            healthcheck(bot, x)
                         shieldloser = get_database_value(bot, x, 'shield') or 0
                         if shieldloser and damage > 0:
                             damagemath = int(shieldloser) - damage
@@ -617,7 +617,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             canduelarrayorig.append(u)
                             targethealth = get_database_value(bot, u, 'health') or 0
                             if not targethealth:
-                                set_database_value(bot, u, 'health', stockhealth)
+                                healthcheck(bot, u)
                                 targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget, secondarytarget, thirdtarget = '','',''
@@ -711,7 +711,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         targethealth = get_database_value(bot, target, 'health') or 0
                         targetmana = get_database_value(bot, target, 'mana') or 0
                         if not targethealth:
-                            set_database_value(bot, target, 'health', stockhealth)
+                            healthcheck(bot, target)
                             targethealth = get_database_value(bot, target, 'health')
                         uselootarray = []
                         if lootitem == 'mysterypotion':
@@ -992,8 +992,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     actualmanarequired = int(manarequired)
                     instaquantity = int(quantity)
                     if int(instaquantity) > 1:
+                        healthtier = respawn_tiers(bot)
                         instaquantity = int(instaquantity) - 1
-                        quantityadjust = stockhealth * int(instaquantity)
+                        quantityadjust = healthtier * int(instaquantity)
                         quantityadjust = quantityadjust / 200
                         quantityadjust = quantityadjust * manarequiredmagicattack
                         actualmanarequired = int(quantityadjust) + int(manarequired)
@@ -1503,7 +1504,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
 def whokilledwhom(bot, winner, loser):
     ## Reset mana and health
     set_database_value(bot, loser, 'mana', None)
-    set_database_value(bot, loser, 'health', stockhealth)
+    healthcheck(bot, loser)
     ## update kills/deaths
     adjust_database_value(bot, winner, 'kills', defaultadjust)
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
@@ -1520,6 +1521,7 @@ def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
         currenthealthtier = respawn_tiers(bot)
+        bot.say(str(currenthealthtier))
         set_database_value(bot, nick, 'health', currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
@@ -1533,6 +1535,7 @@ def refreshbot(bot):
 
 def respawn_tiers(bot):
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    bot.say(str(currenttier))
     if not currenttier:
         health = stockhealth
     elif currenttier == 1:
