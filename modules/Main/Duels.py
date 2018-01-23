@@ -134,7 +134,7 @@ transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire'] ## Valid Classes
 duelstatsadminarray = ['classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
-magicoptions = ['attack','instakill','curse','shield']
+magicoptionsarray = ['attack','instakill','curse','shield']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -918,7 +918,7 @@ def execute_main(bot, trigger, triggerargsarray):
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatormana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
-            if not magicusage or magicusage not in magicoptions:
+            if not magicusage or magicusage not in magicoptionsarray:
                 magicoptions = get_trigger_arg(magicoptions, 'list')
                 bot.say('Magic uses include: '+ magicoptions)
             else:
