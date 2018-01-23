@@ -15,7 +15,7 @@ import re
 import sys
 import os
 from os.path import exists
-import numToWords
+import num2words
 
 ## not needed if using without spicebot
 shareddir = os.path.dirname(os.path.dirname(__file__))
