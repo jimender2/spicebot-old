@@ -1840,10 +1840,11 @@ def damagedone(bot, winner, loser, weapon):
         damage = randint(0, 120)
        
     ## Damage Tiers
-    bot.say(str(damage))
+    bot.say("Tier " + str(damagescale))
+    bot.say("damage start "+str(damage))
     if damage > 0:
-        damage = int(damagescale) * int(damage)
-    bot.say(str(damage))
+        damage = damagescale * damage
+    bot.say("damage end "+str(damage))
     
     if damage == 0:
         damagetext = str(winner + " hits " + loser + weapon + ' but deals no damage. ')
