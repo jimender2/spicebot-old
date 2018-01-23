@@ -1357,8 +1357,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 combattextarray.append(checktext)
         iterateme = iter(combattextarray)
         for x in iterateme:
-            linetosay = str(x, next(iterateme))
-            bot.say(linetosay)
+            linetosay = (x, next(iterateme))
+            bot.say(str(linetosay))
         #for j in combattextarray:
             #bot.say(j)
         
