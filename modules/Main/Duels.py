@@ -795,6 +795,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             bot.say(mainlootusemessage)
             elif lootcommand == 'trade':
+                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
                 lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemc
@@ -830,6 +831,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'buy':
+                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
                 lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemb
@@ -863,6 +865,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'sell':
+                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
                 lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemb
