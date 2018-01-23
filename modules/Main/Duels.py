@@ -1545,7 +1545,6 @@ def healthcheck(bot, nick):
     elif health < 0 and nick != bot.nick:
         currenthealthtier = respawn_tiers(bot)
         set_database_value(bot, nick, 'health', currenthealthtier)
-        
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
@@ -1803,7 +1802,17 @@ def statreset(bot, nick):
 ## Damage Done ##
 #################
 
+def damage_tiers(bot):
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    if not currenttier:
+        damage = stockdamage
+    else:
+        wordconvert = num2words(int(currenttier))
+        damage = eval("damage"+ wordconvert)
+    return damage
+
 def damagedone(bot, winner, loser, weapon):
+    damagescale = damage_tiers(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
@@ -1829,6 +1838,12 @@ def damagedone(bot, winner, loser, weapon):
     ## All Other Players
     else:
         damage = randint(0, 120)
+       
+    ## Damage Tiers
+    bot.say(str(damage))
+    if damage > 0:
+        damage = int(damagescale * damage)
+    bot.say(str(damage))
     
     if damage == 0:
         damagetext = str(winner + " hits " + loser + weapon + ' but deals no damage. ')
