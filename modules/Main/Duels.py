@@ -1844,6 +1844,7 @@ def damagedone(bot, winner, loser, weapon):
     bot.say("damage start "+str(damage))
     if damage > 0:
         damage = damagescale * damage
+        damage = int(damage)
     bot.say("damage end "+str(damage))
     
     if damage == 0:
