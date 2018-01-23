@@ -820,7 +820,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_value(bot, instigator, 'coin', -abs(coinrequired))
                         adjust_database_value(bot, instigator, lootitem, quantity)
-                        bot.say(instigator + " bought " + str(quantity) + + " "lootitem + "s for " +str(coinrequired)+ " coins.")
+                        bot.say(instigator + " bought " + str(quantity) +  " "+lootitem + "s for " +str(coinrequired)+ " coins.")
             elif lootcommand == 'sell':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
