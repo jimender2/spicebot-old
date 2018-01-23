@@ -15,7 +15,7 @@ import re
 import sys
 import os
 from os.path import exists
-import num2words
+from num2words import num2words
 
 ## not needed if using without spicebot
 shareddir = os.path.dirname(os.path.dirname(__file__))
@@ -1561,7 +1561,7 @@ def respawn_tiers(bot):
     if not currenttier:
         health = stockhealth
     else:
-        wordconvert = wordconvet = 
+        wordconvert = num2words(int(currenttier))
         health = eval("health"+ wordconvert)
         bot.say(str(health))
     return health
