@@ -795,6 +795,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             bot.say(mainlootusemessage)
             elif lootcommand == 'trade':
+                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemc
                 if not quantity:
                     quantity = 1
@@ -828,11 +830,19 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'buy':
+                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemb
                 if not quantity:
                     quantity = 1
                 elif quantity == 'all':
-                    quantity = 99999999999999999
+                    if instigatorclass == 'scavenger':
+                        quantity = int(instigatorcoin) / lootbuycostscavenger
+                    else:
+                        quantity = int(instigatorcoin) / lootbuycostscavenger
+                    if not quantity > 1:
+                        bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
+                        return
                 if instigatorclass == 'scavenger':
                     coinrequired = lootbuycostscavenger * int(quantity)
                 else:
@@ -853,6 +863,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, itemexchanged, reward)
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'sell':
+                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
                 quantity = lootitemb
                 if not quantity:
                     quantity = 1
