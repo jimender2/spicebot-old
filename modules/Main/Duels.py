@@ -589,7 +589,7 @@ def execute_main(bot, trigger, triggerargsarray):
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
-            if not lootcommand or target.lower() in [x.lower() for x in dueloptedinarray]:
+            if not lootcommand or lootcommand.lower() in [x.lower() for x in dueloptedinarray]:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
