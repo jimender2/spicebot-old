@@ -287,6 +287,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
                 return
             if commandortarget == 'random':
+                typeofduel == 'random'
                 target = get_trigger_arg(canduelarray, 'random')
                 OSDTYPE = 'say'
                 targetarray.append(target)
@@ -1177,7 +1178,6 @@ def execute_main(bot, trigger, triggerargsarray):
     refreshbot(bot)
 
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
-    commandortarget = get_trigger_arg(triggerargsarray, 1).lower()
     
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
@@ -1186,6 +1186,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        combattextarray = []
         statreset(bot, target)
         targetarraytotal = targetarraytotal - 1
         if typeofduel == 'assault':
@@ -1345,24 +1346,30 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 streaktext = str(str(streaktext) + "       ")
 
         ## On Screen Text
-        if OSDTYPE == 'say':
-            bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
-            bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
-            if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
-                bot.say(str(streaktext) + str(pepperstatuschangemsg))
-            if magicattributestext != '':
-                bot.say(str(magicattributestext))
-        elif OSDTYPE == 'notice':
-            bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), winner)
-            bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
-            bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), winner)
-            bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), loser)
-            if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
-                bot.notice(str(streaktext) + str(pepperstatuschangemsg), winner)
-                bot.notice(str(streaktext) + str(pepperstatuschangemsg), loser)
-            if magicattributestext != '':
-                bot.notice(str(magicattributestext), winner)
-                bot.notice(str(magicattributestext), loser)
+        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext']
+        for x in combattextarrayloop:
+            checktext = eval(x)
+            if checktext and checktext != '':
+                combattextarray.append(checktext)
+
+        #if OSDTYPE == 'say':
+        #    bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
+        #    bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
+        #    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
+        #        bot.say(str(streaktext) + str(pepperstatuschangemsg))
+        #    if magicattributestext != '':
+        #        bot.say(str(magicattributestext))
+        #elif OSDTYPE == 'notice':
+        #    bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), winner)
+        #    bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
+        #    bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), winner)
+        #    bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), loser)
+        #    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
+        #        bot.notice(str(streaktext) + str(pepperstatuschangemsg), winner)
+        #        bot.notice(str(streaktext) + str(pepperstatuschangemsg), loser)
+        #    if magicattributestext != '':
+        #        bot.notice(str(magicattributestext), winner)
+        #        bot.notice(str(magicattributestext), loser)
 
         ## update assault stats
         if winner == instigator:
@@ -1382,7 +1389,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             time.sleep(5)
         
         ## Random Bonus
-        if typeofduel == 'target' and winner == instigator and commandortarget == 'random':
+        if typeofduel == 'random' and winner == instigator:
             adjust_database_value(bot, winner, 'coin', randomcoinaward)
             
         ## End Of assault
