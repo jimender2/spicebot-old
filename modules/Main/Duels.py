@@ -846,6 +846,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if not quantity > 1:
                             bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
                             return
+                    quantity = int(quantity)
                     if instigatorclass == 'scavenger':
                         coinrequired = lootbuycostscavenger * int(quantity)
                     else:
@@ -872,6 +873,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if int(quantity) > gethowmanylootitem:
                         bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
                     else:
+                        quantity = int(quantity)
                         if instigatorclass == 'scavenger':
                             reward = lootsellrewardscavenger * int(quantity)
                         else:
