@@ -1355,8 +1355,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             checktext = eval(x)
             if checktext and checktext != '':
                 combattextarray.append(checktext)
-        for j in combattextarray:
-            bot.say(j)
+        iterateme = iter(combattextarray)
+        for x in iterateme:
+            linetosay = (x, next(iterateme))
+            bot.say(linetosay)
+        #for j in combattextarray:
+            #bot.say(j)
         
         #if OSDTYPE == 'say':
         #    bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
