@@ -1360,13 +1360,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     combattextarraya.append(checktext)
                     lastarray = 1
                 else:
-                    if len(checktext) > 60:
-                        combattextarraya.append(checktext)
-                        combattextarrayb.append('   ')
-                        lastarray = 1
-                    else:
-                        combattextarrayb.append(checktext)
-                        lastarray = 2
+                    combattextarrayb.append(checktext)
+                    lastarray = 2
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
             bot.say(arrayone + "   " + arraytwo)
         #iterateme = iter(combattextarray)
