@@ -874,6 +874,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         adjust_database_value(bot, instigator, lootitem, -abs(quantitymath))
                         adjust_database_value(bot, instigator, lootitemb, quantity)
+                        quantity = int(quantity)
                         bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
                     
         ## Weaponslocker
