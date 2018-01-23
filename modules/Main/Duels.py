@@ -873,7 +873,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
                     else:
                         adjust_database_value(bot, instigator, lootitem, -abs(quantitymath))
-                        adjust_database_value(bot, instigator, lootitemb, 1)
+                        adjust_database_value(bot, instigator, lootitemb, quantity)
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
                     
         ## Weaponslocker
