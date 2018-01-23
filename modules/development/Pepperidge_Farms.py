@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     pfremembers = get_trigger_arg(triggerargsarray, 0)
-    if echotext:
+    if pfremembers:
         bot.say("Pepperidge Farms remembers " + str(pfremembers))
     else:
         bot.say("You're so old Pepperidge Farms doesn't even remember that.")
