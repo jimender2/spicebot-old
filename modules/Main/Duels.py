@@ -538,7 +538,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if statleadername != '':
                         bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
                     else:
-                        bot.say("There doesn't apear to be a "+ subcommand + " amount for "+subcommanda+".")
+                        bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
         ## Loot Items
         elif commandortarget == 'loot':
