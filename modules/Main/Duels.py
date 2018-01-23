@@ -1842,7 +1842,7 @@ def damagedone(bot, winner, loser, weapon):
     ## Damage Tiers
     bot.say(str(damage))
     if damage > 0:
-        damage = int(damagescale * damage)
+        damage = int(damagescale) * int(damage)
     bot.say(str(damage))
     
     if damage == 0:
