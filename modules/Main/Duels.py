@@ -719,6 +719,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.say("Invalid command.")
                         return
+                    targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                     if int(gethowmanylootitem) < int(quantity):
                         bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
                     elif target == bot.nick:
