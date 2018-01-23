@@ -995,7 +995,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     manatier = tierratio_level(bot)
                     actualmanarequired = actualmanarequired * manatier
                     targethealthstart = get_database_value(bot, target, 'health')
-                    if int(actualmanarequired) > int(mana):
+                    if int(actualmanarequired) > int(instigatormana):
                         manamath = int(int(actualmanarequired) - int(instigatormana))
                         bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
                     elif target.lower() != instigator.lower() and targetclass == 'fiend':
