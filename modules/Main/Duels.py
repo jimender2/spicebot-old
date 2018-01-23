@@ -785,7 +785,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             postionsusedarray = get_trigger_arg(uselootarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
                         if lootusedeaths > 0:
-                            if lootusedeaths = 1:
+                            if lootusedeaths == 1:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
                             else:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
