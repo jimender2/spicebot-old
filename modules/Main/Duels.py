@@ -1797,7 +1797,7 @@ def damagedone(bot, winner, loser, weapon):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + ", "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetext = str(damagetext + " "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## dish it out
     if damage > 0:
