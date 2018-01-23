@@ -15,6 +15,7 @@ import re
 import sys
 import os
 from os.path import exists
+import numToWords
 
 ## not needed if using without spicebot
 shareddir = os.path.dirname(os.path.dirname(__file__))
@@ -96,7 +97,7 @@ weaponmaxlength = 70
 
 ## Health Tiers
 stockhealth = 1000
-healthone = stockhealth
+healthone = 1000
 healthtwo = 1250
 healththree = 1500
 healthfour = 1750
@@ -111,6 +112,24 @@ healthtwelve = 3750
 healththirteen = 4000
 healthfourteen = 4250
 healthfifteen = 4500
+
+## Damage Tiers
+stockdamage = 1
+damageone = 1.1
+damagetwo = 1.2
+damagethree = 1.3
+damagefour = 1.4
+damagefive = 1.5
+damagesix = 1.6
+damageseven = 1.7
+damageeight = 1.8
+damagenine = 1.9
+damageten = 2
+damageeleven = 2.1
+damagetwelve = 2.2
+damagethirteen = 2.3
+damagefourteen = 2.4
+damagefifteen = 2.5
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -1541,38 +1560,9 @@ def respawn_tiers(bot):
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
     if not currenttier:
         health = stockhealth
-    elif currenttier == 1:
-        health = healthone
-    elif currenttier == 2:
-        health = healthtwo
-    elif currenttier == 3:
-        health = healththree
-    elif currenttier == 4:
-        health = healthfour
-    elif currenttier == 5:
-        health = healthfive
-    elif currenttier == 6:
-        health = healthsix
-    elif currenttier == 7:
-        health = healthseven
-    elif currenttier == 8:
-        health = healtheight
-    elif currenttier == 9:
-        health = healthnine
-    elif currenttier == 10:
-        health = healthten
-    elif currenttier == 11:
-        health = healtheleven
-    elif currenttier == 12:
-        health = healthtwelve
-    elif currenttier == 13:
-        health = healththirteen
-    elif currenttier == 14:
-        health = healthfourteen
-    elif currenttier == 15:
-        health = healthfifteen
     else:
-        health = stockhealth
+        health = eval("health"+ numToWords(currenttier))
+        bot.say(str(health))
     return health
  
 ##########
