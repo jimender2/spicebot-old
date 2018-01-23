@@ -794,42 +794,6 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.notice(mainlootusemessage, target)
                         else:
                             bot.say(mainlootusemessage)
-            elif lootcommand == 'trade':
-                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
-                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
-                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
-                quantity = lootitemc
-                if not quantity:
-                    quantity = 1
-                elif quantity == 'all':
-                    bot.notice("Trading all does not work at this time.",instigator)
-                if instigatorclass == 'scavenger':
-                    quantitymath = traderatioscavenger * int(quantity)
-                else:
-                    quantitymath = traderatio * int(quantity)
-                if lootitem == 'grenade' or lootitemb == 'grenade':
-                    bot.notice(instigator + ", You can't trade for grenades.", instigator)
-                elif lootitemb not in lootitemsarray:
-                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                elif lootitemb not in lootitemsarray:
-                    bot.notice(instigator + ", Invalid loot item.", instigator)
-                elif lootitemb == lootitem:
-                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
-                elif gethowmanylootitem < quantitymath:
-                    bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
-                else:
-                    while int(quantity) > 0:
-                        quantity = int(quantity) - 1
-                        if instigatorclass == 'scavenger':
-                            cost = traderatioscavenger
-                        else:
-                            cost = traderatio
-                        reward = 1
-                        itemtoexchange = lootitem
-                        itemexchanged = lootitemb
-                        adjust_database_value(bot, instigator, itemtoexchange, -abs(cost))
-                        adjust_database_value(bot, instigator, itemexchanged, reward)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'buy':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 if not lootitem:
@@ -881,7 +845,37 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_value(bot, instigator, 'coin', reward)
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                         bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
-
+            elif lootcommand == 'trade':
+                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
+                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
+                if not lootitem or not lootitemb:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif lootitem not in lootitemsarray or lootitemb not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                if lootitem == 'grenade' or lootitemb == 'grenade':
+                    bot.notice(instigator + ", You can't trade for grenades.", instigator)
+                elif lootitemb == lootitem:
+                    bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
+                else:
+                    gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
+                    quantity = get_trigger_arg(triggerargsarray, 5).lower() or 1
+                    if instigatorclass == 'scavenger':
+                        tradingratio = traderatioscavenger
+                    else:
+                        tradingratio = traderatio
+                    if quantity == 'all':
+                        quantity = gethowmanylootitem / tradingratio
+                    if quantity < 0:
+                        bot.notice(instigator + ", You do not have enough "+lootitem+" for this action.", instigator)
+                        return
+                    quantitymath = tradingratio * int(quantity)
+                    if gethowmanylootitem < quantitymath:
+                        bot.notice(instigator + ", You don't have enough of this item to trade.", instigator)
+                    else:
+                        adjust_database_value(bot, instigator, lootitem, -abs(quantitymath))
+                        adjust_database_value(bot, instigator, lootitemb, 1)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                    
         ## Weaponslocker
         elif commandortarget == 'weaponslocker':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
