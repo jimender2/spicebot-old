@@ -94,6 +94,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wik
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
+randomcoinaward = 100
 
 ## Tiers
 stockhealth = 1000
@@ -1176,7 +1177,8 @@ def execute_main(bot, trigger, triggerargsarray):
     refreshbot(bot)
 
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
-
+    commandortarget = get_trigger_arg(triggerargsarray, 1).lower()
+    
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
     assaultdisplay = ''
@@ -1378,7 +1380,11 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if targetarraytotal > 0 and typeofduel == 'assault':
             bot.notice("  ", instigator)
             time.sleep(5)
-
+        
+        ## Random Bonus
+        if typeofduel == 'target' and winner == instigator and commandortarget == 'random':
+            adjust_database_value(bot, winner, 'coin', randomcoinaward)
+            
         ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
@@ -1394,7 +1400,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                         else:
                             assaultdisplay = str(newline)
                 bot.say(instigator + "'s Full Channel Assault results: " + assaultdisplay)
-
+                
 ## End Of Duels ###################################################################################################################
 
 ## 30 minute automation
