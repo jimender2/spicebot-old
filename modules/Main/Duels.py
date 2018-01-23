@@ -1186,7 +1186,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
-        combattextarray = []
         statreset(bot, target)
         targetarraytotal = targetarraytotal - 1
         if typeofduel == 'assault':
@@ -1347,11 +1346,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext']
+        combattextarray = []
         for x in combattextarrayloop:
             checktext = eval(x)
             if checktext and checktext != '':
                 combattextarray.append(checktext)
-
+        for j in combattextarray:
+            bot.say(j)
+        
         #if OSDTYPE == 'say':
         #    bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
         #    bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
