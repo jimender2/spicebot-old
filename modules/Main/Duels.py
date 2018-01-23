@@ -832,62 +832,53 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'buy':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
-                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
-                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
-                quantity = lootitemb
-                if not quantity:
-                    quantity = 1
-                elif quantity == 'all':
-                    if instigatorclass == 'scavenger':
-                        quantity = int(instigatorcoin) / lootbuycostscavenger
-                    else:
-                        quantity = int(instigatorcoin) / lootbuycostscavenger
-                    if not quantity > 1:
-                        bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
-                        return
-                if instigatorclass == 'scavenger':
-                    coinrequired = lootbuycostscavenger * int(quantity)
+                if not lootitem:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif lootitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
                 else:
-                    coinrequired = lootbuycost * int(quantity)
-                if instigatorcoin < coinrequired:
-                    bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
-                else:
-                    while int(quantity) > 0:
-                        quantity = int(quantity) - 1
+                    quantity = get_trigger_arg(triggerargsarray, 4).lower() or 1
+                    if quantity == 'all':
                         if instigatorclass == 'scavenger':
-                            cost = lootbuycostscavenger
+                            quantity = int(instigatorcoin) / lootbuycostscavenger
                         else:
-                            cost = lootbuycost
-                        reward = 1
-                        itemtoexchange = 'coin'
-                        itemexchanged = lootitem
-                        adjust_database_value(bot, instigator, itemtoexchange, -abs(cost))
-                        adjust_database_value(bot, instigator, itemexchanged, reward)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                            quantity = int(instigatorcoin) / lootbuycostscavenger
+                        if not quantity > 1:
+                            bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
+                            return
+                    if instigatorclass == 'scavenger':
+                        coinrequired = lootbuycostscavenger * int(quantity)
+                    else:
+                        coinrequired = lootbuycost * int(quantity)
+                    if instigatorcoin < coinrequired:
+                        bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
+                    else:
+                        adjust_database_value(bot, instigator, 'coin', -abs(coinrequired))
+                        adjust_database_value(bot, instigator, lootitem, quantity)
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
             elif lootcommand == 'sell':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
-                lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
-                lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
-                quantity = lootitemb
-                if not quantity:
-                    quantity = 1
-                elif quantity == 'all':
-                    quantity = gethowmanylootitem
-                if int(quantity) > gethowmanylootitem:
-                    bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
+                gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
+                if not lootitem:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif lootitem not in lootitemsarray:
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 else:
-                    while int(quantity) > 0:
-                        quantity = int(quantity) - 1
-                        cost = -1
+                    quantity = get_trigger_arg(triggerargsarray, 4).lower() or 1
+                    if quantity == 'all':
+                        quantity = gethowmanylootitem
+                    if int(quantity) > gethowmanylootitem:
+                        bot.notice(instigator + ", You do not have enough " + lootitem + " for this action.", instigator)
+                    else:
                         if instigatorclass == 'scavenger':
-                            reward = lootsellrewardscavenger
+                            reward = lootsellrewardscavenger * int(quantity)
                         else:
-                            reward = lootsellreward
-                        itemtoexchange = lootitem
-                        itemexchanged = 'coin'
-                        adjust_database_value(bot, instigator, itemtoexchange, cost)
-                        adjust_database_value(bot, instigator, itemexchanged, reward)
-                    bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
+                            reward = lootsellreward * int(quantity)
+                        adjust_database_value(bot, instigator, 'coin', reward)
+                        adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+                        bot.notice(instigator + ", " + str(lootcommand) + " Completed.", instigator)
 
         ## Weaponslocker
         elif commandortarget == 'weaponslocker':
