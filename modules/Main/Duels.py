@@ -1521,8 +1521,11 @@ def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
         currenthealthtier = respawn_tiers(bot)
-        bot.say(str(currenthealthtier))
         set_database_value(bot, nick, 'health', currenthealthtier)
+    elif health < 0 and nick != bot.nick:
+        currenthealthtier = respawn_tiers(bot)
+        set_database_value(bot, nick, 'health', currenthealthtier)
+        
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
@@ -1926,7 +1929,6 @@ def get_pepper(bot, nick):
         tiernumber = 15
     
     ## advance respawn tier
-    bot.say(str(tiernumber)+"player - current"+str(currenttier))
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
     
