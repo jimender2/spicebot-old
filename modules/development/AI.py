@@ -9,8 +9,6 @@ from sopel.module import rule, priority, rate
 import random
 import time
 
-shareddir = os.path.dirname(os.path.dirname(__file__))
-sys.path.append(shareddir)
 from SpicebotShared import *
 
 @sopel.module.commands('ai')
