@@ -1563,7 +1563,6 @@ def respawn_tiers(bot):
     else:
         wordconvert = num2words(int(currenttier))
         health = eval("health"+ wordconvert)
-        bot.say(str(health))
     return health
  
 ##########
