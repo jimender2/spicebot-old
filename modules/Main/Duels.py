@@ -1129,6 +1129,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+            elif subcommand == 'resettier':
+                set_database_value(bot, duelrecorduser, 'levelingtier', None)
             elif subcommand == 'bugbounty':
                 target = get_trigger_arg(triggerargsarray, 3)
                 statreset(bot, target)
@@ -1921,6 +1923,7 @@ def get_pepper(bot, nick):
         tiernumber = 15
     
     ## advance respawn tier
+    bot.say(str(tiernumber)+"player - current"+str(currenttier))
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
     
