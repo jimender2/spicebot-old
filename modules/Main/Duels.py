@@ -90,10 +90,27 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
 GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
-stockhealth = 1000 ## default health for new players and respawns
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
+
+## Health Tiers
+stockhealth = 1000
+healthone = stockhealth
+healthtwo = 1250
+healththree = 1500
+healthfour = 1750
+healthfive = 2000
+healthsix = 2250
+healthseven = 2500
+healtheight = 2750
+healthnine = 3000
+healthten = 3250
+healtheleven = 3500
+healthtwelve = 3750
+healththirteen = 4000
+healthfourteen = 4250
+healthfifteen = 4500
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -1500,7 +1517,9 @@ def whokilledwhom(bot, winner, loser):
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
     if not health and nick != bot.nick:
-        set_database_value(bot, nick, 'health', stockhealth)
+        currenthealthtier = respawn_tiers(bot)
+        set_database_value(bot, nick, 'health', currenthealthtier)
+    ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         set_database_value(bot, nick, 'mana', None)
@@ -1510,6 +1529,44 @@ def refreshbot(bot):
         statset = x
         set_database_value(bot, bot.nick, x, None)
 
+def respawn_tiers(bot):
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    if not currenttier:
+        health = stockhealth
+    elif currenttier == 1:
+        health = healthone
+    elif currenttier == 2:
+        health = healthtwo
+    elif currenttier == 3:
+        health = healththree
+    elif currenttier == 4:
+        health = healthfour
+    elif currenttier == 5:
+        health = healthfive
+    elif currenttier == 6:
+        health = healthsix
+    elif currenttier == 7:
+        health = healthseven
+    elif currenttier == 8:
+        health = healtheight
+    elif currenttier == 9:
+        health = healthnine
+    elif currenttier == 10:
+        health = healthten
+    elif currenttier == 11:
+        health = healtheleven
+    elif currenttier == 12:
+        health = healthtwelve
+    elif currenttier == 13:
+        health = healththirteen
+    elif currenttier == 14:
+        health = healthfourteen
+    elif currenttier == 15:
+        health = healthfifteen
+    else:
+        health = stockhealth
+    return health
+ 
 ##########
 ## Time ##
 ##########
@@ -1810,6 +1867,8 @@ def damagedone(bot, winner, loser, weapon):
 ##################
 
 def get_pepper(bot, nick):
+    tiernumber = 0
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
     xp = get_database_value(bot, nick, 'xp')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
@@ -1817,35 +1876,57 @@ def get_pepper(bot, nick):
         pepper = ''
     elif xp > 0 and xp < 100:
         pepper = 'Pimiento'
+        tiernumber = 1
     elif xp >= 100 and xp < 250:
         pepper = 'Sonora'
+        tiernumber = 2
     elif xp >= 250 and xp < 500:
         pepper = 'Anaheim'
+        tiernumber = 3
     elif xp >= 500 and xp < 1000:
         pepper = 'Poblano'
+        tiernumber = 4
     elif xp >= 1000 and xp < 2500:
         pepper = 'Jalapeno'
+        tiernumber = 5
     elif xp >= 2500 and xp < 5000:
         pepper = 'Serrano'
+        tiernumber = 6
     elif xp >= 5000 and xp < 7500:
         pepper = 'Chipotle'
+        tiernumber = 7
     elif xp >= 7500 and xp < 10000:
         pepper = 'Tabasco'
+        tiernumber = 8
     elif xp >= 10000 and xp < 15000:
         pepper = 'Cayenne'
+        tiernumber = 9
     elif xp >= 15000 and xp < 25000:
         pepper = 'Thai Pepper'
+        tiernumber = 10
     elif xp >= 25000 and xp < 45000:
         pepper = 'Datil'
+        tiernumber = 11
     elif xp >= 45000 and xp < 70000:
         pepper = 'Habanero'
+        tiernumber = 12
     elif xp >= 70000 and xp < 100000:
         pepper = 'Ghost Chili'
+        tiernumber = 13
     elif xp >= 100000 and xp < 250000:
         pepper = 'Mace'
+        tiernumber = 14
     elif xp >= 250000:
         pepper = 'Pure Capsaicin'
+        tiernumber = 15
+    
+    ## advance respawn tier
+    if tiernumber > currenttier:
+        set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    
     return pepper
+
+
 
 ###################
 ## Select Winner ##
