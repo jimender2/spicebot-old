@@ -220,6 +220,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 statreset(bot, target)
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
+        ## Author
+        if commandortarget == 'author':
+            bot.say("The author of Duels is deathbybandaid.")
+        
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off' or commandortarget == 'enable' or commandortarget == 'disable':
             if commandortarget == 'enable':
