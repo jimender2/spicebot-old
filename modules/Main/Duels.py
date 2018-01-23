@@ -1539,7 +1539,6 @@ def refreshbot(bot):
 
 def respawn_tiers(bot):
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
-    bot.say(str(currenttier))
     if not currenttier:
         health = stockhealth
     elif currenttier == 1:
