@@ -452,7 +452,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         displaymessage = str(displaymessage + addstat)
                 if displaymessage != '':
                     pepper = get_pepper(bot, target)
-                    targetname = str("(" + str(pepper) + ") " + target)
+                    if not pepper or pepper == '':
+                        targetname = target
+                    else:
+                        targetname = str("(" + str(pepper) + ") " + target)
                     displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
                     bot.say(displaymessage)
                 else:
