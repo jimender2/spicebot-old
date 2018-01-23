@@ -213,6 +213,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
+                healthcheck(bot, target)
                 statreset(bot, target)
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
@@ -242,6 +243,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
+                healthcheck(bot, target)
                 statreset(bot, target)
                 if commandortarget == 'on':
                     adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
@@ -257,6 +259,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if target == 'channel':
                 target = duelrecorduser
             statreset(bot, target)
+            healthcheck(bot, target)
             totaluses = get_database_value(bot, target, 'usage')
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
@@ -272,6 +275,7 @@ def execute_main(bot, trigger, triggerargsarray):
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel:
+                    healthcheck(bot, u)
                     statreset(bot, u)
                     canduelarray.append(u)
             if commandortarget != 'random' and bot.nick in canduelarray:
@@ -317,9 +321,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     diedinbattle = []
                     canduelarray.remove(winner)
                     for x in canduelarray:
-                        targethealth = get_database_value(bot, x, 'health') or 0
-                        if not targethealth:
-                            healthcheck(bot, x)
                         shieldloser = get_database_value(bot, x, 'shield') or 0
                         if shieldloser and damage > 0:
                             damagemath = int(shieldloser) - damage
@@ -346,6 +347,7 @@ def execute_main(bot, trigger, triggerargsarray):
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
+                    healthcheck(bot, u)
                     statreset(bot, u)
                     canduelarray.append(u)
             if not subcommand:
@@ -424,6 +426,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
+                healthcheck(bot, target)
                 statreset(bot, target)
                 streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
                 best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
@@ -455,6 +458,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
+                healthcheck(bot, target)
                 statreset(bot, target)
                 for x in duelstatsarray:
                     if x in statsbypassarray:
@@ -497,6 +501,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         statleadernumber = 99999999
                     for u in bot.users:
+                        healthcheck(bot, u)
                         statreset(bot, u)
                         if u in dueloptedinarray:
                             if x != 'winlossratio':
@@ -615,10 +620,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         canduelarrayorig = []
                         for u in canduelarray:
                             canduelarrayorig.append(u)
-                            targethealth = get_database_value(bot, u, 'health') or 0
-                            if not targethealth:
-                                healthcheck(bot, u)
-                                targethealth = get_database_value(bot, u, 'health')
+                            healthcheck(bot, u)
+                            targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget, secondarytarget, thirdtarget = '','',''
                         fulltarget = get_trigger_arg(canduelarray, "random")
@@ -708,11 +711,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         lootusedeaths = 0
                         killedmsg = ''
-                        targethealth = get_database_value(bot, target, 'health') or 0
                         targetmana = get_database_value(bot, target, 'mana') or 0
-                        if not targethealth:
-                            healthcheck(bot, target)
-                            targethealth = get_database_value(bot, target, 'health')
+                        healthcheck(bot, target)
+                        targethealth = get_database_value(bot, target, 'health')
                         uselootarray = []
                         if lootitem == 'mysterypotion':
                             while int(quantity) > 0:
