@@ -283,8 +283,8 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
         ## Colosseum, Assault, and Random
-        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone' or commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone':
-            if commandortarget == 'anyone' or commandortarget == 'somebody':
+        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone' or commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone' or commandortarget == 'available':
+            if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
                 commandortarget = 'random'
             if commandortarget == 'everyone':
                 commandortarget = 'assault'
@@ -589,17 +589,11 @@ def execute_main(bot, trigger, triggerargsarray):
             instigatorclass = get_database_value(bot, instigator, 'class')
             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
             lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
-            lootitem = get_trigger_arg(triggerargsarray, 3).lower()
-            lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
-            lootitemc = get_trigger_arg(triggerargsarray, 5).lower()
-            gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
-            if not lootcommand or lootcommand not in transactiontypesarray:
+            if not lootcommand or target.lower() in [x.lower() for x in dueloptedinarray]:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-                    bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-                elif target.lower() in [x.lower() for x in dueloptedinarray]:
+                else:
                     statreset(bot, target)
                     for x in backpackarray:
                         gethowmany = get_database_value(bot, target, x)
@@ -615,14 +609,19 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(displaymessage)
                     else:
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-                else:
-                    bot.notice(instigator + ", Do you want to buy, sell, trade, or use?", instigator)
-            elif not lootitem:
-                bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-            elif lootitem not in lootitemsarray and lootitem != 'grenade':
-                bot.notice(instigator + ", Invalid loot item.", instigator)
+            elif lootcommand not in transactiontypesarray:
+                transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
+                bot.notice(instigator + ", It looks like " + target + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
             elif lootcommand == 'use':
-                if lootitem == 'grenade':
+                lootitem = get_trigger_arg(triggerargsarray, 3).lower()
+                gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
+                if not lootitem:
+                    bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
+                elif lootitem not in lootitemsarray and lootitem != 'grenade':
+                    bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif not gethowmanylootitem:
+                    bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
+                elif lootitem == 'grenade':
                     if not inchannel.startswith("#"):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
                         return
@@ -633,8 +632,6 @@ def execute_main(bot, trigger, triggerargsarray):
                             canduelarray.append(u)
                     if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
-                    elif not instigatorgrenade:
-                        bot.notice(instigator + ", It looks like you have no grenade.", instigator)
                     else:
                         canduelarrayorig = []
                         for u in canduelarray:
@@ -691,82 +688,74 @@ def execute_main(bot, trigger, triggerargsarray):
                             deadarray = get_trigger_arg(deatharray, "list")
                             displaymsg = str(displaymsg + "    " + deadarray + " died by this grenade volley")
                         if displaymsg != '':
-                            bot.say(displaymsg) 
+                            bot.say(displaymsg)
                 else:
-                    if lootitemb.isdigit():
-                        quantity = int(lootitemb)
-                        target = instigator
-                    elif lootitemb == 'all':
-                        target = instigator
-                        quantity = int(gethowmanylootitem)
-                    elif not lootitemb:
+                    targnum = get_trigger_arg(triggerargsarray, 4).lower()
+                    if not targnum:
                         quantity = 1
                         target = instigator
-                    else:
-                        target = lootitemb
-                        if not lootitemc:
+                    elif targnum.isdigit():
+                        quantity = int(targnum)
+                        target = instigator
+                    elif targnum.lower() in [x.lower() for x in dueloptedinarray]:
+                        targnumb = get_trigger_arg(triggerargsarray, 5).lower()
+                        target = targnum
+                        if not targnumb:
                             quantity = 1
-                        elif lootitemc == 'all':
+                        elif targnumb.isdigit():
+                            quantity = int(targnumb)
+                        elif targnumb == 'all':
                             quantity = int(gethowmanylootitem)
                         else:
-                            quantity = int(lootitemc)
-                    statreset(bot, target)
-                    targetclass = get_database_value(bot, target, 'class') or 'notclassy'
-                    if not gethowmanylootitem:
-                        bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
-                    elif int(gethowmanylootitem) < int(quantity):
-                        bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
-                    elif target.lower() not in [u.lower() for u in bot.users]:
-                        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                    elif target == bot.nick:
-                      bot.notice(instigator + ", I am immune to " + lootitem, instigator)
+                            bot.say("Invalid command.")
+                            return
+                    elif targnum == 'all':
+                        target == instigator
+                        quantity = int(gethowmanylootitem)
                     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+                    elif target.lower() not in [u.lower() for u in bot.users]:
+                        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                    else:
+                        bot.say("Invalid command.")
+                        return
+                    if int(gethowmanylootitem) < int(quantity):
+                        bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
+                    elif target == bot.nick:
+                        bot.notice(instigator + ", I am immune to " + lootitem, instigator)
                     elif target.lower() != instigator.lower() and targetclass == 'fiend':
                         bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
-                        while int(quantity) > 0:
-                            quantity = int(quantity) - 1
-                            adjust_database_value(bot, instigator, lootitem, -1)
+                        adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                     else:
-                        lootusedeaths = 0
-                        killedmsg = ''
-                        targetmana = get_database_value(bot, target, 'mana') or 0
+                        statreset(bot, u)
                         healthcheck(bot, target)
-                        targethealth = get_database_value(bot, target, 'health')
                         uselootarray = []
+                        adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+                        lootusedeaths = 0
                         if lootitem == 'mysterypotion':
                             while int(quantity) > 0:
                                 quantity = quantity - 1
                                 loot = get_trigger_arg(lootitemsarray, 'random')
+                                if loot == 'mysterypotion':
+                                    nulllootitemsarray = ['water','vinegar','mud']
+                                    loot = get_trigger_arg(nulllootitemsarray, 'random')
                                 uselootarray.append(loot)
-                                adjust_database_value(bot, instigator, lootitem, -1)
                         else:
                             while int(quantity) > 0:
-                                quantity = int(quantity) - 1
+                                quantity = quantity - 1
                                 uselootarray.append(lootitem)
-                                adjust_database_value(bot, instigator, lootitem, -1)
                         uselootarraytotal = len(uselootarray)
-                        if int(uselootarraytotal) == 1 and lootitem != 'mysterypotion':
-                            if target == instigator:
+                        if target == instigator:
+                            if int(uselootarraytotal) == 1:
                                 mainlootusemessage = str(instigator + ' uses ' + lootitem + '.')
                             else:
-                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + ".")
-                            if target != instigator:
-                                notifytargetmessage = str(instigator + " used a " + lootitem + " on you.")
-                        elif int(uselootarraytotal) > 1 and lootitem != 'mysterypotion':
-                            if not inchannel.startswith("#"):
-                                mainlootusemessage = str(instigator + ", " + str(lootcommand) + " Completed.")
-                            elif target == instigator:
                                 mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's.')
+                        else:
+                            if int(uselootarraytotal) == 1:
+                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + ".")
                             else:
                                 mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
-                            if target != instigator:
-                                notifytargetmessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on you.")
-                        else:
-                            mainlootusemessage = ''
-                            notifytargetmessage = ''
                         for x in uselootarray:
-                            lootusemsg = ''
                             if x == 'healthpotion':
                                 if targetclass == 'barbarian':
                                     adjust_database_value(bot, target, 'health', healthpotionworthbarbarian)
@@ -788,33 +777,22 @@ def execute_main(bot, trigger, triggerargsarray):
                                 for j in timepotiontimeoutarray:
                                     set_database_value(bot, target, k, None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
-                            else:
-                                nulllootitemsarray = ['water','vinegar','mud']
-                                nullloot = get_trigger_arg(nulllootitemsarray, 'random')
-                                lootusemsg = str("It turned out to be just " + str(nullloot) + ' after all.')
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 lootusedeaths = lootusedeaths + 1
                                 whokilledwhom(bot, instigator, target)
-                                if lootusedeaths > 1:
-                                    killedmsg = str("This resulted in " + str(lootusedeaths) +" deaths.")
-                                else:
-                                    killedmsg = "This resulted in death."
-                            if lootitem == 'mysterypotion':
-                                if lootusemsg == '':
-                                    lootusemsg = str("It was a " + str(x) + "!")
-                                if targethealth <= 0:
-                                    lootusemsg = str(lootusemsg + " This resulted in death.")
-                                if target == instigator:
-                                    bot.notice(instigator + " used a mysterypotion. " + lootusemsg, instigator)
-                                else:
-                                    bot.notice(instigator + " used a mysterypotion on " + target + ". " + lootusemsg, instigator)
-                                if target != instigator:
-                                    bot.notice(instigator + " used a mysterypotion on you. " + lootusemsg, target)
-                        if lootitem != 'mysterypotion':
-                            bot.say(mainlootusemessage + " " + killedmsg)
-                            if target != instigator and not inchannel.startswith("#"):
-                                bot.notice(instigator + " " + notifytargetmessage + " " + lootusemsg, target)
+                        if lootitem == 'mysterypotion':
+                            postionsusedarray = get_trigger_arg(uselootarray, "list")
+                            mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
+                        if lootusedeaths > 0:
+                            if lootusedeaths = 1:
+                                mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
+                            else:
+                                mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
+                        if target != instigator and not inchannel.startswith("#"):
+                            bot.notice(mainlootusemessage, target)
+                        else:
+                            bot.say(mainlootusemessage)
             elif lootcommand == 'trade':
                 quantity = lootitemc
                 if not quantity:
