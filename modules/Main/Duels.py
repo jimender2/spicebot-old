@@ -1381,7 +1381,11 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     if x == 'winnermsg':
                         combattextarrayb.append("dummytext")
                         combattextarraya.append(checktext)
-                        lastarray = 1
+                        if len(checktext) > 200:
+                            combattextarrayb.append("dummytext")
+                            lastarray = 2
+                        else:
+                            lastarray = 1
                     else:
                         combattextarrayb.append(checktext)
                         lastarray = 2
@@ -1903,15 +1907,14 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
     ## Knight
     if loserclass == 'knight' and diaglevel != 2:
-        #retaliateodds = randint(1, 12)
-        retaliateodds = 1
+        retaliateodds = randint(1, 12)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
+            weaponb = str(" "+ weaponb)
             damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
             damagetext = str(damagetext + " "+damagetextb)
             
-    
     ## dish it out
     if damage > 0:
         adjust_database_value(bot, loser, 'health', -abs(damage))
