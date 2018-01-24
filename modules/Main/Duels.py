@@ -1367,7 +1367,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 streaktext = str(str(streaktext) + "       ")
 
         ## On Screen Text
-        combattextarrayloop = ['announcecombatmsg','speceventtext','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext']
+        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext']
         lastarray = 2
         combattextarraya = []
         combattextarrayb = []
@@ -1881,7 +1881,7 @@ def damagedone(bot, winner, loser, weapon):
         rageodds = randint(1, 12)
         if rageodds == 1:
             extradamage = randint(1, 25)
-            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + "damage. ")
+            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage. ")
             damage = damage + extradamage
     
     ## Shield resistance
