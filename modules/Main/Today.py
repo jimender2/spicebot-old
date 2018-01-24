@@ -21,11 +21,11 @@ def execute_main(bot, trigger, triggerargsarray):
     if whatdayofweek == 'Monday':
         specialmsg = "Mondays Suck!"
     if whatdayofweek == 'Tuesday':
-        specialmsg = ''
+        specialmsg = "...but at least it's not Monday."
     if whatdayofweek == 'Wednesday':
         specialmsg = "Today is Wednesday, AKA HUMPDAY!!!!"
     if whatdayofweek == 'Thursday':
-        specialmsg = ""
+        specialmsg = "...but at least it's not Monday."
     if whatdayofweek == 'Friday':
         specialmsg = ""
     if whatdayofweek == 'Saturday':
