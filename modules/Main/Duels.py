@@ -306,7 +306,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("*click*")
                 roulettecount = roulettecount + 1
                 roulettepayout = roulettepayoutdefault * roulettecount
-                bot.say("payout = " + str(roulettepayout))
                 adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
                 adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
