@@ -285,15 +285,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 resultmsg = str(resultmsg + " "+roulettedamage)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 if roulettewinners != []:
+                    displaymessage = get_trigger_arg(roulettewinners, "list")
+                    displaymessage = str("Winners: " + displaymessage)
                     for x in roulettewinners:
                         if x != instigator:
                             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-                            bot.say(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!")
                             adjust_database_value(bot, x, 'coin', roulettepayoutx)
-                            #bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+                            bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
                         set_database_value(bot, x, 'roulettepayout', None)
-                    displaymessage = get_trigger_arg(roulettewinners, "list")
-                    displaymessage = str("Winners: " + displaymessage)
                 bot.say(resultmsg + displaymessage)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
