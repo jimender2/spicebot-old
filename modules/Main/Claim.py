@@ -15,6 +15,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    #lastclaimdate = get_botdatabase_value - name? or 'neverclaimed'
+    #lastclaimedby = get_botdatabase_value - claimername? or 'notclaimed'
     instigator = trigger.nick
     channel = trigger.sender
     target = get_trigger_arg(triggerargsarray, 1)
@@ -32,4 +34,13 @@ def execute_main(bot, trigger, triggerargsarray):
     elif trigger.nick == 'IT_Sean':
         bot.say(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
     else:
+        #if lastclaimdate == 'neverclaimed':
         bot.say(instigator + ' urinates on ' + target + '! Claimed!')
+        #db adjust lastclaimdate = today
+        #db adjust lastclaimedby = instigator
+        #if lastclaimdate < today-1M:
+        #   bot.say(instigator + " has already been claimed by " + str(lastclaimedby) + ", so back off.")
+        #elif lastclaimdate >= today-1M:
+        #   bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
+        #   db adjust lastclaimdate = today
+        #   db adjust lastclaimedby = instigator
