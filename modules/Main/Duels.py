@@ -1381,6 +1381,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     combattextarrayb.append(checktext)
                     lastarray = 2
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
+            if not arraytwo:
+                arraytwo = ''
             if OSDTYPE == 'say':
                 bot.say(arrayone + "   " + arraytwo)
             elif OSDTYPE == 'notice':
