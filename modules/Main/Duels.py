@@ -90,7 +90,7 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 ## other
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
