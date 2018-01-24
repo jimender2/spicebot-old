@@ -28,6 +28,7 @@ from SpicebotShared import *
 
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
+ROULETTETIMEOUT = 20
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
@@ -265,6 +266,11 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'roulette':
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
+                return
+            getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
+            set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+            if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
+                bot.notice(instigator + "Roulette has a small timeout.", instigator)
                 return
             roulettepayoutdefault = 5
             roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
