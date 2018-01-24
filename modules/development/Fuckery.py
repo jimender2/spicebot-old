@@ -18,7 +18,7 @@ def main_command(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    triggerargsarray = create_args_array(trigger.group(2))
+    #triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
