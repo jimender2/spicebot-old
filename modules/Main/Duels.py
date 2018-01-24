@@ -285,16 +285,18 @@ def execute_main(bot, trigger, triggerargsarray):
                 resultmsg = str(resultmsg + " "+roulettedamage)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettewinnersarray = []
-                for x in roulettewinners:
-                    if x not in roulettewinnersarray:
-                        if x != instigator:
-                            roulettewinnersarray.append(x)
-                            roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-                            bot.say(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!")
-                            #bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
-                        set_database_value(bot, x, 'roulettepayout', None)
-                displaymessage = get_trigger_arg(roulettewinnersarray, "list")
-                bot.say(resultmsg + "Winners: " + displaymessage)
+                if roulettewinnersarray != []:
+                    for x in roulettewinners:
+                        if x not in roulettewinnersarray:
+                            if x != instigator:
+                                roulettewinnersarray.append(x)
+                                roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                                bot.say(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!")
+                                #bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+                            set_database_value(bot, x, 'roulettepayout', None)
+                    displaymessage = get_trigger_arg(roulettewinnersarray, "list")
+                    displaymessage = str("Winners: " + displaymessage)
+                bot.say(resultmsg + displaymessage)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', None)
