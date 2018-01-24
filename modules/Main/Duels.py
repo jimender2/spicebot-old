@@ -262,46 +262,51 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
+            roulettepayoutdefault = 5
             roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
+            roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
             if roulettelastplayer == instigator:
                 bot.say("Wait your turn")
                 return
-            roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-            roulettechance = get_database_value(bot, duelrecorduser, 'roulettechance') or 0
-            if not roulettechance:
-                roulettechance = randint(1, 7)
-                if roulettechance == 1:
-                    bot.say("First in the chamber. What bad luck. You blew your brains out. INSERT BAD THING HAPPENING.")
-                    ## something bad to instigator
-                    return
-                else:
-                    set_database_value(bot, duelrecorduser, 'roulettechance', roulettechance)
-            if roulettecount != roulettechance:
-                bot.say("*click*")
-                adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
-                adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
-                set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
-                return
             else:
+                bot.say(instigator + " spins the revolver and pulls the trigger.")
+            roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
+            if not roulettechamber:
+                roulettechamber = randint(1, 6)
+                set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
+            currentspin = randint(1, 6)
+            if currentspin == roulettechamber:
+                resultmsg = ''
+                weapon = " with a Russian Nagant M1895 revolver"
+                winner, loser = 'duelsroulettegame', instigator
+                damage, roulettedamage = damagedone(bot, winner, loser, weapon)
+                if roulettecount == 1:
+                    resultmsg = "First in the chamber. What bad luck. "
+                resultmsg = str(resultmsg + " "+roulettedamage)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettewinnersarray = []
-                if roulettecount == 7:
-                    resultmsg = "Somebody Forgot to load the gun! "
-                    for x in roulettewinners:
-                        if x not in roulettewinnersarray:
+                for x in roulettewinners:
+                    if x not in roulettewinnersarray:
+                        if x != instigator:
                             roulettewinnersarray.append(x)
-                else:
-                    resultmsg = "You blew your brains out. INSERT BAD THING HAPPENING. "
-                    ## something bad to instigator
-                    for x in roulettewinners:
-                        if x not in roulettewinnersarray and x != instigator:
-                            roulettewinnersarray.append(x)
+                            roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                            bot.say(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!")
+                            #bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+                        set_database_value(bot, x, 'roulettepayout', None)
                 displaymessage = get_trigger_arg(roulettewinnersarray, "list")
-                bot.say(resultmsg + "Winners: " + displaymessage + " INSERT STATEMENT OF REWARD")
-                set_database_value(bot, duelrecorduser, 'roulettecount', None)
-                set_database_value(bot, duelrecorduser, 'roulettechance', None)
+                bot.say(resultmsg + "Winners: " + displaymessage)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
+                set_database_value(bot, duelrecorduser, 'roulettecount', None)
+                set_database_value(bot, duelrecorduser, 'roulettechamber', None)
                 set_database_value(bot, duelrecorduser, 'roulettewinners', None)
+            else:
+                bot.say("*click*")
+                roulettecount = roulettecount + 1
+                roulettepayout = roulettepayoutdefault * roulettecount
+                bot.say("payout = " + str(roulettepayout))
+                adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
+                set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
+                adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
 
         ## Usage
         elif commandortarget == 'usage':
@@ -1852,10 +1857,23 @@ def damagedone(bot, winner, loser, weapon):
     shieldloser = get_database_value(bot, loser, 'shield') or 0
     damagetext = ''
     
+    ## names
+    if winner == 'duelsroulettegame':
+        winnername = loser
+        losername = "themself"
+        striketype = "shoots"
+    else:
+        winnername = winner
+        losername = loser
+        striketype = "hits"
+    
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
     if loserclass == 'rogue' and winner in roguearraynodamage:
         damage = 0
+    
+    elif winner == 'duelsroulettegame':
+        damage = randint(90, 200)
     
     ## Bot deals a set amount
     elif winner == bot.nick:
@@ -1877,13 +1895,13 @@ def damagedone(bot, winner, loser, weapon):
     if damage > 0:
         damage = damagescale * damage
         damage = int(damage)
-    
+
     if damage == 0:
-        damagetext = str(winner + " hits " + loser + weapon + ' but deals no damage. ')
+        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ' but deals no damage. ')
     elif winnerclass != 'vampire':
-        damagetext = str(winner + " hits " + loser + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
+        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
     else:
-        damagetext = str(winner + " drains " + str(damage)+ " health from " + loser + weapon + ". ")
+        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + ". ")
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
@@ -1900,7 +1918,7 @@ def damagedone(bot, winner, loser, weapon):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + " "+ loser + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetext = str(damagetext + " "+ losername + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## dish it out
     if damage > 0:
