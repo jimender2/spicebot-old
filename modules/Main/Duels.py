@@ -276,6 +276,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
             currentspin = randint(1, 6)
             if currentspin == roulettechamber:
+                roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
                 resultmsg = ''
                 weapon = " with a Russian Nagant M1895 revolver"
                 winner, loser = 'duelsroulettegame', instigator
@@ -284,7 +285,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     resultmsg = "First in the chamber. What bad luck. "
                     roulettewinners.append(instigator)
                 resultmsg = str(resultmsg + " "+roulettedamage)
-                roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 for x in roulettewinners:
                     if x != instigator:
                         roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
