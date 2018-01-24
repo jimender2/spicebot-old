@@ -242,7 +242,7 @@ def runroulette(bot):
 		winners = ''
 		totalwon = 0		
 		displaymessage = get_trigger_arg(players , "list")
-		bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' good luck to ' + displaymessage
+		bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' good luck to ' + displaymessage)
 		for player in players:
 			playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
 			if not playerarray == '':
