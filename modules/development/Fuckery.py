@@ -13,16 +13,12 @@ from SpicebotShared import *
 
 @sopel.module.commands('fuckery')
 def main_command(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fuckery')
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):
-    #triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    duelusersarray = get_database_value(bot, bot.nick, 'duelusers') or []
     inchannel = trigger.sender
     
     if not subcommand:
@@ -34,15 +30,15 @@ def execute_main(bot, trigger, triggerargsarray):
         
     ## On/off
     if subcommand == 'on' or subcommand == 'off':
-        if subcommand == 'on' and instigator in botusersarray:
-            bot.notice(instigator + ", It looks like you already have " + bot.nick + " on.", instigator)
-        elif subcommand == 'off' and instigator not in botusersarray:
-            bot.notice(instigator + ", It looks like you already have " + bot.nick + " off.", instigator)
-        else:
-            if subcommand == 'on':
+        if subcommand == 'on':
+            if instigator not in botusersarray:
                 adjust_database_array(bot, bot.nick, instigator, 'botusers', 'add')
-                adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
-            else:
+            if instigator not in duelusersarray:
+                adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'add')
+            bot.say(instigator + " has now opted in to every optional module. Let the fuckery commence!")
+        else:
+            if instigator in botusersarray:
                 adjust_database_array(bot, bot.nick, instigator, 'botusers', 'del')
-                adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
-bot.notice(instigator + ", " + bot.nick + "and Duels should now be " + subcommand + ' for ' + instigator + '.', instigator)
+            if instigator in duelusersarray:
+                adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'del')
+            bot.say(instigator + " has opted out of using the bot. Quitter.")
