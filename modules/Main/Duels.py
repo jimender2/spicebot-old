@@ -269,7 +269,7 @@ def execute_main(bot, trigger, triggerargsarray):
             roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
             roulettechance = get_database_value(bot, duelrecorduser, 'roulettechance') or 0
             if not roulettechance:
-                roulettechance = randint(1, 6)
+                roulettechance = randint(1, 7)
                 if roulettechance == 1:
                     bot.say("First in the chamber. What bad luck. You blew your brains out. INSERT BAD THING HAPPENING.")
                     ## something bad to instigator
@@ -281,15 +281,23 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
                 adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
+                return
             else:
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettewinnersarray = []
-                for x in roulettewinners:
-                    if x not in roulettewinnersarray and x != instigator:
-                        roulettewinnersarray.append(x)
+                if roulettecount == 7:
+                    resultmsg = "Somebody Forgot to load the gun! "
+                    for x in roulettewinners:
+                        if x not in roulettewinnersarray:
+                            roulettewinnersarray.append(x)
+                else:
+                    resultmsg = "You blew your brains out. INSERT BAD THING HAPPENING. "
+                    ## something bad to instigator
+                    for x in roulettewinners:
+                        if x not in roulettewinnersarray and x != instigator:
+                            roulettewinnersarray.append(x)
                 displaymessage = get_trigger_arg(roulettewinnersarray, "list")
-                bot.say("You blew your brains out. INSERT BAD THING HAPPENING. Winners: " + displaymessage + " INSERT STATEMENT OF REWARD")
-                ## something bad to instigator
+                bot.say(resultmsg + "Winners: " + displaymessage + " INSERT STATEMENT OF REWARD")
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 set_database_value(bot, duelrecorduser, 'roulettechance', None)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
