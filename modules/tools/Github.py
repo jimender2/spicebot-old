@@ -32,7 +32,7 @@ def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
-    badquery = true
+    badquery = false
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
