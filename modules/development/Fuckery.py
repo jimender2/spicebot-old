@@ -49,6 +49,10 @@ def get_database_value(bot, nick, databasekey):
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
+def set_database_value(bot, nick, databasekey, value):
+    databasecolumn = str('duels_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
+
 def adjust_db_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
