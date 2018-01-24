@@ -281,13 +281,18 @@ def execute_main(bot, trigger, triggerargsarray):
             if currentspin == roulettechamber:
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
                 resultmsg = ''
+                deathmsg = ''
                 weapon = " with a Russian Nagant M1895 revolver"
                 winner, loser = 'duelsroulettegame', instigator
                 damage, roulettedamage = damagedone(bot, winner, loser, weapon, 1)
+                currenthealth = get_database_value(bot, loser, 'health')
+                if currenthealth <= 0:
+                    whokilledwhom(bot, bot.nick, loser)
+                    deathmsg = str(" " +  loser + ' dies forcing a respawn!!')
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
                     roulettewinners.append(instigator)
-                resultmsg = str(resultmsg + roulettedamage)
+                resultmsg = str(resultmsg + roulettedamage + deathmsg)
                 uniqueplayersarray = []
                 for x in roulettewinners:
                     if x not in uniqueplayersarray:
@@ -1896,9 +1901,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damage = damage + extradamage
     
     ## Paladin deflect
-    if loserclass == 'paladin' and damage > 0:
-        #deflectodds = randint(1, 12)
-        deflectodds = 1
+    if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame':
+        deflectodds = randint(1, 12)
         if deflectodds == 1:
             damageb = damage
             damage = 0
@@ -1928,7 +1932,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetext = str(damagetext + " "+ losername + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## Knight
-    if loserclass == 'knight' and diaglevel != 2:
+    if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
         retaliateodds = randint(1, 12)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
