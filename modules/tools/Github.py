@@ -43,7 +43,7 @@ def execute_main(bot, trigger):
         assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
-    if 'instakill' in inputtext or 'instant kill' in inputtext:
+    if 'instakill' in inputtext or 'instant kill' in inputtext or 'random kill' in inputtext:
         bot.say("No. Stop asking for random instakills.")
     elif inputtext.startswith('duel'):
         title = "DUELS: " + title
