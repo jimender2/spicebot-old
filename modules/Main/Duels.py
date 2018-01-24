@@ -1195,6 +1195,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Special Event
         speceventtext = ''
         speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+        bot.say(str(speceventtotal))
         if speceventtotal == 49:
             set_database_value(bot, duelrecorduser, 'specevent', 1)
             speceventtext = str(instigator + " triggered the special event! Winnings are "+speceventreward+" Coins!")
