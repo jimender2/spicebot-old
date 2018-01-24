@@ -195,7 +195,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
 
     ## Commands cannot be run if opted out
-    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable':
+    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable' and commandortarget.lower() != 'admin' :
         bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on/enable to enable.", instigator)
 
     ## Instigator versus Bot
