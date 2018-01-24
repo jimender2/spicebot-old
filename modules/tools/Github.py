@@ -21,11 +21,18 @@ PASSWORD = config.get("github","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
+# Invalid Requests
+dontaskforthese = ['instakill', 
+                  'instant kill', 
+                  'random kill',
+                  'dud grenade']
+
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
+    badquery = true
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -43,18 +50,26 @@ def execute_main(bot, trigger):
         assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
-    if 'instakill' in inputtext or 'instant kill' in inputtext or 'random kill' in inputtext:
-        bot.say("No. Stop asking for random instakills.")
-    elif inputtext.startswith('duel'):
-        title = "DUELS: " + title
-        assignee = "deathbybandaid"
-        body = inputtext
-        body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee, instigator)
+    for request in dontaskforthese:
+        if request in inputtext:
+            badquery = true
+    #if any(request in dontaskforthese for request in dontaskforthese):
+    #    bot.say("No. Stop asking for random instakills.")
+    #if 'instakill' in inputtext or 'instant kill' in inputtext or 'random kill' in inputtext:
+    #    bot.say("No. Stop asking for random instakills.")
+    if badquery:
+        bot.say("That feature has already been rejected by the dev team.")
     else:
-        body = inputtext
-        body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee, instigator)
+        elif inputtext.startswith('duel'):
+            title = "DUELS: " + title
+            assignee = "deathbybandaid"
+            body = inputtext
+            body = str(instigator + action + ": " + body)
+            make_github_issue(bot, body, labels, title, assignee, instigator)
+        else:
+            body = inputtext
+            body = str(instigator + action + ": " + body)
+            make_github_issue(bot, body, labels, title, assignee, instigator)
 
 def make_github_issue(bot, body, labels, title, assignee, instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
