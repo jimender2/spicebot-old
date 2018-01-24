@@ -845,10 +845,9 @@ def execute_main(bot, trigger, triggerargsarray):
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
                             else:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
+                        bot.say(mainlootusemessage)
                         if target != instigator and not inchannel.startswith("#"):
                             bot.notice(mainlootusemessage, target)
-                        else:
-                            bot.say(mainlootusemessage)
             elif lootcommand == 'buy':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 if not lootitem:
