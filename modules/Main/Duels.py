@@ -786,7 +786,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             while int(quantity) > 0:
                                 quantity = quantity - 1
                                 loot = get_trigger_arg(lootitemsarray, 'random')
-                                if loot == 'mysterypotion':
+                                if loot == 'mysterypotion' or loot == 'magicpotion':
                                     nulllootitemsarray = ['water','vinegar','mud']
                                     loot = get_trigger_arg(nulllootitemsarray, 'random')
                                 uselootarray.append(loot)
