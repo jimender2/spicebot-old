@@ -22,10 +22,7 @@ REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
 # Invalid Requests
-dontaskforthese = ['instakill', 
-                  'instant kill', 
-                  'random kill',
-                  'dud grenade']
+dontaskforthese = ['instakill','instant kill','random kill','dud grenade','random deaths','butterfingers',]
 
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
@@ -53,12 +50,11 @@ def execute_main(bot, trigger):
     for request in dontaskforthese:
         if request in inputtext:
             badquery = 1
-    #if any(request in dontaskforthese for request in dontaskforthese):
-    #    bot.say("No. Stop asking for random instakills.")
-    #if 'instakill' in inputtext or 'instant kill' in inputtext or 'random kill' in inputtext:
-    #    bot.say("No. Stop asking for random instakills.")
     if badquery:
-        bot.say("That feature has already been rejected by the dev team.")
+        if inputtext.startswith('duel'):
+            bot.say("The duels developer has already said no to that. Stop asking.")
+        else:
+            bot.say("That feature has already been rejected by the dev team.")
     else:
         if inputtext.startswith('duel'):
             title = "DUELS: " + title
