@@ -22,7 +22,7 @@ REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
 # Invalid Requests
-dontaskforthese = ['instakill','instant kill','random kill','dud grenade','random deaths','butterfingers',]
+dontaskforthese = ['instakill','instant kill','random kill','dud grenade','random deaths','butterfingers','bad grenade','grenade failure','suicide']
 
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
