@@ -133,7 +133,7 @@ backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','ti
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire'] ## Valid Classes
+classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight'] ## Valid Classes
 duelstatsadminarray = ['currentlosestreak','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
@@ -283,7 +283,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 resultmsg = ''
                 weapon = " with a Russian Nagant M1895 revolver"
                 winner, loser = 'duelsroulettegame', instigator
-                damage, roulettedamage = damagedone(bot, winner, loser, weapon)
+                damage, roulettedamage = damagedone(bot, winner, loser, weapon, 1)
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
                     roulettewinners.append(instigator)
@@ -1278,7 +1278,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             weapon = str(" " + weapon)
 
         ## Damage Done (random)
-        damage, winnermsg = damagedone(bot, winner, loser, weapon)
+        damage, winnermsg = damagedone(bot, winner, loser, weapon, 1)
         
         ## Update Wins and Losses
         if instigator != target:
@@ -1819,7 +1819,7 @@ def tierratio_level(bot):
 ## Damage Done ##
 #################
 
-def damagedone(bot, winner, loser, weapon):
+def damagedone(bot, winner, loser, weapon, diaglevel):
     damagescale = tierratio_level(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
@@ -1831,6 +1831,10 @@ def damagedone(bot, winner, loser, weapon):
         winnername = loser
         losername = "themself"
         striketype = "shoots"
+    if winnerclass = 'knight' and diaglevel == 2:
+        winnername = winner
+        losername = loser
+        striketype == "retaliates against":
     else:
         winnername = winner
         losername = loser
@@ -1897,6 +1901,16 @@ def damagedone(bot, winner, loser, weapon):
             set_database_value(bot, loser, 'shield', None)
         damagetext = str(damagetext + " "+ losername + " absorbs " + str(absorbed) + " of the damage. ")
 
+    ## Knight
+    if loserclass == 'knight' and winnerclass != 'knight' and striketype == "retaliates against":
+        retaliateodds = randint(1, 12)
+        if retaliateodds == 1:
+            weaponb = weaponofchoice(bot, winner)
+            weaponb = weaponformatter(bot, weapon)
+            damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
+            damagetext = str(damagetext + " "+damagetextb)
+            
+    
     ## dish it out
     if damage > 0:
         adjust_database_value(bot, loser, 'health', -abs(damage))
