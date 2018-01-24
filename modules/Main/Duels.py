@@ -467,7 +467,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
-                healthcheck(bot, target)
+                #healthcheck(bot, target)
                 statreset(bot, target)
                 for x in duelstatsarray:
                     if x in statsbypassarray:
@@ -510,7 +510,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         statleadernumber = 99999999
                     for u in bot.users:
-                        healthcheck(bot, u)
+                        #healthcheck(bot, u)
                         statreset(bot, u)
                         if u in dueloptedinarray:
                             if x != 'winlossratio':
