@@ -1381,12 +1381,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     if x == 'winnermsg':
                         combattextarrayb.append("dummytext")
                         combattextarraya.append(checktext)
-                        bot.say(str(len(checktext)))
-                        if len(checktext) > 200:
-                            combattextarrayb.append("dummytext")
-                            lastarray = 2
-                        else:
-                            lastarray = 1
+                        lastarray = 1
                     else:
                         combattextarrayb.append(checktext)
                         lastarray = 2
