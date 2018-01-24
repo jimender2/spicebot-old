@@ -140,6 +140,8 @@ def slots(bot,trigger,arg):
 
 		else:
 			bot.say('You dont have enough Spicebucks')
+#------Start Roulutte
+
 
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
@@ -166,6 +168,8 @@ def roulette(bot,trigger,arg):
 		inputcheck = 0
 	elif mybet=='payout':
 		bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+	elif mybet =='end':
+		runroulette(bot)
 
 	else:
 		if mybet == 'allin':
@@ -177,13 +181,13 @@ def roulette(bot,trigger,arg):
 				bot.say('You do not have any spicebucks')
 				inputcheck = 0
 		elif not mybet.isdigit():
-			bot.say('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
+			bot.notice(('Please bet a number between ' + str(minbet) + ' and ' + str(maxbet)),player)
 			inputcheck = 0
 		else:			
 			inputcheck = 1
 			mybet = int(mybet)			
 			if (mybet<minbet or mybet>maxbet):
-				bot.say('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet))			
+				bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)), player)			
 				inputcheck = 0
 	#setup what was bet on
     	if inputcheck == 1:	
@@ -191,7 +195,7 @@ def roulette(bot,trigger,arg):
 		if myitem.isdigit(): 
 			mynumber = int(myitem) 
                     	if(mynumber <= 0 or mynumber > maxwheel):
-                        	bot.say('Please pick a number between 0 and ' + str(maxwheel))
+                        	bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
                         	inputcheck=0
 			#check to see if a color was selected
 			else: 
@@ -199,7 +203,7 @@ def roulette(bot,trigger,arg):
 					if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
 						mycolor = myitem2
 					else:
-						bot.say('Choose either red or black')
+						bot.notice(('Choose either red or black'), player)
 						inputcheck=0
 						mycolor=''
                         	else:
@@ -212,40 +216,74 @@ def roulette(bot,trigger,arg):
 			inputcheck =1
                 else:
 		#no valid choices
-                    bot.say('Please pick either a color or number to bet on')                    
-                    inputcheck = 0 
+                    bot.notice(('Please pick either a color or number to bet on'),player)                    
+                    inputcheck = 0 	
+		
+		
 	# user input now setup game will run
 	if inputcheck == 1:
 		if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
 			Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
 			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
-            		winningnumber = spin(wheel)
-            		color = spin(colors)
-			#if bot.nick.endswith('dev'): 					
-			#	currentcolors =bot.db.get_nick_value('ColorCount','colors') or 'None'
-			#	currentcolors = color+str(currentcolors)
-			#	bot.db.set_nick_value('ColorCount','colors', currentcolors)
-		 	spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
-            		mywinnings=0
-			winner = ' '
-			if mynumber == winningnumber:
-				mywinnings=mybet * maxwheel
-			elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-				newbet = int(mybet/colorpayout)
-				colorwinnings = mybet + newbet									
-				mywinnings=mywinnings+colorwinnings		
-		 	if mywinnings >=1:
-				winner = ' has won ' + str(mywinnings)
-				if spicebankbalance < mywinnings:
-			 		Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)		  						
-				else:
-					Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings)
-		 	else:
-				winner =' is not a winner'
-			bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' and ' + trigger.nick + winner)
+			bot.db.set_nick_value('Roulette', 'rouletteplayers', player)
+			roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+			bot.db.set_nick_value(player, 'roulettearray', roulettearray)
 		else:
-			bot.say('You dont have enough Spicebucks')
-				
+			bot.notice("You don't have enough Spicebucks",player)
+			
+#-----Run roulette game			
+def runroulette(bot):
+	players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
+	if not players == '':			
+		winningnumber = spin(wheel)
+		color = spin(colors)		
+		spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
+		mywinnings=0
+		winners = ''
+		totalwon = 0		
+		displaymessage = get_trigger_arg(players , "list")
+		bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' good luck to ' + displaymessage
+		for player in players:
+			playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
+			if not playerarray == '':
+				mybet =  int(get_trigger_arg(playerarray,1) or 0)
+				mynumber = int(get_trigger_arg(playerarray,2) or 0)
+				mycolor =  get_trigger_arg(playerarray,3) or ''
+				roulettereset(bot,player)
+				if not mybet == 0:
+					if mynumber == winningnumber:
+						mywinnings=mybet * maxwheel
+					elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
+						newbet = int(mybet/colorpayout)
+						colorwinnings = mybet + newbet									
+						mywinnings=mywinnings+colorwinnings		
+					if mywinnings >=1:
+						bot.notice(("You have won " + str(mywinnings),player)
+						if spicebankbalance < mywinnings:
+							Spicebucks.spicebucks(bot, player, 'plus', mywinnings)		  						
+						else:
+							Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
+					   	winners=winners + " " + player
+					   	totalwon = totalwon + mywinnings
+				   	
+						
+		if winners =='':
+			bot.say("No one wins anything")
+		else:
+			bot.say(winners + " are winners and " + str(totalwon) + " was won in total")
+	else:
+	   bot.say("No players found")
+
+		
+	
+			
+def roulettereset(bot,player):
+	mybet =''
+	mynumber= 0
+	mybet = 0
+	roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+	bot.db.set_nick_value(player, 'roulettearray', roulettearray)					   
+					
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
 	maxnumber=50
