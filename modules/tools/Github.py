@@ -60,7 +60,7 @@ def execute_main(bot, trigger):
     if badquery:
         bot.say("That feature has already been rejected by the dev team.")
     else:
-        elif inputtext.startswith('duel'):
+        if inputtext.startswith('duel'):
             title = "DUELS: " + title
             assignee = "deathbybandaid"
             body = inputtext
