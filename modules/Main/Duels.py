@@ -1385,9 +1385,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     else:
                         combattextarrayb.append(checktext)
                         lastarray = 2
-        arraylengthone = len(combattextarraya)
-        arraylengthtwo = len(combattextarrayb)
-        if arraylengthone > arraylengthtwo:
+        if len(combattextarraya) > len(combattextarrayb):
             combattextarrayb.append("dummytext")
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
             if arraytwo == "dummytext":
