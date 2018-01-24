@@ -262,6 +262,9 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " Duels must be in channel.", instigator)
+                return
             roulettepayoutdefault = 5
             roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
             roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
