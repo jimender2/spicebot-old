@@ -133,7 +133,7 @@ backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','ti
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight'] ## Valid Classes
+classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
 duelstatsadminarray = ['currentlosestreak','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
@@ -1822,6 +1822,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     shieldloser = get_database_value(bot, loser, 'shield') or 0
+    shieldwinner = get_database_value(bot, winner, 'shield') or 0
     damagetext = ''
     
     ## names
@@ -1885,6 +1886,25 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             extradamage = randint(1, 25)
             damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage. ")
             damage = damage + extradamage
+    
+    ## Paladin deflect
+    if loserclass == 'paladin' and damage > 0:
+        #deflectodds = randint(1, 12)
+        deflectodds = 1
+        if deflectodds == 1:
+            damageb = damage
+            damage = 0
+            damagetext = str(damagetext + " "+ losername + " deflects the damage back on " + winnername)
+            damagemathb = int(shieldwinner) - damageb
+            if int(damagemathb) > 0:
+                adjust_database_value(bot, winner, 'shield', -abs(damageb))
+                damageb = 0
+                absorbedb = 'all'
+            else:
+                absorbedb = damagemathb + damageb
+                damage = abs(damagemathb)
+                set_database_value(bot, loser, 'shield', None)
+            damagetext = str(damagetext + " "+ winnername + " absorbs " + str(absorbedb) + " of the damage. ")
     
     ## Shield resistance
     if shieldloser and damage > 0:
