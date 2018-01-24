@@ -1870,7 +1870,7 @@ def damagedone(bot, winner, loser, weapon):
         rageodds = randint(1, 25)
         if rageodds == 1:
             extradamage = randint(1, 25)
-            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage))
+            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + "damage. ")
             damage = damage + extradamage
     
     ## Shield resistance
