@@ -1844,7 +1844,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         winnername = loser
         losername = "themself"
         striketype = "shoots"
-    if winnerclass == 'knight' and diaglevel == 2:
+    elif winnerclass == 'knight' and diaglevel == 2:
         winnername = winner
         losername = loser
         striketype = "retaliates against"
