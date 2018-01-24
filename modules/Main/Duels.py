@@ -284,7 +284,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
                     roulettewinners.append(instigator)
-                resultmsg = str(resultmsg + " "+roulettedamage)
+                resultmsg = str(resultmsg + roulettedamage)
                 uniqueplayersarray = []
                 for x in roulettewinners:
                     if x not in uniqueplayersarray:
