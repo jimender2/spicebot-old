@@ -68,4 +68,4 @@ def adjust_db_array(bot, nick, entry, databasekey, adjustmentdirection):
     if adjustarray == []:
         set_database_value(bot, nick, databasekey, None)
     else:
-set_database_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarray)
