@@ -90,7 +90,7 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 ## other
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
-GITWIKIURL = "https://github.com/deathbybandaid/sopel-modules/wiki/Duels" ## Wiki URL
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
@@ -195,7 +195,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
 
     ## Commands cannot be run if opted out
-    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable':
+    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable' and commandortarget.lower() != 'admin' :
         bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on/enable to enable.", instigator)
 
     ## Instigator versus Bot
@@ -845,10 +845,9 @@ def execute_main(bot, trigger, triggerargsarray):
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
                             else:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
+                        bot.say(mainlootusemessage)
                         if target != instigator and not inchannel.startswith("#"):
                             bot.notice(mainlootusemessage, target)
-                        else:
-                            bot.say(mainlootusemessage)
             elif lootcommand == 'buy':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 if not lootitem:
@@ -1349,7 +1348,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             loot = get_trigger_arg(lootitemsarray, 'random')
-            loot_text = str(eval(str(loot)+"dispmsg") + " Use .duel loot use " + str(loot) + " to consume.")
+            loot_text = eval(loot+"dispmsg")
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
             ## Barbarians get a 50/50 chance of getting loot even if they lose
@@ -1844,7 +1843,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         winnername = loser
         losername = "themself"
         striketype = "shoots"
-    if winnerclass == 'knight' and diaglevel == 2:
+    elif winnerclass == 'knight' and diaglevel == 2:
         winnername = winner
         losername = loser
         striketype = "retaliates against"
