@@ -122,6 +122,7 @@ poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
 timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
+magicpotiondispmsg = str(": A 1 to 1 tradable item!")
 
 ############
 ## Arrays ##

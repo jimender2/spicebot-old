@@ -150,6 +150,7 @@ def roulette(bot,trigger,arg):
     	wheel = range(maxwheel + 1)		
     	colors = ['red', 'black']
 	inputcheck = 0
+	player = trigger.nick
 	
 	mybet = get_trigger_arg(arg, 2) or 'nobet'
 	myitem = get_trigger_arg(arg, 3) or 'noitem'
