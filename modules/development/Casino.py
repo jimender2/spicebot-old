@@ -282,7 +282,8 @@ def roulettereset(bot,player):
 	mynumber= 0
 	mybet = 0
 	roulettearray = str(mybet) + str(mynumber)+str(mycolor)
-	bot.db.set_nick_value(player, 'roulettearray', roulettearray)					   
+	bot.db.set_nick_value(player, 'roulettearray', roulettearray)
+	bot.db.set_nick_value('Roulette' 'rouletteplayers', '')
 					
 #______Game 3 Lottery________				
 def lottery(bot,trigger, arg):
