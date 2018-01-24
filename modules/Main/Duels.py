@@ -283,7 +283,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
                 resultmsg = ''
                 deathmsg = ''
-                weapon = " with a Russian Nagant M1895 revolver"
+                revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
+                weapon = get_trigger_arg(revolvernames, 'random')
+                weapon = str(" with a " + weapon)
                 winner, loser = 'duelsroulettegame', instigator
                 damage, roulettedamage = damagedone(bot, winner, loser, weapon, 1)
                 currenthealth = get_database_value(bot, loser, 'health')
