@@ -13,6 +13,11 @@ from SpicebotShared import *
 
 @sopel.module.commands('fuckery')
 def main_command(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fuckery')
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+    
+def execute_main(bot, trigger, triggerargsarray):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
