@@ -1044,7 +1044,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         set_database_value(bot, target, 'curse', curseduration)
                         specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels.")
                     elif magicusage == 'shield':
-                        adjust_database_value(bot, target, 'shield', shieldduration)
+                        actualshieldduration = int(quantity) * int(shieldduration)
+                        adjust_database_value(bot, target, 'shield', actualshieldduration)
                         specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage.")
                     if instigator == target:
                         displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
