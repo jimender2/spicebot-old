@@ -268,10 +268,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
             getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
-            set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
             if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + "Roulette has a small timeout.", instigator)
                 return
+            set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
             roulettepayoutdefault = 5
             roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
             roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
