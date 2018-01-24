@@ -18,7 +18,7 @@ def main_command(bot, trigger):
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-    duelusersarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    duelusersarray = get_botdatabase_value(bot, bot.nick, 'duelusers') or []
     inchannel = trigger.sender
     
     if not subcommand:
