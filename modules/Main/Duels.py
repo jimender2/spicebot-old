@@ -292,7 +292,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, x, 'coin', roulettepayoutx)
                             #bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
                         set_database_value(bot, x, 'roulettepayout', None)
-                    displaymessage = get_trigger_arg(roulettewinnersarray, "list")
+                    displaymessage = get_trigger_arg(roulettewinners, "list")
                     displaymessage = str("Winners: " + displaymessage)
                 bot.say(resultmsg + displaymessage)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
@@ -303,7 +303,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("*click*")
                 roulettecount = roulettecount + 1
                 roulettepayout = roulettepayoutdefault * roulettecount
-                adjust_database_value(bot, duelrecorduser, 'roulettepayout', roulettepayout)
+                adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
                 adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
                 adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
@@ -1873,7 +1873,7 @@ def damagedone(bot, winner, loser, weapon):
         damage = 0
     
     elif winner == 'duelsroulettegame':
-        damage = randint(90, 200)
+        damage = randint(50, 120)
     
     ## Bot deals a set amount
     elif winner == bot.nick:
