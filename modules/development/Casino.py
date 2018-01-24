@@ -339,6 +339,11 @@ def blackjack(bot,trigger,arg):
 	payouton21 = 1
 	mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
 	mychoice2 = get_trigger_arg(arg, 3) or 'nocommand'
+	botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+	botuseron=[]
+	for u in bot.users:
+		if u in botusersarray and u != bot.nick:
+			botuseron.append(u)
 	if mychoice == 'nocommand':
 		bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
 		
@@ -411,19 +416,14 @@ def blackjack(bot,trigger,arg):
 					blackjackreset(bot,player)
 					
 		elif mychoice == 'check':
-			if len(arg)<3:
-				target = player
-			else:				
-				botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
-				if arg[2] not in allusersinroomarray:
-					target = player
-				else:
-					target = arg[2]			
-				
-			myhand =  bot.db.get_nick_value(target, 'myhand') or 0
-			dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
-			bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
-			
+			target = get_trigger_arg(arg, 3) or 'notarget'						
+			if not target.lower() in [u.lower() for u in botuseron]:
+				bot.say("Target not found.")
+			else:					
+				myhand =  bot.db.get_nick_value(target, 'myhand') or 0
+				dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
+				bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
+
 		elif mychoice == 'double' or mychoice == '4':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
@@ -441,8 +441,29 @@ def blackjack(bot,trigger,arg):
 					myhand.append(playerhits)
 					bot.db.set_nick_value(player, 'myhand', myhand)
 					bot.say(player + " doubles down and gets " + str(playerhits))
-					blackjackstand(bot,player,myhand,dealerhand,mybet)
-					
+					blackjackstand(bot,player,myhand,dealerhand,mybet)					
+		
+						
+		elif mychoice == 'adminset' and trigger.admin:
+			target = get_trigger_arg(arg, 3) or 'notarget'
+			card1 = get_trigger_arg(arg, 4) or 'nocard1'
+			card2 = get_trigger_arg(arg, 5) or 'nocard2'
+			myhand = []
+			dealerhand = []
+			mybet = 30
+			if not target.lower() in [u.lower() for u in botuseron]:
+				bot.say("Target not found.")
+			else:
+				if not (card1 == 'nocard1'and card2 == 'nocard2'):
+					myhand.append(card1)
+					myhand.append(card2)
+					dealerhand.append(card1)
+					dealerhand.append(card2)
+					bot.say(str(myhand))					
+					bot.db.set_nick_value(player, 'myhand', myhand)
+					bot.db.set_nick_value(player, 'dealerhand', dealerhand)
+					bot.db.set_nick_value(player, 'mybet', mybet)				
+									
 			
 			
 		elif mychoice == 'stand' or mychoice == '3':
@@ -519,21 +540,22 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 				else: 
 					bot.say('The dealer takes a hit and gets a' + dealerhitlist)
 			showdealerhand = ''
-			for card in dealerhand:						
-				showdealerhand = showdealerhand + ' ' + str(card)
+			for i in dealerhand:						
+				showdealerhand = showdealerhand + " " + str(i)
+		
 			if dealerscore > 21:
 				payout=payout + int((payout/2))
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
-				bot.say('The dealer busts ')
+				bot.say("The dealer had " + showdealerhand + " busts")
 				bot.say(player + ' wins ' + str(payout))
 			elif dealerscore == 21:
-				bot.say("The dealer has" + showdealerhand + " and wins")
+				bot.say("The dealer has " + showdealerhand + " and wins")
 			elif dealerscore < myscore:
 				payout=payout + int((payout/2))
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
-				bot.say("The dealer had" + showdealerhand + " " + player + " wins " + str(payout))
+				bot.say("The dealer had " + showdealerhand + " " + player + " wins " + str(payout))
 			elif dealerscore > myscore:
-				bot.say("The dealer has" + showdealerhand + " and wins")
+				bot.say("The dealer had " +  showdealerhand + " and wins")
 			elif dealerscore == myscore:			
 				Spicebucks.spicebucks(bot, player, 'plus', payout)
 				bot.say('It is a draw and ' + player + ' gets ' + str(payout))

@@ -21,11 +21,15 @@ PASSWORD = config.get("github","password")
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
+# Invalid Requests
+dontaskforthese = ['instakill','instant kill','random kill','dud grenade','random deaths','butterfingers','bad grenade','grenade failure','suicide']
+
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
+    badquery = 0
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -43,16 +47,25 @@ def execute_main(bot, trigger):
         assignee = ''
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
-    elif inputtext.startswith('duel'):
-        title = "DUELS: " + title
-        assignee = "deathbybandaid"
-        body = inputtext
-        body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee, instigator)
+    for request in dontaskforthese:
+        if request in inputtext:
+            badquery = 1
+    if badquery:
+        if inputtext.startswith('duel'):
+            bot.say("The duels developer has already said no to that. Stop asking.")
+        else:
+            bot.say("That feature has already been rejected by the dev team.")
     else:
-        body = inputtext
-        body = str(instigator + action + ": " + body)
-        make_github_issue(bot, body, labels, title, assignee, instigator)
+        if inputtext.startswith('duel'):
+            title = "DUELS: " + title
+            assignee = "deathbybandaid"
+            body = inputtext
+            body = str(instigator + action + ": " + body)
+            make_github_issue(bot, body, labels, title, assignee, instigator)
+        else:
+            body = inputtext
+            body = str(instigator + action + ": " + body)
+            make_github_issue(bot, body, labels, title, assignee, instigator)
 
 def make_github_issue(bot, body, labels, title, assignee, instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)
