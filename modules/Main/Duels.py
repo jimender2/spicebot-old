@@ -1894,7 +1894,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         if deflectodds == 1:
             damageb = damage
             damage = 0
-            damagetext = str(damagetext + " "+ losername + " deflects the damage back on " + winnername)
+            damagetext = str(damagetext + " "+ losername + " deflects the damage back on " + winnername + ". ")
             damagemathb = int(shieldwinner) - damageb
             if int(damagemathb) > 0:
                 adjust_database_value(bot, winner, 'shield', -abs(damageb))
