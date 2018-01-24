@@ -1867,7 +1867,7 @@ def damagedone(bot, winner, loser, weapon):
         
     ## Berserker Rage
     if winnerclass == 'barbarian':
-        rageodds = randint(1, 25)
+        rageodds = randint(1, 12)
         if rageodds == 1:
             extradamage = randint(1, 25)
             damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + "damage. ")
