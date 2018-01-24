@@ -2014,7 +2014,7 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
-    statcheckarray = ['health','xp','kills','respawns']
+    statcheckarray = ['health','xp','kills','respawns','currentwinstreak','currentlosestreak']
 
     ## empty var to start
     for user in nickarray:
@@ -2031,12 +2031,12 @@ def selectwinner(bot, nickarray):
     ## Stats
     for x in statcheckarray:
         statscore = 0
-        if x == 'respawns':
+        if x == 'respawns' or x == 'currentwinstreak':
             statscore = 99999999
         statleader = ''
         for u in nickarray:
             value = get_database_value(bot, u, x) or 0
-            if x == 'respawns':
+            if x == 'respawns' or x == 'currentwinstreak':
                 if int(value) < statscore:
                     statleader = u
                     statscore = int(value)
