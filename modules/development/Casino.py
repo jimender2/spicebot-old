@@ -258,7 +258,7 @@ def runroulette(bot):
 						colorwinnings = mybet + newbet									
 						mywinnings=mywinnings+colorwinnings		
 					if mywinnings >=1:
-						bot.notice(("You have won " + str(mywinnings),player)
+						bot.notice(("You have won " + str(mywinnings)),player)
 						if spicebankbalance < mywinnings:
 							Spicebucks.spicebucks(bot, player, 'plus', mywinnings)		  						
 						else:
