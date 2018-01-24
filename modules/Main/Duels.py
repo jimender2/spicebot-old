@@ -980,7 +980,7 @@ def execute_main(bot, trigger, triggerargsarray):
             instigatormana = get_database_value(bot, instigator, 'mana')
             magicusage = get_trigger_arg(triggerargsarray, 2)
             if not magicusage or magicusage not in magicoptionsarray:
-                magicoptions = get_trigger_arg(magicoptions, 'list')
+                magicoptions = get_trigger_arg(magicoptionsarray, 'list')
                 bot.say('Magic uses include: '+ magicoptions)
             else:
                 targnum = get_trigger_arg(triggerargsarray, 3).lower()
