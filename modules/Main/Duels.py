@@ -1902,11 +1902,12 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetext = str(damagetext + " "+ losername + " absorbs " + str(absorbed) + " of the damage. ")
 
     ## Knight
-    if loserclass == 'knight' and winnerclass != 'knight' and striketype == "retaliates against":
+    if loserclass == 'knight' and diaglevel != 2:
+        bot.say('knight')
         retaliateodds = randint(1, 12)
         if retaliateodds == 1:
-            weaponb = weaponofchoice(bot, winner)
-            weaponb = weaponformatter(bot, weapon)
+            weaponb = weaponofchoice(bot, loser)
+            weaponb = weaponformatter(bot, weaponb)
             damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
             damagetext = str(damagetext + " "+damagetextb)
             
