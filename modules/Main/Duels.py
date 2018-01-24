@@ -138,7 +138,6 @@ classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire',
 duelstatsadminarray = ['currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
-roulettespinarray = [1,2,3,4,5,6]
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -278,6 +277,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if not roulettechamber:
                 roulettechamber = randint(1, 6)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
+            roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
             if roulettelastplayer == instigator:
                 if len(roulettespinarray) > 1:
                     temparray = []
@@ -287,10 +287,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     randomremove = get_trigger_arg(temparray, "random")
                     roulettespinarray.remove(randomremove)
                     currentspin = get_trigger_arg(roulettespinarray, "random")
+                    set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
                 else:
                     currentspin = roulettechamber
+                    set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
             else:
-                roulettespinarray = [1,2,3,4,5,6]
+                set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
