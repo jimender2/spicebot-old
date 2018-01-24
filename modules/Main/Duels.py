@@ -1022,6 +1022,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                 elif magicusage == 'curse' and targetcurse:
                     bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
+                    return
                 elif magicusage == 'curse':
                     manarequired = manarequiredmagiccurse
                 elif magicusage == 'shield':
