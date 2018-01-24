@@ -285,7 +285,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettewinnersarray = []
                 for x in roulettewinners:
-                    if x not in roulettewinnersarray:
+                    if x not in roulettewinnersarray and x != instigator:
                         roulettewinnersarray.append(x)
                 displaymessage = get_trigger_arg(roulettewinnersarray, "list")
                 bot.say("You blew your brains out. INSERT BAD THING HAPPENING. Winners: " + displaymessage + " INSERT STATEMENT OF REWARD")
