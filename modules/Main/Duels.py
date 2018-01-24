@@ -95,6 +95,7 @@ grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
 randomcoinaward = 100
+speceventreward = 500
 
 ## Tiers
 stockhealth = 1000
@@ -1190,6 +1191,17 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        
+        ## Special Event
+        speceventtext = ''
+        speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+        if speceventtotal == 49:
+            set_database_value(bot, duelrecorduser, 'specevent', 1)
+            speceventtext = str(instigator + " triggered the special event! Winnings are "+speceventreward+" Coins!")
+            adjust_database_value(bot, instigator, 'coin', speceventreward)
+        else:
+            adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
+        
         statreset(bot, target)
         targetarraytotal = targetarraytotal - 1
         if typeofduel == 'assault':
@@ -1349,7 +1361,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 streaktext = str(str(streaktext) + "       ")
 
         ## On Screen Text
-        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext']
+        combattextarrayloop = ['announcecombatmsg','speceventtext','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext']
         lastarray = 2
         combattextarraya = []
         combattextarrayb = []
