@@ -223,17 +223,26 @@ def roulette(bot,trigger,arg):
 		
 	# user input now setup game will run
 	if inputcheck == 1:
-		if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
-			Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
-			bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
-			bot.db.set_nick_value('Roulette', 'rouletteplayers', player)
-			roulettearray = str(mybet) + str(mynumber)+str(mycolor)
-			bot.db.set_nick_value(player, 'roulettearray', roulettearray)
-		else:
-			bot.notice("You don't have enough Spicebucks",player)
+		players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
+		for i in players
+			if i == player:
+				bot.say("You already placed a bet")
+				inputcheck = 0
+		if inputcheck == 1
+			if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
+				Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
+				bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
+				bot.db.set_nick_value('Roulette', 'rouletteplayers', player)
+				roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+				bot.db.set_nick_value(player, 'roulettearray', roulettearray)
+			else:
+				bot.notice("You don't have enough Spicebucks",player)
 			
 #-----Run roulette game			
 def runroulette(bot):
+	maxwheel = 25
+	wheel = range(maxwheel + 1)		
+    	colors = ['red', 'black']
 	players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
 	if not players == '':			
 		winningnumber = spin(wheel)
