@@ -1051,7 +1051,6 @@ def execute_main(bot, trigger, triggerargsarray):
                         displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
                     else:
                         displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + specialtext + ".")
-                        displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + damageorhealth + " " + str(abs(damagedealt)) + " " + damageorhealthb + " " + specialtext + " " + magickilled)
                     bot.say(str(displaymsg))
                     if not inchannel.startswith("#") and target != instigator:
                         bot.notice(str(displaymsg), target)
