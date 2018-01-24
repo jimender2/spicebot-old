@@ -1349,7 +1349,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             loot = get_trigger_arg(lootitemsarray, 'random')
-            loot_text = str(eval(str(loot)+"dispmsg") + " Use .duel loot use " + str(loot) + " to consume.")
+            loot_text = eval(loot+"dispmsg")
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
             ## Barbarians get a 50/50 chance of getting loot even if they lose
