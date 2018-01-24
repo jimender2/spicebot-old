@@ -282,17 +282,20 @@ def execute_main(bot, trigger, triggerargsarray):
                 damage, roulettedamage = damagedone(bot, winner, loser, weapon)
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
+                    roulettewinners.append(instigator)
                 resultmsg = str(resultmsg + " "+roulettedamage)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
+                for x in roulettewinners:
+                    if x != instigator:
+                        roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                        adjust_database_value(bot, x, 'coin', roulettepayoutx)
+                        bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+                    set_database_value(bot, x, 'roulettepayout', None)
+                if instigator in roulettewinners:
+                    roulettewinners.remove(instigator)
                 if roulettewinners != []:
                     displaymessage = get_trigger_arg(roulettewinners, "list")
                     displaymessage = str("Winners: " + displaymessage)
-                    for x in roulettewinners:
-                        if x != instigator:
-                            roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-                            adjust_database_value(bot, x, 'coin', roulettepayoutx)
-                            bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
-                        set_database_value(bot, x, 'roulettepayout', None)
                 bot.say(resultmsg + displaymessage)
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
