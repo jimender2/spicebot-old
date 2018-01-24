@@ -47,7 +47,7 @@ def main_command(bot, trigger):
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-return database_value
+    return database_value
 
 def adjust_db_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
