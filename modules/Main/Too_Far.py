@@ -19,7 +19,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if not item:
         bot.say("What can you risk going too far?")
     else:
-        if not item.endswith('ing'):
+        if not item.endswith('ing') or not ' ' in item:
             itema = str(item + "ing")
             itemb = item
         else:
