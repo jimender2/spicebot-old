@@ -32,7 +32,7 @@ def execute_main(bot, trigger):
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
-    badquery = false
+    badquery = 0
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -52,7 +52,7 @@ def execute_main(bot, trigger):
         bot.say("What feature/issue do you want to post?")
     for request in dontaskforthese:
         if request in inputtext:
-            badquery = true
+            badquery = 1
     #if any(request in dontaskforthese for request in dontaskforthese):
     #    bot.say("No. Stop asking for random instakills.")
     #if 'instakill' in inputtext or 'instant kill' in inputtext or 'random kill' in inputtext:
