@@ -128,8 +128,8 @@ mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 ############
 
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
-lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## types of potions
-backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion'] ## how to organize backpack
+lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
+backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
@@ -668,6 +668,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
+                elif lootitem == 'magicpotion':
+                    bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
                 elif lootitem == 'grenade':
                     if not inchannel.startswith("#"):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
@@ -847,6 +849,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
+                elif lootitem == 'magicpotion':
+                    bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
                 else:
                     quantity = get_trigger_arg(triggerargsarray, 4).lower() or 1
                     if quantity == 'all':
@@ -877,6 +881,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
+                elif lootitem == 'magicpotion':
+                    bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
                 else:
                     quantity = get_trigger_arg(triggerargsarray, 4).lower() or 1
                     if quantity == 'all':
@@ -906,7 +912,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
                     quantity = get_trigger_arg(triggerargsarray, 5).lower() or 1
-                    if instigatorclass == 'scavenger':
+                    if lootitem == 'magicpotion':
+                        tradingratio = 1
+                    elif instigatorclass == 'scavenger':
                         tradingratio = traderatioscavenger
                     else:
                         tradingratio = traderatio
