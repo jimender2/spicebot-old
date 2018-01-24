@@ -260,6 +260,41 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, target, 'opttime', now)
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
 
+        ## Russian Roulette
+        elif commandortarget == 'roulette':
+            roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
+            if roulettelastplayer == instigator:
+                bot.say("Wait your turn")
+                return
+            roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
+            roulettechance = get_database_value(bot, duelrecorduser, 'roulettechance') or 0
+            if not roulettechance:
+                roulettechance = randint(1, 6)
+                if roulettechance == 1:
+                    bot.say("First in the chamber. What bad luck. You blew your brains out. INSERT BAD THING HAPPENING.")
+                    ## something bad to instigator
+                    return
+                else:
+                    set_database_value(bot, duelrecorduser, 'roulettechance', roulettechance)
+            if roulettecount != roulettechance:
+                bot.say("*click*")
+                adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
+                adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
+                set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
+            else:
+                roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners')
+                roulettewinnersarray = []
+                for x in roulettewinners:
+                    if x not in roulettewinnersarray:
+                        roulettewinnersarray.append(x)
+                displaymessage = get_trigger_arg(roulettewinnersarray, "list")
+                bot.say("You blew your brains out. INSERT BAD THING HAPPENING. Winners: " + displaymessage + " INSERT STATEMENT OF REWARD")
+                ## something bad to instigator
+                set_database_value(bot, duelrecorduser, 'roulettecount', None)
+                set_database_value(bot, duelrecorduser, 'roulettechance', None)
+                set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
+                set_database_value(bot, duelrecorduser, 'roulettewinners', None)
+
         ## Usage
         elif commandortarget == 'usage':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
