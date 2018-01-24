@@ -1856,15 +1856,23 @@ def damagedone(bot, winner, loser, weapon):
 
     if damage == 0:
         damagetext = str(winnername + " "+striketype+" " + losername + weapon + ' but deals no damage. ')
-    elif winnerclass != 'vampire':
-        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
-    else:
+    elif winnerclass == 'vampire':
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + ". ")
+    else:
+        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
         adjust_database_value(bot, winner, 'health', damage)
         
+    ## Berserker Rage
+    if winnerclass == 'barbarian':
+        rageodds = randint(1, 25)
+        if rageodds == 1:
+            extradamage = randint(1, 25)
+            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage))
+            damage = damage + extradamage
+    
     ## Shield resistance
     if shieldloser and damage > 0:
         damagemath = int(shieldloser) - damage
