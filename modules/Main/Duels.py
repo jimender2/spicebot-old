@@ -2014,7 +2014,7 @@ def get_pepper(bot, nick):
 ###################
 
 def selectwinner(bot, nickarray):
-    statcheckarray = ['health','xp','kills','respawns','currentwinstreak','currentlosestreak']
+    statcheckarray = ['health','xp','kills','respawns','currentwinstreak']
 
     ## empty var to start
     for user in nickarray:
