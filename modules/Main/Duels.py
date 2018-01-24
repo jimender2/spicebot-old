@@ -1363,36 +1363,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     combattextarrayb.append(checktext)
                     lastarray = 2
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
-            bot.say(arrayone + "   " + arraytwo)
-        #iterateme = iter(combattextarray)
-        #for x in iterateme:
-        #    try:
-        #        linetosay = (x, next(iterateme))
-        #    except StopIteration:
-        #        linetosay = x
-        #    bot.say(str(linetosay))
-        #for j in combattextarray:
-            #bot.say(j)
+            if OSDTYPE == 'say':
+                bot.say(arrayone + "   " + arraytwo)
+            elif OSDTYPE == 'notice':
+                bot.notice(arrayone + "   " + arraytwo, winner)
+                bot.notice(arrayone + "   " + arraytwo, loser)
         
-        #if OSDTYPE == 'say':
-        #    bot.say(str(announcecombatmsg) + "       " + str(lootwinnermsg))
-        #    bot.say(str(winnermsg)+ "       " + str(lootwinnermsgb))
-        #    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
-        #        bot.say(str(streaktext) + str(pepperstatuschangemsg))
-        #    if magicattributestext != '':
-        #        bot.say(str(magicattributestext))
-        #elif OSDTYPE == 'notice':
-        #    bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), winner)
-        #    bot.notice(str(announcecombatmsg) + "       " + str(lootwinnermsg), loser)
-        #    bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), winner)
-        #    bot.notice(str(winnermsg)+ "       " + str(lootwinnermsgb), loser)
-        #    if instigatorpeppernow != instigatorpepperstart or targetpeppernow != targetpepperstart or streaktext:
-        #        bot.notice(str(streaktext) + str(pepperstatuschangemsg), winner)
-        #        bot.notice(str(streaktext) + str(pepperstatuschangemsg), loser)
-        #    if magicattributestext != '':
-        #        bot.notice(str(magicattributestext), winner)
-        #        bot.notice(str(magicattributestext), loser)
-
         ## update assault stats
         if winner == instigator:
             assault_wins = assault_wins + 1
