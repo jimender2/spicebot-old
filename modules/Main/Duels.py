@@ -1903,7 +1903,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
     ## Knight
     if loserclass == 'knight' and diaglevel != 2:
-        retaliateodds = randint(1, 12)
+        #retaliateodds = randint(1, 12)
+        retaliateodds = 1
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
