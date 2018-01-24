@@ -1902,8 +1902,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     
     ## Paladin deflect
     if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame':
-        #deflectodds = randint(1, 12)
-        deflectodds = 1
+        deflectodds = randint(1, 12)
         if deflectodds == 1:
             damageb = damage
             damage = 0
