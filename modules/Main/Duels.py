@@ -116,6 +116,15 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
+tiercommandarray = ['docs','help','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tierunlockdocs, tierunlockhelp, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
+tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
+tierunlockleaderboard, tierunlockwarroom = 3,3
+tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 4,4,4
+tierunlockrandom = 5
+tierunlockroulette = 6
+tierunlockassault = 7
+tierunlockcolosseum = 8
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -123,7 +132,7 @@ poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
 timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
-magicpotiondispmsg = str(": A 1 to 1 tradable item!")
+magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
 ############
 ## Arrays ##
@@ -136,7 +145,7 @@ duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses',
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 
@@ -206,6 +215,19 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
         
+        ## Tier unlocks
+        try:
+            commandeval = eval("tierunlock"+ commandortarget) or 0
+        except NameError:
+            bot.say("This looks like an invalid command or an invalid person.")
+            return
+        currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+        if int(commandeval) > int(currenttier) and not bot.nick.endswith(devbot):
+            tierpepperrequired = get_tierpepper(bot, commandeval)
+            tiermath = commandeval - currenttier
+            bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+            return
+        
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
         
@@ -228,11 +250,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("The author of Duels is deathbybandaid.")
         
         ## On/off
-        elif commandortarget == 'on' or commandortarget == 'off' or commandortarget == 'enable' or commandortarget == 'disable':
-            if commandortarget == 'enable':
-                commandortarget = 'on'
-            if commandortarget == 'disable':
-                commandortarget = 'off'
+        elif commandortarget == 'on' or commandortarget == 'off':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
@@ -299,6 +317,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
+                biggestpayout = 0
+                biggestpayoutwinner = ''
                 statreset(bot, instigator)
                 healthcheck(bot, instigator)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
@@ -326,6 +346,12 @@ def execute_main(bot, trigger, triggerargsarray):
                         statreset(bot, x)
                         healthcheck(bot, x)
                         roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                        if roulettepayoutx > biggestpayout:
+                            biggestpayoutwinner = x
+                            biggestpayout = roulettepayoutx
+                        if roulettepayoutx == biggestpayout:
+                            biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
+                            biggestpayout = roulettepayoutx
                         adjust_database_value(bot, x, 'coin', roulettepayoutx)
                         bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
                     set_database_value(bot, x, 'roulettepayout', None)
@@ -333,12 +359,17 @@ def execute_main(bot, trigger, triggerargsarray):
                     roulettewinners.remove(instigator)
                 if roulettewinners != []:
                     displaymessage = get_trigger_arg(roulettewinners, "list")
-                    displaymessage = str("Winners: " + displaymessage)
-                bot.say(resultmsg + displaymessage)
+                    displaymessage = str("Winners: " + displaymessage + " ")
+                if biggestpayoutwinner != '':
+                    displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
-                set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', None)
                 set_database_value(bot, duelrecorduser, 'roulettewinners', None)
+                roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
+                set_database_value(bot, duelrecorduser, 'roulettecount', None)
+                if roulettecount > 1:
+                    displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
+                bot.say(resultmsg + displaymessage)
             else:
                 bot.say("*click*")
                 roulettecount = roulettecount + 1
@@ -358,11 +389,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
         ## Colosseum, Assault, and Random
-        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone' or commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone' or commandortarget == 'available':
-            if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-                commandortarget = 'random'
-            if commandortarget == 'everyone':
-                commandortarget = 'assault'
+        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'random':
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
@@ -689,7 +716,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             elif lootcommand not in transactiontypesarray:
                 transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
-                bot.notice(instigator + ", It looks like " + target + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
+                bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
             elif lootcommand == 'use':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
@@ -851,7 +878,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, target, 'lastfought', None)
                                 for k in timepotiontargetarray:
                                     targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
-                                    if k == target:
+                                    if targetequalcheck == target:
                                         set_database_value(bot, duelrecorduser, k, None)
                                 for j in timepotiontimeoutarray:
                                     set_database_value(bot, target, k, None)
@@ -1157,6 +1184,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                     elif target == 'everyone':
                         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+                        set_database_value(bot, duelrecorduser, 'levelingtier', None)
+                        set_database_value(bot, duelrecorduser, 'specevent', None)
                         for u in bot.users:
                             statreset(bot, target)
                             if statset == 'all':
@@ -1203,8 +1232,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_database_value(bot, instigator, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
-            
-                
+             
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
@@ -1238,6 +1266,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        targetarraytotal = targetarraytotal - 1
+        if typeofduel == 'assault':
+            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
+        
+        ## verify stats aren't old
+        statreset(bot, target)
         
         ## Special Event
         speceventtext = ''
@@ -1249,10 +1283,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         else:
             adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
         
-        statreset(bot, target)
-        targetarraytotal = targetarraytotal - 1
-        if typeofduel == 'assault':
-            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
+        ## Tier update
+        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
 
         ## Update Time Of Combat
         set_database_value(bot, instigator, 'timeout', now)
@@ -1328,19 +1360,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_current_streaks(bot, winner, 'win')
             set_current_streaks(bot, loser, 'loss')
 
-        ## Update XP points
-        if yourclasswinner == 'ranger':
-            XPearnedwinner = XPearnedwinnerranger
-        else:
-            XPearnedwinner = XPearnedwinnerstock
-        if yourclassloser == 'ranger':
-            XPearnedloser = XPearnedloserranger
-        else:
-            XPearnedloser = XPearnedloserstock
-        if instigator != target:
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
-
         ## Update last fought
         if instigator != target:
             set_database_value(bot, instigator, 'lastfought', target)
@@ -1404,11 +1423,44 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         streaktext = ''
         if instigator != target:
             streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
-            if streaktext != '':
-                streaktext = str(str(streaktext) + "       ")
 
+        ## Tier update Part 2
+        tierchangemsg = ''
+        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        if int(currenttierend) > int(currenttierstart):
+            tierchangemsg = str("New Tier Unlocked!")
+            if currenttierend != 1:
+                newtierlistarray = []
+                for x in tiercommandarray:
+                    newtiereval = eval("tierunlock"+x)
+                    if newtiereval == currenttierend:
+                        newtierlistarray.append(x)
+                if newtierlistarray != []:
+                    newtierlist = get_trigger_arg(newtierlistarray, "list")
+                    tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
+                
+        ## Update XP points
+        if yourclasswinner == 'ranger':
+            XPearnedwinner = XPearnedwinnerranger
+        else:
+            XPearnedwinner = XPearnedwinnerstock
+        if yourclassloser == 'ranger':
+            XPearnedloser = XPearnedloserranger
+        else:
+            XPearnedloser = XPearnedloserstock
+        if instigator != target:
+            winnertier = get_database_value(bot, winner, 'levelingtier')
+            losertier = get_database_value(bot, loser, 'levelingtier')
+            xptier = tierratio_level(bot)
+            if winnertier < currenttierend:
+                XPearnedwinner = XPearnedwinner * xptier
+            if losertier < currenttierend:
+                XPearnedloser = XPearnedloser * xptier
+            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+            adjust_database_value(bot, loser, 'xp', XPearnedloser)
+        
         ## On Screen Text
-        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext']
+        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
         lastarray = 2
         combattextarraya = []
         combattextarrayb = []
@@ -1981,6 +2033,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
 def get_pepper(bot, nick):
     tiernumber = 0
+    nicktier = get_database_value(bot, nick, 'levelingtier')
+    nickpepper = get_database_value(bot, nick, 'levelingpepper')
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
     xp = get_database_value(bot, nick, 'xp')
     if nick == bot.nick:
@@ -2036,9 +2090,49 @@ def get_pepper(bot, nick):
     ## advance respawn tier
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    if tiernumber != nicktier:
+        set_database_value(bot, nick, 'levelingtier', tiernumber)
+    #if pepper != nickpepper:
+    #    set_database_value(bot, nick, 'levelingpepper', pepper)
     
     return pepper
 
+def get_tierpepper(bot, tiernumber):
+    if not tiernumber:
+        pepper = ''
+    elif tiernumber == 1:
+        pepper = 'Pimiento'
+    elif tiernumber == 2:
+        pepper = 'Sonora'
+    elif tiernumber == 3:
+        pepper = 'Anaheim'
+    elif tiernumber == 4:
+        pepper = 'Poblano'
+    elif tiernumber == 5:
+        pepper = 'Jalapeno'
+    elif tiernumber == 6:
+        pepper = 'Serrano'
+    elif tiernumber == 7:
+        pepper = 'Chipotle'
+    elif tiernumber == 8:
+        pepper = 'Tabasco'
+    elif tiernumber == 9:
+        pepper = 'Cayenne'
+    elif tiernumber == 10:
+        pepper = 'Thai Pepper'
+    elif tiernumber == 11:
+        pepper = 'Datil'
+    elif tiernumber == 12:
+        tiernumber = 12
+    elif tiernumber == 13:
+        pepper = 'Ghost Chili'
+    elif tiernumber == 14:
+        pepper = 'Mace'
+    elif tiernumber == 15:
+        pepper = 'Pure Capsaicin'
+    else:
+        pepper = ''
+    return pepper
 
 
 ###################
