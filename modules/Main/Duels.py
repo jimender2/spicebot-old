@@ -363,10 +363,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 if biggestpayoutwinner != '':
                     displaymessage = str(displaymessage +"Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
-                set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', None)
                 set_database_value(bot, duelrecorduser, 'roulettewinners', None)
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
+                set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 if roulettecount > 1:
                     displaymessage = str(displaymessage +"The chamber spun " + str(roulettecount) + " times.")
                 bot.say(resultmsg + displaymessage)
