@@ -9,23 +9,26 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
-custompagearray=['bot','usage'
+custompagearray=['bot','usage','spicebot',
                  'module','modules','command','commands',
                  'casino','gamble','gambling',
                  'challenge','challenges','duel','duels','dueling','duelling',
                  'github',
                  'pants','points',
                  'search','searching','google','lookup',
-                 'spicebuck','spicebuck',
+                 'spicebucks','spicebuck',
                  'weather']
+custompages=['spicebot','modules','casino','duel','github','pants','points','search','spicebucks','weather']
+
 
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
-    
+    if subcommand == 'options' or subcommand == 'help':
+        bot.say("Modules with custom pages include: " + custompages)
     if subcommand in custompagearray:
-        if 'bot' in subcommand or 'usage' in subcommand:
+        if 'bot' in subcommand or 'usage' in subcommand or 'spicebot' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
         elif 'module' in subcommand or 'command' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Modules"
