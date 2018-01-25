@@ -504,10 +504,9 @@ def blackjack(bot,trigger,arg):
 #__________________________Shared Functions____________________
 def spin(wheel):
     random.seed()
-    #selects a random element of an array and return one item
-      selected=random.randint(0,(len(wheel)-1))
-      reel=wheel[selected]
-      return reel
+    selected=random.randint(0,(len(wheel)-1))
+    reel=wheel[selected]
+    return reel
 
 def deal(deck, cardcount):
     #choose a random card from a deck and remove it from deck
@@ -515,11 +514,15 @@ def deal(deck, cardcount):
     
     for i in range(cardcount):        
         card = get_trigger_arg(deck,'random')    
-           if card == 11:card = "J"
-            if card == 12:card = "Q"
-            if card == 13:card = "K"
-            if card == 14:card = "A"
-            hand.append(card)
+        if card == 11:
+            card = "J"
+        if card == 12:
+            card = "Q"
+        if card == 13:
+            card = "K"
+        if card == 14:
+            card = "A"
+        hand.append(card)
     return hand    
 
 def blackjackstand(bot,player,myhand,dealerhand,payout):
