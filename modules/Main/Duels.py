@@ -2089,7 +2089,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             weaponb = str(" "+ weaponb)
             damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
             for x in damagetextb:
-                damagetextarray.append(damagetext)
+                damagetextarray.append(x)
             
     ## dish it out
     if damage > 0:
