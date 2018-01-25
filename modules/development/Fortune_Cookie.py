@@ -7,7 +7,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-cookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
+devcookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
+cookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/fortune_cookie.txt'
+devbot='dev' ## Enables the bot to distinguish if in test
 
 @sopel.module.commands('fortune','cookie')
 def mainfunction(bot, trigger):
@@ -16,9 +18,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    if not trigger.group(2):
-        myline = randomcookie()
-        bot.say(myline)
+    if bot.nick.endswith(devbot):
+        cookies=devcookies
+    myline = randomcookie()
+    bot.say(myline)
        
 # random rule
 def randomcookie():
