@@ -221,10 +221,10 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if commandeval > currenttier and not bot.nick.endswith(devbot):
+        if commandeval > currenttier:# and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
-            bot.say("This command will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+            bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
             return
         
         ## usage counter
@@ -864,7 +864,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 set_database_value(bot, target, 'lastfought', None)
                                 for k in timepotiontargetarray:
                                     targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
-                                    if k == target:
+                                    if targetequalcheck == target:
                                         set_database_value(bot, duelrecorduser, k, None)
                                 for j in timepotiontimeoutarray:
                                     set_database_value(bot, target, k, None)
