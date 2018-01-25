@@ -221,7 +221,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if commandeval > currenttier:# and not bot.nick.endswith(devbot):
+        if commandeval > currenttier and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
             bot.say("This command will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
@@ -1251,6 +1251,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        targetarraytotal = targetarraytotal - 1
+        if typeofduel == 'assault':
+            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
+        
+        ## verify stats aren't old
+        statreset(bot, target)
         
         ## Special Event
         speceventtext = ''
@@ -1262,10 +1268,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         else:
             adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
         
-        statreset(bot, target)
-        targetarraytotal = targetarraytotal - 1
-        if typeofduel == 'assault':
-            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
+        ## Tier update
+        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
 
         ## Update Time Of Combat
         set_database_value(bot, instigator, 'timeout', now)
@@ -1420,8 +1424,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             if streaktext != '':
                 streaktext = str(str(streaktext) + "       ")
 
+        ## Tier update Part 2
+        tierchangemsg = ''
+        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        if currenttierend > currenttierstart:
+            tierchangemsg = "New Tier Unlocked!"
+        
         ## On Screen Text
-        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext']
+        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
         lastarray = 2
         combattextarraya = []
         combattextarrayb = []
