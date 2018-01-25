@@ -238,7 +238,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':# and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
-            if commandortarget != 'stats' or commandortarget != 'loot':
+            if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 return
         
