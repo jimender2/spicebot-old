@@ -23,7 +23,7 @@ wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 def mainfunction(bot, trigger):
 	enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'gamble')
   	if not enablestatus:
-    		execute_main(bot, trigger, triggerargsarray)
+	    execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
 	mygame = get_trigger_arg(arg, 1) or 'nocommand'
@@ -139,8 +139,8 @@ def slots(bot,trigger,arg):
 
 
 		else:
-			bot.say('You dont have enough Spicebucks')
-#------Start Roulutte
+			bot.say("You don't have enough Spicebucks" )
+#------Start Roulette
 
 
 #----------------Roulette-------
@@ -195,9 +195,9 @@ def roulette(bot,trigger,arg):
 		#check to see if a number was entered
 		if myitem.isdigit(): 
 			mynumber = int(myitem) 
-                    	if(mynumber <= 0 or mynumber > maxwheel):
-                        	bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
-                        	inputcheck=0
+	        if(mynumber <= 0 or mynumber > maxwheel):
+	            bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
+	            inputcheck=0
 			#check to see if a color was selected
 			else: 
 				if not myitem2 == 'noitem':
@@ -208,12 +208,12 @@ def roulette(bot,trigger,arg):
 						inputcheck=0
 						mycolor=''
                         	else:
-                            		mycolor = ' '
-                            		inputcheck =1
+	                            mycolor = ' '
+	                            inputcheck =1
 		#was a color selected first
 		elif(myitem == 'red' or myitem == 'black'):
-	    		mycolor = myitem
-	    		mynumber=''
+	        mycolor = myitem
+	        mynumber=''
 			inputcheck =1
                 else:
 		#no valid choices
