@@ -229,6 +229,9 @@ def execute_main(bot, trigger, triggerargsarray):
             commandortarget = 'docs'
         
         ## Tier unlocks
+        if "." in commandortarget:
+            bot.say("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()")
+            return
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
         except NameError:
@@ -923,7 +926,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     if targetequalcheck == target:
                                         set_database_value(bot, duelrecorduser, k, None)
                                 for j in timepotiontimeoutarray:
-                                    set_database_value(bot, target, k, None)
+                                    set_database_value(bot, target, j, None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
