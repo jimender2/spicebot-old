@@ -529,13 +529,15 @@ def execute_main(bot, trigger, triggerargsarray):
             elif titletoset == 'remove':
                 set_database_value(bot, instigator, 'title', None)
             else:
+                titletoset = str(titletoset)
                 instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
                 if instigatorcoin < changeclasscost:
                     bot.say("Changing your title costs " + str(changeclasscost) + " coin. You need more funding.")
-                elif len() > 10:
+                elif len(titletoset) > 10:
                     bot.say("Purchased titles can be no longer than 10 characters")
                 else:
                     set_database_value(bot, instigator, 'title', titletoset)
+                    adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
             
         ## Class
         elif commandortarget == 'class':
