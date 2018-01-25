@@ -1518,8 +1518,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             checktext = eval(x)
             if checktext and checktext != '':
                 combattextarraycomplete.append(checktext)
-        #for x in winnermsgarray:
-        #    combattextarray.append(x)
+        for x in winnermsgarray:
+            combattextarraycomplete.append(x)
         #combattextarrayloopc = ['lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
         #for x in combattextarrayloopc:
         #    checktext = eval(x)
