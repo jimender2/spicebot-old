@@ -1348,8 +1348,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_current_streaks(bot, winner, 'win')
             set_current_streaks(bot, loser, 'loss')
 
-
-
         ## Update last fought
         if instigator != target:
             set_database_value(bot, instigator, 'lastfought', target)
