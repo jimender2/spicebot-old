@@ -116,14 +116,14 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
-tiercommandarray = ['docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tiercommandarray = ['armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1
 tierunlockstreaks = 2
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
 tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
 tierunlockroulette = 6
-tierunlockassault = 7
+tierunlockassault, tierunlockarmor = 7,7
 tierunlockcolosseum = 8
 tierunlocktitle = 9
 
@@ -238,7 +238,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-        if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':# and not bot.nick.endswith(devbot):
+        if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on' and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
             if commandortarget != 'stats' and commandortarget != 'loot':
@@ -345,7 +345,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 weapon = get_trigger_arg(revolvernames, 'random')
                 weapon = str(" with a " + weapon)
                 winner, loser = 'duelsroulettegame', instigator
-                damage, roulettedamage = damagedone(bot, winner, loser, weapon, 1)
+                damage, roulettedamagearray = damagedone(bot, winner, loser, weapon, 1)
+                roulettedamage = ''
+                for x in roulettedamagearray:
+                    roulettedamage = str(roulettedamage+" "+ x)
                 currenthealth = get_database_value(bot, loser, 'health')
                 if currenthealth <= 0:
                     whokilledwhom(bot, bot.nick, loser)
@@ -732,6 +735,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
+        ## Armor
+        elif commandortarget == 'armor':
+            bot.say("WIP")
+        
         ## Loot Items
         elif commandortarget == 'loot':
             instigatorclass = get_database_value(bot, instigator, 'class')
@@ -1307,6 +1314,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
     assaultdisplay = ''
+    combattextarraycomplete = []
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
     targetarraytotal = len(targetarray)
@@ -1396,7 +1404,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             weapon = str(" " + weapon)
 
         ## Damage Done (random)
-        damage, winnermsg = damagedone(bot, winner, loser, weapon, 1)
+        damage, winnermsgarray = damagedone(bot, winner, loser, weapon, 1)
         
         ## Update Wins and Losses
         if instigator != target:
@@ -1419,11 +1427,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             loser = targetname
         if currenthealth <= 0:
             whokilledwhom(bot, winner, loser)
-            winnermsg = str(winnermsg +  loser + ' dies forcing a respawn!!')
+            winnermsg = str(loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
                 assault_deaths = assault_deaths + 1
+            winnermsgarray.append(winnermsg)
 
         ## new pepper level?
         pepperstatuschangemsg = ''
@@ -1505,24 +1514,28 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
         
         ## On Screen Text
-        combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
+        combattextarrayloopa = ['announcecombatmsg','lootwinnermsg']
+        for x in combattextarrayloopa:
+            checktext = eval(x)
+            if checktext and checktext != '':
+                combattextarraycomplete.append(checktext)
+        for x in winnermsgarray:
+            combattextarraycomplete.append(x)
+        combattextarrayloopc = ['lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
+        for x in combattextarrayloopc:
+            checktext = eval(x)
+            if checktext and checktext != '':
+                combattextarraycomplete.append(checktext)
         lastarray = 2
         combattextarraya = []
         combattextarrayb = []
-        for x in combattextarrayloop:
-            checktext = eval(x)
-            if checktext and checktext != '':
-                if lastarray == 2:
-                    combattextarraya.append(checktext)
-                    lastarray = 1
-                else:
-                    if x == 'winnermsg':
-                        combattextarrayb.append("dummytext")
-                        combattextarraya.append(checktext)
-                        lastarray = 1
-                    else:
-                        combattextarrayb.append(checktext)
-                        lastarray = 2
+        for x in combattextarraycomplete:
+            if lastarray == 2:
+                combattextarraya.append(x)
+                lastarray = 1
+            else:
+                combattextarrayb.append(x)
+                lastarray = 2
         if len(combattextarraya) > len(combattextarrayb):
             combattextarrayb.append("dummytext")
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
@@ -1961,6 +1974,7 @@ def tierratio_level(bot):
 #################
 
 def damagedone(bot, winner, loser, weapon, diaglevel):
+    damagetextarray = []
     damagescale = tierratio_level(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
@@ -2017,6 +2031,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + ". ")
     else:
         damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
+    damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
     if winnerclass == 'vampire':
@@ -2027,8 +2042,9 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         rageodds = randint(1, 12)
         if rageodds == 1:
             extradamage = randint(1, 25)
-            damagetext = str(damagetext +" "+ winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage. ")
+            damagetext = str(winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage.")
             damage = damage + extradamage
+            damagetextarray.append(damagetext)
     
     ## Paladin deflect
     if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame':
@@ -2046,7 +2062,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
                 absorbedb = damagemathb + damageb
                 damage = abs(damagemathb)
                 set_database_value(bot, loser, 'shield', None)
-            damagetext = str(damagetext + " "+ winnername + " absorbs " + str(absorbedb) + " of the damage. ")
+            damagetext = str(winnername + " absorbs " + str(absorbedb) + " of the damage. ")
+            damagetextarray.append(damagetext)
     
     ## Shield resistance
     if shieldloser and damage > 0:
@@ -2059,7 +2076,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             set_database_value(bot, loser, 'shield', None)
-        damagetext = str(damagetext + " "+ losername + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetext = str(losername + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetextarray.append(damagetext)
 
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
@@ -2069,13 +2087,14 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             weaponb = weaponformatter(bot, weaponb)
             weaponb = str(" "+ weaponb)
             damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
-            damagetext = str(damagetext + " "+damagetextb)
+            for x in damagetextb:
+                damagetextarray.append(x)
             
     ## dish it out
     if damage > 0:
         adjust_database_value(bot, loser, 'health', -abs(damage))
     
-    return damage, damagetext
+    return damage, damagetextarray
 
 ##################
 ## Pepper level ##
