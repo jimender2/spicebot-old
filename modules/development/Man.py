@@ -24,7 +24,7 @@ def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
-    
+    bot.say(str(subcommand))
     if subcommand in custompagearray:
         if 'bot' or 'usage' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
