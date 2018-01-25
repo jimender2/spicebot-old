@@ -64,7 +64,7 @@ def freebie(bot,trigger):
         else:
             bot.say("The casino doesn't have any funds to provide")
     else:
-            bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
+        bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
     
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
@@ -84,11 +84,11 @@ def slots(bot,trigger,arg):
             bot.say("Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
     else:    
 #start slots
-            if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
+        if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
             #add bet to spicebank
-                mywinnings = 0
+            mywinnings = 0
 
-                wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
+            wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
                 wheel1 = spin(wheel)
                 wheel2 = spin(wheel)
                 wheel3 = spin(wheel)
