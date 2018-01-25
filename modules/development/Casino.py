@@ -224,7 +224,7 @@ def roulette(bot,trigger,arg):
 	# user input now setup game will run
 	if inputcheck == 1:
 		players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
-		for i in players
+		for i in players:
 			if i == player:
 				bot.say("You already placed a bet")
 				inputcheck = 0
