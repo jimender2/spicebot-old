@@ -1171,6 +1171,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     elif target == 'everyone':
                         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
                         set_database_value(bot, duelrecorduser, 'levelingtier', None)
+                        set_database_value(bot, duelrecorduser, 'specevent', None)
                         for u in bot.users:
                             statreset(bot, target)
                             if statset == 'all':
