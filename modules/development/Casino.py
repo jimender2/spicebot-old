@@ -260,8 +260,8 @@ def runroulette(bot):
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
-                           winners=winners + " " + player
-                           totalwon = totalwon + mywinnings                   
+                            winners=winners + " " + player
+                            totalwon = totalwon + mywinnings                   
                         
         if winners =='':
             bot.say("No one wins anything")
