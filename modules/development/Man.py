@@ -22,7 +22,7 @@ custompagearray=['bot','usage'
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
-    subcommand = get_trigger_arg(triggerargsarray, 1)
+    subcommand = get_trigger_arg(triggerargsarray, 2) or 'justwiki'
     instigator = trigger.nick
     bot.say(str(subcommand))
     if subcommand in custompagearray:
