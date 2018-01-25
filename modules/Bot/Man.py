@@ -43,4 +43,4 @@ def mainfunction(bot, trigger):
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Weather"
         bot.say("There is a custom page for that. Find it here: " + str(CUSTOMPAGEURL))
     else:
-        bot.say("Online Docs: " + GITWIKIURL)
+        bot.say("The guide for the bot can be found here: " + GITWIKIURL)
