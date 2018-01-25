@@ -116,6 +116,7 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
+tiercommandarray = ['docs','help','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 tierunlockdocs, tierunlockhelp, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
 tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
 tierunlockleaderboard, tierunlockwarroom = 3,3
@@ -1271,7 +1272,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
         
         ## Tier update
-        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
 
         ## Update Time Of Combat
         set_database_value(bot, instigator, 'timeout', now)
@@ -1427,10 +1428,13 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Tier update Part 2
         tierchangemsg = ''
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        bot.say(str(currenttierstart)+" "+ str(currenttierend))
         if int(currenttierend) > int(currenttierstart):
             tierchangemsg = str("New Tier Unlocked!")
-            bot.say(tierchangemsg)
+            newtierlist = []
+            for x in tiercommandarray:
+                newtiereval = eval("tierunlock"+x)
+                if newtiereval == currenttierend:
+                    newtierlist.append(x)
         
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
