@@ -28,7 +28,7 @@ from SpicebotShared import *
 
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
-ROULETTETIMEOUT = 20
+ROULETTETIMEOUT = 8
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
