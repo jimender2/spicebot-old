@@ -1313,7 +1313,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     ## clean empty stats
     assaultdisplay = ''
-    combattextarray = []
+    combattextarraycomplete = []
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
     targetarraytotal = len(targetarray)
@@ -1517,8 +1517,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for x in combattextarrayloopa:
             checktext = eval(x)
             if checktext and checktext != '':
-                bot.say(checktext)
-        #        combattextarray.append(x)
+                combattextarraycomplete.append(x)
         #for x in winnermsgarray:
         #    combattextarray.append(x)
         #combattextarrayloopc = ['lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
@@ -1529,7 +1528,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         #lastarray = 2
         #combattextarraya = []
         #combattextarrayb = []
-        #for x in combattextarray:
+        for x in combattextarray:
+            bot.say(x)
         #    if lastarray == 2:
         #        combattextarraya.append(checktext)
         #        lastarray = 1
