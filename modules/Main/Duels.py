@@ -28,7 +28,7 @@ from SpicebotShared import *
 
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
-ROULETTETIMEOUT = 20
+ROULETTETIMEOUT = 8
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
@@ -185,12 +185,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## Instigator
     instigator = trigger.nick
-    adjust_database_value(bot, instigator, 'usage', 1)
-    healthcheck(bot, instigator)
 
-    ## Stat reset
-    statreset(bot, instigator)
-        
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
@@ -210,7 +205,14 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
-
+        
+        ## usage counter
+        adjust_database_value(bot, instigator, 'usage', 1)
+        
+        ## Stat check
+        statreset(bot, instigator)
+        healthcheck(bot, instigator)
+        
         ## Docs
         if commandortarget == 'docs' or commandortarget == 'help':
             target = get_trigger_arg(triggerargsarray, 2)
@@ -219,8 +221,6 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
-                healthcheck(bot, target)
-                statreset(bot, target)
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
         ## Author
@@ -253,8 +253,6 @@ def execute_main(bot, trigger, triggerargsarray):
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
-                healthcheck(bot, target)
-                statreset(bot, target)
                 if commandortarget == 'on':
                     adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                 else:
@@ -301,6 +299,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
+                statreset(bot, instigator)
+                healthcheck(bot, instigator)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
                 resultmsg = ''
                 deathmsg = ''
@@ -323,6 +323,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         uniqueplayersarray.append(x)
                 for x in uniqueplayersarray:
                     if x != instigator:
+                        statreset(bot, x)
+                        healthcheck(bot, x)
                         roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
                         adjust_database_value(bot, x, 'coin', roulettepayoutx)
                         bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
@@ -352,8 +354,6 @@ def execute_main(bot, trigger, triggerargsarray):
             targetname = target
             if target == 'channel':
                 target = duelrecorduser
-            statreset(bot, target)
-            healthcheck(bot, target)
             totaluses = get_database_value(bot, target, 'usage')
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
@@ -369,8 +369,6 @@ def execute_main(bot, trigger, triggerargsarray):
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel:
-                    healthcheck(bot, u)
-                    statreset(bot, u)
                     canduelarray.append(u)
             if commandortarget != 'random' and bot.nick in canduelarray:
                 canduelarray.remove(bot.nick)
@@ -408,6 +406,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
                 elif commandortarget == 'colosseum':
+                    statreset(bot, instigator)
+                    healthcheck(bot, instigator)
                     totalplayers = len(canduelarray)
                     riskcoins = int(totalplayers) * 30
                     damage = riskcoins
@@ -416,6 +416,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     diedinbattle = []
                     canduelarray.remove(winner)
                     for x in canduelarray:
+                        statreset(bot, x)
+                        healthcheck(bot, x)
                         shieldloser = get_database_value(bot, x, 'shield') or 0
                         if shieldloser and damage > 0:
                             damagemath = int(shieldloser) - damage
@@ -442,8 +444,6 @@ def execute_main(bot, trigger, triggerargsarray):
             for u in bot.users:
                 canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
                 if canduel and u != bot.nick:
-                    healthcheck(bot, u)
-                    statreset(bot, u)
                     canduelarray.append(u)
             if not subcommand:
                 if instigator in canduelarray:
@@ -505,6 +505,8 @@ def execute_main(bot, trigger, triggerargsarray):
             elif setclass == instigatorclass:
                 bot.say('Your class is already set to ' +  setclass)
             else:
+                statreset(bot, instigator)
+                healthcheck(bot, instigator)
                 set_database_value(bot, instigator, 'class', setclass)
                 bot.say('Your class is now set to ' +  setclass)
                 set_database_value(bot, instigator, 'classtimeout', now)
@@ -705,16 +707,16 @@ def execute_main(bot, trigger, triggerargsarray):
                         return
                     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
                     for u in bot.users:
-                        statreset(bot, target)
                         if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
+                            statreset(bot, target)
+                            healthcheck(bot, u)
                     if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
                     else:
                         canduelarrayorig = []
                         for u in canduelarray:
                             canduelarrayorig.append(u)
-                            healthcheck(bot, u)
                             targethealth = get_database_value(bot, u, 'health')
                         adjust_database_value(bot, instigator, lootitem, -1)
                         fulltarget, secondarytarget, thirdtarget = '','',''
@@ -806,8 +808,6 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                     else:
-                        statreset(bot, u)
-                        healthcheck(bot, target)
                         uselootarray = []
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                         lootusedeaths = 0
@@ -1053,6 +1053,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("Invalid command.")
                     return
                 statreset(bot, target)
+                healthcheck(bot, u)
                 targetcurse = get_database_value(bot, target, 'curse') or 0
                 targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                 if target.lower() != instigator.lower() and targetclass == 'fiend':
