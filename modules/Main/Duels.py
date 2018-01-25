@@ -1425,8 +1425,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Tier update Part 2
         tierchangemsg = ''
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        bot.say(str(currenttierstart)+" "+ str(currenttierend))
         if int(currenttierend) > int(currenttierstart):
             tierchangemsg = str("New Tier Unlocked!")
+            bot.say(tierchangemsg)
         
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
