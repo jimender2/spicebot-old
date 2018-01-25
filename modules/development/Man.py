@@ -26,21 +26,21 @@ def mainfunction(bot, trigger):
     instigator = trigger.nick
     
     if subcommand in custompagearray:
-        if subcommand == 'bot' or subcommand == 'usage':
+        if 'bot' or 'usage' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
-        if 'module' or 'command' in subcommand:
+        elif 'module' or 'command' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Modules"
-        if 'duel' or 'challenge' in subcommand:
+        elif 'duel' or 'challenge' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Duels"
-        if subcommand == 'github':
+        elif 'github' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Github"
-        if subcommand == 'pants' or subcommand == 'points':
+        elif 'pants' or 'points' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Points"
-        if 'search' or 'google' or 'lookup' in subcommand:
+        elif 'search' or 'google' or 'lookup' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Search"
-        if 'spicebuck' in subcommand:
-            CUSTOMPAGEURL = str(GITWIKIURL)+"/Duels"
-        if subcommand == 'weather':
+        elif 'spicebuck' in subcommand:
+            CUSTOMPAGEURL = str(GITWIKIURL)+"/Spicebucks"
+        elif 'weather' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Weather"
         bot.say("There is a custom page for that. Find it here: " + str(CUSTOMPAGEURL))
     else:
