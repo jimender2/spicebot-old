@@ -702,7 +702,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             elif lootcommand not in transactiontypesarray:
                 transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
-                bot.notice(instigator + ", It looks like " + target + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
+                bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
             elif lootcommand == 'use':
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
