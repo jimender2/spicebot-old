@@ -120,7 +120,10 @@ tierunlockdocs, tierunlockhelp, tierunlockadminn, tierunlockauthor, tierunlockon
 tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
 tierunlockleaderboard, tierunlockwarroom = 3,3
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 4,4,4
-tierunlockroulette, tierunlockcolosseum, tierunlockassault, tierunlockrandom = 5,5,5,5
+tierunlockrandom = 5
+tierunlockroulette = 6
+tierunlockassault = 7
+tierunlockcolosseum = 8
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -211,6 +214,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
         
+        ## Tier unlocks
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
         except NameError:
@@ -218,7 +222,7 @@ def execute_main(bot, trigger, triggerargsarray):
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if commandeval > currenttier:# and not bot.nick.endswith(devbot):
-            bot.say("This command will be unlocked when somebody reaches " + str(currenttier))
+            bot.say("This command will be unlocked when somebody reaches " + str(commandeval) + ". Current Tier is " + str(currenttier))
             return
         
         ## usage counter
