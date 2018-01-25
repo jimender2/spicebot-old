@@ -145,7 +145,7 @@ duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses',
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 
@@ -1348,18 +1348,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_current_streaks(bot, winner, 'win')
             set_current_streaks(bot, loser, 'loss')
 
-        ## Update XP points
-        if yourclasswinner == 'ranger':
-            XPearnedwinner = XPearnedwinnerranger
-        else:
-            XPearnedwinner = XPearnedwinnerstock
-        if yourclassloser == 'ranger':
-            XPearnedloser = XPearnedloserranger
-        else:
-            XPearnedloser = XPearnedloserstock
-        if instigator != target:
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
+
 
         ## Update last fought
         if instigator != target:
@@ -1440,6 +1429,26 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     newtierlist = get_trigger_arg(newtierlistarray, "list")
                     tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
                 
+        ## Update XP points
+        if yourclasswinner == 'ranger':
+            XPearnedwinner = XPearnedwinnerranger
+        else:
+            XPearnedwinner = XPearnedwinnerstock
+        if yourclassloser == 'ranger':
+            XPearnedloser = XPearnedloserranger
+        else:
+            XPearnedloser = XPearnedloserstock
+        if instigator != target:
+            winnertier = get_database_value(bot, winner, 'levelingtier')
+            losertier = get_database_value(bot, loser, 'levelingtier')
+            xptier = tierratio_level(bot)
+            if winnertier < currenttier:
+                XPearnedwinner = XPearnedwinner * xptier
+            if losertier < currenttier:
+                XPearnedloser = XPearnedloser * xptier
+            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+            adjust_database_value(bot, loser, 'xp', XPearnedloser)
+        
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
         lastarray = 2
@@ -2014,6 +2023,8 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
 def get_pepper(bot, nick):
     tiernumber = 0
+    nicktier = get_database_value(bot, nick, 'levelingtier')
+    nickpepper = get_database_value(bot, nick, 'levelingpepper')
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
     xp = get_database_value(bot, nick, 'xp')
     if nick == bot.nick:
@@ -2069,6 +2080,10 @@ def get_pepper(bot, nick):
     ## advance respawn tier
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    if tiernumber != nicktier:
+        set_database_value(bot, nick, 'levelingtier', tiernumber)
+    #if pepper != nickpepper:
+    #    set_database_value(bot, nick, 'levelingpepper', pepper)
     
     return pepper
 
