@@ -132,17 +132,41 @@ def main_command(bot, trigger):
         elif adddel not in adddelarray:
             bot.say("Invalid Command")
         elif not target:
-            bot.say('Wh do you want to block?')
+            bot.say('Who do you want to block?')
         elif target not in userarray:
             bot.say("I don't know who that is.")
         else:
             if adddel == 'add':
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
-                adddelword = "added"
+                adddelword = "added to"
             else:
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
-                adddelword = "deleted"
-            bot.say(target + " has been " + adddelword + " from the " + botchannel + " block list.")
+                adddelword = "removed from"
+            bot.say(target + " has been " + adddelword + " the " + botchannel + " block list.")
+    
+    ## Block users from using the github module
+    #elif subcommand == 'githubblock' and not botchannel.startswith("#"):
+    #    bot.say("You must be in channel to block access to the github module.")
+    elif subcommand == 'githubblock':
+        adddel = get_trigger_arg(triggerargsarray, 2)
+        target = get_trigger_arg(triggerargsarray, 3)
+        adddelarray = ['add','del']
+        if not adddel:
+            bot.say("would you like to add or del a user from the github block list?")
+        elif adddel not in adddelarray:
+            bot.say("Invalid Command")
+        elif not target:
+            bot.say('Who do you want to block?')
+        elif target not in userarray:
+            bot.say("I don't know who that is.")
+        else:
+            if adddel == 'add':
+                adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'add')
+                adddelword = "added to"
+            else:
+                adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'del')
+                adddelword = "removed from"
+            bot.say(target + " has been " + adddelword + " the " + botchannel + " github block list.")
     
     ## On/off
     elif subcommand == 'on' or subcommand == 'off':
@@ -236,7 +260,4 @@ def update(bot, trigger):
     bot.say('Pulling From Github...')
     g = git.cmd.Git(moduledir)
     g.pull()
-    
-    
-    
     
