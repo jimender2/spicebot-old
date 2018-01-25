@@ -116,8 +116,11 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
-tierunlockdocs, tierunlockhelp = 1, 1
-#tierunlock
+tierunlockdocs, tierunlockhelp, tierunlockadminn, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
+tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
+tierunlockleaderboard, tierunlockwarroom = 3,3
+tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 4,4,4
+tierunlockroulette, tierunlockcolosseum, tierunlockassault, tierunlockrandom = 5,5,5,5
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -125,7 +128,7 @@ poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
 timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
-magicpotiondispmsg = str(": A 1 to 1 tradable item!")
+magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
 ############
 ## Arrays ##
@@ -214,7 +217,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if commandeval > currenttier:
+        if commandeval > currenttier:# and not bot.nick.endswith(devbot):
             bot.say("This command will be unlocked when somebody reaches " + str(currenttier))
             return
         
@@ -367,10 +370,6 @@ def execute_main(bot, trigger, triggerargsarray):
             
         ## Colosseum, Assault, and Random
         elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'random':
-            if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-                commandortarget = 'random'
-            if commandortarget == 'everyone':
-                commandortarget = 'assault'
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
