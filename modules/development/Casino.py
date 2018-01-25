@@ -229,7 +229,7 @@ def roulette(bot,trigger,arg):
 def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
-        colors = ['red', 'black']
+    colors = ['red', 'black']
     players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
     if not players == '':            
         winningnumber = spin(wheel)
