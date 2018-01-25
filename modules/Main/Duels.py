@@ -528,6 +528,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(unsetmsg + "What do you want your title to be?")
             elif titletoset == 'remove':
                 set_database_value(bot, instigator, 'title', None)
+                bot.say("Your title has been removed")
             else:
                 titletoset = str(titletoset)
                 instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
@@ -538,6 +539,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     set_database_value(bot, instigator, 'title', titletoset)
                     adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+                    bot.say("Your title is now " + titletoset)
             
         ## Class
         elif commandortarget == 'class':
