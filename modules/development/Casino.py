@@ -181,6 +181,7 @@ def roulette(bot,trigger,arg):
     #setup what was bet on
         if inputcheck == 1:    
             #check to see if a number was entered
+            mynumber=''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
             if(mynumber <= 0 or mynumber > maxwheel):
