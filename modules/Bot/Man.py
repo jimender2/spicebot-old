@@ -14,19 +14,21 @@ custompagearray=['bot','usage','spicebot',
                  'casino','gamble','gambling',
                  'challenge','challenges','duel','duels','dueling','duelling',
                  'github',
+                 'man',
                  'pants','points',
                  'search','searching','google','lookup',
                  'spicebucks','spicebuck',
                  'weather']
-custompages=['spicebot','modules','casino','duel','github','pants','points','search','spicebucks','weather']
+custompages=['spicebot','modules','casino','duel','github','man','pants','points','search','spicebucks','weather']
 
 
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
+    customdisplay =  get_trigger_arg(canduelarray, "list")
     if subcommand == 'options' or subcommand == 'help':
-        bot.say("Modules with custom pages include: " + custompages)
+        bot.say("Modules with custom pages include: " + customdisplay)
     if subcommand in custompagearray:
         if 'bot' in subcommand or 'usage' in subcommand or 'spicebot' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
@@ -36,6 +38,8 @@ def mainfunction(bot, trigger):
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Duels"
         elif 'github' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Github"
+        elif 'man' in subcommand or 'help' in subcommand:
+            CUSTOMPAGEURL = str(GITWIKIURL)+"/Man"
         elif 'pants' in subcommand or 'points' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Points"
         elif 'search' in subcommand or 'google'in subcommand  or 'lookup' in subcommand:
