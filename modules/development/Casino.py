@@ -195,9 +195,9 @@ def roulette(bot,trigger,arg):
                         bot.notice(('Choose either red or black'), player)
                         inputcheck=0
                         mycolor=''
-                            else:
-                                mycolor = ' '
-                                inputcheck =1
+                else:
+                    mycolor = ' '
+                    inputcheck =1
         #was a color selected first
         elif(myitem == 'red' or myitem == 'black'):
             mycolor = myitem
