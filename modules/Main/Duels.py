@@ -346,6 +346,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 weapon = str(" with a " + weapon)
                 winner, loser = 'duelsroulettegame', instigator
                 damage, roulettedamagearray = damagedone(bot, winner, loser, weapon, 1)
+                roulettedamage = ''
                 for x in roulettedamagearray:
                     roulettedamage = str(roulettedamage+" "+ x)
                 currenthealth = get_database_value(bot, loser, 'health')
