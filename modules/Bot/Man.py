@@ -26,7 +26,7 @@ custompages=['spicebot','modules','casino','duel','github','man','pants','points
 def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
-    customdisplay =  get_trigger_arg(canduelarray, "list")
+    customdisplay =  get_trigger_arg(custompages, "list")
     if subcommand == 'options' or subcommand == 'help':
         bot.say("Modules with custom pages include: " + customdisplay)
     if subcommand in custompagearray:
