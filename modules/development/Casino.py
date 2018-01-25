@@ -127,8 +127,8 @@ def slots(bot,trigger,arg):
                         bot.say(trigger.nick + ' is paid ' + str(mywinnings))
                     else:
                         bot.say('Error in banking system')
-            else:
-                bot.say("You don't have enough Spicebucks" )
+        else:
+            bot.say("You don't have enough Spicebucks" )
 
 #------Start Roulette
 #----------------Roulette-------
