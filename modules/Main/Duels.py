@@ -923,7 +923,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     if targetequalcheck == target:
                                         set_database_value(bot, duelrecorduser, k, None)
                                 for j in timepotiontimeoutarray:
-                                    set_database_value(bot, target, k, None)
+                                    set_database_value(bot, target, j, None)
                                 set_database_value(bot, duelrecorduser, 'timeout', None)
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
