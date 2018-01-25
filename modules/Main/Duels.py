@@ -221,7 +221,7 @@ def execute_main(bot, trigger, triggerargsarray):
         except NameError:
             bot.say("This looks like an invalid command or an invalid person.")
             return
-        currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         if int(commandeval) > int(currenttier):# and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
