@@ -317,6 +317,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
+                biggestpayout = 0
+                biggestpayoutwinner = ''
                 statreset(bot, instigator)
                 healthcheck(bot, instigator)
                 roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
@@ -344,6 +346,12 @@ def execute_main(bot, trigger, triggerargsarray):
                         statreset(bot, x)
                         healthcheck(bot, x)
                         roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                        if roulettepayoutx > biggestpayout:
+                            biggestpayoutwinner = x
+                            biggestpayout = roulettepayoutx
+                        if roulettepayoutx == biggestpayout:
+                            biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
+                            biggestpayout = roulettepayoutx
                         adjust_database_value(bot, x, 'coin', roulettepayoutx)
                         bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
                     set_database_value(bot, x, 'roulettepayout', None)
@@ -351,12 +359,17 @@ def execute_main(bot, trigger, triggerargsarray):
                     roulettewinners.remove(instigator)
                 if roulettewinners != []:
                     displaymessage = get_trigger_arg(roulettewinners, "list")
-                    displaymessage = str("Winners: " + displaymessage)
-                bot.say(resultmsg + displaymessage)
+                    displaymessage = str("Winners: " + displaymessage + " ")
+                if biggestpayoutwinner != '':
+                    displaymessage = str(displaymessage +"Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', None)
                 set_database_value(bot, duelrecorduser, 'roulettewinners', None)
+                roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
+                if roulettecount > 1:
+                    displaymessage = str(displaymessage +"The chamber spun " + str(roulettecount) + " times.")
+                bot.say(resultmsg + displaymessage)
             else:
                 bot.say("*click*")
                 roulettecount = roulettecount + 1
