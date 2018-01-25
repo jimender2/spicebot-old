@@ -1675,7 +1675,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
         if u in dueloptedinarray and u != bot.nick:
             totalduelusersarray.append(u)
     howmanyduelsers = len(totalduelusersarray)
-
+    target = actualname(bot, target)
     if instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
