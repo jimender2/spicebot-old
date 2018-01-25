@@ -1442,9 +1442,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
             xptier = tierratio_level(bot)
-            if winnertier < currenttier:
+            if winnertier < currenttierend:
                 XPearnedwinner = XPearnedwinner * xptier
-            if losertier < currenttier:
+            if losertier < currenttierend:
                 XPearnedloser = XPearnedloser * xptier
             adjust_database_value(bot, winner, 'xp', XPearnedwinner)
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
