@@ -12,7 +12,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 custompagearray=['bot','usage'
                  'module','modules','command','commands',
                  'casino','gamble','gambling',
-                 'challenge','challenges','duel','duels',
+                 'challenge','challenges','duel','duels','dueling','duelling',
                  'github',
                  'pants','points',
                  'search','searching','google','lookup',
