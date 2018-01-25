@@ -10,7 +10,7 @@ from SpicebotShared import *
 devcookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
 cookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/fortune_cookie.txt'
 devbot='dev' ## Enables the bot to distinguish if in test
-filetocheck=devcookies
+#filetocheck='devcookies'
 
 @sopel.module.commands('fortune','cookie')
 def mainfunction(bot, trigger):
@@ -20,9 +20,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     if not bot.nick.endswith(devbot):
-        filetocheck=cookies
-    #else:
-    #    filetocheck=devcookies
+        filetocheck='cookies'
+    else:
+        filetocheck=devcookies
     myline = randomcookie(filetocheck)
     bot.say(myline)
        
