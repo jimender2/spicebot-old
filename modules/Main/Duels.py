@@ -116,8 +116,8 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
-tiercommandarray = ['docs','help','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-tierunlockdocs, tierunlockhelp, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
+tiercommandarray = ['docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1
 tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
 tierunlockleaderboard, tierunlockwarroom = 3,3
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 4,4,4
@@ -125,6 +125,7 @@ tierunlockrandom = 5
 tierunlockroulette = 6
 tierunlockassault = 7
 tierunlockcolosseum = 8
+tierunlocktitle = 9
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -214,6 +215,18 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
+        
+        ## Alternative commands
+        if commandortarget == 'enable':
+            commandortarget = 'on'
+        if commandortarget == 'disable':
+            commandortarget = 'off'
+        if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+            commandortarget = 'random'
+        if commandortarget == 'everyone':
+            commandortarget = 'assault'
+        if commandortarget == 'help':
+            commandortarget = 'docs'
         
         ## Tier unlocks
         try:
@@ -504,6 +517,30 @@ def execute_main(bot, trigger, triggerargsarray):
                     dowedisplay = 1
                     mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
 
+        ## Title
+        elif commandortarget == 'title':
+            instigatortitle = get_database_value(bot, instigator, 'title')
+            titletoset = get_trigger_arg(triggerargsarray, 2)
+            if not titletoset:
+                unsetmsg = ''
+                if not instigatortitle:
+                    unsetmsg = "You don't have a title! "
+                bot.say(unsetmsg + "What do you want your title to be?")
+            elif titletoset == 'remove':
+                set_database_value(bot, instigator, 'title', None)
+                bot.say("Your title has been removed")
+            else:
+                titletoset = str(titletoset)
+                instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                if instigatorcoin < changeclasscost:
+                    bot.say("Changing your title costs " + str(changeclasscost) + " coin. You need more funding.")
+                elif len(titletoset) > 10:
+                    bot.say("Purchased titles can be no longer than 10 characters")
+                else:
+                    set_database_value(bot, instigator, 'title', titletoset)
+                    adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+                    bot.say("Your title is now " + titletoset)
+            
         ## Class
         elif commandortarget == 'class':
             subcommandarray = ['set','change']
@@ -1705,9 +1742,14 @@ def whatsyourname(bot, trigger, nick, channel):
     ## Pepper Level
     pepperstart = get_pepper(bot, nick)
     
+    ## custom title
+    nicktitle = get_database_value(bot, nick, 'title')
+    
     ## bot.owner
     try:
-        if nick.lower() in bot.config.core.owner.lower():
+        if nicktitle:
+            nickname = str(nicktitle+" " + nickname)
+        elif nick.lower() in bot.config.core.owner.lower():
             nickname = str("The Legendary " + nickname)
     ## botdevteam
         elif nick in botdevteam:
