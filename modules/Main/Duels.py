@@ -1430,16 +1430,16 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
             tierchangemsg = str("New Tier Unlocked!")
-            newtierlistarray = []
-            for x in tiercommandarray:
-                newtiereval = eval("tierunlock"+x)
-                if newtiereval == currenttierend:
-                    newtierlistarray.append(x)
-            if newtierlistarray != []:
-                newtierlist = get_trigger_arg(newtierlistarray, "list")
-                tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
+            if currenttierend != 1:
+                newtierlistarray = []
+                for x in tiercommandarray:
+                    newtiereval = eval("tierunlock"+x)
+                    if newtiereval == currenttierend:
+                        newtierlistarray.append(x)
+                if newtierlistarray != []:
+                    newtierlist = get_trigger_arg(newtierlistarray, "list")
+                    tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
                 
-        
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
         lastarray = 2
