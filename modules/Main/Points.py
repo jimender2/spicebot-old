@@ -21,12 +21,19 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     pointsstring = trigger.group(1)
+    pointsreason = get_trigger_args(triggerargsarray, '2+')
+    pointsreasonmsg = '.'
     if not channel.startswith("#"):
         bot.notice(instigator + ", " + pointsstring.title() + " must be in a channel.", instigator)
         return
     rando = randint(1, 666)
     commortarget = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    if pointsreason:
+        if pointsreason.startswith('for'):
+            pointsreasonmsg = ' ' + str(pointsreason) + '.'
+        else:
+            pointsreasonmsg = ' for ' + str(pointsreason) + '.'
     if not commortarget:
         commortarget = 'everyone'
     if commortarget == instigator:
@@ -42,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             bot.say(target + ' has ' + str(points) + ' ' + pointsstring + '.')
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
-        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone.')
+        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone'+ str(pointsreasonmsg))
         bot.say(randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
@@ -54,7 +61,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if target == instigator:
             bot.say("You cannot take " + pointsstring + " from yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
-            randopoints = str(instigator + " takes " + str(rando) + ' ' + pointsstring + ' from everyone.')
+            randopoints = str(instigator + " takes " + str(rando) + ' ' + pointsstring + ' from everyone' + str(pointsreasonmsg))
             bot.say(randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
@@ -62,13 +69,13 @@ def execute_main(bot, trigger, triggerargsarray):
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
-            randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + ".")
+            randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + str(pointsreasonmsg))
             bot.say(randopoints)
             adjust_botdatabase_value(bot, target, 'points', -abs(rando))
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     else:
-        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+'.')
+        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
 
