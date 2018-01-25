@@ -26,10 +26,12 @@ dontaskforthese = ['instakill','instant kill','random kill','random deaths','but
 
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
+    banneduserarray = get_botdatabase_value(bot, bot.nick, 'featureban') or [] # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
     badquery = 0
+    baduser = 0
     if maincommand == 'feature':
         labels=['Feature Request']
         title='Feature Request'
@@ -50,11 +52,16 @@ def execute_main(bot, trigger):
     for request in dontaskforthese:
         if request in inputtext:
             badquery = 1
-    if badquery:
-        if inputtext.startswith('duel'):
-            bot.say("The duels developer has already said no to that. Stop asking.")
-        else:
-            bot.say("That feature has already been rejected by the dev team.")
+    if str(instigator) in banneduserarray:
+        baduser = 1    
+    if badquery or baduser:
+        if badquery:
+            if inputtext.startswith('duel'):
+                bot.say("The duels developer has already said no to that. Stop asking.")
+            else:
+                bot.say("That feature has already been rejected by the dev team.")
+        if baduser:
+            bot.say("Due to abusing this module you have been banned from using it, " + str(instigator))
     else:
         if inputtext.startswith('duel'):
             title = "DUELS: " + title
