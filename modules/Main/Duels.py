@@ -267,7 +267,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 return
             getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
             if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
-                bot.notice(instigator + "Roulette has a small timeout.", instigator)
+                bot.notice(instigator + " Roulette has a small timeout.", instigator)
                 return
             set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
             roulettepayoutdefault = 5
@@ -790,7 +790,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.say("Invalid command.")
                             return
                     elif targnum == 'all':
-                        target == instigator
+                        target = instigator
                         quantity = int(gethowmanylootitem)
                     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
