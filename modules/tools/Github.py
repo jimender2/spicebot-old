@@ -26,7 +26,7 @@ dontaskforthese = ['instakill','instant kill','random kill','random deaths','but
 
 @sopel.module.commands('feature','issue','wiki')
 def execute_main(bot, trigger):
-    banneduserarray = get_botdatabase_value(bot, bot.nick, 'featureban') or [] # Banned Users
+    banneduserarray = get_botdatabase_value(bot, bot.nick, 'githubblockedusers') or [] # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2)
