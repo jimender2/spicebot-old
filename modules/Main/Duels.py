@@ -208,8 +208,10 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
         
-        
-        commandeval = eval("tierunlock"+ commandortarget) or 0
+        try:
+            commandeval = eval("tierunlock"+ commandortarget) or 0
+        except NameError:
+            commandeval = 0
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if commandeval > currenttier:
             bot.say("This command will be unlocked when somebody reaches " + str(currenttier))
