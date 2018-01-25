@@ -123,7 +123,7 @@ tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
 tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
 tierunlockroulette = 6
-tierunlockassault = 7
+tierunlockassault, tierunlockarmor = 7,7
 tierunlockcolosseum = 8
 tierunlocktitle = 9
 
@@ -732,6 +732,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
+        ## Armor
+        elif commandortarget == 'loot':
+            bot.say("WIP")
+        
         ## Loot Items
         elif commandortarget == 'loot':
             instigatorclass = get_database_value(bot, instigator, 'class')
