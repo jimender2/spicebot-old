@@ -30,9 +30,8 @@ def mainfunction(bot, trigger):
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
         if 'modules' or 'commands' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Modules"
-        if duel or challenge in subcommand:
+        if 'duel' or 'challenge' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Duels"
-        if subcommand
         bot.say("There is a custom page for that. Find it here: " + str(CUSTOMPAGEURL))
     else:
         bot.say("Online Docs: " + GITWIKIURL)
