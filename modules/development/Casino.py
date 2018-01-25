@@ -89,46 +89,46 @@ def slots(bot,trigger,arg):
             mywinnings = 0
 
             wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
-                wheel1 = spin(wheel)
-                wheel2 = spin(wheel)
-                wheel3 = spin(wheel)
-                reel = [wheel1, wheel2, wheel3]
-                bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')    
-                for i in reel:
-            if i==keyword:                
-                        mywinnings = mywinnings + 1
+            wheel1 = spin(wheel)
+            wheel2 = spin(wheel)
+            wheel3 = spin(wheel)
+            reel = [wheel1, wheel2, wheel3]
+            bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')    
+            for i in reel:
+                if i==keyword:                
+                    mywinnings = mywinnings + 1
             if mywinnings>=1:
-                            bot.say('You got a bonus word, ' + keyword + ', worth 1 spicebuck')
+                bot.say('You got a bonus word, ' + keyword + ', worth 1 spicebuck')
 
             if(wheel1 == wheel2 and wheel2 == wheel3):
-                            #bot.say(trigger.nick + ' got 3 ' + str(wheel1))
-                            if wheel1 == keyword:                            
-                                bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
-                                mywinnings=bankbalance                        
+                #bot.say(trigger.nick + ' got 3 ' + str(wheel1))
+                if wheel1 == keyword:                            
+                    bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
+                    mywinnings=bankbalance                        
                 elif wheel1 == 'Patches':
-                                    #bot.say('You got 3 matches')
-                                    mywinnings= mywinnings + match3        
+                    #bot.say('You got 3 matches')
+                    mywinnings= mywinnings + match3        
                 else:
-                                    mywinnings= mywinnings + match3
-                                    #bot.say('You got 3 matches')
+                    mywinnings= mywinnings + match3
+                    #bot.say('You got 3 matches')
             elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-                            mywinnings =  mywinnings + match2 
-                            #bot.say(trigger.nick + ' a match')    
+                mywinnings =  mywinnings + match2 
+                #bot.say(trigger.nick + ' a match')    
 
             if mywinnings <=0:
-                            bot.say(trigger.nick + ' gets nothing')
+                bot.say(trigger.nick + ' gets nothing')
             else:
-                            bankbalance=Spicebucks.bank(bot,'SpiceBank')
-                            if mywinnings > bankbalance:
-                                Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-                                bot.say(trigger.nick + ' is paid ' + str(mywinnings))
-                            else:                    
-                                if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-                                    bot.say(trigger.nick + ' is paid ' + str(mywinnings))
-                                else:
-                                    bot.say('Error in banking system')
-        else:
-                    bot.say("You don't have enough Spicebucks" )
+                bankbalance=Spicebucks.bank(bot,'SpiceBank')
+                if mywinnings > bankbalance:
+                    Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+                    bot.say(trigger.nick + ' is paid ' + str(mywinnings))
+                else:                    
+                    if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
+                        bot.say(trigger.nick + ' is paid ' + str(mywinnings))
+                    else:
+                        bot.say('Error in banking system')
+            else:
+                bot.say("You don't have enough Spicebucks" )
 
 #------Start Roulette
 #----------------Roulette-------
