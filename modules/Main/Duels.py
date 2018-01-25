@@ -1082,12 +1082,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     manarequired = -abs(actualmanarequired)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     if magicusage == 'curse':
+                        damagedealt = magiccursedamage
                         set_database_value(bot, target, 'curse', curseduration)
-                        specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels.")
+                        specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
+                        adjust_database_value(bot, target, 'health', int(damagedealt))
                     elif magicusage == 'shield':
+                        damagedealt = magicshielddamage
                         actualshieldduration = int(quantity) * int(shieldduration)
                         adjust_database_value(bot, target, 'shield', actualshieldduration)
-                        specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage.")
+                        specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
+                        adjust_database_value(bot, target, 'health', int(damagedealt))
                     if instigator == target:
                         displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
                     else:
