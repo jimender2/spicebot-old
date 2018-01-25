@@ -229,9 +229,12 @@ def execute_main(bot, trigger, triggerargsarray):
             commandortarget = 'docs'
         
         ## Tier unlocks
+        if "." in commandortarget:
+            bot.say("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()")
+            return
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
-        except NameError or SyntaxError:
+        except NameError:
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
