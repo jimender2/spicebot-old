@@ -22,21 +22,20 @@ custompagearray=['bot','usage'
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
-    subcommand = get_trigger_arg(triggerargsarray, 2) or 'justwiki'
-    instigator = trigger.nick
-    bot.say(str(subcommand))
+    subcommand = get_trigger_arg(triggerargsarray, 1)
+    
     if subcommand in custompagearray:
-        if 'bot' or 'usage' in subcommand:
+        if 'bot' in subcommand or 'usage' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
-        elif 'module' or 'command' in subcommand:
+        elif 'module' in subcommand or 'command' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Modules"
-        elif 'duel' or 'challenge' in subcommand:
+        elif 'duel' in subcommand or 'challenge' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Duels"
         elif 'github' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Github"
-        elif 'pants' or 'points' in subcommand:
+        elif 'pants' in subcommand or 'points' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Points"
-        elif 'search' or 'google' or 'lookup' in subcommand:
+        elif 'search' in subcommand or 'google'in subcommand  or 'lookup' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Search"
         elif 'spicebuck' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Spicebucks"
