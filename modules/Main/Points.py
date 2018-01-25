@@ -21,7 +21,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     pointsstring = trigger.group(1)
-    pointsreason = get_trigger_args(triggerargsarray, '2+')
+    pointsreason = get_trigger_arg(triggerargsarray, '2+')
     pointsreasonmsg = '.'
     if not channel.startswith("#"):
         bot.notice(instigator + ", " + pointsstring.title() + " must be in a channel.", instigator)
