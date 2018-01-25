@@ -282,12 +282,16 @@ def execute_main(bot, trigger, triggerargsarray):
                         adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
             elif targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+                target = actualname(bot, target)
                 bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
             elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
+                target = actualname(bot, target)
                 bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
             elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
+                target = actualname(bot, target)
                 bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             else:
+                target = actualname(bot, target)
                 if commandortarget == 'on':
                     adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
                 else:
@@ -406,6 +410,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if target == 'channel':
                 target = duelrecorduser
             totaluses = get_database_value(bot, target, 'usage')
+            targetname = actualname(bot, targetname)
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
         ## Colosseum, Assault, and Random
@@ -518,6 +523,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif subcommand.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
+                subcommand = actualname(bot, subcommand)
                 if subcommand in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
                 else:
@@ -594,6 +600,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
             else:
+                target = actualname(bot, target)
                 healthcheck(bot, target)
                 statreset(bot, target)
                 streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
@@ -628,6 +635,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif int(commandeval) > int(currenttier) and target != instigator:
                 bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
             else:
+                target = actualname(bot, target)
                 #healthcheck(bot, target)
                 statreset(bot, target)
                 for x in duelstatsarray:
@@ -751,6 +759,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif int(commandeval) > int(currenttier) and target != instigator:
                     bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
+                    target = actualname(bot, target)
                     statreset(bot, target)
                     for x in backpackarray:
                         gethowmany = get_database_value(bot, target, x)
@@ -887,6 +896,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                     else:
+                        target = actualname(bot, target)
                         uselootarray = []
                         adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                         lootusedeaths = 0
@@ -1052,6 +1062,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 weaponchange = get_trigger_arg(triggerargsarray, '4+')
             weaponslist = get_database_value(bot, target, 'weaponslocker') or []
             statreset(bot, target)
+            target = actualname(bot, target)
             if not adjustmentdirection:
                 bot.notice(instigator + ", Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
             elif adjustmentdirection == 'total':
@@ -1131,6 +1142,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     bot.say("Invalid command.")
                     return
+                target = actualname(bot, target)
                 statreset(bot, target)
                 healthcheck(bot, u)
                 targetcurse = get_database_value(bot, target, 'curse') or 0
@@ -1230,6 +1242,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
+                    target = actualname(bot, target)
                     if subcommand == 'reset':
                         newvalue = None
                     if subcommand == 'set' and newvalue == None:
@@ -1271,6 +1284,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
+                    target = actualname(bot, target)
                     bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
                     adjust_database_value(bot, target, 'coin', bugbountycoinaward)
                     
@@ -1291,6 +1305,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
+        commandortarget = actualname(bot, commandortarget)
         bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
     
     ## Duels must be in a channel
@@ -1303,6 +1318,7 @@ def execute_main(bot, trigger, triggerargsarray):
         dowedisplay = 1
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
         if executedueling:
+            target = actualname(bot, target)
             targetarray.append(target)
             getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
@@ -1319,6 +1335,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
     targetarraytotal = len(targetarray)
     for target in targetarray:
+        target = actualname(bot, target)
         targetarraytotal = targetarraytotal - 1
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
@@ -1809,6 +1826,13 @@ def whatsyourname(bot, trigger, nick, channel):
         nickname = str(nickname + " (" + pepperstart + ")")
 
     return nickname, pepperstart
+
+def actualname(bot,nick):
+    actualnick = nick
+    for u in bot.users:
+        if u.lower == nick.lower:
+            actualnick = u
+    return actualnick
 
 #############
 ## Streaks ##
