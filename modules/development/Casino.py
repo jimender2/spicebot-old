@@ -203,10 +203,10 @@ def roulette(bot,trigger,arg):
             mycolor = myitem
             mynumber=''
             inputcheck =1
-                else:
+        else:
         #no valid choices
-                    bot.notice(('Please pick either a color or number to bet on'),player)                    
-                    inputcheck = 0     
+            bot.notice(('Please pick either a color or number to bet on'),player)                    
+            inputcheck = 0     
         
     # user input now setup game will run
     if inputcheck == 1:
