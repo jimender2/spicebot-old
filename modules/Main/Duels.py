@@ -2081,14 +2081,15 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
-        retaliateodds = randint(1, 12)
+        #retaliateodds = randint(1, 12)
+        retaliateodds = 1
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
             weaponb = str(" "+ weaponb)
             damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
-            damagetext = str(damagetextb)
-            damagetextarray.append(damagetext)
+            for x in damagetextb:
+                damagetextarray.append(damagetext)
             
     ## dish it out
     if damage > 0:
