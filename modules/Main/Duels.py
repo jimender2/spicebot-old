@@ -231,7 +231,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Tier unlocks
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
-        except NameError:
+        except NameError or SyntaxError:
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
