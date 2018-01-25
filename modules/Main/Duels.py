@@ -1436,7 +1436,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 if newtiereval == currenttierend:
                     newtierlistarray.append(x)
             if newtierlistarray != []:
-                newtierlist = get_trigger_arg(newtierlist, "list")
+                newtierlist = get_trigger_arg(newtierlistarray, "list")
                 tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
                 
         
