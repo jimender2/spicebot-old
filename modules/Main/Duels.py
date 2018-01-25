@@ -221,7 +221,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This looks like an invalid command or an invalid person.")
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if commandeval > currenttier:# and not bot.nick.endswith(devbot):
+        if int(commandeval) > int(currenttier):# and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
             bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
@@ -1421,14 +1421,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         streaktext = ''
         if instigator != target:
             streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
-            if streaktext != '':
-                streaktext = str(str(streaktext) + "       ")
 
         ## Tier update Part 2
         tierchangemsg = ''
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if currenttierend > currenttierstart:
-            tierchangemsg = "New Tier Unlocked!"
+        if int(currenttierend) > int(currenttierstart):
+            tierchangemsg = str("New Tier Unlocked!")
         
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
