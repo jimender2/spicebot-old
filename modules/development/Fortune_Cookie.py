@@ -10,7 +10,6 @@ from SpicebotShared import *
 devcookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
 cookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/fortune_cookie.txt'
 devbot='dev' ## Enables the bot to distinguish if in test
-#filetocheck='devcookies'
 
 @sopel.module.commands('fortune','cookie')
 def mainfunction(bot, trigger):
