@@ -1517,34 +1517,35 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for x in combattextarrayloopa:
             checktext = eval(x)
             if checktext and checktext != '':
-                combattextarray.append(x)
-        for x in winnermsgarray:
-            combattextarray.append(x)
-        combattextarrayloopc = ['lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
-        for x in combattextarrayloopc:
-            checktext = eval(x)
-            if checktext and checktext != '':
-                combattextarray.append(x)
-        lastarray = 2
-        combattextarraya = []
-        combattextarrayb = []
-        for x in combattextarray:
-            if lastarray == 2:
-                combattextarraya.append(checktext)
-                lastarray = 1
-            else:
-                combattextarrayb.append(checktext)
-                lastarray = 2
-        if len(combattextarraya) > len(combattextarrayb):
-            combattextarrayb.append("dummytext")
-        for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
-            if arraytwo == "dummytext":
-                arraytwo = ''
-            if OSDTYPE == 'say':
-                bot.say(arrayone + "   " + arraytwo)
-            elif OSDTYPE == 'notice':
-                bot.notice(arrayone + "   " + arraytwo, winner)
-                bot.notice(arrayone + "   " + arraytwo, loser)
+                bot.say(checktext)
+        #        combattextarray.append(x)
+        #for x in winnermsgarray:
+        #    combattextarray.append(x)
+        #combattextarrayloopc = ['lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
+        #for x in combattextarrayloopc:
+        #    checktext = eval(x)
+        #    if checktext and checktext != '':
+        #        combattextarray.append(x)
+        #lastarray = 2
+        #combattextarraya = []
+        #combattextarrayb = []
+        #for x in combattextarray:
+        #    if lastarray == 2:
+        #        combattextarraya.append(checktext)
+        #        lastarray = 1
+        #    else:
+        #        combattextarrayb.append(checktext)
+        #        lastarray = 2
+        #if len(combattextarraya) > len(combattextarrayb):
+        #    combattextarrayb.append("dummytext")
+        #for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
+        #    if arraytwo == "dummytext":
+        #        arraytwo = ''
+        #    if OSDTYPE == 'say':
+        #        bot.say(arrayone + "   " + arraytwo)
+        #    elif OSDTYPE == 'notice':
+        #        bot.notice(arrayone + "   " + arraytwo, winner)
+        #        bot.notice(arrayone + "   " + arraytwo, loser)
         
         ## update assault stats
         if winner == instigator:
