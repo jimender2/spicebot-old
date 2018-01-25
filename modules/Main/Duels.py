@@ -211,7 +211,8 @@ def execute_main(bot, trigger, triggerargsarray):
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
         except NameError:
-            commandeval = 0
+            bot.say("This looks like an invalid command or an invalid person.")
+            return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if commandeval > currenttier:
             bot.say("This command will be unlocked when somebody reaches " + str(currenttier))
