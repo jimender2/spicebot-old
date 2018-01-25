@@ -1434,7 +1434,11 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             for x in tiercommandarray:
                 newtiereval = eval("tierunlock"+x)
                 if newtiereval == currenttierend:
-                    newtierlist.append(x)
+                    newtierlistarray.append(x)
+            if newtierlistarray != []:
+                newtierlist = get_trigger_arg(newtierlist, "list")
+                tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
+                
         
         ## On Screen Text
         combattextarrayloop = ['announcecombatmsg','lootwinnermsg','winnermsg','lootwinnermsgb','pepperstatuschangemsg','magicattributestext','speceventtext','tierchangemsg']
