@@ -1830,7 +1830,7 @@ def whatsyourname(bot, trigger, nick, channel):
 def actualname(bot,nick):
     actualnick = nick
     for u in bot.users:
-        if u.lower == nick.lower:
+        if u.lower() == nick.lower():
             actualnick = u
     return actualnick
 
