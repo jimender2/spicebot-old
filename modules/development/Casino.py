@@ -152,32 +152,32 @@ def roulette(bot,trigger,arg):
         maxwheel=15
     
     #set bet
-        if mybet == 'nobet':
-            bot.say('Please enter an amount to bet')
-            inputcheck = 0
+    if mybet == 'nobet':
+        bot.say('Please enter an amount to bet')
+        inputcheck = 0
     elif mybet=='payout':
-            bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+        bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='end':
-            runroulette(bot)
+        runroulette(bot)
 
     else:
-            if mybet == 'allin':
-                balance = Spicebucks.bank(bot, trigger.nick)
-                if balance > 0:
-                    mybet=balance
-                    inputcheck = 1
-                else:
-                    bot.say('You do not have any spicebucks')
-                    inputcheck = 0
+        if mybet == 'allin':
+            balance = Spicebucks.bank(bot, trigger.nick)
+            if balance > 0:
+                mybet=balance
+                inputcheck = 1
+            else:
+                bot.say('You do not have any spicebucks')
+                inputcheck = 0
         elif not mybet.isdigit():
-                    bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
-                    inputcheck = 0
+            bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
+            inputcheck = 0
         else:            
-                    inputcheck = 1
-                    mybet = int(mybet)            
-                if (mybet<minbet or mybet>maxbet):
-                    bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)), player)            
-                    inputcheck = 0
+            inputcheck = 1
+            mybet = int(mybet)            
+            if (mybet<minbet or mybet>maxbet):
+                bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)), player)            
+                inputcheck = 0
     #setup what was bet on
         if inputcheck == 1:    
             #check to see if a number was entered
