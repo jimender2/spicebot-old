@@ -14,7 +14,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 #Payout lines:
-#slots, 77 - roulette, 147 - lottery, 242 - blackjack, 351
+#slots, 75 - roulette, 151 - lottery, 287 - blackjack, 368
 
 #shared variables:
 maxbet = 100
@@ -68,8 +68,6 @@ def freebie(bot,trigger):
 			bot.say("The casino doesn't have any funds to provide")
 	else:
 		bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
-		
-
 	
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
@@ -92,7 +90,6 @@ def slots(bot,trigger,arg):
 		if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
 			#add bet to spicebank
 			mywinnings = 0
-			
 
 			wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
 			wheel1 = spin(wheel)
@@ -117,8 +114,6 @@ def slots(bot,trigger,arg):
 				else:
 					mywinnings= mywinnings + match3
 					#bot.say('You got 3 matches')
-
-
 			elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
 				mywinnings =  mywinnings + match2 
 				#bot.say(trigger.nick + ' a match')	
@@ -135,14 +130,10 @@ def slots(bot,trigger,arg):
 						bot.say(trigger.nick + ' is paid ' + str(mywinnings))
 					else:
 						bot.say('Error in banking system')
-
-
-
 		else:
 			bot.say("You don't have enough Spicebucks" )
+
 #------Start Roulette
-
-
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
 	maxwheel = 25
@@ -220,7 +211,6 @@ def roulette(bot,trigger,arg):
                     bot.notice(('Please pick either a color or number to bet on'),player)                    
                     inputcheck = 0 	
 		
-		
 	# user input now setup game will run
 	if inputcheck == 1:
 		players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
@@ -274,8 +264,7 @@ def runroulette(bot):
 						else:
 							Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
 					   	winners=winners + " " + player
-					   	totalwon = totalwon + mywinnings
-				   	
+					   	totalwon = totalwon + mywinnings			   	
 						
 		if winners =='':
 			bot.say("No one wins anything")
@@ -283,10 +272,7 @@ def runroulette(bot):
 			bot.say(winners + " are winners and " + str(totalwon) + " was won in total")
 	else:
 	   bot.say("No players found")
-
-		
 	
-			
 def roulettereset(bot,player):
 	mybet =''
 	mynumber= 0
@@ -299,7 +285,6 @@ def roulettereset(bot,player):
 def lottery(bot,trigger, arg):
 	maxnumber=50
 #___payout table___
-	
 	#match5payout = jackpot
 	if bot.nick.endswith('dev'): 
 		maxnumber=20
@@ -324,7 +309,6 @@ def lottery(bot,trigger, arg):
 			picker = get_trigger_arg(arg, i)
 			if picker.isdigit():
 				picks.append(int(picker))
-		
 		
 		if len(picks)!=5:
 			bot.say('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.')
@@ -375,10 +359,8 @@ def lottery(bot,trigger, arg):
 							Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
 						else:
 							bot.say('You are not a winner')
-						
 					else:
 						bot.say('You dont have enough Spicebucks')
-
 							
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
@@ -433,8 +415,6 @@ def blackjack(bot,trigger,arg):
 								bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 								bot.db.set_nick_value(player, 'mybet', mybet)
 								bot.say( " You can say'.gamble blackjack 2' to take a card or '.gamble blackjack 3' to finish the game")
-
-						
 						else:
 							bot.say('You do not have enough spicebucks.')
 		elif mychoice == 'hit' or mychoice == '2':
@@ -491,7 +471,6 @@ def blackjack(bot,trigger,arg):
 					bot.db.set_nick_value(player, 'myhand', myhand)
 					bot.say(player + " doubles down and gets " + str(playerhits))
 					blackjackstand(bot,player,myhand,dealerhand,mybet)					
-		
 						
 		elif mychoice == 'adminset' and trigger.admin:
 			target = get_trigger_arg(arg, 3) or 'notarget'
@@ -512,8 +491,6 @@ def blackjack(bot,trigger,arg):
 					bot.db.set_nick_value(player, 'myhand', myhand)
 					bot.db.set_nick_value(player, 'dealerhand', dealerhand)
 					bot.db.set_nick_value(player, 'mybet', mybet)				
-									
-			
 			
 		elif mychoice == 'stand' or mychoice == '3':
 			myhand =  bot.db.get_nick_value(player, 'myhand') or 0
@@ -521,14 +498,11 @@ def blackjack(bot,trigger,arg):
 			payout = bot.db.get_nick_value(player, 'mybet') or 0
 			blackjackstand(bot,player,myhand,dealerhand,payout)
 			
-			
 		elif mychoice == 'payout':
 			bot.say("Getting blackjack pays 2x, getting 21 pays 1x, beating the dealer pays 1/2 your bet.")
-				
 
 		else:
 			bot.say('Choose an option: deal, hit, or stand')
-
 			
 #__________________________Shared Functions____________________
 def spin(wheel):
@@ -610,8 +584,6 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 				bot.say('It is a draw and ' + player + ' gets ' + str(payout))
 			else:
 				bot.say('No scores found start a new game')
-
-
 		blackjackreset(bot,player)
 
 def blackjackscore(hand):
