@@ -222,7 +222,9 @@ def execute_main(bot, trigger, triggerargsarray):
             return
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if commandeval > currenttier:# and not bot.nick.endswith(devbot):
-            bot.say("This command will be unlocked when somebody reaches " + str(commandeval) + ". Current Tier is " + str(currenttier))
+            tierpepperrequired = get_tierpepper(bot, commandeval)
+            tiermath = commandeval - currenttier
+            bot.say("This command will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
             return
         
         ## usage counter
@@ -2050,6 +2052,42 @@ def get_pepper(bot, nick):
     
     return pepper
 
+def get_tierpepper(bot, tiernumber):
+    if not tiernumber:
+        pepper = ''
+    elif tiernumber == 1:
+        pepper = 'Pimiento'
+    elif tiernumber == 2:
+        pepper = 'Sonora'
+    elif tiernumber == 3:
+        pepper = 'Anaheim'
+    elif tiernumber == 4:
+        pepper = 'Poblano'
+    elif tiernumber == 5:
+        pepper = 'Jalapeno'
+    elif tiernumber == 6:
+        pepper = 'Serrano'
+    elif tiernumber == 7:
+        pepper = 'Chipotle'
+    elif tiernumber == 8:
+        pepper = 'Tabasco'
+    elif tiernumber == 9:
+        pepper = 'Cayenne'
+    elif tiernumber == 10:
+        pepper = 'Thai Pepper'
+    elif tiernumber == 11:
+        pepper = 'Datil'
+    elif tiernumber == 12:
+        tiernumber = 12
+    elif tiernumber == 13:
+        pepper = 'Ghost Chili'
+    elif tiernumber == 14:
+        pepper = 'Mace'
+    elif tiernumber == 15:
+        pepper = 'Pure Capsaicin'
+    else:
+        pepper = ''
+    return pepper
 
 
 ###################
