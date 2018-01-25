@@ -361,14 +361,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     displaymessage = get_trigger_arg(roulettewinners, "list")
                     displaymessage = str("Winners: " + displaymessage + " ")
                 if biggestpayoutwinner != '':
-                    displaymessage = str(displaymessage +"Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
+                    displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
                 set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
                 set_database_value(bot, duelrecorduser, 'roulettechamber', None)
                 set_database_value(bot, duelrecorduser, 'roulettewinners', None)
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 if roulettecount > 1:
-                    displaymessage = str(displaymessage +"The chamber spun " + str(roulettecount) + " times.")
+                    displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
                 bot.say(resultmsg + displaymessage)
             else:
                 bot.say("*click*")
@@ -1232,8 +1232,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_database_value(bot, instigator, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
-            
-                
+             
         ## If not a command above, invalid
         else:
             bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
