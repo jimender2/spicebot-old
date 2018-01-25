@@ -116,6 +116,8 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
+tierunlockdocs, tierunlockhelp = 1, 1
+#tierunlock
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -206,6 +208,13 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
         
+        
+        commandeval = eval("tierunlock"+ commandortarget) or 0
+        currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        if commandeval > currenttier:
+            bot.say("This command will be unlocked when somebody reaches " + str(currenttier))
+            return
+        
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
         
@@ -228,11 +237,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("The author of Duels is deathbybandaid.")
         
         ## On/off
-        elif commandortarget == 'on' or commandortarget == 'off' or commandortarget == 'enable' or commandortarget == 'disable':
-            if commandortarget == 'enable':
-                commandortarget = 'on'
-            if commandortarget == 'disable':
-                commandortarget = 'off'
+        elif commandortarget == 'on' or commandortarget == 'off':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetopttime = get_timesince_duels(bot, target, 'opttime')
             if target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
@@ -358,7 +363,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(targetname + " has used duels " + str(totaluses) + " times.")
             
         ## Colosseum, Assault, and Random
-        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'everyone' or commandortarget == 'random' or commandortarget == 'somebody' or commandortarget == 'anyone' or commandortarget == 'available':
+        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'random':
             if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
                 commandortarget = 'random'
             if commandortarget == 'everyone':
