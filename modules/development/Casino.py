@@ -228,7 +228,7 @@ def roulette(bot,trigger,arg):
 			if i == player:
 				bot.say("You already placed a bet")
 				inputcheck = 0
-		if inputcheck == 1
+		if inputcheck == 1:
 			if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
 				Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
 				bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
