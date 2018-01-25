@@ -736,7 +736,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
         ## Armor
-        elif commandortarget == 'loot':
+        elif commandortarget == 'armor':
             bot.say("WIP")
         
         ## Loot Items
