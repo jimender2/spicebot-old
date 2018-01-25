@@ -118,10 +118,10 @@ tierratiofourteen = 2.4
 tierratiofifteen = 2.5
 tiercommandarray = ['docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1
-tierunlockstats, tierunlockloot, tierunlockstreaks = 2,2,2
-tierunlockleaderboard, tierunlockwarroom = 3,3
-tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 4,4,4
-tierunlockrandom = 5
+tierunlockstreaks = 2
+tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
+tierunlockleaderboard, tierunlockwarroom = 4,4
+tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
 tierunlockroulette = 6
 tierunlockassault = 7
 tierunlockcolosseum = 8
@@ -238,7 +238,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':# and not bot.nick.endswith(devbot):
             tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
-            if commandortarget != 'stats':
+            if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 return
         
@@ -738,6 +738,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                elif int(commandeval) > int(currenttier) and target != instigator:
+                    bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
                     statreset(bot, target)
                     for x in backpackarray:
