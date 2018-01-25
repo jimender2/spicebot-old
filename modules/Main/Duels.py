@@ -1430,7 +1430,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
             tierchangemsg = str("New Tier Unlocked!")
-            newtierlist = []
+            newtierlistarray = []
             for x in tiercommandarray:
                 newtiereval = eval("tierunlock"+x)
                 if newtiereval == currenttierend:
