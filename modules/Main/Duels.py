@@ -1528,7 +1528,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         #lastarray = 2
         #combattextarraya = []
         #combattextarrayb = []
-        for x in combattextarray:
+        for x in combattextarraycomplete:
             bot.say(x)
         #    if lastarray == 2:
         #        combattextarraya.append(checktext)
