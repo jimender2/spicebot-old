@@ -790,7 +790,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.say("Invalid command.")
                             return
                     elif targnum == 'all':
-                        target == instigator
+                        target = instigator
                         quantity = int(gethowmanylootitem)
                     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
