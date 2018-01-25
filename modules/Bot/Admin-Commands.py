@@ -138,11 +138,11 @@ def main_command(bot, trigger):
         else:
             if adddel == 'add':
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
-                adddelword = "added"
+                adddelword = "added to"
             else:
                 adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
-                adddelword = "deleted"
-            bot.say(target + " has been " + adddelword + " from the " + botchannel + " block list.")
+                adddelword = "removed from"
+            bot.say(target + " has been " + adddelword + " the " + botchannel + " block list.")
     
     ## Block users from using the github module
     #elif subcommand == 'githubblock' and not botchannel.startswith("#"):
@@ -162,11 +162,11 @@ def main_command(bot, trigger):
         else:
             if adddel == 'add':
                 adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'add')
-                adddelword = "added"
+                adddelword = "added to"
             else:
                 adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'del')
-                adddelword = "deleted"
-            bot.say(target + " has been " + adddelword + " from the " + botchannel + " github block list.")
+                adddelword = "removed from"
+            bot.say(target + " has been " + adddelword + " the " + botchannel + " github block list.")
     
     ## On/off
     elif subcommand == 'on' or subcommand == 'off':
