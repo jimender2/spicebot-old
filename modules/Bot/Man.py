@@ -27,8 +27,6 @@ def mainfunction(bot, trigger):
     triggerargsarray = create_args_array(trigger.group(2))
     subcommand = get_trigger_arg(triggerargsarray, 1)
     customdisplay =  get_trigger_arg(custompages, "list")
-    if subcommand == 'options' or subcommand == 'help':
-        bot.say("Modules with custom pages include: " + customdisplay)
     if subcommand in custompagearray:
         if 'bot' in subcommand or 'usage' in subcommand or 'spicebot' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
@@ -49,5 +47,7 @@ def mainfunction(bot, trigger):
         elif 'weather' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Weather"
         bot.say("There is a custom page for that. Find it here: " + str(CUSTOMPAGEURL))
+    elif subcommand == 'options' or subcommand == 'help':
+        bot.say("Modules with custom pages include: " + customdisplay)
     else:
         bot.say("The guide for the bot can be found here: " + GITWIKIURL)
