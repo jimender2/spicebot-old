@@ -1416,7 +1416,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             targetpepperstart = ''
         else:
             for q in getreadytorumblenamearray:
-                targetscriptdef = str(q + "(bot, target)")
+                targetscriptdef = str(q + "(bot, target, channel)")
                 targetnameadd = eval(targetscriptdef)
                 if targetname != '':
                     targetname = str(targetname + " " + targetnameadd)
