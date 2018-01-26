@@ -1371,7 +1371,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     
     healthcheck(bot, instigator)
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
-    getreadytorumblenamearray = ['nicktitles']
+    getreadytorumblenamearray = ['nicktitles','nickpepper']
     ## clean empty stats
     assaultdisplay = ''
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -1768,6 +1768,183 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
         bot.notice(displaymsg, instigator)
     return executedueling
 
+###########
+## Names ##
+###########
+
+def nicktitles(bot, nick, channel):
+    nickname = actualname(bot,nick)
+    ## custom title
+    nicktitle = get_database_value(bot, nick, 'title')
+    ## bot.owner
+    try:
+        if nicktitle:
+            nickname = str(nicktitle+" " + nickname)
+        elif nick.lower() in bot.config.core.owner.lower():
+            nickname = str("The Legendary " + nickname)
+    ## botdevteam
+        elif nick in botdevteam:
+            nickname = str("The Extraordinary " + nickname)
+    ## OP
+        elif bot.privileges[channel.lower()][nick.lower()] == OP:
+            nickname = str("The Magnificent " + nickname)
+    ## VOICE
+        elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
+            nickname = str("The Incredible " + nickname)
+    ## bot.admin
+        elif nick in bot.config.core.admins:
+            nickname = str("The Spectacular " + nickname)
+    ## else
+        else:
+            nickname = str(nickname)
+    except KeyError:
+        nickname = str(nickname)
+    return nickname
+
+def nickpepper(bot, nick, channel):
+    pepperstart = get_pepper(bot, nick)
+    if not pepperstart or pepperstart == '':
+        nickname = "(n00b)"
+    else:
+        nickname = str("(" + pepperstart + ")")
+
+def whatsyourname(bot, trigger, nick, channel):
+    nickname = str(nick)
+    
+    ## Pepper Level
+    
+
+    ##  attributes
+    nickcurse = get_database_value(bot, nick, 'curse')
+    nickshield = get_database_value(bot, nick, 'shield')
+    nickcursed = ''
+    nickshielded = ''
+    if nickcurse or nickshield:
+        if nickcurse:
+            nickcursed = "(Cursed)"
+        if nickshield:
+            nickshielded = "(Shielded)"
+        nickname = str(nickname + " " + nickcursed + nickshielded)
+
+    ## Pepper Names
+    if not pepperstart or pepperstart == '':
+        nickname = str(nickname + " (n00b)")
+    else:
+        nickname = str(nickname + " (" + pepperstart + ")")
+
+    return nickname, pepperstart
+
+def actualname(bot,nick):
+    actualnick = nick
+    for u in bot.users:
+        if u.lower() == nick.lower():
+            actualnick = u
+    return actualnick
+
+##################
+## Pepper level ##
+##################
+
+def get_pepper(bot, nick):
+    tiernumber = 0
+    nicktier = get_database_value(bot, nick, 'levelingtier')
+    nickpepper = get_database_value(bot, nick, 'levelingpepper')
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    xp = get_database_value(bot, nick, 'xp')
+    if nick == bot.nick:
+        pepper = 'Dragon Breath Chilli'
+    elif not xp:
+        pepper = ''
+    elif xp > 0 and xp < 100:
+        pepper = 'Pimiento'
+        tiernumber = 1
+    elif xp >= 100 and xp < 250:
+        pepper = 'Sonora'
+        tiernumber = 2
+    elif xp >= 250 and xp < 500:
+        pepper = 'Anaheim'
+        tiernumber = 3
+    elif xp >= 500 and xp < 1000:
+        pepper = 'Poblano'
+        tiernumber = 4
+    elif xp >= 1000 and xp < 2500:
+        pepper = 'Jalapeno'
+        tiernumber = 5
+    elif xp >= 2500 and xp < 5000:
+        pepper = 'Serrano'
+        tiernumber = 6
+    elif xp >= 5000 and xp < 7500:
+        pepper = 'Chipotle'
+        tiernumber = 7
+    elif xp >= 7500 and xp < 10000:
+        pepper = 'Tabasco'
+        tiernumber = 8
+    elif xp >= 10000 and xp < 15000:
+        pepper = 'Cayenne'
+        tiernumber = 9
+    elif xp >= 15000 and xp < 25000:
+        pepper = 'Thai Pepper'
+        tiernumber = 10
+    elif xp >= 25000 and xp < 45000:
+        pepper = 'Datil'
+        tiernumber = 11
+    elif xp >= 45000 and xp < 70000:
+        pepper = 'Habanero'
+        tiernumber = 12
+    elif xp >= 70000 and xp < 100000:
+        pepper = 'Ghost Chili'
+        tiernumber = 13
+    elif xp >= 100000 and xp < 250000:
+        pepper = 'Mace'
+        tiernumber = 14
+    elif xp >= 250000:
+        pepper = 'Pure Capsaicin'
+        tiernumber = 15
+    ## advance respawn tier
+    if tiernumber > currenttier:
+        set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    if tiernumber != nicktier:
+        set_database_value(bot, nick, 'levelingtier', tiernumber)
+    return pepper
+
+def get_tierpepper(bot, tiernumber):
+    if not tiernumber:
+        pepper = ''
+    elif tiernumber == 1:
+        pepper = 'Pimiento'
+    elif tiernumber == 2:
+        pepper = 'Sonora'
+    elif tiernumber == 3:
+        pepper = 'Anaheim'
+    elif tiernumber == 4:
+        pepper = 'Poblano'
+    elif tiernumber == 5:
+        pepper = 'Jalapeno'
+    elif tiernumber == 6:
+        pepper = 'Serrano'
+    elif tiernumber == 7:
+        pepper = 'Chipotle'
+    elif tiernumber == 8:
+        pepper = 'Tabasco'
+    elif tiernumber == 9:
+        pepper = 'Cayenne'
+    elif tiernumber == 10:
+        pepper = 'Thai Pepper'
+    elif tiernumber == 11:
+        pepper = 'Datil'
+    elif tiernumber == 12:
+        tiernumber = 12
+    elif tiernumber == 13:
+        pepper = 'Ghost Chili'
+    elif tiernumber == 14:
+        pepper = 'Mace'
+    elif tiernumber == 15:
+        pepper = 'Pure Capsaicin'
+    else:
+        pepper = ''
+    return pepper
+
+
 ######################
 ## On Screen Text ##
 ######################
@@ -1875,78 +2052,13 @@ def hours_minutes_seconds(countdownseconds):
             displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
     return displaymsg
 
-###########
-## Names ##
-###########
 
-def nicktitles(bot, nick, channel):
-    nickname = actualname(bot,nick)
-    ## custom title
-    nicktitle = get_database_value(bot, nick, 'title')
-    ## bot.owner
-    try:
-        if nicktitle:
-            nickname = str(nicktitle+" " + nickname)
-        elif nick.lower() in bot.config.core.owner.lower():
-            nickname = str("The Legendary " + nickname)
-    ## botdevteam
-        elif nick in botdevteam:
-            nickname = str("The Extraordinary " + nickname)
-    ## OP
-        elif bot.privileges[channel.lower()][nick.lower()] == OP:
-            nickname = str("The Magnificent " + nickname)
-    ## VOICE
-        elif bot.privileges[channel.lower()][nick.lower()] == VOICE:
-            nickname = str("The Incredible " + nickname)
-    ## bot.admin
-        elif nick in bot.config.core.admins:
-            nickname = str("The Spectacular " + nickname)
-    ## else
-        else:
-            nickname = str(nickname)
-    except KeyError:
-        nickname = str(nickname)
-    return nickname
     
 
 
     
     
-def whatsyourname(bot, trigger, nick, channel):
-    nickname = str(nick)
-    
-    ## Pepper Level
-    pepperstart = get_pepper(bot, nick)
-    
-    ## custom title
-    nicktitle = get_database_value(bot, nick, 'title')
 
-    ##  attributes
-    nickcurse = get_database_value(bot, nick, 'curse')
-    nickshield = get_database_value(bot, nick, 'shield')
-    nickcursed = ''
-    nickshielded = ''
-    if nickcurse or nickshield:
-        if nickcurse:
-            nickcursed = "(Cursed)"
-        if nickshield:
-            nickshielded = "(Shielded)"
-        nickname = str(nickname + " " + nickcursed + nickshielded)
-
-    ## Pepper Names
-    if not pepperstart or pepperstart == '':
-        nickname = str(nickname + " (n00b)")
-    else:
-        nickname = str(nickname + " (" + pepperstart + ")")
-
-    return nickname, pepperstart
-
-def actualname(bot,nick):
-    actualnick = nick
-    for u in bot.users:
-        if u.lower() == nick.lower():
-            actualnick = u
-    return actualnick
 
 #############
 ## Streaks ##
@@ -2234,112 +2346,6 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     
     return damage, damagetextarray
 
-##################
-## Pepper level ##
-##################
-
-def get_pepper(bot, nick):
-    tiernumber = 0
-    nicktier = get_database_value(bot, nick, 'levelingtier')
-    nickpepper = get_database_value(bot, nick, 'levelingpepper')
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
-    xp = get_database_value(bot, nick, 'xp')
-    if nick == bot.nick:
-        pepper = 'Dragon Breath Chilli'
-    elif not xp:
-        pepper = ''
-    elif xp > 0 and xp < 100:
-        pepper = 'Pimiento'
-        tiernumber = 1
-    elif xp >= 100 and xp < 250:
-        pepper = 'Sonora'
-        tiernumber = 2
-    elif xp >= 250 and xp < 500:
-        pepper = 'Anaheim'
-        tiernumber = 3
-    elif xp >= 500 and xp < 1000:
-        pepper = 'Poblano'
-        tiernumber = 4
-    elif xp >= 1000 and xp < 2500:
-        pepper = 'Jalapeno'
-        tiernumber = 5
-    elif xp >= 2500 and xp < 5000:
-        pepper = 'Serrano'
-        tiernumber = 6
-    elif xp >= 5000 and xp < 7500:
-        pepper = 'Chipotle'
-        tiernumber = 7
-    elif xp >= 7500 and xp < 10000:
-        pepper = 'Tabasco'
-        tiernumber = 8
-    elif xp >= 10000 and xp < 15000:
-        pepper = 'Cayenne'
-        tiernumber = 9
-    elif xp >= 15000 and xp < 25000:
-        pepper = 'Thai Pepper'
-        tiernumber = 10
-    elif xp >= 25000 and xp < 45000:
-        pepper = 'Datil'
-        tiernumber = 11
-    elif xp >= 45000 and xp < 70000:
-        pepper = 'Habanero'
-        tiernumber = 12
-    elif xp >= 70000 and xp < 100000:
-        pepper = 'Ghost Chili'
-        tiernumber = 13
-    elif xp >= 100000 and xp < 250000:
-        pepper = 'Mace'
-        tiernumber = 14
-    elif xp >= 250000:
-        pepper = 'Pure Capsaicin'
-        tiernumber = 15
-    
-    ## advance respawn tier
-    if tiernumber > currenttier:
-        set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
-    if tiernumber != nicktier:
-        set_database_value(bot, nick, 'levelingtier', tiernumber)
-    #if pepper != nickpepper:
-    #    set_database_value(bot, nick, 'levelingpepper', pepper)
-    
-    return pepper
-
-def get_tierpepper(bot, tiernumber):
-    if not tiernumber:
-        pepper = ''
-    elif tiernumber == 1:
-        pepper = 'Pimiento'
-    elif tiernumber == 2:
-        pepper = 'Sonora'
-    elif tiernumber == 3:
-        pepper = 'Anaheim'
-    elif tiernumber == 4:
-        pepper = 'Poblano'
-    elif tiernumber == 5:
-        pepper = 'Jalapeno'
-    elif tiernumber == 6:
-        pepper = 'Serrano'
-    elif tiernumber == 7:
-        pepper = 'Chipotle'
-    elif tiernumber == 8:
-        pepper = 'Tabasco'
-    elif tiernumber == 9:
-        pepper = 'Cayenne'
-    elif tiernumber == 10:
-        pepper = 'Thai Pepper'
-    elif tiernumber == 11:
-        pepper = 'Datil'
-    elif tiernumber == 12:
-        tiernumber = 12
-    elif tiernumber == 13:
-        pepper = 'Ghost Chili'
-    elif tiernumber == 14:
-        pepper = 'Mace'
-    elif tiernumber == 15:
-        pepper = 'Pure Capsaicin'
-    else:
-        pepper = ''
-    return pepper
 
 
 ###################
