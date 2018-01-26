@@ -1371,7 +1371,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     
     healthcheck(bot, instigator)
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
-    getreadytorumblenamearray = ['nicktitles','nickpepper']
+    getreadytorumblenamearray = ['nicktitles','nickpepper','nickmagicattributes']
     ## clean empty stats
     assaultdisplay = ''
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -1808,6 +1808,24 @@ def nickpepper(bot, nick, channel):
     else:
         nickname = str("(" + pepperstart + ")")
     return nickname
+
+def nickmagicattributes(bot, nick, channel):
+    nickname = ''
+    nickcurse = get_database_value(bot, nick, 'curse')
+    nickshield = get_database_value(bot, nick, 'shield')
+    magicattrarray = []
+    if nickcurse:
+        magicattrarray.append("[Cursed]")
+    if nickshield:
+        magicattrarray.append("[Shielded]")
+    if nickname != []:
+        for x in magicattrarray:
+            if nickname != '':
+                nickname = str(nickname + x)
+            else:
+                nickname = x
+    return nickname
+    
 
 def whatsyourname(bot, trigger, nick, channel):
     nickname = str(nick)
