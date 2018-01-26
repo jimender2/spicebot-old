@@ -23,7 +23,7 @@ from SpicebotShared import *
 @sopel.module.commands('channel')
 def main_command(bot, trigger):
     instigator = trigger.nick
-    triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
     subcommand = get_trigger_arg(triggerargsarray, 1)
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     
