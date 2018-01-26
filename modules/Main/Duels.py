@@ -777,6 +777,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     placement = " adds to "
                 adjust_database_value(bot, instigator, 'bounty', amount)
                 bot.say(instigator + placement + " the bounty on " + target)
+                bountyontarget = get_database_value(bot, target, 'bounty')
+                bot.say(str(bountyontarget))
 
         ## Loot Items
         elif commandortarget == 'loot':
@@ -1477,14 +1479,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             loser = targetname
         if currenthealth <= 0:
             deathmsgb = whokilledwhom(bot, winner, loser) or ''
-            bot.say(deathmsgb)
             winnermsg = str(loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
                 assault_deaths = assault_deaths + 1
             winnermsgarray.append(winnermsg)
-            winnermsgarray.append(deathmsgb)
+            if deathmsgb != '':
+                winnermsgarray.append(deathmsgb)
 
         ## new pepper level?
         pepperstatuschangemsg = ''
@@ -1593,11 +1595,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
             if arraytwo == "dummytext":
                 arraytwo = ''
+            combinedline = str(arrayone + "   " + arraytwo)
             if OSDTYPE == 'say':
-                bot.say(arrayone + "   " + arraytwo)
+                bot.say(combinedline)
             elif OSDTYPE == 'notice':
-                bot.notice(arrayone + "   " + arraytwo, winner)
-                bot.notice(arrayone + "   " + arraytwo, loser)
+                bot.notice(combinedline, winner)
+                bot.notice(combinedline, loser)
         
         ## update assault stats
         if winner == instigator:
