@@ -337,9 +337,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
                 else:
                     currentspin = roulettechamber
-                    set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
+                    reset_database_value(bot, duelrecorduser, 'roulettespinarray')
             else:
-                set_database_value(bot, duelrecorduser, 'roulettespinarray', None)
+                reset_database_value(bot, duelrecorduser, 'roulettespinarray')
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
                 biggestpayout = 0
@@ -383,7 +383,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             biggestpayout = roulettepayoutx
                         adjust_database_value(bot, x, 'coin', roulettepayoutx)
                         bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
-                    set_database_value(bot, x, 'roulettepayout', None)
+                    reset_database_value(bot, x, 'roulettepayout')
                 if instigator in roulettewinners:
                     roulettewinners.remove(instigator)
                 if roulettewinners != []:
@@ -391,11 +391,11 @@ def execute_main(bot, trigger, triggerargsarray):
                     displaymessage = str("Winners: " + displaymessage + " ")
                 if biggestpayoutwinner != '':
                     displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
-                set_database_value(bot, duelrecorduser, 'roulettelastplayer', None)
-                set_database_value(bot, duelrecorduser, 'roulettechamber', None)
-                set_database_value(bot, duelrecorduser, 'roulettewinners', None)
+                reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
+                reset_database_value(bot, duelrecorduser, 'roulettechamber')
+                reset_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-                set_database_value(bot, duelrecorduser, 'roulettecount', None)
+                reset_database_value(bot, duelrecorduser, 'roulettecount')
                 if roulettecount > 1:
                     roulettecount = roulettecount + 1
                     displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
@@ -486,7 +486,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 damage = 0
                             else:
                                 damage = abs(damagemath)
-                                set_database_value(bot, x, 'shield', None)
+                                reset_database_value(bot, x, 'shield')
                         if damage > 0:
                             adjust_database_value(bot, x, 'health', -abs(damage))
                             currenthealth = get_database_value(bot, x, 'health')
@@ -548,7 +548,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     unsetmsg = "You don't have a title! "
                 bot.say(unsetmsg + "What do you want your title to be?")
             elif titletoset == 'remove':
-                set_database_value(bot, instigator, 'title', None)
+                reset_database_value(bot, instigator, 'title')
                 bot.say("Your title has been removed")
             else:
                 titletoset = str(titletoset)
@@ -886,7 +886,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     damage = 0
                                 else:
                                     damage = abs(damagemath)
-                                    set_database_value(bot, x, 'shield', None)
+                                    reset_database_value(bot, x, 'shield')
                             if damage > 0:
                                 adjust_database_value(bot, x, 'health', -abs(damage))
                             xhealth = get_database_value(bot, x, 'health') or 0
@@ -978,14 +978,14 @@ def execute_main(bot, trigger, triggerargsarray):
                                 else:
                                     adjust_database_value(bot, target, 'mana', manapotionworth)
                             elif x == 'timepotion':
-                                set_database_value(bot, target, 'lastfought', None)
+                                reset_database_value(bot, target, 'lastfought')
                                 for k in timepotiontargetarray:
                                     targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
                                     if targetequalcheck == target:
-                                        set_database_value(bot, duelrecorduser, k, None)
+                                        reset_database_value(bot, duelrecorduser, k)
                                 for j in timepotiontimeoutarray:
-                                    set_database_value(bot, target, j, None)
-                                set_database_value(bot, duelrecorduser, 'timeout', None)
+                                    reset_database_value(bot, target, j)
+                                reset_database_value(bot, duelrecorduser, 'timeout')
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 lootusedeaths = lootusedeaths + 1
@@ -1123,7 +1123,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif target != instigator and not trigger.admin:
                 bot.notice(instigator + ", You may not adjust somebody elses locker.", instigator)
             elif adjustmentdirection == 'reset':
-                set_database_value(bot, target, 'weaponslocker', None)
+                reset_database_value(bot, target, 'weaponslocker')
                 bot.notice(instigator + ", Locker Reset.", instigator)
             else:
                 if not weaponchange:
@@ -1234,7 +1234,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(str(displaymsg), target)
                     instigatormana = get_database_value(bot, instigator, 'mana')
                     if instigatormana <= 0:
-                        set_database_value(bot, instigator, 'mana', None)
+                        reset_database_value(bot, instigator, 'mana')
 
         ## Admin Commands
         elif commandortarget == 'admin' and not trigger.admin:
@@ -1248,15 +1248,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 if not settingchange:
                     bot.notice(instigator + ", What channel setting do you want to change?", instigator)
                 elif settingchange == 'lastassault':
-                    set_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator', None)
+                    reset_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator')
                     bot.notice("Last Assault Instigator removed.", instigator)
-                    set_database_value(bot, duelrecorduser, 'lastfullroomassult', None)
+                    reset_database_value(bot, duelrecorduser, 'lastfullroomassult')
                 elif settingchange == 'lastroman':
-                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator', None)
+                    reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator')
                     bot.notice("Last Colosseum Instigator removed.", instigator)
-                    set_database_value(bot, duelrecorduser, 'lastfullroomcolosseum', None)
+                    reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseum')
                 elif settingchange == 'lastinstigator':
-                    set_database_value(bot, duelrecorduser, 'lastinstigator', None)
+                    reset_database_value(bot, duelrecorduser, 'lastinstigator')
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif settingchange == 'halfhoursim':
                     bot.notice("Simulating the half hour automated events.", instigator)
@@ -1268,7 +1268,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 3)
                 subcommand = get_trigger_arg(triggerargsarray, 4)
                 statset = get_trigger_arg(triggerargsarray, 5)
-                newvalue = get_trigger_arg(triggerargsarray, 6) or None
+                newvalue = get_trigger_arg(triggerargsarray, 6)
                 if not target:
                     bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
                 elif target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
@@ -1291,8 +1291,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                     elif target == 'everyone':
                         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-                        set_database_value(bot, duelrecorduser, 'levelingtier', None)
-                        set_database_value(bot, duelrecorduser, 'specevent', None)
+                        reset_database_value(bot, nick, 'levelingtier')
+                        reset_database_value(bot, nick, 'specevent')
                         for u in bot.users:
                             statreset(bot, target)
                             if statset == 'all':
@@ -1315,7 +1315,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             elif subcommand == 'resettier':
-                set_database_value(bot, duelrecorduser, 'levelingtier', None)
+                reset_database_value(bot, duelrecorduser, 'levelingtier')
             elif subcommand == 'bugbounty':
                 target = get_trigger_arg(triggerargsarray, 3)
                 statreset(bot, target)
@@ -1749,7 +1749,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
 def whokilledwhom(bot, winner, loser):
     returntext = ''
     ## Reset mana and health
-    set_database_value(bot, loser, 'mana', None)
+    reset_database_value(bot, loser, 'mana')
     healthcheck(bot, loser)
     ## update kills/deaths
     adjust_database_value(bot, winner, 'kills', defaultadjust)
@@ -1759,14 +1759,14 @@ def whokilledwhom(bot, winner, loser):
     bountyonloser = get_database_value(bot, loser, 'bounty')
     if bountyonloser:
         adjust_database_value(bot, winner, 'coin', bountyonloser)
-        set_database_value(bot, loser, 'bounty', None)
+        reset_database_value(bot, loser, 'bounty')
         returntext = str(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
         for x in lootitemsarray:
             gethowmany = get_database_value(bot, loser, x)
             adjust_database_value(bot, winner, x, gethowmany)
-            set_database_value(bot, loser, x, None)
+            reset_database_value(bot, loser, x)
     return returntext
 
 def healthcheck(bot, nick):
@@ -1779,12 +1779,12 @@ def healthcheck(bot, nick):
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
-        set_database_value(bot, nick, 'mana', None)
+        reset_database_value(bot, nick, 'mana')
 
 def refreshbot(bot):
     for x in duelstatsadminarray:
         statset = x
-        set_database_value(bot, bot.nick, x, None)
+        reset_database_value(bot, bot.nick, x)
  
 ##########
 ## Time ##
@@ -1911,7 +1911,7 @@ def set_current_streaks(bot, nick, winlose):
         set_database_value(bot, nick, beststreaktype, int(currentstreak))
 
     ## Clear current opposite streak
-    set_database_value(bot, nick, oppositestreaktype, None)
+    reset_database_value(bot, nick, oppositestreaktype)
 
 def get_current_streaks(bot, winner, loser):
     winner_loss_streak = get_database_value(bot, winner, 'currentlosestreak') or 0
@@ -1950,12 +1950,12 @@ def halfhourpotionwinner(bot, randomuarray):
     lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
     howmanyusers = len(randomuarray)
     if not howmanyusers > 1:
-        set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', None)
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinner')
     for x in randomuarray:
         if x not in recentwinnersarray and x != lasttimedlootwinner:
             winnerselectarray.append(x)
     if winnerselectarray == [] and randomuarray != []:
-        set_database_value(bot, duelrecorduser, 'lasttimedlootwinners', None)
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinners')
         return halfhourpotionwinner(bot, randomuarray)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
     adjust_database_array(bot, duelrecorduser, lootwinner, 'lasttimedlootwinners', 'add')
@@ -1983,14 +1983,14 @@ def weaponofchoice(bot, nick):
     lastusedweapon = get_database_value(bot, nick, 'lastweaponused') or 'fist'
     howmanyweapons = get_database_array_total(bot, nick, 'weaponslocker') or 0
     if not howmanyweapons > 1:
-        set_database_value(bot, nick, 'lastweaponused', None)
+        reset_database_value(bot, nick, 'lastweaponused')
     for x in weaponslist:
         if len(x) > weaponmaxlength:
             adjust_database_array(bot, nick, x, 'weaponslocker', 'del')
         if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
-        set_database_value(bot, nick, 'lastweaponusedarray', None)
+        reset_database_value(bot, nick, 'lastweaponusedarray')
         return weaponofchoice(bot, nick)
     weapon = get_trigger_arg(weaponslistselect, 'random') or 'fist'
     adjust_database_array(bot, nick, weapon, 'lastweaponusedarray', 'add')
@@ -2029,7 +2029,7 @@ def statreset(bot, nick):
     getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
     if getnicklastreset < getlastchanstatreset:
         for x in duelstatsadminarray:
-            set_database_value(bot, nick, x, None)
+            reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
 
 ################
@@ -2137,7 +2137,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             else:
                 absorbedb = damagemathb + damageb
                 damage = abs(damagemathb)
-                set_database_value(bot, loser, 'shield', None)
+                reset_database_value(bot, loser, 'shield')
             damagetext = str(winnername + " absorbs " + str(absorbedb) + " of the damage. ")
             damagetextarray.append(damagetext)
     
@@ -2151,7 +2151,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         else:
             absorbed = damagemath + damage
             damage = abs(damagemath)
-            set_database_value(bot, loser, 'shield', None)
+            reset_database_value(bot, loser, 'shield')
         damagetext = str(losername + " absorbs " + str(absorbed) + " of the damage. ")
         damagetextarray.append(damagetext)
 
@@ -2289,7 +2289,7 @@ def selectwinner(bot, nickarray):
 
     ## empty var to start
     for user in nickarray:
-        set_database_value(bot, user, 'winnerselection', None)
+        reset_database_value(bot, user, 'winnerselection')
 
     ## everyone gets a roll
     for user in nickarray:
@@ -2339,7 +2339,7 @@ def selectwinner(bot, nickarray):
     for user in nickarray:
         cursed = get_database_value(bot, user, 'curse') or 0
         if cursed:
-            set_database_value(bot, user, 'winnerselection', None)
+            reset_database_value(bot, user, 'winnerselection')
             adjust_database_value(bot, user, 'curse', -1)
 
     ## who wins
@@ -2353,7 +2353,7 @@ def selectwinner(bot, nickarray):
 
     ## Clear value
     for user in nickarray:
-        set_database_value(bot, user, 'winnerselection', None)
+        reset_database_value(bot, user, 'winnerselection')
 
     return winner
 
@@ -2453,7 +2453,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     adjustarraynew = []
     for x in adjustarray:
         adjustarraynew.append(x)
-    set_database_value(bot, nick, databasekey, None)
+    reset_database_value(bot, nick, databasekey)
     adjustarray = []
     if adjustmentdirection == 'add':
         if entry not in adjustarraynew:
@@ -2465,7 +2465,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
-        set_database_value(bot, nick, databasekey, None)
+        reset_database_value(bot, nick, databasekey)
     else:
         set_database_value(bot, nick, databasekey, adjustarray)
 
