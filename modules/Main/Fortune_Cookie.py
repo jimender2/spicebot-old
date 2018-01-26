@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     if not bot.nick.endswith(devbot):
-        filetocheck='cookies'
+        filetocheck=cookies
     else:
         filetocheck=devcookies
     myline = randomcookie(filetocheck)
