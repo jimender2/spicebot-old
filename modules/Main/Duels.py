@@ -1587,27 +1587,13 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             checktext = eval(x)
             if checktext and checktext != '':
                 combattextarraycomplete.append(checktext)
-        lastarray = 2
-        combattextarraya = []
-        combattextarrayb = []
-        for x in combattextarraycomplete:
-            if lastarray == 2:
-                combattextarraya.append(x)
-                lastarray = 1
-            else:
-                combattextarrayb.append(x)
-                lastarray = 2
-        if len(combattextarraya) > len(combattextarrayb):
-            combattextarrayb.append("dummytext")
-        for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
-            if arraytwo == "dummytext":
-                arraytwo = ''
-            combinedline = str(arrayone + "   " + arraytwo)
-            if OSDTYPE == 'say':
-                bot.say(combinedline)
-            elif OSDTYPE == 'notice':
-                bot.notice(combinedline, winner)
-                bot.notice(combinedline, loser)
+        texttargetarray = []
+        if OSDTYPE == 'say':
+            texttargetarray.append(channel)
+        elif OSDTYPE == 'notice':
+            texttargetarray.append(winner)
+            texttargetarray.append(loser)
+        onscreentext(bot, texttargetarray, textarraycomplete)
         
         ## update assault stats
         if winner == instigator:
@@ -1741,6 +1727,30 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
     if dowedisplay:
         bot.notice(displaymsg, instigator)
     return executedueling
+
+######################
+## On Screen Text ##
+######################
+
+def onscreentext(bot, texttargetarray, textarraycomplete):
+    lastarray = 2
+    textarraya = []
+    textarrayb = []
+    for x in textarraycomplete:
+        if lastarray == 2:
+            textarraya.append(x)
+            lastarray = 1
+        else:
+            textarrayb.append(x)
+            lastarray = 2
+    if len(textarraya) > len(textarrayb):
+        textarrayb.append("dummytext")
+    for j, k in zip(textarraya, textarrayb):
+        if k == "dummytext":
+            k = ''
+        combinedline = str(j + "   " + k)
+        for user in targetarray:
+            bot.notice(combinedline, user)
 
 ###################
 ## Living Status ##
