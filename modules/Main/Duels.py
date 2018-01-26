@@ -769,6 +769,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if int(instigatorcoin) < int(amount):
                 bot.say("Insufficient Funds.")
             else:
+                amount = int(amount)
                 placement = " places a "
                 adjust_database_value(bot, instigator, 'coin', -abs(amount))
                 bountyontarget = get_database_value(bot, target, 'bounty')
