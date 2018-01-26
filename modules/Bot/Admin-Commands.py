@@ -17,7 +17,7 @@ log_file_path = os.path.join(moduledir, log_path)
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
-    triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
     service = bot.nick.lower()
     subcommand = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
