@@ -766,7 +766,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("How much of a bounty do you wish to place on "+target+".")
             elif not amount.isdigit():
                 bot.say("Invalid Amount.")
-            elif amount > instigatorcoin:
+            if int(instigatorcoin) < int(amount):
                 bot.say("Insufficient Funds.")
             else:
                 placement = " places a "
