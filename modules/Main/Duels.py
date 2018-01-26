@@ -634,7 +634,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            elif int(commandeval) > int(currenttier) and target != instigator:
+            elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
             else:
                 target = actualname(bot, target)
@@ -787,7 +787,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif int(commandeval) > int(currenttier) and target != instigator:
+                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
                     target = actualname(bot, target)
