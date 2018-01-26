@@ -1407,6 +1407,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for q in getreadytorumblenamearray:
             instigatorscriptdef = str(q + "(bot, instigator, channel)")
             instigatornameadd = eval(instigatorscriptdef)
+            instigatornameadd = str(instigatornameadd)
             if instigatorname != '':
                 instigatorname = str(instigatorname + " " + instigatornameadd)
             else:
@@ -1418,6 +1419,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             for q in getreadytorumblenamearray:
                 targetscriptdef = str(q + "(bot, target, channel)")
                 targetnameadd = eval(targetscriptdef)
+                targetnameadd = str(targetnameadd)
                 if targetname != '':
                     targetname = str(targetname + " " + targetnameadd)
                 else:
