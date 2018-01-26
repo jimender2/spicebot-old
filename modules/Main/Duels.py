@@ -1408,17 +1408,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Starting Tier
         currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-        
-        ## classes
-        yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
-        yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
-        
+
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
-        
-        ## Current Streaks
-        winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
-        
+
         ## Display Naming
         instigatorname = ''
         targetname = ''
@@ -1467,6 +1460,13 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 loser = target
             else:
                 loser = instigator
+        
+        ## classes
+        yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
+        yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
+        
+        ## Current Streaks
+        winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
         
         ## Update XP points
         if yourclasswinner == 'ranger':
