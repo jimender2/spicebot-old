@@ -1405,7 +1405,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         instigatorname = ''
         targetname = ''
         for q in getreadytorumblenamearray:
-            instigatorscriptdef = str(q + "(bot, instigator)")
+            instigatorscriptdef = str(q + "(bot, instigator, channel)")
             instigatornameadd = eval(instigatorscriptdef)
             if instigatorname != '':
                 instigatorname = str(instigatorname + " " + instigatornameadd)
@@ -1879,7 +1879,7 @@ def hours_minutes_seconds(countdownseconds):
 ## Names ##
 ###########
 
-def nicktitles(bot, nick):
+def nicktitles(bot, nick, channel):
     nickname = actualname(bot,nick)
     ## custom title
     nicktitle = get_database_value(bot, nick, 'title')
