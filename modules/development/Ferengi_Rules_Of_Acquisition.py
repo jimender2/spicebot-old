@@ -29,7 +29,8 @@ def execute_main(bot, trigger, triggerargsarray):
             myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
-            lines=htmlfile.readlines()            
+            lines=htmlfile.readlines() 
+            bot.say("Lines: " + str(lines))
             if requested.isdigit():
                 rulenumber = int(requested)
                 myline = get_trigger_arg(lines, rulenumber)
