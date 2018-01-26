@@ -312,7 +312,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
                     currenttierlistarray.append(x)
             if currenttierlistarray != []:
-                currenttierlist = get_trigger_arg(newtierlistarray, "list")
+                currenttierlist = get_trigger_arg(currenttierlistarray, "list")
                 dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist)
 
         ## Russian Roulette
