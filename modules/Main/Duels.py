@@ -305,22 +305,52 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Tier
         elif commandortarget == 'tier':
-            dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-            currenttierlistarray = []
-            futuretierlistarray = []
-            for x in tiercommandarray:
-                tiereval = eval("tierunlock"+x)
-                if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
-                    currenttierlistarray.append(x)
-                elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
-                    futuretierlistarray.append(x)
-            if currenttierlistarray != []:
-                currenttierlist = get_trigger_arg(currenttierlistarray, "list")
-                dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist + ". ")
-            if futuretierlistarray != []:
-                futuretierlist = get_trigger_arg(futuretierlistarray, "list")
-                dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
-            bot.say(dispmsg)
+            command = get_trigger_arg(triggerargsarray, 2)
+            if not command:
+                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+                currenttierlistarray = []
+                futuretierlistarray = []
+                for x in tiercommandarray:
+                    tiereval = eval("tierunlock"+x)
+                    if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
+                        currenttierlistarray.append(x)
+                    elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
+                        futuretierlistarray.append(x)
+                if currenttierlistarray != []:
+                    currenttierlist = get_trigger_arg(currenttierlistarray, "list")
+                    dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist + ". ")
+                if futuretierlistarray != []:
+                    futuretierlist = get_trigger_arg(futuretierlistarray, "list")
+                    dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
+                bot.say(dispmsg)
+            elif command.isdigit():
+                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+                pickarray = []
+                for x in tiercommandarray and x != 'upupdowndownleftrightleftrightba':
+                    tiereval = eval("tierunlock"+x)
+                    if tiereval == int(command):
+                        pickarray.append(x)
+                if pickarray != []:
+                    tierlist = get_trigger_arg(pickarray, "list")
+                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+                    tiermath = int(command) - currenttier
+                    if tiermath > 0:
+                        dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+                else:
+                    dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
+                bot.say(dispmsg)
+            elif command not in tiercommandarray or command == 'upupdowndownleftrightleftrightba':
+                bot.say("Invalid command.")
+            else:
+                tiereval = eval("tierunlock"+command)
+                if tiereval <= currenttier:
+                    bot.say(command+" is already avaliable to use.")
+                else:
+                    tierpepperrequired = get_tierpepper(bot, commandeval)
+                    tiermath = tiereval - currenttier
+                    bot.say("Duel "+command+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+                
+                
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
