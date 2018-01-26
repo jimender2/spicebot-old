@@ -1593,7 +1593,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         elif OSDTYPE == 'notice':
             texttargetarray.append(winner)
             texttargetarray.append(loser)
-        onscreentext(bot, texttargetarray, textarraycomplete)
+        else:
+            texttargetarray.append(instigator)
+        onscreentext(bot, texttargetarray, combattextarraycomplete)
         
         ## update assault stats
         if winner == instigator:
