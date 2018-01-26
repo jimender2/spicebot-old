@@ -1628,12 +1628,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             ## new pepper level?
         instigatorpeppernow = get_pepper(bot, instigator)
         if instigatorpeppernow != instigatorpepperstart and instigator != target:
-            pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
+            pepperstatuschangemsg = str(instigator + " graduates to " + instigatorpeppernow + "! ")
             assault_levelups = assault_levelups + 1
             combattextarraycomplete.append(pepperstatuschangemsg)
         targetpeppernow = get_pepper(bot, target)
         if targetpeppernow != targetpepperstart and instigator != target:
-            pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
+            pepperstatuschangemsg = str(target + " graduates to " + targetpeppernow + "! ")
             combattextarraycomplete.append(pepperstatuschangemsg)
 
         ## Magic Attributes text
