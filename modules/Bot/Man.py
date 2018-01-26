@@ -24,7 +24,7 @@ custompages=['spicebot','modules','casino','duel','github','man','pants','points
 
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
     subcommand = get_trigger_arg(triggerargsarray, 1)
     customdisplay =  get_trigger_arg(custompages, "list")
     if subcommand in custompagearray:
