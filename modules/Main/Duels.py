@@ -772,7 +772,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 amount = int(amount)
                 adjust_database_value(bot, instigator, 'coin', -abs(amount))
                 bountyontarget = get_database_value(bot, target, 'bounty') or 0
-                if bountyontarget:
+                if not bountyontarget:
                     bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
                 else:
                     bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
