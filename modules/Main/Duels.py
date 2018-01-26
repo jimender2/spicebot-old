@@ -97,9 +97,9 @@ grenadesec = 50
 weaponmaxlength = 70
 randomcoinaward = 100
 speceventreward = 500
+stockhealth = 1000
 
 ## Tiers
-stockhealth = 1000
 stocktierratio = 1
 tierratioone = 1.1
 tierratiotwo = 1.2
