@@ -1790,7 +1790,10 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
             k = ''
         combinedline = str(j + "   " + k)
         for user in texttargetarray:
-            bot.notice(combinedline, user)
+            if user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)
 
 ###################
 ## Living Status ##
