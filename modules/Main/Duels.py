@@ -667,13 +667,14 @@ def execute_main(bot, trigger, triggerargsarray):
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if not subcommand:
                 leaderscript = []
-                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak']
+                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak','bounty']
                 worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
                 winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
                 killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
                 respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
                 healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
                 bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
+                bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
                 for x in leaderboardarraystats:
                     statleadername = ''
                     if x != 'health':
