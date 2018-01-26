@@ -320,6 +320,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if futuretierlistarray != []:
                 futuretierlist = get_trigger_arg(futuretierlistarray, "list")
                 dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
+            bot.say(dispmsg)
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
