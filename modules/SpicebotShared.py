@@ -207,6 +207,12 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(triggerarg  + ", " + x)
             else:
                 triggerarg  = str(x)
+    #elif number == 'create':
+    #    triggerargsarraynew = []
+    #    if triggerargsarray:
+    #        for word in triggerargsarray.split():
+    #            triggerargsarraynew.append(word)
+    #    return triggerargsarraynew
     else:
         number = int(number) - 1
         try:
@@ -227,6 +233,10 @@ def get_botdatabase_value(bot, nick, databasekey):
 def set_botdatabase_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
+
+def reset_botdatabase_value(bot, nick, databasekey):
+    databasecolumn = str('spicebot_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, None)
     
 def adjust_botdatabase_value(bot, nick, databasekey, value):
     oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
