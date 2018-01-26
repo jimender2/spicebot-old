@@ -1371,6 +1371,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     
     healthcheck(bot, instigator)
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
+    getreadytorumblenamearray = ['nicktitles']
     ## clean empty stats
     assaultdisplay = ''
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -1383,23 +1384,47 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         combattextarraycomplete = []
         texttargetarray = []
         
-        ## Make sure name is displayed properly
-        target = actualname(bot, target)
-        
         ## Check for new player health
         healthcheck(bot, target)
+        ## verify stats aren't old
+        statreset(bot, target)
         
         ## Assault does not touch lastfought
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
+
+        ## Update Time Of Combat
+        set_database_value(bot, instigator, 'timeout', now)
+        set_database_value(bot, target, 'timeout', now)
+        set_database_value(bot, duelrecorduser, 'timeout', now)
         
-        ## verify stats aren't old
-        statreset(bot, target)
+        ## Tier update
+        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         
-        ## names test
-        combattextarraycomplete.append("testing")
-        bot.say(target)
+        ## Display Naming
+        for q in getreadytorumblenamearray:
+            instigatorscriptdef = str(q + "(bot, instigator)")
+            instigatorname = eval(instigatorscriptdef)
+        if instigator == target:
+            targetname = "themself"
+            targetpepperstart = ''
+        else:
+            for q in getreadytorumblenamearray:
+                targetscriptdef = str(q + "(bot, target)")
+                targetname = eval(targetscriptdef)
+            targetname = nicktitles(bot, target)
         
+        ## Announce Combat
+        announcecombatmsg = str(instigatorname + " versus " + targetname)
+        combattextarraycomplete.append(announcecombatmsg)
+            
+        ## Naming and Initial pepper level
+        #instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
+        #if instigator == target:
+        #    targetname = "themself"
+        #    targetpepperstart = ''
+        #else:
+        #    targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
         
         
         
@@ -1413,27 +1438,16 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         #else:
         #    adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
         
-        ## Tier update
-        #currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+        
 
-        ## Update Time Of Combat
-        #set_database_value(bot, instigator, 'timeout', now)
-        #set_database_value(bot, target, 'timeout', now)
-        #set_database_value(bot, duelrecorduser, 'timeout', now)
+        
 
-        ## Naming and Initial pepper level
-        #instigatorname, instigatorpepperstart = whatsyourname(bot, trigger, instigator, channel)
-        #if instigator == target:
-        #    targetname = "themself"
-        #    targetpepperstart = ''
-        #else:
-        #    targetname, targetpepperstart = whatsyourname(bot, trigger, target, channel)
+        
 
         ## Magic Attributes Start
         #instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
 
-        ## Announce Combat
-        #announcecombatmsg = str(instigatorname + " versus " + targetname)
+        
 
         ## Manual weapon
         #weapon = get_trigger_arg(triggerargsarray, '2+')
@@ -1852,15 +1866,10 @@ def hours_minutes_seconds(countdownseconds):
 ## Names ##
 ###########
 
-def whatsyourname(bot, trigger, nick, channel):
-    nickname = str(nick)
-    
-    ## Pepper Level
-    pepperstart = get_pepper(bot, nick)
-    
+def nicktitles(bot, nick):
+    nickname = actualname(bot,nick)
     ## custom title
     nicktitle = get_database_value(bot, nick, 'title')
-    
     ## bot.owner
     try:
         if nicktitle:
@@ -1884,7 +1893,21 @@ def whatsyourname(bot, trigger, nick, channel):
             nickname = str(nickname)
     except KeyError:
         nickname = str(nickname)
+    return nickname
     
+
+
+    
+    
+def whatsyourname(bot, trigger, nick, channel):
+    nickname = str(nick)
+    
+    ## Pepper Level
+    pepperstart = get_pepper(bot, nick)
+    
+    ## custom title
+    nicktitle = get_database_value(bot, nick, 'title')
+
     ##  attributes
     nickcurse = get_database_value(bot, nick, 'curse')
     nickshield = get_database_value(bot, nick, 'shield')
