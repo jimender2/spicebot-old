@@ -1589,17 +1589,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             if lootwinnermsgb != '':
                 combattextarraycomplete.append(lootwinnermsgb)
                 
-        ## new pepper level?
-        instigatorpeppernow = get_pepper(bot, instigator)
-        if instigatorpeppernow != instigatorpepperstart and instigator != target:
-            pepperstatuschangemsg = str(pepperstatuschangemsg + instigator + " graduates to " + instigatorpeppernow + "! ")
-            assault_levelups = assault_levelups + 1
-            combattextarraycomplete.append(pepperstatuschangemsg)
-        targetpeppernow = get_pepper(bot, target)
-        if targetpeppernow != targetpepperstart and instigator != target:
-            pepperstatuschangemsg = str(pepperstatuschangemsg + target + " graduates to " + targetpeppernow + "! ")
-            combattextarraycomplete.append(pepperstatuschangemsg)
-        
         ## Tier update
         tierchangemsg = ''
         currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
@@ -1636,6 +1625,17 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             adjust_database_value(bot, winner, 'xp', XPearnedwinner)
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
             
+            ## new pepper level?
+        instigatorpeppernow = get_pepper(bot, instigator)
+        if instigatorpeppernow != instigatorpepperstart and instigator != target:
+            pepperstatuschangemsg = str(instigator + " graduates to " + instigatorpeppernow + "! ")
+            assault_levelups = assault_levelups + 1
+            combattextarraycomplete.append(pepperstatuschangemsg)
+        targetpeppernow = get_pepper(bot, target)
+        if targetpeppernow != targetpepperstart and instigator != target:
+            pepperstatuschangemsg = str(target + " graduates to " + targetpeppernow + "! ")
+            combattextarraycomplete.append(pepperstatuschangemsg)
+
         ## Magic Attributes text
         if instigator != target:
             magicattributestext = get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
