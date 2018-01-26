@@ -31,9 +31,11 @@ def spicebot_prerun(bot,trigger,commandused):
     
     ## Custom args
     try:
-        triggerargsarray = create_args_array(trigger.group(2))
+        triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
+        #triggerargsarray = create_args_array(trigger.group(2))
     except IndexError:
-        triggerargsarray = create_args_array(trigger.group(1))
+        triggerargsarray = get_trigger_arg(trigger.group(1), 'create')
+        #triggerargsarray = create_args_array(trigger.group(1))
     
     ## Nick of user operating command
     instigator = trigger.nick
@@ -135,12 +137,12 @@ def increment_counter(bot, trigger, commandused):
 ## ARGS ##
 ##########
 
-def create_args_array(fullstring):
-    triggerargsarray = []
-    if fullstring:
-        for word in fullstring.split():
-            triggerargsarray.append(word)
-    return triggerargsarray
+#def create_args_array(fullstring):
+#    triggerargsarray = []
+#    if fullstring:
+#        for word in fullstring.split():
+#            triggerargsarray.append(word)
+#    return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
@@ -207,12 +209,12 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(triggerarg  + ", " + x)
             else:
                 triggerarg  = str(x)
-    #elif number == 'create':
-    #    triggerargsarraynew = []
-    #    if triggerargsarray:
-    #        for word in triggerargsarray.split():
-    #            triggerargsarraynew.append(word)
-    #    return triggerargsarraynew
+    elif number == 'create':
+        triggerargsarraynew = []
+        if triggerargsarray:
+            for word in triggerargsarray.split():
+                triggerargsarraynew.append(word)
+        return triggerargsarraynew
     else:
         number = int(number) - 1
         try:
