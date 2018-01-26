@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if requested.isdigit():
                 rulenumber = int(requested)
                 if rulenumber > numberoflines:
-                    bot.say("Please select a rule number between 1 and " + numberoflines)
+                    bot.say("Please select a rule number between 1 and " + str(numberoflines))
                 else:
                     myline = get_trigger_arg(lines, rulenumber)
             else:
