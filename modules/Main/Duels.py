@@ -1602,8 +1602,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if OSDTYPE == 'say':
             texttargetarray.append(channel)
         elif OSDTYPE == 'notice':
-            texttargetarray.append(winner)
-            texttargetarray.append(loser)
+            texttargetarray.append(instigator)
+            texttargetarray.append(target)
         else:
             texttargetarray.append(instigator)
         onscreentext(bot, texttargetarray, combattextarraycomplete)
