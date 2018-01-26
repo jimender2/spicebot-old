@@ -307,13 +307,20 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'tier':
             dispmsg = str("The current tier is " + str(currenttier)+ ". ")
             currenttierlistarray = []
+            futuretierlistarray = []
             for x in tiercommandarray:
                 tiereval = eval("tierunlock"+x)
                 if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
                     currenttierlistarray.append(x)
+                elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
+                    futuretierlistarray.append(x)
             if currenttierlistarray != []:
-                currenttierlist = get_trigger_arg(newtierlistarray, "list")
-                dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist)
+                currenttierlist = get_trigger_arg(currenttierlistarray, "list")
+                dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist + ". ")
+            if futuretierlistarray != []:
+                futuretierlist = get_trigger_arg(futuretierlistarray, "list")
+                dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
+            bot.say(dispmsg)
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
