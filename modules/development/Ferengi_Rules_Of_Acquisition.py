@@ -29,10 +29,15 @@ def execute_main(bot, trigger, triggerargsarray):
             myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
-            lines=htmlfile.readlines()            
+            lines=htmlfile.readlines() 
+            numberoflines = len(lines)
+           
             if requested.isdigit():
                 rulenumber = int(requested)
-                myline = get_trigger_arg(lines, rulenumber)
+                if rulenumber > numberoflines:
+                    bot.say("Please select a rule number between 1 and " + numberoflines)
+                else:
+                    myline = get_trigger_arg(lines, rulenumber)
             else:
                 try:
                     rulenumber = w2n.word_to_num(str(requested))

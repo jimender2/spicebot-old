@@ -31,9 +31,9 @@ def spicebot_prerun(bot,trigger,commandused):
     
     ## Custom args
     try:
-        triggerargsarray = create_args_array(trigger.group(2))
+        triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
     except IndexError:
-        triggerargsarray = create_args_array(trigger.group(1))
+        triggerargsarray = get_trigger_arg(trigger.group(1), 'create')
     
     ## Nick of user operating command
     instigator = trigger.nick
@@ -143,6 +143,12 @@ def create_args_array(fullstring):
     return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
+    if number == 'create':
+        triggerargsarraynew = []
+        if triggerargsarray:
+            for word in triggerargsarray.split():
+                triggerargsarraynew.append(word)
+        return triggerargsarraynew
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
@@ -227,6 +233,10 @@ def get_botdatabase_value(bot, nick, databasekey):
 def set_botdatabase_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
+
+def reset_botdatabase_value(bot, nick, databasekey):
+    databasecolumn = str('spicebot_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, None)
     
 def adjust_botdatabase_value(bot, nick, databasekey, value):
     oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0

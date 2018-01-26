@@ -13,7 +13,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
 @sopel.module.commands('spicebot')
 def main_command(bot, trigger):
-    triggerargsarray = create_args_array(trigger.group(2))
+    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
     subcommand = get_trigger_arg(triggerargsarray, 1)
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
