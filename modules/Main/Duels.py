@@ -1415,7 +1415,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Display Naming
         instigatorname = ''
         targetname = ''
-        instigatorpepperstart = get_pepper(bot, nick)
+        instigatorpepperstart = get_pepper(bot, instigator)
         for q in getreadytorumblenamearray:
             instigatorscriptdef = str(q + "(bot, instigator, channel)")
             instigatornameadd = eval(instigatorscriptdef)
