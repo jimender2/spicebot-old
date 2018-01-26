@@ -27,7 +27,9 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         requested.lstrip("-")        
         if (requested == '0' or requested.lower() == 'zero'):
-            myline = randomfra()
+            myline = 'That doesnt appear to be a rule number.'
+        elif requested == 'random':
+             myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
             lines=htmlfile.readlines() 
