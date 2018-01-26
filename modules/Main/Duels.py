@@ -326,9 +326,9 @@ def execute_main(bot, trigger, triggerargsarray):
             elif command.isdigit():
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 pickarray = []
-                for x in tiercommandarray and x != 'upupdowndownleftrightleftrightba':
+                for x in tiercommandarray:
                     tiereval = eval("tierunlock"+x)
-                    if tiereval == int(command):
+                    if tiereval == int(command) and x != 'upupdowndownleftrightleftrightba':
                         pickarray.append(x)
                 if pickarray != []:
                     tierlist = get_trigger_arg(pickarray, "list")
