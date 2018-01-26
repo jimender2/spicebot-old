@@ -159,8 +159,8 @@ magicoptionsarray = ['curse','shield']
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    # triggerargsarray = create_args_array(trigger.group(1)) # enable if not using with spicebot
-    # execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
         execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
@@ -168,8 +168,8 @@ def duel_action(bot, trigger):
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    #triggerargsarray = create_args_array(trigger.group(2)) # enable if not using with spicebot
-    # execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
         execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
@@ -2473,14 +2473,13 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 ## ARGS ##
 ##########
 
-def create_args_array(fullstring):
-    triggerargsarray = []
-    if fullstring:
-        for word in fullstring.split():
-            triggerargsarray.append(word)
-    return triggerargsarray
-
 def get_trigger_arg(triggerargsarray, number):
+    if number == 'create':
+        triggerargsarraynew = []
+        if triggerargsarray:
+            for word in triggerargsarray.split():
+                triggerargsarraynew.append(word)
+        return triggerargsarraynew
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
@@ -2545,12 +2544,6 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(triggerarg  + ", " + x)
             else:
                 triggerarg  = str(x)
-    #elif number == 'create':
-    #    triggerargsarraynew = []
-    #    if triggerargsarray:
-    #        for word in triggerargsarray.split():
-    #            triggerargsarraynew.append(word)
-    #    return triggerargsarraynew
     else:
         number = int(number) - 1
         try:
