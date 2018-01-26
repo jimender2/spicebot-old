@@ -759,18 +759,20 @@ def execute_main(bot, trigger, triggerargsarray):
             target = get_trigger_arg(triggerargsarray, 2)
             target = actualname(bot, target)
             amount = get_trigger_arg(triggerargsarray, 3)
+            if not amount.isdigit():
+                bot.say("Invalid Amount.")
+                return
+            else:
+                amount = int(amount)
             if not target:
                 bot.say("You must pick a target.")
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif not amount:
                 bot.say("How much of a bounty do you wish to place on "+target+".")
-            elif not amount.isdigit():
-                bot.say("Invalid Amount.")
-            if int(instigatorcoin) < int(amount):
+            elif int(instigatorcoin) < int(amount):
                 bot.say("Insufficient Funds.")
             else:
-                amount = int(amount)
                 adjust_database_value(bot, instigator, 'coin', -abs(amount))
                 bountyontarget = get_database_value(bot, target, 'bounty') or 0
                 if not bountyontarget:
