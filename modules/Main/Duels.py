@@ -775,10 +775,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 bountyontarget = get_database_value(bot, target, 'bounty')
                 if bountyontarget:
                     placement = " adds to "
-                adjust_database_value(bot, instigator, 'bounty', amount)
+                adjust_database_value(bot, target, 'bounty', amount)
                 bot.say(instigator + placement + " the bounty on " + target)
-                bountyontarget = get_database_value(bot, target, 'bounty')
-                bot.say(str(bountyontarget))
 
         ## Loot Items
         elif commandortarget == 'loot':
