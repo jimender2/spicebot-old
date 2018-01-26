@@ -30,7 +30,8 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             htmlfile=urllib.urlopen(fra)
             lines=htmlfile.readlines() 
-            bot.say("Lines: " + str(lines))
+            numberoflines = len(lines)
+            bot.say("Total lines " + str(numberlines))
             if requested.isdigit():
                 rulenumber = int(requested)
                 myline = get_trigger_arg(lines, rulenumber)
