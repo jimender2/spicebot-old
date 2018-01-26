@@ -116,8 +116,8 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
-tiercommandarray = ['bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1
+tiercommandarray = ['tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
 tierunlockstreaks, tierunlockbounty = 2,2
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
@@ -302,6 +302,18 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
                 set_database_value(bot, target, 'opttime', now)
                 bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
+
+        ## Tier
+        elif commandortarget == 'tier':
+            dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+            currenttierlistarray = []
+            for x in tiercommandarray:
+                tiereval = eval("tierunlock"+x)
+                if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
+                    currenttierlistarray.append(x)
+            if currenttierlistarray != []:
+                currenttierlist = get_trigger_arg(newtierlistarray, "list")
+                dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist)
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
