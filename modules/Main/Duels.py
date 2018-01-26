@@ -770,13 +770,13 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Insufficient Funds.")
             else:
                 amount = int(amount)
-                placement = " places a "
                 adjust_database_value(bot, instigator, 'coin', -abs(amount))
                 bountyontarget = get_database_value(bot, target, 'bounty')
                 if bountyontarget:
-                    placement = " adds to "
+                    bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
+                else:
+                    bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
                 adjust_database_value(bot, target, 'bounty', amount)
-                bot.say(instigator + placement + " the bounty on " + target)
 
         ## Loot Items
         elif commandortarget == 'loot':
