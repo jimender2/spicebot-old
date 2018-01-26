@@ -393,6 +393,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
                 set_database_value(bot, duelrecorduser, 'roulettecount', None)
                 if roulettecount > 1:
+                    roulettecount = roulettecount + 1
                     displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
                 bot.say(resultmsg + displaymessage)
             else:
