@@ -116,9 +116,9 @@ tierratiotwelve = 2.2
 tierratiothirteen = 2.3
 tierratiofourteen = 2.4
 tierratiofifteen = 2.5
-tiercommandarray = ['armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tiercommandarray = ['bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1
-tierunlockstreaks = 2
+tierunlockstreaks, tierunlockbounty = 2,2
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
 tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
@@ -142,11 +142,11 @@ magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
 backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
-duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout']
+duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 
@@ -237,10 +237,10 @@ def execute_main(bot, trigger, triggerargsarray):
         except NameError:
             bot.say("This looks like an invalid command or an invalid person.")
             return
+        tierpepperrequired = get_tierpepper(bot, commandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+        tiermath = commandeval - currenttier
         if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on' and not bot.nick.endswith(devbot):
-            tierpepperrequired = get_tierpepper(bot, commandeval)
-            tiermath = commandeval - currenttier
             if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 return
@@ -355,8 +355,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     roulettedamage = str(roulettedamage+" "+ x)
                 currenthealth = get_database_value(bot, loser, 'health')
                 if currenthealth <= 0:
-                    whokilledwhom(bot, bot.nick, loser)
                     deathmsg = str(" " +  loser + ' dies forcing a respawn!!')
+                    deathmsgb = whokilledwhom(bot, bot.nick, loser) or ''
+                    deathmsg = str(deathmsg+" "+deathmsgb)
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
                     roulettewinners.append(instigator)
@@ -467,6 +468,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
                     diedinbattle = []
                     canduelarray.remove(winner)
+                    deathmsgb = ''
                     for x in canduelarray:
                         statreset(bot, x)
                         healthcheck(bot, x)
@@ -483,11 +485,11 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, x, 'health', -abs(damage))
                             currenthealth = get_database_value(bot, x, 'health')
                         if currenthealth <= 0:
-                            whokilledwhom(bot, winner, x)
+                            deathmsgb = whokilledwhom(bot, winner, x) or ''
                             diedinbattle.append(x)
                     displaymessage = get_trigger_arg(diedinbattle, "list")
                     if displaymessage:
-                        bot.say(displaymessage + " died in this event.")
+                        bot.say(displaymessage + " died in this event." + " "+ deathmsgb)
                     adjust_database_value(bot, winner, 'coin', riskcoins)
 
         ## War Room
@@ -632,7 +634,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            elif int(commandeval) > int(currenttier) and target != instigator:
+            elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
             else:
                 target = actualname(bot, target)
@@ -665,13 +667,14 @@ def execute_main(bot, trigger, triggerargsarray):
             subcommand = get_trigger_arg(triggerargsarray, 2)
             if not subcommand:
                 leaderscript = []
-                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak']
+                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak','bounty']
                 worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
                 winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
                 killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
                 respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
                 healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
                 bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
+                bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
                 for x in leaderboardarraystats:
                     statleadername = ''
                     if x != 'health':
@@ -747,6 +750,37 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandortarget == 'armor':
             bot.say("WIP")
         
+        ## Bounty
+        elif commandortarget == 'bounty':
+            if not inchannel.startswith("#"):
+                bot.notice(instigator + " Bounties must be in channel.", instigator)
+                return
+            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+            target = get_trigger_arg(triggerargsarray, 2)
+            target = actualname(bot, target)
+            amount = get_trigger_arg(triggerargsarray, 3)
+            if not amount.isdigit():
+                bot.say("Invalid Amount.")
+                return
+            else:
+                amount = int(amount)
+            if not target:
+                bot.say("You must pick a target.")
+            elif target.lower() not in [u.lower() for u in bot.users]:
+                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+            elif not amount:
+                bot.say("How much of a bounty do you wish to place on "+target+".")
+            elif int(instigatorcoin) < int(amount):
+                bot.say("Insufficient Funds.")
+            else:
+                adjust_database_value(bot, instigator, 'coin', -abs(amount))
+                bountyontarget = get_database_value(bot, target, 'bounty') or 0
+                if not bountyontarget:
+                    bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
+                else:
+                    bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
+                adjust_database_value(bot, target, 'bounty', amount)
+
         ## Loot Items
         elif commandortarget == 'loot':
             instigatorclass = get_database_value(bot, instigator, 'class')
@@ -756,7 +790,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif int(commandeval) > int(currenttier) and target != instigator:
+                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
                     target = actualname(bot, target)
@@ -835,6 +869,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if thirdtarget != '':
                             painarray.append(thirdtarget)
                             damagearray.append(grenadesec)
+                        deathmsgb = ''
                         for x, damage in zip(painarray, damagearray):
                             damage = int(damage)
                             shieldloser = get_database_value(bot, x, 'shield') or 0
@@ -850,11 +885,11 @@ def execute_main(bot, trigger, triggerargsarray):
                                 adjust_database_value(bot, x, 'health', -abs(damage))
                             xhealth = get_database_value(bot, x, 'health') or 0
                             if int(xhealth) <= 0:
-                                whokilledwhom(bot, instigator, x)
+                                deathmsgb = whokilledwhom(bot, instigator, x) or ''
                                 deatharray.append(x)
                         if deatharray != []:
                             deadarray = get_trigger_arg(deatharray, "list")
-                            displaymsg = str(displaymsg + "    " + deadarray + " died by this grenade volley")
+                            displaymsg = str(displaymsg + "    " + deadarray + " died by this grenade volley. " + deathmsgb)
                         if displaymsg != '':
                             bot.say(displaymsg)
                 else:
@@ -948,7 +983,8 @@ def execute_main(bot, trigger, triggerargsarray):
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 lootusedeaths = lootusedeaths + 1
-                                whokilledwhom(bot, instigator, target)
+                                deathmsgb = whokilledwhom(bot, instigator, target) or ''
+                                mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
                             postionsusedarray = get_trigger_arg(uselootarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
@@ -1443,13 +1479,15 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if instigator == target:
             loser = targetname
         if currenthealth <= 0:
-            whokilledwhom(bot, winner, loser)
+            deathmsgb = whokilledwhom(bot, winner, loser) or ''
             winnermsg = str(loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
             else:
                 assault_deaths = assault_deaths + 1
             winnermsgarray.append(winnermsg)
+            if deathmsgb != '':
+                winnermsgarray.append(deathmsgb)
 
         ## new pepper level?
         pepperstatuschangemsg = ''
@@ -1558,11 +1596,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for arrayone, arraytwo in zip(combattextarraya, combattextarrayb):
             if arraytwo == "dummytext":
                 arraytwo = ''
+            combinedline = str(arrayone + "   " + arraytwo)
             if OSDTYPE == 'say':
-                bot.say(arrayone + "   " + arraytwo)
+                bot.say(combinedline)
             elif OSDTYPE == 'notice':
-                bot.notice(arrayone + "   " + arraytwo, winner)
-                bot.notice(arrayone + "   " + arraytwo, loser)
+                bot.notice(combinedline, winner)
+                bot.notice(combinedline, loser)
         
         ## update assault stats
         if winner == instigator:
@@ -1702,6 +1741,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
 ###################
 
 def whokilledwhom(bot, winner, loser):
+    returntext = ''
     ## Reset mana and health
     set_database_value(bot, loser, 'mana', None)
     healthcheck(bot, loser)
@@ -1710,12 +1750,18 @@ def whokilledwhom(bot, winner, loser):
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     ## Loot Corpse
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    bountyonloser = get_database_value(bot, loser, 'bounty')
+    if bountyonloser:
+        adjust_database_value(bot, winner, 'coin', bountyonloser)
+        set_database_value(bot, loser, 'bounty', None)
+        returntext = str(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
         for x in lootitemsarray:
             gethowmany = get_database_value(bot, loser, x)
             adjust_database_value(bot, winner, x, gethowmany)
             set_database_value(bot, loser, x, None)
+    return returntext
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
