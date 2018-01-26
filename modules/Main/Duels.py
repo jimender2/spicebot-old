@@ -1751,7 +1751,7 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
         if k == "dummytext":
             k = ''
         combinedline = str(j + "   " + k)
-        for user in targetarray:
+        for user in texttargetarray:
             bot.notice(combinedline, user)
 
 ###################
