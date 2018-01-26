@@ -18,9 +18,9 @@ from os.path import exists
 from num2words import num2words
 
 ## not needed if using without spicebot
-shareddir = os.path.dirname(os.path.dirname(__file__))
-sys.path.append(shareddir)
-from SpicebotShared import *
+shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
+sys.path.append(shareddir) ## not needed if using without spicebot
+from SpicebotShared import * ## not needed if using without spicebot
 
 ###################
 ## Configurables ##
@@ -91,7 +91,7 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 ## other
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
-GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
@@ -159,16 +159,20 @@ magicoptionsarray = ['curse','shield']
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel')
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+    # triggerargsarray = create_args_array(trigger.group(1)) # enable if not using with spicebot
+    # execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel')
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+    #triggerargsarray = create_args_array(trigger.group(2)) # enable if not using with spicebot
+    # execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## The Command Process
 def execute_main(bot, trigger, triggerargsarray):
@@ -180,14 +184,14 @@ def execute_main(bot, trigger, triggerargsarray):
     displaymessage = ''
     typeofduel = 'target'
     
-    ## Build User/channel Arrays
+    ## User/channel Arrays
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     canduelarray, targetarray = [], []
 
     ## Time when Module use started
     now = time.time()
 
-    ###### Channel
+    ## Channel
     inchannel = trigger.sender
 
     ## bot does not need stats or backpack items
@@ -230,12 +234,12 @@ def execute_main(bot, trigger, triggerargsarray):
         
         ## Tier unlocks
         if "." in commandortarget:
-            bot.say("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()")
+            bot.notice("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()", instigator)
             return
         try:
             commandeval = eval("tierunlock"+ commandortarget) or 0
         except NameError:
-            bot.say("This looks like an invalid command or an invalid person.")
+            bot.notice("This looks like an invalid command or an invalid person.", instigator)
             return
         tierpepperrequired = get_tierpepper(bot, commandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
@@ -256,7 +260,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if commandortarget == 'docs' or commandortarget == 'help':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
-                bot.say("Online Docs: " + GITWIKIURL)
+                bot.notice("Online Docs: " + GITWIKIURL, instigator)
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
@@ -264,7 +268,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Author
         if commandortarget == 'author':
-            bot.say("The author of Duels is deathbybandaid.")
+            bot.notice("The author of Duels is deathbybandaid.", instigator)
         
         ## On/off
         elif commandortarget == 'on' or commandortarget == 'off':
@@ -397,6 +401,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
                 bot.say(resultmsg + displaymessage)
             else:
+                time.sleep(2) # added to build suspense
                 bot.say("*click*")
                 roulettecount = roulettecount + 1
                 roulettepayout = roulettepayoutdefault * roulettecount
@@ -2428,6 +2433,10 @@ def get_database_value(bot, nick, databasekey):
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
+    
+def reset_database_value(bot, nick, databasekey):
+    databasecolumn = str('duels_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, None)
 
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
@@ -2536,6 +2545,12 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(triggerarg  + ", " + x)
             else:
                 triggerarg  = str(x)
+    #elif number == 'create':
+    #    triggerargsarraynew = []
+    #    if triggerargsarray:
+    #        for word in triggerargsarray.split():
+    #            triggerargsarraynew.append(word)
+    #    return triggerargsarraynew
     else:
         number = int(number) - 1
         try:
