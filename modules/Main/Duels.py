@@ -73,10 +73,10 @@ magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
 
 ## XP points awarded
-XPearnedwinnerranger = 7 ## xp earned as a winner and ranger
-XPearnedloserranger = 5 ## xp earned as a loser and ranger
-XPearnedwinnerstock = 5 ## default xp earned as a winner
-XPearnedloserstock = 3 ## default xp earned as a loser
+XPearnedwinnerranger = 20 ## xp earned as a winner and ranger
+XPearnedloserranger = 15 ## xp earned as a loser and ranger
+XPearnedwinnerstock = 15 ## default xp earned as a winner
+XPearnedloserstock = 10 ## default xp earned as a loser
 
 ## Class advantages
 scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
@@ -2079,14 +2079,6 @@ def hours_minutes_seconds(countdownseconds):
             displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
     return displaymsg
 
-
-    
-
-
-    
-    
-
-
 #############
 ## Streaks ##
 #############
@@ -2372,8 +2364,6 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         adjust_database_value(bot, loser, 'health', -abs(damage))
     
     return damage, damagetextarray
-
-
 
 ###################
 ## Select Winner ##
