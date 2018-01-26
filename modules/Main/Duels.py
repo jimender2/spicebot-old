@@ -342,14 +342,15 @@ def execute_main(bot, trigger, triggerargsarray):
             elif command not in tiercommandarray or command == 'upupdowndownleftrightleftrightba':
                 bot.say("Invalid command.")
             else:
+                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 tiereval = eval("tierunlock"+command)
+                tierpepperrequired = get_tierpepper(bot, commandeval)
+                tiermath = tiereval - currenttier
                 if tiereval <= currenttier:
-                    bot.say(command+" is already avaliable to use.")
+                    dispmsg = str(command " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
                 else:
-                    tierpepperrequired = get_tierpepper(bot, commandeval)
-                    tiermath = tiereval - currenttier
-                    bot.say("Duel "+command+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-                
+                    dispmsg = str(command " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+                bot.say(dispmsg)
                 
 
         ## Russian Roulette
