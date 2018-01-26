@@ -237,9 +237,9 @@ def execute_main(bot, trigger, triggerargsarray):
         except NameError:
             bot.say("This looks like an invalid command or an invalid person.")
             return
+        tierpepperrequired = get_tierpepper(bot, commandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on' and not bot.nick.endswith(devbot):
-            tierpepperrequired = get_tierpepper(bot, commandeval)
             tiermath = commandeval - currenttier
             if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
