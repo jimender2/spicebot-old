@@ -347,9 +347,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 tierpepperrequired = get_tierpepper(bot, commandeval)
                 tiermath = tiereval - currenttier
                 if tiereval <= currenttier:
-                    dispmsg = str(command " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
+                    dispmsg = str(dispmsg+ command " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
                 else:
-                    dispmsg = str(command " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+                    dispmsg = str(dispmsg+ command " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 bot.say(dispmsg)
                 
 
