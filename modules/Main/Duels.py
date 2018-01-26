@@ -1477,6 +1477,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             loser = targetname
         if currenthealth <= 0:
             deathmsgb = whokilledwhom(bot, winner, loser) or ''
+            bot.say(deathmsgb)
             winnermsg = str(loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
