@@ -1598,15 +1598,15 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         #    checktext = eval(x)
         #    if checktext and checktext != '':
         #        combattextarraycomplete.append(checktext)
-        #texttargetarray = []
-        #if OSDTYPE == 'say':
-        #    texttargetarray.append(channel)
-        #elif OSDTYPE == 'notice':
-        #    texttargetarray.append(winner)
-        #    texttargetarray.append(loser)
-        #else:
-        #    texttargetarray.append(instigator)
-        #onscreentext(bot, texttargetarray, combattextarraycomplete)
+        texttargetarray = []
+        if OSDTYPE == 'say':
+            texttargetarray.append(channel)
+        elif OSDTYPE == 'notice':
+            texttargetarray.append(winner)
+            texttargetarray.append(loser)
+        else:
+            texttargetarray.append(instigator)
+        onscreentext(bot, texttargetarray, combattextarraycomplete)
         
         ## update assault stats
         #if winner == instigator:
