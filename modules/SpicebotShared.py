@@ -145,6 +145,12 @@ def increment_counter(bot, trigger, commandused):
 #    return triggerargsarray
 
 def get_trigger_arg(triggerargsarray, number):
+    if number == 'create':
+        triggerargsarraynew = []
+        if triggerargsarray:
+            for word in triggerargsarray.split():
+                triggerargsarraynew.append(word)
+        return triggerargsarraynew
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
@@ -209,12 +215,6 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(triggerarg  + ", " + x)
             else:
                 triggerarg  = str(x)
-    elif number == 'create':
-        triggerargsarraynew = []
-        if triggerargsarray:
-            for word in triggerargsarray.split():
-                triggerargsarraynew.append(word)
-        return triggerargsarraynew
     else:
         number = int(number) - 1
         try:
