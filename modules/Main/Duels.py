@@ -1402,12 +1402,12 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         
         ## Display Naming
-        instigatorname = None
-        targetname = None
+        instigatorname = ''
+        targetname = ''
         for q in getreadytorumblenamearray:
             instigatorscriptdef = str(q + "(bot, instigator)")
             instigatornameadd = eval(instigatorscriptdef)
-            if not instigatorname:
+            if instigatorname != '':
                 instigatorname = str(instigatorname + " " + instigatornameadd)
             else:
                 instigatorname = str(instigatornameadd)
@@ -1418,7 +1418,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             for q in getreadytorumblenamearray:
                 targetscriptdef = str(q + "(bot, target)")
                 targetnameadd = eval(targetscriptdef)
-                if not targetname:
+                if targetname != '':
                     targetname = str(targetname + " " + targetnameadd)
                 else:
                     targetname = str(targetnameadd)
