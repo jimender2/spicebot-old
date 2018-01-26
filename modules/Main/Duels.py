@@ -1467,27 +1467,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Current Streaks
         winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
-        
-        ## Update XP points
-        if yourclasswinner == 'ranger':
-            XPearnedwinner = XPearnedwinnerranger
-        else:
-            XPearnedwinner = XPearnedwinnerstock
-        if yourclassloser == 'ranger':
-            XPearnedloser = XPearnedloserranger
-        else:
-            XPearnedloser = XPearnedloserstock
-        if instigator != target:
-            winnertier = get_database_value(bot, winner, 'levelingtier')
-            losertier = get_database_value(bot, loser, 'levelingtier')
-            xptier = tierratio_level(bot)
-            if winnertier < currenttierend:
-                XPearnedwinner = XPearnedwinner * xptier
-            if losertier < currenttierend:
-                XPearnedloser = XPearnedloser * xptier
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
-        
+
         ## Update Wins and Losses
         if instigator != target:
             adjust_database_value(bot, winner, 'wins', defaultadjust)
@@ -1586,6 +1566,26 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                     tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
                 combattextarraycomplete.append(tierchangemsg)
                 
+        ## Update XP points
+        if yourclasswinner == 'ranger':
+            XPearnedwinner = XPearnedwinnerranger
+        else:
+            XPearnedwinner = XPearnedwinnerstock
+        if yourclassloser == 'ranger':
+            XPearnedloser = XPearnedloserranger
+        else:
+            XPearnedloser = XPearnedloserstock
+        if instigator != target:
+            winnertier = get_database_value(bot, winner, 'levelingtier')
+            losertier = get_database_value(bot, loser, 'levelingtier')
+            xptier = tierratio_level(bot)
+            if winnertier < currenttierend:
+                XPearnedwinner = XPearnedwinner * xptier
+            if losertier < currenttierend:
+                XPearnedloser = XPearnedloser * xptier
+            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+            adjust_database_value(bot, loser, 'xp', XPearnedloser)
+            
         ## Magic Attributes text
         if instigator != target:
             magicattributestext = get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
