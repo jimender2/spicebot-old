@@ -11,6 +11,11 @@ import time
 
 from SpicebotShared import *
 
+# Frequency controls ?
+# Rate controls ? (Seems to be frequency/10)
+# Several functions seem to be based on an almost diceroll function tied to rate, frequency.
+# Several other functions seem to have a sleep period.
+
 @sopel.module.commands('ai')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ai')
@@ -21,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
     bot.say("It's not intelligence if you're telling me to do it directly.")
     
 def setup(bot):
-    # Set value to 3 if not configured
+    # Set value to 3 if not configured in config
     if bot.config.ai and bot.config.ai.frequency:
         bot.memory['frequency'] = bot.config.ai.frequency
     else:
