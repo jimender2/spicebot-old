@@ -1341,8 +1341,8 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                     elif target == 'everyone':
                         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-                        reset_database_value(bot, nick, 'levelingtier')
-                        reset_database_value(bot, nick, 'specevent')
+                        reset_database_value(bot, duelrecorduser, 'levelingtier')
+                        reset_database_value(bot, duelrecorduser, 'specevent')
                         for u in bot.users:
                             statreset(bot, target)
                             if statset == 'all':
