@@ -1590,6 +1590,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 combattextarraycomplete.append(lootwinnermsgb)
 
         ## Update XP points
+        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if yourclasswinner == 'ranger':
             XPearnedwinner = XPearnedwinnerranger
         else:
