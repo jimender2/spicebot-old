@@ -1588,23 +1588,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 assault_potionslost = assault_potionslost + 1
             if lootwinnermsgb != '':
                 combattextarraycomplete.append(lootwinnermsgb)
-                
-        ## Tier update
-        tierchangemsg = ''
-        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
-        if int(currenttierend) > int(currenttierstart):
-            tierchangemsg = str("New Tier Unlocked!")
-            if currenttierend != 1:
-                newtierlistarray = []
-                for x in tiercommandarray:
-                    newtiereval = eval("tierunlock"+x)
-                    if newtiereval == currenttierend:
-                        newtierlistarray.append(x)
-                if newtierlistarray != []:
-                    newtierlist = get_trigger_arg(newtierlistarray, "list")
-                    tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
-                combattextarraycomplete.append(tierchangemsg)
-                
+
         ## Update XP points
         if yourclasswinner == 'ranger':
             XPearnedwinner = XPearnedwinnerranger
@@ -1625,7 +1609,23 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             adjust_database_value(bot, winner, 'xp', XPearnedwinner)
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
             
-            ## new pepper level?
+        ## Tier update
+        tierchangemsg = ''
+        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        if int(currenttierend) > int(currenttierstart):
+            tierchangemsg = str("New Tier Unlocked!")
+            if currenttierend != 1:
+                newtierlistarray = []
+                for x in tiercommandarray:
+                    newtiereval = eval("tierunlock"+x)
+                    if newtiereval == currenttierend:
+                        newtierlistarray.append(x)
+                if newtierlistarray != []:
+                    newtierlist = get_trigger_arg(newtierlistarray, "list")
+                    tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
+                combattextarraycomplete.append(tierchangemsg)
+                
+        ## new pepper level?
         instigatorpeppernow = get_pepper(bot, instigator)
         if instigatorpeppernow != instigatorpepperstart and instigator != target:
             pepperstatuschangemsg = str(instigator + " graduates to " + instigatorpeppernow + "! ")
