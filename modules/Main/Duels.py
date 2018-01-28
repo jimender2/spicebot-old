@@ -1061,6 +1061,23 @@ def execute_main(bot, trigger, triggerargsarray):
                                 deathmsgb = whokilledwhom(bot, instigator, target) or ''
                                 mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
+                            actualpotionmathedarray = []
+                            healthpotionamount,manapotionamount,poisonpotionamount,timepotionamount = 0,0,0,0
+                            for potiontype in uselootarray:
+                                if potiontype == 'healthpotion':
+                                    healthpotionamount = healthpotionamount + 1
+                                elif potiontype == 'poisonpotion':
+                                    poisonpotionamount = poisonpotionamount + 1
+                                elif potiontype == 'manapotion':
+                                    manapotionamount = manapotionamount + 1
+                                elif potiontype == 'timepotion':
+                                    timepotionamount = timepotionamount + 1
+                            for lootpotion in lootitemsarray:
+                                if lootpotion != 'mysterypotion' and lootpotion != 'magicpotion' and lootpotion != 'grenade':
+                                    potioneval = eval(lootpotion+ "amount")
+                                    if potioneval > 1:
+                                        uselootarray.remove(lootpotion)
+                                        uselootarray.append(str(str(potioneval) + lootpotion + "s"))
                             postionsusedarray = get_trigger_arg(uselootarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
                         if lootusedeaths > 0:
