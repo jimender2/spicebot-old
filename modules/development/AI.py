@@ -79,7 +79,7 @@ def ty2(bot, trigger):
 def ty4(bot, trigger):
     ty(bot, trigger) # Activate function "ty"
 
-@rule('(sopel|$nickname)\:\s+(yes!?|no)$') # Respond to "botnick: yes/no"
+@rule('(sopel|$nickname)\:\s+(yes!?|no!?)$') # Respond to "botnick: yes/no"
 @rate(15)
 def yesno(bot, trigger):
     rand = random.uniform(0, 5) # Random time to wait
