@@ -1556,6 +1556,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Manual weapon
         weapon = get_trigger_arg(triggerargsarray, '2+')
+        bot.say(str(weapon))
         if weapon and tierunlockweaponslocker >= currenttierstart:
             manualweapon = 'true'
             if weapon == 'all':
