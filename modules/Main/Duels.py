@@ -2329,7 +2329,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     elif winnerclass == 'vampire':
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon +" in the " + bodypart+ ". ")
     else:
-        damagetext = str(winnername + " "+striketype++striketype+" in the " + bodypart+ " " + losername + weapon " " + losername + weapon + ', dealing ' + str(damage) + ' damage. ')
+        damagetext = str(winnername + " "+striketype+" in the " + bodypart+ " " + losername + weapon " " + losername + weapon + ', dealing ' + str(damage) + ' damage. ')
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
