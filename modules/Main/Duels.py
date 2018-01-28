@@ -821,7 +821,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     for x in armortypesarray:
                         gethowmany = get_database_value(bot, target, x)
                         if gethowmany:
-                            armordurability = str(x + "'s durability = " + str(gethowmany))
+                            addstat = str(x + "'s durability = " + str(gethowmany))
                             displaymessage = str(displaymessage + addstat)
                     if displaymessage != '':
                         displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
