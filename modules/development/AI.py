@@ -22,7 +22,7 @@ def mainfunction(bot, trigger): # dummy function to allow module to load at pres
 def execute_main(bot, trigger, triggerargsarray): # Response for running the dummy command directly
     commandused = get_trigger_arg(triggerargsarray, 1)
     # adminusers array, triggerargsarray
-    if commandused == 'channels':
+    if commandused == 'channels': # check what channels are active
         channels = bot.config.ai.active_channels
         bot.say(str(channels))
     # if adminuser:
