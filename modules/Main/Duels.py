@@ -150,6 +150,8 @@ duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestrea
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
+duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
+duelbodypartsarray = ['chest','arm','leg','head']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -1556,22 +1558,16 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Manual weapon
         weapon = get_trigger_arg(triggerargsarray, '2+')
-        if weapon and tierunlockweaponslocker == currenttierstart:
-            manualweapon = 'true'
+        if winner == instigator and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
                 weapon = getallchanweaponsrandom(bot)
             elif weapon == 'target':
                 weapon = weaponofchoice(bot, target)
                 weapon = str(target + "'s " + weapon)
+        elif winner == bot.nick:
+            weapon = ''
         else:
-            manualweapon = 'false'
-        
-        ## Weapon Select
-        if manualweapon == 'false' or winner == target:
-            if winner == bot.nick:
-                weapon = ''
-            else:
-                weapon = weaponofchoice(bot, winner)
+            weapon = weaponofchoice(bot, winner)
         weapon = weaponformatter(bot, weapon)
         if weapon != '':
             weapon = str(" " + weapon)
@@ -2273,6 +2269,7 @@ def tierratio_level(bot):
 #################
 
 def damagedone(bot, winner, loser, weapon, diaglevel):
+
     damagetextarray = []
     damagescale = tierratio_level(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
@@ -2286,15 +2283,18 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         winnername = loser
         losername = "themself"
         striketype = "shoots"
+        bodypart = "head"
     elif winnerclass == 'knight' and diaglevel == 2:
         winnername = winner
         losername = loser
         striketype = "retaliates against"
+        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
     else:
         winnername = winner
         losername = loser
-        striketype = "hits"
-    
+        striketype = get_trigger_arg(duelhittypesarray, 'random')
+        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
     if loserclass == 'rogue' and winner in roguearraynodamage:
@@ -2325,11 +2325,11 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = int(damage)
 
     if damage == 0:
-        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ' but deals no damage. ')
+        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ' but deals no damage. ')
     elif winnerclass == 'vampire':
-        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + ". ")
+        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ". ")
     else:
-        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + " " + ", dealing " + str(damage) + " damage. ")
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
@@ -2483,7 +2483,10 @@ def winnerdicerolling(bot, nick, rolls):
         fightroll = randint(rolla, rollb)
         fightarray.append(fightroll)
         rolls = int(rolls) - 1
-    fight = max(fightarray)
+    try:
+        fight = max(fightarray)
+    except ValueError:
+        fight = 0
     return fight
 
 #####################
