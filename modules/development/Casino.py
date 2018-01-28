@@ -220,8 +220,10 @@ def roulette(bot,trigger,arg):
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
-                bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
-                bot.db.set_nick_value('Roulette', 'rouletteplayers', player)
+                bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber + " " + str(mycolor))
+                players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+                players.append(player)
+                bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray = str(mybet) + str(mynumber)+str(mycolor)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
             else:
@@ -232,8 +234,8 @@ def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
-    players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
-    if not players == '':            
+    players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+    if not players == []:            
         winningnumber = spin(wheel)
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
@@ -263,8 +265,9 @@ def runroulette(bot):
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
                             winners=winners + " " + player
-                            totalwon = totalwon + mywinnings                   
-                        
+                            totalwon = totalwon + mywinnings                  
+        players = []
+        bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
             bot.say("No one wins anything")
         else:
