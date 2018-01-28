@@ -24,7 +24,11 @@ def execute_main(bot, trigger, triggerargsarray): # Response for running the dum
     # adminusers array, triggerargsarray
     if commandused == 'channels': # check what channels are active
         channels = bot.config.ai.active_channels
-        bot.say(str(channels))
+        if channels == '':
+            chanmsg = "The AI module is not currently allowed in any channels."
+        else:
+            chanmsg = "The AI module is currently active in: "
+        bot.say(str(chanmsg) + str(channels))
     # if adminuser:
     # if triggerarg1 = enable, add channel to bot.config.ai.active_channels
     # if triggerarg1 = disable, remove channel from bot.config.ai.active_channels
