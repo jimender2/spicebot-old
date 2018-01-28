@@ -37,4 +37,4 @@ def getgif():
     randno = randint(0,99)
     id = data['data'][randno]['id']
     gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-return gif
+    return gif
