@@ -25,7 +25,6 @@ def execute_main(bot, trigger, triggerargsarray):
     if gif:
         bot.say(gif)
     else:
-     bot.say(random.choice(respond))
         bot.action('gives ' + instigator + random.choice(responsemsg))
 
 
