@@ -161,6 +161,7 @@ def roulette(bot,trigger,arg):
         runroulette(bot)
 
     else:
+        
         if mybet == 'allin':
             balance = Spicebucks.bank(bot, trigger.nick)
             if balance > 0:
@@ -184,9 +185,9 @@ def roulette(bot,trigger,arg):
             mynumber=''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
-            if(mynumber <= 0 or mynumber > maxwheel):
-                bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
-                inputcheck=0
+                if(mynumber <= 0 or mynumber > maxwheel):
+                    bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
+                    inputcheck=0
                     #check to see if a color was selected
             else: 
                 if not myitem2 == 'noitem':
