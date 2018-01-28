@@ -221,7 +221,7 @@ def roulette(bot,trigger,arg):
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber + " " + str(mycolor))
-                players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+                players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
                 players.append(player)
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray = str(mybet) + str(mynumber)+str(mycolor)
@@ -266,7 +266,7 @@ def runroulette(bot):
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
                             winners=winners + " " + player
                             totalwon = totalwon + mywinnings                  
-        players = []
+        players = ''
         bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
             bot.say("No one wins anything")
