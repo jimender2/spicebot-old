@@ -149,6 +149,7 @@ classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire',
 duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
+nulllootitemsarray = ['water','vinegar','mud']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -878,7 +879,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 elif lootitem == 'magicpotion':
-                    bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
+                    bot.notice("Magic Potions are not purchasable, sellable, or usable. They can only be traded.", instigator)
                 elif lootitem == 'grenade':
                     if not inchannel.startswith("#"):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
@@ -996,7 +997,6 @@ def execute_main(bot, trigger, triggerargsarray):
                                 quantity = quantity - 1
                                 loot = get_trigger_arg(lootitemsarray, 'random')
                                 if loot == 'mysterypotion' or loot == 'magicpotion':
-                                    nulllootitemsarray = ['water','vinegar','mud']
                                     loot = get_trigger_arg(nulllootitemsarray, 'random')
                                 uselootarray.append(loot)
                         else:
@@ -1004,16 +1004,35 @@ def execute_main(bot, trigger, triggerargsarray):
                                 quantity = quantity - 1
                                 uselootarray.append(lootitem)
                         uselootarraytotal = len(uselootarray)
+                        extramsg = '.'
+                        if lootitem == 'healthpotion':
+                            if targetclass == 'barbarian':
+                                potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
+                            else:
+                                potionmaths = int(uselootarraytotal) * healthpotionworth
+                            extramsg = str(" restoring " + str(potionmaths) + " health.")
+                        elif lootitem == 'poisonpotion':
+                            poisonpotionworthb = abs(poisonpotionworth)
+                            potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
+                            extramsg = str(" draining " + str(potionmaths) + " health.")
+                        elif lootitem == 'manapotion':
+                            if targetclass == 'mage':
+                                potionmaths = int(uselootarraytotal) * manapotionworthmage
+                            else:
+                                potionmaths = int(uselootarraytotal) * manapotionworth
+                            extramsg = str(" restoring " + str(potionmaths) + " mana.")
+                        elif lootitem == 'timepotion':
+                            extramsg = str(" removing timeouts.")        
                         if target == instigator:
                             if int(uselootarraytotal) == 1:
-                                mainlootusemessage = str(instigator + ' uses ' + lootitem + '.')
+                                mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
                             else:
-                                mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's.')
+                                mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
                         else:
                             if int(uselootarraytotal) == 1:
-                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + ".")
+                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + extramsg)
                             else:
-                                mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
+                                mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +extramsg)
                         for x in uselootarray:
                             if x == 'healthpotion':
                                 if targetclass == 'barbarian':
@@ -1042,8 +1061,18 @@ def execute_main(bot, trigger, triggerargsarray):
                                 deathmsgb = whokilledwhom(bot, instigator, target) or ''
                                 mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
-                            postionsusedarray = get_trigger_arg(uselootarray, "list")
-                            mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
+                            actualpotionmathedarray = []
+                            alreadyprocessedarray = []
+                            for fluid in uselootarray:
+                                if fluid not in alreadyprocessedarray:
+                                    alreadyprocessedarray.append(fluid)
+                                    countedeval = uselootarray.count(fluid)
+                                    if countedeval > 1:
+                                        actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
+                                    else:
+                                        actualpotionmathedarray.append(fluid)
+                            postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
+                            mainlootusemessage = str(mainlootusemessage + " Potion(s) used: " + postionsusedarray)
                         if lootusedeaths > 0:
                             if lootusedeaths == 1:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
@@ -1114,7 +1143,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray or lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
-                if lootitem == 'grenade' or lootitemb == 'grenade':
+                elif lootitem == 'grenade' or lootitemb == 'grenade':
                     bot.notice(instigator + ", You can't trade for grenades.", instigator)
                 elif lootitemb == lootitem:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
