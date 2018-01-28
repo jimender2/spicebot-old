@@ -162,13 +162,9 @@ nulllootitemsarray = ['water','vinegar','mud']
 def duel_action(bot, trigger):
     #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
     #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
-    
-    bot.say(str(trigger.group(0)))
-    bot.say(str(trigger.group(1)))
-    
-    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
