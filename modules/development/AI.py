@@ -23,8 +23,9 @@ def execute_main(bot, trigger, triggerargsarray): # Response for running the dum
     commandused = get_trigger_arg(triggerargsarray, 1)
     # adminusers array, triggerargsarray
     if commandused == 'channels': # check what channels are active
-        channels = bot.config.ai.active_channels
-        if channels == '':
+        #channels = bot.config.ai.active_channels - need to change to use valid channel
+        channels = get_botdatabase_value(bot, botchannel, 'channelmodules') or []
+        if not channels:
             chanmsg = "The AI module is not currently allowed in any channels."
         else:
             chanmsg = "The AI module is currently active in: "
@@ -37,12 +38,12 @@ def execute_main(bot, trigger, triggerargsarray): # Response for running the dum
     
     
 def setup(bot): # Check to see if bot is configured
-    if bot.config.ai and bot.config.ai.frequency and bot.config.ai.active_channels: 
+    if bot.config.ai and bot.config.ai.frequency: 
         bot.memory['frequency'] = bot.config.ai.frequency # Pull 'frequency' from bot config into memory if configured
-        bot.memory['valid_channels'] = bot.config.ai.valid_channels or '' # Confirm valid channels
+        #bot.memory['valid_channels'] = bot.config.ai.valid_channels or '' # Confirm valid channels
     else:
         bot.memory['frequency'] = 3 # Set frequency to 3 if not configured in config
-        bot.memory['valid_channels'] = ''
+        #bot.memory['valid_channels'] = ''
 
     random.seed() # initialise random number
 
