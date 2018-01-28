@@ -258,7 +258,7 @@ def runroulette(bot):
                         newbet = int(mybet/colorpayout)
                         colorwinnings = mybet + newbet                                    
                         mywinnings=mywinnings+colorwinnings        
-                    if mywinnings >=1:
+                    if mywinnings >=1:                    
                         bot.notice(("You have won " + str(mywinnings)),player)
                         if spicebankbalance < mywinnings:
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
@@ -266,7 +266,9 @@ def runroulette(bot):
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
                             winners=winners + " " + player
                             totalwon = totalwon + mywinnings
-                     roulettereset(bot,player)
+                    roulettereset(bot,player)
+                        
+                     
         players = ''
         bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
