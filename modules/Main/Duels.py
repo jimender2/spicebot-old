@@ -2483,7 +2483,10 @@ def winnerdicerolling(bot, nick, rolls):
         fightroll = randint(rolla, rollb)
         fightarray.append(fightroll)
         rolls = int(rolls) - 1
-    fight = max(fightarray)
+    try:
+        fight = max(fightarray)
+    except ValueError:
+        fight = 0
     return fight
 
 #####################
