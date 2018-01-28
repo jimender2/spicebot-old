@@ -1555,27 +1555,39 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_current_streaks(bot, loser, 'loss')
         
         ## Manual weapon
-        weapon = get_trigger_arg(triggerargsarray, '2+')
-        bot.say(str(weapon))
-        if weapon and tierunlockweaponslocker >= currenttierstart:
-            manualweapon = 'true'
-            if weapon == 'all':
-                weapon = getallchanweaponsrandom(bot)
-            elif weapon == 'target':
-                weapon = weaponofchoice(bot, target)
-                weapon = str(target + "'s " + weapon)
+        if winner == instigator:
+            weapon = get_trigger_arg(triggerargsarray, '2+')
+            if weapon:
+                bot.say(str(weapon))
+        elif  winner == bot.nick:
+            weapon = ''
         else:
-            manualweapon = 'false'
-        
-        ## Weapon Select
-        if manualweapon == 'false' or winner == target:
-            if winner == bot.nick:
-                weapon = ''
-            else:
-                weapon = weaponofchoice(bot, winner)
+            weapon = weaponofchoice(bot, winner)
         weapon = weaponformatter(bot, weapon)
         if weapon != '':
             weapon = str(" " + weapon)
+        
+        
+        
+        #if weapon and tierunlockweaponslocker >= currenttierstart:
+        #    manualweapon = 'true'
+        #    if weapon == 'all':
+        #        weapon = getallchanweaponsrandom(bot)
+        #    elif weapon == 'target':
+        #        weapon = weaponofchoice(bot, target)
+        #        weapon = str(target + "'s " + weapon)
+        #else:
+        #    manualweapon = 'false'
+        
+        ## Weapon Select
+        #if manualweapon == 'false' or winner == target:
+        #    if winner == bot.nick:
+        #        weapon = ''
+        #    else:
+        #        weapon = weaponofchoice(bot, winner)
+        #weapon = weaponformatter(bot, weapon)
+        #if weapon != '':
+        #    weapon = str(" " + weapon)
         
         ## Combat Process
         damage, winnermsgarray = damagedone(bot, winner, loser, weapon, 1)
