@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray): # Response for running the dum
     commandused = get_trigger_arg(triggerargsarray, 1)
     # adminusers array, triggerargsarray
     if commandused == 'channels':
-        channels = bot.config.ai.valid_channels
+        channels = bot.config.ai.active_channels
         bot.say(str(channels))
     # if adminuser:
     # if triggerarg1 = enable, add channel to bot.config.ai.active_channels
