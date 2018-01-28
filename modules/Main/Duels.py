@@ -1062,30 +1062,14 @@ def execute_main(bot, trigger, triggerargsarray):
                                 mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
                             actualpotionmathedarray = []
-                            healthpotionamount,manapotionamount,poisonpotionamount,timepotionamount = 0,0,0,0
-                            for potiontype in uselootarray:
-                                if potiontype == 'healthpotion':
-                                    healthpotionamount = healthpotionamount + 1
-                                elif potiontype == 'poisonpotion':
-                                    poisonpotionamount = poisonpotionamount + 1
-                                elif potiontype == 'manapotion':
-                                    manapotionamount = manapotionamount + 1
-                                elif potiontype == 'timepotion':
-                                    timepotionamount = timepotionamount + 1
-                            for lootpotion in lootitemsarray:
-                                if lootpotion != 'mysterypotion' and lootpotion != 'magicpotion' and lootpotion != 'grenade':
-                                    potioneval = eval(lootpotion+ "amount")
-                                    if potioneval > 1:
-                                        uselootarray = [value for value in uselootarray if value != lootpotion]
-                                        uselootarray.append(str(str(potioneval) + " "+lootpotion + "s"))
-                            for nonlootitem in nulllootitemsarray:
-                                if nonlootitem in uselootarray:
-                                    nonpotioneval = uselootarray.count(nonlootitem)        
-                                    if nonpotioneval > 1:
-                                        uselootarray = [value for value in uselootarray if value != nonlootitem]
-                                        uselootarray.append(str(str(nonpotioneval) + " "+nonlootitem + "s"))
-                            postionsusedarray = get_trigger_arg(uselootarray, "list")
-                            mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
+                            for fluid in uselootarray:
+                                countedeval = uselootarray.count(fluid)
+                                if countedeval > 1:
+                                    uselootarray.append(str(str(countedeval) + " "+fluid + "s"))
+                                else:
+                                    actualpotionmathedarray.append(fluid)
+                            postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
+                            mainlootusemessage = str(mainlootusemessage + " Potion(s) used: " + postionsusedarray)
                         if lootusedeaths > 0:
                             if lootusedeaths == 1:
                                 mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
