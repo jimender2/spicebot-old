@@ -20,12 +20,16 @@ def mainfunction(bot, trigger): # dummy function to allow module to load at pres
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray): # Response for running the dummy command directly
+    commandused = trigger.group(2)
     # adminusers array, triggerargsarray
+    if commandused == 'channels':
+        channels = bot.memory['valid_channels']
+        bot.say(str(channels))
     # if adminuser:
     # if triggerarg1 = enable, add channel to bot.config.ai.active_channels
     # if triggerarg1 = disable, remove channel from bot.config.ai.active_channels
-    # else:
-    bot.say("It's not intelligence if you're telling me to do it directly.")
+    else:
+        bot.say("It's not intelligence if you're telling me to do it directly.")
     
     
 def setup(bot): # Check to see if bot is configured
