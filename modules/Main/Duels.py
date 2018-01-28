@@ -150,6 +150,7 @@ duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestrea
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
+duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -2267,6 +2268,7 @@ def tierratio_level(bot):
 #################
 
 def damagedone(bot, winner, loser, weapon, diaglevel):
+
     damagetextarray = []
     damagescale = tierratio_level(bot)
     winnerclass = get_database_value(bot, winner, 'class') or 'notclassy'
@@ -2287,7 +2289,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     else:
         winnername = winner
         losername = loser
-        striketype = "hits"
+        striketype = get_trigger_arg(duelhittypesarray, 'random')
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
@@ -2323,7 +2325,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     elif winnerclass == 'vampire':
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + ". ")
     else:
-        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', striking a blow of ' + str(damage) + ' damage. ')
+        damagetext = str(winnername + " "+striketype+" " + losername + weapon + ', dealing ' + str(damage) + ' damage. ')
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
