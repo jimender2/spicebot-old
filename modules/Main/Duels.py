@@ -1006,7 +1006,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         uselootarraytotal = len(uselootarray)
                         if target == instigator:
                             extramsg = '.'
-                            elif lootitem == 'healthpotion':
+                            if lootitem == 'healthpotion':
                                 if targetclass == 'barbarian':
                                     potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
                                 else:
