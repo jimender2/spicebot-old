@@ -1062,12 +1062,15 @@ def execute_main(bot, trigger, triggerargsarray):
                                 mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
                             actualpotionmathedarray = []
+                            alreadyprocessedarray = []
                             for fluid in uselootarray:
-                                countedeval = uselootarray.count(fluid)
-                                if countedeval > 1:
-                                    actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
-                                else:
-                                    actualpotionmathedarray.append(fluid)
+                                if fluid not in alreadyprocessedarray:
+                                    alreadyprocessedarray.append(fluid)
+                                    countedeval = uselootarray.count(fluid)
+                                    if countedeval > 1:
+                                        actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
+                                    else:
+                                        actualpotionmathedarray.append(fluid)
                             postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potion(s) used: " + postionsusedarray)
                         if lootusedeaths > 0:
