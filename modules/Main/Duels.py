@@ -878,7 +878,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
                 elif lootitem == 'magicpotion':
-                    bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
+                    bot.notice("Magic Potions are not purchasable, sellable, or usable. They can only be traded.", instigator)
                 elif lootitem == 'grenade':
                     if not inchannel.startswith("#"):
                         bot.notice(instigator + ", grenades must be used in channel.", instigator)
@@ -1005,15 +1005,34 @@ def execute_main(bot, trigger, triggerargsarray):
                                 uselootarray.append(lootitem)
                         uselootarraytotal = len(uselootarray)
                         if target == instigator:
+                            extramsg = '.'
+                            elif lootitem == 'healthpotion':
+                                if targetclass == 'barbarian':
+                                    potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
+                                else:
+                                    potionmaths = int(uselootarraytotal) * healthpotionworth
+                                extramsg = str(" restoring " + str(potionmaths) + " health.")
+                            elif lootitem == 'poisonpotion':
+                                poisonpotionworthb = abs(poisonpotionworth)
+                                potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
+                                extramsg = str(" draining " + str(potionmaths) + " health.")
+                            elif lootitem == 'manapotion':
+                                if targetclass == 'mage':
+                                    potionmaths = int(uselootarraytotal) * manapotionworthmage
+                                else:
+                                    potionmaths = int(uselootarraytotal) * manapotionworth
+                                extramsg = str(" restoring " + str(potionmaths) + " mana.")
+                            elif lootitem == 'timepotion':
+                                extramsg = str(" removing timeouts.")
                             if int(uselootarraytotal) == 1:
-                                mainlootusemessage = str(instigator + ' uses ' + lootitem + '.')
+                                mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
                             else:
-                                mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's.')
+                                mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
                         else:
                             if int(uselootarraytotal) == 1:
-                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + ".")
+                                mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + extramsg)
                             else:
-                                mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +".")
+                                mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +extramsg)
                         for x in uselootarray:
                             if x == 'healthpotion':
                                 if targetclass == 'barbarian':
