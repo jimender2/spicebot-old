@@ -7,8 +7,8 @@ import os
 import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
-from Points import *
 from SpicebotShared import *
+from Points import *
 
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
