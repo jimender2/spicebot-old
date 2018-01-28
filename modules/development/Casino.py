@@ -278,7 +278,7 @@ def runroulette(bot):
 def roulettereset(bot,player):
     mybet =''
     mynumber= 0
-    mycoloer = ''
+    mycolor = ''
    
     roulettearray = str(mybet) + str(mynumber)+str(mycolor)
     bot.db.set_nick_value(player, 'roulettearray', roulettearray)
