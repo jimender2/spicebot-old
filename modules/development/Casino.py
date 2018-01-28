@@ -250,7 +250,7 @@ def runroulette(bot):
                 mybet =  int(get_trigger_arg(playerarray,1) or 0)
                 mynumber = int(get_trigger_arg(playerarray,2) or 0)
                 mycolor =  get_trigger_arg(playerarray,3) or ''
-                roulettereset(bot,player)
+                
                 if not mybet == 0:
                     if mynumber == winningnumber:
                         mywinnings=mybet * maxwheel
@@ -265,7 +265,8 @@ def runroulette(bot):
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
                             winners=winners + " " + player
-                            totalwon = totalwon + mywinnings                  
+                            totalwon = totalwon + mywinnings
+                     roulettereset(bot,player)
         players = ''
         bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
