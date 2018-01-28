@@ -583,7 +583,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
                 subcommand = actualname(bot, subcommand)
-                if subcommand in canduelarray:
+                if subcommand in canduelarray and instigator in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
                 else:
                     dowedisplay = 1
@@ -2532,6 +2532,11 @@ def get_winlossratio(bot,target):
             winlossratio = 0
         else:
             winlossratio = wins
+    elif not wins:
+        if not losses:
+            winlossratio = 0
+        else:
+            winlossratio = int(losses) * -1
     else:
         winlossratio = float(wins)/losses
     return winlossratio
