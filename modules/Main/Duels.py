@@ -583,7 +583,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
             else:
                 subcommand = actualname(bot, subcommand)
-                if subcommand in canduelarray:
+                if subcommand in canduelarray and instigator in canduelarray:
                     bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
                 else:
                     dowedisplay = 1
