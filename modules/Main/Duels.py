@@ -1077,8 +1077,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     potioneval = eval(lootpotion+ "amount")
                                     if potioneval > 1:
                                         uselootarray = [value for value in uselootarray if value != lootpotion]
-                                        uselootarray.remove(lootpotion)
-                                        uselootarray.append(str(str(potioneval) + lootpotion + "s"))
+                                        uselootarray.append(str(str(potioneval) + " "+lootpotion + "s"))
                             postionsusedarray = get_trigger_arg(uselootarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
                         if lootusedeaths > 0:
