@@ -1114,7 +1114,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
                 elif lootitem not in lootitemsarray or lootitemb not in lootitemsarray:
                     bot.notice(instigator + ", Invalid loot item.", instigator)
-                if lootitem == 'grenade' or lootitemb == 'grenade':
+                elif lootitem == 'grenade' or lootitemb == 'grenade':
                     bot.notice(instigator + ", You can't trade for grenades.", instigator)
                 elif lootitemb == lootitem:
                     bot.notice(instigator + ", You can't trade for the same type of potion.", instigator)
