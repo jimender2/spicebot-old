@@ -21,6 +21,7 @@ def mainfunction(bot, trigger): # dummy function to allow module to load at pres
     
 def execute_main(bot, trigger, triggerargsarray): # Response for running the dummy command directly
     commandused = get_trigger_arg(triggerargsarray, 1)
+    botchannel = trigger.sender
     # adminusers array, triggerargsarray
     if commandused == 'channels': # check what channels are active
         #channels = bot.config.ai.active_channels - need to change to use valid channel
@@ -78,7 +79,7 @@ def ty2(bot, trigger):
 def ty4(bot, trigger):
     ty(bot, trigger) # Activate function "ty"
 
-@rule('(sopel|$nickname)\:\s+(yes|no)$') # Respond to "botnick: yes/no"
+@rule('(sopel|$nickname)\:\s+(yes!?|no)$') # Respond to "botnick: yes/no"
 @rate(15)
 def yesno(bot, trigger):
     rand = random.uniform(0, 5) # Random time to wait
