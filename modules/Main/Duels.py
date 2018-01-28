@@ -146,12 +146,13 @@ duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses',
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
 duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 duelbodypartsarray = ['chest','arm','leg','head']
+armortypesarray = ['helmet','gauntlets','breastplate','greaves']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -807,8 +808,36 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Armor
         elif commandortarget == 'armor':
-            bot.say("WIP")
-        
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
+                target = get_trigger_arg(triggerargsarray, 2) or instigator
+                if target.lower() not in [u.lower() for u in bot.users]:
+                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+                else:
+                    target = actualname(bot, target)
+                    statreset(bot, target)
+                    for x in armortypesarray:
+                        gethowmany = get_database_value(bot, target, x)
+                        if gethowmany:
+                            armordurability = str(x + "'s durability = " + str(gethowmany))
+                            displaymessage = str(displaymessage + addstat)
+                    if displaymessage != '':
+                        displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
+                        bot.say(displaymessage)
+                    else:
+                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            elif subcommand == 'buy':
+                bot.say("WIP")
+                ## have to decide on a cost
+            elif subcommand == 'sell':
+                bot.say("WIP")
+                ## based on the remaining durability of the item
+            elif subcommand == 'repair':
+                bot.say("WIP")
+                ## should be cheaper than buy, but has to be done before the damage destroys the item
+
         ## Bounty
         elif commandortarget == 'bounty':
             if not inchannel.startswith("#"):
