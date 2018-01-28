@@ -2529,9 +2529,14 @@ def get_winlossratio(bot,target):
     losses = int(losses)
     if not losses:
         if not wins:
-            winlossratio = int(losses) * -1
+            winlossratio = 0
         else:
             winlossratio = wins
+    elif not wins:
+        if not losses:
+            winlossratio = 0
+        else:
+            winlossratio = int(losses) * -1
     else:
         winlossratio = float(wins)/losses
     bot.say(str(winlossratio))
