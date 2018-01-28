@@ -1065,7 +1065,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             for fluid in uselootarray:
                                 countedeval = uselootarray.count(fluid)
                                 if countedeval > 1:
-                                    uselootarray.append(str(str(countedeval) + " "+fluid + "s"))
+                                    actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
                                 else:
                                     actualpotionmathedarray.append(fluid)
                             postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
