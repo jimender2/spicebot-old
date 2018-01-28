@@ -149,6 +149,7 @@ classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire',
 duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
+nulllootitemsarray = ['water','vinegar','mud']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -996,7 +997,6 @@ def execute_main(bot, trigger, triggerargsarray):
                                 quantity = quantity - 1
                                 loot = get_trigger_arg(lootitemsarray, 'random')
                                 if loot == 'mysterypotion' or loot == 'magicpotion':
-                                    nulllootitemsarray = ['water','vinegar','mud']
                                     loot = get_trigger_arg(nulllootitemsarray, 'random')
                                 uselootarray.append(loot)
                         else:
@@ -1078,6 +1078,12 @@ def execute_main(bot, trigger, triggerargsarray):
                                     if potioneval > 1:
                                         uselootarray = [value for value in uselootarray if value != lootpotion]
                                         uselootarray.append(str(str(potioneval) + " "+lootpotion + "s"))
+                            for nonlootitem in nulllootitemsarray:
+                                if nonlootitem in uselootarray:
+                                    nonpotioneval = uselootarray.count(nonlootitem)        
+                                    if nonpotioneval > 1:
+                                        uselootarray = [value for value in uselootarray if value != nonlootitem]
+                                        uselootarray.append(str(str(nonpotioneval) + " "+nonlootitem + "s"))
                             postionsusedarray = get_trigger_arg(uselootarray, "list")
                             mainlootusemessage = str(mainlootusemessage + " Potions used: " + postionsusedarray)
                         if lootusedeaths > 0:
