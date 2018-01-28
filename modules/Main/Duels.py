@@ -1559,7 +1559,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             weapon = get_trigger_arg(triggerargsarray, '2+')
             if weapon:
                 bot.say(str(weapon))
-                if tierunlockweaponslocker >= currenttierstart:
+                if currenttierstart >= tierunlockweaponslocker:
                     bot.say(str(weapon))
             else:
                 weapon = weaponofchoice(bot, winner)
