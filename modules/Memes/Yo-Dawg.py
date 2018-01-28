@@ -20,4 +20,4 @@ def execute_main(bot, trigger, triggerargsarray):
         statement = str("Yo Dawg! I heard you liked " + target + ", So I put a " + target + " in/on your " + target + "!!!")
         bot.say(statement)
     else:
-        bot.say("I'm not sure who that is.")
+        bot.say("I'm not sure who or what the hell that is.")

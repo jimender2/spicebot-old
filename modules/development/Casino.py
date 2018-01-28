@@ -161,6 +161,7 @@ def roulette(bot,trigger,arg):
         runroulette(bot)
 
     else:
+        
         if mybet == 'allin':
             balance = Spicebucks.bank(bot, trigger.nick)
             if balance > 0:
@@ -184,9 +185,9 @@ def roulette(bot,trigger,arg):
             mynumber=''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
-            if(mynumber <= 0 or mynumber > maxwheel):
-                bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
-                inputcheck=0
+                if(mynumber <= 0 or mynumber > maxwheel):
+                    bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
+                    inputcheck=0
                     #check to see if a color was selected
             else: 
                 if not myitem2 == 'noitem':
@@ -219,8 +220,10 @@ def roulette(bot,trigger,arg):
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
-                bot.say(trigger.nick + ' puts ' + str(mybet) + ' on the table spins and the wheel')
-                bot.db.set_nick_value('Roulette', 'rouletteplayers', player)
+                bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
+                players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+                players.append(player)
+                bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray = str(mybet) + str(mynumber)+str(mycolor)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
             else:
@@ -231,8 +234,8 @@ def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
-    players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
-    if not players == '':            
+    players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+    if not players == []:            
         winningnumber = spin(wheel)
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
@@ -247,7 +250,7 @@ def runroulette(bot):
                 mybet =  int(get_trigger_arg(playerarray,1) or 0)
                 mynumber = int(get_trigger_arg(playerarray,2) or 0)
                 mycolor =  get_trigger_arg(playerarray,3) or ''
-                roulettereset(bot,player)
+                
                 if not mybet == 0:
                     if mynumber == winningnumber:
                         mywinnings=mybet * maxwheel
@@ -255,15 +258,19 @@ def runroulette(bot):
                         newbet = int(mybet/colorpayout)
                         colorwinnings = mybet + newbet                                    
                         mywinnings=mywinnings+colorwinnings        
-                    if mywinnings >=1:
+                    if mywinnings >=1:                    
                         bot.notice(("You have won " + str(mywinnings)),player)
                         if spicebankbalance < mywinnings:
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
                             winners=winners + " " + player
-                            totalwon = totalwon + mywinnings                   
+                            totalwon = totalwon + mywinnings
+                    roulettereset(bot,player)
                         
+                     
+        players = ''
+        bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
             bot.say("No one wins anything")
         else:
@@ -274,10 +281,11 @@ def runroulette(bot):
 def roulettereset(bot,player):
     mybet =''
     mynumber= 0
-    mybet = 0
+    mycolor = ''
+    players = []
     roulettearray = str(mybet) + str(mynumber)+str(mycolor)
     bot.db.set_nick_value(player, 'roulettearray', roulettearray)
-    bot.db.set_nick_value('Roulette' 'rouletteplayers', '')
+    bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
