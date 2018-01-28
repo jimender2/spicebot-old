@@ -9,7 +9,6 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 from Nuke import *
 from Points import *
-#from shareddir.path.append(Main) import Nuke ##this line is wonky
 
 @sopel.module.commands('testimport')
 def mainfunction(bot, trigger):
