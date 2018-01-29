@@ -247,9 +247,9 @@ def runroulette(bot):
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
-                mybet =  int(get_trigger_arg(playerarray,0) or 0)
-                mynumber = int(get_trigger_arg(playerarray,1) or 0)
-                mycolor =  get_trigger_arg(playerarray,2) or ''
+                mybet =  int(playerarray[0]) or 0
+                mynumber = int(playerarray[1]) or 0
+                mycolor =  playerarray[2] or ''
                 
                 if not mybet == 0:
                     if mynumber == winningnumber:
