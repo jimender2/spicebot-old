@@ -221,7 +221,7 @@ def roulette(bot,trigger,arg):
         players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
         for i in players:
             if i == player:
-                bot.say("You already placed a bet")
+                bot.notice("You already placed a bet",player)
                 inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
