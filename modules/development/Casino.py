@@ -52,19 +52,19 @@ def execute_main(bot, trigger, arg):
         bot.db.set_nick_value('ColorCount','colors', 'None')
         bot.say('Colors database emptied')
     else:
-        bot.say('Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
+        bot.say('Please choose a game. Options include: slots, blackjack, roulette, blackjack and lottery.')
         
 def freebie(bot,trigger):
     bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
     spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
     if bankbalance<1:
         if spicebankbalance >=1:
-            bot.say('The casino gives you 1 Spicebuck for use in the casino')
+            bot.notice('The casino gives you 1 Spicebuck for use in the casino', trigger)
             Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
         else:
-            bot.say("The casino doesn't have any funds to provide")
+            bot.notice("The casino doesn't have any funds to provide",trigger)
     else:
-        bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
+        bot.notice(('Looks like you dont need a handout because your bank balance is ' + str(bankbalance)),trigger)
     
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
@@ -157,7 +157,8 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-    elif mybet =='end':
+    elif mybet =='call':
+        bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
         runroulette(bot)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
@@ -172,7 +173,7 @@ def roulette(bot,trigger,arg):
                 mybet=balance
                 inputcheck = 1
             else:
-                bot.say('You do not have any spicebucks')
+                bot.notice('You do not have any spicebucks',player)
                 inputcheck = 0
         elif not mybet.isdigit():
             bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
