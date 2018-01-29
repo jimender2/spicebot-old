@@ -270,14 +270,14 @@ def execute_main(bot, trigger, triggerargsarray):
         if commandortarget == 'docs' or commandortarget == 'help':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
-                bot.notice("Online Docs: " + GITWIKIURL, instigator)
+                bot.say("Online Docs: " + GITWIKIURL)
             elif target.lower() not in [u.lower() for u in bot.users]:
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             else:
                 bot.notice("Online Docs: " + GITWIKIURL, target)
 
         ## Author
-        if commandortarget == 'author':
+        elif commandortarget == 'author':
             bot.notice("The author of Duels is deathbybandaid.", instigator)
         
         ## On/off
