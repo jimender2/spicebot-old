@@ -190,8 +190,8 @@ def roulette(bot,trigger,arg):
             mycolor = ''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
-                if(mynumber <= 0 or mynumber > maxwheel):
-                    bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
+                if(mynumber <= 1 or mynumber > maxwheel):
+                    bot.notice(('Please pick a number between 1 and ' + str(maxwheel)),player)
                     inputcheck=0
                     #check to see if a color was selected
                 else: 
@@ -250,6 +250,8 @@ def runroulette(bot):
     players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
     if not players == []:            
         winningnumber = spin(wheel)
+        if winningnumber == 0:
+            winningnumber == 1
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
         mywinnings=0
@@ -260,9 +262,11 @@ def runroulette(bot):
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
-                mybet =  int(playerarray[0]) or 0
-                mynumber = int(playerarray[1]) or 0
-                mycolor =  playerarray[2] or ''
+                mybet =  get_trigger_arg(playerarray, 1) or 0
+                mybet = int(mybet)
+                mynumber = get_trigger_arg(playerarray, 2) or 0
+                mynumber = int(mynumber)
+                mycolor =  get_trigger_arg(playerarray, 3) or ''
                 
                 if not mybet == 0:
                     if mynumber == winningnumber:
