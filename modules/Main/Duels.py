@@ -847,6 +847,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if getarmor and getarmor > 0:
                         bot.say("It looks like you already have a " + typearmor + ".")
                     else:
+                        bot.say("Purchase Complete.")
                         adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
                         set_database_value(bot, instigator, typearmor, armormaxdurability)
             elif subcommand == 'sell':
