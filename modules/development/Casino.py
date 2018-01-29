@@ -272,7 +272,7 @@ def runroulette(bot):
                     if mynumber == winningnumber:
                         mywinnings=mybet * maxwheel
                     elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-                        newbet = int(mybet/colorpayout)
+                        newbet = int(mybet/2)
                         colorwinnings = mybet + newbet                                    
                         mywinnings=mywinnings+colorwinnings        
                     if mywinnings >=1:                    
