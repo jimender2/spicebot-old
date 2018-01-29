@@ -229,8 +229,8 @@ def roulette(bot,trigger,arg):
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
                 players.append(player)
-                testmsg = get_trigger_arg(players,"list")
-                bot.say("Players " + testmsg)
+                #testmsg = get_trigger_arg(players,"list")
+                bot.say("Players " + players)
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray.append(mybet)
                 roulettearray.append(mynumber)
