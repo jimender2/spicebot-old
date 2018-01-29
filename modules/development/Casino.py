@@ -52,19 +52,19 @@ def execute_main(bot, trigger, arg):
         bot.db.set_nick_value('ColorCount','colors', 'None')
         bot.say('Colors database emptied')
     else:
-        bot.say('Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
+        bot.say('Please choose a game. Options include: slots, blackjack, roulette, blackjack and lottery.')
         
 def freebie(bot,trigger):
     bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
     spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
     if bankbalance<1:
         if spicebankbalance >=1:
-            bot.say('The casino gives you 1 Spicebuck for use in the casino')
+            bot.notice('The casino gives you 1 Spicebuck for use in the casino', trigger)
             Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
         else:
-            bot.say("The casino doesn't have any funds to provide")
+            bot.notice("The casino doesn't have any funds to provide",trigger)
     else:
-        bot.say('Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
+        bot.notice(('Looks like you dont need a handout because your bank balance is ' + str(bankbalance)),trigger)
     
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
@@ -157,8 +157,13 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-    elif mybet =='end':
+    elif mybet =='call':
+        bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
         runroulette(bot)
+    elif mybet == 'reset' and trigger.admin:
+        roulettereset(bot,trigger.nick)
+        bot.say("Stats reset for " + trigger.nick)
+        
 
     else:
         
@@ -168,7 +173,7 @@ def roulette(bot,trigger,arg):
                 mybet=balance
                 inputcheck = 1
             else:
-                bot.say('You do not have any spicebucks')
+                bot.notice('You do not have any spicebucks',player)
                 inputcheck = 0
         elif not mybet.isdigit():
             bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
@@ -183,51 +188,63 @@ def roulette(bot,trigger,arg):
         if inputcheck == 1:    
             #check to see if a number was entered
             mynumber=''
+            mycolor = ''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
-                if(mynumber <= 0 or mynumber > maxwheel):
-                    bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
+                if(mynumber <= 1 or mynumber > maxwheel):
+                    bot.notice(('Please pick a number between 1 and ' + str(maxwheel)),player)
                     inputcheck=0
                     #check to see if a color was selected
-            else: 
-                if not myitem2 == 'noitem':
-                    if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
-                        mycolor = myitem2
+                else: 
+                    if not myitem2 == 'noitem':
+                        if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
+                            mycolor = myitem2
+                        else:
+                            bot.notice(('Choose either red or black'), player)
+                            inputcheck=0
+                            mycolor=''
                     else:
-                        bot.notice(('Choose either red or black'), player)
-                        inputcheck=0
-                        mycolor=''
-                else:
-                    mycolor = ' '
-                    inputcheck =1
+                        mycolor = ' '
+                        inputcheck =1
         #was a color selected first
-        elif(myitem == 'red' or myitem == 'black'):
-            mycolor = myitem
-            mynumber=''
-            inputcheck =1
-        else:
-        #no valid choices
-            bot.notice(('Please pick either a color or number to bet on'),player)                    
-            inputcheck = 0     
+            elif(myitem == 'red' or myitem == 'black'):
+                mycolor = myitem
+                mynumber=''
+                inputcheck =1
+            else:
+                #no valid choices
+                bot.notice(('Please pick either a color or number to bet on'),player)                    
+                inputcheck = 0     
         
     # user input now setup game will run
     if inputcheck == 1:
         players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
         for i in players:
             if i == player:
-                bot.say("You already placed a bet")
+                bot.notice("You already placed a bet",player)
                 inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
+                roulettearray = []
+                players = []
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
-                players.append(player)
+                players.append(player)               
+                
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
-                roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+                roulettearray.append(str(mybet))
+                roulettearray.append(str(mynumber))
+                roulettearray.append(mycolor)
+                testmsg = get_trigger_arg(roulettearray,"list") 
+                bot.notice("Your bet has been recorded", player)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
+                numberofplayers = len(players)
+                if numberofplayers>=3:
+                    bot.say("The dealer collects all bets")
+                    runroulette(bot)
             else:
-                bot.notice("You don't have enough Spicebucks",player)
+                bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
 def runroulette(bot):
@@ -237,29 +254,35 @@ def runroulette(bot):
     players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
     if not players == []:            
         winningnumber = spin(wheel)
+        if winningnumber == 0:
+            winningnumber == 1
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
         mywinnings=0
         winners = ''
         totalwon = 0        
         displaymessage = get_trigger_arg(players , "list")
-        bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' good luck to ' + displaymessage)
+        
+        bot.say('The dealer spins the wheel good luck to ' + displaymessage)
+        bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
-                mybet =  int(get_trigger_arg(playerarray,1) or 0)
-                mynumber = int(get_trigger_arg(playerarray,2) or 0)
-                mycolor =  get_trigger_arg(playerarray,3) or ''
+                mybet =  get_trigger_arg(playerarray, 1) or 0
+                mybet = int(mybet)
+                mynumber = get_trigger_arg(playerarray, 2) or 0
+                mynumber = int(mynumber)
+                mycolor =  get_trigger_arg(playerarray, 3) or ''
                 
                 if not mybet == 0:
                     if mynumber == winningnumber:
                         mywinnings=mybet * maxwheel
                     elif mycolor == color: # chance of choosing the same color is so high will set the payout to a fixed amount
-                        newbet = int(mybet/colorpayout)
+                        newbet = int(mybet/2)
                         colorwinnings = mybet + newbet                                    
                         mywinnings=mywinnings+colorwinnings        
                     if mywinnings >=1:                    
-                        bot.notice(("You have won " + str(mywinnings)),player)
+                        bot.notice(("Roulette has ended and you have won " + str(mywinnings)),player)
                         if spicebankbalance < mywinnings:
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
@@ -274,7 +297,7 @@ def runroulette(bot):
         if winners =='':
             bot.say("No one wins anything")
         else:
-            bot.say(winners + " are winners and " + str(totalwon) + " was won in total")
+            bot.say("winners: " + winners + " and " + str(totalwon) + " was won in total")
     else:
        bot.say("No players found")
     

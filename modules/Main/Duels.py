@@ -83,6 +83,12 @@ scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding l
 barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
 vampiremaximumdamge = 50
 
+## Armor
+armormaxdurability = 20
+armormaxdurabilityblacksmith = 30
+armorhitpercentage = .5
+armorcost = 500
+
 ## Bot
 botdamage = 150 ## The bot deals a set damage
 duelrecorduser = 'duelrecorduser' ## just a database column to store values in
@@ -145,13 +151,14 @@ backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','ti
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
+duelstatsadminarray = ['helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
 duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 duelbodypartsarray = ['chest','arm','leg','head']
+armortypesarray = ['helmet','gauntlets','breastplate','greaves']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
@@ -807,8 +814,91 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Armor
         elif commandortarget == 'armor':
-            bot.say("WIP")
-        
+            subcommand = get_trigger_arg(triggerargsarray, 2)
+            typearmor = get_trigger_arg(triggerargsarray, 3)
+            if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
+                target = get_trigger_arg(triggerargsarray, 2) or instigator
+                if target.lower() not in [u.lower() for u in bot.users]:
+                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+                    bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+                else:
+                    target = actualname(bot, target)
+                    statreset(bot, target)
+                    for x in armortypesarray:
+                        gethowmany = get_database_value(bot, target, x)
+                        if gethowmany:
+                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                            displaymessage = str(displaymessage + addstat)
+                    if displaymessage != '':
+                        displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
+                        bot.say(displaymessage)
+                    else:
+                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            elif subcommand == 'buy':
+                instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                elif instigatorcoin < armorcost:
+                    bot.say("Insufficient Funds")
+                else:
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
+                    if getarmor and getarmor > 0:
+                        bot.say("It looks like you already have a " + typearmor + ".")
+                    else:
+                        bot.say(instigator + " bought " + typearmor + " for " + str(armorcost) + " coins.")
+                        adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
+                        set_database_value(bot, instigator, typearmor, armormaxdurability)
+            elif subcommand == 'sell':
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                else:
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
+                    if not getarmor:
+                        bot.say("You don't have a " + typearmor + " to sell.")
+                    elif getarmor < 0:
+                        bot.say("Your armor is too damaged to sell.")
+                        reset_database_value(bot, instigator, typearmor)
+                    else:
+                        durabilityremaining = getarmor / armormaxdurability
+                        sellingamount = durabilityremaining * armorcost
+                        if sellingamount <= 0:
+                            bot.say("Your armor is too damaged to sell.")
+                        else:
+                            bot.say("Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
+                            adjust_database_value(bot, instigator, 'coin', sellingamount)
+                            reset_database_value(bot, instigator, typearmor)
+            elif subcommand == 'repair':
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                else:
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
+                    instigatorclass = get_database_value(bot, instigator, 'class')
+                    durabilitycompare = armormaxdurability
+                    if instigatorclass == 'armormaxdurability':
+                        durabilitycompare = armormaxdurabilityblacksmith
+                    if not getarmor:
+                        bot.say("You don't have a " + typearmor + " to repair.")
+                    elif getarmor >= durabilitycompare:
+                        bot.say("It looks like your armor does not need repair.")
+                    else:
+                        durabilitytorepair = durabilitycompare - getarmor
+                        if durabilitytorepair <= 0:
+                            bot.say("Looks like you can't repair that right now.")
+                        else:
+                            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                            costinvolved  = durabilitytorepair / durabilitycompare
+                            costinvolved = costinvolved * armorcost
+                            if instigatorcoin < costinvolved:
+                                bot.say("Insufficient Funds.")
+                            else:
+                                bot.say(typearmor + " repaired  for " + str(costinvolved)+" coins.")
+                                adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
+                                set_database_value(bot, instigator, typearmor, durabilitycompare)
+
         ## Bounty
         elif commandortarget == 'bounty':
             if not inchannel.startswith("#"):
@@ -2289,12 +2379,29 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         losername = loser
         striketype = "retaliates against"
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+    elif winner == loser:
+        winnername = loser
+        losername = "themself"
+        striketype = get_trigger_arg(duelhittypesarray, 'random')
+        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
     else:
         winnername = winner
         losername = loser
         striketype = get_trigger_arg(duelhittypesarray, 'random')
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
 
+    ## Armortype to check
+    if bodypart == 'chest':
+        armortype = 'breastplate'
+    elif bodypart == 'arm':
+        armortype = 'gauntlets'
+    elif bodypart == 'leg':
+        armortype = 'greaves'
+    elif bodypart == 'head':
+        armortype = 'helmet'
+    else:
+        armortype = 'breastplate'
+    
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
     if loserclass == 'rogue' and winner in roguearraynodamage:
@@ -2312,7 +2419,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = randint(barbarianminimumdamge, 120)
     
     ## vampires have a minimum damage
-    elif winnerclass == 'vampire':
+    elif winnerclass == 'vampire' and winner != loser:
         damage = randint(0, vampiremaximumdamge)
     
     ## All Other Players
@@ -2325,19 +2432,19 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = int(damage)
 
     if damage == 0:
-        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ' but deals no damage. ')
-    elif winnerclass == 'vampire':
+        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ', but deals no damage. ')
+    elif winnerclass == 'vampire' and winner != loser:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ". ")
     else:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + " " + ", dealing " + str(damage) + " damage. ")
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage. ")
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
-    if winnerclass == 'vampire':
+    if winnerclass == 'vampire' and winner != loser:
         adjust_database_value(bot, winner, 'health', damage)
         
     ## Berserker Rage
-    if winnerclass == 'barbarian':
+    if winnerclass == 'barbarian' and winner != loser:
         rageodds = randint(1, 12)
         if rageodds == 1:
             extradamage = randint(1, 25)
@@ -2346,7 +2453,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damagetextarray.append(damagetext)
     
     ## Paladin deflect
-    if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame':
+    if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame' and winner != loser:
         deflectodds = randint(1, 12)
         if deflectodds == 1:
             damageb = damage
@@ -2365,7 +2472,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damagetextarray.append(damagetext)
     
     ## Shield resistance
-    if shieldloser and damage > 0:
+    if shieldloser and damage > 0 and winner != loser:
         damagemath = int(shieldloser) - damage
         if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
@@ -2378,8 +2485,24 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetext = str(losername + " absorbs " + str(absorbed) + " of the damage. ")
         damagetextarray.append(damagetext)
 
+    ## Armor usage
+    armorloser = get_database_value(bot, loser, armortype) or 0
+    if armorloser and damage > 0 and winner != loser:
+        adjust_database_value(bot, loser, armortype, -1)
+        damage = damage * armorhitpercentage
+        damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
+        armorloser = get_database_value(bot, loser, armortype) or 0
+        if armorloser <= 0:
+            reset_database_value(bot, loser, armortype)
+            damagetext = str(damagetext + ", causing the armor to break!")
+        elif armorloser <= 5:
+            damagetext = str(damagetext + ", causing the armor to be in need of repair!")
+        else:
+            damagetext = str(damagetext + ".")
+        damagetextarray.append(damagetext)
+    
     ## Knight
-    if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
+    if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame' and winner != loser:
         retaliateodds = randint(1, 12)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
