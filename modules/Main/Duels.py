@@ -1603,6 +1603,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             for q in getreadytorumblenamearray:
                 targetscriptdef = str(q + "(bot, target, channel)")
                 targetnameadd = eval(targetscriptdef)
+                targetnameadd = str(targetnameadd)
                 if targetname != '':
                     targetname = str(targetname + " " + targetnameadd)
                 else:
