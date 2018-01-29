@@ -1542,7 +1542,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
     
     healthcheck(bot, instigator)
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
-    getreadytorumblenamearray = ['nicktitles','nickpepper','nickmagicattributes']
+    getreadytorumblenamearray = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
     ## clean empty stats
     assaultdisplay = ''
     assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -1590,6 +1590,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         for q in getreadytorumblenamearray:
             instigatorscriptdef = str(q + "(bot, instigator, channel)")
             instigatornameadd = eval(instigatorscriptdef)
+            instigatornameadd = str(instigatornameadd)
             if instigatorname != '':
                 instigatorname = str(instigatorname + " " + instigatornameadd)
             else:
@@ -1602,6 +1603,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             for q in getreadytorumblenamearray:
                 targetscriptdef = str(q + "(bot, target, channel)")
                 targetnameadd = eval(targetscriptdef)
+                targetnameadd = str(targetnameadd)
                 if targetname != '':
                     targetname = str(targetname + " " + targetnameadd)
                 else:
@@ -1974,6 +1976,14 @@ def nickmagicattributes(bot, nick, channel):
                 nickname = str(nickname + x)
             else:
                 nickname = x
+    return nickname
+
+def nickarmor(bot, nick, channel):
+    nickname = ''
+    for x in armortypesarray:
+        gethowmany = get_database_value(bot, nick, x)
+        if gethowmany:
+            nickname = "{Armored}"
     return nickname
 
 def actualname(bot,nick):
