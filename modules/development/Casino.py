@@ -223,14 +223,17 @@ def roulette(bot,trigger,arg):
                # inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
+                roulettearray = []
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
                 players.append(player)
                 testmsg = get_trigger_arg(players,"list")
-                bot.say(" Players " + testmsg)
+                bot.say("Players " + testmsg)
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
-                roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+                roulettearray.append(mybet)
+                roulettearray.append(mynumber)
+                roulettearray.append(mycolor)
                 bot.say(roulettearray)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
             else:
