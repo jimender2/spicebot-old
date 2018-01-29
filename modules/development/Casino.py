@@ -213,20 +213,23 @@ def roulette(bot,trigger,arg):
             inputcheck = 0     
         
     # user input now setup game will run
-    if inputcheck == 1:
-        players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
-        for i in players:
-            if i == player:
-                bot.say("You already placed a bet")
-                inputcheck = 0
+    #if inputcheck == 1:
+        #players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
+        #for i in players:
+           # if i == player:
+              #  bot.say("You already placed a bet")
+               # inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
                 players.append(player)
+                testmsg = get_trigger_arg(players,"list")
+                bot.say(" Players " + testmsg)
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray = str(mybet) + str(mynumber)+str(mycolor)
+                bot.say(roulettearray)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
             else:
                 bot.notice("You don't have enough Spicebucks",player)
