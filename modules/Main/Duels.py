@@ -843,7 +843,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 elif instigatorcoin < armorcost:
                     bot.say("Insufficient Funds")
                 else:
-                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
                     if getarmor and getarmor > 0:
                         bot.say("It looks like you already have a " + typearmor + ".")
                     else:
@@ -854,7 +854,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     armors = get_trigger_arg(armortypesarray, 'list')
                     bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
                 else:
-                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
                     if not getarmor:
                         bot.say("You don't have a " + typearmor + " to sell.")
                     elif getarmor < 0:
@@ -874,7 +874,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     armors = get_trigger_arg(armortypesarray, 'list')
                     bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
                 else:
-                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    getarmor = get_database_value(bot, instigator, typearmor) or 0
                     instigatorclass = get_database_value(bot, instigator, 'class')
                     durabilitycompare = armormaxdurability
                     if instigatorclass == 'armormaxdurability':
