@@ -187,23 +187,24 @@ def roulette(bot,trigger,arg):
         if inputcheck == 1:    
             #check to see if a number was entered
             mynumber=''
+            mycolor = ''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
                 if(mynumber <= 0 or mynumber > maxwheel):
                     bot.notice(('Please pick a number between 0 and ' + str(maxwheel)),player)
                     inputcheck=0
                     #check to see if a color was selected
-            else: 
-                if not myitem2 == 'noitem':
-                    if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
-                        mycolor = myitem2
+                else: 
+                    if not myitem2 == 'noitem':
+                        if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
+                            mycolor = myitem2
+                        else:
+                            bot.notice(('Choose either red or black'), player)
+                            inputcheck=0
+                            mycolor=''
                     else:
-                        bot.notice(('Choose either red or black'), player)
-                        inputcheck=0
-                        mycolor=''
-                else:
-                    mycolor = ' '
-                    inputcheck =1
+                        mycolor = ' '
+                        inputcheck =1
         #was a color selected first
         elif(myitem == 'red' or myitem == 'black'):
             mycolor = myitem
