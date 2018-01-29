@@ -870,14 +870,32 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_database_value(bot, instigator, 'coin', sellingamount)
                             reset_database_value(bot, instigator, typearmor)
             elif subcommand == 'repair':
-                bot.say("WIP")
-                #armormaxdurability = 20
-                #armormaxdurabilityblacksmith = 30
-                ## should be cheaper than buy, but has to be done before the damage destroys the item
-                ## also need to set a max durability for an item
-                ## max durability extra for blacksmith
-            ## Other thoughts
-            # what percentage of a hit is aleviated by the armor, durability decreases by one?
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                else:
+                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    instigatorclass = get_database_value(bot, instigator, 'class')
+                    durabilitycompare = armormaxdurability
+                    if instigatorclass == 'armormaxdurability':
+                        durabilitycompare = armormaxdurabilityblacksmith
+                    if not getarmor:
+                        bot.say("You don't have a " + typearmor + " to repair.")
+                    elif getarmor >= durabilitycompare:
+                        bot.say("It looks like your armor does not need repair.")
+                    else:
+                        durabilitytorepair = durabilitycompare - getarmor
+                        if durabilitytorepair <= 0:
+                            bot.say("Looks like you can't repair that right now.")
+                        else:
+                            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                            costinvolved = durabilitytorepair * armorcost
+                            if instigatorcoin < costinvolved:
+                                bot.say("Insufficient Funds.")
+                            else:
+                                bot.say(typearmor + " repaired.")
+                                adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
+                                set_database_value(bot, instigator, typearmor, durabilitycompare)
 
         ## Bounty
         elif commandortarget == 'bounty':
