@@ -216,12 +216,12 @@ def roulette(bot,trigger,arg):
                 inputcheck = 0     
         
     # user input now setup game will run
-    #if inputcheck == 1:
-        #players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
-        #for i in players:
-           # if i == player:
-              #  bot.say("You already placed a bet")
-               # inputcheck = 0
+     if inputcheck == 1:
+        players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
+        for i in players:
+            if i == player:
+                bot.say("You already placed a bet")
+                inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 roulettearray = []
@@ -229,18 +229,21 @@ def roulette(bot,trigger,arg):
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
-                players.append(player)
-                testmsg = get_trigger_arg(players,"list")
-                bot.say("Players " + testmsg)
+                players.append(player)               
+                
                 bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
                 testmsg = get_trigger_arg(roulettearray,"list") 
-                bot.say(testmsg)
+                bot.notice("Your bet has been recorded", player)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
+                numberofplayers = len(players)
+                if numberofplayers>=3:
+                    bot.say("The dealer collects all bets")
+                    runroulette(bot)
             else:
-                bot.notice("You don't have enough Spicebucks",player)
+                bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
 def runroulette(bot):
@@ -258,7 +261,9 @@ def runroulette(bot):
         winners = ''
         totalwon = 0        
         displaymessage = get_trigger_arg(players , "list")
-        bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color + ' good luck to ' + displaymessage)
+        
+        bot.say('The dealer spins the wheel good luck to ' + displaymessage)
+        bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
@@ -276,7 +281,7 @@ def runroulette(bot):
                         colorwinnings = mybet + newbet                                    
                         mywinnings=mywinnings+colorwinnings        
                     if mywinnings >=1:                    
-                        bot.notice(("You have won " + str(mywinnings)),player)
+                        bot.notice(("Roulette has ended and you have won " + str(mywinnings)),player)
                         if spicebankbalance < mywinnings:
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
@@ -291,7 +296,7 @@ def runroulette(bot):
         if winners =='':
             bot.say("No one wins anything")
         else:
-            bot.say(winners + " are winners and " + str(totalwon) + " was won in total")
+            bot.say("winners: " + winners + " and " + str(totalwon) + " was won in total")
     else:
        bot.say("No players found")
     
