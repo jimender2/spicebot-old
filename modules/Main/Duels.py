@@ -83,6 +83,12 @@ scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding l
 barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
 vampiremaximumdamge = 50
 
+## Armor
+armormaxdurability = 20
+armormaxdurabilityblacksmith = 30
+armorhitpercentage = .5
+armorcost = 500
+
 ## Bot
 botdamage = 150 ## The bot deals a set damage
 duelrecorduser = 'duelrecorduser' ## just a database column to store values in
@@ -809,6 +815,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ## Armor
         elif commandortarget == 'armor':
             subcommand = get_trigger_arg(triggerargsarray, 2)
+            typearmor = get_trigger_arg(triggerargsarray, 3)
             if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
@@ -829,14 +836,43 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
             elif subcommand == 'buy':
-                bot.say("WIP")
-                ## have to decide on a cost
-                ## while, max durability extra for blacksmith, starts at stock durability, but can be repaired to new max
+                instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                elif instigatorcoin < armorcost:
+                    bot.say("Insufficient Funds")
+                else:
+                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    if getarmor and getarmor > 0:
+                        bot.say("It looks like you already have a " + typearmor + ".")
+                    else:
+                        adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
+                        set_database_value(bot, instigator, typearmor, armormaxdurability)
             elif subcommand == 'sell':
-                bot.say("WIP")
-                ## based on the remaining durability of the item
+                if not typearmor or typearmor not in armortypesarray:
+                    armors = get_trigger_arg(armortypesarray, 'list')
+                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+                else:
+                    getarmor = get_database_value(bot, target, typearmor) or 0
+                    if not getarmor:
+                        bot.say("You don't have a " + typearmor + " to sell.")
+                    elif getarmor < 0:
+                        bot.say("Your armor is too damaged to sell.")
+                        reset_database_value(bot, instigator, typearmor)
+                    else:
+                        durabilityremaining = getarmor / armormaxdurability
+                        sellingamount = durabilityremaining * armorcost
+                        if sellingamount <= 0:
+                            bot.say("Your armor is too damaged to sell.")
+                        else:
+                            bot.say("Your armor earned you " + str(sellingamount) + " coins.")
+                            adjust_database_value(bot, instigator, 'coin', sellingamount)
+                            reset_database_value(bot, instigator, typearmor)
             elif subcommand == 'repair':
                 bot.say("WIP")
+                #armormaxdurability = 20
+                #armormaxdurabilityblacksmith = 30
                 ## should be cheaper than buy, but has to be done before the damage destroys the item
                 ## also need to set a max durability for an item
                 ## max durability extra for blacksmith
@@ -2428,7 +2464,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     armorloser = get_database_value(bot, loser, armortype) or 0
     if armorloser and damage > 0:
         adjust_database_value(bot, loser, armortype, -1)
-        damage = damage * .5
+        damage = damage * armorhitpercentage
         damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
         armorloser = get_database_value(bot, loser, armortype) or 0
         if armorloser <= 0:
