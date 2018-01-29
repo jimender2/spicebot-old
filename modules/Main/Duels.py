@@ -890,6 +890,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.say("Looks like you can't repair that right now.")
                         else:
                             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                            bot.say(str(durabilitytorepair))
+                            
+                            
                             costinvolved  = durabilitytorepair / durabilitycompare
                             costinvolved = durabilitytorepair * armorcost
                             if instigatorcoin < costinvolved:
@@ -2432,11 +2435,11 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = int(damage)
 
     if damage == 0:
-        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ' but deals no damage. ')
+        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ', but deals no damage. ')
     elif winnerclass == 'vampire' and winner != loser:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ". ")
     else:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + " " + ", dealing " + str(damage) + " damage. ")
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage. ")
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
