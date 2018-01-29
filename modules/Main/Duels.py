@@ -84,9 +84,9 @@ barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
 vampiremaximumdamge = 50
 
 ## Armor
-armormaxdurability = 20
-armormaxdurabilityblacksmith = 30
-armorhitpercentage = .5
+armormaxdurability = 10
+armormaxdurabilityblacksmith = 15
+armorhitpercentage = .3
 armorcost = 500
 
 ## Bot
