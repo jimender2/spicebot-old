@@ -2499,7 +2499,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
         damage = damage * armorhitpercentage
-        damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
+        damagetext = str(losername + "s "+ armortype + " aleviated a third of the damage ")
         armorloser = get_database_value(bot, loser, armortype) or 0
         if armorloser <= 0:
             reset_database_value(bot, loser, armortype)
