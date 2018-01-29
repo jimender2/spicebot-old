@@ -2377,6 +2377,11 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         losername = loser
         striketype = "retaliates against"
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+    elif winner == loser:
+        winnername = loser
+        losername = "themself"
+        striketype = get_trigger_arg(duelhittypesarray, 'random')
+        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
     else:
         winnername = winner
         losername = loser
@@ -2412,7 +2417,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = randint(barbarianminimumdamge, 120)
     
     ## vampires have a minimum damage
-    elif winnerclass == 'vampire':
+    elif winnerclass == 'vampire' and winner != loser:
         damage = randint(0, vampiremaximumdamge)
     
     ## All Other Players
@@ -2426,18 +2431,18 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
     if damage == 0:
         damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ' but deals no damage. ')
-    elif winnerclass == 'vampire':
+    elif winnerclass == 'vampire' and winner != loser:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ". ")
     else:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + " " + ", dealing " + str(damage) + " damage. ")
     damagetextarray.append(damagetext)
     
     ## Vampires gain health from wins
-    if winnerclass == 'vampire':
+    if winnerclass == 'vampire' and winner != loser:
         adjust_database_value(bot, winner, 'health', damage)
         
     ## Berserker Rage
-    if winnerclass == 'barbarian':
+    if winnerclass == 'barbarian' and winner != loser:
         rageodds = randint(1, 12)
         if rageodds == 1:
             extradamage = randint(1, 25)
@@ -2446,7 +2451,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damagetextarray.append(damagetext)
     
     ## Paladin deflect
-    if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame':
+    if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame' and winner != loser:
         deflectodds = randint(1, 12)
         if deflectodds == 1:
             damageb = damage
@@ -2465,7 +2470,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damagetextarray.append(damagetext)
     
     ## Shield resistance
-    if shieldloser and damage > 0:
+    if shieldloser and damage > 0 and winner != loser:
         damagemath = int(shieldloser) - damage
         if int(damagemath) > 0:
             adjust_database_value(bot, loser, 'shield', -abs(damage))
@@ -2480,7 +2485,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
 
     ## Armor usage
     armorloser = get_database_value(bot, loser, armortype) or 0
-    if armorloser and damage > 0:
+    if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
         damage = damage * armorhitpercentage
         damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
@@ -2495,7 +2500,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetextarray.append(damagetext)
     
     ## Knight
-    if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
+    if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame' and winner != loser:
         retaliateodds = randint(1, 12)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
