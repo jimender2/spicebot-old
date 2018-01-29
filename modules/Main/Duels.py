@@ -1984,6 +1984,7 @@ def nickarmor(bot, nick, channel):
         gethowmany = get_database_value(bot, nick, x)
         if gethowmany:
             nickname = "{Armored]"
+    return nickname
 
 def actualname(bot,nick):
     actualnick = nick
