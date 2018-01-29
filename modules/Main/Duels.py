@@ -847,7 +847,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if getarmor and getarmor > 0:
                         bot.say("It looks like you already have a " + typearmor + ".")
                     else:
-                        bot.say("Purchase Complete.")
+                        bot.say(instigator " bought " + typearmor + " for " + str(armorcost) + " coins.")
                         adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
                         set_database_value(bot, instigator, typearmor, armormaxdurability)
             elif subcommand == 'sell':
@@ -867,7 +867,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if sellingamount <= 0:
                             bot.say("Your armor is too damaged to sell.")
                         else:
-                            bot.say("Your armor earned you " + str(sellingamount) + " coins.")
+                            bot.say("Selling your"+typearmor +" earned you " + str(sellingamount) + " coins.")
                             adjust_database_value(bot, instigator, 'coin', sellingamount)
                             reset_database_value(bot, instigator, typearmor)
             elif subcommand == 'repair':
@@ -894,7 +894,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             if instigatorcoin < costinvolved:
                                 bot.say("Insufficient Funds.")
                             else:
-                                bot.say(typearmor + " repaired.")
+                                bot.say(typearmor + " repaired  for " + str(costinvolved)+" coins.")
                                 adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
                                 set_database_value(bot, instigator, typearmor, durabilitycompare)
 
