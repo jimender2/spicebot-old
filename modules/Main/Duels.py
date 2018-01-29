@@ -891,8 +891,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         else:
                             instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
                             costinvolved  = durabilitytorepair / durabilitycompare
-                            bot.say(str(costinvolved))
-                            costinvolved = durabilitytorepair * armorcost
+                            costinvolved = costinvolved * armorcost
                             if instigatorcoin < costinvolved:
                                 bot.say("Insufficient Funds.")
                             else:
