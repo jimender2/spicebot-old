@@ -831,12 +831,17 @@ def execute_main(bot, trigger, triggerargsarray):
             elif subcommand == 'buy':
                 bot.say("WIP")
                 ## have to decide on a cost
+                ## while, max durability extra for blacksmith, starts at stock durability, but can be repaired to new max
             elif subcommand == 'sell':
                 bot.say("WIP")
                 ## based on the remaining durability of the item
             elif subcommand == 'repair':
                 bot.say("WIP")
                 ## should be cheaper than buy, but has to be done before the damage destroys the item
+                ## also need to set a max durability for an item
+                ## max durability extra for blacksmith
+            ## Other thoughts
+            # what percentage of a hit is aleviated by the armor, durability decreases by one?
 
         ## Bounty
         elif commandortarget == 'bounty':
@@ -2324,6 +2329,18 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         striketype = get_trigger_arg(duelhittypesarray, 'random')
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
 
+    ## Armortype to check
+    if bodypart == 'chest':
+        armortype = 'breastplate'
+    elif bodypart == 'arm':
+        armortype = 'gauntlets'
+    elif bodypart == 'leg':
+        armortype = 'greaves'
+    elif bodypart == 'head':
+        armortype = 'helmet'
+    else:
+        armortype = 'breastplate'
+    
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
     if loserclass == 'rogue' and winner in roguearraynodamage:
@@ -2407,6 +2424,22 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagetext = str(losername + " absorbs " + str(absorbed) + " of the damage. ")
         damagetextarray.append(damagetext)
 
+    ## Armor usage
+    armorloser = get_database_value(bot, loser, armortype) or 0
+    if armorloser and damage > 0:
+        adjust_database_value(bot, loser, armortype, -1)
+        damage = damage * .5
+        damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
+        armorloser = get_database_value(bot, loser, armortype) or 0
+        if armorloser <= 0:
+            reset_database_value(bot, loser, armortype)
+            damagetext = str(damagetext + ", causing the armor to break!")
+        elif armorloser <= 5:
+            damagetext = str(damagetext + ", causing the armor to be in need of repair!")
+        else:
+            damagetext = str(damagetext + ".")
+        damagetextarray.append(damagetext)
+    
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame':
         retaliateodds = randint(1, 12)
