@@ -51,7 +51,8 @@ def execute_main(bot, trigger):
         bot.say("What feature/issue do you want to post?")
     for request in dontaskforthese:
         if request in inputtext:
-            badquery = 1
+            if instigator != bot.owner:
+                badquery = 1
     if str(instigator) in banneduserarray:
         baduser = 1    
     if badquery or baduser:
