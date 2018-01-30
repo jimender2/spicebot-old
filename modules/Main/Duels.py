@@ -88,6 +88,10 @@ armormaxdurability = 10
 armormaxdurabilityblacksmith = 15
 armorhitpercentage = 33 ## has to be converted to decimal later
 armorcost = 500
+armorchest = 'breastplate'
+armorarm = 'gauntlets'
+armorhead = 'helmet'
+armorleg = 'greaves'
 
 ## Bot
 botdamage = 150 ## The bot deals a set damage
@@ -2400,16 +2404,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
 
     ## Armortype to check
-    if bodypart == 'chest':
-        armortype = 'breastplate'
-    elif bodypart == 'arm':
-        armortype = 'gauntlets'
-    elif bodypart == 'leg':
-        armortype = 'greaves'
-    elif bodypart == 'head':
-        armortype = 'helmet'
-    else:
-        armortype = 'breastplate'
+    armortype = eval("armor"+bodypart)
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
