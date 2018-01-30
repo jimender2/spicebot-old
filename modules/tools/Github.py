@@ -51,11 +51,8 @@ def execute_main(bot, trigger):
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     for request in dontaskforthese:
-        if request in inputtext:
-            if trigger.admin:
-                badquery = 0
-            else:
-                badquery = 1
+        if request in inputtext and not trigger.admin:
+            badquery = 1
     if str(instigator) in banneduserarray:
         baduser = 1    
     if badquery or baduser:
