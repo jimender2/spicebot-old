@@ -2498,8 +2498,9 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     armorloser = get_database_value(bot, loser, armortype) or 0
     if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
-        damagepercent = randint(1, armorhitpercentage)
-        damagepercent = damagepercent / 100
+        damagepercent = randint(1, armorhitpercentage) / 100
+        bot.say(str(damagepercent))
+        #damagepercent = damagepercent / 100
         damagebeforearmor = damage
         damage = damage * damagepercent
         damagereduceddisplay = damagebeforearmor - damage
