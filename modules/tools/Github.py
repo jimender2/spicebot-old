@@ -29,6 +29,7 @@ def execute_main(bot, trigger):
     banneduserarray = get_botdatabase_value(bot, bot.nick, 'githubblockedusers') or [] # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
+    owner = bot.owner
     inputtext = trigger.group(2)
     badquery = 0
     baduser = 0
@@ -51,7 +52,7 @@ def execute_main(bot, trigger):
         bot.say("What feature/issue do you want to post?")
     for request in dontaskforthese:
         if request in inputtext:
-            if instigator != bot.owner:
+            if instigator != owner:
                 badquery = 1
     if str(instigator) in banneduserarray:
         baduser = 1    
