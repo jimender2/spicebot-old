@@ -42,14 +42,15 @@ def execute_main(bot, trigger, triggerargsarray):
            bot.db.set_nick_value(target,'claimed',instigator)
            bot.db.set_nick_value(target,'claimdate',now)
        else:
-           righnow=now.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
-           lastcliam = claimdate.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
-           daysincelastclaim = (rightnow-lastclaim).days
-           bot.say(str(dayssinceclaim))
-           if dayssinceclaim < 30:
-               bot.say(target + " has already been claimed by " + claimedby + ", so back off")
-           else:      
-               bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
-               bot.db.set_nick_value(target,'claimed',instigator)
-               bot.db.set_nick_value(target,'claimdate',now)
+           bot.say(target + " has already been claimed by " + claimedby + ", so back off")
+           #righnow=now.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
+           #lastcliam = claimdate.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
+           #daysincelastclaim = (rightnow-lastclaim).days
+           #bot.say(str(dayssinceclaim))
+          # if dayssinceclaim < 30:
+            
+           #else:      
+            #   bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
+             #  bot.db.set_nick_value(target,'claimed',instigator)
+              # bot.db.set_nick_value(target,'claimdate',now)
         
