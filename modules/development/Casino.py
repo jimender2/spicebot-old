@@ -191,7 +191,7 @@ def roulette(bot,trigger,arg):
             mycolor = ''
             if myitem.isdigit(): 
                 mynumber = int(myitem) 
-                if(mynumber <= 1 or mynumber > maxwheel):
+                if(mynumber < 1 or mynumber > maxwheel):
                     bot.notice(('Please pick a number between 1 and ' + str(maxwheel)),player)
                     inputcheck=0
                     #check to see if a color was selected

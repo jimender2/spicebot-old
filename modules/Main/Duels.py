@@ -86,8 +86,12 @@ vampiremaximumdamge = 50
 ## Armor
 armormaxdurability = 10
 armormaxdurabilityblacksmith = 15
-armorhitpercentage = .3
+armorhitpercentage = 33 ## has to be converted to decimal later
 armorcost = 500
+armorchest = 'breastplate'
+armorarm = 'gauntlets'
+armorhead = 'helmet'
+armorleg = 'greaves'
 
 ## Bot
 botdamage = 150 ## The bot deals a set damage
@@ -128,8 +132,8 @@ tierunlockstreaks, tierunlockbounty = 2,2
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
 tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
-tierunlockroulette = 6
-tierunlockassault, tierunlockarmor = 7,7
+tierunlockroulette, tierunlockarmor = 6,6
+tierunlockassault = 7
 tierunlockcolosseum = 8
 tierunlocktitle = 9
 
@@ -2400,16 +2404,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
 
     ## Armortype to check
-    if bodypart == 'chest':
-        armortype = 'breastplate'
-    elif bodypart == 'arm':
-        armortype = 'gauntlets'
-    elif bodypart == 'leg':
-        armortype = 'greaves'
-    elif bodypart == 'head':
-        armortype = 'helmet'
-    else:
-        armortype = 'breastplate'
+    armortype = eval("armor"+bodypart)
     
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
@@ -2498,8 +2493,11 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     armorloser = get_database_value(bot, loser, armortype) or 0
     if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
-        damage = damage * armorhitpercentage
-        damagetext = str(losername + "s "+ armortype + " aleviated half of the damage ")
+        damagepercent = randint(1, armorhitpercentage) / 100
+        damagereduced = damage * damagepercent
+        damagereduced = int(damagereduced)
+        damage = damage - damagereduced
+        damagetext = str(losername + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
         armorloser = get_database_value(bot, loser, armortype) or 0
         if armorloser <= 0:
             reset_database_value(bot, loser, armortype)
