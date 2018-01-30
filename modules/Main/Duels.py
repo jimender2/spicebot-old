@@ -1380,8 +1380,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if instigatorclass == 'mage':
                     manarequired = manarequired * magemanamagiccut
                 actualmanarequired = int(manarequired) * int(quantity)
-                manatier = tierratio_level(bot)
-                actualmanarequired = actualmanarequired * manatier
+                #manatier = tierratio_level(bot)
+                #actualmanarequired = actualmanarequired * manatier
                 if int(actualmanarequired) > int(instigatormana):
                     manamath = int(int(actualmanarequired) - int(instigatormana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
