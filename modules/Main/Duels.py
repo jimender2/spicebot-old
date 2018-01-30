@@ -1380,8 +1380,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 if instigatorclass == 'mage':
                     manarequired = manarequired * magemanamagiccut
                 actualmanarequired = int(manarequired) * int(quantity)
-                manatier = tierratio_level(bot)
-                actualmanarequired = actualmanarequired * manatier
+                #manatier = tierratio_level(bot)
+                #actualmanarequired = actualmanarequired * manatier
                 if int(actualmanarequired) > int(instigatormana):
                     manamath = int(int(actualmanarequired) - int(instigatormana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
@@ -1390,12 +1390,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     manarequired = -abs(actualmanarequired)
                     adjust_database_value(bot, instigator, 'mana', manarequired)
                     if magicusage == 'curse':
-                        damagedealt = magiccursedamage
+                        damagedealt = magiccursedamage * int(quantity)
                         set_database_value(bot, target, 'curse', curseduration)
                         specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
                         adjust_database_value(bot, target, 'health', int(damagedealt))
                     elif magicusage == 'shield':
-                        damagedealt = magicshielddamage
+                        damagedealt = magicshielddamage * int(quantity)
                         actualshieldduration = int(quantity) * int(shieldduration)
                         adjust_database_value(bot, target, 'shield', actualshieldduration)
                         specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
