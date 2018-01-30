@@ -132,8 +132,8 @@ tierunlockstreaks, tierunlockbounty = 2,2
 tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
 tierunlockleaderboard, tierunlockwarroom = 4,4
 tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
-tierunlockroulette = 6
-tierunlockassault, tierunlockarmor = 7,7
+tierunlockroulette, tierunlockarmor = 6,6
+tierunlockassault = 7
 tierunlockcolosseum = 8
 tierunlocktitle = 9
 
