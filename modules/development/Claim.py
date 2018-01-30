@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import datetime
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -15,8 +16,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    #lastclaimdate = get_botdatabase_value - name? or 'neverclaimed'
-    #lastclaimedby = get_botdatabase_value - claimername? or 'notclaimed'
+    
     instigator = trigger.nick
     channel = trigger.sender
     target = get_trigger_arg(triggerargsarray, 1)
@@ -34,12 +34,15 @@ def execute_main(bot, trigger, triggerargsarray):
     elif trigger.nick == 'IT_Sean':
         bot.say(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
     else:
-        #if lastclaimdate == 'neverclaimed':
-        bot.say(instigator + ' urinates on ' + target + '! Claimed!')
-        #db adjust lastclaimdate = today
-        #db adjust lastclaimedby = instigator
-        #if lastclaimdate < today-1M:
-        #   bot.say(instigator + " has already been claimed by " + str(lastclaimedby) + ", so back off.")
+       claimedby = bot.db.get_nick_value(target,'claimed') or ''
+       claimdate = bot.db.get_nick_value(target, 'claimdate' or 0
+       now = datetime.datetime.now()
+       if claimedby not == '':
+           bot.say(instigator + ' urinates on ' + target + '! Claimed!')
+           bot.db.set_nick_value(target,'claimed',instigator)
+       else:
+           bot.say(target + " has already been claimed by " + claimedby + ", so back off")       
+        
         #elif lastclaimdate >= today-1M:
         #   bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
         #   db adjust lastclaimdate = today
