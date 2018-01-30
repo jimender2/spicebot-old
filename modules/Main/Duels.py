@@ -86,7 +86,7 @@ vampiremaximumdamge = 50
 ## Armor
 armormaxdurability = 10
 armormaxdurabilityblacksmith = 15
-armorhitpercentage = .3
+armorhitpercentage = 33 ## has to be converted to decimal later
 armorcost = 500
 
 ## Bot
@@ -2498,8 +2498,12 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
     armorloser = get_database_value(bot, loser, armortype) or 0
     if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
-        damage = damage * armorhitpercentage
-        damagetext = str(losername + "s "+ armortype + " aleviated a third of the damage ")
+        damagepercent = randint(1, armorhitpercentage)
+        damagepercent = damagepercent / 100
+        damagebeforearmor = damage
+        damage = damage * damagepercent
+        damagereduceddisplay = damagebeforearmor - damage
+        damagetext = str(losername + "s "+ armortype + " aleviated "+str(damagereduceddisplay)+" of the damage ")
         armorloser = get_database_value(bot, loser, armortype) or 0
         if armorloser <= 0:
             reset_database_value(bot, loser, armortype)
