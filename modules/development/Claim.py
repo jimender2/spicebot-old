@@ -40,10 +40,13 @@ def execute_main(bot, trigger, triggerargsarray):
        if not claimedby == '':
            bot.say(instigator + ' urinates on ' + target + '! Claimed!')
            bot.db.set_nick_value(target,'claimed',instigator)
+           bot.db.set_nick_value(target,'claimdate',now)
        else:
-           bot.say(target + " has already been claimed by " + claimedby + ", so back off")       
+           daysinceclaim = (now- claimdate).days
+           if dayssinceclaim < 30:
+               bot.say(target + " has already been claimed by " + claimedby + ", so back off")
+           else:      
+               bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
+               bot.db.set_nick_value(target,'claimed',instigator)
+               bot.db.set_nick_value(target,'claimdate',now)
         
-        #elif lastclaimdate >= today-1M:
-        #   bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + str(lastclaimedby) + "!")
-        #   db adjust lastclaimdate = today
-        #   db adjust lastclaimedby = instigator
