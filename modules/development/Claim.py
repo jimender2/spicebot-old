@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
     else:
        claimedby = bot.db.get_nick_value(target,'claimed') or ''
-       claimdate = bot.db.get_nick_value(target, 'claimdate' or 0
+       claimdate = bot.db.get_nick_value(target, 'claimdate') or 0
        now = datetime.datetime.now()
        if not claimedby == '':
            bot.say(instigator + ' urinates on ' + target + '! Claimed!')
@@ -43,6 +43,7 @@ def execute_main(bot, trigger, triggerargsarray):
            bot.db.set_nick_value(target,'claimdate',now)
        else:
            daysinceclaim = (now- claimdate).days
+           bot.say(str(dayssinceclaim))
            if dayssinceclaim < 30:
                bot.say(target + " has already been claimed by " + claimedby + ", so back off")
            else:      
