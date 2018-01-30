@@ -42,7 +42,9 @@ def execute_main(bot, trigger, triggerargsarray):
            bot.db.set_nick_value(target,'claimed',instigator)
            bot.db.set_nick_value(target,'claimdate',now)
        else:
-           daysinceclaim = (now- claimdate).days
+           righnow=now.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
+           lastcliam = claimdate.replace(hour = 0, minute = 0, second = 0, microsecond = 0)
+           daysincelastclaim = (rightnow-lastclaim).days
            bot.say(str(dayssinceclaim))
            if dayssinceclaim < 30:
                bot.say(target + " has already been claimed by " + claimedby + ", so back off")
