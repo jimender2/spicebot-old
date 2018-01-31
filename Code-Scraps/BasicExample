@@ -1,6 +1,7 @@
 import sopel.module
 import sys
 import os
+import arrow
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 from SpicebotShared import *
@@ -131,7 +132,8 @@ def adjust_database_value(bot, nick, databasekey, value):
 # weaponslist.append(weaponchange)
 # weaponslist.remove(weaponchange)
 
-## Compare two dates, count days between
+## Compare two dates, count days between (arrow needs importing)
+# import arrow
 # date1 = '2018-01-28' (datetime.date.today() returns this format, but still needs casting to str()
 # date2 = '2017-12-19' (any date in this format can be used)
 # newerdate = arrow.get(date1)
