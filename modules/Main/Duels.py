@@ -461,7 +461,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if roulettepayoutx > biggestpayout:
                             biggestpayoutwinner = x
                             biggestpayout = roulettepayoutx
-                        if roulettepayoutx == biggestpayout:
+                        elif roulettepayoutx == biggestpayout:
                             biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
                             biggestpayout = roulettepayoutx
                         adjust_database_value(bot, x, 'coin', roulettepayoutx)
