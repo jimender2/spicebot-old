@@ -230,12 +230,8 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget == instigator:
         bot.say("If you are feeling self-destructive, there are places you can call.")
 
-    ## commands as nicks
-    elif commandortarget.lower() in tiercommandarray and commandortarget.lower() in [u.lower() for u in bot.users]:
-        bot.say("Target is a command?")
-        
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [u.lower() for u in bot.users]:
+    elif commandortarget.lower() not in [u.lower() for u in bot.users] or commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
         
         ## Alternative commands
