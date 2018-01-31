@@ -246,6 +246,11 @@ def execute_main(bot, trigger, triggerargsarray):
         if commandortarget == 'help':
             commandortarget = 'docs'
         
+        ## not a command
+        if commandortarget not in tiercommandarray:
+            bot.notice("This looks like an invalid command or an invalid person.", instigator)
+            return
+        
         ## Tier unlocks
         if "." in commandortarget:
             bot.notice("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()", instigator)
