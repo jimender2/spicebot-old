@@ -42,7 +42,6 @@ def execute_main(bot, trigger, triggerargsarray):
         okaytoclaim = 0
         if trigger.admin:
             if not admintarget:
-                rejectmessage = "Please specify someone to reset claim on."
                 bot.say("Please specify someone to reset claim on.")
             elif admintarget.lower() not in bot.privileges[channel.lower()]:
                 bot.say("I'm not sure who that is.")
