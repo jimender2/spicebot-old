@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
        claimedby = bot.db.get_nick_value(target,'claimed') or ''
        claimdate = bot.db.get_nick_value(target, 'claimdate') or 0
        now = datetime.datetime.now()
-       if not claimedby == '':
+       if claimedby == '':
            bot.say(instigator + ' urinates on ' + target + '! Claimed!')
            bot.db.set_nick_value(target,'claimed',instigator)
            bot.db.set_nick_value(target,'claimdate',now)
