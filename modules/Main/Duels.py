@@ -213,7 +213,12 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## Instigator
     instigator = trigger.nick
-
+    
+    ## Instigator can't be a command, and can't enable duels
+    if instigator.lower() in tiercommandarray:
+        bot.say("Really?")
+        return
+    
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
