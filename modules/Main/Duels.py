@@ -818,7 +818,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 subcommanda = get_trigger_arg(triggerargsarray, 3)
                 if not subcommanda:
                     bot.say("What stat do you want to check highest/losest?")
-                elif subcommanda not in duelstatsadminarray and subcommanda != 'class':
+                elif subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
                     bot.say("This stat is either not comparable at the moment or invalid.")
                 else:
                     subcommanda = subcommanda.lower()
