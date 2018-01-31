@@ -326,7 +326,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Tier
         elif commandortarget == 'tier':
-            command = get_trigger_arg(triggerargsarray, 3)
+            command = get_trigger_arg(triggerargsarray, 2)
             if not command:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 currenttierlistarray = []
@@ -360,7 +360,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
                 bot.say(dispmsg)
-            elif command not in tiercommandarray or command == 'upupdowndownleftrightleftrightba':
+            elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
                 bot.say("Invalid command.")
             else:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
@@ -2097,7 +2097,7 @@ def get_tierpepper(bot, tiernumber):
     elif tiernumber == 11:
         pepper = 'Datil'
     elif tiernumber == 12:
-        tiernumber = 12
+        pepper = 'Habanero'
     elif tiernumber == 13:
         pepper = 'Ghost Chili'
     elif tiernumber == 14:
