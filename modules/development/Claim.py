@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
         thisminutestring = basetime.year + "-" + basetime.month + "-" + basetime.day
         bot.say("Claim info for " + target + " reset on " + str(thisminutestring))
     elif target == bot.nick:
-        bot.say("I have already been claimed by " + bot.owner +"!")
+        bot.say("I have already been claimed by deathbybandaid!")
     elif target.lower() not in bot.privileges[channel.lower()]:
         bot.say("I'm not sure who that is.")
     elif trigger.nick == 'IT_Sean':
