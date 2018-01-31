@@ -813,13 +813,15 @@ def execute_main(bot, trigger, triggerargsarray):
                     for msg in leaderscript:
                         displaymessage = str(displaymessage+ msg+ "  ")
                 bot.say(displaymessage)
-            if subcommand == 'highest' or subcommand == 'lowest':
+            if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
+                subcommand = subcommand.lower()
                 subcommanda = get_trigger_arg(triggerargsarray, 3)
                 if not subcommanda:
                     bot.say("What stat do you want to check highest/losest?")
                 elif subcommanda not in duelstatsadminarray and subcommanda != 'class':
                     bot.say("This stat is either not comparable at the moment or invalid.")
                 else:
+                    subcommanda = subcommanda.lower()
                     statleadername = ''
                     if subcommand == 'highest':
                         statleadernumber = 0
