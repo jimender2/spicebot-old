@@ -35,8 +35,8 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(instigator + ' releases the contents of his bladder on ' + target + '! All should recognize this profound claim of ownership upon ' + claimed +'!')
     else:
        claimedby = bot.db.get_nick_value(target,'claimed') or ''
-       claimdate = bot.db.get_nick_value(target, 'claimdate') or 0
-       now = datetime.datetime.now()
+       #claimdate = bot.db.get_nick_value(target, 'claimdate') or 0
+       #now = datetime.datetime.now()
        if claimedby == '':
            bot.say(instigator + ' urinates on ' + target + '! Claimed!')
            bot.db.set_nick_value(target,'claimed',instigator)
