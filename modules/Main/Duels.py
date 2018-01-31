@@ -1026,7 +1026,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     for u in bot.users:
                         if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
-                            statreset(bot, target)
+                            statreset(bot, u)
                             healthcheck(bot, u)
                     if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
