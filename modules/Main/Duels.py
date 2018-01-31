@@ -234,6 +234,11 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandortarget.lower() not in [u.lower() for u in bot.users]:
         commandortarget = commandortarget.lower()
         
+        ## not a command
+        if commandortarget not in tiercommandarray:
+            bot.notice("This looks like an invalid command or an invalid person.", instigator)
+            return
+        
         ## Alternative commands
         if commandortarget == 'enable':
             commandortarget = 'on'
