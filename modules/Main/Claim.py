@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    owner = 'dysonparkes'
+    owner = 'deathbybandaid'
     target = get_trigger_arg(triggerargsarray, 1)
     admintarget = get_trigger_arg(triggerargsarray, 2)
     inchannel = trigger.sender
