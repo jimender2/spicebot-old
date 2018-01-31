@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    human = random.uniform(0, 9) # Random number with uniform chances across range
+    human = random.uniform(0, 30) # Random number with uniform chances across range
     time.sleep(human) # Wait for random time
     prefix = "!"
     command = "test"
