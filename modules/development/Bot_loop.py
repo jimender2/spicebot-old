@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     human = random.uniform(0, 9) # Random number with uniform chances across range
     time.sleep(human) # Wait for random time
-    prefix = "."
+    prefix = "!"
     command = "test"
     bot.say(prefix + command)
