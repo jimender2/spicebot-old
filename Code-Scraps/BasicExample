@@ -130,3 +130,14 @@ def adjust_database_value(bot, nick, databasekey, value):
 ## append and remove from an array
 # weaponslist.append(weaponchange)
 # weaponslist.remove(weaponchange)
+
+## Compare two dates, count days between
+# date1 = '2018-01-28' (datetime.date.today() returns this format, but still needs casting to str()
+# date2 = '2017-12-19' (any date in this format can be used)
+# newerdate = arrow.get(date1)
+# olderdate = arrow.get(date2)
+# timepassed = newerdate - olderdate
+# dayspassed = timepassed.days (could use timepassed.months for whole months, or timepassed.years etc)
+# in this case, dayspassed would return an int of 40.
+# if dayspassed > 30: (would be true)
+# if dayspassed < 30: (would be false)
