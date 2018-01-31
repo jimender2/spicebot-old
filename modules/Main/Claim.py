@@ -76,7 +76,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > 30:
-                bot.say(instigator + " urinates on " + target + "again! The claim has been renewed!")
+                bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
             else:
