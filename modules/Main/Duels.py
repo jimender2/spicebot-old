@@ -366,7 +366,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 tiereval = eval("tierunlock"+command)
                 tiereval = int(tiereval)
-                tierpepperrequired = get_tierpepper(bot, int(tiercommandeval))
+                tierpepperrequired = get_tierpepper(bot, tiereval)
                 tiermath = tiereval - currenttier
                 if tiereval <= currenttier:
                     dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
