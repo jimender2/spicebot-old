@@ -18,10 +18,11 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    owner = 'deathbybandaid'
+    owner = 'dysonparkes'
     target = get_trigger_arg(triggerargsarray, 1)
     admintarget = get_trigger_arg(triggerargsarray, 2)
     inchannel = trigger.sender
+    channel = trigger.sender
     todaydate = datetime.date.today()  
     storedate = str(todaydate)
     okaytoclaim = 1
@@ -69,7 +70,17 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
         elif claimedby == instigator:
-            bot.say(instigator + ", you already claimed " + target +".")
+            claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
+            datea = arrow.get(todaydate)
+            dateb = arrow.get(claimdate)
+            timepassed = datea - dateb
+            dayspassed = timepassed.days
+            if timepassed.days > 30:
+                bot.say(instigator + " urinates on " + target + "again! The claim has been renewed!")
+                bot.db.set_nick_value(target,'claimed',instigator)
+                bot.db.set_nick_value(target,'claimdate',storedate)
+            else:
+                bot.say(instigator + ", you already claimed " + target +".")
         else:
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
             datea = arrow.get(todaydate)
@@ -77,11 +88,13 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > 30:
-                bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
+                if claimedby == '':
+                    bot.say(instigator + " urinates on " + target + "! Claimed!")
+                else:
+                    bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
             else:
                 bot.say(target + " has already been claimed by " + str(claimedby) + ", so back off!")
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
-        
