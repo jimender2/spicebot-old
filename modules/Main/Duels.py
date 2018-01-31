@@ -256,15 +256,15 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.notice("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()", instigator)
             return
         try:
-            commandeval = eval("tierunlock"+ commandortarget) or 0
+            tiercommandeval = eval("tierunlock"+ commandortarget) or 0
         except NameError:
             bot.notice("This looks like an invalid command or an invalid person.", instigator)
             return
-        bot.say(str(commandeval))
-        tierpepperrequired = get_tierpepper(bot, commandeval)
+        bot.say(str(tiercommandeval))
+        tierpepperrequired = get_tierpepper(bot, tiercommandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-        tiermath = int(commandeval) - int(currenttier)
-        if int(commandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on' and not bot.nick.endswith(devbot):
+        tiermath = int(tiercommandeval) - int(currenttier)
+        if int(tiercommandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':# and not bot.nick.endswith(devbot):
             if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 return
@@ -364,7 +364,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 tiereval = eval("tierunlock"+command)
-                tierpepperrequired = get_tierpepper(bot, commandeval)
+                tierpepperrequired = get_tierpepper(bot, tiercommandeval)
                 tiermath = tiereval - currenttier
                 if tiereval <= currenttier:
                     dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
@@ -710,7 +710,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
             elif target.lower() not in [x.lower() for x in dueloptedinarray]:
                 bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+            elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
             else:
                 target = actualname(bot, target)
@@ -830,7 +830,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+                elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
                     target = actualname(bot, target)
@@ -949,7 +949,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 target = get_trigger_arg(triggerargsarray, 2) or instigator
                 if target.lower() not in [u.lower() for u in bot.users]:
                     bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif int(commandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+                elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
                 else:
                     target = actualname(bot, target)
