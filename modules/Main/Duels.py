@@ -261,7 +261,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.notice("This looks like an invalid command or an invalid person.", instigator)
             return
         tiercommandeval = int(tiercommandeval)
-        tierpepperrequired = get_tierpepper(bot, int(iercommandeval))
+        tierpepperrequired = get_tierpepper(bot, int(tiercommandeval))
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         tiermath = int(tiercommandeval) - int(currenttier)
         if int(tiercommandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':
