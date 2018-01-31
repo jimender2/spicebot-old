@@ -29,15 +29,13 @@ def execute_main(bot, trigger, triggerargsarray):
     rando = randint(1, 666)
     commortarget = get_trigger_arg(triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-    if pointsreason:
-        if pointsreason.startswith('for'):
-            pointsreasonmsg = ' ' + str(pointsreason) + '.'
-        else:
-            pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+    
     if not commortarget:
         commortarget = 'everyone'
+        
     if commortarget == instigator:
         bot.say("You cannot award " + pointsstring + " to yourself!")
+        
     elif commortarget == "check":
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         if target.lower() not in [u.lower() for u in bot.users]:
@@ -48,14 +46,27 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(target + ' has no ' + pointsstring + ' history.')
         else:
             bot.say(target + ' has ' + str(points) + ' ' + pointsstring + '.')
+            
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
+        if pointsreason:
+            if pointsreason.startswith('for'):
+                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+            else:
+                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone'+ str(pointsreasonmsg))
         bot.say(randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
                 adjust_botdatabase_value(bot, u, 'points', rando)
+                
     elif commortarget == 'take':
         target = get_trigger_arg(triggerargsarray, 2)
+        pointsreason = get_trigger_arg(triggerargsarray, '3+')
+        if pointsreason:
+            if pointsreason.startswith('for'):
+                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+            else:
+                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
         if not target:
             target = 'everyone'
         if target == instigator:
@@ -75,6 +86,11 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     else:
+        if pointsreason:
+            if pointsreason.startswith('for'):
+                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+            else:
+                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
