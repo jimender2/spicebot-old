@@ -264,10 +264,11 @@ def execute_main(bot, trigger, triggerargsarray):
         tierpepperrequired = get_tierpepper(bot, tiercommandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
         tiermath = int(tiercommandeval) - int(currenttier)
-        if int(tiercommandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':# and not bot.nick.endswith(devbot):
+        if int(tiercommandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':
             if commandortarget != 'stats' and commandortarget != 'loot':
                 bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-                return
+                if not bot.nick.endswith(devbot):
+                    return
         
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
