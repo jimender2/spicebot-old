@@ -1591,6 +1591,7 @@ def execute_main(bot, trigger, triggerargsarray):
         executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
         if executedueling:
             target = actualname(bot, target)
+            healthcheck(bot, target)
             targetarray.append(target)
             getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
 
