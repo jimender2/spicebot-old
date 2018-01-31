@@ -9,6 +9,7 @@ import requests
 import ConfigParser
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
+from sopel.module import ADMIN
 from SpicebotShared import *
 
 ## Creds
@@ -50,7 +51,7 @@ def execute_main(bot, trigger):
     if not inputtext:
         bot.say("What feature/issue do you want to post?")
     for request in dontaskforthese:
-        if request in inputtext:
+        if request in inputtext and not trigger.admin:
             badquery = 1
     if str(instigator) in banneduserarray:
         baduser = 1    

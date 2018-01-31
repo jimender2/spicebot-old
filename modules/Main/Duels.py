@@ -2599,7 +2599,19 @@ def selectwinner(bot, nickarray):
     ## Clear value
     for user in nickarray:
         reset_database_value(bot, user, 'winnerselection')
-
+    
+    if not winner:
+        for u in nickarray:
+            maxroll = winnerdicerolling(bot, u, 2)
+            set_database_value(bot, u, 'winnerselection', maxroll)
+        winnermax = 0
+        winner = ''
+        for u in nickarray:
+            maxstat = get_database_value(bot, u, 'winnerselection') or 0
+            if int(maxstat) > winnermax:
+                winner = u
+                winnermax = maxstat
+    
     return winner
 
 def winnerdicerolling(bot, nick, rolls):
