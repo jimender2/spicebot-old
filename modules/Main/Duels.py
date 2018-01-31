@@ -1026,7 +1026,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     for u in bot.users:
                         if u in dueloptedinarray and u != bot.nick and u != instigator:
                             canduelarray.append(u)
-                            statreset(bot, target)
+                            statreset(bot, u)
                             healthcheck(bot, u)
                     if canduelarray == []:
                         bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
@@ -1226,7 +1226,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 lootitem = get_trigger_arg(triggerargsarray, 3).lower()
                 if not lootitem:
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-                elif lootitem not in lootitemsarray:
+                elif lootitem not in lootitemsarray and lootitem != 'grenade':
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif lootitem == 'magicpotion':
                     bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
@@ -1256,7 +1256,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
                 if not lootitem:
                     bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-                elif lootitem not in lootitemsarray:
+                elif lootitem not in lootitemsarray and lootitem != 'grenade':
                     bot.notice(instigator + ", Invalid loot item.", instigator)
                 elif not gethowmanylootitem:
                     bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
