@@ -2072,6 +2072,8 @@ def get_pepper(bot, nick):
     return pepper
 
 def get_tierpepper(bot, tiernumber):
+    tiernumber = int(tiernumber)
+    bot.say(str(tiernumber))
     if not tiernumber:
         pepper = ''
     elif tiernumber == 1:
