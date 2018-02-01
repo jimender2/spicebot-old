@@ -358,7 +358,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(dispmsg)
             elif command.lower() in peppertierarray:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-                pepperconvert = get_peppertier
+                pepperconvert = get_peppertier(bot,command)
                 pickarray = []
                 for x in tiercommandarray:
                     tiereval = eval("tierunlock"+x)
@@ -2176,35 +2176,35 @@ def get_tierpepper(bot, tiernumber):
 def get_peppertier(bot, pepper):
     if not pepper:
         tiernumber = 1
-    elif pepper == 'Pimiento':
+    elif pepper == 'pimiento':
         tiernumber = 1
-    elif pepper == 'Sonora':
+    elif pepper == 'sonora':
         tiernumber = 2
-    elif pepper == 'Anaheim':
+    elif pepper == 'anaheim':
         tiernumber = 3
-    elif pepper == 'Poblano':
+    elif pepper == 'poblano':
         tiernumber = 4
-    elif pepper == 'Jalapeno':
+    elif pepper == 'jalapeno':
         tiernumber = 5
-    elif pepper == 'Serrano':
+    elif pepper == 'serrano':
         tiernumber = 6
-    elif pepper == 'Chipotle':
+    elif pepper == 'chipotle':
         tiernumber = 7
-    elif pepper == 'Tabasco':
+    elif pepper == 'tabasco':
         tiernumber = 8
-    elif pepper == 'Cayenne':
+    elif pepper == 'cayenne':
         tiernumber = 9
-    elif pepper == 'Thai Pepper':
+    elif pepper == 'thai pepper':
         tiernumber = 10
-    elif pepper == 'Datil':
+    elif pepper == 'datil':
         tiernumber = 11
-    elif pepper == 'Habanero':
+    elif pepper == 'habanero':
         tiernumber = 12
-    elif pepper == 'Ghost Chili':
+    elif pepper == 'ghost chili':
         tiernumber = 13
-    elif pepper == 'Mace':
+    elif pepper == 'mace':
         tiernumber = 14
-    elif pepper == 'Pure Capsaicin':
+    elif pepper == 'pure capsaicin':
         tiernumber = 15
     else:
         tiernumber = 1
