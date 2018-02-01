@@ -366,7 +366,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         pickarray.append(x)
                 if pickarray != []:
                     tierlist = get_trigger_arg(pickarray, "list")
-                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
                     tiermath = int(pepperconvert) - currenttier
                     if tiermath > 0:
                         dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
@@ -2174,7 +2174,6 @@ def get_tierpepper(bot, tiernumber):
     return pepper
 
 def get_peppertier(bot, pepper):
-    bot.say(pepper)
     if not pepper:
         tiernumber = 1
     elif pepper == 'pimiento':
@@ -2209,7 +2208,6 @@ def get_peppertier(bot, pepper):
         tiernumber = 15
     else:
         tiernumber = 1
-    bot.say(str(tiernumber))
     return tiernumber
 
 ######################
