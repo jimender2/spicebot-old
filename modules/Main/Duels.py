@@ -1929,6 +1929,11 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 def halfhourtimer(bot):
     now = time.time()
     
+    ## Tier the stats
+    tierratio = tierratio_level(bot)
+    healthregencurrent = tierratio * healthregenmax
+    magemanaregencurrent = tierratio * magemanaregenmax
+    
     ## bot does not need stats or backpack items
     refreshbot(bot)
     
@@ -1959,24 +1964,23 @@ def halfhourtimer(bot):
                 if u != lasttimedlootwinner:
                     randomuarray.append(u)
 
-                ## award coin to scavengers
-                if uclass == 'scavenger':
-                    adjust_database_value(bot, u, 'coin', scavengercoinaward)
+                ## award coin to all
+                adjust_database_value(bot, u, 'coin', scavengercoinaward)
 
                 ## health regenerates for all
-                if int(health) < healthregenmax:
+                if int(health) < healthregencurrent:
                     adjust_database_value(bot, u, 'health', healthregen)
                     health = get_database_value(bot, u, 'health')
-                    if int(health) > healthregenmax:
-                        set_database_value(bot, u, 'health', healthregenmax)
+                    if int(health) > healthregencurrent:
+                        set_database_value(bot, u, 'health', healthregencurrent)
 
                 ## mages regen mana
                 if uclass == 'mage':
-                    if int(mana) < magemanaregenmax:
+                    if int(mana) < magemanaregencurrent:
                         adjust_database_value(bot, u, 'mana', magemanaregen)
                         mana = get_database_value(bot, u, 'mana')
-                        if int(mana) > magemanaregenmax:
-                            set_database_value(bot, u, 'mana', magemanaregenmax)
+                        if int(mana) > magemanaregencurrent:
+                            set_database_value(bot, u, 'mana', magemanaregencurrent)
 
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
