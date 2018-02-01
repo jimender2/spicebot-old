@@ -143,7 +143,7 @@ peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano',
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
+timepotiondispmsg = str(": Removes multiple timeouts.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
@@ -380,7 +380,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
                 bot.say(dispmsg)
             elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
-                bot.say("Invalid command.")
+                bot.notice(instigator + ", that appears to be an invalid command.", instigator)
             else:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 tiereval = eval("tierunlock"+command)
