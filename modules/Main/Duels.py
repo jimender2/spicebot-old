@@ -201,7 +201,6 @@ def execute_main(bot, trigger, triggerargsarray):
             triggerargsarray = get_trigger_arg(comsplit, 'create')
             execute_main(bot, trigger, triggerargsarray)
                     
-
 def execute_mainactual(bot, trigger, triggerargsarray):
     
     ## Initial ARGS of importance
@@ -1447,7 +1446,7 @@ def execute_mainactual(bot, trigger, triggerargsarray):
                     return
                 target = actualname(bot, target)
                 statreset(bot, target)
-                healthcheck(bot, u)
+                healthcheck(bot, target)
                 targetcurse = get_database_value(bot, target, 'curse') or 0
                 targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                 if target.lower() != instigator.lower() and targetclass == 'fiend':
