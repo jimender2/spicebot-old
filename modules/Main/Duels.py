@@ -224,6 +224,18 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
     
+    ## Alternative commands
+    if commandortarget == 'enable':
+        commandortarget = 'on'
+    elif commandortarget == 'disable':
+        commandortarget = 'off'
+    elif commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+        commandortarget = 'random'
+    elif commandortarget == 'everyone':
+        commandortarget = 'assault'
+    elif commandortarget == 'help':
+        commandortarget = 'docs'
+    
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
@@ -243,19 +255,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
-        
-        ## Alternative commands
-        if commandortarget == 'enable':
-            commandortarget = 'on'
-        elif commandortarget == 'disable':
-            commandortarget = 'off'
-        elif commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-            commandortarget = 'random'
-        elif commandortarget == 'everyone':
-            commandortarget = 'assault'
-        elif commandortarget == 'help':
-            commandortarget = 'docs'
-        
+
         ## Tier unlocks
         tiercommandeval = eval("tierunlock"+ commandortarget) or 0
         tiercommandeval = int(tiercommandeval)
