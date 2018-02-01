@@ -459,7 +459,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 currenthealth = get_database_value(bot, loser, 'health')
                 if currenthealth <= 0:
                     deathmsg = str(" " +  loser + ' dies forcing a respawn!!')
-                    deathmsgb = whokilledwhom(bot, bot.nick, loser) or ''
+                    deathmsgb = suicidekill(bot,loser)
                     deathmsg = str(deathmsg+" "+deathmsgb)
                 if roulettecount == 1:
                     resultmsg = "First in the chamber. What bad luck. "
@@ -1215,7 +1215,10 @@ def execute_main(bot, trigger, triggerargsarray):
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 lootusedeaths = lootusedeaths + 1
-                                deathmsgb = whokilledwhom(bot, instigator, target) or ''
+                                if target == instigator:
+                                    deathmsgb = suicidekill(bot,loser)
+                                else:
+                                    deathmsgb = whokilledwhom(bot, instigator, target) or ''
                                 mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
                         if lootitem == 'mysterypotion':
                             actualpotionmathedarray = []
@@ -1752,7 +1755,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if instigator == target:
             loser = targetname
         if currenthealth <= 0:
-            deathmsgb = whokilledwhom(bot, winner, loser) or ''
+            if winner == loser:
+                deathmsgb = suicidekill(bot,loser)
+            else:
+                deathmsgb = whokilledwhom(bot, winner, loser) or ''
             winnermsg = str(loser + ' dies forcing a respawn!!')
             if winner == instigator:
                 assault_kills = assault_kills + 1
@@ -1965,7 +1971,11 @@ def halfhourtimer(bot):
 def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
     displaymsg = ''
     executedueling = 0
-    instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
+    instigatorclass = get_database_value(bot, instigator, 'class') or 'notclassy'
+    if instigatorclass != 'knight':
+        instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
+    else:
+        instigatorlastfought = bot.nick
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
     targettime = get_timesince_duels(bot, target, 'timeout') or ''
     duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or ''
@@ -2242,6 +2252,25 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
 ## Living Status ##
 ###################
 
+def suicidekill(bot,loser):
+    returntext = str(loser + " committed suicide ")
+    ## Reset mana and health
+    reset_database_value(bot, loser, 'mana')
+    suicidehealthcheck(bot, loser)
+    ## update deaths
+    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    ## bounty
+    bountyonloser = get_database_value(bot, loser, 'bounty')
+    if bountyonloser:
+        returntext = str(returntext + "and wastes the bounty of " + str(bountyonloser) + " coin.")
+    reset_database_value(bot, loser, 'bounty')
+    ## rangers don't lose their stuff
+    if loserclass != 'ranger':
+        for x in lootitemsarray:
+            reset_database_value(bot, loser, x)
+    return returntext
+
 def whokilledwhom(bot, winner, loser):
     returntext = ''
     ## Reset mana and health
@@ -2277,6 +2306,16 @@ def healthcheck(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
 
+def suicidehealthcheck(bot, nick):
+    health = get_database_value(bot, nick, 'health')
+    if not health or health < 0:
+        if nick != bot.nick:
+            set_database_value(bot, nick, 'health', stockhealth)
+    ## no mana at respawn
+    mana = get_database_value(bot, nick, 'mana')
+    if int(mana) <= 0:
+        reset_database_value(bot, nick, 'mana')
+        
 def refreshbot(bot):
     for x in duelstatsadminarray:
         statset = x
