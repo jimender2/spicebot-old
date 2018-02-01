@@ -194,6 +194,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
     fullcomsplit = fullcommandusedtotal.split("&&")
+    for comsplit in fullcomsplit:
         triggerargsarray = get_trigger_arg(comsplit, 'create')
         execute_main(bot, trigger, triggerargsarray)
                     
