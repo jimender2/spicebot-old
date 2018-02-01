@@ -405,6 +405,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     dispmsg = str(dispmsg+ command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
                 bot.say(dispmsg)
                 
+        ## Suicide
+        elif commandortarget == 'harakiri':
+            target = get_trigger_arg(triggerargsarray, 2) or instigator
+            if target != instigator and target != 'confirm':
+                bot.say("You can't suicide other people. It's called Murder.")
+            elif target == instigator:
+                bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
+            else:
+                deathmsgb = suicidekill(bot,instigator)
+                bot.say(deathmsgb)
 
         ## Russian Roulette
         elif commandortarget == 'roulette':
