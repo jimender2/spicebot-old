@@ -2720,7 +2720,8 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
             weaponb = str(" "+ weaponb)
-            damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
+            damage, damagetextb, assault_kills, assault_deaths = damagedone(bot, loser, winner, instigator, weaponb, 2, assault_kills, assault_deaths)
+            #damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
             for x in damagetextb:
                 damagetextarray.append(x)
     
