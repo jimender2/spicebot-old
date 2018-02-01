@@ -136,6 +136,27 @@ def spicebot_prerun(bot,trigger):
 #        bot.db.set_nick_value(target, 'spicebot_usertotal', None)
 #        bot.db.set_nick_value(target, 'spicebothour_warn', None)
 
+## Log out bot.admin
+#@event('QUIT') ###need to verify if this is the same if a person looses connection or quits
+#@rule('.spicebotadmin*')
+#def logoutadmin(bot, trigger):
+#    botadmins = ['deathbybandaid']
+#    if trigger.nick in botadmins
+#    bot.db.set_nick_value(target, 'spicebot_admin', 'out')
+
+## Verify nick is bot.admin and logged in
+#@event('JOIN') ###need to verify if this is the same if a person looses connection or quits
+#@rule('.spicebotadmin*')
+#def logoutadmin(bot, trigger):
+#    botadmins = ['deathbybandaid']
+#    loggedin = bot.db.get_nick_value(target, 'spicebot_admin')
+#    if trigger.nick not in botadmins or loggedin == 'out':
+#        bot.notify("Please log in before issuing spicebotadmin commands.")
+
+### will need to add coding for adding a pin/password for the bot.admin
+### will need to add verification in the .spicebotadmin command
+
+
 ## Autoblock users that 
 #@sopel.module.interval(60)
 #def autoblock(bot):

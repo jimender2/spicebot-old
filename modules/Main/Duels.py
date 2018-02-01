@@ -159,7 +159,7 @@ duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses',
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
 classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsadminarray = ['codpiece','helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
@@ -467,7 +467,9 @@ def execute_mainactual(bot, trigger, triggerargsarray):
                 weapon = get_trigger_arg(revolvernames, 'random')
                 weapon = str(" with a " + weapon)
                 winner, loser = 'duelsroulettegame', instigator
-                damage, roulettedamagearray = damagedone(bot, winner, loser, weapon, 1)
+                assault_kills, assault_deaths = 0,0
+                damage, roulettedamagearray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
+                #damage, roulettedamagearray = damagedone(bot, winner, loser, weapon, 1)
                 roulettedamage = ''
                 for x in roulettedamagearray:
                     roulettedamage = str(roulettedamage+" "+ x)
@@ -1764,15 +1766,15 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             weapon = str(" " + weapon)
         
         ## Combat Process
-        damage, winnermsgarray = damagedone(bot, winner, loser, weapon, 1)
+        damage, winnermsgarray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
         for x in winnermsgarray:
             combattextarraycomplete.append(x)
             
         ## Update Health Of Loser, respawn, allow winner to loot
-        currenthealth = get_database_value(bot, loser, 'health')
+        losercurrenthealth = get_database_value(bot, loser, 'health')
         if instigator == target:
             loser = targetname
-        if currenthealth <= 0:
+        if losercurrenthealth <= 0:
             if winner == loser:
                 deathmsgb = suicidekill(bot,loser)
             else:
@@ -1785,6 +1787,13 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             combattextarraycomplete.append(winnermsg)
             if deathmsgb != '':
                 combattextarraycomplete.append(deathmsgb)
+        
+        ## Knight/Paladin
+        winnercurrenthealth = get_database_value(bot, winner, 'health')
+        if winnercurrenthealth <= 0 and winner != loser:
+            deathmsgb = whokilledwhom(bot, winner, loser) or ''
+            
+        
         
         ## Chance that Instigator looses found loot
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
@@ -2544,7 +2553,7 @@ def tierratio_level(bot):
 ## Damage Done ##
 #################
 
-def damagedone(bot, winner, loser, weapon, diaglevel):
+def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills, assault_deaths):
 
     damagetextarray = []
     damagescale = tierratio_level(bot)
@@ -2681,6 +2690,28 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             damagetext = str(damagetext + ".")
         damagetextarray.append(damagetext)
     
+    ## dish it out
+    if damage > 0:
+        adjust_database_value(bot, loser, 'health', -abs(damage))
+    
+    ## Update Health Of Loser, respawn, allow winner to loot
+    deathmsgb = ''
+    losercurrenthealth = get_database_value(bot, loser, 'health')
+    if losercurrenthealth <= 0:
+        if winner == loser:
+            deathmsgb = suicidekill(bot,loser)
+        else:
+            deathmsgb = whokilledwhom(bot, winner, loser) or ''
+        winnermsg = str(loser + ' dies forcing a respawn!!')
+        damagetextarray.append(winnermsg)
+        if winner != loser:
+            if winner == instigator:
+                assault_kills = assault_kills + 1
+            else:
+                assault_deaths = assault_deaths + 1
+        if deathmsgb != '':
+            damagetextarray.append(deathmsgb)
+    
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame' and winner != loser:
         retaliateodds = randint(1, 12)
@@ -2688,15 +2719,12 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
             weaponb = str(" "+ weaponb)
-            damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
+            damage, damagetextb, assault_kills, assault_deaths = damagedone(bot, loser, winner, instigator, weaponb, 2, assault_kills, assault_deaths)
+            #damageb, damagetextb = damagedone(bot, loser, winner, weaponb, 2)
             for x in damagetextb:
                 damagetextarray.append(x)
-            
-    ## dish it out
-    if damage > 0:
-        adjust_database_value(bot, loser, 'health', -abs(damage))
     
-    return damage, damagetextarray
+    return damage, damagetextarray, assault_kills, assault_deaths
 
 ###################
 ## Select Winner ##
