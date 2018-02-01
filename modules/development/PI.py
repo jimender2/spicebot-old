@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Please enter the number of digits you want to see.")
         else:
             digits=int(digitcount)
-            if digits>=1 and digits<=100
+            if digits>=1 and digits<=100:
                 mynumber =chudnovskyBig(digits)
                 bot.say(str(mynumber)
             else:
