@@ -241,35 +241,23 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("If you are feeling self-destructive, there are places you can call.")
 
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [u.lower() for u in bot.users] or commandortarget.lower() in tiercommandarray:
+    elif commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
         
         ## Alternative commands
         if commandortarget == 'enable':
             commandortarget = 'on'
-        if commandortarget == 'disable':
+        elif commandortarget == 'disable':
             commandortarget = 'off'
-        if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+        elif commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
             commandortarget = 'random'
-        if commandortarget == 'everyone':
+        elif commandortarget == 'everyone':
             commandortarget = 'assault'
-        if commandortarget == 'help':
+        elif commandortarget == 'help':
             commandortarget = 'docs'
         
-        ## not a command
-        if commandortarget not in tiercommandarray:
-            bot.notice("This looks like an invalid command or an invalid person.", instigator)
-            return
-        
         ## Tier unlocks
-        if "." in commandortarget:
-            bot.notice("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()", instigator)
-            return
-        try:
-            tiercommandeval = eval("tierunlock"+ commandortarget) or 0
-        except NameError:
-            bot.notice("This looks like an invalid command or an invalid person.", instigator)
-            return
+        tiercommandeval = eval("tierunlock"+ commandortarget) or 0
         tiercommandeval = int(tiercommandeval)
         tierpepperrequired = get_tierpepper(bot, tiercommandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
@@ -288,7 +276,7 @@ def execute_main(bot, trigger, triggerargsarray):
         healthcheck(bot, instigator)
         
         ## Docs
-        if commandortarget == 'docs' or commandortarget == 'help':
+        if commandortarget == 'docs':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
@@ -1601,10 +1589,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_database_value(bot, instigator, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
-             
-        ## If not a command above, invalid
+        
+        ## Command Valid, but not coded yet
         else:
-            bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
+            bot.notice(instigator + " This command is a Work In Progress.", instigator)
+             
+    ## not in the room
+    elif commandortarget.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
 
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
