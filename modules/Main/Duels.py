@@ -37,6 +37,7 @@ CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 INSTIGATORTIMEOUT = 1800
 timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
 timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult','opttime','classtimeout']
+AUTOLOGOUT = 259200
 
 ## Half hour timer
 scavengercoinaward = 15 ## coin gain per half hour for scavengers
@@ -219,6 +220,9 @@ def execute_main(bot, trigger, triggerargsarray):
     if instigator.lower() in tiercommandarray:
         bot.notice("It looks like your nick is unable to play duels.",instigator)
         return
+    
+    ## Instigator last used
+    set_database_value(bot, instigator, 'lastcommand', now)
     
     ## If Not a target or a command used
     if not fullcommandused:
@@ -1913,44 +1917,56 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 ## 30 minute automation
 @sopel.module.interval(1800)
 def halfhourtimer(bot):
-
+    now = time.time()
+    
     ## bot does not need stats or backpack items
     refreshbot(bot)
-    #duelrecorduser
+    
     ## Who gets to win a mysterypotion?
     randomuarray = []
     duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
+    
     for u in bot.users:
-        ## must have duels enabled
+        ## must have duels enabled, but has to use the game every so often
         if u in duelusersarray and u != bot.nick:
-            healthcheck(bot, u)
-            uclass = get_database_value(bot, u, 'class') or 'notclassy'
-            mana = get_database_value(bot, u, 'mana') or 0
-            health = get_database_value(bot, u, 'health') or 0
+            
+            ## Log out users that aren't playing
+            lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
+            lastping = get_timesince_duels(bot, u, 'lastping') or 0
+            if AUTOLOGOUT < lastcommandusedtime and lastping < AUTOLOGOUT:
+                adjust_database_array(bot, bot.nick, u, 'duelusers', 'del')
+                reset_database_value(bot, u, 'lastping')
+            else:  
+                set_database_value(bot, u, 'lastping', now)
+                
+                healthcheck(bot, u)
+                uclass = get_database_value(bot, u, 'class') or 'notclassy'
+                mana = get_database_value(bot, u, 'mana') or 0
+                health = get_database_value(bot, u, 'health') or 0
+    
+                ## Random user gets a mysterypotion
+                lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
+                if u != lasttimedlootwinner:
+                    randomuarray.append(u)
 
-            ## Random user gets a mysterypotion
-            lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
-            if u != lasttimedlootwinner:
-                randomuarray.append(u)
+                ## award coin to scavengers
+                if uclass == 'scavenger':
+                    adjust_database_value(bot, u, 'coin', scavengercoinaward)
 
-            ## award coin to scavengers
-            if uclass == 'scavenger':
-                adjust_database_value(bot, u, 'coin', scavengercoinaward)
+                ## health regenerates for all
+                if int(health) < healthregenmax:
+                    adjust_database_value(bot, u, 'health', healthregen)
+                    health = get_database_value(bot, u, 'health')
+                    if int(health) > healthregenmax:
+                        set_database_value(bot, u, 'health', healthregenmax)
 
-            ## health regenerates for all
-            if int(health) < healthregenmax:
-                adjust_database_value(bot, u, 'health', healthregen)
-                health = get_database_value(bot, u, 'health')
-                if int(health) > healthregenmax:
-                    set_database_value(bot, u, 'health', healthregenmax)
-
-            ## mages regen mana
-            if uclass == 'mage':
-                if int(mana) < magemanaregenmax:
-                    adjust_database_value(bot, u, 'mana', magemanaregen)
-                    mana = get_database_value(bot, u, 'mana')
-                    if int(mana) > magemanaregenmax:
-                        set_database_value(bot, u, 'mana', magemanaregenmax)
+                ## mages regen mana
+                if uclass == 'mage':
+                    if int(mana) < magemanaregenmax:
+                        adjust_database_value(bot, u, 'mana', magemanaregen)
+                        mana = get_database_value(bot, u, 'mana')
+                        if int(mana) > magemanaregenmax:
+                            set_database_value(bot, u, 'mana', magemanaregenmax)
 
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
