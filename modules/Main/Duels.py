@@ -136,6 +136,7 @@ tierunlockroulette, tierunlockarmor = 6,6
 tierunlockassault = 7
 tierunlockcolosseum = 8
 tierunlocktitle = 9
+peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -337,7 +338,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         ## Tier
         elif commandortarget == 'tier':
-            command = get_trigger_arg(triggerargsarray, 2)
+            command = get_trigger_arg(triggerargsarray, "2+")
             if not command:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 currenttierlistarray = []
@@ -355,6 +356,20 @@ def execute_main(bot, trigger, triggerargsarray):
                     futuretierlist = get_trigger_arg(futuretierlistarray, "list")
                     dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
                 bot.say(dispmsg)
+            elif command.lower() in peppertierarray:
+                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+                pepperconvert = get_peppertier
+                pickarray = []
+                for x in tiercommandarray:
+                    tiereval = eval("tierunlock"+x)
+                    if tiereval == int(pepperconvert) and x != 'upupdowndownleftrightleftrightba':
+                        pickarray.append(x)
+                if pickarray != []:
+                    tierlist = get_trigger_arg(pickarray, "list")
+                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+                    tiermath = int(pepperconvert) - currenttier
+                    if tiermath > 0:
+                        dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
             elif command.isdigit():
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 pickarray = []
@@ -2158,6 +2173,42 @@ def get_tierpepper(bot, tiernumber):
         pepper = ''
     return pepper
 
+def get_peppertier(bot, pepper):
+    if not pepper:
+        tiernumber = 1
+    elif pepper == 'Pimiento':
+        tiernumber = 1
+    elif pepper == 'Sonora':
+        tiernumber = 2
+    elif pepper == 'Anaheim':
+        tiernumber = 3
+    elif pepper == 'Poblano':
+        tiernumber = 4
+    elif pepper == 'Jalapeno':
+        tiernumber = 5
+    elif pepper == 'Serrano':
+        tiernumber = 6
+    elif pepper == 'Chipotle':
+        tiernumber = 7
+    elif pepper == 'Tabasco':
+        tiernumber = 8
+    elif pepper == 'Cayenne':
+        tiernumber = 9
+    elif pepper == 'Thai Pepper':
+        tiernumber = 10
+    elif pepper == 'Datil':
+        tiernumber = 11
+    elif pepper == 'Habanero':
+        tiernumber = 12
+    elif pepper == 'Ghost Chili':
+        tiernumber = 13
+    elif pepper == 'Mace':
+        tiernumber = 14
+    elif pepper == 'Pure Capsaicin':
+        tiernumber = 15
+    else:
+        tiernumber = 1
+    return tiernumber
 
 ######################
 ## On Screen Text ##
