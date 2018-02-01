@@ -1446,7 +1446,7 @@ def execute_mainactual(bot, trigger, triggerargsarray):
                     return
                 target = actualname(bot, target)
                 statreset(bot, target)
-                healthcheck(bot, u)
+                healthcheck(bot, target)
                 targetcurse = get_database_value(bot, target, 'curse') or 0
                 targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                 if target.lower() != instigator.lower() and targetclass == 'fiend':
