@@ -201,7 +201,6 @@ def execute_main(bot, trigger, triggerargsarray):
             triggerargsarray = get_trigger_arg(comsplit, 'create')
             execute_main(bot, trigger, triggerargsarray)
                     
-
 def execute_mainactual(bot, trigger, triggerargsarray):
     
     ## Initial ARGS of importance
