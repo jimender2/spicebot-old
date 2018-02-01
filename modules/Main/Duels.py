@@ -509,6 +509,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 reset_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
                 reset_database_value(bot, duelrecorduser, 'roulettecount')
+                reset_database_value(bot, instigator, 'roulettepayout')
                 if roulettecount > 1:
                     roulettecount = roulettecount + 1
                     displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
@@ -1464,8 +1465,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 if instigatorclass == 'mage':
                     manarequired = manarequired * magemanamagiccut
                 actualmanarequired = int(manarequired) * int(quantity)
-                #manatier = tierratio_level(bot)
-                #actualmanarequired = actualmanarequired * manatier
                 if int(actualmanarequired) > int(instigatormana):
                     manamath = int(int(actualmanarequired) - int(instigatormana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
