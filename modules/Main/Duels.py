@@ -2714,8 +2714,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
     
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame' and winner != loser:
-        retaliateodds = 1
-        #retaliateodds = randint(1, 12)
+        retaliateodds = randint(1, 12)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
