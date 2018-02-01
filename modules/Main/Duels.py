@@ -179,7 +179,7 @@ def duel_action(bot, trigger):
     #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
-        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+        execute_mainactual(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
@@ -192,7 +192,18 @@ def mainfunction(bot, trigger):
 
 ## The Command Process
 def execute_main(bot, trigger, triggerargsarray):
+    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
+    if "&&" not in fullcommandusedtotal:
+        execute_mainactual(bot, trigger, triggerargsarray)
+    else:
+        fullcomsplit = fullcommandusedtotal.split("&&")
+        for comsplit in fullcomsplit:
+            triggerargsarray = get_trigger_arg(comsplit, 'create')
+            execute_main(bot, trigger, triggerargsarray)
+                    
 
+def execute_mainactual(bot, trigger, triggerargsarray):
+    
     ## Initial ARGS of importance
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
