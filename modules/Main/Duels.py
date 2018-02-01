@@ -2174,6 +2174,7 @@ def get_tierpepper(bot, tiernumber):
     return pepper
 
 def get_peppertier(bot, pepper):
+    bot.say(pepper)
     if not pepper:
         tiernumber = 1
     elif pepper == 'pimiento':
@@ -2208,6 +2209,7 @@ def get_peppertier(bot, pepper):
         tiernumber = 15
     else:
         tiernumber = 1
+    bot.say(str(tiernumber))
     return tiernumber
 
 ######################
