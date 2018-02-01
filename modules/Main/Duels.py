@@ -363,11 +363,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 for x in tiercommandarray:
                     tiereval = eval("tierunlock"+x)
                     if tiereval == int(pepperconvert) and x != 'upupdowndownleftrightleftrightba':
-                        bot.say(str(x))
                         pickarray.append(x)
                 if pickarray != []:
                     tierlist = get_trigger_arg(pickarray, "list")
                     dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
+                    bot.say(str(dispmsg))
                     tiermath = int(pepperconvert) - currenttier
                     if tiermath > 0:
                         dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
