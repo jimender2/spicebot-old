@@ -1672,10 +1672,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             instigatorscriptdef = str(q + "(bot, instigator, channel)")
             instigatornameadd = eval(instigatorscriptdef)
             instigatornameadd = str(instigatornameadd)
-            if instigatorname != '':
-                instigatorname = str(instigatorname + " " + instigatornameadd)
-            else:
+            if instigatorname == '':
                 instigatorname = str(instigatornameadd)
+            else:
+                instigatorname = str(instigatorname + " " + instigatornameadd)
         if instigator == target:
             targetname = "themself"
             targetpepperstart = ''
@@ -1685,10 +1685,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 targetscriptdef = str(q + "(bot, target, channel)")
                 targetnameadd = eval(targetscriptdef)
                 targetnameadd = str(targetnameadd)
-                if targetname != '':
-                    targetname = str(targetname + " " + targetnameadd)
-                else:
+                if targetname == '':
                     targetname = str(targetnameadd)
+                else:
+                    targetname = str(targetname + " " + targetnameadd)
 
         ## Announce Combat
         announcecombatmsg = str(instigatorname + " versus " + targetname)
@@ -2585,7 +2585,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damage = int(damage)
 
     if damage == 0:
-        damagetext = str(winnername + " " + striketype + losername + " in the " + bodypart + weapon + ', but deals no damage. ')
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage. ')
     elif winnerclass == 'vampire' and winner != loser:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ". ")
     else:
