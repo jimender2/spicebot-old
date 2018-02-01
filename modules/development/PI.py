@@ -43,7 +43,7 @@ def chudnovskyBig(n): #http://en.wikipedia.org/wiki/Chudnovsky_algorithm
         k += 1
     pi = pi * Decimal(10005).sqrt()/4270934400
     pi = pi**(-1)
-    return 
+    return pi
                 
 def factorial(n):
     if n<1:
