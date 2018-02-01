@@ -2611,7 +2611,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         if deflectodds == 1:
             damageb = damage
             damage = 0
-            damagetext = str(damagetext + " "+ losername + " deflects the damage back on " + winnername + ". ")
+            damagetext = str(damagetext + " "+ loser + " deflects the damage back on " + winner + ". ")
             damagemathb = int(shieldwinner) - damageb
             if int(damagemathb) > 0:
                 adjust_database_value(bot, winner, 'shield', -abs(damageb))
@@ -2621,7 +2621,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
                 absorbedb = damagemathb + damageb
                 damage = abs(damagemathb)
                 reset_database_value(bot, loser, 'shield')
-            damagetext = str(winnername + " absorbs " + str(absorbedb) + " of the damage. ")
+            damagetext = str(winner + " absorbs " + str(absorbedb) + " of the damage. ")
             damagetextarray.append(damagetext)
     
     ## Shield resistance
@@ -2635,7 +2635,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
             absorbed = damagemath + damage
             damage = abs(damagemath)
             reset_database_value(bot, loser, 'shield')
-        damagetext = str(losername + " absorbs " + str(absorbed) + " of the damage. ")
+        damagetext = str(loser + " absorbs " + str(absorbed) + " of the damage. ")
         damagetextarray.append(damagetext)
 
     ## Armor usage
@@ -2646,7 +2646,7 @@ def damagedone(bot, winner, loser, weapon, diaglevel):
         damagereduced = damage * damagepercent
         damagereduced = int(damagereduced)
         damage = damage - damagereduced
-        damagetext = str(losername + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
+        damagetext = str(loser + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
         armorloser = get_database_value(bot, loser, armortype) or 0
         if armorloser <= 0:
             reset_database_value(bot, loser, armortype)
