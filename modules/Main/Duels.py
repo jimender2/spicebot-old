@@ -93,6 +93,7 @@ armorchest = 'breastplate'
 armorarm = 'gauntlets'
 armorhead = 'helmet'
 armorleg = 'greaves'
+armorjunk = 'codpiece'
 
 ## Bot
 botdamage = 150 ## The bot deals a set damage
@@ -163,8 +164,8 @@ statsadminchangearray = ['set','reset'] ## valid admin subcommands
 magicoptionsarray = ['curse','shield']
 nulllootitemsarray = ['water','vinegar','mud']
 duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
-duelbodypartsarray = ['chest','arm','leg','head']
-armortypesarray = ['helmet','gauntlets','breastplate','greaves']
+duelbodypartsarray = ['chest','arm','leg','head','junk']
+armortypesarray = ['helmet','gauntlets','breastplate','greaves','codpiece']
 
 ################################################################################
 ## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
