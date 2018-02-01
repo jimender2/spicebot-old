@@ -351,10 +351,10 @@ def execute_main(bot, trigger, triggerargsarray):
                         futuretierlistarray.append(x)
                 if currenttierlistarray != []:
                     currenttierlist = get_trigger_arg(currenttierlistarray, "list")
-                    dispmsg = str(dispmsg + " Function(s) currently available: " + currenttierlist + ". ")
+                    dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
                 if futuretierlistarray != []:
                     futuretierlist = get_trigger_arg(futuretierlistarray, "list")
-                    dispmsg = str(dispmsg + " Function(s) not yet unlocked: " + futuretierlist + ". ")
+                    dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
                 bot.say(dispmsg)
             elif command.lower() in peppertierarray:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
@@ -366,7 +366,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         pickarray.append(x)
                 if pickarray != []:
                     tierlist = get_trigger_arg(pickarray, "list")
-                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
+                    dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
                     tiermath = int(pepperconvert) - currenttier
                     if tiermath > 0:
                         dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
@@ -380,7 +380,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         pickarray.append(x)
                 if pickarray != []:
                     tierlist = get_trigger_arg(pickarray, "list")
-                    dispmsg =  str(dispmsg + " Function(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+                    dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
                     tiermath = int(command) - currenttier
                     if tiermath > 0:
                         dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
@@ -1834,7 +1834,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                         newtierlistarray.append(x)
                 if newtierlistarray != []:
                     newtierlist = get_trigger_arg(newtierlistarray, "list")
-                    tierchangemsg = str(tierchangemsg + " Function(s) now available: " + newtierlist)
+                    tierchangemsg = str(tierchangemsg + " Feature(s) now available: " + newtierlist)
                 combattextarraycomplete.append(tierchangemsg)
 
         ## Magic Attributes text
