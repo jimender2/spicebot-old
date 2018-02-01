@@ -143,7 +143,7 @@ peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano',
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(": worth up to " + str(USERTIMEOUT) + " seconds of timeout.")
+timepotiondispmsg = str(": Removes multiple timeouts.")
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
@@ -224,6 +224,18 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
     
+    ## Alternative commands
+    if commandortarget == 'enable':
+        commandortarget = 'on'
+    elif commandortarget == 'disable':
+        commandortarget = 'off'
+    elif commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+        commandortarget = 'random'
+    elif commandortarget == 'everyone':
+        commandortarget = 'assault'
+    elif commandortarget == 'help':
+        commandortarget = 'docs'
+    
     ## If Not a target or a command used
     if not fullcommandused:
         bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
@@ -241,35 +253,11 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("If you are feeling self-destructive, there are places you can call.")
 
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() not in [u.lower() for u in bot.users] or commandortarget.lower() in tiercommandarray:
+    elif commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
-        
-        ## Alternative commands
-        if commandortarget == 'enable':
-            commandortarget = 'on'
-        if commandortarget == 'disable':
-            commandortarget = 'off'
-        if commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-            commandortarget = 'random'
-        if commandortarget == 'everyone':
-            commandortarget = 'assault'
-        if commandortarget == 'help':
-            commandortarget = 'docs'
-        
-        ## not a command
-        if commandortarget not in tiercommandarray:
-            bot.notice("This looks like an invalid command or an invalid person.", instigator)
-            return
-        
+
         ## Tier unlocks
-        if "." in commandortarget:
-            bot.notice("You managed to find a syntax error. I sometimes have trouble evaluating with '.' eval()", instigator)
-            return
-        try:
-            tiercommandeval = eval("tierunlock"+ commandortarget) or 0
-        except NameError:
-            bot.notice("This looks like an invalid command or an invalid person.", instigator)
-            return
+        tiercommandeval = eval("tierunlock"+ commandortarget) or 0
         tiercommandeval = int(tiercommandeval)
         tierpepperrequired = get_tierpepper(bot, tiercommandeval)
         currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
@@ -288,7 +276,7 @@ def execute_main(bot, trigger, triggerargsarray):
         healthcheck(bot, instigator)
         
         ## Docs
-        if commandortarget == 'docs' or commandortarget == 'help':
+        if commandortarget == 'docs':
             target = get_trigger_arg(triggerargsarray, 2)
             if not target:
                 bot.say("Online Docs: " + GITWIKIURL)
@@ -392,7 +380,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
                 bot.say(dispmsg)
             elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
-                bot.say("Invalid command.")
+                bot.notice(instigator + ", that appears to be an invalid command.", instigator)
             else:
                 dispmsg = str("The current tier is " + str(currenttier)+ ". ")
                 tiereval = eval("tierunlock"+command)
@@ -509,6 +497,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 reset_database_value(bot, duelrecorduser, 'roulettewinners')
                 roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
                 reset_database_value(bot, duelrecorduser, 'roulettecount')
+                reset_database_value(bot, instigator, 'roulettepayout')
                 if roulettecount > 1:
                     roulettecount = roulettecount + 1
                     displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
@@ -1464,8 +1453,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 if instigatorclass == 'mage':
                     manarequired = manarequired * magemanamagiccut
                 actualmanarequired = int(manarequired) * int(quantity)
-                #manatier = tierratio_level(bot)
-                #actualmanarequired = actualmanarequired * manatier
                 if int(actualmanarequired) > int(instigatormana):
                     manamath = int(int(actualmanarequired) - int(instigatormana))
                     bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
@@ -1602,10 +1589,14 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_database_value(bot, instigator, 'health', konamiset)
             else:
                 bot.notice(instigator + " you can only cheat once.", instigator)
-             
-        ## If not a command above, invalid
+        
+        ## Command Valid, but not coded yet
         else:
-            bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
+            bot.notice(instigator + " This command is a Work In Progress.", instigator)
+             
+    ## not in the room
+    elif commandortarget.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
 
     ## warning if user doesn't have duels enabled
     elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
