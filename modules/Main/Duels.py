@@ -2282,7 +2282,7 @@ def suicidekill(bot,loser):
     returntext = str(loser + " committed suicide ")
     ## Reset mana and health
     reset_database_value(bot, loser, 'mana')
-    suicidehealthcheck(bot, loser)
+    set_database_value(bot, loser, 'health', stockhealth)
     ## update deaths
     adjust_database_value(bot, loser, 'respawns', defaultadjust)
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
@@ -2327,16 +2327,6 @@ def healthcheck(bot, nick):
             currenthealthtier = tierratio_level(bot)
             currenthealthtier = currenthealthtier * stockhealth
             set_database_value(bot, nick, 'health', currenthealthtier)
-    ## no mana at respawn
-    mana = get_database_value(bot, nick, 'mana')
-    if int(mana) <= 0:
-        reset_database_value(bot, nick, 'mana')
-
-def suicidehealthcheck(bot, nick):
-    health = get_database_value(bot, nick, 'health')
-    if not health or health < 0:
-        if nick != bot.nick:
-            set_database_value(bot, nick, 'health', stockhealth)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
