@@ -419,6 +419,8 @@ def execute_main(bot, trigger, triggerargsarray):
             roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
             if roulettelastplayer == instigator:
                 bot.say(instigator + " spins the revolver and pulls the trigger.")
+            elif roulettecount == 1:
+                bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
             else:
                 bot.say(instigator + " spins the cylinder and pulls the trigger.")
             roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
