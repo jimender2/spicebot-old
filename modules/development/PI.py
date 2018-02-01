@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    digitcount = get_trigger_arg(triggerarray, 1) or ''
+    digitcount = get_trigger_arg(triggerargsarray, 1) or ''
     if not digitcount == '':
         if not digitcount.isdigit():
             bot.say("Please enter the number of digits you want to see.")
