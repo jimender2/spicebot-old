@@ -25,13 +25,13 @@ def execute_main(bot, trigger, triggerargsarray):
             digits=int(digitcount)
             if digits>=1 and digits<=100:
                 mynumber =chudnovskyBig(digits)
-                bot.say(str(mynumber)
+                bot.say(str(mynumber))
             else:
                 bot.say("Please select a number of decimal places between 1 and 100")
     else:
         numberofplaces = random.randint(1,100)
         mynumber = chudnovskyBig(numberofplaces)
-        bot.say(str(mynumber)
+        bot.say(str(mynumber))
             
     
     
