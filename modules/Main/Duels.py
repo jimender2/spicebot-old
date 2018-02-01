@@ -192,10 +192,10 @@ def mainfunction(bot, trigger):
 
 ## The Command Process
 def execute_main(bot, trigger, triggerargsarray):
-    #fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
+    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
     #fullcomsplit = fullcommandusedtotal.split("&&")
     #for comsplit in fullcomsplit:
-    for comsplit in get_trigger_arg(triggerargsarray, 0).split("&&"):
+    for comsplit in fullcommandusedtotal.split("&&"):
         triggerargsarray = get_trigger_arg(comsplit, 'create')
         execute_main(bot, trigger, triggerargsarray)
                     
