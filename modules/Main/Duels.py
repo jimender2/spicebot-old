@@ -1144,12 +1144,14 @@ def execute_mainactual(bot, trigger, triggerargsarray):
                     elif targnum == 'all':
                         target = instigator
                         quantity = int(gethowmanylootitem)
-                    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
+                    if not target or not quantity:
+                        bot.say("Invalid command.")
+                        return
+                    if target.lower() not in [x.lower() for x in dueloptedinarray]:
                         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+                        return
                     elif target.lower() not in [u.lower() for u in bot.users]:
                         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                    else:
-                        bot.say("Invalid command.")
                         return
                     targetclass = get_database_value(bot, target, 'class') or 'notclassy'
                     if int(gethowmanylootitem) < int(quantity):
