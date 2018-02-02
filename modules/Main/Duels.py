@@ -1144,9 +1144,6 @@ def execute_mainactual(bot, trigger, triggerargsarray):
                     elif targnum == 'all':
                         target = instigator
                         quantity = int(gethowmanylootitem)
-                    if not target or not quantity:
-                        bot.say("An error occured")
-                        return
                     if target.lower() not in [x.lower() for x in dueloptedinarray]:
                         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
                     elif target.lower() not in [u.lower() for u in bot.users]:
