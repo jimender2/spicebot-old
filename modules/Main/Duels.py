@@ -301,7 +301,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
 
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now, currentuserlistarray)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
@@ -313,14 +313,14 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Run Target Check
     else:
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers)
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray)
         if validtarget:
             bot.say("target passed checks")
         else:
             bot.say(validtargetmsg)
 
 ## Subcommands
-def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray):
     
     ## Admin Command Blocker
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
@@ -346,7 +346,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## If The above passes all Checks
     try:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers)')
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray)')
         eval(subcommand_run)
     except NameError:
         bot.notice(instigator + ", it looks like this functionality is a work in progress, and not coded yet.", instigator)
@@ -355,7 +355,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers):
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray):
     
     ## Guilty until proven Innocent
     validtarget = 0
@@ -382,11 +382,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers):
     
 
 ## Author Subcommand
-def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray):
     bot.say("The author of Duels is deathbybandaid.")
     
 ## docs Subcommand
-def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers):
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray):
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
