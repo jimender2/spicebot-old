@@ -229,7 +229,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     ## Check command was issued
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
-    commandortarget = str(commandortarget)
     if not fullcommandused:
         bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
         return
@@ -247,19 +246,19 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Alternative commands
     if commandortarget.lower() in commandarray_alt_on:
-        commandortarget.lower() = 'on'
+        commandortarget = 'on'
     if commandortarget.lower() in commandarray_alt_off:
-        commandortarget.lower() = 'off'
+        commandortarget = 'off'
     if commandortarget.lower() in commandarray_alt_random:
-        commandortarget.lower() = 'random'
+        commandortarget = 'random'
     if commandortarget.lower() in commandarray_alt_assault:
-        commandortarget.lower() = 'assault'
+        commandortarget = 'assault'
     if commandortarget.lower() in commandarray_alt_docs:
-        commandortarget.lower() = 'docs'
+        commandortarget = 'docs'
 
     ## Subcommand
     if commandortarget.lower() in commandarray_all_valid:
-        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray)
+        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray)
     else:
         return targetcheck(bot)
     
