@@ -2787,7 +2787,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
        
     ## Damage Tiers
     if damage > 0:
-        damage = damagescale * damage
+        damage = int(damagescale) * damage
         damage = int(damage)
 
     if damage == 0:
