@@ -37,9 +37,9 @@ def execute_main(bot, trigger, triggerargsarray):
     
 def chudnovskyBig(n): #http://en.wikipedia.org/wiki/Chudnovsky_algorithm
     pi = Decimal(0) 
-    a= 1
-    b= 3
-    k = 0
+    a = Decimal(1)
+    b = Decimal(3)
+    k = Decimal(0)
     while k<n:
         pi = pi + ((4/a)-(4/b))
         a+=4
