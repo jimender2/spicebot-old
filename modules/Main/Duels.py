@@ -262,7 +262,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
         return
     
-    ## can't be a command, and can't enable duels
+    ## Instigator can't be a command, and can't enable duels
     if instigator.lower() in commandarray_all_valid:
         bot.notice(instigator + ", your nick is the same as a valid command for duels.", instigator)
         return
@@ -272,6 +272,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     if instigator not in dueloptedinarray and commandortarget.lower() not in commandarray_instigator_bypass:
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
+    
+    ## Stat check TODO: revamp these functions
+    #statreset(bot, instigator)
+    #healthcheck(bot, instigator)
     
     ## Time when Module use started
     now = time.time()
@@ -329,8 +333,13 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
             if not bot.nick.endswith(devbot):
                 return
-
-    bot.say("Subcommand Runs")
+    
+    ## If The above passes all Checks
+    subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator)')
+    eval(subcommand_run)
+    
+    ## usage counter TODO: add specifics
+    #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
 def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
@@ -358,6 +367,12 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     bot.say("Target Passed All checks.")
     
 
+## Docs
+def subcommand_author():
+    bot.notice("The author of Duels is deathbybandaid.", instigator)
+    
+    
+    
 def allthingsmustdie():
     
     ## Commands that can't be run via privmsg
