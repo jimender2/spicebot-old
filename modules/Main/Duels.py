@@ -347,10 +347,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## If The above passes all Checks TODO
     #try:
     if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
-        subcommand_run = str('subcommand_onoff' + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger)')
+        subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier)
     else:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger)')
-    eval(subcommand_run)
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier)')
+        eval(subcommand_run)
     #except NameError:
     #    bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
     
@@ -392,11 +392,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
 
 ## Author Subcommand
-def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
     bot.say("The author of Duels is deathbybandaid.")
     
 ## Docs Subcommand
-def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
@@ -408,7 +408,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     bot.notice("Online Docs: " + GITWIKIURL, target)
         
 ## On/Off Subcommand
-def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
+def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if target != instigator and not trigger.admin:
         bot.notice(instigator + ", you may only change the enable status for yourself.", instigator)
@@ -444,7 +444,7 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
     bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
     
 ## Tier Subcommand  
-def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
+def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
     command = get_trigger_arg(triggerargsarray, "2+")
     if not command:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
