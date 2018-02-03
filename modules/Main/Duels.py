@@ -3152,7 +3152,7 @@ def get_trigger_arg(triggerargsarray, number):
             if triggerarg != '':
                 triggerarg = str(triggerarg + " " + x)
             else:
-                triggerarg = str(arg)
+                triggerarg = str(x)
         return triggerarg
     ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
