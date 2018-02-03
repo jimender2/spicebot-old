@@ -293,6 +293,7 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
         commandortarget = actualname(bot, commandortarget)
         bot.notice(instigator + ", " + commandortarget + " has duels disabled.", instigator)
+        return
 
     
     
