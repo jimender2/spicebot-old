@@ -44,24 +44,22 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_0 = ['docs', 'admin', 'author', 'on','upupdowndownleftrightleftrightba']
-commandarray_tier_1 = ['tier', 'off', 'usage']
-commandarray_tier_2 = ['streaks', 'bounty', 'harakiri']
-commandarray_tier_3 = ['weaponslocker', 'class']
-commandarray_tier_4 = ['leaderboard', 'warroom']
-commandarray_tier_5 = ['stats', 'loot']
-commandarray_tier_6 = ['magic', 'armor']
-commandarray_tier_7 = ['assault']
-commandarray_tier_8 = ['roulette']
-commandarray_tier_9 = ['random']
-commandarray_tier_10 = ['colosseum']
-commandarray_tier_11 = ['title']
-commandarray_tier_12 = []
-commandarray_tier_13 = []
-commandarray_tier_14 = []
-commandarray_tier_15 = []
-
-
+commandarray_tier_unlocks_0 = ['docs', 'admin', 'author', 'on','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_1 = ['tier', 'off', 'usage']
+commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
+commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
+commandarray_tier_unlocks_4 = ['leaderboard', 'warroom']
+commandarray_tier_unlocks_5 = ['stats', 'loot']
+commandarray_tier_unlocks_6 = ['magic', 'armor']
+commandarray_tier_unlocks_7 = ['assault']
+commandarray_tier_unlocks_8 = ['roulette']
+commandarray_tier_unlocks_9 = ['random']
+commandarray_tier_unlocks_10 = ['colosseum']
+commandarray_tier_unlocks_11 = ['title']
+commandarray_tier_unlocks_12 = []
+commandarray_tier_unlocks_13 = []
+commandarray_tier_unlocks_14 = []
+commandarray_tier_unlocks_15 = []
 
 ## Command Help Text
 commandarray_help_on = "This function enables duels."
@@ -315,12 +313,23 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
         return
     
-    ## test
+    ## What Tier Command?
     for i in range(0,16):
-        testing = eval("commandarray_tier_"+str(i))
-        bot.say(str(testing))
+        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+        if commandortarget.lower() in tiercheck:
+            tiercommandeval = i
+            continue
     
-    
+    ## Is the Tier Unlocked?
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+    tierpepperrequired = get_tierpepper(bot, tiercommandeval)
+    tiermath = int(tiercommandeval) - int(currenttier)
+    if int(tiercommandeval) > int(currenttier):
+        if commandortarget.lower() not in commandarray_tier_self:
+            bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+            if not bot.nick.endswith(devbot):
+                return
+
     bot.say("Subcommand Runs")
 
 ## Target
@@ -349,10 +358,6 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     bot.say("Target Passed All checks.")
     
 
-  
-    
-
-
 def allthingsmustdie():
     
     ## Commands that can't be run via privmsg
@@ -372,17 +377,7 @@ def allthingsmustdie():
     if commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
 
-        ## Tier unlocks
-        tiercommandeval = eval("tierunlock"+ commandortarget) or 0
-        tiercommandeval = int(tiercommandeval)
-        tierpepperrequired = get_tierpepper(bot, tiercommandeval)
-        currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-        tiermath = int(tiercommandeval) - int(currenttier)
-        if int(tiercommandeval) > int(currenttier) and commandortarget != 'admin' and commandortarget != 'on':
-            if commandortarget != 'stats' and commandortarget != 'loot':
-                bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-                if not bot.nick.endswith(devbot):
-                    return
+        
 
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
