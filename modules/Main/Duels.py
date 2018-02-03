@@ -345,11 +345,11 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
                 return
     
     ## If The above passes all Checks
-    #try:
-    subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray)')
-    eval(subcommand_run)
-    #except NameError:
-    #    bot.notice(instigator + ", it looks like this functionality is a work in progress, and not coded yet.", instigator)
+    try:
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray)')
+        eval(subcommand_run)
+    except NameError:
+        bot.notice(instigator + ", it looks like this functionality is a work in progress, and not coded yet.", instigator)
     
     ## usage counter TODO: add specifics
     #adjust_database_value(bot, instigator, 'usage', 1)
@@ -382,11 +382,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
 
 ## Author Subcommand
-def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray):
     bot.say("The author of Duels is deathbybandaid.")
     
 ## docs Subcommand
-def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray):
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray):
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
