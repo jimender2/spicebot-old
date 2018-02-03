@@ -2719,7 +2719,7 @@ def statreset(bot, nick):
 
 def tierratio_level(bot):
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier)
+    tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
     return tierratio
 
 #################
@@ -2787,7 +2787,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
        
     ## Damage Tiers
     if damage > 0:
-        damage = int(damagescale) * damage
+        damage = damagescale * damage
         damage = int(damage)
 
     if damage == 0:
