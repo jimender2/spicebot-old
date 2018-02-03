@@ -456,7 +456,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 currenttierlistarray.append(x)
             elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
                 futuretierlistarray.append(x)
-       if currenttierlistarray != []:
+        if currenttierlistarray != []:
             currenttierlist = get_trigger_arg(currenttierlistarray, "list")
             dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
         if futuretierlistarray != []:
