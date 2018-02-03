@@ -235,8 +235,8 @@ def execute_mainactual(bot, trigger, triggerargsarray):
         commandortarget.lower() = 'random'
     elif commandortarget.lower() == 'everyone':
         commandortarget.lower() = 'assault'
-    elif commandortarget.lower() == 'help' or commandortarget.lower() == 'man':
-        commandortarget.lower() = 'docs'
+    #elif commandortarget.lower() == 'help' or commandortarget.lower() == 'man':
+    #    commandortarget.lower() = 'docs'
     
     ## user list
     currentuserlistarray = []
