@@ -300,7 +300,7 @@ def dividehere():
     bot.say("checks passed")
     return
     
-def subcommands(bot):
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray):
     bot.say("testing")
 
 def allthingsmustdie():
