@@ -521,7 +521,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 statleadername = user
                 statleadernumber = statamount
         if statleadername != '':
-            bot.say("The leader in xp is " + statleadername + " with " + str(statamount))
+            bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber))
         else:
             bot.say("Nobody is the closest to the next pepper level.")
     elif command.lower() == 'upupdowndownleftrightleftrightba':
