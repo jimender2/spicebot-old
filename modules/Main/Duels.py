@@ -44,8 +44,8 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
-commandarray_tier_unlocks_1 = ['tier', 'usage']
+commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
 commandarray_tier_unlocks_4 = ['leaderboard', 'warroom']
@@ -474,9 +474,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
         pepperconvert = pepper_levels_all.index(command.lower())
         pickarray = []
-        for x in tiercommandarray:
-            tiereval = eval("tierunlock"+x)
-            if tiereval == int(pepperconvert) and x != 'upupdowndownleftrightleftrightba':
+        tiercheck = eval("commandarray_tier_unlocks_"+str(pepperconvert))
+        for x in tiercheck:
+            if x != 'upupdowndownleftrightleftrightba':
                 pickarray.append(x)
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
