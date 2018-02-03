@@ -42,7 +42,24 @@ commandarray_alt_random = ['anyone','somebody','available']
 commandarray_alt_assault = ['everyone']
 commandarray_alt_docs = ['help','man']
 
+## Command Tiers
+commandarray_tier_0 = "zero"
+commandarray_tier_1 = "one"
+
+tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
+tierunlockstreaks, tierunlockbounty, tierunlockharakiri = 2,2,2
+tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
+tierunlockleaderboard, tierunlockwarroom = 4,4
+tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
+tierunlockroulette, tierunlockarmor = 6,6
+tierunlockassault = 7
+tierunlockcolosseum = 8
+tierunlocktitle = 9
+
+
 ## Command Help Text
+commandarray_help_on = "This function enables duels."
+
 
 
 ###################
@@ -291,6 +308,12 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
         bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
         return
+    
+    ## test
+    for i in range(0,1):
+        testing = eval("commandarray_tier_"+i)
+        bot.say(testing)
+    
     
     bot.say("Subcommand Runs")
 
