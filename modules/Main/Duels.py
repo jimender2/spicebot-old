@@ -2718,12 +2718,8 @@ def statreset(bot, nick):
 ################
 
 def tierratio_level(bot):
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
-    if not currenttier:
-        tierratio = stocktierratio
-    else:
-        wordconvert = num2words(int(currenttier))
-        tierratio = eval("tierratio"+ wordconvert)
+    currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    tierxprequired = get_trigger_arg(commandarray_tier_ratio, currenttier)
     return tierratio
 
 #################
