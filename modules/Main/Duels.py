@@ -64,7 +64,11 @@ commandarray_tier_unlocks_15 = []
 ## Command Help Text
 commandarray_help_on = "This function enables duels."
 
+###################
+## Pepper Levels ##
+###################
 
+pepper_levels_all = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
 
 ###################
 ## Configurables ##
@@ -450,12 +454,15 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
         currenttierlistarray = []
         futuretierlistarray = []
-        for x in tiercommandarray:
-            tiereval = eval("tierunlock"+x)
-            if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
-                currenttierlistarray.append(x)
-            elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
-                futuretierlistarray.append(x)
+        for i in range(0,16):
+            tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+            for x in tiercheck:
+                if i <= currenttier:
+                    if x != 'upupdowndownleftrightleftrightba':
+                        currenttierlistarray.append(x)
+                else:
+                    if x != 'upupdowndownleftrightleftrightba':
+                        futuretierlistarray.append(x)
         if currenttierlistarray != []:
             currenttierlist = get_trigger_arg(currenttierlistarray, "list")
             dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
@@ -463,9 +470,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
         bot.say(dispmsg)
-    elif command.lower() in peppertierarray:
+    elif command.lower() in pepper_levels_all:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-        pepperconvert = get_peppertier(bot,command)
+        pepperconvert = pepper_levels_all.index(command.lower())
         pickarray = []
         for x in tiercommandarray:
             tiereval = eval("tierunlock"+x)
@@ -560,17 +567,7 @@ def allthingsmustdie():
         if not commandortarget:
             bot.say("temp fix")
                 
-        ## Suicide
-        elif commandortarget == 'harakiri':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target != instigator and target != 'confirm':
-                bot.say("You can't suicide other people. It's called Murder.")
-            elif target == instigator:
-                bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
-            else:
-                deathmsgb = suicidekill(bot,instigator)
-                bot.say(deathmsgb)
-
+        
         ## Russian Roulette
         elif commandortarget == 'roulette':
             if not inchannel.startswith("#"):
