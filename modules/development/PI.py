@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 bot.say("Please select a number of decimal places between 1 and 100")
     else:
-        numberofplaces = random.randint(1,100)
+        numberofplaces = 1000
         mynumber = chudnovskyBig(numberofplaces)
         bot.say(str(mynumber))
             
@@ -40,7 +40,7 @@ def chudnovskyBig(n): #http://en.wikipedia.org/wiki/Chudnovsky_algorithm
     a= 1
     b= 3
     k = 0
-    while k<n
+    while k<n:
         pi = pi + ((4/a)-(4/b))
         a+=4
         b+=4
