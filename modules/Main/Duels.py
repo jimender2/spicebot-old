@@ -2719,7 +2719,7 @@ def statreset(bot, nick):
 
 def tierratio_level(bot):
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierxprequired = get_trigger_arg(commandarray_tier_ratio, currenttier)
+    tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier)
     return tierratio
 
 #################
