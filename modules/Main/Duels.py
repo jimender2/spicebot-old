@@ -3113,6 +3113,7 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
 ##########
 
 def get_trigger_arg(triggerargsarray, number):
+    ## Create
     if number == 'create':
         triggerargsarraynew = []
         if triggerargsarray:
@@ -3122,20 +3123,24 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
-    if str(number) == 'random':
-        if totalarray > 1:
-            try:
-                shuffledarray = random.shuffle(triggerargsarray)
-                randomselected = random.randint(0,len(shuffledarray) - 1)
-                triggerarg = str(shuffledarray [randomselected])
-            except TypeError:
-                triggerarg = get_trigger_arg(triggerargsarray, 1)
-        else:
-            try:
-                triggerarg = get_trigger_arg(triggerargsarray, 1)
-            except TypeError:
-                return triggerarg
-            return triggerarg
+    ## Comma Seperated List
+    if number == 'list':
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg  = str(triggerarg  + ", " + x)
+            else:
+                triggerarg  = str(x)
+        return triggerarg
+    ## Random Entry from array
+    if number == 'random':
+        try:
+            shuffledarray = random.shuffle(triggerargsarray)
+            randomselected = random.randint(0,len(shuffledarray) - 1)
+            triggerarg = str(shuffledarray [randomselected])
+        except TypeError:
+            triggerarg = get_trigger_arg(triggerargsarray, 1)
+        return triggerarg
+    ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
             rangea = re.sub(r"\+", '', str(number))
@@ -3181,13 +3186,6 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
-    
-    elif number == 'list':
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg  = str(triggerarg  + ", " + x)
-            else:
-                triggerarg  = str(x)
     else:
         number = int(number) - 1
         try:
