@@ -361,6 +361,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     validtarget = 0
     validtargetmsg = ''
     
+    ## Target can't be a valid command
+    if target.lower() in commandarray_all_valid:
+        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
+        return validtarget, validtargetmsg
+    
     ## Offline User
     if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
@@ -368,15 +373,17 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
         return validtarget, validtargetmsg
     
     ## Opted Out
-    if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [x.lower() for x in dueloptedinarray]:
+    if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
         target = actualname(bot, target)
         validtargetmsg = str(instigator + ", " + target + " has duels disabled.")
         return validtarget, validtargetmsg
-    
-    if target.lower() in commandarray_all_valid:
-        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
-        return
-    
+
+    ## None of the above
+    if target.lower() not in [y.lower() for y in currentuserlistarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + target + " is either not here, or not a valid nick to target.")
+        return validtarget, validtargetmsg
+
     validtarget = 1
     return validtarget, validtargetmsg
     
