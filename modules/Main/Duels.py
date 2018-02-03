@@ -22,6 +22,24 @@ shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using wi
 sys.path.append(shareddir) ## not needed if using without spicebot
 from SpicebotShared import * ## not needed if using without spicebot
 
+########################
+## Command Structures ##
+########################
+
+## All Commands
+commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+
+## bypass for Opt status
+commandarray_instigator_bypass = ['on','admin']
+
+## Alternative Commands
+commandarray_alt_on = ['enable']
+commandarray_alt_off = ['disable']
+commandarray_alt_random = ['anyone','somebody','available']
+commandarray_alt_assault = ['everyone']
+commandarray_alt_docs = ['help','man']
+
+
 ###################
 ## Configurables ##
 ###################
@@ -195,48 +213,65 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
     if "&&" not in fullcommandusedtotal:
-        execute_mainactual(bot, trigger, triggerargsarray)
+        commandortargetsplit(bot, trigger, triggerargsarray)
     else:
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
             triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-            execute_main(bot, trigger, triggerargsarraypart)
-                    
-def execute_mainactual(bot, trigger, triggerargsarray):
-    
+            commandortargetsplit(bot, trigger, triggerargsarraypart)
+
+#def execute_mainactual(bot, trigger, triggerargsarray):
+def commandortargetsplit(bot, trigger, triggerargsarray):
+
     ## Instigator
     instigator = trigger.nick
 
     ## Check command was issued
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
+    commandortarget = str(commandortarget)
     if not fullcommandused:
         bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
         return
     
     ## can't be a command, and can't enable duels
-    if instigator.lower() in tiercommandarray:
+    if instigator.lower() in commandarray_all_valid:
         bot.notice(instigator + ", your nick is the same as a valid command for duels.",instigator)
         return
     
     ## Check if Instigator is Opted in
-    insstigatoroptinbypassarray = ['on','admin']
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    if instigator not in dueloptedinarray and commandortarget.lower() not in insstigatoroptinbypassarray:
+    if instigator not in dueloptedinarray and commandortarget.lower() not in commandarray_instigator_bypass:
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
     
     ## Alternative commands
-    if commandortarget.lower() == 'enable':
+    if commandortarget.lower() in commandarray_alt_on:
         commandortarget.lower() = 'on'
-    if commandortarget.lower() == 'disable':
+    if commandortarget.lower() in commandarray_alt_off:
         commandortarget.lower() = 'off'
-    if commandortarget.lower() == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+    if commandortarget.lower() in commandarray_alt_random:
         commandortarget.lower() = 'random'
-    if commandortarget.lower() == 'everyone':
+    if commandortarget.lower() in commandarray_alt_assault:
         commandortarget.lower() = 'assault'
-    if commandortarget.lower() == 'help' or commandortarget.lower() == 'man':
+    if commandortarget.lower() in commandarray_alt_docs:
         commandortarget.lower() = 'docs'
+
+    ## Subcommand
+    if commandortarget.lower() in commandarray_all_valid:
+        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray)
+    else:
+        return targetcheck(bot)
+    
+    bot.say("shouldnt see this")
+        
+
+def targetcheck(bot):
+    bot.say("wip")
+        
+def dividehere():
+    
+    
     
     ## user list
     currentuserlistarray = []
@@ -244,7 +279,7 @@ def execute_mainactual(bot, trigger, triggerargsarray):
         currentuserlistarray.append(user)
     
     ## Not a command, and not in bot accessible rooms
-    if commandortarget.lower() not in tiercommandarray and commandortarget.lower() not in [x.lower() for x in currentuserlistarray]:
+    if commandortarget.lower() not in commandarray_all_valid and commandortarget.lower() not in [x.lower() for x in currentuserlistarray]:
         bot.notice(instigator + ", " + str(commandortarget) + " is either not here, or not a valid command.", instigator)
         return
     
@@ -266,6 +301,10 @@ def execute_mainactual(bot, trigger, triggerargsarray):
     bot.say("checks passed")
     return
     
+def subcommands(bot):
+    bot.say("testing")
+
+def allthingsmustdie():
     
     ## Commands that can't be run via privmsg
     inchannel = trigger.sender
