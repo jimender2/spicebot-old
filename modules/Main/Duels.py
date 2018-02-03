@@ -3122,7 +3122,7 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
-    if number == 'random':
+    if str(number) == 'random':
         if totalarray > 1:
             try:
                 shuffledarray = random.shuffle(triggerargsarray)
