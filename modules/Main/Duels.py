@@ -68,7 +68,7 @@ commandarray_help_on = "This function enables duels."
 ## Pepper Levels ##
 ###################
 
-pepper_levels_all = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
+pepper_levels_all = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
 
 ###################
 ## Configurables ##
