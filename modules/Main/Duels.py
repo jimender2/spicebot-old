@@ -407,7 +407,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         return
     bot.notice("Online Docs: " + GITWIKIURL, target)
         
-## On/Off
+## On/Off Subcommand
 def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if target != instigator and not trigger.admin:
@@ -443,8 +443,70 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
     set_database_value(bot, target, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
     
-        
-    
+## Tier Subcommand  
+def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger):
+    command = get_trigger_arg(triggerargsarray, "2+")
+    if not command:
+        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        currenttierlistarray = []
+        futuretierlistarray = []
+        for x in tiercommandarray:
+            tiereval = eval("tierunlock"+x)
+            if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
+                currenttierlistarray.append(x)
+            elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
+                futuretierlistarray.append(x)
+       if currenttierlistarray != []:
+            currenttierlist = get_trigger_arg(currenttierlistarray, "list")
+            dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
+        if futuretierlistarray != []:
+            futuretierlist = get_trigger_arg(futuretierlistarray, "list")
+            dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
+        bot.say(dispmsg)
+    elif command.lower() in peppertierarray:
+        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        pepperconvert = get_peppertier(bot,command)
+        pickarray = []
+        for x in tiercommandarray:
+            tiereval = eval("tierunlock"+x)
+            if tiereval == int(pepperconvert) and x != 'upupdowndownleftrightleftrightba':
+                pickarray.append(x)
+        if pickarray != []:
+            tierlist = get_trigger_arg(pickarray, "list")
+            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
+            tiermath = int(pepperconvert) - currenttier
+            if tiermath > 0:
+                dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+       bot.say(dispmsg)
+    elif command.isdigit():
+        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        pickarray = []
+        for x in tiercommandarray:
+            tiereval = eval("tierunlock"+x)
+            if tiereval == int(command) and x != 'upupdowndownleftrightleftrightba':
+                pickarray.append(x)
+        if pickarray != []:
+            tierlist = get_trigger_arg(pickarray, "list")
+            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+            tiermath = int(command) - currenttier
+            if tiermath > 0:
+               dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+        else:
+            dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
+        bot.say(dispmsg)
+    elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
+        bot.notice(instigator + ", that appears to be an invalid command.", instigator)
+    else:
+        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        tiereval = eval("tierunlock"+command)
+        tiereval = int(tiereval)
+        tierpepperrequired = get_tierpepper(bot, tiereval)
+        tiermath = tiereval - currenttier
+        if tiereval <= currenttier:
+            dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
+        else:
+            dispmsg = str(dispmsg+ command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+        bot.say(dispmsg)
     
     
     
