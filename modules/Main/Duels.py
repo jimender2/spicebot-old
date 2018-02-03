@@ -227,16 +227,16 @@ def execute_mainactual(bot, trigger, triggerargsarray):
         return
     
     ## Alternative commands
-    #if commandortarget.lower() == 'enable':
-    #    commandortarget.lower() = 'on'
-    #elif commandortarget.lower() == 'disable':
-    #    commandortarget.lower() = 'off'
-    #elif commandortarget.lower() == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-    #    commandortarget.lower() = 'random'
-    #elif commandortarget.lower() == 'everyone':
-    #    commandortarget.lower() = 'assault'
-    #elif commandortarget.lower() == 'help' or commandortarget.lower() == 'man':
-    #    commandortarget.lower() = 'docs'
+    if commandortarget.lower() == 'enable':
+        commandortarget.lower() = 'on'
+    if commandortarget.lower() == 'disable':
+        commandortarget.lower() = 'off'
+    if commandortarget.lower() == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+        commandortarget.lower() = 'random'
+    if commandortarget.lower() == 'everyone':
+        commandortarget.lower() = 'assault'
+    if commandortarget.lower() == 'help' or commandortarget.lower() == 'man':
+        commandortarget.lower() = 'docs'
     
     ## user list
     currentuserlistarray = []
