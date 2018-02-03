@@ -253,6 +253,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     
     ## user list
+    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
     currentuserlistarray = []
     for user in bot.users:
         currentuserlistarray.append(user)
