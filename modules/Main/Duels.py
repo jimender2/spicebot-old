@@ -3148,11 +3148,14 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerarg
     ## Complete
     if number == 0:
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg = str(triggerarg + " " + x)
-            else:
-                triggerarg = str(x)
+        try:
+            for x in triggerargsarray:
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + x)
+                else:
+                    triggerarg = str(x)
+        except TypeError:
+            triggerarg = ''
         return triggerarg
     ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
