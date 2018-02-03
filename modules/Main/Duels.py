@@ -340,8 +340,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierpepperrequired = pepper_levels_all.index(tiercommandeval + 1)
-    #tierpepperrequired = get_tierpepper(bot, tiercommandeval)
+    tierpepperrequired = pepper_levels_all.index(tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
@@ -511,7 +510,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if command.lower() in tiercheck:
                 tiereval = i
                 continue
-        tierpepperrequired = pepper_levels_all.index(tiereval.lower())
+        tierpepperrequired = pepper_levels_all.index(tiereval)
         tiermath = tiereval - currenttier
         if tiereval <= currenttier:
             dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
