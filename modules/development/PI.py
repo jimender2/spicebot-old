@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Please enter the number of digits you want to see.")
         else:
             digits=int(digitcount)
-            if digits>=1 and digits<=100:
+            if digits>=1 and digits<=10000:
                 mynumber =chudnovskyBig(digits)
                 bot.say(str(mynumber))
             else:
@@ -37,15 +37,14 @@ def execute_main(bot, trigger, triggerargsarray):
     
 def chudnovskyBig(n): #http://en.wikipedia.org/wiki/Chudnovsky_algorithm
     pi = Decimal(0) 
-    k=1
-    #pi += (Decimal(-1)**k)*(Decimal(factorial(6*k))/((factorial(k)**3)*(factorial(3*k)))* (13591409+545140134*k)/(640320**(3*k)))    
-    #pi = pi * Decimal(10005).sqrt()/4270934400
-   # pi = pi**(-1)  
-    pi = (4/1) - (4/3) + (4/5) - (4/7) + (4/9) - (4/11) + (4/13) - (4/15) 
+    a= 1
+    b= 3
+    k = 0
+    while k<n
+        pi = pi + ((4/a)-(4/b))
+        a+=4
+        b+=4
+        k+=1
     return pi
                 
-def factorial(n):
-    if n<1:
-        return 1
-    else:
-        return n * factorial(n-1)
+
