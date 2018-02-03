@@ -314,10 +314,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     ## Run Target Check
     else:
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray)
-        if validtarget:
-            bot.say("target passed checks")
-        else:
+        if not validtarget:
             bot.say(validtargetmsg)
+        else:
+            bot.say("target passed checks")
 
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray):
@@ -392,10 +392,11 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         bot.say("Online Docs: " + GITWIKIURL)
         return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray)
-    if validtarget:
-        bot.notice("Online Docs: " + GITWIKIURL, target)
-    else:
+    if not validtarget:
         bot.notice(validtargetmsg, instigator)
+    else:
+        bot.notice("Online Docs: " + GITWIKIURL, target)
+        
 
     
     
