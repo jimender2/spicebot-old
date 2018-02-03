@@ -42,6 +42,8 @@ commandarray_alt_random = ['anyone','somebody','available']
 commandarray_alt_assault = ['everyone']
 commandarray_alt_docs = ['help','man']
 
+## Command Help Text
+
 
 ###################
 ## Configurables ##
@@ -241,7 +243,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## can't be a command, and can't enable duels
     if instigator.lower() in commandarray_all_valid:
-        bot.notice(instigator + ", your nick is the same as a valid command for duels.",instigator)
+        bot.notice(instigator + ", your nick is the same as a valid command for duels.", instigator)
         return
     
     ## Check if Instigator is Opted in
@@ -260,8 +262,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         except NameError:
             dummyvar = 1
     
-    bot.say(str(commandortarget))
-    ## Subcommand
+    ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
         return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
     else:
@@ -272,7 +273,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     bot.say("testing")
 
 ## Target
-def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, target, dueloptedinarray, botvisibleusers):
+def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers):
     
     ## user list
     currentuserlistarray = []
