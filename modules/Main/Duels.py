@@ -496,7 +496,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         bot.say(dispmsg)
     elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
-    else:
+    elif command.lower() in tiercommandarray:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
         tiereval = eval("tierunlock"+command)
         tiereval = int(tiereval)
@@ -507,7 +507,14 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsg = str(dispmsg+ command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
         bot.say(dispmsg)
-    
+    else:
+        validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        targettier = get_database_value(bot, target, 'levelingtier') or 0
+        dispmsg = str(target + "'s current tier is " + str(targettier)+ ". ")
+        
     
     
 def allthingsmustdie():
