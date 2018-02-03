@@ -368,7 +368,7 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
 
 ## Docs
-def subcommand_author():
+def subcommand_author(bot, instigator):
     bot.notice("The author of Duels is deathbybandaid.", instigator)
     
     
