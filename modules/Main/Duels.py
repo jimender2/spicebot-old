@@ -310,7 +310,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         return
     
     ## test
-    for i in range(0,1):
+    for i in range(0,2):
         testing = eval("commandarray_tier_"+str(i))
         bot.say(str(testing))
     
