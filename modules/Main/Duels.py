@@ -311,8 +311,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## test
     for i in range(0,1):
-        testing = eval("commandarray_tier_"+i)
-        bot.say(testing)
+        testing = eval("commandarray_tier_"+str(i))
+        bot.say(str(testing))
     
     
     bot.say("Subcommand Runs")
