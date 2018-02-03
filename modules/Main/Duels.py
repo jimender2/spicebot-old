@@ -3122,6 +3122,20 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
+    if number == 'random':
+        if totalarray > 1:
+            try:
+                shuffledarray = random.shuffle(triggerargsarray)
+                randomselected = random.randint(0,len(shuffledarray) - 1)
+                triggerarg = str(shuffledarray [randomselected])
+            except TypeError:
+                triggerarg = get_trigger_arg(triggerargsarray, 1)
+        else:
+            try:
+                triggerarg = get_trigger_arg(triggerargsarray, 1)
+            except TypeError:
+                return triggerarg
+            return triggerarg
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
             rangea = re.sub(r"\+", '', str(number))
@@ -3167,16 +3181,7 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
-    elif number == 'random':
-        if totalarray > 1:
-            try:
-                shuffledarray = random.shuffle(triggerargsarray)
-                randomselected = random.randint(0,len(shuffledarray) - 1)
-                triggerarg = str(shuffledarray [randomselected])
-            except TypeError:
-                triggerarg = get_trigger_arg(triggerargsarray, 1)
-        else:
-            triggerarg = get_trigger_arg(triggerargsarray, 1)
+    
     elif number == 'list':
         for x in triggerargsarray:
             if triggerarg != '':
