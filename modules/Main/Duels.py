@@ -259,7 +259,8 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
                 continue
         except NameError:
             dummyvar = 1
-
+    
+    bot.say(str(commandortarget))
     ## Subcommand
     if commandortarget.lower() in commandarray_all_valid:
         return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
