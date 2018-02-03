@@ -516,7 +516,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         statleadername = ''
         statleadernumber  = 0
         for user in currentuserlistarray:
-            statamount = get_database_value(bot, u, x)
+            statamount = get_database_value(bot, user, x)
             if statamount >= statleadernumber and statamount > 0:
                 statleadername = user
                 statleadernumber = statamount
