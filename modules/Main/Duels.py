@@ -340,7 +340,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierpepperrequired = get_tierpepper(bot, tiercommandeval)
+    tierpepperrequired = pepper_levels_all.index(tiercommandeval.lower())
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
@@ -488,9 +488,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.isdigit():
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
         pickarray = []
-        for x in tiercommandarray:
-            tiereval = eval("tierunlock"+x)
-            if tiereval == int(command) and x != 'upupdowndownleftrightleftrightba':
+        tiercheck = eval("commandarray_tier_unlocks_"+str(command))
+        for x in tiercheck:
+            if x != 'upupdowndownleftrightleftrightba':
                 pickarray.append(x)
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
@@ -503,11 +503,14 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         bot.say(dispmsg)
     elif command.lower() == 'upupdowndownleftrightleftrightba':
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
-    elif command.lower() in tiercommandarray:
+    elif command.lower() in commandarray_all_valid:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-        tiereval = eval("tierunlock"+command)
-        tiereval = int(tiereval)
-        tierpepperrequired = get_tierpepper(bot, tiereval)
+        for i in range(0,16):
+            tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+            if command.lower() in tiercheck:
+                tiereval = i
+                continue
+        tierpepperrequired = pepper_levels_all.index(tiereval.lower())
         tiermath = tiereval - currenttier
         if tiereval <= currenttier:
             dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
