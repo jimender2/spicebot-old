@@ -64,14 +64,14 @@ commandarray_tier_unlocks_13 = []
 commandarray_tier_unlocks_14 = []
 commandarray_tier_unlocks_15 = []
 
+## XP tier unlock
+commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000]
+
 ## Command Help Text
 commandarray_help_on = "This function enables duels."
 
-###################
-## Pepper Levels ##
-###################
-
-pepper_levels_all = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
+## Pepper Levels
+commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
 
 ###################
 ## Configurables ##
@@ -351,7 +351,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierpepperrequired = get_trigger_arg(pepper_levels_all, tiercommandeval)
+    tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
@@ -481,9 +481,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
         bot.say(dispmsg)
-    elif command.lower() in pepper_levels_all:
+    elif command.lower() in commandarray_pepper_levels:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-        pepperconvert = pepper_levels_all.index(command.lower())
+        pepperconvert = commandarray_pepper_levels.index(command.lower())
         pickarray = []
         tiercheck = eval("commandarray_tier_unlocks_"+str(pepperconvert))
         for x in tiercheck:
@@ -521,7 +521,10 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 statleadername = user
                 statleadernumber = statamount
         if statleadername != '':
-            bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber))
+            nexttier = currenttier + 1
+            tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
+            tierxpmath = tierxprequired - statleadernumber
+            bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
         else:
             bot.say("Nobody is the closest to the next pepper level.")
     elif command.lower() == 'upupdowndownleftrightleftrightba':
@@ -533,7 +536,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if command.lower() in tiercheck:
                 tiereval = i
                 continue
-        tierpepperrequired = get_trigger_arg(pepper_levels_all, tiereval)
+        tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiereval)
         tiermath = tiereval - currenttier
         if tiereval <= currenttier:
             dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
