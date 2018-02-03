@@ -44,8 +44,8 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['docs', 'admin', 'author', 'on','upupdowndownleftrightleftrightba']
-commandarray_tier_unlocks_1 = ['tier', 'off', 'usage']
+commandarray_tier_unlocks_0 = ['docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_1 = ['tier', 'usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
 commandarray_tier_unlocks_4 = ['leaderboard', 'warroom']
@@ -344,15 +344,15 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             if not bot.nick.endswith(devbot):
                 return
     
-    ## If The above passes all Checks
-    try:
-        if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
-            subcommand_run = str('subcommand_onoff' + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
-        else:
-            subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
-        eval(subcommand_run)
-    except NameError:
-        bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
+    ## If The above passes all Checks TODO
+    #try:
+    if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
+        subcommand_run = str('subcommand_onoff' + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
+    else:
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
+    eval(subcommand_run)
+    #except NameError:
+    #    bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
     
     ## usage counter TODO: add specifics
     #adjust_database_value(bot, instigator, 'usage', 1)
