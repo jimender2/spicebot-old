@@ -355,7 +355,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers)
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers):
     
     ## Guilty until proven Innocent
     validtarget = 0
