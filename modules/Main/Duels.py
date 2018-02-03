@@ -313,7 +313,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Run Target Check
     else:
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray)
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
         if not validtarget:
             bot.say(validtargetmsg)
         else:
@@ -355,7 +355,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray):
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator):
     
     ## Guilty until proven Innocent
     validtarget = 0
@@ -375,13 +375,13 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Opted Out
     if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + target + " has duels disabled.")
+        validtargetmsg = str(instigator + ", " + str(target) + " has duels disabled.")
         return validtarget, validtargetmsg
 
     ## None of the above
     if target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + target + " is either not here, or not a valid nick to target.")
+        validtargetmsg = str(instigator + ", " + str(target) + " is either not here, or not a valid nick to target.")
         return validtarget, validtargetmsg
 
     validtarget = 1
@@ -398,7 +398,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
     else:
