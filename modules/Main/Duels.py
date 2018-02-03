@@ -3140,6 +3140,20 @@ def get_trigger_arg(triggerargsarray, number):
         except TypeError:
             triggerarg = get_trigger_arg(triggerargsarray, 1)
         return triggerarg
+    ## Last
+    if number == 'last':
+        if totalarray > 1:
+            totalarray = totalarray -2
+            triggerarg = str(triggerargsarray[totalarray])
+        return triggerarg
+    ## Complete
+    if number == 0:
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + x)
+            else:
+                triggerarg = str(arg)
+        return triggerarg
     ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
         if str(number).endswith("+"):
@@ -3163,9 +3177,6 @@ def get_trigger_arg(triggerargsarray, number):
             rangeb = number.split("^", 1)[1]
             rangea = int(rangea)
             rangeb = int(rangeb) + 1
-        elif number == 0:
-            rangea = 1
-            rangeb = totalarray
         if rangea <= totalarray:
             for i in range(rangea,rangeb):
                 arg = get_trigger_arg(triggerargsarray, i)
@@ -3173,10 +3184,6 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
-    elif number == 'last':
-        if totalarray > 1:
-            totalarray = totalarray -2
-            triggerarg = str(triggerargsarray[totalarray])
     elif str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
         for i in range(1,totalarray):
