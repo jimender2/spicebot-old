@@ -477,7 +477,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             tiermath = int(pepperconvert) - currenttier
             if tiermath > 0:
                 dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
-       bot.say(dispmsg)
+        bot.say(dispmsg)
     elif command.isdigit():
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
         pickarray = []
