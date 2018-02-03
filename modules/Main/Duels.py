@@ -227,7 +227,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 #def execute_mainactual(bot, trigger, triggerargsarray):
 def commandortargetsplit(bot, trigger, triggerargsarray):
-
+    
     ## Instigator
     instigator = trigger.nick
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
@@ -252,6 +252,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
     
+    ## Time when Module use started
+    now = time.time()
+    
+    ## Instigator last used
+    set_database_value(bot, instigator, 'lastcommand', now)
+    
     ## Alternative commands
     for subcom in commandarray_all_valid:
         try:
@@ -264,16 +270,32 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
+        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
+    
+    ## Instigator versus Bot
+    elif commandortarget.lower() == bot.nick.lower():
+        bot.say("I refuse to fight a biological entity!")
+
+    ## Instigator versus Instigator
+    elif commandortarget.lower() == instigator.lower():
+        bot.say("If you are feeling self-destructive, there are places you can call.")
+    
+    ## Run Target Check
     else:
-        return targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
+        return targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
 
 ## Subcommands
-def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers):
-    bot.say("testing")
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
+    
+    ## Admin Command Blocker
+    if commandortarget.lower() in commandarray_admin and not trigger.admin:
+        bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
+        return
+    
+    bot.say("Subcommand Runs")
 
 ## Target
-def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers):
+def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
     
     ## user list
     currentuserlistarray = []
@@ -295,82 +317,30 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         bot.notice(instigator + ", " + commandortarget + " has duels disabled.", instigator)
         return
 
-    bot.say("passed")
+    bot.say("Target Passed All checks.")
     
-    
-def dividehere():
-    
-    
-    
-    
-    
-    ## Not a command, and not in bot accessible rooms
 
-    ## In bot accessible rooms, but not opted in
-    if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
-        commandortarget = actualname(bot, commandortarget)
-        
-        return
-        
-    ## Admin Command Blocker
-    if commandortarget.lower() in commandarray_admin and not trigger.admin:
-        bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
-        return
+  
     
-    
-        
-    ## during rebuild, remove later
-    bot.say("checks passed")
-    return
-    
+
 
 def allthingsmustdie():
     
     ## Commands that can't be run via privmsg
     inchannel = trigger.sender
     mustbeinchannelarray = []
-    if commandortarget.lower() not in dueloptedinarray:
-        bot.say("nothing")
-    
-    
-    
-    
-    ## Time when Module use started
-    #now = time.time()
-    
     ## Initial ARGS of importance
-    
-    
     #dowedisplay = 0
     #displaymessage = ''
     #typeofduel = 'target'
-    
     ## User/channel Arrays
-    
     #canduelarray, targetarray = [], []
-
-    
-
-    
-
     ## bot does not need stats or backpack items
     #refreshbot(bot)
 
-    ## Instigator last used
-    #set_database_value(bot, instigator, 'lastcommand', now)
-    
-    
-    
-    ## If Not a target or a command used
     
 
-    ## Instigator versus Bot
-    elif commandortarget == bot.nick:
-        bot.say("I refuse to fight a biological entity!")
-
-    ## Instigator versus Instigator
-    elif commandortarget == instigator:
-        bot.say("If you are feeling self-destructive, there are places you can call.")
+    
 
     ## Determine if the arg after .duel is a target or a command
     elif commandortarget.lower() in tiercommandarray:
