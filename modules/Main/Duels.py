@@ -420,10 +420,11 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
             else:
                 adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
         return
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
-    if not validtarget:
-        bot.notice(validtargetmsg, instigator)
-        return
+    if target != instigator:
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
     target = actualname(bot, target)
     targetopttime = get_timesince_duels(bot, target, 'opttime')
     if targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
