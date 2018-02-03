@@ -335,12 +335,13 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     for i in range(0,16):
         tiercheck = eval("commandarray_tier_unlocks_"+str(i))
         if commandortarget.lower() in tiercheck:
-            tiercommandeval = i
+            tiercommandeval = int(i)
             continue
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierpepperrequired = pepper_levels_all.index(tiercommandeval.lower())
+    tierpepperrequired = pepper_levels_all.index(tiercommandeval)
+    #tierpepperrequired = get_tierpepper(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
