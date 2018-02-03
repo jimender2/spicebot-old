@@ -35,6 +35,9 @@ commandarray_instigator_bypass = ['on','admin']
 ## Admin Functions
 commandarray_admin = ['admin']
 
+## Must Be inchannel
+commandarray_inchannel = ['roulette','assault','colosseum']
+
 ## Alternative Commands
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
@@ -302,7 +305,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
                 continue
         except NameError:
             dummyvar = 1
-
+    
+    ## Inchannel Block
+    inchannel = trigger.sender
+    if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
+        bot.notice(instigator + ", duel " + commandortarget + " must be in channel.", instigator)
+    
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
         subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now, currentuserlistarray)
@@ -317,6 +325,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Run Target Check
     else:
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + ", duels must be in channel.", instigator)
+            return
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, instigator)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
@@ -501,6 +512,18 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
         bot.say(dispmsg)
+    elif command.lower() == 'closest':
+        statleadername = ''
+        statleadernumber  = 0
+        for user in currentuserlistarray:
+            statamount = get_database_value(bot, u, x)
+            if statamount >= statleadernumber and statamount > 0:
+                statleadername = user
+                statleadernumber = statamount
+        if statleadername != '':
+            bot.say("The leader in xp is " + statleadername + " with " + str(statamount))
+        else:
+            bot.say("Nobody is the closest to the next pepper level.")
     elif command.lower() == 'upupdowndownleftrightleftrightba':
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
     elif command.lower() in commandarray_all_valid:
@@ -542,7 +565,6 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 def allthingsmustdie():
     
     ## Commands that can't be run via privmsg
-    inchannel = trigger.sender
     mustbeinchannelarray = []
     ## Initial ARGS of importance
     #dowedisplay = 0
