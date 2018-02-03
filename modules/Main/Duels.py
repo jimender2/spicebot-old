@@ -67,11 +67,14 @@ commandarray_tier_unlocks_15 = []
 ## XP tier unlock
 commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000]
 
-## Command Help Text
-commandarray_help_on = "This function enables duels."
+## Tier Ratios
+commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.2.1,2.2.2.3,2.4,2.5]
 
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
+
+## Command Help Text TODO
+commandarray_help_on = "This function enables duels."
 
 ###################
 ## Configurables ##
@@ -163,33 +166,8 @@ speceventreward = 500
 stockhealth = 1000
 
 ## Tiers
-stocktierratio = 1
-tierratioone = 1.1
-tierratiotwo = 1.2
-tierratiothree = 1.3
-tierratiofour = 1.4
-tierratiofive = 1.5
-tierratiosix = 1.6
-tierratioseven = 1.7
-tierratioeight = 1.8
-tierrationine = 1.9
-tierratioten = 2
-tierratioeleven = 2.1
-tierratiotwelve = 2.2
-tierratiothirteen = 2.3
-tierratiofourteen = 2.4
-tierratiofifteen = 2.5
-tiercommandarray = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
-tierunlockstreaks, tierunlockbounty, tierunlockharakiri = 2,2,2
-tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
-tierunlockleaderboard, tierunlockwarroom = 4,4
-tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
-tierunlockroulette, tierunlockarmor = 6,6
-tierunlockassault = 7
-tierunlockcolosseum = 8
-tierunlocktitle = 9
-peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
+
+
 
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
@@ -580,7 +558,119 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         deathmsgb = suicidekill(bot,instigator) ## TODO
         bot.say(deathmsgb)
 
-
+## Russian Roulette
+def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
+    if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
+        bot.notice(instigator + " Roulette has a small timeout.", instigator)
+        return
+    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+    roulettepayoutdefault = 5
+    roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
+    roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+    if roulettelastplayer == instigator:
+        bot.say(instigator + " spins the revolver and pulls the trigger.")
+    elif roulettecount == 1:
+        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
+    else:
+        bot.say(instigator + " spins the cylinder and pulls the trigger.")
+    roulettechamber = get_database_value(bot, bot.ncik, 'roulettechamber')
+    if not roulettechamber:
+        roulettechamber = randint(1, 6)
+        set_database_value(bot, bot.nick, 'roulettechamber', roulettechamber)
+    roulettespinarray = get_database_value(bot, bot.nick, 'roulettespinarray') or [1,2,3,4,5,6]
+    if roulettelastplayer == instigator:
+        if len(roulettespinarray) > 1:
+            temparray = []
+            for x in roulettespinarray:
+                if x != roulettechamber:
+                    temparray.append(x)
+            randomremove = get_trigger_arg(temparray, "random")
+            roulettespinarray.remove(randomremove)
+            currentspin = get_trigger_arg(roulettespinarray, "random")
+            set_database_value(bot, bot.nick, 'roulettespinarray', roulettespinarray)
+        else:
+            currentspin = roulettechamber
+            reset_database_value(bot, bot.nick, 'roulettespinarray')
+    else:
+        reset_database_value(bot, bot.nick, 'roulettespinarray')
+    currentspin = get_trigger_arg(roulettespinarray, "random")
+    if currentspin == roulettechamber:
+        biggestpayout = 0
+        biggestpayoutwinner = ''
+        statreset(bot, instigator)
+        healthcheck(bot, instigator)
+        roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
+        resultmsg = ''
+        deathmsg = ''
+        revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
+        weapon = get_trigger_arg(revolvernames, 'random')
+        weapon = str(" with a " + weapon)
+        winner, loser = 'duelsroulettegame', instigator
+        assault_kills, assault_deaths = 0,0
+        damage, roulettedamagearray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
+        roulettedamage = ''
+        for x in roulettedamagearray:
+            roulettedamage = str(roulettedamage+" "+ x)
+        currenthealth = get_database_value(bot, loser, 'health')
+        if currenthealth <= 0:
+            deathmsg = str(" " +  loser + ' dies forcing a respawn!!')
+            deathmsgb = suicidekill(bot,loser)
+            deathmsg = str(deathmsg+" "+deathmsgb)
+        if roulettecount == 1:
+            resultmsg = "First in the chamber. What bad luck. "
+            roulettewinners.append(instigator)
+        resultmsg = str(resultmsg + roulettedamage + deathmsg)
+        uniqueplayersarray = []
+        for x in roulettewinners:
+            if x not in uniqueplayersarray:
+                uniqueplayersarray.append(x)
+        for x in uniqueplayersarray:
+            if x != instigator:
+                statreset(bot, x)
+                healthcheck(bot, x)
+                roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+                if roulettepayoutx > biggestpayout:
+                    biggestpayoutwinner = x
+                    biggestpayout = roulettepayoutx
+                elif roulettepayoutx == biggestpayout:
+                    biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
+                    biggestpayout = roulettepayoutx
+                adjust_database_value(bot, x, 'coin', roulettepayoutx)
+                bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+            reset_database_value(bot, x, 'roulettepayout')
+        if instigator in roulettewinners:
+            roulettewinners.remove(instigator)
+        if roulettewinners != []:
+            displaymessage = get_trigger_arg(roulettewinners, "list")
+            displaymessage = str("Winners: " + displaymessage + " ")
+        if biggestpayoutwinner != '':
+            displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
+        reset_database_value(bot, bot.nick, 'roulettelastplayer')
+        reset_database_value(bot, bot.nick, 'roulettechamber')
+        reset_database_value(bot, bot.nick, 'roulettewinners')
+        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+        reset_database_value(bot, bot.nick, 'roulettecount')
+        reset_database_value(bot, instigator, 'roulettepayout')
+        if roulettecount > 1:
+            roulettecount = roulettecount + 1
+            displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
+                bot.say(resultmsg + displaymessage)
+    else:
+        time.sleep(2) # added to build suspense
+        bot.say("*click*")
+        roulettecount = roulettecount + 1
+        roulettepayout = roulettepayoutdefault * roulettecount
+        adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
+        adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
+        set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
+        adjust_database_array(bot, bot.nick, instigator, 'roulettewinners', 'add')
+    
+    
+    
+    
+    
+    
     
 def allthingsmustdie():
     
