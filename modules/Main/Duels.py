@@ -340,7 +340,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
-    tierpepperrequired = pepper_levels_all.index(tiercommandeval)
+    tierpepperrequired = pepper_levels_all.index(tiercommandeval + 1)
     #tierpepperrequired = get_tierpepper(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
