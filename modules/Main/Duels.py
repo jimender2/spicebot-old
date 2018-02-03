@@ -312,10 +312,7 @@ def dividehere():
     
     
     ## Not a command, and not in bot accessible rooms
-    
-        
-        return
-    
+
     ## In bot accessible rooms, but not opted in
     if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
         commandortarget = actualname(bot, commandortarget)
