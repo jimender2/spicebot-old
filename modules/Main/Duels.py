@@ -165,10 +165,6 @@ randomcoinaward = 100
 speceventreward = 500
 stockhealth = 1000
 
-## Tiers
-
-
-
 ## Potion Display Message
 healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
@@ -560,6 +556,7 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    displaymessage = ''
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
     if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
