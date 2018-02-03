@@ -295,7 +295,7 @@ def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         bot.notice(instigator + ", " + commandortarget + " has duels disabled.", instigator)
         return
 
-    
+    bot.say("passed")
     
     
 def dividehere():
