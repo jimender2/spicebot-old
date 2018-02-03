@@ -362,7 +362,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers):
     validtargetmsg = ''
     
     ## Offline User
-    if target.lower() in [x.lower() for x in botvisibleusers] and commandortarget.lower() not in [y.lower() for y in currentuserlistarray]:
+    if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
         validtargetmsg = str(instigator + ", " + str(target) + " is offline right now.")
         return validtarget, validtargetmsg
