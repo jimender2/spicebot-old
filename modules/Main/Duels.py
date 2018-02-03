@@ -32,9 +32,12 @@ commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','adm
 ## bypass for Opt status
 commandarray_instigator_bypass = ['on','admin']
 
+## Admin Functions
+commandarray_admin = ['admin']
+
 ## Alternative Commands
-commandarray_alt_on = ['enable']
-commandarray_alt_off = ['disable']
+commandarray_alt_on = ['enable','activate']
+commandarray_alt_off = ['disable','deactivate']
 commandarray_alt_random = ['anyone','somebody','available']
 commandarray_alt_assault = ['everyone']
 commandarray_alt_docs = ['help','man']
@@ -225,6 +228,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
 
     ## Instigator
     instigator = trigger.nick
+    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
+    if instigator not in botvisibleusers:
+        adjust_database_array(bot, bot.nick, instigator, 'botvisibleusers', 'add')
 
     ## Check command was issued
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
@@ -245,51 +251,78 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         return
     
     ## Alternative commands
-    if commandortarget.lower() in commandarray_alt_on:
-        commandortarget = 'on'
-    if commandortarget.lower() in commandarray_alt_off:
-        commandortarget = 'off'
-    if commandortarget.lower() in commandarray_alt_random:
-        commandortarget = 'random'
-    if commandortarget.lower() in commandarray_alt_assault:
-        commandortarget = 'assault'
-    if commandortarget.lower() in commandarray_alt_docs:
-        commandortarget = 'docs'
+    for subcom in commandarray_all_valid:
+        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+        if commandortarget.lower() in commandarray_alt_eval:
+            commandortarget = commandortarget.split("commandarray_alt_", 1)[1]
+            continue
+        #try:
+            
+    #if commandortarget.lower() in commandarray_alt_on:
+    #    commandortarget = 'on'
+    #if commandortarget.lower() in commandarray_alt_off:
+    #    commandortarget = 'off'
+    #if commandortarget.lower() in commandarray_alt_random:
+    #    commandortarget = 'random'
+    #if commandortarget.lower() in commandarray_alt_assault:
+    #    commandortarget = 'assault'
+    #if commandortarget.lower() in commandarray_alt_docs:
+    #    commandortarget = 'docs'
+    bot.say(str(commandortarget))
 
     ## Subcommand
     if commandortarget.lower() in commandarray_all_valid:
-        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray)
+        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
     else:
-        return targetcheck(bot)
-    
-    bot.say("shouldnt see this")
-        
+        return targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers)
 
-def targetcheck(bot):
-    bot.say("wip")
-        
-def dividehere():
-    
-    
+## Subcommands
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers):
+    bot.say("testing")
+
+## Target
+def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, target, dueloptedinarray, botvisibleusers):
     
     ## user list
     currentuserlistarray = []
     for user in bot.users:
         currentuserlistarray.append(user)
+        if user not in botvisibleusers:
+            adjust_database_array(bot, bot.nick, user, 'botvisibleusers', 'add')
+    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
+    
+    ## Offline User
+    if commandortarget.lower() in [x.lower() for x in botvisibleusers] and commandortarget.lower() not in [y.lower() for y in currentuserlistarray]:
+        commandortarget = actualname(bot, commandortarget)
+        bot.notice(instigator + ", " + str(commandortarget) + " is offline right now.", instigator)
+        return
+    
+    ## Opted Out
+    if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
+        commandortarget = actualname(bot, commandortarget)
+        bot.notice(instigator + ", " + commandortarget + " has duels disabled.", instigator)
+
+    
+    
+    
+def dividehere():
+    
+    
+    
+    
     
     ## Not a command, and not in bot accessible rooms
-    if commandortarget.lower() not in commandarray_all_valid and commandortarget.lower() not in [x.lower() for x in currentuserlistarray]:
-        bot.notice(instigator + ", " + str(commandortarget) + " is either not here, or not a valid command.", instigator)
+    
+        
         return
     
     ## In bot accessible rooms, but not opted in
     if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
         commandortarget = actualname(bot, commandortarget)
-        bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
+        
         return
         
     ## Admin Command Blocker
-    commandarray_admin = ['admin']
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
         bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
         return
@@ -300,8 +333,6 @@ def dividehere():
     bot.say("checks passed")
     return
     
-def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray):
-    bot.say("testing")
 
 def allthingsmustdie():
     
