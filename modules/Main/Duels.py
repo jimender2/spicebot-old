@@ -338,12 +338,9 @@ def allthingsmustdie():
     ## bot does not need stats or backpack items
     #refreshbot(bot)
 
-    
-
-    
 
     ## Determine if the arg after .duel is a target or a command
-    elif commandortarget.lower() in tiercommandarray:
+    if commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
 
         ## Tier unlocks
