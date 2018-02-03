@@ -512,7 +512,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
-        targettier = get_database_value(bot, target, 'levelingtier') or 0
+        targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsg = str(target + "'s current tier is " + str(targettier)+ ". ")
         
     
