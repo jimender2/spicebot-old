@@ -276,28 +276,28 @@ def execute_mainactual(bot, trigger, triggerargsarray):
     
     
     ## Time when Module use started
-    now = time.time()
+    #now = time.time()
     
     ## Initial ARGS of importance
     
     
-    dowedisplay = 0
-    displaymessage = ''
-    typeofduel = 'target'
+    #dowedisplay = 0
+    #displaymessage = ''
+    #typeofduel = 'target'
     
     ## User/channel Arrays
     
-    canduelarray, targetarray = [], []
+    #canduelarray, targetarray = [], []
 
     
 
     
 
     ## bot does not need stats or backpack items
-    refreshbot(bot)
+    #refreshbot(bot)
 
     ## Instigator last used
-    set_database_value(bot, instigator, 'lastcommand', now)
+    #set_database_value(bot, instigator, 'lastcommand', now)
     
     
     
