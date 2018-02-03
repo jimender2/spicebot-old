@@ -251,9 +251,14 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Instigator
     instigator = trigger.nick
+    
+    ## user list
+    currentuserlistarray = []
+    for user in bot.users:
+        currentuserlistarray.append(user)
+        if user not in botvisibleusers:
+            adjust_database_array(bot, bot.nick, user, 'botvisibleusers', 'add')
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
-    if instigator not in botvisibleusers:
-        adjust_database_array(bot, bot.nick, instigator, 'botvisibleusers', 'add')
 
     ## Check command was issued
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
@@ -292,10 +297,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
                 continue
         except NameError:
             dummyvar = 1
-    
+
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        return subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
@@ -307,7 +312,11 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Run Target Check
     else:
-        return targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now)
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers)
+        if validtarget:
+            bot.say("target passed checks")
+        else:
+            bot.say(validtargetmsg)
 
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
@@ -336,7 +345,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## If The above passes all Checks
     try:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator)')
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers)')
         eval(subcommand_run)
     except NameError:
         bot.notice(instigator + ", it looks like this functionality is a work in progress, and not coded yet.", instigator)
@@ -345,34 +354,52 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
-def targetcheck(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
+def targetcheck(bot, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
     
-    ## user list
-    currentuserlistarray = []
-    for user in bot.users:
-        currentuserlistarray.append(user)
-        if user not in botvisibleusers:
-            adjust_database_array(bot, bot.nick, user, 'botvisibleusers', 'add')
-    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
+    ## Guilty until proven Innocent
+    validtarget = 0
+    validtargetmsg = ''
     
     ## Offline User
     if commandortarget.lower() in [x.lower() for x in botvisibleusers] and commandortarget.lower() not in [y.lower() for y in currentuserlistarray]:
         commandortarget = actualname(bot, commandortarget)
-        bot.notice(instigator + ", " + str(commandortarget) + " is offline right now.", instigator)
-        return
+        validtargetmsg = str(instigator + ", " + str(commandortarget) + " is offline right now.")
+        return validtarget, validtargetmsg
     
     ## Opted Out
     if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
         commandortarget = actualname(bot, commandortarget)
-        bot.notice(instigator + ", " + commandortarget + " has duels disabled.", instigator)
+        validtargetmsg = str(instigator + ", " + commandortarget + " has duels disabled.")
+        return validtarget, validtargetmsg
+    
+    if commandortarget.lower() in commandarray_all_valid:
+        validtargetmsg = str(instigator + ", " + commandortarget + "'s nick is the same as a valid command for duels.", instigator)
         return
-
-    bot.say("Target Passed All checks.")
+    
+    validtarget = 1
+    return validtarget, validtargetmsg
     
 
 ## Author Subcommand
-def subcommand_author(bot, instigator):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers):
     bot.notice("The author of Duels is deathbybandaid.", instigator)
+    
+## docs Subcommand
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers):
+    target = get_trigger_arg(triggerargsarray, 2)
+    if not target:
+        bot.say("Online Docs: " + GITWIKIURL)
+        return
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers)
+    if validtarget:
+        bot.notice("Online Docs: " + GITWIKIURL, target)
+    else:
+        bot.notice(validtargetmsg, instigator)
+
+    
+    
+        
+    
     
     
     
