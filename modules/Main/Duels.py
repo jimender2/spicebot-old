@@ -185,8 +185,6 @@ def duel_action(bot, trigger):
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    if "spice" in str(bot.nick):
-        bot.say("works")
     #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
     #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
@@ -201,61 +199,110 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
-            triggerargsarray = get_trigger_arg(comsplit, 'create')
-            execute_main(bot, trigger, triggerargsarray)
+            triggerargsarraypart = get_trigger_arg(comsplit, 'create')
+            execute_main(bot, trigger, triggerargsarraypart)
                     
 def execute_mainactual(bot, trigger, triggerargsarray):
     
-    ## Initial ARGS of importance
+    ## Instigator
+    instigator = trigger.nick
+
+    ## Check command was issued
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
+    if not fullcommandused:
+        bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
+        return
+    
+    ## can't be a command, and can't enable duels
+    if instigator.lower() in tiercommandarray:
+        bot.notice(instigator + ", your nick is the same as a valid command for duels.",instigator)
+        return
+    
+    ## Check if Instigator is Opted in
+    insstigatoroptinbypassarray = ['on','admin']
+    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    if instigator not in dueloptedinarray and commandortarget.lower() not in insstigatoroptinbypassarray:
+        bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
+        return
+    
+    ## Alternative commands
+    if commandortarget.lower() == 'enable':
+        commandortarget.lower() = 'on'
+    elif commandortarget.lower() == 'disable':
+        commandortarget.lower() = 'off'
+    elif commandortarget.lower() == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
+        commandortarget.lower() = 'random'
+    elif commandortarget.lower() == 'everyone':
+        commandortarget.lower() = 'assault'
+    elif commandortarget.lower() == 'help' or commandortarget == 'man':
+        commandortarget.lower() = 'docs'
+    
+    ## user list
+    currentuserlistarray = []
+    for user in bot.users:
+        currentuserlistarray.append(user)
+    
+    ## Not a command, and not in bot accessible rooms
+    if commandortarget.lower() not in tiercommandarray and commandortarget.lower() not in [x.lower() for x in currentuserlistarray]:
+        bot.notice(instigator + ", " + str(commandortarget) + " is either not here, or not a valid command.", instigator)
+        return
+    
+    ## In bot accessible rooms, but not opted in
+    if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
+        commandortarget = actualname(bot, commandortarget)
+        bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
+        return
+        
+    ## Admin Command Blocker
+    commandarray_admin = ['admin']
+    if commandortarget.lower() in commandarray_admin and not trigger.admin:
+        bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
+        return
+    
+    
+        
+    ## during rebuild, remove later
+    bot.say("checks passed")
+    return
+    
+    
+    ## Commands that can't be run via privmsg
+    inchannel = trigger.sender
+    mustbeinchannelarray = []
+    if commandortarget.lower() not in dueloptedinarray:
+    
+    
+    
+    
+    ## Time when Module use started
+    now = time.time()
+    
+    ## Initial ARGS of importance
+    
+    
     dowedisplay = 0
     displaymessage = ''
     typeofduel = 'target'
     
     ## User/channel Arrays
-    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    
     canduelarray, targetarray = [], []
 
-    ## Time when Module use started
-    now = time.time()
+    
 
-    ## Channel
-    inchannel = trigger.sender
+    
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-    ## Instigator
-    instigator = trigger.nick
-    
-    ## Instigator can't be a command, and can't enable duels
-    if instigator.lower() in tiercommandarray:
-        bot.notice("It looks like your nick is unable to play duels.",instigator)
-        return
-    
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
     
-    ## Alternative commands
-    if commandortarget == 'enable':
-        commandortarget = 'on'
-    elif commandortarget == 'disable':
-        commandortarget = 'off'
-    elif commandortarget == 'anyone' or commandortarget == 'somebody' or commandortarget == 'available':
-        commandortarget = 'random'
-    elif commandortarget == 'everyone':
-        commandortarget = 'assault'
-    elif commandortarget == 'help':
-        commandortarget = 'docs'
+    
     
     ## If Not a target or a command used
-    if not fullcommandused:
-        bot.notice(instigator + ", Who do you want to duel? Online Docs: " + GITWIKIURL, instigator)
-
-    ## Commands cannot be run if opted out
-    elif instigator not in dueloptedinarray and commandortarget.lower() != 'on' and commandortarget.lower() != 'enable' and commandortarget.lower() != 'admin' :
-        bot.notice(instigator + ", It looks like you have duels disabled. Run .duel on/enable to enable.", instigator)
+    
 
     ## Instigator versus Bot
     elif commandortarget == bot.nick:
