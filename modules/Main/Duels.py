@@ -512,6 +512,23 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
         bot.say(dispmsg)
+    elif command.lower() == 'next':
+        nexttier = currenttier + 1
+        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        pickarray = []
+        tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
+        for x in tiercheck:
+            if x != 'upupdowndownleftrightleftrightba':
+                pickarray.append(x)
+        if pickarray != []:
+            tierlist = get_trigger_arg(pickarray, "list")
+            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(nexttier) +": " + tierlist + ". ")
+            tiermath = int(nexttier) - currenttier
+            if tiermath > 0:
+               dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+        else:
+            dispmsg = str(dispmsg + " No unlocks at tier " + str(nexttier)+ ". ")
+        bot.say(dispmsg)
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
