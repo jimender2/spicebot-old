@@ -43,18 +43,24 @@ commandarray_alt_assault = ['everyone']
 commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
-commandarray_tier_0 = "zero"
-commandarray_tier_1 = "one"
+commandarray_tier_self = ['stats', 'loot', 'streaks']
+commandarray_tier_0 = ['docs', 'admin', 'author', 'on','upupdowndownleftrightleftrightba']
+commandarray_tier_1 = ['tier', 'off', 'usage']
+commandarray_tier_2 = ['streaks', 'bounty', 'harakiri']
+commandarray_tier_3 = ['weaponslocker', 'class']
+commandarray_tier_4 = ['leaderboard', 'warroom']
+commandarray_tier_5 = ['stats', 'loot']
+commandarray_tier_6 = ['magic', 'armor']
+commandarray_tier_7 = ['assault']
+commandarray_tier_8 = ['roulette']
+commandarray_tier_9 = ['random']
+commandarray_tier_10 = ['colosseum']
+commandarray_tier_11 = ['title']
+commandarray_tier_12 = []
+commandarray_tier_13 = []
+commandarray_tier_14 = []
+commandarray_tier_15 = []
 
-tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
-tierunlockstreaks, tierunlockbounty, tierunlockharakiri = 2,2,2
-tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
-tierunlockleaderboard, tierunlockwarroom = 4,4
-tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
-tierunlockroulette, tierunlockarmor = 6,6
-tierunlockassault = 7
-tierunlockcolosseum = 8
-tierunlocktitle = 9
 
 
 ## Command Help Text
@@ -310,7 +316,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         return
     
     ## test
-    for i in range(0,2):
+    for i in range(0,16):
         testing = eval("commandarray_tier_"+str(i))
         bot.say(str(testing))
     
