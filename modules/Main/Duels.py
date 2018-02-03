@@ -391,7 +391,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray)
     if validtarget:
         bot.notice("Online Docs: " + GITWIKIURL, target)
     else:
