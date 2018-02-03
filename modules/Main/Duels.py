@@ -252,10 +252,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Alternative commands
     for subcom in commandarray_all_valid:
-        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
-        if commandortarget.lower() in commandarray_alt_eval:
-            commandortarget = commandortarget.split("commandarray_alt_", 1)[1]
-            continue
+        try:
+            commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+            if commandortarget.lower() in commandarray_alt_eval:
+                commandortarget = commandortarget.split("commandarray_alt_", 1)[1]
+                continue
+        except NameError:
+            dummyvar = 1
         #try:
             
     #if commandortarget.lower() in commandarray_alt_on:
