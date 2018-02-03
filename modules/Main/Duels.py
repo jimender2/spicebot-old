@@ -185,7 +185,7 @@ def duel_action(bot, trigger):
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    if "spicebot" in bot.nick:
+    if "spice" in str(bot.nick):
         bot.say("works")
     #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
     #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
