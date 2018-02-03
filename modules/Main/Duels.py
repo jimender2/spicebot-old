@@ -516,7 +516,18 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         dispmsg = str(command + "'s current tier is " + str(targettier)+ ". ")
         bot.say(dispmsg)
         
-    
+## Suicide/harakiri
+def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    target = get_trigger_arg(triggerargsarray, 2) or instigator
+    if target != instigator and target != 'confirm':
+        bot.say("You can't suicide other people. It's called Murder.")
+    elif target == instigator:
+        bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
+    else:
+        deathmsgb = suicidekill(bot,instigator) ## TODO
+        bot.say(deathmsgb)
+
+
     
 def allthingsmustdie():
     
@@ -546,123 +557,8 @@ def allthingsmustdie():
         statreset(bot, instigator)
         healthcheck(bot, instigator)
         
-        ## Docs
-        if commandortarget == 'docs':
-            target = get_trigger_arg(triggerargsarray, 2)
-            if not target:
-                bot.say("Online Docs: " + GITWIKIURL)
-            elif target.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            else:
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                bot.notice("Online Docs: " + GITWIKIURL, target)
-
-        ## Author
-        elif commandortarget == 'author':
-            bot.notice("The author of Duels is deathbybandaid.", instigator)
-        
-        ## On/off
-        elif commandortarget == 'on' or commandortarget == 'off':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            targetopttime = get_timesince_duels(bot, target, 'opttime')
-            if target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target != instigator and not trigger.admin:
-                bot.notice(instigator + "This is an admin only function.", instigator)
-            elif target == 'everyone':
-                for u in bot.users:
-                    if commandortarget == 'on':
-                        adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
-                    else:
-                        adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
-                bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-            elif targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
-                target = actualname(bot, target)
-                bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
-            elif commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
-                target = actualname(bot, target)
-                bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
-            elif commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
-                target = actualname(bot, target)
-                bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
-            else:
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                target = actualname(bot, target)
-                if commandortarget == 'on':
-                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
-                else:
-                    adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
-                set_database_value(bot, target, 'opttime', now)
-                bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
-
-        ## Tier
-        elif commandortarget == 'tier':
-            command = get_trigger_arg(triggerargsarray, "2+")
-            if not command:
-                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-                currenttierlistarray = []
-                futuretierlistarray = []
-                for x in tiercommandarray:
-                    tiereval = eval("tierunlock"+x)
-                    if tiereval <= currenttier and x != 'upupdowndownleftrightleftrightba':
-                        currenttierlistarray.append(x)
-                    elif tiereval > currenttier and x != 'upupdowndownleftrightleftrightba':
-                        futuretierlistarray.append(x)
-                if currenttierlistarray != []:
-                    currenttierlist = get_trigger_arg(currenttierlistarray, "list")
-                    dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
-                if futuretierlistarray != []:
-                    futuretierlist = get_trigger_arg(futuretierlistarray, "list")
-                    dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
-                bot.say(dispmsg)
-            elif command.lower() in peppertierarray:
-                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-                pepperconvert = get_peppertier(bot,command)
-                pickarray = []
-                for x in tiercommandarray:
-                    tiereval = eval("tierunlock"+x)
-                    if tiereval == int(pepperconvert) and x != 'upupdowndownleftrightleftrightba':
-                        pickarray.append(x)
-                if pickarray != []:
-                    tierlist = get_trigger_arg(pickarray, "list")
-                    dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
-                    tiermath = int(pepperconvert) - currenttier
-                    if tiermath > 0:
-                        dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
-                bot.say(dispmsg)
-            elif command.isdigit():
-                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-                pickarray = []
-                for x in tiercommandarray:
-                    tiereval = eval("tierunlock"+x)
-                    if tiereval == int(command) and x != 'upupdowndownleftrightleftrightba':
-                        pickarray.append(x)
-                if pickarray != []:
-                    tierlist = get_trigger_arg(pickarray, "list")
-                    dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
-                    tiermath = int(command) - currenttier
-                    if tiermath > 0:
-                        dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
-                else:
-                    dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
-                bot.say(dispmsg)
-            elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
-                bot.notice(instigator + ", that appears to be an invalid command.", instigator)
-            else:
-                dispmsg = str("The current tier is " + str(currenttier)+ ". ")
-                tiereval = eval("tierunlock"+command)
-                tiereval = int(tiereval)
-                tierpepperrequired = get_tierpepper(bot, tiereval)
-                tiermath = tiereval - currenttier
-                if tiereval <= currenttier:
-                    dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
-                else:
-                    dispmsg = str(dispmsg+ command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-                bot.say(dispmsg)
+        if not commandortarget:
+            bot.say("temp fix")
                 
         ## Suicide
         elif commandortarget == 'harakiri':
