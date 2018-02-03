@@ -655,7 +655,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         if roulettecount > 1:
             roulettecount = roulettecount + 1
             displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
-                bot.say(resultmsg + displaymessage)
+            bot.say(resultmsg + displaymessage)
     else:
         time.sleep(2) # added to build suspense
         bot.say("*click*")
