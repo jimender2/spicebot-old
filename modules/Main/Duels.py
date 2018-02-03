@@ -271,6 +271,7 @@ def execute_mainactual(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     mustbeinchannelarray = []
     if commandortarget.lower() not in dueloptedinarray:
+        bot.say("nothing")
     
     
     
