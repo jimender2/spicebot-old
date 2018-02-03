@@ -255,23 +255,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         try:
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if commandortarget.lower() in commandarray_alt_eval:
-                commandortarget = commandortarget.split("commandarray_alt_", 1)[1]
+                commandortarget = commandortarget.split("commandarray_alt_", 0)[1]
                 continue
         except NameError:
             dummyvar = 1
-        #try:
-            
-    #if commandortarget.lower() in commandarray_alt_on:
-    #    commandortarget = 'on'
-    #if commandortarget.lower() in commandarray_alt_off:
-    #    commandortarget = 'off'
-    #if commandortarget.lower() in commandarray_alt_random:
-    #    commandortarget = 'random'
-    #if commandortarget.lower() in commandarray_alt_assault:
-    #    commandortarget = 'assault'
-    #if commandortarget.lower() in commandarray_alt_docs:
-    #    commandortarget = 'docs'
-    bot.say(str(commandortarget))
 
     ## Subcommand
     if commandortarget.lower() in commandarray_all_valid:
