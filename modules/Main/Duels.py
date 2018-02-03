@@ -355,26 +355,26 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     #adjust_database_value(bot, instigator, 'usage', 1)
 
 ## Target
-def targetcheck(bot, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now):
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers)
     
     ## Guilty until proven Innocent
     validtarget = 0
     validtargetmsg = ''
     
     ## Offline User
-    if commandortarget.lower() in [x.lower() for x in botvisibleusers] and commandortarget.lower() not in [y.lower() for y in currentuserlistarray]:
-        commandortarget = actualname(bot, commandortarget)
-        validtargetmsg = str(instigator + ", " + str(commandortarget) + " is offline right now.")
+    if target.lower() in [x.lower() for x in botvisibleusers] and commandortarget.lower() not in [y.lower() for y in currentuserlistarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + str(target) + " is offline right now.")
         return validtarget, validtargetmsg
     
     ## Opted Out
-    if commandortarget.lower() in [x.lower() for x in currentuserlistarray] and commandortarget.lower() not in [x.lower() for x in dueloptedinarray]:
-        commandortarget = actualname(bot, commandortarget)
-        validtargetmsg = str(instigator + ", " + commandortarget + " has duels disabled.")
+    if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [x.lower() for x in dueloptedinarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + target + " has duels disabled.")
         return validtarget, validtargetmsg
     
-    if commandortarget.lower() in commandarray_all_valid:
-        validtargetmsg = str(instigator + ", " + commandortarget + "'s nick is the same as a valid command for duels.", instigator)
+    if target.lower() in commandarray_all_valid:
+        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
         return
     
     validtarget = 1
@@ -383,7 +383,7 @@ def targetcheck(bot, instigator, fullcommandused, commandortarget, dueloptedinar
 
 ## Author Subcommand
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers):
-    bot.notice("The author of Duels is deathbybandaid.", instigator)
+    bot.say("The author of Duels is deathbybandaid.")
     
 ## docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers):
