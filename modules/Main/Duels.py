@@ -335,7 +335,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             continue
     
     ## Is the Tier Unlocked?
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+    currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
     tierpepperrequired = get_tierpepper(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
@@ -346,7 +346,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## If The above passes all Checks
     try:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray)')
+        if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
+            subcommand_run = str('subcommand_onoff' + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
+        else:
+            subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget)')
         eval(subcommand_run)
     except NameError:
         bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
@@ -389,11 +392,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
 
 ## Author Subcommand
-def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget):
     bot.say("The author of Duels is deathbybandaid.")
     
-## docs Subcommand
-def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray):
+## Docs Subcommand
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget):
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
@@ -401,11 +404,43 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
-    else:
-        bot.notice("Online Docs: " + GITWIKIURL, target)
+        return
+    bot.notice("Online Docs: " + GITWIKIURL, target)
         
-
-    
+## On/Off
+def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget):
+    target = get_trigger_arg(triggerargsarray, 2) or instigator
+    if target != instigator and not trigger.admin:
+        bot.notice(instigator + ", you may only change the enable status for yourself.", instigator)
+        return
+    if target == 'everyone':
+        for user in botvisibleusers:
+            if commandortarget == 'on':
+                adjust_database_array(bot, bot.nick, user, 'duelusers', 'add')
+            else:
+                adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
+        return
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
+        return
+    target = actualname(bot, target)
+    targetopttime = get_timesince_duels(bot, target, 'opttime')
+    if targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+        bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
+        return
+    if commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
+        return
+    if commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+        return
+    if commandortarget == 'on':
+        adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+    else:
+        adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
+    set_database_value(bot, target, 'opttime', now)
+    bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
     
         
     
@@ -574,25 +609,25 @@ def allthingsmustdie():
             if not inchannel.startswith("#"):
                 bot.notice(instigator + " Duels must be in channel.", instigator)
                 return
-            getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
+            getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
             if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
                 bot.notice(instigator + " Roulette has a small timeout.", instigator)
                 return
-            set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+            set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
             roulettepayoutdefault = 5
-            roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
-            roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
+            roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
+            roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
             if roulettelastplayer == instigator:
                 bot.say(instigator + " spins the revolver and pulls the trigger.")
             elif roulettecount == 1:
                 bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
             else:
                 bot.say(instigator + " spins the cylinder and pulls the trigger.")
-            roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
+            roulettechamber = get_database_value(bot, bot.ncik, 'roulettechamber')
             if not roulettechamber:
                 roulettechamber = randint(1, 6)
-                set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
-            roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
+                set_database_value(bot, bot.nick, 'roulettechamber', roulettechamber)
+            roulettespinarray = get_database_value(bot, bot.nick, 'roulettespinarray') or [1,2,3,4,5,6]
             if roulettelastplayer == instigator:
                 if len(roulettespinarray) > 1:
                     temparray = []
@@ -602,19 +637,19 @@ def allthingsmustdie():
                     randomremove = get_trigger_arg(temparray, "random")
                     roulettespinarray.remove(randomremove)
                     currentspin = get_trigger_arg(roulettespinarray, "random")
-                    set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
+                    set_database_value(bot, bot.nick, 'roulettespinarray', roulettespinarray)
                 else:
                     currentspin = roulettechamber
-                    reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+                    reset_database_value(bot, bot.nick, 'roulettespinarray')
             else:
-                reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+                reset_database_value(bot, bot.nick, 'roulettespinarray')
             currentspin = get_trigger_arg(roulettespinarray, "random")
             if currentspin == roulettechamber:
                 biggestpayout = 0
                 biggestpayoutwinner = ''
                 statreset(bot, instigator)
                 healthcheck(bot, instigator)
-                roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
+                roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
                 resultmsg = ''
                 deathmsg = ''
                 revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
@@ -661,11 +696,11 @@ def allthingsmustdie():
                     displaymessage = str("Winners: " + displaymessage + " ")
                 if biggestpayoutwinner != '':
                     displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
-                reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
-                reset_database_value(bot, duelrecorduser, 'roulettechamber')
-                reset_database_value(bot, duelrecorduser, 'roulettewinners')
-                roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-                reset_database_value(bot, duelrecorduser, 'roulettecount')
+                reset_database_value(bot, bot.nick, 'roulettelastplayer')
+                reset_database_value(bot, bot.nick, 'roulettechamber')
+                reset_database_value(bot, bot.nick, 'roulettewinners')
+                roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+                reset_database_value(bot, bot.nick, 'roulettecount')
                 reset_database_value(bot, instigator, 'roulettepayout')
                 if roulettecount > 1:
                     roulettecount = roulettecount + 1
@@ -677,16 +712,16 @@ def allthingsmustdie():
                 roulettecount = roulettecount + 1
                 roulettepayout = roulettepayoutdefault * roulettecount
                 adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-                adjust_database_value(bot, duelrecorduser, 'roulettecount', defaultadjust)
-                set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
-                adjust_database_array(bot, duelrecorduser, instigator, 'roulettewinners', 'add')
+                adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
+                set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
+                adjust_database_array(bot, bot.nick, instigator, 'roulettewinners', 'add')
 
         ## Usage
         elif commandortarget == 'usage':
             target = get_trigger_arg(triggerargsarray, 2) or instigator
             targetname = target
             if target == 'channel':
-                target = duelrecorduser
+                target = bot.nick
             totaluses = get_database_value(bot, target, 'usage')
             if target.lower() in tiercommandarray:
                 bot.notice("It looks like that nick is unable to play duels.",instigator)
@@ -716,8 +751,8 @@ def allthingsmustdie():
                 getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
                 return
             timeouteval = eval(commandortarget.upper() + "TIMEOUT")
-            getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
-            getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+            getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
+            getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
             if getlastusage < timeouteval and not bot.nick.endswith(devbot):
                 bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
             elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
@@ -730,8 +765,8 @@ def allthingsmustdie():
                     canduelarray.remove(instigator)
                 displaymessage = get_trigger_arg(canduelarray, "list")
                 bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
-                set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
-                set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+                set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+                set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
                 if commandortarget == 'assault':
                     OSDTYPE = 'notice'
                     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
@@ -789,8 +824,8 @@ def allthingsmustdie():
                 if subcommand == 'everyone':
                     subcommand = 'assault'
                 timeouteval = eval(subcommand.upper() + "TIMEOUT")
-                getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + subcommand)) or timeouteval
-                getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
+                getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + subcommand)) or timeouteval
+                getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
                 if getlastinstigator == instigator and not bot.nick.endswith(devbot):
                     bot.notice(instigator + ", You may not instigate a full channel " + subcommand + " event twice in a row.", instigator)
                 elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
@@ -1380,12 +1415,12 @@ def allthingsmustdie():
                             elif x == 'timepotion':
                                 reset_database_value(bot, target, 'lastfought')
                                 for k in timepotiontargetarray:
-                                    targetequalcheck = get_database_value(bot, duelrecorduser, k) or bot.nick
+                                    targetequalcheck = get_database_value(bot, bot.nick, k) or bot.nick
                                     if targetequalcheck == target:
-                                        reset_database_value(bot, duelrecorduser, k)
+                                        reset_database_value(bot, bot.nick, k)
                                 for j in timepotiontimeoutarray:
                                     reset_database_value(bot, target, j)
-                                reset_database_value(bot, duelrecorduser, 'timeout')
+                                reset_database_value(bot, bot.nick, 'timeout')
                             targethealth = get_database_value(bot, target, 'health')
                             if targethealth <= 0:
                                 lootusedeaths = lootusedeaths + 1
@@ -1665,15 +1700,15 @@ def allthingsmustdie():
                 if not settingchange:
                     bot.notice(instigator + ", What channel setting do you want to change?", instigator)
                 elif settingchange == 'lastassault':
-                    reset_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator')
+                    reset_database_value(bot, bot.nick, 'lastfullroomassultinstigator')
                     bot.notice("Last Assault Instigator removed.", instigator)
-                    reset_database_value(bot, duelrecorduser, 'lastfullroomassult')
+                    reset_database_value(bot, bot.nick, 'lastfullroomassult')
                 elif settingchange == 'lastroman':
-                    reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator')
+                    reset_database_value(bot, bot.nick, 'lastfullroomcolosseuminstigator')
                     bot.notice("Last Colosseum Instigator removed.", instigator)
-                    reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseum')
+                    reset_database_value(bot, bot.nick, 'lastfullroomcolosseum')
                 elif settingchange == 'lastinstigator':
-                    reset_database_value(bot, duelrecorduser, 'lastinstigator')
+                    reset_database_value(bot, bot.nick, 'lastinstigator')
                     bot.notice("Last Fought Instigator removed.", instigator)
                 elif settingchange == 'halfhoursim':
                     bot.notice("Simulating the half hour automated events.", instigator)
@@ -1710,9 +1745,9 @@ def allthingsmustdie():
                     if subcommand == 'set' and newvalue == None:
                         bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
                     elif target == 'everyone':
-                        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-                        reset_database_value(bot, duelrecorduser, 'levelingtier')
-                        reset_database_value(bot, duelrecorduser, 'specevent')
+                        set_database_value(bot, bot.nick, 'chanstatsreset', now)
+                        reset_database_value(bot, bot.nick, 'levelingtier')
+                        reset_database_value(bot, bot.nick, 'specevent')
                         for u in bot.users:
                             statreset(bot, target)
                             if statset == 'all':
@@ -1735,7 +1770,7 @@ def allthingsmustdie():
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             elif subcommand == 'resettier':
-                reset_database_value(bot, duelrecorduser, 'levelingtier')
+                reset_database_value(bot, bot.nick, 'levelingtier')
             elif subcommand == 'bugbounty':
                 target = get_trigger_arg(triggerargsarray, 3)
                 statreset(bot, target)
@@ -1822,7 +1857,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
         
         ## Same person can't instigate twice in a row
-        set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
+        set_database_value(bot, bot.nick, 'lastinstigator', instigator)
         
         ## Update last fought
         if instigator != target:
@@ -1832,10 +1867,10 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Update Time Of Combat
         set_database_value(bot, instigator, 'timeout', now)
         set_database_value(bot, target, 'timeout', now)
-        set_database_value(bot, duelrecorduser, 'timeout', now)
+        set_database_value(bot, bot.nick, 'timeout', now)
         
         ## Starting Tier
-        currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+        currenttierstart = get_database_value(bot, bot.nick, 'levelingtier') or 0
 
         ## Magic Attributes Start
         instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
@@ -2006,7 +2041,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Tier update
         tierchangemsg = ''
-        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
+        currenttierend = get_database_value(bot, bot.nick, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
             tierchangemsg = str("New Tier Unlocked!")
             if currenttierend != 1:
@@ -2028,14 +2063,14 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 
         ## Special Event
         speceventtext = ''
-        speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+        speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
         if speceventtotal >= 49:
-            set_database_value(bot, duelrecorduser, 'specevent', 1)
+            set_database_value(bot, bot.nick, 'specevent', 1)
             speceventtext = str(instigator + " triggered the special event! Winnings are "+str(speceventreward)+" Coins!")
             adjust_database_value(bot, instigator, 'coin', speceventreward)
             combattextarraycomplete.append(speceventtext)
         else:
-            adjust_database_value(bot, duelrecorduser, 'specevent', defaultadjust)
+            adjust_database_value(bot, bot.nick, 'specevent', defaultadjust)
 
         ## Streaks Text
         streaktext = ''
@@ -2129,7 +2164,7 @@ def halfhourtimer(bot):
                 health = get_database_value(bot, u, 'health') or 0
     
                 ## Random user gets a mysterypotion
-                lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
+                lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
                 if u != lasttimedlootwinner:
                     randomuarray.append(u)
 
@@ -2177,8 +2212,8 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
         instigatorlastfought = bot.nick
     instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
     targettime = get_timesince_duels(bot, target, 'timeout') or ''
-    duelrecordusertime = get_timesince_duels(bot, duelrecorduser, 'timeout') or ''
-    duelrecorduserlastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
+    channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or ''
+    channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
     dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
     totalduelusersarray = []
     for u in bot.users:
@@ -2186,7 +2221,7 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
             totalduelusersarray.append(u)
     howmanyduelsers = len(totalduelusersarray)
     target = actualname(bot, target)
-    if instigator == duelrecorduserlastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
+    if instigator == channellastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
     elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
@@ -2198,8 +2233,8 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
         displaymsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - instigatortime)))+".")
     elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
         displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime)))+".")
-    elif duelrecordusertime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - duelrecordusertime)))+".")
+    elif channeltime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
+        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
     else:
         displaymsg = ''
         executedueling = 1
@@ -2288,7 +2323,7 @@ def get_pepper(bot, nick):
     tiernumber = 0
     nicktier = get_database_value(bot, nick, 'levelingtier')
     nickpepper = get_database_value(bot, nick, 'levelingpepper')
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
     xp = get_database_value(bot, nick, 'xp')
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
@@ -2341,7 +2376,7 @@ def get_pepper(bot, nick):
         tiernumber = 15
     ## advance respawn tier
     if tiernumber > currenttier:
-        set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+        set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
     return pepper
@@ -2606,20 +2641,20 @@ def randominventory(bot, instigator):
 
 def halfhourpotionwinner(bot, randomuarray):
     winnerselectarray = []
-    recentwinnersarray = get_database_value(bot, duelrecorduser, 'lasttimedlootwinners') or []
-    lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
+    recentwinnersarray = get_database_value(bot, bot.nick, 'lasttimedlootwinners') or []
+    lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
     howmanyusers = len(randomuarray)
     if not howmanyusers > 1:
-        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinner')
+        reset_database_value(bot, bot.nick, 'lasttimedlootwinner')
     for x in randomuarray:
         if x not in recentwinnersarray and x != lasttimedlootwinner:
             winnerselectarray.append(x)
     if winnerselectarray == [] and randomuarray != []:
-        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinners')
+        reset_database_value(bot, bot.nick, 'lasttimedlootwinners')
         return halfhourpotionwinner(bot, randomuarray)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
-    adjust_database_array(bot, duelrecorduser, lootwinner, 'lasttimedlootwinners', 'add')
-    set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', lootwinner)
+    adjust_database_array(bot, bot.nick, lootwinner, 'lasttimedlootwinners', 'add')
+    set_database_value(bot, bot.nick, 'lasttimedlootwinner', lootwinner)
     return lootwinner
 
 ######################
@@ -2683,9 +2718,9 @@ def weaponformatter(bot, weapon):
 
 def statreset(bot, nick):
     now = time.time()
-    getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
+    getlastchanstatreset = get_database_value(bot, bot.nick, 'chanstatsreset')
     if not getlastchanstatreset:
-        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+        set_database_value(bot, bot.nick, 'chanstatsreset', now)
     getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
     if getnicklastreset < getlastchanstatreset:
         for x in duelstatsadminarray:
@@ -2697,7 +2732,7 @@ def statreset(bot, nick):
 ################
 
 def tierratio_level(bot):
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier')
+    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
     if not currenttier:
         tierratio = stocktierratio
     else:
