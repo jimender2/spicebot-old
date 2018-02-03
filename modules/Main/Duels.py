@@ -255,7 +255,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         try:
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if commandortarget.lower() in commandarray_alt_eval:
-                commandortarget = commandarray_alt_eval.split("commandarray_alt_", 1)[1]
+                commandortarget = subcom
                 continue
         except NameError:
             dummyvar = 1
