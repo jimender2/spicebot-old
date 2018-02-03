@@ -494,7 +494,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
         bot.say(dispmsg)
-    elif command.lower() not in tiercommandarray or command.lower() == 'upupdowndownleftrightleftrightba':
+    elif command.lower() == 'upupdowndownleftrightleftrightba':
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
     elif command.lower() in tiercommandarray:
         dispmsg = str("The current tier is " + str(currenttier)+ ". ")
