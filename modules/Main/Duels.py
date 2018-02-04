@@ -767,7 +767,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             target = bot.nick
         if command == 'view':
             viewedtier = get_database_value(bot, target, 'levelingtier')
-            bot.notice(instigator + ", " str(target) + " is at tier " + str(viewedtier) + ".")
+            bot.notice(instigator + ", " + str(target) + " is at tier " + str(viewedtier) + ".")
             return
         if command == 'reset':
             bot.notice(instigator, + ", " str(target) + "'s tier has been reset.")
