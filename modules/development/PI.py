@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
             digits=int(digitcount)
             pilength = len(pi)
             if digits>=1 and digits<=pilength:
-                mynumber = pi[:-digits]
+                mynumber = pi[0:digits]
                 bot.say(str(mynumber))
             else:
                 bot.say("Please select a number of decimal places between 1 and " + str(pilengh))
