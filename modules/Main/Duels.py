@@ -825,6 +825,8 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
     
     
     #elif subcommand == 'stats':
+    else:
+        bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
         
         
     
