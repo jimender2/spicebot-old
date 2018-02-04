@@ -516,7 +516,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
             dispmsgarray.append("Feature(s) that are available at tier " + str(tiernumber) + " (" + str(pepper) +"): " + tierlist + ".")
-            tiermath = int(pepperconvert) - currenttier
+            tiermath = int(tiernumber) - currenttier
             if tiermath > 0:
                 dispmsgarray.append(str(tiermath) + " tiers to go!")
         onscreentext(bot, ['say'], dispmsgarray)
