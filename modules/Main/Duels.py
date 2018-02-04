@@ -426,7 +426,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     target = instigator
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+    if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
         return
     if commandortarget == 'on' and instigator.lower() in [x.lower() for x in dueloptedinarray]:
