@@ -305,7 +305,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
@@ -355,9 +355,9 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## If The above passes all Checks TODO
     #try:
     if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
-        subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier)
+        subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)
     else:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier)')
+        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)')
         eval(subcommand_run)
     #except NameError:
     #    bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
