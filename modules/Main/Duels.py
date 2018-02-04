@@ -333,7 +333,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         if not inchannel.startswith("#"):
             bot.notice(instigator + ", duels must be in channel.", instigator)
             return
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, instigator)
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
