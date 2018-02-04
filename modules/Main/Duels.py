@@ -643,7 +643,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         for x in roulettewinners:
             if x not in uniquewinnersarray and x != instigator:
                 uniquewinnersarray.append(x)
-        for x in uniqueplayersarray:
+        for x in uniquewinnersarray:
             statreset(bot, x) ## TODO: find a more uniform time to run these
             healthcheck(bot, x) ## also TODO
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
