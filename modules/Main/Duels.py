@@ -809,9 +809,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
     elif subcommand == 'roulette':
         command = get_trigger_arg(triggerargsarray, 3).lower()
         if command != 'reset':
-            bot.notice(instigator + ", what did you intend to do with roulette?")
+            bot.notice(instigator + ", what did you intend to do with roulette?", instigator)
             return
-        bot.notice(instigator + ", Roulette should now be reset.")
+        bot.notice(instigator + ", Roulette should now be reset.", instigator)
         reset_database_value(bot, bot.nick, 'roulettelastplayer')
         reset_database_value(bot, bot.nick, 'roulettechamber')
         reset_database_value(bot, bot.nick, 'roulettewinners')
