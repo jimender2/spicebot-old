@@ -755,6 +755,7 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
     
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
+    damagetextarray = []
     
     ## Shields
     shieldloser = get_database_value(bot, nick, 'shield') or 0
@@ -790,6 +791,7 @@ def damage_resistance(bot, nick, damage, bodypart):
         else:
             damagetext = str(damagetext + ".")
         damagetextarray.append(damagetext)
+    
     return damage, damagetextarray 
     
     
