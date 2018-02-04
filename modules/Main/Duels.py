@@ -741,7 +741,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                     adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
             return
         if targetsetting != instigator:
-            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+            validtarget, validtargetmsg = targetcheck(bot, targetsetting, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
             if not validtarget:
                 bot.notice(validtargetmsg, instigator)
                 return
