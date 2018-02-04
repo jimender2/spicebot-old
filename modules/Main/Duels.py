@@ -740,11 +740,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
             return
-        if target != instigator:
-            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
-            if not validtarget:
-                bot.notice(validtargetmsg, instigator)
-                return
+        if target not in botvisibleusers:
+            bot.notice(instigator + ", I have never seen " + str(target) + " before.", instigator)
+            return
         target = actualname(bot, target)
         if subcommand == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
             bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
