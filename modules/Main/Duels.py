@@ -768,18 +768,18 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         if command == 'view':
             viewedtier = get_database_value(bot, target, 'levelingtier')
             bot.notice(instigator + ", " + str(target) + " is at tier " + str(viewedtier) + ".", instigator)
-            return
-        if command == 'reset':
+        elif command == 'reset':
             bot.notice(instigator + ", " +  str(target) + "'s tier has been reset.", instigator)
             reset_database_value(bot, target, 'levelingtier')
-            return
-        if command == 'set':
+        elif command == 'set':
             newsetting = get_trigger_arg(triggerargsarray, 5)
             if not newsetting or not newsetting.isdigit():
                 bot.notice(instigator + ", you must specify a number setting.", instigator)
                 return
             bot.notice(instigator + ", " +  str(target) + "'s tier has been set to " + str(newsetting) + ".", instigator)
             set_database_value(bot, target, 'levelingtier', int(newsetting))
+        else:
+            bot.notice(instigator + ", This looks to be an invalid command.")
     elif subcommand == 'bugbounty':
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
         statreset(bot, target) ## TODO
@@ -794,18 +794,33 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         if command == 'view':
             viewedkonami = get_database_value(bot, target, 'konami')
             bot.notice(instigator + ", " + str(target) + "'s konami is currently " + str(viewedkonami) + ".", instigator)
-            return
-        if command == 'reset':
+        elif command == 'reset':
             bot.notice(instigator + ", " +  str(target) + "'s konami has been reset.", instigator)
             reset_database_value(bot, target, 'konami')
-            return
-        if command == 'set':
+        elif command == 'set':
             newsetting = get_trigger_arg(triggerargsarray, 5)
             if not newsetting or not newsetting.isdigit():
                 bot.notice(instigator + ", you must specify a number setting.", instigator)
                 return
             bot.notice(instigator + ", " +  str(target) + "'s konami " + str(newsetting) + ".", instigator)
             set_database_value(bot, target, 'konami', int(newsetting))
+        else:
+            bot.notice(instigator + ", This looks to be an invalid command.")
+    elif subcommand == 'roulette':
+        command = get_trigger_arg(triggerargsarray, 3).lower()
+        if command != 'reset':
+            bot.notice(instigator + ", what did you intend to do with roulette?")
+            return
+        bot.notice(instigator + ", Roulette should now be reset.")
+        reset_database_value(bot, bot.nick, 'roulettelastplayer')
+        reset_database_value(bot, bot.nick, 'roulettechamber')
+        reset_database_value(bot, bot.nick, 'roulettewinners')
+        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+        reset_database_value(bot, bot.nick, 'roulettecount')
+        reset_database_value(bot, bot.nick, 'roulettespinarray')
+        for user in botvisibleusers:
+            reset_database_value(bot, user, 'roulettepayout')
+        
     
     
     
