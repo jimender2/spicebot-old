@@ -773,7 +773,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     ## Armor
     bodypartnumber = bodypartsarray.index(bodypart)
     armortype = get_trigger_arg(armorarray, bodypartnumber)
-    instigatorarmor = get_database_value(bot, nick, armortype) or 0
+    armorloser = get_database_value(bot, nick, armortype) or 0
     if armorloser and damage > 0:
         adjust_database_value(bot, loser, armortype, -1)
         damagepercent = randint(1, armorhitpercentage) / 100
