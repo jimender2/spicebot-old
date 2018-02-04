@@ -69,6 +69,7 @@ commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,
 
 ## Tier Ratios
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5]
+commandarray_tier_display_exclude = ['upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
 
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
@@ -80,16 +81,28 @@ commandarray_help_on = "This function enables duels."
 ## Configurables ##
 ###################
 
+## Documentation
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
+
+## On/off
+OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
+
 ## Roulette
-revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
+roulette_payout_default = 5
+roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
 
+## Health
+konamiset = 600 ## for cheaters that actually read the code slightly
 
+###############
+## Old stuff ##
+###############
 
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
 ROULETTETIMEOUT = 8
 CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
-OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
+
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
@@ -162,7 +175,7 @@ devbot = 'dev' ## If using a development bot and want to bypass commands, this i
 ## other
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
 defaultadjust = 1 ## The default number to increase a stat
-GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
+
 grenadefull = 100
 grenadesec = 50
 weaponmaxlength = 70
@@ -243,7 +256,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     currentuserlistarray = []
     for user in bot.users:
         currentuserlistarray.append(user)
-        if user not in botvisibleusers:
+        if user not in botvisibleusers and user not in commandarray_all_valid:
             adjust_database_array(bot, bot.nick, user, 'botvisibleusers', 'add')
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
 
@@ -292,15 +305,15 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget.lower(), dueloptedinarray, botvisibleusers, now, currentuserlistarray)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
-        bot.say("I refuse to fight a biological entity!")
+        bot.say("I refuse to fight a biological entity!") ## TODO: update message
 
     ## Instigator versus Instigator
     elif commandortarget.lower() == instigator.lower():
-        bot.say("If you are feeling self-destructive, there are places you can call.")
+        bot.say("If you are feeling self-destructive, there are places you can call.") ## TODO: mention harikari
     
     ## Run Target Check
     else:
@@ -312,19 +325,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
             bot.notice(validtargetmsg,instigator)
             return
         ## TODO
-        OSDTYPE = 'say'
-        target = get_trigger_arg(triggerargsarray, 1)
-        if target.lower() in tiercommandarray:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
-            return
-        dowedisplay = 1
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
-        if executedueling:
-            target = actualname(bot, target)
-            healthcheck(bot, target)
-            targetarray.append(target)
-            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
-        
+        bot.say("Run a duel!")
 
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray):
@@ -453,74 +454,76 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
     command = get_trigger_arg(triggerargsarray, "2+")
+    dispmsgarray = []
+    texttargetarray = ['say']
     if not command:
-        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         currenttierlistarray = []
         futuretierlistarray = []
         for i in range(0,16):
             tiercheck = eval("commandarray_tier_unlocks_"+str(i))
             for x in tiercheck:
                 if i <= currenttier:
-                    if x != 'upupdowndownleftrightleftrightba':
+                    if x not in commandarray_tier_display_exclude:
                         currenttierlistarray.append(x)
                 else:
-                    if x != 'upupdowndownleftrightleftrightba':
+                    if x not in commandarray_tier_display_exclude:
                         futuretierlistarray.append(x)
         if currenttierlistarray != []:
             currenttierlist = get_trigger_arg(currenttierlistarray, "list")
-            dispmsg = str(dispmsg + " Feature(s) currently available: " + currenttierlist + ". ")
+            dispmsgarray.append("Feature(s) currently available: " + currenttierlist + ". ")
         if futuretierlistarray != []:
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
-            dispmsg = str(dispmsg + " Feature(s) not yet unlocked: " + futuretierlist + ". ")
-        bot.say(dispmsg)
+            dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ". ")
+        onscreentext(bot, texttargetarray, dispmsgarray)
     elif command.lower() in commandarray_pepper_levels:
-        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         pepperconvert = commandarray_pepper_levels.index(command.lower())
         pickarray = []
         tiercheck = eval("commandarray_tier_unlocks_"+str(pepperconvert))
         for x in tiercheck:
-            if x != 'upupdowndownleftrightleftrightba':
+            if x not in commandarray_tier_display_exclude:
                 pickarray.append(x)
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
-            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
+            dispmsgarray.append("Feature(s) that are available at tier "+ str(pepperconvert) +": " + tierlist + ". ")
             tiermath = int(pepperconvert) - currenttier
             if tiermath > 0:
-                dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
-        bot.say(dispmsg)
+                dispmsgarray.append(str(tiermath) + " tiers to go!")
+        onscreentext(bot, texttargetarray, dispmsgarray)
     elif command.isdigit():
-        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         pickarray = []
         tiercheck = eval("commandarray_tier_unlocks_"+str(command))
         for x in tiercheck:
-            if x != 'upupdowndownleftrightleftrightba':
+            if x not in commandarray_tier_display_exclude:
                 pickarray.append(x)
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
-            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
+            dispmsgarray.append("Feature(s) that are available at tier "+ str(command) +": " + tierlist + ". ")
             tiermath = int(command) - currenttier
             if tiermath > 0:
-               dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+               dispmsgarray.append(str(tiermath) + " tiers to go!")
         else:
-            dispmsg = str(dispmsg + " No unlocks at tier " + str(command)+ ". ")
-        bot.say(dispmsg)
+            dispmsgarray.append("No unlocks at tier " + str(command)+ ". ")
+        onscreentext(bot, texttargetarray, dispmsgarray)
     elif command.lower() == 'next':
         nexttier = currenttier + 1
-        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         pickarray = []
         tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
         for x in tiercheck:
-            if x != 'upupdowndownleftrightleftrightba':
+            if x not in commandarray_tier_display_exclude:
                 pickarray.append(x)
         if pickarray != []:
             tierlist = get_trigger_arg(pickarray, "list")
-            dispmsg =  str(dispmsg + " Feature(s) that are available at tier "+ str(nexttier) +": " + tierlist + ". ")
+            dispmsgarray.append(" Feature(s) that are available at tier "+ str(nexttier) +": " + tierlist + ". ")
             tiermath = int(nexttier) - currenttier
             if tiermath > 0:
-               dispmsg = str(dispmsg + str(tiermath) + " tiers to go!")
+               dispmsgarray.append(str(tiermath) + " tiers to go!")
         else:
-            dispmsg = str(dispmsg + " No unlocks at tier " + str(nexttier)+ ". ")
-        bot.say(dispmsg)
+            dispmsgarray.append("No unlocks at tier " + str(nexttier)+ ". ")
+        onscreentext(bot, texttargetarray, dispmsgarray)
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
@@ -536,10 +539,10 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
         else:
             bot.say("Nobody is the closest to the next pepper level.")
-    elif command.lower() == 'upupdowndownleftrightleftrightba':
+    elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
     elif command.lower() in commandarray_all_valid:
-        dispmsg = str("The current tier is " + str(currenttier)+ ". ")
+        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         for i in range(0,16):
             tiercheck = eval("commandarray_tier_unlocks_"+str(i))
             if command.lower() in tiercheck:
@@ -548,18 +551,19 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiereval)
         tiermath = tiereval - currenttier
         if tiereval <= currenttier:
-            dispmsg = str(dispmsg+ command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
+            dispmsgarray.append(command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
         else:
-            dispmsg = str(dispmsg+ command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-        bot.say(dispmsg)
+            dispmsgarray.append(command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+        onscreentext(bot, texttargetarray, dispmsgarray)
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
         targettier = get_database_value(bot, command, 'levelingtier') or 0
-        dispmsg = str(command + "'s current tier is " + str(targettier)+ ". ")
-        bot.say(dispmsg)
+        dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
+        onscreentext(bot, texttargetarray, combattextarraycomplete)
+        onscreentext(bot, texttargetarray, dispmsgarray)
         
 ## Suicide/harakiri
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
@@ -580,7 +584,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
-    roulettepayoutdefault = 5
     roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
     if roulettelastplayer == instigator:
@@ -618,7 +621,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
         resultmsg = ''
         deathmsg = ''
-        weapon = get_trigger_arg(revolvernames, 'random')
+        weapon = get_trigger_arg(roulette_revolver_list, 'random')
         weapon = str(" with a " + weapon)
         winner, loser = 'duelsroulettegame', instigator
         assault_kills, assault_deaths = 0,0
@@ -674,7 +677,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
-        roulettepayout = roulettepayoutdefault * roulettecount
+        roulettepayout = roulette_payout_default * roulettecount
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
         set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
@@ -754,7 +757,6 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
     if not konami:
         set_database_value(bot, instigator, 'konami', 1)
         bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-        konamiset = 600
         adjust_database_value(bot, instigator, 'health', konamiset)
     else:
         bot.notice(instigator + " you can only cheat once.", instigator)
@@ -2559,7 +2561,9 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
             k = ''
         combinedline = str(j + "   " + k)
         for user in texttargetarray:
-            if user.startswith("#"):
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
                 bot.msg(user, combinedline)
             else:
                 bot.notice(combinedline, user)
