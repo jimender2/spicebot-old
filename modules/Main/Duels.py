@@ -217,9 +217,9 @@ duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knock
 duelbodypartsarray = ['chest','arm','leg','head','junk']
 armortypesarray = ['helmet','gauntlets','breastplate','greaves','codpiece']
 
-################################################################################
-## Main Operation #### Main Operation #### Main Operation #### Main Operation ##
-################################################################################
+########################
+## Main Command Usage ##
+########################
 
 ## work with /me ACTION (does not work with manual weapon)
 @module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -252,7 +252,10 @@ def execute_main(bot, trigger, triggerargsarray):
             triggerargsarraypart = get_trigger_arg(comsplit, 'create')
             commandortargetsplit(bot, trigger, triggerargsarraypart)
 
-#def execute_mainactual(bot, trigger, triggerargsarray):
+####################################
+## Seperate Targets from Commands ##
+####################################
+
 def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Instigator
@@ -331,9 +334,20 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
-        ## TODO
-        bot.say("Run a duel!")
+        duelrun(bot)
 
+#####################
+## Main Duel Usage ##
+#####################
+
+def duelrun(bot):
+    bot.say("Run a duel!")
+    ## TODO
+        
+#######################
+## Subcommands Usage ##
+#######################
+        
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel):
     
@@ -372,39 +386,9 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## usage counter TODO: add specifics
     #adjust_database_value(bot, instigator, 'usage', 1)
 
-## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator):
-    
-    ## Guilty until proven Innocent
-    validtarget = 0
-    validtargetmsg = ''
-    
-    ## Target can't be a valid command
-    if target.lower() in commandarray_all_valid:
-        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
-        return validtarget, validtargetmsg
-    
-    ## Offline User
-    if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
-        target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " is offline right now.")
-        return validtarget, validtargetmsg
-    
-    ## Opted Out
-    if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
-        target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " has duels disabled.")
-        return validtarget, validtargetmsg
-
-    ## None of the above
-    if target.lower() not in [y.lower() for y in currentuserlistarray]:
-        target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " is either not here, or not a valid nick to target.")
-        return validtarget, validtargetmsg
-
-    validtarget = 1
-    return validtarget, validtargetmsg
-    
+#################
+## Subcommands ##
+#################
 
 ## Author Subcommand
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
@@ -826,9 +810,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
     #elif subcommand == 'stats':
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
-        
-        
-    
 
 ## Konami
 def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
@@ -839,9 +820,48 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
         adjust_database_value(bot, instigator, 'health', konamiset)
     else:
         bot.notice(instigator + " you can only cheat once.", instigator)
+
+#####################
+## Target Criteria ##
+#####################
+
+## Target
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator):
     
+    ## Guilty until proven Innocent
+    validtarget = 0
+    validtargetmsg = ''
     
+    ## Target can't be a valid command
+    if target.lower() in commandarray_all_valid:
+        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
+        return validtarget, validtargetmsg
     
+    ## Offline User
+    if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + str(target) + " is offline right now.")
+        return validtarget, validtargetmsg
+    
+    ## Opted Out
+    if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + str(target) + " has duels disabled.")
+        return validtarget, validtargetmsg
+
+    ## None of the above
+    if target.lower() not in [y.lower() for y in currentuserlistarray]:
+        target = actualname(bot, target)
+        validtargetmsg = str(instigator + ", " + str(target) + " is either not here, or not a valid nick to target.")
+        return validtarget, validtargetmsg
+
+    validtarget = 1
+    return validtarget, validtargetmsg  
+
+############
+## Damage ##
+############
+
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
