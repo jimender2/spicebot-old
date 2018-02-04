@@ -731,21 +731,21 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
     if subcommand not in commandarray_all_valid:
         bot.notice(instigator + ", What Admin change do you want to make?", instigator)
         return
-    targetsetting = get_trigger_arg(triggerargsarray, 3).lower()
     if subcommand == 'on' or subcommand == 'off':
-        if targetsetting == 'everyone':
+        target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
+        if target == 'everyone':
             for user in botvisibleusers:
                 if subcommand == 'on':
                     adjust_database_array(bot, bot.nick, user, 'duelusers', 'add')
                 else:
                     adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
             return
-        if targetsetting != instigator:
-            validtarget, validtargetmsg = targetcheck(bot, targetsetting, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+        if target != instigator:
+            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
             if not validtarget:
                 bot.notice(validtargetmsg, instigator)
                 return
-        target = actualname(bot, targetsetting)
+        target = actualname(bot, target)
         if subcommand == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
             bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
             return
