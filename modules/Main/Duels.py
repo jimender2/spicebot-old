@@ -729,8 +729,8 @@ def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, cur
 ## Admin
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    if subcommand not in commandarray_all_valid:
-        bot.notice(instigator + ", What Admin change do you want to make?", instigator)
+    if subcommand not in commandarray_all_valid and subcommand != konami:
+        bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
         return
     if subcommand == 'on' or subcommand == 'off':
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
@@ -780,6 +780,35 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 return
             bot.notice(instigator + ", " +  str(target) + "'s tier has been set to " + str(newsetting) + ".", instigator)
             set_database_value(bot, target, 'levelingtier', int(newsetting))
+    elif subcommand == 'bugbounty':
+        target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
+        statreset(bot, target) ## TODO
+        bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
+        adjust_database_value(bot, target, 'coin', bugbountycoinaward)
+    elif subcommand == 'konami':
+        command = get_trigger_arg(triggerargsarray, 3).lower()
+        if not command:
+            bot.notice(instigator + ", what did you intend to do with konami?")
+            return
+        target = get_trigger_arg(triggerargsarray, 4).lower() or instigator
+        if command == 'view':
+            viewedkonami = get_database_value(bot, target, 'konami')
+            bot.notice(instigator + ", " + str(target) + "'s konami is currently " + str(viewedtier) + ".", instigator)
+            return
+        if command == 'reset':
+            bot.notice(instigator + ", " +  str(target) + "'s konami has been reset.", instigator)
+            reset_database_value(bot, target, 'konami')
+            return
+        if command == 'set':
+            newsetting = get_trigger_arg(triggerargsarray, 5)
+            if not newsetting or not newsetting.isdigit():
+                bot.notice(instigator + ", you must specify a number setting.", instigator)
+                return
+            bot.notice(instigator + ", " +  str(target) + "'s konami " + str(newsetting) + ".", instigator)
+            set_database_value(bot, target, 'konami', int(newsetting))
+    
+    
+    
     #elif subcommand == 'stats':
         
         
