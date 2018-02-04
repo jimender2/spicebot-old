@@ -767,17 +767,18 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             target = bot.nick
         if command == 'view':
             viewedtier = get_database_value(bot, target, 'levelingtier')
-            bot.notice(instigator + ", " + str(target) + " is at tier " + str(viewedtier) + ".")
+            bot.notice(instigator + ", " + str(target) + " is at tier " + str(viewedtier) + ".", instigator)
             return
         if command == 'reset':
-            bot.notice(instigator + ", " +  str(target) + "'s tier has been reset.")
+            bot.notice(instigator + ", " +  str(target) + "'s tier has been reset.", instigator)
             reset_database_value(bot, target, 'levelingtier')
             return
         if command == 'set':
             newsetting = get_trigger_arg(triggerargsarray, 5)
             if not newsetting or not newsetting.isdigit():
-                bot.notice(instigator + ", you must specify a number setting.")
+                bot.notice(instigator + ", you must specify a number setting.", instigator)
                 return
+            bot.notice(instigator + ", " +  str(target) + "'s tier has been set to " + str(newsetting) + ".", instigator)
             set_database_value(bot, target, 'levelingtier', int(newsetting))
     #elif subcommand == 'stats':
         
