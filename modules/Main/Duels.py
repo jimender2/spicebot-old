@@ -740,7 +740,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
             return
-        if target not in botvisibleusers:
+        if target not in [y.lower() for y in botvisibleusers]:
             bot.notice(instigator + ", I have never seen " + str(target) + " before.", instigator)
             return
         target = actualname(bot, target)
