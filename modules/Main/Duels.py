@@ -328,7 +328,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         bot.say("Run a duel!")
 
 ## Subcommands
-def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray):
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel):
     
     ## Admin Command Blocker
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
