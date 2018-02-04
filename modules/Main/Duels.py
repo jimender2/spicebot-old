@@ -80,6 +80,11 @@ commandarray_help_on = "This function enables duels."
 ## Configurables ##
 ###################
 
+## Roulette
+revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
+
+
+
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
 ROULETTETIMEOUT = 8
@@ -305,8 +310,21 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, instigator)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
-        else:
-            bot.say("target passed checks")
+            return
+        ## TODO
+        OSDTYPE = 'say'
+        target = get_trigger_arg(triggerargsarray, 1)
+        if target.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        dowedisplay = 1
+        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
+        if executedueling:
+            target = actualname(bot, target)
+            healthcheck(bot, target)
+            targetarray.append(target)
+            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+        
 
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray):
@@ -600,7 +618,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
         resultmsg = ''
         deathmsg = ''
-        revolvernames = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
         weapon = get_trigger_arg(revolvernames, 'random')
         weapon = str(" with a " + weapon)
         winner, loser = 'duelsroulettegame', instigator
@@ -662,6 +679,88 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
         set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
         adjust_database_array(bot, bot.nick, instigator, 'roulettewinners', 'add')
+
+## Colosseum
+def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Assault
+def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Random Target
+def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Usage
+def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## War Room
+def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Title
+def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Class
+def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Streaks
+def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Stats
+def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Leaderboard
+def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Armor
+def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Usage
+def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Bounty
+def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Loot
+def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Weaponslocker
+def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Magic
+def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")  
+
+## Admin
+def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    bot.say("wip")
+
+## Konami
+def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
+    konami = get_database_value(bot, instigator, 'konami')
+    if not konami:
+        set_database_value(bot, instigator, 'konami', 1)
+        bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
+        konamiset = 600
+        adjust_database_value(bot, instigator, 'health', konamiset)
+    else:
+        bot.notice(instigator + " you can only cheat once.", instigator)
+    
+    
+    
     
     
     
