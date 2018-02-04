@@ -267,10 +267,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     ## user list
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
     currentuserlistarray = []
+    botvisibleusersappendarray = []
     for user in bot.users:
         currentuserlistarray.append(user)
         if user not in botvisibleusers and user not in commandarray_all_valid:
-            adjust_database_array(bot, bot.nick, user, 'botvisibleusers', 'add')
+            botvisibleusersappendarray.append(user)
+    adjust_database_array(bot, bot.nick, botvisibleusersappendarray, 'botvisibleusers', 'add')
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
 
     ## Check command was issued
@@ -412,7 +414,6 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         
 ## On/Off Subcommand
 def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    target = instigator
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
@@ -424,9 +425,9 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.notice(instigator + ", It looks like you already have duels off.", instigator)
         return
     if commandortarget == 'on':
-        adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'add')
+        adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'add')
     else:
-        adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'del')
+        adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'del')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
@@ -589,7 +590,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
         set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
-        adjust_database_array(bot, bot.nick, instigator, 'roulettewinners', 'add')
+        adjust_database_array(bot, bot.nick, [instigator], 'roulettewinners', 'add')
     ### instigator shoots themself in the head
     else:
         dispmsgarray = []
@@ -722,11 +723,10 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
     if subcommand == 'on' or subcommand == 'off':
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
         if target == 'everyone':
-            for user in botvisibleusers:
-                if subcommand == 'on':
-                    adjust_database_array(bot, bot.nick, user, 'duelusers', 'add')
-                else:
-                    adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
+            if subcommand == 'on':
+                adjust_database_array(bot, bot.nick, botvisibleusers, 'duelusers', 'add')
+            else:
+                reset_database_value(bot, bot.nick, 'duelusers')
             return
         if target not in [y.lower() for y in botvisibleusers]:
             bot.notice(instigator + ", I have never seen " + str(target) + " before.", instigator)
@@ -739,9 +739,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             return
         if subcommand == 'on':
-            adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+            adjust_database_array(bot, bot.nick, [target], 'duelusers', 'add')
         else:
-            adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
+            adjust_database_array(bot, bot.nick, [target], 'duelusers', 'del')
         set_database_value(bot, target, 'opttime', now)
         bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
     elif subcommand == 'tier':
@@ -1817,7 +1817,7 @@ def allthingsmustdie():
                         weaponlockerstatus = 'now'
                     else:
                         weaponlockerstatus = 'no longer'
-                    adjust_database_array(bot, target, weaponchange, 'weaponslocker', adjustmentdirection)
+                    adjust_database_array(bot, target, [weaponchange], 'weaponslocker', adjustmentdirection)
                     message = str(weaponchange + " is " + weaponlockerstatus + " in weapons locker.")
                     bot.notice(instigator + ", " + message, instigator)
 
@@ -2370,6 +2370,9 @@ def halfhourtimer(bot):
     randomuarray = []
     duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
     
+    ## Log Out Array
+    logoutarray = []
+    
     for u in bot.users:
         ## must have duels enabled, but has to use the game every so often
         if u in duelusersarray and u != bot.nick:
@@ -2378,7 +2381,7 @@ def halfhourtimer(bot):
             lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
             lastping = get_timesince_duels(bot, u, 'lastping') or 0
             if AUTOLOGOUT < lastcommandusedtime and lastping < AUTOLOGOUT:
-                adjust_database_array(bot, bot.nick, u, 'duelusers', 'del')
+                logoutarray.append(u)
                 reset_database_value(bot, u, 'lastping')
             else:  
                 set_database_value(bot, u, 'lastping', now)
@@ -2411,6 +2414,10 @@ def halfhourtimer(bot):
                         if int(mana) > magemanaregencurrent:
                             set_database_value(bot, u, 'mana', magemanaregencurrent)
 
+    ## Log Out Users
+    adjust_database_array(bot, bot.nick, logoutarray, 'duelusers', 'del')
+    
+    ## Random winner select
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
         loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
@@ -2880,7 +2887,7 @@ def halfhourpotionwinner(bot, randomuarray):
         reset_database_value(bot, bot.nick, 'lasttimedlootwinners')
         return halfhourpotionwinner(bot, randomuarray)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
-    adjust_database_array(bot, bot.nick, lootwinner, 'lasttimedlootwinners', 'add')
+    adjust_database_array(bot, bot.nick, [lootwinner], 'lasttimedlootwinners', 'add')
     set_database_value(bot, bot.nick, 'lasttimedlootwinner', lootwinner)
     return lootwinner
 
@@ -2908,14 +2915,14 @@ def weaponofchoice(bot, nick):
         reset_database_value(bot, nick, 'lastweaponused')
     for x in weaponslist:
         if len(x) > weaponmaxlength:
-            adjust_database_array(bot, nick, x, 'weaponslocker', 'del')
+            adjust_database_array(bot, nick, [x], 'weaponslocker', 'del')
         if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
         reset_database_value(bot, nick, 'lastweaponusedarray')
         return weaponofchoice(bot, nick)
     weapon = get_trigger_arg(weaponslistselect, 'random') or 'fist'
-    adjust_database_array(bot, nick, weapon, 'lastweaponusedarray', 'add')
+    adjust_database_array(bot, nick, [weapon], 'lastweaponusedarray', 'add')
     set_database_value(bot, nick, 'lastweaponused', weapon)
     return weapon
 
@@ -3328,7 +3335,7 @@ def get_database_array_total(bot, nick, databasekey):
     entriestotal = len(array)
     return entriestotal
 
-def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
+def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
@@ -3336,18 +3343,17 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
     reset_database_value(bot, nick, databasekey)
     adjustarray = []
     if adjustmentdirection == 'add':
-        if entry not in adjustarraynew:
-            adjustarraynew.append(entry)
+        for y in entries:
+            if y not in adjustarraynew:
+                adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
-        if entry in adjustarraynew:
-            adjustarraynew.remove(entry)
-    for x in adjustarraynew:
-        if x not in adjustarray:
-            adjustarray.append(x)
+        for y in entries:
+            if entry in adjustarraynew:
+                adjustarraynew.remove(entry)
     if adjustarray == []:
         reset_database_value(bot, nick, databasekey)
     else:
-        set_database_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarraynew)
 
 ##########
 ## ARGS ##
