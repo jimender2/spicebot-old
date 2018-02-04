@@ -91,6 +91,9 @@ armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
 ## Documentation
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
 
+## people to recognize
+botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+
 ## On/off
 OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 
@@ -202,7 +205,7 @@ magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this
 ## Arrays ##
 ############
 
-botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## people to recognize
+
 lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
 backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
