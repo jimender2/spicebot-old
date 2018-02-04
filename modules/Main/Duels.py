@@ -491,7 +491,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsgarray.append(command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
         onscreentext(bot, ['say'], dispmsgarray)
-    else:
+    elif command.isdigit() or command.lower() in commandarray_pepper_levels or command.lower() == 'next':
         pickarray = []
         dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         if command.isdigit():
@@ -503,6 +503,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif command.lower() in commandarray_pepper_levels:
             tiernumber = commandarray_pepper_levels.index(command.lower())
             pepper = command.lower()
+        elif command.lower() == 'next':
+            tiernumber = currenttier + 1
+            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
         else:
             bot.say("Invalid Tier to Check.")
             return
@@ -517,25 +520,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if tiermath > 0:
                 dispmsgarray.append(str(tiermath) + " tiers to go!")
         onscreentext(bot, ['say'], dispmsgarray)
-
-    
-    elif command.lower() == 'next':
-        nexttier = currenttier + 1
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
-        pickarray = []
-        tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
-        for x in tiercheck:
-            if x not in commandarray_tier_display_exclude:
-                pickarray.append(x)
-        if pickarray != []:
-            tierlist = get_trigger_arg(pickarray, "list")
-            dispmsgarray.append(" Feature(s) that are available at tier "+ str(nexttier) +": " + tierlist + ". ")
-            tiermath = int(nexttier) - currenttier
-            if tiermath > 0:
-               dispmsgarray.append(str(tiermath) + " tiers to go!")
-        else:
-            dispmsgarray.append("No unlocks at tier " + str(nexttier)+ ". ")
-        onscreentext(bot, texttargetarray, dispmsgarray)
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
@@ -551,8 +535,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
         else:
             bot.say("Nobody is the closest to the next pepper level.")
-    
-    
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
         if not validtarget:
