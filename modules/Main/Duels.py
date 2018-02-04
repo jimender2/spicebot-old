@@ -412,6 +412,7 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
+    ## TODO: add individual help texts
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
@@ -756,6 +757,28 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
         set_database_value(bot, target, 'opttime', now)
         bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
+    elif subcommand == 'tier':
+        command = get_trigger_arg(triggerargsarray, 3).lower()
+        if not command:
+            bot.notice(instigator + ", what did you intend to do with tiers?")
+            return
+        target = get_trigger_arg(triggerargsarray, 4).lower() or instigator
+        if target == 'channel':
+            target = bot.nick
+        if command == 'view':
+            viewedtier = get_database_value(bot, target, 'levelingtier')
+            bot.notice(instigator, + ", " str(target) + " is at tier " + str(viewedtier) + ".")
+            return
+        if command == 'reset':
+            bot.notice(instigator, + ", " str(target) + "'s tier has been reset.")
+            reset_database_value(bot, target, 'levelingtier')
+            return
+        if command == 'set':
+            newsetting = get_trigger_arg(triggerargsarray, 5)
+            if not newsetting or not newsetting.isdigit():
+                bot.notice(instigator + ", you must specify a number setting.")
+                return
+            set_database_value(bot, target, 'levelingtier', int(newsetting))
     #elif subcommand == 'stats':
         
         
