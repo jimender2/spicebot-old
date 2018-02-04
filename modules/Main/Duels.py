@@ -77,6 +77,13 @@ commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','ja
 ## Command Help Text TODO
 commandarray_help_on = "This function enables duels."
 
+################
+## Body/Armor ##
+################
+
+bodypartsarray = ['head','chest','arm','junk','leg']
+armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
+
 ###################
 ## Configurables ##
 ###################
@@ -279,8 +286,8 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         return
     
     ## Stat check TODO: revamp these functions
-    #statreset(bot, instigator)
-    #healthcheck(bot, instigator)
+    statreset(bot, instigator)
+    healthcheck(bot, instigator)
     
     ## Time when Module use started
     now = time.time()
@@ -557,24 +564,31 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    displaymessage = ''
+    
+    ## Small timeout
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
     if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+    
+    ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
-    if roulettelastplayer == instigator:
+    if roulettelastplayer == instigator: ## Odds increase
         bot.say(instigator + " spins the revolver and pulls the trigger.")
     elif roulettecount == 1:
         bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
+    
+    ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, bot.nick, 'roulettechamber')
     if not roulettechamber:
         roulettechamber = randint(1, 6)
         set_database_value(bot, bot.nick, 'roulettechamber', roulettechamber)
+    
+    ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
     roulettespinarray = get_database_value(bot, bot.nick, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
         if len(roulettespinarray) > 1:
@@ -587,69 +601,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             currentspin = get_trigger_arg(roulettespinarray, "random")
             set_database_value(bot, bot.nick, 'roulettespinarray', roulettespinarray)
         else:
-            currentspin = roulettechamber
+            currentspin = roulettechamber ## if only one location left
             reset_database_value(bot, bot.nick, 'roulettespinarray')
     else:
         reset_database_value(bot, bot.nick, 'roulettespinarray')
+    
+    ## determine if current spin equals bullet loacation
     currentspin = get_trigger_arg(roulettespinarray, "random")
-    if currentspin == roulettechamber:
-        dispmsgarray = []
-        biggestpayout = 0
-        biggestpayoutwinner = ''
-        statreset(bot, instigator)
-        healthcheck(bot, instigator)
-        roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
-        weapon = get_trigger_arg(roulette_revolver_list, 'random')
-        weapon = str(" with a " + weapon)
-        winner, loser = 'duelsroulettegame', instigator
-        assault_kills, assault_deaths = 0,0
-        damage, roulettedamagearray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
-        for x in roulettedamagearray:
-            dispmsgarray.append(x)
-        currenthealth = get_database_value(bot, loser, 'health')
-        if currenthealth <= 0:
-            dispmsgarray.append(loser + ' dies forcing a respawn!!')
-            deathmsgb = suicidekill(bot,loser) ## TODO
-            dispmsgarray.append(deathmsgb)
-        if roulettecount == 1:
-            resultmsg = "First in the chamber. What bad luck. "
-            roulettewinners.append(instigator)
-        uniqueplayersarray = []
-        for x in roulettewinners:
-            if x not in uniqueplayersarray:
-                uniqueplayersarray.append(x)
-        for x in uniqueplayersarray:
-            if x != instigator:
-                statreset(bot, x)
-                healthcheck(bot, x)
-                roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-                if roulettepayoutx > biggestpayout:
-                    biggestpayoutwinner = x
-                    biggestpayout = roulettepayoutx
-                elif roulettepayoutx == biggestpayout:
-                    biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
-                    biggestpayout = roulettepayoutx
-                adjust_database_value(bot, x, 'coin', roulettepayoutx)
-                bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
-            reset_database_value(bot, x, 'roulettepayout')
-        if instigator in roulettewinners:
-            roulettewinners.remove(instigator)
-        if roulettewinners != []:
-            displaymessage = get_trigger_arg(roulettewinners, "list")
-            dispmsgarray.append("Winners: " + displaymessage + ".")
-        if biggestpayoutwinner != '':
-            dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
-        reset_database_value(bot, bot.nick, 'roulettelastplayer')
-        reset_database_value(bot, bot.nick, 'roulettechamber')
-        reset_database_value(bot, bot.nick, 'roulettewinners')
-        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
-        reset_database_value(bot, bot.nick, 'roulettecount')
-        reset_database_value(bot, instigator, 'roulettepayout')
-        if roulettecount > 1:
-            roulettecount = roulettecount + 1
-            dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
-        onscreentext(bot, [inchannel], dispmsgarray)
-    else:
+    ### current spin is safe
+    if currentspin != roulettechamber:
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
@@ -658,6 +618,60 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
         set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
         adjust_database_array(bot, bot.nick, instigator, 'roulettewinners', 'add')
+    ### instigator shoots themself in the head
+    else:
+        dispmsgarray = []
+        biggestpayout, biggestpayoutwinner = 0,''
+        roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
+        revolver = get_trigger_arg(roulette_revolver_list, 'random')
+        damage = randint(50, 120)
+        damagescale = tierratio_level(bot)
+        damage = damagescale * damage
+        bodypart = 'head'
+        if roulettecount == 1:
+            dispmsgarray.append("First in the chamber. What bad luck.")
+        dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        damage, damagetextarray = damage_resistance(bot, nick, damage, bodypart)
+        for x in damagetextarray:
+            dispmsgarray.append(x)
+        currenthealth = get_database_value(bot, instigator, 'health')
+        if currenthealth <= 0:
+            dispmsgarray.append(instigator + ' dies forcing a respawn!!')
+            deathmsgb = suicidekill(bot,instigator) ## TODO
+            dispmsgarray.append(deathmsgb)
+        uniquewinnersarray = []
+        for x in roulettewinners:
+            if x not in uniquewinnersarray and x != instigator:
+                uniquewinnersarray.append(x)
+        for x in uniqueplayersarray:
+            statreset(bot, x) ## TODO: find a more uniform time to run these
+            healthcheck(bot, x) ## also TODO
+            roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+            if roulettepayoutx > biggestpayout:
+                biggestpayoutwinner = x
+                biggestpayout = roulettepayoutx
+            elif roulettepayoutx == biggestpayout:
+                biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
+                biggestpayout = roulettepayoutx
+            adjust_database_value(bot, x, 'coin', roulettepayoutx)
+            bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+            reset_database_value(bot, x, 'roulettepayout')
+        if uniqueplayersarray != []:
+            displaymessage = get_trigger_arg(uniqueplayersarray, "list")
+            dispmsgarray.append("Winners: " + displaymessage + ".")
+        if biggestpayoutwinner != '':
+            dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
+        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+        if roulettecount > 1:
+            roulettecount = roulettecount + 1
+            dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
+        onscreentext(bot, [inchannel], dispmsgarray)
+        ### Reset for next run
+        reset_database_value(bot, bot.nick, 'roulettelastplayer')
+        reset_database_value(bot, bot.nick, 'roulettechamber')
+        reset_database_value(bot, bot.nick, 'roulettewinners')
+        reset_database_value(bot, bot.nick, 'roulettecount')
+        reset_database_value(bot, instigator, 'roulettepayout')
 
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
@@ -739,7 +753,44 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
     
     
     
+## Damage Resistance
+def damage_resistance(bot, nick, damage, bodypart):
     
+    ## Shields
+    shieldloser = get_database_value(bot, nick, 'shield') or 0
+    if shieldloser and damage > 0:
+        damagemath = int(shieldloser) - damage
+        if int(damagemath) > 0:
+            adjust_database_value(bot, loser, 'shield', -abs(damage))
+            damage = 0
+            absorbed = 'all'
+        else:
+            absorbed = damagemath + damage
+            damage = abs(damagemath)
+            reset_database_value(bot, loser, 'shield')
+        damagetextarray.append(nick + " absorbs " + str(absorbed) + " of the damage. ")
+    
+    ## Armor
+    bodypartnumber = bodypartsarray.index(bodypart)
+    armortype = get_trigger_arg(armorarray, bodypartnumber)
+    instigatorarmor = get_database_value(bot, nick, armortype) or 0
+    if armorloser and damage > 0:
+        adjust_database_value(bot, loser, armortype, -1)
+        damagepercent = randint(1, armorhitpercentage) / 100
+        damagereduced = damage * damagepercent
+        damagereduced = int(damagereduced)
+        damage = damage - damagereduced
+        damagetext = str(loser + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
+        armorloser = get_database_value(bot, loser, armortype) or 0
+        if armorloser <= 0:
+            reset_database_value(bot, loser, armortype)
+            damagetext = str(damagetext + ", causing the armor to break!")
+        elif armorloser <= 5:
+            damagetext = str(damagetext + ", causing the armor to be in need of repair!")
+        else:
+            damagetext = str(damagetext + ".")
+        damagetextarray.append(damagetext)
+    return damage, damagetextarray 
     
     
     
