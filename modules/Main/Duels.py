@@ -518,7 +518,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             dispmsgarray.append("Feature(s) that are available at tier " + str(tiernumber) + " (" + str(pepper) +"): " + tierlist + ".")
             tiermath = int(tiernumber) - currenttier
             if tiermath > 0:
-                dispmsgarray.append(str(tiermath) + " tiers to go!")
+                dispmsgarray.append(str(tiermath) + " tier(s) to go!")
         onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() == 'closest':
         statleadername = ''
@@ -542,8 +542,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             return
         targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
-        onscreentext(bot, texttargetarray, combattextarraycomplete)
-        onscreentext(bot, texttargetarray, dispmsgarray)
+        onscreentext(bot, ['say'], dispmsgarray)
         
 ## Suicide/harakiri
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier):
@@ -594,30 +593,27 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, bot.nick, 'roulettespinarray')
     currentspin = get_trigger_arg(roulettespinarray, "random")
     if currentspin == roulettechamber:
+        dispmsgarray = []
         biggestpayout = 0
         biggestpayoutwinner = ''
         statreset(bot, instigator)
         healthcheck(bot, instigator)
         roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
-        resultmsg = ''
-        deathmsg = ''
         weapon = get_trigger_arg(roulette_revolver_list, 'random')
         weapon = str(" with a " + weapon)
         winner, loser = 'duelsroulettegame', instigator
         assault_kills, assault_deaths = 0,0
         damage, roulettedamagearray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
-        roulettedamage = ''
         for x in roulettedamagearray:
-            roulettedamage = str(roulettedamage+" "+ x)
+            dispmsgarray.append(x)
         currenthealth = get_database_value(bot, loser, 'health')
         if currenthealth <= 0:
-            deathmsg = str(" " +  loser + ' dies forcing a respawn!!')
-            deathmsgb = suicidekill(bot,loser)
-            deathmsg = str(deathmsg+" "+deathmsgb)
+            dispmsgarray.append(loser + ' dies forcing a respawn!!')
+            deathmsgb = suicidekill(bot,loser) ## TODO
+            dispmsgarray.append(deathmsgb)
         if roulettecount == 1:
             resultmsg = "First in the chamber. What bad luck. "
             roulettewinners.append(instigator)
-        resultmsg = str(resultmsg + roulettedamage + deathmsg)
         uniqueplayersarray = []
         for x in roulettewinners:
             if x not in uniqueplayersarray:
@@ -640,9 +636,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettewinners.remove(instigator)
         if roulettewinners != []:
             displaymessage = get_trigger_arg(roulettewinners, "list")
-            displaymessage = str("Winners: " + displaymessage + " ")
+            dispmsgarray.append("Winners: " + displaymessage + ".")
         if biggestpayoutwinner != '':
-            displaymessage = str(displaymessage +"     Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins. ")
+            dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
         reset_database_value(bot, bot.nick, 'roulettelastplayer')
         reset_database_value(bot, bot.nick, 'roulettechamber')
         reset_database_value(bot, bot.nick, 'roulettewinners')
@@ -651,8 +647,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, instigator, 'roulettepayout')
         if roulettecount > 1:
             roulettecount = roulettecount + 1
-            displaymessage = str(displaymessage +"     The chamber spun " + str(roulettecount) + " times. ")
-            bot.say(resultmsg + displaymessage)
+            dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
+        onscreentext(bot, [inchannel], dispmsgarray)
     else:
         time.sleep(2) # added to build suspense
         bot.say("*click*")
