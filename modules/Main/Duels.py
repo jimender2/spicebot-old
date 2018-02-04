@@ -656,7 +656,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             adjust_database_value(bot, x, 'coin', roulettepayoutx)
             bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
             reset_database_value(bot, x, 'roulettepayout')
-        if uniqueplayersarray != []:
+        if uniquewinnersarray != []:
             displaymessage = get_trigger_arg(uniqueplayersarray, "list")
             dispmsgarray.append("Winners: " + displaymessage + ".")
         if biggestpayoutwinner != '':
