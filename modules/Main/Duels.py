@@ -505,7 +505,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             pepper = command.lower()
         elif command.lower() == 'next':
             tiernumber = currenttier + 1
-            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
+            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
         else:
             bot.say("Invalid Tier to Check.")
             return
