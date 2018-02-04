@@ -440,7 +440,7 @@ def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, current
     else:
         adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'del')
     set_database_value(bot, instigator, 'opttime', now)
-    bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + instigator + '.', instigator)
+    bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
