@@ -727,6 +727,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 adjust_database_array(bot, bot.nick, botvisibleusers, 'duelusers', 'add')
             else:
                 reset_database_value(bot, bot.nick, 'duelusers')
+            bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
             return
         if target not in [y.lower() for y in botvisibleusers]:
             bot.notice(instigator + ", I have never seen " + str(target) + " before.", instigator)
