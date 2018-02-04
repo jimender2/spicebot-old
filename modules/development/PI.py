@@ -8,8 +8,9 @@ import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-from decimal import *
-getcontext().prec = 25
+import decimal 
+
+
 @sopel.module.commands('pi')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -17,34 +18,20 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    pi = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679'
     digitcount = get_trigger_arg(triggerargsarray, 1) or ''
     if not digitcount == '':
         if not digitcount.isdigit():
             bot.say("Please enter the number of digits you want to see.")
         else:
             digits=int(digitcount)
-            if digits>=1 and digits<=10000:
-                mynumber =chudnovskyBig(digits)
+            pilength = len(pi)
+            if digits>=1 and digits<=pilength:
+                mynumber = pi[:-digits]
                 bot.say(str(mynumber))
             else:
-                bot.say("Please select a number of decimal places between 1 and 100")
+                bot.say("Please select a number of decimal places between 1 and " + str(pilengh))
     else:
-        numberofplaces = 1000
-        mynumber = chudnovskyBig(numberofplaces)
-        bot.say(str(mynumber))
+        bot.say(str(pi))
             
-    
-    
-def chudnovskyBig(n): #http://en.wikipedia.org/wiki/Chudnovsky_algorithm
-    pi = Decimal(0) 
-    a = Decimal(1)
-    b = Decimal(3)
-    k = Decimal(0)
-    while k<n:
-        pi += ((4/a)-(4/b))
-        a+=4
-        b+=4
-        k+=1
-    return pi
-                
-
+ 
