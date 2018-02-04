@@ -3348,7 +3348,7 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
                 adjustarraynew.append(entry)
     elif adjustmentdirection == 'del':
         for y in entries:
-            if entry in adjustarraynew:
+            if y in adjustarraynew:
                 adjustarraynew.remove(entry)
     if adjustarray == []:
         reset_database_value(bot, nick, databasekey)
