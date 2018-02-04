@@ -729,7 +729,7 @@ def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, cur
 ## Admin
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    if subcommand not in commandarray_all_valid and subcommand != konami:
+    if subcommand not in commandarray_all_valid and subcommand != 'konami':
         bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
         return
     if subcommand == 'on' or subcommand == 'off':
