@@ -631,7 +631,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         if roulettecount == 1:
             dispmsgarray.append("First in the chamber. What bad luck.")
         dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
-        damage, damagetextarray = damage_resistance(bot, nick, damage, bodypart)
+        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
         for x in damagetextarray:
             dispmsgarray.append(x)
         currenthealth = get_database_value(bot, instigator, 'health')
