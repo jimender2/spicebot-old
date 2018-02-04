@@ -815,7 +815,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         reset_database_value(bot, bot.nick, 'roulettelastplayer')
         reset_database_value(bot, bot.nick, 'roulettechamber')
         reset_database_value(bot, bot.nick, 'roulettewinners')
-        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
         reset_database_value(bot, bot.nick, 'roulettecount')
         reset_database_value(bot, bot.nick, 'roulettespinarray')
         for user in botvisibleusers:
