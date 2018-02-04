@@ -496,7 +496,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         if command.isdigit():
             tiernumber = int(command)
-            if tiercheck > 15:
+            if tiernumber > 15:
                 bot.say("Tiers don't go that high.")
                 return
             pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
