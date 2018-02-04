@@ -27,13 +27,13 @@ from SpicebotShared import * ## not needed if using without spicebot
 ########################
 
 ## All Commands
-commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+commandarray_all_valid = ['bugbounty','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 
 ## bypass for Opt status
-commandarray_instigator_bypass = ['on','admin']
+commandarray_instigator_bypass = ['bugbounty','on','admin']
 
 ## Admin Functions
-commandarray_admin = ['admin']
+commandarray_admin = ['bugbounty','admin']
 
 ## Must Be inchannel
 commandarray_inchannel = ['roulette','assault','colosseum']
@@ -47,7 +47,7 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_0 = ['bugbounty','tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -69,7 +69,7 @@ commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,
 
 ## Tier Ratios
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5]
-commandarray_tier_display_exclude = ['upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
+commandarray_tier_display_exclude = ['admin','bugbounty','upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
 
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
@@ -424,39 +424,23 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         
 ## On/Off Subcommand
 def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    target = get_trigger_arg(triggerargsarray, 2) or instigator
-    if target != instigator and not trigger.admin:
-        bot.notice(instigator + ", you may only change the enable status for yourself.", instigator)
-        return
-    if target == 'everyone':
-        for user in botvisibleusers:
-            if commandortarget == 'on':
-                adjust_database_array(bot, bot.nick, user, 'duelusers', 'add')
-            else:
-                adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
-        return
-    if target != instigator:
-        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
-        if not validtarget:
-            bot.notice(validtargetmsg, instigator)
-            return
-    target = actualname(bot, target)
-    targetopttime = get_timesince_duels(bot, target, 'opttime')
+    target = instigator
+    instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if targetopttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
-        bot.notice(instigator + " It looks like " + target + " can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
         return
-    if commandortarget == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
+    if commandortarget == 'on' and instigator.lower() in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like you already have duels on.", instigator)
         return
-    if commandortarget == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+    if commandortarget == 'off' and instigator.lower() not in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like you already have duels off.", instigator)
         return
     if commandortarget == 'on':
-        adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+        adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'add')
     else:
-        adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
-    set_database_value(bot, target, 'opttime', now)
-    bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + target + '.', instigator)
+        adjust_database_array(bot, bot.nick, instigator, 'duelusers', 'del')
+    set_database_value(bot, instigator, 'opttime', now)
+    bot.notice(instigator + ", duels should now be " +  commandortarget + ' for ' + instigator + '.', instigator)
     
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
@@ -737,9 +721,47 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
 def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     bot.say("wip")  
 
+## Bug Bounty
+def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
+    bot.say("wip")  
+
 ## Admin
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+    if subcommand not in commandarray_all_valid:
+        bot.notice(instigator + ", What Admin change do you want to make?", instigator)
+        return
+    targetsetting = get_trigger_arg(triggerargsarray, 3).lower()
+    if subcommand == 'on' or subcommand == 'off':
+        if targetsetting == 'everyone':
+            for user in botvisibleusers:
+                if subcommand == 'on':
+                    adjust_database_array(bot, bot.nick, user, 'duelusers', 'add')
+                else:
+                    adjust_database_array(bot, bot.nick, user, 'duelusers', 'del')
+            return
+        if targetsetting != instigator:
+            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+            if not validtarget:
+                bot.notice(validtargetmsg, instigator)
+                return
+        target = actualname(bot, targetsetting)
+        if subcommand == 'on' and target.lower() in [x.lower() for x in dueloptedinarray]:
+            bot.notice(instigator + ", It looks like " + target + " already has duels on.", instigator)
+            return
+        if subcommand == 'off' and target.lower() not in [x.lower() for x in dueloptedinarray]:
+            bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
+            return
+        if subcommand == 'on':
+            adjust_database_array(bot, bot.nick, target, 'duelusers', 'add')
+        else:
+            adjust_database_array(bot, bot.nick, target, 'duelusers', 'del')
+        set_database_value(bot, target, 'opttime', now)
+        bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
+    #elif subcommand == 'stats':
+        
+        
+    
 
 ## Konami
 def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
