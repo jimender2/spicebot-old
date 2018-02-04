@@ -793,7 +793,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         target = get_trigger_arg(triggerargsarray, 4).lower() or instigator
         if command == 'view':
             viewedkonami = get_database_value(bot, target, 'konami')
-            bot.notice(instigator + ", " + str(target) + "'s konami is currently " + str(viewedtier) + ".", instigator)
+            bot.notice(instigator + ", " + str(target) + "'s konami is currently " + str(viewedkonami) + ".", instigator)
             return
         if command == 'reset':
             bot.notice(instigator + ", " +  str(target) + "'s konami has been reset.", instigator)
