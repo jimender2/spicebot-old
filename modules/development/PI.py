@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if not digitcount.isdigit():
             bot.say("Please enter the number of digits you want to see.")
         else:
-            digits=int(digitcount)
+            digits=int(digitcount)+2
             pilength = len(pi)
             if digits>=1 and digits<=pilength:
                 mynumber = pi[0:digits]
