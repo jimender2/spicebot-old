@@ -641,75 +641,535 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, bot.nick, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
-## Colosseum
+## Colosseum ## TODO
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    for u in bot.users:
+        canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay) ## TODO
+        if canduel:
+            canduelarray.append(u)
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    if canduelarray == [] or len(canduelarray) == 1:
+        bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+        return
+    timeouteval = eval(commandortarget.upper() + "TIMEOUT")
+    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
+    getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+    if getlastusage < timeouteval and not bot.nick.endswith(devbot):
+        bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+    elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
+        bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
+    elif instigator not in canduelarray:
+        dowedisplay = 1
+        mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+    else:
+        if instigator in canduelarray:
+            canduelarray.remove(instigator)
+        displaymessage = get_trigger_arg(canduelarray, "list")
+        bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+        set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+        set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+        statreset(bot, instigator)
+        healthcheck(bot, instigator)
+        totalplayers = len(canduelarray)
+        riskcoins = int(totalplayers) * 30
+        damage = riskcoins
+        winner = selectwinner(bot, canduelarray)
+        bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+        diedinbattle = []
+        canduelarray.remove(winner)
+        deathmsgb = ''
+        for x in canduelarray:
+            statreset(bot, x)
+            healthcheck(bot, x)
+            shieldloser = get_database_value(bot, x, 'shield') or 0
+            if shieldloser and damage > 0:
+                damagemath = int(shieldloser) - damage
+                if int(damagemath) > 0:
+                    adjust_database_value(bot, x, 'shield', -abs(damage))
+                    damage = 0
+                else:
+                    damage = abs(damagemath)
+                    reset_database_value(bot, x, 'shield')
+            if damage > 0:
+                adjust_database_value(bot, x, 'health', -abs(damage))
+                currenthealth = get_database_value(bot, x, 'health')
+            if currenthealth <= 0:
+                deathmsgb = whokilledwhom(bot, winner, x) or ''
+                diedinbattle.append(x)
+        displaymessage = get_trigger_arg(diedinbattle, "list")
+        if displaymessage:
+            bot.say(displaymessage + " died in this event." + " "+ deathmsgb)
+        adjust_database_value(bot, winner, 'coin', riskcoins)
 
-## Assault
+## Assault ## TODO
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    for u in bot.users:
+        canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay) ## TODO
+        if canduel:
+            canduelarray.append(u)
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    if canduelarray == [] or len(canduelarray) == 1:
+        bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+        return
+    timeouteval = eval(commandortarget.upper() + "TIMEOUT")
+    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
+    getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+    if getlastusage < timeouteval and not bot.nick.endswith(devbot):
+        bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+    elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
+        bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
+    elif instigator not in canduelarray:
+        dowedisplay = 1
+        mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+    else:
+        if instigator in canduelarray:
+            canduelarray.remove(instigator)
+        displaymessage = get_trigger_arg(canduelarray, "list")
+        bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+        set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+        set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+        OSDTYPE = 'notice'
+        lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
+        typeofduel = 'assault'
+        getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+        set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
-## Random Target
+## Random Target ## TODO
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
-
-## Usage
+    for u in bot.users:
+        canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay) ## TODO
+        if canduel:
+            canduelarray.append(u)
+    if canduelarray == [] or len(canduelarray) == 1:
+        bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+        return
+    typeofduel == 'random'
+    target = get_trigger_arg(canduelarray, 'random')
+    OSDTYPE = 'say'
+    targetarray.append(target)
+    getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+            
+## Usage ## TODO
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    target = get_trigger_arg(triggerargsarray, 2) or instigator
+    targetname = target
+    if target == 'channel':
+        target = bot.nick
+    totaluses = get_database_value(bot, target, 'usage')
+    if target.lower() in tiercommandarray:
+        bot.notice("It looks like that nick is unable to play duels.",instigator)
+        return
+    targetname = actualname(bot, targetname)
+    bot.say(targetname + " has used duels " + str(totaluses) + " times.")
 
-## War Room
+## War Room ## TODO
 def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+    for u in bot.users:
+        canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
+        if canduel and u != bot.nick:
+            canduelarray.append(u)
+    if not subcommand:
+        if instigator in canduelarray:
+            bot.notice(instigator + ", It looks like you can duel.", instigator)
+        else:
+            dowedisplay = 1
+            mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+    elif subcommand == 'colosseum' or subcommand == 'assault':
+        if subcommand == 'everyone':
+            subcommand = 'assault'
+        timeouteval = eval(subcommand.upper() + "TIMEOUT")
+        getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + subcommand)) or timeouteval
+        getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
+        if getlastinstigator == instigator and not bot.nick.endswith(devbot):
+            bot.notice(instigator + ", You may not instigate a full channel " + subcommand + " event twice in a row.", instigator)
+        elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
+            bot.notice(instigator + ", full channel " + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+        else:
+            bot.notice(instigator + ", It looks like full channel " + subcommand + " event can be used.", instigator)
+    elif subcommand == 'list':
+        if instigator in canduelarray:
+            canduelarray.remove(instigator)
+        displaymessage = get_trigger_arg(canduelarray, "list")
+        bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
+    elif subcommand.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
+    else:
+        if subcommand.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        subcommand = actualname(bot, subcommand)
+        if subcommand in canduelarray and instigator in canduelarray:
+            bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
+        else:
+            dowedisplay = 1
+            mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
 
-## Title
+## Title ## TODO
 def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    instigatortitle = get_database_value(bot, instigator, 'title')
+    titletoset = get_trigger_arg(triggerargsarray, 2)
+    if not titletoset:
+        unsetmsg = ''
+        if not instigatortitle:
+            unsetmsg = "You don't have a title! "
+        bot.say(unsetmsg + "What do you want your title to be?")
+    elif titletoset == 'remove':
+        reset_database_value(bot, instigator, 'title')
+        bot.say("Your title has been removed")
+    else:
+        titletoset = str(titletoset)
+        instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+        if instigatorcoin < changeclasscost:
+            bot.say("Changing your title costs " + str(changeclasscost) + " coin. You need more funding.")
+        elif len(titletoset) > 10:
+            bot.say("Purchased titles can be no longer than 10 characters")
+        else:
+            set_database_value(bot, instigator, 'title', titletoset)
+            adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+            bot.say("Your title is now " + titletoset)
 
-## Class
+## Class ## TODO
 def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    subcommandarray = ['set','change']
+    classes = get_trigger_arg(classarray, "list")
+    subcommand = get_trigger_arg(triggerargsarray, 2).lower()
+    setclass = get_trigger_arg(triggerargsarray, 3).lower()
+    instigatorclass = get_database_value(bot, instigator, 'class')
+    instigatorfreebie = get_database_value(bot, instigator, 'classfreebie') or 0
+    classtime = get_timesince_duels(bot, instigator, 'classtimeout')
+    instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
+    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+    if not instigatorclass and not subcommand:
+        bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
+    elif not subcommand:
+        bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+    elif classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
+        bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((CLASSTIMEOUT - instigatorclasstime)))+" to change.")
+    elif subcommand not in subcommandarray:
+        bot.say("Invalid command. Options are set or change.")
+    elif not setclass:
+        bot.say("Which class would you like to use? Options are: " + classes +".")
+    elif instigatorcoin < changeclasscost and instigatorfreebie:
+        bot.say("Changing class costs " + str(changeclasscost) + " coin. You need more funding.")
+    elif setclass not in classarray:
+        bot.say("Invalid class. Options are: " + classes +".")
+    elif setclass == instigatorclass:
+        bot.say('Your class is already set to ' +  setclass)
+    else:
+        statreset(bot, instigator)
+        healthcheck(bot, instigator)
+        set_database_value(bot, instigator, 'class', setclass)
+        bot.say('Your class is now set to ' +  setclass)
+        set_database_value(bot, instigator, 'classtimeout', now)
+        if instigatorfreebie:
+            adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+        else:
+            set_database_value(bot, instigator, 'classfreebie', 1)
 
-## Streaks
+## Streaks ## TODO
 def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    target = get_trigger_arg(triggerargsarray, 2) or instigator
+    if target.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+    else:
+        if target.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        target = actualname(bot, target)
+        healthcheck(bot, target)
+        statreset(bot, target)
+        streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
+        best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
+        worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
+        if streak_type == 'win':
+            streak_count = get_database_value(bot, target, 'currentwinstreak') or 0
+            typeofstreak = 'winning'
+        elif streak_type == 'loss':
+            streak_count = get_database_value(bot, target, 'currentlosestreak') or 0
+            typeofstreak = 'losing'
+        else:
+            streak_count = 0
+        if streak_count > 1 and streak_type != 'none':
+            displaymessage = str(displaymessage + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
+        if int(best_wins) > 1:
+            displaymessage = str(displaymessage + "Best Win streak= " + str(best_wins) + ".     ")
+        if int(worst_losses) > 1:
+            displaymessage = str(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".     ")
+        if displaymessage == '':
+            bot.say(target + " has no streaks.")
+        else:
+            bot.say(target + "'s streaks: " + displaymessage)
 
-## Stats
+## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    target = get_trigger_arg(triggerargsarray, 2) or instigator
+    if target.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+    elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+    else:
+        if target.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        target = actualname(bot, target)
+        #healthcheck(bot, target)
+        statreset(bot, target)
+        for x in duelstatsarray:
+            if x in statsbypassarray:
+                scriptdef = str('get_' + x + '(bot,target)')
+                gethowmany = eval(scriptdef)
+            else:
+                gethowmany = get_database_value(bot, target, x)
+            if gethowmany:
+                if x == 'winlossratio':
+                    gethowmany = format(gethowmany, '.3f')
+                addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                displaymessage = str(displaymessage + addstat)
+        if displaymessage != '':
+            pepper = get_pepper(bot, target)
+            if not pepper or pepper == '':
+                targetname = target
+            else:
+                targetname = str("(" + str(pepper) + ") " + target)
+            displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
+            bot.say(displaymessage)
+        else:
+            bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
 
-## Leaderboard
+## Leaderboard ## TODO
 def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    subcommand = get_trigger_arg(triggerargsarray, 2)
+    if not subcommand:
+        leaderscript = []
+        leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak','bounty']
+        worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
+        winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
+        killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
+        respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
+        healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
+        bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
+        bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
+        for x in leaderboardarraystats:
+            statleadername = ''
+            if x != 'health':
+                statleadernumber = 0
+            else:
+                statleadernumber = 99999999
+            for u in bot.users:
+                #healthcheck(bot, u)
+                statreset(bot, u)
+                if u in dueloptedinarray:
+                    if x != 'winlossratio':
+                        statamount = get_database_value(bot, u, x)
+                    else:
+                        scriptdef = str('get_' + x + '(bot,u)')
+                        statamount = eval(scriptdef)
+                    if statamount == statleadernumber and statamount > 0:
+                        statleadername = str(statleadername+ " "+ u)
+                    else:
+                        if x != 'health':
+                            if statamount > statleadernumber:
+                                statleadernumber = statamount
+                                statleadername = u
+                        else:
+                            if statamount < statleadernumber and statamount > 0:
+                                statleadernumber = statamount
+                                statleadername = u
+            if x == 'winlossratio':
+                statleadernumber = format(statleadernumber, '.3f')
+            if statleadername != '':
+                msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+                leaderscript.append(msgtoadd)
+        if leaderscript == []:
+            displaymessage = str("Leaderboard appears to be empty")
+        else:
+            for msg in leaderscript:
+                displaymessage = str(displaymessage+ msg+ "  ")
+        bot.say(displaymessage)
+    if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
+        subcommand = subcommand.lower()
+        subcommanda = get_trigger_arg(triggerargsarray, 3)
+        if not subcommanda:
+            bot.say("What stat do you want to check highest/losest?")
+        elif subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
+            bot.say("This stat is either not comparable at the moment or invalid.")
+        else:
+            subcommanda = subcommanda.lower()
+            statleadername = ''
+            if subcommand == 'highest':
+                statleadernumber = 0
+            else:
+                statleadernumber = 99999999
+            for u in bot.users:
+                if subcommanda != 'winlossratio':
+                    statamount = get_database_value(bot, u, subcommanda)
+                else:
+                    scriptdef = str('get_' + subcommanda + '(bot,u)')
+                    statamount = eval(scriptdef)
+                if statamount == statleadernumber and statamount > 0:
+                    statleadername = str(statleadername+ " "+ u)
+                else:
+                    if subcommand == 'highest':
+                        if statamount > statleadernumber:
+                            statleadernumber = statamount
+                            statleadername = u
+                    else:
+                        if statamount < statleadernumber and statamount > 0:
+                            statleadernumber = statamount
+                            statleadername = u
+           if statleadername != '':
+                bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
+            else:
+                bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
-## Armor
+## Armor ## TODO
 def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    subcommand = get_trigger_arg(triggerargsarray, 2)
+    typearmor = get_trigger_arg(triggerargsarray, 3)
+    if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        if target.lower() not in [u.lower() for u in bot.users]:
+           bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+        elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+           bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+        else:
+            if target.lower() in tiercommandarray:
+                bot.notice("It looks like that nick is unable to play duels.",instigator)
+                return
+            target = actualname(bot, target)
+            statreset(bot, target)
+            for x in armortypesarray:
+                gethowmany = get_database_value(bot, target, x)
+                if gethowmany:
+                    addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                    displaymessage = str(displaymessage + addstat)
+            if displaymessage != '':
+                displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
+                bot.say(displaymessage)
+            else:
+                bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+    elif subcommand == 'buy':
+        instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+        if not typearmor or typearmor not in armortypesarray:
+            armors = get_trigger_arg(armortypesarray, 'list')
+            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+        elif instigatorcoin < armorcost:
+            bot.say("Insufficient Funds")
+        else:
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
+            if getarmor and getarmor > 0:
+                bot.say("It looks like you already have a " + typearmor + ".")
+            else:
+                bot.say(instigator + " bought " + typearmor + " for " + str(armorcost) + " coins.")
+                adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
+                set_database_value(bot, instigator, typearmor, armormaxdurability)
+    elif subcommand == 'sell':
+        if not typearmor or typearmor not in armortypesarray:
+            armors = get_trigger_arg(armortypesarray, 'list')
+            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+        else:
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
+            if not getarmor:
+                bot.say("You don't have a " + typearmor + " to sell.")
+            elif getarmor < 0:
+                bot.say("Your armor is too damaged to sell.")
+                reset_database_value(bot, instigator, typearmor)
+            else:
+                durabilityremaining = getarmor / armormaxdurability
+                sellingamount = durabilityremaining * armorcost
+                if sellingamount <= 0:
+                    bot.say("Your armor is too damaged to sell.")
+                else:
+                    bot.say("Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
+                    adjust_database_value(bot, instigator, 'coin', sellingamount)
+                    reset_database_value(bot, instigator, typearmor)
+    elif subcommand == 'repair':
+        if not typearmor or typearmor not in armortypesarray:
+            armors = get_trigger_arg(armortypesarray, 'list')
+            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+        else:
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
+            instigatorclass = get_database_value(bot, instigator, 'class')
+            durabilitycompare = armormaxdurability
+            if instigatorclass == 'armormaxdurability':
+                durabilitycompare = armormaxdurabilityblacksmith
+            if not getarmor:
+                bot.say("You don't have a " + typearmor + " to repair.")
+            elif getarmor >= durabilitycompare:
+                bot.say("It looks like your armor does not need repair.")
+            else:
+                durabilitytorepair = durabilitycompare - getarmor
+                if durabilitytorepair <= 0:
+                    bot.say("Looks like you can't repair that right now.")
+                else:
+                    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+                    costinvolved  = durabilitytorepair / durabilitycompare
+                    costinvolved = costinvolved * armorcost
+                    if instigatorcoin < costinvolved:
+                        bot.say("Insufficient Funds.")
+                    else:
+                        bot.say(typearmor + " repaired  for " + str(costinvolved)+" coins.")
+                        adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
+                        set_database_value(bot, instigator, typearmor, durabilitycompare)
 
-## Usage
-def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
-
-## Bounty
+## Bounty ## TODO
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")
+    if not inchannel.startswith("#"):
+        bot.notice(instigator + " Bounties must be in channel.", instigator)
+        return
+    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+    target = get_trigger_arg(triggerargsarray, 2)
+    target = actualname(bot, target)
+    amount = get_trigger_arg(triggerargsarray, 3)
+    if not amount.isdigit():
+        bot.say("Invalid Amount.")
+        return
+    else:
+        amount = int(amount)
+    if not target:
+        bot.say("You must pick a target.")
+    elif target.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+    elif not amount:
+        bot.say("How much of a bounty do you wish to place on "+target+".")
+    elif int(instigatorcoin) < int(amount):
+        bot.say("Insufficient Funds.")
+    else:
+        if target.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        adjust_database_value(bot, instigator, 'coin', -abs(amount))
+        bountyontarget = get_database_value(bot, target, 'bounty') or 0
+        if not bountyontarget:
+           bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
+        else:
+           bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
+        adjust_database_value(bot, target, 'bounty', amount)
 
-## Loot
+## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     bot.say("wip")
 
-## Weaponslocker
+## Weaponslocker ## TODO
 def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     bot.say("wip")
 
-## Magic
+## Magic ## TODO
 def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     bot.say("wip")  
 
-## Bug Bounty
+## Bug Bounty ## TODO
 def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     bot.say("wip")  
 
-## Admin
+## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if subcommand not in commandarray_all_valid and subcommand != 'konami':
@@ -908,7 +1368,6 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     
 def allthingsmustdie():
-    
     ## Commands that can't be run via privmsg
     mustbeinchannelarray = []
     ## Initial ARGS of importance
@@ -919,503 +1378,17 @@ def allthingsmustdie():
     #canduelarray, targetarray = [], []
     ## bot does not need stats or backpack items
     #refreshbot(bot)
-
-
     ## Determine if the arg after .duel is a target or a command
     if commandortarget.lower() in tiercommandarray:
         commandortarget = commandortarget.lower()
-
-        
-
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
-        
         ## Stat check
         statreset(bot, instigator)
         healthcheck(bot, instigator)
-        
         if not commandortarget:
             bot.say("temp fix")
 
-        ## Usage
-        elif commandortarget == 'usage':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            targetname = target
-            if target == 'channel':
-                target = bot.nick
-            totaluses = get_database_value(bot, target, 'usage')
-            if target.lower() in tiercommandarray:
-                bot.notice("It looks like that nick is unable to play duels.",instigator)
-                return
-            targetname = actualname(bot, targetname)
-            bot.say(targetname + " has used duels " + str(totaluses) + " times.")
-            
-        ## Colosseum, Assault, and Random
-        elif commandortarget == 'colosseum' or commandortarget == 'assault' or commandortarget == 'random':
-            if not inchannel.startswith("#"):
-                bot.notice(instigator + " Duels must be in channel.", instigator)
-                return
-            for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
-                if canduel:
-                    canduelarray.append(u)
-            if commandortarget != 'random' and bot.nick in canduelarray:
-                canduelarray.remove(bot.nick)
-            if canduelarray == [] or len(canduelarray) == 1:
-                bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
-                return
-            if commandortarget == 'random':
-                typeofduel == 'random'
-                target = get_trigger_arg(canduelarray, 'random')
-                OSDTYPE = 'say'
-                targetarray.append(target)
-                getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
-                return
-            timeouteval = eval(commandortarget.upper() + "TIMEOUT")
-            getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
-            getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
-            if getlastusage < timeouteval and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
-            elif getlastinstigator == instigator and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.", instigator)
-            elif instigator not in canduelarray:
-                dowedisplay = 1
-                mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
-            else:
-                if instigator in canduelarray and commandortarget == 'assault':
-                    canduelarray.remove(instigator)
-                displaymessage = get_trigger_arg(canduelarray, "list")
-                bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
-                set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
-                set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-                if commandortarget == 'assault':
-                    OSDTYPE = 'notice'
-                    lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-                    typeofduel = 'assault'
-                    getreadytorumble(bot, trigger, instigator, canduelarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
-                    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
-                elif commandortarget == 'colosseum':
-                    statreset(bot, instigator)
-                    healthcheck(bot, instigator)
-                    totalplayers = len(canduelarray)
-                    riskcoins = int(totalplayers) * 30
-                    damage = riskcoins
-                    winner = selectwinner(bot, canduelarray)
-                    bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
-                    diedinbattle = []
-                    canduelarray.remove(winner)
-                    deathmsgb = ''
-                    for x in canduelarray:
-                        statreset(bot, x)
-                        healthcheck(bot, x)
-                        shieldloser = get_database_value(bot, x, 'shield') or 0
-                        if shieldloser and damage > 0:
-                            damagemath = int(shieldloser) - damage
-                            if int(damagemath) > 0:
-                                adjust_database_value(bot, x, 'shield', -abs(damage))
-                                damage = 0
-                            else:
-                                damage = abs(damagemath)
-                                reset_database_value(bot, x, 'shield')
-                        if damage > 0:
-                            adjust_database_value(bot, x, 'health', -abs(damage))
-                            currenthealth = get_database_value(bot, x, 'health')
-                        if currenthealth <= 0:
-                            deathmsgb = whokilledwhom(bot, winner, x) or ''
-                            diedinbattle.append(x)
-                    displaymessage = get_trigger_arg(diedinbattle, "list")
-                    if displaymessage:
-                        bot.say(displaymessage + " died in this event." + " "+ deathmsgb)
-                    adjust_database_value(bot, winner, 'coin', riskcoins)
-
-        ## War Room
-        elif commandortarget == 'warroom':
-            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-            for u in bot.users:
-                canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay)
-                if canduel and u != bot.nick:
-                    canduelarray.append(u)
-            if not subcommand:
-                if instigator in canduelarray:
-                    bot.notice(instigator + ", It looks like you can duel.", instigator)
-                else:
-                    dowedisplay = 1
-                    mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
-            elif subcommand == 'colosseum' or subcommand == 'assault':
-                if subcommand == 'everyone':
-                    subcommand = 'assault'
-                timeouteval = eval(subcommand.upper() + "TIMEOUT")
-                getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + subcommand)) or timeouteval
-                getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
-                if getlastinstigator == instigator and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", You may not instigate a full channel " + subcommand + " event twice in a row.", instigator)
-                elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", full channel " + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
-                else:
-                    bot.notice(instigator + ", It looks like full channel " + subcommand + " event can be used.", instigator)
-            elif subcommand == 'list':
-                if instigator in canduelarray:
-                    canduelarray.remove(instigator)
-                displaymessage = get_trigger_arg(canduelarray, "list")
-                bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
-            elif subcommand.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
-            else:
-                if subcommand.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                subcommand = actualname(bot, subcommand)
-                if subcommand in canduelarray and instigator in canduelarray:
-                    bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
-                else:
-                    dowedisplay = 1
-                    mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
-
-        ## Title
-        elif commandortarget == 'title':
-            instigatortitle = get_database_value(bot, instigator, 'title')
-            titletoset = get_trigger_arg(triggerargsarray, 2)
-            if not titletoset:
-                unsetmsg = ''
-                if not instigatortitle:
-                    unsetmsg = "You don't have a title! "
-                bot.say(unsetmsg + "What do you want your title to be?")
-            elif titletoset == 'remove':
-                reset_database_value(bot, instigator, 'title')
-                bot.say("Your title has been removed")
-            else:
-                titletoset = str(titletoset)
-                instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-                if instigatorcoin < changeclasscost:
-                    bot.say("Changing your title costs " + str(changeclasscost) + " coin. You need more funding.")
-                elif len(titletoset) > 10:
-                    bot.say("Purchased titles can be no longer than 10 characters")
-                else:
-                    set_database_value(bot, instigator, 'title', titletoset)
-                    adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
-                    bot.say("Your title is now " + titletoset)
-            
-        ## Class
-        elif commandortarget == 'class':
-            subcommandarray = ['set','change']
-            classes = get_trigger_arg(classarray, "list")
-            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-            setclass = get_trigger_arg(triggerargsarray, 3).lower()
-            instigatorclass = get_database_value(bot, instigator, 'class')
-            instigatorfreebie = get_database_value(bot, instigator, 'classfreebie') or 0
-            classtime = get_timesince_duels(bot, instigator, 'classtimeout')
-            instigatorclasstime = get_timesince_duels(bot, instigator, 'classtimeout')
-            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-            if not instigatorclass and not subcommand:
-                bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
-            elif not subcommand:
-                bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-            elif classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
-                bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((CLASSTIMEOUT - instigatorclasstime)))+" to change.")
-            elif subcommand not in subcommandarray:
-                bot.say("Invalid command. Options are set or change.")
-            elif not setclass:
-                bot.say("Which class would you like to use? Options are: " + classes +".")
-            elif instigatorcoin < changeclasscost and instigatorfreebie:
-                bot.say("Changing class costs " + str(changeclasscost) + " coin. You need more funding.")
-            elif setclass not in classarray:
-                bot.say("Invalid class. Options are: " + classes +".")
-            elif setclass == instigatorclass:
-                bot.say('Your class is already set to ' +  setclass)
-            else:
-                statreset(bot, instigator)
-                healthcheck(bot, instigator)
-                set_database_value(bot, instigator, 'class', setclass)
-                bot.say('Your class is now set to ' +  setclass)
-                set_database_value(bot, instigator, 'classtimeout', now)
-                if instigatorfreebie:
-                    adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
-                else:
-                    set_database_value(bot, instigator, 'classfreebie', 1)
-
-        ## Streaks
-        elif commandortarget == 'streaks':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            else:
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                target = actualname(bot, target)
-                healthcheck(bot, target)
-                statreset(bot, target)
-                streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
-                best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
-                worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
-                if streak_type == 'win':
-                    streak_count = get_database_value(bot, target, 'currentwinstreak') or 0
-                    typeofstreak = 'winning'
-                elif streak_type == 'loss':
-                    streak_count = get_database_value(bot, target, 'currentlosestreak') or 0
-                    typeofstreak = 'losing'
-                else:
-                    streak_count = 0
-                if streak_count > 1 and streak_type != 'none':
-                    displaymessage = str(displaymessage + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
-                if int(best_wins) > 1:
-                    displaymessage = str(displaymessage + "Best Win streak= " + str(best_wins) + ".     ")
-                if int(worst_losses) > 1:
-                    displaymessage = str(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".     ")
-                if displaymessage == '':
-                    bot.say(target + " has no streaks.")
-                else:
-                    bot.say(target + "'s streaks: " + displaymessage)
-
-        ## Stats
-        elif commandortarget == 'stats':
-            target = get_trigger_arg(triggerargsarray, 2) or instigator
-            if target.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-            elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
-                bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-            else:
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                target = actualname(bot, target)
-                #healthcheck(bot, target)
-                statreset(bot, target)
-                for x in duelstatsarray:
-                    if x in statsbypassarray:
-                        scriptdef = str('get_' + x + '(bot,target)')
-                        gethowmany = eval(scriptdef)
-                    else:
-                        gethowmany = get_database_value(bot, target, x)
-                    if gethowmany:
-                        if x == 'winlossratio':
-                            gethowmany = format(gethowmany, '.3f')
-                        addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                        displaymessage = str(displaymessage + addstat)
-                if displaymessage != '':
-                    pepper = get_pepper(bot, target)
-                    if not pepper or pepper == '':
-                        targetname = target
-                    else:
-                        targetname = str("(" + str(pepper) + ") " + target)
-                    displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
-                    bot.say(displaymessage)
-                else:
-                    bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-
-        ## Leaderboard
-        elif commandortarget == 'leaderboard':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            if not subcommand:
-                leaderscript = []
-                leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak','bounty']
-                worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
-                winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
-                killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
-                respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
-                healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
-                bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
-                bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
-                for x in leaderboardarraystats:
-                    statleadername = ''
-                    if x != 'health':
-                        statleadernumber = 0
-                    else:
-                        statleadernumber = 99999999
-                    for u in bot.users:
-                        #healthcheck(bot, u)
-                        statreset(bot, u)
-                        if u in dueloptedinarray:
-                            if x != 'winlossratio':
-                                statamount = get_database_value(bot, u, x)
-                            else:
-                                scriptdef = str('get_' + x + '(bot,u)')
-                                statamount = eval(scriptdef)
-                            if statamount == statleadernumber and statamount > 0:
-                                statleadername = str(statleadername+ " "+ u)
-                            else:
-                                if x != 'health':
-                                    if statamount > statleadernumber:
-                                        statleadernumber = statamount
-                                        statleadername = u
-                                else:
-                                    if statamount < statleadernumber and statamount > 0:
-                                        statleadernumber = statamount
-                                        statleadername = u
-                    if x == 'winlossratio':
-                        statleadernumber = format(statleadernumber, '.3f')
-                    if statleadername != '':
-                        msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                        leaderscript.append(msgtoadd)
-                if leaderscript == []:
-                    displaymessage = str("Leaderboard appears to be empty")
-                else:
-                    for msg in leaderscript:
-                        displaymessage = str(displaymessage+ msg+ "  ")
-                bot.say(displaymessage)
-            if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
-                subcommand = subcommand.lower()
-                subcommanda = get_trigger_arg(triggerargsarray, 3)
-                if not subcommanda:
-                    bot.say("What stat do you want to check highest/losest?")
-                elif subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
-                    bot.say("This stat is either not comparable at the moment or invalid.")
-                else:
-                    subcommanda = subcommanda.lower()
-                    statleadername = ''
-                    if subcommand == 'highest':
-                        statleadernumber = 0
-                    else:
-                        statleadernumber = 99999999
-                    for u in bot.users:
-                        if subcommanda != 'winlossratio':
-                            statamount = get_database_value(bot, u, subcommanda)
-                        else:
-                            scriptdef = str('get_' + subcommanda + '(bot,u)')
-                            statamount = eval(scriptdef)
-                        if statamount == statleadernumber and statamount > 0:
-                            statleadername = str(statleadername+ " "+ u)
-                        else:
-                            if subcommand == 'highest':
-                                if statamount > statleadernumber:
-                                    statleadernumber = statamount
-                                    statleadername = u
-                            else:
-                                if statamount < statleadernumber and statamount > 0:
-                                    statleadernumber = statamount
-                                    statleadername = u
-                    if statleadername != '':
-                        bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
-                    else:
-                        bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
-
-        ## Armor
-        elif commandortarget == 'armor':
-            subcommand = get_trigger_arg(triggerargsarray, 2)
-            typearmor = get_trigger_arg(triggerargsarray, 3)
-            if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
-                target = get_trigger_arg(triggerargsarray, 2) or instigator
-                if target.lower() not in [u.lower() for u in bot.users]:
-                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
-                    bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-                else:
-                    if target.lower() in tiercommandarray:
-                        bot.notice("It looks like that nick is unable to play duels.",instigator)
-                        return
-                    target = actualname(bot, target)
-                    statreset(bot, target)
-                    for x in armortypesarray:
-                        gethowmany = get_database_value(bot, target, x)
-                        if gethowmany:
-                            addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                            displaymessage = str(displaymessage + addstat)
-                    if displaymessage != '':
-                        displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
-                        bot.say(displaymessage)
-                    else:
-                        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
-            elif subcommand == 'buy':
-                instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-                if not typearmor or typearmor not in armortypesarray:
-                    armors = get_trigger_arg(armortypesarray, 'list')
-                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
-                elif instigatorcoin < armorcost:
-                    bot.say("Insufficient Funds")
-                else:
-                    getarmor = get_database_value(bot, instigator, typearmor) or 0
-                    if getarmor and getarmor > 0:
-                        bot.say("It looks like you already have a " + typearmor + ".")
-                    else:
-                        bot.say(instigator + " bought " + typearmor + " for " + str(armorcost) + " coins.")
-                        adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
-                        set_database_value(bot, instigator, typearmor, armormaxdurability)
-            elif subcommand == 'sell':
-                if not typearmor or typearmor not in armortypesarray:
-                    armors = get_trigger_arg(armortypesarray, 'list')
-                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
-                else:
-                    getarmor = get_database_value(bot, instigator, typearmor) or 0
-                    if not getarmor:
-                        bot.say("You don't have a " + typearmor + " to sell.")
-                    elif getarmor < 0:
-                        bot.say("Your armor is too damaged to sell.")
-                        reset_database_value(bot, instigator, typearmor)
-                    else:
-                        durabilityremaining = getarmor / armormaxdurability
-                        sellingamount = durabilityremaining * armorcost
-                        if sellingamount <= 0:
-                            bot.say("Your armor is too damaged to sell.")
-                        else:
-                            bot.say("Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
-                            adjust_database_value(bot, instigator, 'coin', sellingamount)
-                            reset_database_value(bot, instigator, typearmor)
-            elif subcommand == 'repair':
-                if not typearmor or typearmor not in armortypesarray:
-                    armors = get_trigger_arg(armortypesarray, 'list')
-                    bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
-                else:
-                    getarmor = get_database_value(bot, instigator, typearmor) or 0
-                    instigatorclass = get_database_value(bot, instigator, 'class')
-                    durabilitycompare = armormaxdurability
-                    if instigatorclass == 'armormaxdurability':
-                        durabilitycompare = armormaxdurabilityblacksmith
-                    if not getarmor:
-                        bot.say("You don't have a " + typearmor + " to repair.")
-                    elif getarmor >= durabilitycompare:
-                        bot.say("It looks like your armor does not need repair.")
-                    else:
-                        durabilitytorepair = durabilitycompare - getarmor
-                        if durabilitytorepair <= 0:
-                            bot.say("Looks like you can't repair that right now.")
-                        else:
-                            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-                            costinvolved  = durabilitytorepair / durabilitycompare
-                            costinvolved = costinvolved * armorcost
-                            if instigatorcoin < costinvolved:
-                                bot.say("Insufficient Funds.")
-                            else:
-                                bot.say(typearmor + " repaired  for " + str(costinvolved)+" coins.")
-                                adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
-                                set_database_value(bot, instigator, typearmor, durabilitycompare)
-
-        ## Bounty
-        elif commandortarget == 'bounty':
-            if not inchannel.startswith("#"):
-                bot.notice(instigator + " Bounties must be in channel.", instigator)
-                return
-            instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-            target = get_trigger_arg(triggerargsarray, 2)
-            target = actualname(bot, target)
-            amount = get_trigger_arg(triggerargsarray, 3)
-            if not amount.isdigit():
-                bot.say("Invalid Amount.")
-                return
-            else:
-                amount = int(amount)
-            if not target:
-                bot.say("You must pick a target.")
-            elif target.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-            elif not amount:
-                bot.say("How much of a bounty do you wish to place on "+target+".")
-            elif int(instigatorcoin) < int(amount):
-                bot.say("Insufficient Funds.")
-            else:
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                adjust_database_value(bot, instigator, 'coin', -abs(amount))
-                bountyontarget = get_database_value(bot, target, 'bounty') or 0
-                if not bountyontarget:
-                    bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
-                else:
-                    bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
-                adjust_database_value(bot, target, 'bounty', amount)
 
         ## Loot Items
         elif commandortarget == 'loot':
@@ -2005,17 +1978,7 @@ def allthingsmustdie():
                     target = actualname(bot, target)
                     bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
                     adjust_database_value(bot, target, 'coin', bugbountycoinaward)
-                    
-        ## Konami
-        elif commandortarget == 'upupdowndownleftrightleftrightba':
-            konami = get_database_value(bot, instigator, 'konami')
-            if not konami:
-                set_database_value(bot, instigator, 'konami', 1)
-                bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-                konamiset = 600
-                adjust_database_value(bot, instigator, 'health', konamiset)
-            else:
-                bot.notice(instigator + " you can only cheat once.", instigator)
+
         
         ## Command Valid, but not coded yet
         else:
