@@ -537,14 +537,12 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    
     ## Small timeout
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
     if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
-    
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
@@ -554,13 +552,11 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
-    
     ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, bot.nick, 'roulettechamber')
     if not roulettechamber:
         roulettechamber = randint(1, 6)
         set_database_value(bot, bot.nick, 'roulettechamber', roulettechamber)
-    
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
     roulettespinarray = get_database_value(bot, bot.nick, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
@@ -578,7 +574,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             reset_database_value(bot, bot.nick, 'roulettespinarray')
     else:
         reset_database_value(bot, bot.nick, 'roulettespinarray')
-    
     ## determine if current spin equals bullet loacation
     currentspin = get_trigger_arg(roulettespinarray, "random")
     ### current spin is safe
