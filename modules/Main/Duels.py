@@ -344,13 +344,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
-        duelrun(bot, trigger, inistigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel)
+        duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel)
 
 #####################
 ## Main Duel Usage ##
 #####################
 ## TODO
-def duelrun(bot, trigger, inistigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel):
+def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel):
     OSDTYPE = 'say'
     target = get_trigger_arg(triggerargsarray, 1)
     if target.lower() in tiercommandarray:
