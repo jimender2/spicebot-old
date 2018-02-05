@@ -880,9 +880,10 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
 ## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
-    if int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+    if int(tiercommandeval) > int(currenttier) and target != instigator:
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        return
+        if not bot.nick.endswith(devbot):
+            return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
@@ -1004,26 +1005,26 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
     typearmor = get_trigger_arg(triggerargsarray, 3)
     if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
-        if target.lower() not in [u.lower() for u in bot.users]:
-           bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-        elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
-           bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        else:
-            if target.lower() in commandarray_all_valid:
-                bot.notice("It looks like that nick is unable to play duels.",instigator)
+        if int(tiercommandeval) > int(currenttier) and target != instigator:
+            bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+            if not bot.nick.endswith(devbot):
                 return
-            target = actualname(bot, target)
-            statreset(bot, target)
-            for x in armortypesarray:
-                gethowmany = get_database_value(bot, target, x)
-                if gethowmany:
-                    addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                    displaymessage = str(displaymessage + addstat)
-            if displaymessage != '':
-                displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
-                bot.say(displaymessage)
-            else:
-                bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        target = actualname(bot, target)
+        statreset(bot, target)
+        for x in armortypesarray:
+            gethowmany = get_database_value(bot, target, x)
+            if gethowmany:
+                addstat = str(' ' + str(x) + "=" + str(gethowmany))
+                displaymessage = str(displaymessage + addstat)
+        if displaymessage != '':
+            displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
+            bot.say(displaymessage)
+        else:
+            bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
     elif subcommand == 'buy':
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
         if not typearmor or typearmor not in armortypesarray:
