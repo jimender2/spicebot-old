@@ -22,9 +22,12 @@ shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using wi
 sys.path.append(shareddir) ## not needed if using without spicebot
 from SpicebotShared import * ## not needed if using without spicebot
 
-########################
-## Command Structures ##
-########################
+###################
+## Configurables ##
+###################
+
+## Base Values
+defaultadjust = 1 ## The default number to increase a stat
 
 ## All Commands
 commandarray_all_valid = ['bugbounty','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
@@ -74,19 +77,14 @@ commandarray_tier_display_exclude = ['admin','bugbounty','upupdowndownleftrightl
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
 
-################
-## Body/Armor ##
-################
-
 bodypartsarray = ['head','chest','arm','junk','leg']
 armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
 
-###################
-## Configurables ##
-###################
-
 ## Documentation
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
+
+## Dev bot
+devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 
 ## people to recognize
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
@@ -96,84 +94,74 @@ OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
 
 ## Roulette
 roulette_payout_default = 5
+ROULETTETIMEOUT = 8
 roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
 
-## Health
-konamiset = 600 ## for cheaters that actually read the code slightly
-
-###############
-## Old stuff ##
-###############
-
-## Tiers
-stocktierratio = 1
-tierratioone = 1.1
-tierratiotwo = 1.2
-tierratiothree = 1.3
-tierratiofour = 1.4
-tierratiofive = 1.5
-tierratiosix = 1.6
-tierratioseven = 1.7
-tierratioeight = 1.8
-tierrationine = 1.9
-tierratioten = 2
-tierratioeleven = 2.1
-tierratiotwelve = 2.2
-tierratiothirteen = 2.3
-tierratiofourteen = 2.4
-tierratiofifteen = 2.5
-tiercommandarray = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
-tierunlockstreaks, tierunlockbounty, tierunlockharakiri = 2,2,2
-tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
-tierunlockleaderboard, tierunlockwarroom = 4,4
-tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
-tierunlockroulette, tierunlockarmor = 6,6
-tierunlockassault = 7
-tierunlockcolosseum = 8
-tierunlocktitle = 9
-peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
-
-## Timeouts
-USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
-ROULETTETIMEOUT = 8
-CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
-
+## Assault
 ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
+
+## Colosseum
 COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
+
+## Random Target
+randomcoinaward = 100
+
+## Stats
+duelstatsadminarray = ['codpiece','helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
+duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
+statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
+
+## Class
+classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
-INSTIGATORTIMEOUT = 1800
-timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
-timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult','opttime','classtimeout']
-AUTOLOGOUT = 259200
-
-## Half hour timer
-scavengercoinaward = 15 ## coin gain per half hour for scavengers
-magemanaregen = 50 ## mages regenerate mana: rate
-magemanaregenmax = 500 ## mages regenerate mana: limit
-healthregen = 50 ## health regen rate
-healthregenmax = 500 ## health regen limit
-
-## Potion Potency
-healthpotionworthbarbarian = 125 ## health potion worth for barbarians
-healthpotionworth = 100 ## normal health potion worth
-poisonpotionworth = -50 ## poisonpotion damage
-manapotionworthmage = 125 ## manapotion worth for mages
-manapotionworth = 100 ##normal mana potion worth
-
-## Buy/sell/trade rates
-traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
-traderatio = 3 ## normal trading ratio 3:1
-lootbuycostscavenger = 80 ## cost to buy a loot item for scavengers
-lootbuycost = 100 ## normal cost to buy a loot item
-lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
-lootsellreward = 25 ## normal coin rewarded in selling loot
 changeclasscost = 100 ## ## how many coin to change class
 
-## Magic usage
+## Bug Bounty
+bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
+
+## Loot
+lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
+backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
+transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
+### Buy
+lootbuycostscavenger = 80 ## cost to buy a loot item for scavengers
+lootbuycost = 100 ## normal cost to buy a loot item
+### Sell
+lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
+lootsellreward = 25 ## normal coin rewarded in selling loot
+### Trade
+traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
+traderatio = 3 ## normal trading ratio 3:1
+### Grenades
+grenadefull = 100
+grenadesec = 50
+### Health Potions
+healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
+healthpotionworthbarbarian = 125 ## health potion worth for barbarians
+healthpotionworth = 100 ## normal health potion worth
+### Mana Potions
+manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
+manapotionworthmage = 125 ## manapotion worth for mages
+manapotionworth = 100 ##normal mana potion worth
+### Poison Potions
+poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
+poisonpotionworth = -50 ## poisonpotion damage
+### Mystery Potions
+mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
+nulllootitemsarray = ['water','vinegar','mud']
+### Time Potions
+timepotiondispmsg = str(": Removes multiple timeouts.")
+timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
+timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult','opttime','classtimeout']
+## Magic Potions
+magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
+
+## Weapons Locker
+weaponmaxlength = 70
+
+## Magic
+magicoptionsarray = ['curse','shield']
 magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
-manarequiredmagicattack = 250 ## mana required for magic attack
-magicattackdamage = -200 ## damage caused by a magic attack
 manarequiredmagicshield = 300 ## mana required for magic shield
 magicshielddamage = 80 ## damage caused by a magic shield usage
 shieldduration = 200 ## how long a shield lasts
@@ -181,70 +169,38 @@ manarequiredmagiccurse = 500 ## mana required for magic curse
 magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
 
-## XP points awarded
-XPearnedwinnerranger = 20 ## xp earned as a winner and ranger
-XPearnedloserranger = 15 ## xp earned as a loser and ranger
-XPearnedwinnerstock = 15 ## default xp earned as a winner
-XPearnedloserstock = 10 ## default xp earned as a loser
-
-## Class advantages
-scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
-barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
-vampiremaximumdamge = 50
-
 ## Armor
 armormaxdurability = 10
 armormaxdurabilityblacksmith = 15
 armorhitpercentage = 33 ## has to be converted to decimal later
 armorcost = 500
-armorchest = 'breastplate'
-armorarm = 'gauntlets'
-armorhead = 'helmet'
-armorleg = 'greaves'
-armorjunk = 'codpiece'
 
-## Bot
-botdamage = 150 ## The bot deals a set damage
-duelrecorduser = 'duelrecorduser' ## just a database column to store values in
-devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+## Half Hour Timer
+AUTOLOGOUT = 259200 ## Opt out users after 3 days of inactivity
+healthregen,healthregenmax = 50,500 ## health regen rate
+magemanaregen, magemanaregenmax = 50, 500 ## mages regenerate mana: rate
+halfhourcoinaward = 15 ## coin gain per half hour
 
-## other
-bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
-defaultadjust = 1 ## The default number to increase a stat
-
-grenadefull = 100
-grenadesec = 50
-weaponmaxlength = 70
-randomcoinaward = 100
-speceventreward = 500
-stockhealth = 1000
-
-## Potion Display Message
-healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
-poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
-manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
-timepotiondispmsg = str(": Removes multiple timeouts.")
-mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
-magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
-
-############
-## Arrays ##
-############
-
-
-lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
-backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
-duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
-statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
-transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
-classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-duelstatsadminarray = ['codpiece','helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
-statsadminchangearray = ['set','reset'] ## valid admin subcommands
-magicoptionsarray = ['curse','shield']
-nulllootitemsarray = ['water','vinegar','mud']
+## Main Duel Runs
 duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
-duelbodypartsarray = ['chest','arm','leg','head','junk']
-armortypesarray = ['helmet','gauntlets','breastplate','greaves','codpiece']
+botdamage = 150 ## The bot deals a set damage
+USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
+CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
+INSTIGATORTIMEOUT = 1800 ## Time between instigation, unless another user plays
+speceventreward = 500 ## Every 50 duels, instigator wins 500 coins
+### Class advantages
+scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
+barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
+vampiremaximumdamge = 50 ## Vampires have a max damage, but drain that amount from enemy into their own health
+### XP points awarded
+XPearnedwinnerranger = 20 ## xp earned as a winner and ranger
+XPearnedloserranger = 15 ## xp earned as a loser and ranger
+XPearnedwinnerstock = 15 ## default xp earned as a winner
+XPearnedloserstock = 10 ## default xp earned as a loser
+
+## Health
+konamiset = 600 ## for cheaters that actually read the code slightly
+stockhealth = 1000
 
 ########################
 ## Main Command Usage ##
@@ -1981,10 +1937,38 @@ def damage_resistance(bot, nick, damage, bodypart):
     return damage, damagetextarray 
     
     
+######################
+## On Screen Text ##
+######################
+
+def onscreentext(bot, texttargetarray, textarraycomplete):
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= 200:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+    for combinedline in combinedtextarray:
+        for user in texttargetarray:
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)
     
-    
-    
-    
+###############
+## OLD STUFF ##
+###############
+
 def allthingsmustdie():
     ## Commands that can't be run via privmsg
     mustbeinchannelarray = []
@@ -2453,7 +2437,7 @@ def halfhourtimer(bot):
                     randomuarray.append(u)
 
                 ## award coin to all
-                adjust_database_value(bot, u, 'coin', scavengercoinaward)
+                adjust_database_value(bot, u, 'coin', halfhourcoinaward)
 
                 ## health regenerates for all
                 if int(health) < healthregencurrent:
@@ -2743,60 +2727,11 @@ def get_peppertier(bot, pepper):
         tiernumber = 1
     return tiernumber
 
-######################
-## On Screen Text ##
-######################
 
-def onscreentext(bot, texttargetarray, textarraycomplete):
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= 200:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
-            else:
-                bot.notice(combinedline, user)
     
 
     
-def oldonscreentext(bot, texttargetarray, textarraycomplete):
-    lastarray = 2
-    textarraya = []
-    textarrayb = []
-    for x in textarraycomplete:
-        if lastarray == 2:
-            textarraya.append(x)
-            lastarray = 1
-        else:
-            textarrayb.append(x)
-            lastarray = 2
-    if len(textarraya) > len(textarrayb):
-        textarrayb.append("dummytext")
-    for j, k in zip(textarraya, textarrayb):
-        if k == "dummytext":
-            k = ''
-        combinedline = str(j + "   " + k)
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
-            else:
-                bot.notice(combinedline, user)
+
 
 ###################
 ## Living Status ##
