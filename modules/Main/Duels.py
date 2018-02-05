@@ -213,10 +213,10 @@ stockhealth = 1000
 @module.require_chanmsg
 def duel_action(bot, trigger):
     #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #commandortargetsplit(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
-        execute_mainactual(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+        commandortargetsplit(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
@@ -331,6 +331,17 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + ", duels must be in channel.", instigator)
+            return
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg,instigator)
+            return
+        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+        if not executedueling:
+            bot.notice(executeduelingmsg,instigator)
+            return
         duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
 #######################
@@ -376,17 +387,6 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 
 ## TODO
 def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray):
-    if not inchannel.startswith("#"):
-        bot.notice(instigator + ", duels must be in channel.", instigator)
-        return
-    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-    if not validtarget:
-        bot.notice(validtargetmsg,instigator)
-        return
-    executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
-    if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
-        return
     getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
         
 #################
