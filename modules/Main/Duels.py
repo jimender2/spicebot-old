@@ -875,7 +875,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
             dispmsgarrayb.append(x)    
     else:
         dispmsgarrayb.append(target + " has no streaks.")
-    onscreentext(bot, 'say', dispmsgarrayb)
+    onscreentext(bot, ['say'], dispmsgarrayb)
 ## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
