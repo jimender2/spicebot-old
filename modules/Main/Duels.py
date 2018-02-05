@@ -352,6 +352,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 ## TODO
 def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel):
     OSDTYPE = 'say'
+    typeofduel = 'target'
     target = get_trigger_arg(triggerargsarray, 1)
     if target.lower() in commandarray_all_valid:
         bot.notice("It looks like that nick is unable to play duels.",instigator)
