@@ -2750,12 +2750,13 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
     if currentstring != '':
         combinedtextarray.append(currentstring)
     for combined in combinedtextarray:
-        if user == 'say':
-            bot.say(combinedline)
-        elif user.startswith("#"):
-            bot.msg(user, combinedline)
-        else:
-            bot.notice(combinedline, user)
+        for user in texttargetarray:
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)
     
 
     
