@@ -14,6 +14,7 @@ from SpicebotShared import *
 import Points
 
 
+
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
 
@@ -50,17 +51,17 @@ def execute_main(bot, trigger, triggerargsarray):
             if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
                 bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
-                addpoints(bot, instigator, pointsworth)
+                Points.addpoints(bot, instigator, pointsworth)
             elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
                 bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
-                addpoints(bot,instigator,pointsworth)
+                Points.addpoints(bot,instigator,pointsworth)
     elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
         bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
-        addpoints(bot,instigator,pointsworth)
+        Points.addpoints(bot,instigator,pointsworth)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')
         bot.say(bot.nick + ' takes ' + pointsvalue + ' points from ' + instigator)
-        takepoints(bot,instigator,pointsworth)
+        Points.takepoints(bot,instigator,pointsworth)
         
