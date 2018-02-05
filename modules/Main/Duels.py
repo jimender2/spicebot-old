@@ -413,7 +413,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+    if instigatoropttime < OPTTIMEOUT:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
         return
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
@@ -426,7 +426,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+    if instigatoropttime < OPTTIMEOUT:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
         return
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
@@ -720,6 +720,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
         bot.notice(validtargetmsg,instigator)
+        return
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
@@ -729,6 +730,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
 ## Usage ## TODO
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
+    ## TODO: if target in command array
     targetname = target
     if target == 'channel':
         target = bot.nick
@@ -742,42 +744,40 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
 ## War Room ## TODO
 def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    
     if not subcommand:
-        if instigator in canduelarray:
-            bot.notice(instigator + ", It looks like you can duel.", instigator)
-        else:
-            dowedisplay = 1
-            mustpassthesetoduel(bot, trigger, instigator, instigator, dowedisplay)
+        if instigator not in canduelarray:
+            canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, subcommand, currentduelplayersarray)
+            bot.notice(validtargetmsg,instigator)
+        bot.notice(instigator + ", It looks like you can duel.", instigator)
     elif subcommand == 'colosseum' or subcommand == 'assault':
-        if subcommand == 'everyone':
-            subcommand = 'assault'
-        timeouteval = eval(subcommand.upper() + "TIMEOUT")
-        getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + subcommand)) or timeouteval
-        getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + subcommand + 'instigator')) or bot.nick
-        if getlastinstigator == instigator and not bot.nick.endswith(devbot):
-            bot.notice(instigator + ", You may not instigate a full channel " + subcommand + " event twice in a row.", instigator)
-        elif getlastusage < timeouteval and not bot.nick.endswith(devbot):
-            bot.notice(instigator + ", full channel " + subcommand + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".", instigator)
+        ## TODO: alt commands
+        executedueling, executeduelingmsg = eventchecks(bot, canduelarray, subcommand, instigator, currentduelplayersarray)
+        if not executedueling:
+            bot.notice(executeduelingmsg,instigator)
         else:
             bot.notice(instigator + ", It looks like full channel " + subcommand + " event can be used.", instigator)
     elif subcommand == 'list':
         if instigator in canduelarray:
             canduelarray.remove(instigator)
-        displaymessage = get_trigger_arg(canduelarray, "list")
-        bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
-    elif subcommand.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
+        if bot.nick in canduelarray:
+            canduelarray.remove(bot.nick)
+        if canduelarray != []:
+            displaymessage = get_trigger_arg(canduelarray, "list")
+            bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
+        else:
+            bot.notice(instigator + ", It looks like nobody can duel at the moment.",instigator)
     else:
-        if subcommand.lower() in commandarray_all_valid:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
+        validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, canduelarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, subcommand, currentduelplayersarray)
+        if not executedueling:
+            bot.notice(executeduelingmsg,instigator)
             return
         subcommand = actualname(bot, subcommand)
         if subcommand in canduelarray and instigator in canduelarray:
             bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
-        else:
-            dowedisplay = 1
-            mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
 
 ## Title ## TODO
 def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
