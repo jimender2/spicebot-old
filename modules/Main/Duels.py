@@ -843,6 +843,10 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Streaks ## TODO
 def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
+    if int(tiercommandeval) > int(currenttier) and target != instigator:
+        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+        if not bot.nick.endswith(devbot):
+            return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
@@ -1005,30 +1009,29 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
     typearmor = get_trigger_arg(triggerargsarray, 3)
     if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
-        if int(tiercommandeval) > int(currenttier) and target != instigator:
-            bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-            if not bot.nick.endswith(devbot):
-                return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
         target = actualname(bot, target)
         statreset(bot, target)
-        for x in armortypesarray:
+        dispmsgarray = []
+        for x in armorarray: 
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                displaymessage = str(displaymessage + addstat)
-        if displaymessage != '':
-            displaymessage = str(target + "'s " + commandortarget + " durability: " + displaymessage)
-            bot.say(displaymessage)
+                dispmsgarray.append(str(x) + "=" + str(gethowmany))
+        dispmsgarrayb = []
+        if dispmsgarray != []:
+            dispmsgarrayb.append(target + "'s " + commandortarget + " durability: ")
+            for y in dispmsgarray:
+                dispmsgarrayb.append(y)
         else:
-            bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        onscreentext(bot, ['say'], dispmsgarrayb)
     elif subcommand == 'buy':
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        if not typearmor or typearmor not in armortypesarray:
-            armors = get_trigger_arg(armortypesarray, 'list')
+        if not typearmor or typearmor not in armorarray:
+            armors = get_trigger_arg(armorarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         elif instigatorcoin < armorcost:
             bot.say("Insufficient Funds")
@@ -1041,8 +1044,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
                 set_database_value(bot, instigator, typearmor, armormaxdurability)
     elif subcommand == 'sell':
-        if not typearmor or typearmor not in armortypesarray:
-            armors = get_trigger_arg(armortypesarray, 'list')
+        if not typearmor or typearmor not in armorarray:
+            armors = get_trigger_arg(armorarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
@@ -1061,8 +1064,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     adjust_database_value(bot, instigator, 'coin', sellingamount)
                     reset_database_value(bot, instigator, typearmor)
     elif subcommand == 'repair':
-        if not typearmor or typearmor not in armortypesarray:
-            armors = get_trigger_arg(armortypesarray, 'list')
+        if not typearmor or typearmor not in armorarray:
+            armors = get_trigger_arg(armorarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
@@ -2677,7 +2680,7 @@ def nickmagicattributes(bot, nick, channel):
 
 def nickarmor(bot, nick, channel):
     nickname = ''
-    for x in armortypesarray:
+    for x in armorarray:
         gethowmany = get_database_value(bot, nick, x)
         if gethowmany:
             nickname = "{Armored}"
