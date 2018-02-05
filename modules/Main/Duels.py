@@ -603,9 +603,13 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         if roulettecount == 1:
             dispmsgarray.append("First in the chamber. What bad luck.")
         dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        damagescale = tierratio_level(bot)
+        damage = damagescale * damage
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
         for x in damagetextarray:
             dispmsgarray.append(x)
+        if damage > 0:
+            adjust_database_value(bot, instigator, 'health', -abs(damage))
         currenthealth = get_database_value(bot, instigator, 'health')
         if currenthealth <= 0:
             dispmsgarray.append(instigator + ' dies forcing a respawn!!')
@@ -656,6 +660,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     if not executedueling:
         bot.notice(executeduelingmsg,instigator)
         return
+    dispmsgarray = []
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
@@ -666,32 +671,31 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     riskcoins = int(totalplayers) * 30
     damage = riskcoins
     winner = selectwinner(bot, canduelarray)
-    bot.say("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+    dispmsgarray.append("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
     diedinbattle = []
     canduelarray.remove(winner)
-    deathmsgb = ''
     for x in canduelarray:
         statreset(bot, x)
         healthcheck(bot, x)
-        shieldloser = get_database_value(bot, x, 'shield') or 0
-        if shieldloser and damage > 0:
-            damagemath = int(shieldloser) - damage
-            if int(damagemath) > 0:
-                adjust_database_value(bot, x, 'shield', -abs(damage))
-                damage = 0
-            else:
-                damage = abs(damagemath)
-                reset_database_value(bot, x, 'shield')
+        damagescale = tierratio_level(bot)
+        damage = damagescale * damage
+        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
+        for j in damagetextarray:
+            dispmsgarray.append(j)
         if damage > 0:
-            adjust_database_value(bot, x, 'health', -abs(damage))
-            currenthealth = get_database_value(bot, x, 'health')
+            adjust_database_value(bot, instigator, 'health', -abs(damage))
+        currenthealth = get_database_value(bot, instigator, 'health')
         if currenthealth <= 0:
-            deathmsgb = whokilledwhom(bot, winner, x) or ''
+            dispmsgarray.append(instigator + ' dies forcing a respawn!!')
+            winnertextarray = whokilledwhom(bot, winner, x)
+            for s in winnertextarray:
+                dispmsgarray.append(s)
             diedinbattle.append(x)
-    displaymessage = get_trigger_arg(diedinbattle, "list")
-    if displaymessage:
-        bot.say(displaymessage + " died in this event." + " "+ deathmsgb)
+    if diedinbattle != []:
+        displaymessage = get_trigger_arg(diedinbattle, "list")
+        dispmsgarray.append(displaymessage + " died in this event." + " "+ deathmsgb)
     adjust_database_value(bot, winner, 'coin', riskcoins)
+    onscreentext(bot, [inchannel], dispmsgarray)
 
 ## Assault ## TODO
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
@@ -1982,6 +1986,31 @@ def damage_resistance(bot, nick, damage, bodypart):
 ## Living Status ##
 ###################
 
+def whokilledwhom(bot, winner, loser):
+    winnertextarray = []
+    ## Reset mana and health
+    reset_database_value(bot, loser, 'mana')
+    healthcheck(bot, loser)
+    ## update kills/deaths
+    adjust_database_value(bot, winner, 'kills', defaultadjust)
+    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    ## Loot Corpse
+    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    bountyonloser = get_database_value(bot, loser, 'bounty')
+    if bountyonloser:
+        adjust_database_value(bot, winner, 'coin', bountyonloser)
+        reset_database_value(bot, loser, 'bounty')
+        winnertextarray.append(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
+    ## rangers don't lose their stuff
+    if loserclass != 'ranger':
+        for x in lootitemsarray:
+            gethowmany = get_database_value(bot, loser, x)
+            ## TODO array of loot won
+            adjust_database_value(bot, winner, x, gethowmany)
+            reset_database_value(bot, loser, x)
+    return winnertextarray
+
+
 def suicidekill(bot,loser):
     suicidetextarray = []
     suicidetextarray.append(loser + " committed suicide.")
@@ -2449,6 +2478,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
                 bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
+                
                 for x in assaultstatsarray:
                     workingvar = eval("assault_"+x)
                     if workingvar > 0:
@@ -2457,6 +2487,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                             assaultdisplay = str(assaultdisplay + " " + newline)
                         else:
                             assaultdisplay = str(newline)
+                ##onscreentext(bot, [inchannel], dispmsgarray) TODO: make the assualt stats an array
                 bot.say(instigator + "'s Full Channel Assault results: " + assaultdisplay)
                 
 ## End Of Duels ###################################################################################################################
@@ -2723,28 +2754,6 @@ def get_pepper(bot, nick):
 
 
 
-def whokilledwhom(bot, winner, loser):
-    returntext = ''
-    ## Reset mana and health
-    reset_database_value(bot, loser, 'mana')
-    healthcheck(bot, loser)
-    ## update kills/deaths
-    adjust_database_value(bot, winner, 'kills', defaultadjust)
-    adjust_database_value(bot, loser, 'respawns', defaultadjust)
-    ## Loot Corpse
-    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
-    bountyonloser = get_database_value(bot, loser, 'bounty')
-    if bountyonloser:
-        adjust_database_value(bot, winner, 'coin', bountyonloser)
-        reset_database_value(bot, loser, 'bounty')
-        returntext = str(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
-    ## rangers don't lose their stuff
-    if loserclass != 'ranger':
-        for x in lootitemsarray:
-            gethowmany = get_database_value(bot, loser, x)
-            adjust_database_value(bot, winner, x, gethowmany)
-            reset_database_value(bot, loser, x)
-    return returntext
 
 def healthcheck(bot, nick):
     health = get_database_value(bot, nick, 'health')
