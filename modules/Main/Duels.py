@@ -213,10 +213,10 @@ stockhealth = 1000
 @module.require_chanmsg
 def duel_action(bot, trigger):
     #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    #commandortargetsplit(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
-        commandortargetsplit(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
