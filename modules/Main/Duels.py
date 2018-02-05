@@ -283,6 +283,14 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
     
+    ## Make a list of valid targets
+    validtargetsarray = []
+    for u in dueloptedinarray:
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+        if validtarget:
+            validtargetsarray.append(u)
+    bot.say(str(validtargetsarray))
+    
     ## Stat check TODO: revamp these functions
     statreset(bot, instigator)
     healthcheck(bot, instigator)
