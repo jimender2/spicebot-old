@@ -354,6 +354,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
+        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+        if not executedueling:
+            bot.notice(executeduelingmsg,instigator)
+            return
         duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
 #####################
@@ -361,11 +365,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 #####################
 ## TODO
 def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray):
-    executedueling = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
-    if executedueling:
-        target = actualname(bot, commandortarget)
-        healthcheck(bot, commandortarget)
-        getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
+    getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
         
 #######################
 ## Subcommands Usage ##
