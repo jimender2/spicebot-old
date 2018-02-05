@@ -282,10 +282,14 @@ def execute_main(bot, trigger, triggerargsarray):
     
     ## Current Duelable Players
     currentduelplayersarray = []
+    canduelarray = []
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-    for h in currentduelplayersarray:
+            canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay) ## TODO
+            if canduel:
+                canduelarray.append(player)
+    for h in canduelarray:
         bot.say(h)
     
     ## Stat check 
