@@ -536,7 +536,7 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
     else:
         suicidetextarray = suicidekill(bot,instigator)
-        onscreentext(bot, ['say'], suicidetext)
+        onscreentext(bot, ['say'], suicidetextarray)
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray):
