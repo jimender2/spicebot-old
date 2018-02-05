@@ -6,11 +6,12 @@ import sys
 import os
 from random import random
 from random import randint
-from Points import addpoints
+moduledir = os.path.dirname(__file__)
+sys.path.append(moduledir)
 shareddir = os.path.dirname(os.path.dirname(__file__))
-
 sys.path.append(shareddir)
 from SpicebotShared import *
+import Points
 
 
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
