@@ -865,9 +865,9 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
     if streak_count > 1 and streak_type != 'none':
         dispmsgarray.append("Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".")
     if int(best_wins) > 1:
-        dispmsgarray.append(displaymessage + "Best Win streak= " + str(best_wins) + ".")
+        dispmsgarray.append("Best Win streak= " + str(best_wins) + ".")
     if int(worst_losses) > 1:
-        dispmsgarray.append(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".")
+        dispmsgarray.append("Worst Losing streak= " + str(worst_losses) + ".")
     if dispmsgarray == []:
         bot.say(target + " has no streaks.")
     else:
