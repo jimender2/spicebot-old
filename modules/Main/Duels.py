@@ -136,16 +136,16 @@ traderatio = 3 ## normal trading ratio 3:1
 grenadefull = 100
 grenadesec = 50
 ### Health Potions
-healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 healthpotionworthbarbarian = 125 ## health potion worth for barbarians
 healthpotionworth = 100 ## normal health potion worth
+healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
 ### Mana Potions
-manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
 manapotionworthmage = 125 ## manapotion worth for mages
 manapotionworth = 100 ##normal mana potion worth
+manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
 ### Poison Potions
-poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 poisonpotionworth = -50 ## poisonpotion damage
+poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
 ### Mystery Potions
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
 nulllootitemsarray = ['water','vinegar','mud']
