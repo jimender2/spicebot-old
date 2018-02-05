@@ -276,8 +276,6 @@ def execute_main(bot, trigger, triggerargsarray):
             canduel = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
             if canduel:
                 canduelarray.append(player)
-    for h in canduelarray:
-        bot.say(h)
     
     ## Stat check 
     statreset(bot, instigator)
@@ -321,7 +319,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, fullcommandused)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
@@ -376,7 +374,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
                 return
     
     ## If the above passes all above checks
-    subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray)')
+    subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused)')
     eval(subcommand_run)
     
     ## usage counter
@@ -397,11 +395,11 @@ def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, tri
 #################
 
 ## Author Subcommand
-def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     bot.say("The author of Duels is deathbybandaid.")
     
 ## Docs Subcommand
-def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
@@ -413,7 +411,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     bot.notice("Online Docs: " + GITWIKIURL, target)
         
 ## On Subcommand
-def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
@@ -426,7 +424,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
 ## Off Subcommand
-def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
@@ -439,7 +437,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
 
 ## Tier Subcommand  
-def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     command = get_trigger_arg(triggerargsarray, 2)
     dispmsgarray = []
     if not command:
@@ -532,7 +530,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         onscreentext(bot, ['say'], dispmsgarray)
         
 ## Suicide/harakiri
-def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if target != instigator and target != 'confirm':
         bot.say("You can't suicide other people. It's called Murder.")
@@ -543,7 +541,6 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         onscreentext(bot, ['say'], suicidetextarray)
 
 ## Russian Roulette
-def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
     ## Small timeout
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
     if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
@@ -650,7 +647,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, instigator, 'roulettepayout')
 
 ## Colosseum ## TODO
-def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     if instigator in canduelarray:
@@ -697,7 +694,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     adjust_database_value(bot, winner, 'coin', riskcoins)
 
 ## Assault ## TODO
-def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray)
@@ -715,21 +712,18 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
 ## Random Target ## TODO
-def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
         bot.notice(validtargetmsg,instigator)
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
-    typeofduel == 'random'
     target = get_trigger_arg(canduelarray, 'random')
-    OSDTYPE = 'say'
-    targetarray.append(target)
-    getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+    getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
             
 ## Usage ## TODO
-def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     targetname = target
     if target == 'channel':
@@ -742,7 +736,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
     bot.say(targetname + " has used duels " + str(totaluses) + " times.")
 
 ## War Room ## TODO
-def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     
     if not subcommand:
@@ -782,7 +776,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
             mustpassthesetoduel(bot, trigger, instigator, subcommand, dowedisplay)
 
 ## Title ## TODO
-def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatortitle = get_database_value(bot, instigator, 'title')
     titletoset = get_trigger_arg(triggerargsarray, 2)
     if not titletoset:
@@ -806,7 +800,7 @@ def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.say("Your title is now " + titletoset)
 
 ## Class ## TODO
-def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommandarray = ['set','change']
     classes = get_trigger_arg(classarray, "list")
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
@@ -844,7 +838,7 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
             set_database_value(bot, instigator, 'classfreebie', 1)
 
 ## Streaks ## TODO
-def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if target.lower() not in [u.lower() for u in bot.users]:
         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -880,7 +874,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
             bot.say(target + "'s streaks: " + displaymessage)
 
 ## Stats ## TODO
-def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if target.lower() not in [u.lower() for u in bot.users]:
         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
@@ -918,7 +912,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
 
 ## Leaderboard ## TODO
-def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2)
     if not subcommand:
         leaderscript = []
@@ -1004,7 +998,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
 ## Armor ## TODO
-def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2)
     typearmor = get_trigger_arg(triggerargsarray, 3)
     if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
@@ -1094,7 +1088,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                         set_database_value(bot, instigator, typearmor, durabilitycompare)
 
 ## Bounty ## TODO
-def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     if not inchannel.startswith("#"):
         bot.notice(instigator + " Bounties must be in channel.", instigator)
         return
@@ -1471,7 +1465,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
             
 ## Weaponslocker ## TODO
-def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     validdirectionarray = ['total','inv','add','del','reset']
     if target in validdirectionarray:
@@ -1530,7 +1524,8 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
             bot.notice(instigator + ", " + message, instigator)
 
 ## Magic ## TODO
-def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused
+                    ):
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatormana = get_database_value(bot, instigator, 'mana')
     magicusage = get_trigger_arg(triggerargsarray, 2)
@@ -1622,7 +1617,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
                 reset_database_value(bot, instigator, 'mana')
 
 ## Bug Bounty ## TODO
-def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2)
     statreset(bot, target)
     if not target:
@@ -1637,7 +1632,7 @@ def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, cur
         adjust_database_value(bot, target, 'coin', bugbountycoinaward)
 
 ## Admin ## TODO
-def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if subcommand not in commandarray_all_valid and subcommand != 'konami':
         bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
@@ -1787,7 +1782,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
 
 ## Konami
-def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray):
+def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     konami = get_database_value(bot, instigator, 'konami')
     if not konami:
         set_database_value(bot, instigator, 'konami', 1)
