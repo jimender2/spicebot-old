@@ -26,9 +26,6 @@ from SpicebotShared import * ## not needed if using without spicebot
 ## Configurables ##
 ###################
 
-## Base Values
-defaultadjust = 1 ## The default number to increase a stat
-
 ## All Commands
 commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 
@@ -77,9 +74,6 @@ commandarray_tier_display_exclude = ['admin','upupdowndownleftrightleftrightba']
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
 
-bodypartsarray = ['head','chest','arm','junk','leg']
-armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
-
 ## Documentation
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
 
@@ -116,6 +110,9 @@ statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functi
 classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
 CLASSTIMEOUT = 86400 ## Time between changing class - One Day
 changeclasscost = 100 ## ## how many coin to change class
+
+## Title
+changetitlecost = 100 ## ## how many coin to change title
 
 ## Bug Bounty
 bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
@@ -171,6 +168,8 @@ magiccursedamage = -80 ## damage caused by a magic curse
 curseduration = 4 ## how long a curse lasts
 
 ## Armor
+bodypartsarray = ['head','chest','arm','junk','leg']
+armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
 armormaxdurability = 10
 armormaxdurabilityblacksmith = 15
 armorhitpercentage = 33 ## has to be converted to decimal later
@@ -587,7 +586,7 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-        adjust_database_value(bot, bot.nick, 'roulettecount', defaultadjust)
+        adjust_database_value(bot, bot.nick, 'roulettecount', 1)
         set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
         adjust_database_array(bot, bot.nick, [instigator], 'roulettewinners', 'add')
     ### instigator shoots themself in the head
@@ -712,7 +711,8 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-    getreadytorumble(bot, trigger, instigator, canduelarray, 'notice', fullcommandused, now, triggerargsarray, 'assault', inchannel)
+    bot.say("todo")
+    #getreadytorumble(bot, trigger, instigator, canduelarray, 'notice', fullcommandused, now, triggerargsarray, 'assault', inchannel)
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
 ## Random Target ## TODO
@@ -725,19 +725,21 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
     target = get_trigger_arg(canduelarray, 'random')
-    getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
+    bot.say("todo")
+    #getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
             
 ## Usage ## TODO
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
-    ## TODO: if target in command array
+    ## TODO: if target in commandarray_all_valid:
     targetname = target
     if target == 'channel':
         target = bot.nick
-    totaluses = get_database_value(bot, target, 'usage')
-    if target.lower() in commandarray_all_valid:
-        bot.notice("It looks like that nick is unable to play duels.",instigator)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
         return
+    totaluses = get_database_value(bot, target, 'usage')
     targetname = actualname(bot, targetname)
     bot.say(targetname + " has used duels " + str(totaluses) + " times.")
 
@@ -782,26 +784,23 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
 ## Title ## TODO
 def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatortitle = get_database_value(bot, instigator, 'title')
-    titletoset = get_trigger_arg(triggerargsarray, 2)
+    titletoset = get_trigger_arg(triggerargsarray, "2+")
     if not titletoset:
-        unsetmsg = ''
-        if not instigatortitle:
-            unsetmsg = "You don't have a title! "
-        bot.say(unsetmsg + "What do you want your title to be?")
+        bot.notice(instigator + ", what do you want your title to be?", instigator)
     elif titletoset == 'remove':
         reset_database_value(bot, instigator, 'title')
-        bot.say("Your title has been removed")
+        bot.notice(instigator + ", your title has been removed", instigator)
     else:
         titletoset = str(titletoset)
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
         if instigatorcoin < changeclasscost:
-            bot.say("Changing your title costs " + str(changeclasscost) + " coin. You need more funding.")
+            bot.notice(instigator + ", changing your title costs " + str(changetitlecost) + " coin. You need more funding.", instigator)
         elif len(titletoset) > 10:
-            bot.say("Purchased titles can be no longer than 10 characters")
+            bot.notice(instigator + ", purchased titles can be no longer than 10 characters", instigator)
         else:
             set_database_value(bot, instigator, 'title', titletoset)
-            adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
-            bot.say("Your title is now " + titletoset)
+            adjust_database_value(bot, instigator, 'coin', -abs(changetitlecost))
+            bot.say(instigator + ", your title is now " + titletoset)
 
 ## Class ## TODO
 def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
@@ -844,38 +843,39 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Streaks ## TODO
 def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
-    if target.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
+        return
+    target = actualname(bot, target)
+    healthcheck(bot, target)
+    statreset(bot, target)
+    streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
+    best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
+    worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
+    if streak_type == 'win':
+        streak_count = get_database_value(bot, target, 'currentwinstreak') or 0
+        typeofstreak = 'winning'
+    elif streak_type == 'loss':
+        streak_count = get_database_value(bot, target, 'currentlosestreak') or 0
+        typeofstreak = 'losing'
     else:
-        if target.lower() in commandarray_all_valid:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
-            return
-        target = actualname(bot, target)
-        healthcheck(bot, target)
-        statreset(bot, target)
-        streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
-        best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
-        worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
-        if streak_type == 'win':
-            streak_count = get_database_value(bot, target, 'currentwinstreak') or 0
-            typeofstreak = 'winning'
-        elif streak_type == 'loss':
-            streak_count = get_database_value(bot, target, 'currentlosestreak') or 0
-            typeofstreak = 'losing'
-        else:
-            streak_count = 0
-        if streak_count > 1 and streak_type != 'none':
-            displaymessage = str(displaymessage + "Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".     ")
-        if int(best_wins) > 1:
-            displaymessage = str(displaymessage + "Best Win streak= " + str(best_wins) + ".     ")
-        if int(worst_losses) > 1:
-            displaymessage = str(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".     ")
-        if displaymessage == '':
-            bot.say(target + " has no streaks.")
-        else:
-            bot.say(target + "'s streaks: " + displaymessage)
+        streak_count = 0
+    dispmsgarray = []
+    if streak_count > 1 and streak_type != 'none':
+        dispmsgarray.append("Currently on a " + typeofstreak + " streak of " + str(streak_count) + ".")
+    if int(best_wins) > 1:
+        dispmsgarray.append(displaymessage + "Best Win streak= " + str(best_wins) + ".")
+    if int(worst_losses) > 1:
+        dispmsgarray.append(displaymessage + "Worst Losing streak= " + str(worst_losses) + ".")
+    if dispmsgarray == []:
+        bot.say(target + " has no streaks.")
+    else:
+        dispmsgarrayb = []
+        dispmsgarrayb.append(target + "'s streaks:")
+        for x in dispmsgarray:
+            dispmsgarrayb.append(x)
+        onscreentext(bot, 'say', dispmsgarrayb)
 
 ## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
@@ -1998,8 +1998,8 @@ def whokilledwhom(bot, winner, loser):
     reset_database_value(bot, loser, 'mana')
     healthcheck(bot, loser)
     ## update kills/deaths
-    adjust_database_value(bot, winner, 'kills', defaultadjust)
-    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    adjust_database_value(bot, winner, 'kills', 1)
+    adjust_database_value(bot, loser, 'respawns', 1)
     ## Loot Corpse
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     bountyonloser = get_database_value(bot, loser, 'bounty')
@@ -2026,7 +2026,7 @@ def suicidekill(bot,loser):
     ## Stock health
     set_database_value(bot, loser, 'health', stockhealth)
     ## update deaths
-    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    adjust_database_value(bot, loser, 'respawns', 1)
     ## bounty
     bountyonloser = get_database_value(bot, loser, 'bounty')
     if bountyonloser:
@@ -2303,8 +2303,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
         ## Update Wins and Losses
         if instigator != target:
-            adjust_database_value(bot, winner, 'wins', defaultadjust)
-            adjust_database_value(bot, loser, 'losses', defaultadjust)
+            adjust_database_value(bot, winner, 'wins', 1)
+            adjust_database_value(bot, loser, 'losses', 1)
             set_current_streaks(bot, winner, 'win')
             set_current_streaks(bot, loser, 'loss')
         
@@ -2368,7 +2368,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
                 lootwinner = winner
             else:
                 lootwinner = winner
-            adjust_database_value(bot, lootwinner, loot, defaultadjust)
+            adjust_database_value(bot, lootwinner, loot, 1)
             if lootwinner == instigator:
                 assault_potionswon = assault_potionswon + 1
             else:
@@ -2438,7 +2438,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             adjust_database_value(bot, instigator, 'coin', speceventreward)
             combattextarraycomplete.append(speceventtext)
         else:
-            adjust_database_value(bot, bot.nick, 'specevent', defaultadjust)
+            adjust_database_value(bot, bot.nick, 'specevent', 1)
 
         ## Streaks Text
         streaktext = ''
@@ -2566,7 +2566,7 @@ def halfhourtimer(bot):
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
         loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
-        adjust_database_value(bot, lootwinner, 'mysterypotion', defaultadjust)
+        adjust_database_value(bot, lootwinner, 'mysterypotion', 1)
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
@@ -2829,7 +2829,7 @@ def set_current_streaks(bot, nick, winlose):
         oppositestreaktype = 'currentwinstreak'
 
     ## Update Current streak
-    adjust_database_value(bot, nick, currentstreaktype, defaultadjust)
+    adjust_database_value(bot, nick, currentstreaktype, 1)
     set_database_value(bot, nick, 'currentstreaktype', winlose)
 
     ## Update Best Streak
