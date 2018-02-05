@@ -2735,6 +2735,31 @@ def get_peppertier(bot, pepper):
 ######################
 
 def onscreentext(bot, texttargetarray, textarraycomplete):
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= 200:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+    for combined in combinedtextarray:
+        if user == 'say':
+            bot.say(combinedline)
+        elif user.startswith("#"):
+            bot.msg(user, combinedline)
+        else:
+            bot.notice(combinedline, user)
+    
+
+    
+def oldonscreentext(bot, texttargetarray, textarraycomplete):
     lastarray = 2
     textarraya = []
     textarrayb = []
