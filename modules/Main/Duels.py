@@ -30,13 +30,13 @@ from SpicebotShared import * ## not needed if using without spicebot
 defaultadjust = 1 ## The default number to increase a stat
 
 ## All Commands
-commandarray_all_valid = ['bugbounty','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 
 ## bypass for Opt status
-commandarray_instigator_bypass = ['bugbounty','on','admin']
+commandarray_instigator_bypass = ['on','admin']
 
 ## Admin Functions
-commandarray_admin = ['bugbounty','admin']
+commandarray_admin = ['admin']
 
 ## Must Be inchannel
 commandarray_inchannel = ['roulette','assault','colosseum']
@@ -50,7 +50,7 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['bugbounty','tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -72,7 +72,7 @@ commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,
 
 ## Tier Ratios
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5]
-commandarray_tier_display_exclude = ['admin','bugbounty','upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
+commandarray_tier_display_exclude = ['admin','upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
 
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
@@ -1528,8 +1528,7 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
             bot.notice(instigator + ", " + message, instigator)
 
 ## Magic ## TODO
-def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused
-                    ):
+def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatormana = get_database_value(bot, instigator, 'mana')
     magicusage = get_trigger_arg(triggerargsarray, 2)
@@ -1620,25 +1619,10 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             if instigatormana <= 0:
                 reset_database_value(bot, instigator, 'mana')
 
-## Bug Bounty ## TODO
-def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
-    target = get_trigger_arg(triggerargsarray, 2)
-    statreset(bot, target)
-    if not target:
-        bot.notice(instigator + ", Target Missing. ", instigator)
-    elif target.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-    elif not trigger.admin:
-        bot.notice(instigator + "This is an admin only function.", instigator)
-    else:
-        target = actualname(bot, target)
-        bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
-        adjust_database_value(bot, target, 'coin', bugbountycoinaward)
-
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    if subcommand not in commandarray_all_valid and subcommand != 'konami':
+    if subcommand not in commandarray_all_valid and subcommand != 'konami' and subcommand != 'bugbounty':
         bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
         return
     if subcommand == 'on' or subcommand == 'off':
@@ -1782,6 +1766,28 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     set_database_value(bot, target, statset, newvalue)
                 bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+    elif subcommand == 'colosseum':
+        bot.say("TODO")
+    elif subcommand == 'assault':
+        bot.say("TODO")
+    elif subcommand == 'usage':
+        bot.say("TODO")
+    elif subcommand == 'title':
+        bot.say("TODO")
+    elif subcommand == 'class':
+        bot.say("TODO")
+    elif subcommand == 'streaks':
+        bot.say("TODO")
+    elif subcommand == 'armor':
+        bot.say("TODO")
+    elif subcommand == 'bounty':
+        bot.say("TODO")
+    elif subcommand == 'loot':
+        bot.say("TODO")
+    elif subcommand == 'weaponslocker':
+        bot.say("TODO")
+    elif subcommand == 'magic':
+        bot.say("TODO")
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
 
