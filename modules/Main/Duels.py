@@ -1998,7 +1998,7 @@ def allthingsmustdie():
         
 
     ## bot does not need stats or backpack items
-    refreshbot(bot)
+        refreshbot(bot)
 
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
     
