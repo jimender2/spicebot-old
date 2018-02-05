@@ -1792,7 +1792,7 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
 #####################
 
 ## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator):
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray):
     
     ## Guilty until proven Innocent
     validtarget = 0
