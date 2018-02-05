@@ -74,9 +74,6 @@ commandarray_tier_display_exclude = ['admin','bugbounty','upupdowndownleftrightl
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
 
-## Command Help Text TODO
-commandarray_help_on = "This function enables duels."
-
 ################
 ## Body/Armor ##
 ################
@@ -253,7 +250,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Instigator
     instigator = trigger.nick
     
-    ## user list
+    ## user lists
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
     currentuserlistarray = []
     botvisibleusersappendarray = []
@@ -283,9 +280,17 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
     
-    ## Stat check TODO: revamp these functions
+    ## Current Duelable Players
+    currentduelplayersarray = []
+    for player in currentuserlistarray:
+        if player in dueloptedinarray:
+            currentduelplayersarray.append(player)
+    for h in currentduelplayersarray:
+        bot.say(h)
+    
+    ## Stat check 
     statreset(bot, instigator)
-    healthcheck(bot, instigator)
+    healthcheck(bot, instigator) # TODO: revamp these functions
     
     ## Time when Module use started
     now = time.time()
@@ -329,11 +334,11 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
-        bot.say("I refuse to fight a biological entity!") ## TODO: update message
+        bot.say("I refuse to fight a biological entity! If I did, you'd be sure to lose!")
 
     ## Instigator versus Instigator
     elif commandortarget.lower() == instigator.lower():
-        bot.say("If you are feeling self-destructive, there are places you can call.") ## TODO: mention harikari
+        bot.say("If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command")
     
     ## Run Target Check
     else:
@@ -393,12 +398,13 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             if not bot.nick.endswith(devbot):
                 return
     
-    ## If The above passes all Checks TODO
+    ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)')
     eval(subcommand_run)
     
-    ## usage counter TODO: add specifics
-    #adjust_database_value(bot, instigator, 'usage', 1)
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_'+commandortarget, 1) ## NEW, update subcommand
 
 #################
 ## Subcommands ##
@@ -410,7 +416,6 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    ## TODO: add individual help texts
     target = get_trigger_arg(triggerargsarray, 2)
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
@@ -2897,7 +2902,7 @@ def weaponformatter(bot, weapon):
 ## Stat Reset ##
 ################
 
-def statreset(bot, nick):
+def statreset(bot, nick): ## TODO update
     now = time.time()
     getlastchanstatreset = get_database_value(bot, bot.nick, 'chanstatsreset')
     if not getlastchanstatreset:
