@@ -283,6 +283,7 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Current Duelable Players
     currentduelplayersarray = []
     canduelarray = []
+    dowedisplay = 0
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
