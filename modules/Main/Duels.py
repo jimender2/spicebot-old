@@ -1123,7 +1123,7 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
         adjust_database_value(bot, target, 'bounty', amount)
 
 ## Loot ## TODO
-def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray):
+def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
     lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
