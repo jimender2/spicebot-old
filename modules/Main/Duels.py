@@ -290,8 +290,6 @@ def execute_main(bot, trigger, triggerargsarray):
             canduel = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
             if canduel:
                 canduelarray.append(player)
-    for player in canduelarray:
-        bot.say(player)
     
     ## Stat check 
     statreset(bot, instigator)
