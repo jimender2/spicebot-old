@@ -319,7 +319,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, fullcommandused)
+        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
