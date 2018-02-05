@@ -273,7 +273,7 @@ def execute_main(bot, trigger, triggerargsarray):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            canduel, canduelmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+            canduel = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
             if canduel:
                 canduelarray.append(player)
     for h in canduelarray:
