@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
-import random
-#import Points
+from random import random
+from random import randint
+from Points import addpoints
 shareddir = os.path.dirname(os.path.dirname(__file__))
 
 sys.path.append(shareddir)
