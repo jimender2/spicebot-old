@@ -295,7 +295,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
-        commandortargetsplit(bot, trigger, triggerargsarray, instigator)
+        commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now)
     else:
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
