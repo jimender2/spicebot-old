@@ -480,7 +480,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray):
-    command = get_trigger_arg(triggerargsarray, "2+")
+    command = get_trigger_arg(triggerargsarray, 2)
     dispmsgarray = []
     if not command:
         dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
@@ -563,7 +563,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             bot.say("Nobody is the closest to the next pepper level.")
     else:
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
@@ -1833,7 +1833,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
     ## Target can't be a valid command
     if target.lower() in commandarray_all_valid:
-        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.", instigator)
+        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.")
         return validtarget, validtargetmsg
     
     ## Offline User
