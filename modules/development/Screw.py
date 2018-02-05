@@ -21,5 +21,5 @@ def execute_main(bot, trigger, triggerargsarray):
         if target.lower() not in [u.lower() for u in bot.users]:
             bot.say("Screw someone, " + instigator + " is going home.")
         else:
-            bot.say("Screw " + target + ", " + instigator + " is going home.")
+            bot.say("Screw you " + target + ", " + instigator + " is going home.")
   
