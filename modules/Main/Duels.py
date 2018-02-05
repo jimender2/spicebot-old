@@ -269,9 +269,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     currentuserlistarray = []
     botvisibleusersappendarray = []
     for user in bot.users:
-        currentuserlistarray.append(user)
-        if user not in botvisibleusers and user not in commandarray_all_valid:
-            botvisibleusersappendarray.append(user)
+        if user not in commandarray_all_valid:
+            currentuserlistarray.append(user)
+            if user not in botvisibleusers:
+                botvisibleusersappendarray.append(user)
     adjust_database_array(bot, bot.nick, botvisibleusersappendarray, 'botvisibleusers', 'add')
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
 
@@ -379,14 +380,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
                 return
     
     ## If The above passes all Checks TODO
-    #try:
-    if commandortarget.lower() == 'on' or commandortarget.lower() == 'off':
-        subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)
-    else:
-        subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)')
-        eval(subcommand_run)
-    #except NameError:
-    #    bot.notice(instigator + ", it looks like this functionality is a work-in-progress, broken, or not coded yet.", instigator)
+    subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel)')
+    eval(subcommand_run)
     
     ## usage counter TODO: add specifics
     #adjust_database_value(bot, instigator, 'usage', 1)
@@ -412,25 +407,32 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         return
     bot.notice("Online Docs: " + GITWIKIURL, target)
         
-## On/Off Subcommand
-def subcommand_onoff(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
+## On Subcommand
+def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
         return
-    if commandortarget == 'on' and instigator.lower() in [x.lower() for x in dueloptedinarray]:
+    if instigator.lower() in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels on.", instigator)
         return
-    if commandortarget == 'off' and instigator.lower() not in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like you already have duels off.", instigator)
-        return
-    if commandortarget == 'on':
-        adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'add')
-    else:
-        adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'del')
+    adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
+## Off Subcommand
+def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
+    instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
+    if instigatoropttime < OPTTIMEOUT and not trigger.admin and not bot.nick.endswith(devbot):
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
+        return
+    if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
+        bot.notice(instigator + ", It looks like you already have duels off.", instigator)
+        return
+    adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'del')
+    set_database_value(bot, instigator, 'opttime', now)
+    bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
+
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
     command = get_trigger_arg(triggerargsarray, "2+")
