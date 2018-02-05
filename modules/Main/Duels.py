@@ -2749,7 +2749,7 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 currentstring = textstring
     if currentstring != '':
         combinedtextarray.append(currentstring)
-    for combined in combinedtextarray:
+    for combinedline in combinedtextarray:
         for user in texttargetarray:
             if user == 'say':
                 bot.say(combinedline)
