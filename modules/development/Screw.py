@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(triggerargarry, 1) or ''
-    if target == ''
+    if target == '':
         bot.say("Screw you all, " + instigator + " is going home.")
     else:
         if target.lower() not in [u.lower() for u in bot.users]:
