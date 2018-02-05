@@ -300,9 +300,9 @@ def execute_main(bot, trigger, triggerargsarray):
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
             triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-            commandortargetsplit(bot, trigger, triggerargsarraypart, instigator)
+            commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now)
          
-def commandortargetsplit(bot, trigger, triggerargsarray, instigator):
+def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now):
     
     ## New Vars
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
