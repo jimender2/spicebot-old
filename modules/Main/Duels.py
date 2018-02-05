@@ -244,22 +244,11 @@ def mainfunction(bot, trigger):
     if not enablestatus: ## not needed if using without spicebot
         execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
-## The Command Process
-def execute_main(bot, trigger, triggerargsarray):
-    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
-    if "&&" not in fullcommandusedtotal:
-        commandortargetsplit(bot, trigger, triggerargsarray)
-    else:
-        fullcomsplit = fullcommandusedtotal.split("&&")
-        for comsplit in fullcomsplit:
-            triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-            commandortargetsplit(bot, trigger, triggerargsarraypart)
-
 ####################################
 ## Seperate Targets from Commands ##
 ####################################
 
-def commandortargetsplit(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray):
     
     ## Instigator
     instigator = trigger.nick
@@ -277,9 +266,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
 
     ## Check command was issued
-    fullcommandused = get_trigger_arg(triggerargsarray, 0)
+    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
-    if not fullcommandused:
+    if not fullcommandusedtotal:
         bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
         return
     
@@ -303,6 +292,20 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
     
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
+
+    ## Multiple Commands
+    if "&&" not in fullcommandusedtotal:
+        commandortargetsplit(bot, trigger, triggerargsarray)
+    else:
+        fullcomsplit = fullcommandusedtotal.split("&&")
+        for comsplit in fullcomsplit:
+            triggerargsarraypart = get_trigger_arg(comsplit, 'create')
+            commandortargetsplit(bot, trigger, triggerargsarraypart)
+         
+def commandortargetsplit(bot, trigger, triggerargsarray):
+    
+    ## New Vars
+    commandortarget = get_trigger_arg(triggerargsarray, 1)
     
     ## Alternative commands
     for subcom in commandarray_all_valid:
@@ -340,15 +343,24 @@ def commandortargetsplit(bot, trigger, triggerargsarray):
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
-        duelrun(bot)
+        duelrun(bot, trigger, inistigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel)
 
 #####################
 ## Main Duel Usage ##
 #####################
-
-def duelrun(bot):
-    bot.say("Run a duel!")
-    ## TODO
+## TODO
+def duelrun(bot, trigger, inistigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel):
+    OSDTYPE = 'say'
+    target = get_trigger_arg(triggerargsarray, 1)
+    if target.lower() in tiercommandarray:
+        bot.notice("It looks like that nick is unable to play duels.",instigator)
+        return
+    dowedisplay = 1
+    executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
+    if executedueling:
+        target = actualname(bot, target)
+        healthcheck(bot, target)
+        getreadytorumble(bot, trigger, instigator, [target], OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
         
 #######################
 ## Subcommands Usage ##
@@ -1557,11 +1569,110 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
 
 ## Magic ## TODO
 def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")  
+    instigatorclass = get_database_value(bot, instigator, 'class')
+    instigatormana = get_database_value(bot, instigator, 'mana')
+    magicusage = get_trigger_arg(triggerargsarray, 2)
+    if not magicusage or magicusage not in magicoptionsarray:
+        magicoptions = get_trigger_arg(magicoptionsarray, 'list')
+        bot.say('Magic uses include: '+ magicoptions)
+    else:
+        targnum = get_trigger_arg(triggerargsarray, 3).lower()
+        if not targnum:
+            quantity = 1
+            target = instigator
+        elif targnum.isdigit():
+            quantity = int(targnum)
+            target = instigator
+        elif targnum.lower() in [x.lower() for x in dueloptedinarray]:
+            targnumb = get_trigger_arg(triggerargsarray, 4).lower()
+            target = targnum
+            if not targnumb:
+                quantity = 1
+            elif targnumb.isdigit():
+                quantity = int(targnumb)
+            elif targnumb == 'all':
+                quantity = int(gethowmanylootitem)
+            else:
+                bot.say("Invalid command.")
+                return
+        elif target.lower() not in [x.lower() for x in dueloptedinarray]:
+            bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+        elif target.lower() not in [u.lower() for u in bot.users]:
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+        elif target == bot.nick:
+            bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
+        elif not instigatormana:
+            bot.notice(instigator + " you don't have any mana.", instigator)
+        else:
+            bot.say("Invalid command.")
+            return
+        if target.lower() in tiercommandarray:
+            bot.notice("It looks like that nick is unable to play duels.",instigator)
+            return
+        target = actualname(bot, target)
+        statreset(bot, target)
+        healthcheck(bot, target)
+        targetcurse = get_database_value(bot, target, 'curse') or 0
+        targetclass = get_database_value(bot, target, 'class') or 'notclassy'
+        if target.lower() != instigator.lower() and targetclass == 'fiend':
+            bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
+            manarequired = -abs(manarequired)
+            adjust_database_value(bot, instigator, 'mana', manarequired)
+        elif magicusage == 'curse' and targetcurse:
+            bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
+            return
+        elif magicusage == 'curse':
+            manarequired = manarequiredmagiccurse
+        elif magicusage == 'shield':
+            manarequired = manarequiredmagicshield
+        else:
+            return
+        if instigatorclass == 'mage':
+            manarequired = manarequired * magemanamagiccut
+        actualmanarequired = int(manarequired) * int(quantity)
+        if int(actualmanarequired) > int(instigatormana):
+            manamath = int(int(actualmanarequired) - int(instigatormana))
+            bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
+        else:
+            specialtext = ''
+            manarequired = -abs(actualmanarequired)
+            adjust_database_value(bot, instigator, 'mana', manarequired)
+            if magicusage == 'curse':
+                damagedealt = magiccursedamage * int(quantity)
+                set_database_value(bot, target, 'curse', curseduration)
+                specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
+                adjust_database_value(bot, target, 'health', int(damagedealt))
+            elif magicusage == 'shield':
+                damagedealt = magicshielddamage * int(quantity)
+                actualshieldduration = int(quantity) * int(shieldduration)
+                adjust_database_value(bot, target, 'shield', actualshieldduration)
+                specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
+                adjust_database_value(bot, target, 'health', int(damagedealt))
+            if instigator == target:
+                displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
+            else:
+                displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + specialtext + ".")
+            bot.say(str(displaymsg))
+            if not inchannel.startswith("#") and target != instigator:
+                bot.notice(str(displaymsg), target)
+            instigatormana = get_database_value(bot, instigator, 'mana')
+            if instigatormana <= 0:
+                reset_database_value(bot, instigator, 'mana')
 
 ## Bug Bounty ## TODO
 def subcommand_bugbounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
-    bot.say("wip")  
+    target = get_trigger_arg(triggerargsarray, 2)
+    statreset(bot, target)
+    if not target:
+        bot.notice(instigator + ", Target Missing. ", instigator)
+    elif target.lower() not in [u.lower() for u in bot.users]:
+        bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+    elif not trigger.admin:
+        bot.notice(instigator + "This is an admin only function.", instigator)
+    else:
+        target = actualname(bot, target)
+        bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
+        adjust_database_value(bot, target, 'coin', bugbountycoinaward)
 
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel):
@@ -1656,10 +1767,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         reset_database_value(bot, bot.nick, 'roulettespinarray')
         for user in botvisibleusers:
             reset_database_value(bot, user, 'roulettepayout')
-        
-    
-    
-    
+
     #elif subcommand == 'stats':
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
@@ -1684,6 +1792,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Guilty until proven Innocent
     validtarget = 0
     validtargetmsg = ''
+    
+    ## Null Target
+    if not target:
+        validtargetmsg = str(instigator + ", you must specify a target.", instigator)
+        return validtarget, validtargetmsg
     
     ## Target can't be a valid command
     if target.lower() in commandarray_all_valid:
@@ -1783,107 +1896,13 @@ def allthingsmustdie():
         if not commandortarget:
             bot.say("temp fix")
 
-
-        ## Magic
-        elif commandortarget == 'magic':
-            instigatorclass = get_database_value(bot, instigator, 'class')
-            instigatormana = get_database_value(bot, instigator, 'mana')
-            magicusage = get_trigger_arg(triggerargsarray, 2)
-            if not magicusage or magicusage not in magicoptionsarray:
-                magicoptions = get_trigger_arg(magicoptionsarray, 'list')
-                bot.say('Magic uses include: '+ magicoptions)
-            else:
-                targnum = get_trigger_arg(triggerargsarray, 3).lower()
-                if not targnum:
-                    quantity = 1
-                    target = instigator
-                elif targnum.isdigit():
-                    quantity = int(targnum)
-                    target = instigator
-                elif targnum.lower() in [x.lower() for x in dueloptedinarray]:
-                    targnumb = get_trigger_arg(triggerargsarray, 4).lower()
-                    target = targnum
-                    if not targnumb:
-                        quantity = 1
-                    elif targnumb.isdigit():
-                        quantity = int(targnumb)
-                    elif targnumb == 'all':
-                        quantity = int(gethowmanylootitem)
-                    else:
-                        bot.say("Invalid command.")
-                        return
-                elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-                    bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-                elif target.lower() not in [u.lower() for u in bot.users]:
-                    bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-                elif target == bot.nick:
-                    bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
-                elif not instigatormana:
-                    bot.notice(instigator + " you don't have any mana.", instigator)
-                else:
-                    bot.say("Invalid command.")
-                    return
-                if target.lower() in tiercommandarray:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                target = actualname(bot, target)
-                statreset(bot, target)
-                healthcheck(bot, target)
-                targetcurse = get_database_value(bot, target, 'curse') or 0
-                targetclass = get_database_value(bot, target, 'class') or 'notclassy'
-                if target.lower() != instigator.lower() and targetclass == 'fiend':
-                    bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
-                    manarequired = -abs(manarequired)
-                    adjust_database_value(bot, instigator, 'mana', manarequired)
-                elif magicusage == 'curse' and targetcurse:
-                    bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
-                    return
-                elif magicusage == 'curse':
-                    manarequired = manarequiredmagiccurse
-                elif magicusage == 'shield':
-                    manarequired = manarequiredmagicshield
-                else:
-                    return
-                if instigatorclass == 'mage':
-                    manarequired = manarequired * magemanamagiccut
-                actualmanarequired = int(manarequired) * int(quantity)
-                if int(actualmanarequired) > int(instigatormana):
-                    manamath = int(int(actualmanarequired) - int(instigatormana))
-                    bot.notice(instigator + " you need " + str(manamath) + " more mana to use magic " + magicusage + ".", instigator)
-                else:
-                    specialtext = ''
-                    manarequired = -abs(actualmanarequired)
-                    adjust_database_value(bot, instigator, 'mana', manarequired)
-                    if magicusage == 'curse':
-                        damagedealt = magiccursedamage * int(quantity)
-                        set_database_value(bot, target, 'curse', curseduration)
-                        specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
-                        adjust_database_value(bot, target, 'health', int(damagedealt))
-                    elif magicusage == 'shield':
-                        damagedealt = magicshielddamage * int(quantity)
-                        actualshieldduration = int(quantity) * int(shieldduration)
-                        adjust_database_value(bot, target, 'shield', actualshieldduration)
-                        specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
-                        adjust_database_value(bot, target, 'health', int(damagedealt))
-                    if instigator == target:
-                        displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
-                    else:
-                        displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + specialtext + ".")
-                    bot.say(str(displaymsg))
-                    if not inchannel.startswith("#") and target != instigator:
-                        bot.notice(str(displaymsg), target)
-                    instigatormana = get_database_value(bot, instigator, 'mana')
-                    if instigatormana <= 0:
-                        reset_database_value(bot, instigator, 'mana')
-
         ## Admin Commands
-        elif commandortarget == 'admin' and not trigger.admin:
-            bot.notice(instigator + ", This is an admin only functionality.", instigator)
         elif commandortarget == 'admin':
             subcommand = get_trigger_arg(triggerargsarray, 2).lower()
             settingchange = get_trigger_arg(triggerargsarray, 3).lower()
             if not subcommand:
                 bot.notice(instigator + ", What Admin change do you want to make?", instigator)
+            
             elif subcommand == 'channel':
                 if not settingchange:
                     bot.notice(instigator + ", What channel setting do you want to change?", instigator)
@@ -1957,23 +1976,7 @@ def allthingsmustdie():
                         else:
                             set_database_value(bot, target, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-            elif subcommand == 'resettier':
-                reset_database_value(bot, bot.nick, 'levelingtier')
-            elif subcommand == 'bugbounty':
-                target = get_trigger_arg(triggerargsarray, 3)
-                statreset(bot, target)
-                if not target:
-                    bot.notice(instigator + ", Target Missing. ", instigator)
-                elif target.lower() not in [u.lower() for u in bot.users]:
-                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-                elif not trigger.admin:
-                    bot.notice(instigator + "This is an admin only function.", instigator)
-                else:
-                    target = actualname(bot, target)
-                    bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
-                    adjust_database_value(bot, target, 'coin', bugbountycoinaward)
 
-        
         ## Command Valid, but not coded yet
         else:
             bot.notice(instigator + " This command is a Work In Progress.", instigator)
@@ -1992,18 +1995,7 @@ def allthingsmustdie():
         bot.notice(instigator + ", Duels must be in a channel.", instigator)
 
     else:
-        OSDTYPE = 'say'
-        target = get_trigger_arg(triggerargsarray, 1)
-        if target.lower() in tiercommandarray:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
-            return
-        dowedisplay = 1
-        executedueling = mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay)
-        if executedueling:
-            target = actualname(bot, target)
-            healthcheck(bot, target)
-            targetarray.append(target)
-            getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, inchannel)
+        
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
