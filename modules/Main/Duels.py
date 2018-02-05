@@ -353,7 +353,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel):
     OSDTYPE = 'say'
     target = get_trigger_arg(triggerargsarray, 1)
-    if target.lower() in tiercommandarray:
+    if target.lower() in commandarray_all_valid:
         bot.notice("It looks like that nick is unable to play duels.",instigator)
         return
     dowedisplay = 1
@@ -773,7 +773,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
     if target == 'channel':
         target = bot.nick
     totaluses = get_database_value(bot, target, 'usage')
-    if target.lower() in tiercommandarray:
+    if target.lower() in commandarray_all_valid:
         bot.notice("It looks like that nick is unable to play duels.",instigator)
         return
     targetname = actualname(bot, targetname)
@@ -812,7 +812,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
     elif subcommand.lower() not in [u.lower() for u in bot.users]:
         bot.notice(instigator + ", It looks like " + str(subcommand) + " is either not here, or not a valid person.", instigator)
     else:
-        if subcommand.lower() in tiercommandarray:
+        if subcommand.lower() in commandarray_all_valid:
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         subcommand = actualname(bot, subcommand)
@@ -892,7 +892,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
     else:
-        if target.lower() in tiercommandarray:
+        if target.lower() in commandarray_all_valid:
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         target = actualname(bot, target)
@@ -930,7 +930,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
     elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
     else:
-        if target.lower() in tiercommandarray:
+        if target.lower() in commandarray_all_valid:
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         target = actualname(bot, target)
@@ -1055,7 +1055,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
            bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         else:
-            if target.lower() in tiercommandarray:
+            if target.lower() in commandarray_all_valid:
                 bot.notice("It looks like that nick is unable to play duels.",instigator)
                 return
             target = actualname(bot, target)
@@ -1157,7 +1157,7 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
     elif int(instigatorcoin) < int(amount):
         bot.say("Insufficient Funds.")
     else:
-        if target.lower() in tiercommandarray:
+        if target.lower() in commandarray_all_valid:
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         adjust_database_value(bot, instigator, 'coin', -abs(amount))
@@ -1180,7 +1180,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
             bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         else:
-            if target.lower() in tiercommandarray:
+            if target.lower() in commandarray_all_valid:
                 bot.notice("It looks like that nick is unable to play duels.",instigator)
                 return
             target = actualname(bot, target)
@@ -1323,7 +1323,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
                 adjust_database_value(bot, instigator, lootitem, -abs(quantity))
             else:
-                if target.lower() in tiercommandarray:
+                if target.lower() in commandarray_all_valid:
                     bot.notice("It looks like that nick is unable to play duels.",instigator)
                     return
                 target = actualname(bot, target)
@@ -1524,7 +1524,7 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
         weaponchange = get_trigger_arg(triggerargsarray, '4+')
     weaponslist = get_database_value(bot, target, 'weaponslocker') or []
     statreset(bot, target)
-    if target.lower() in tiercommandarray:
+    if target.lower() in commandarray_all_valid:
         bot.notice("It looks like that nick is unable to play duels.",instigator)
         return
     target = actualname(bot, target)
@@ -1607,7 +1607,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
         else:
             bot.say("Invalid command.")
             return
-        if target.lower() in tiercommandarray:
+        if target.lower() in commandarray_all_valid:
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         target = actualname(bot, target)
@@ -1887,7 +1887,7 @@ def allthingsmustdie():
     ## bot does not need stats or backpack items
     #refreshbot(bot)
     ## Determine if the arg after .duel is a target or a command
-    if commandortarget.lower() in tiercommandarray:
+    if commandortarget.lower() in commandarray_all_valid:
         commandortarget = commandortarget.lower()
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
@@ -1944,7 +1944,7 @@ def allthingsmustdie():
                 elif not trigger.admin:
                     bot.notice(instigator + "This is an admin only function.", instigator)
                 else:
-                    if target.lower() in tiercommandarray:
+                    if target.lower() in commandarray_all_valid:
                         bot.notice("It looks like that nick is unable to play duels.",instigator)
                         return
                     target = actualname(bot, target)
@@ -2217,7 +2217,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
             tierchangemsg = str("New Tier Unlocked!")
             if currenttierend != 1:
                 newtierlistarray = []
-                for x in tiercommandarray:
+                for x in commandarray_all_valid:
                     newtiereval = eval("tierunlock"+x)
                     if newtiereval == currenttierend:
                         newtierlistarray.append(x)
