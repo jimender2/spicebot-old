@@ -295,14 +295,14 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
-        commandortargetsplit(bot, trigger, triggerargsarray)
+        commandortargetsplit(bot, trigger, triggerargsarray, instigator)
     else:
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
             triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-            commandortargetsplit(bot, trigger, triggerargsarraypart)
+            commandortargetsplit(bot, trigger, triggerargsarraypart, instigator)
          
-def commandortargetsplit(bot, trigger, triggerargsarray):
+def commandortargetsplit(bot, trigger, triggerargsarray, instigator):
     
     ## New Vars
     commandortarget = get_trigger_arg(triggerargsarray, 1)
