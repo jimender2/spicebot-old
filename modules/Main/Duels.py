@@ -1534,16 +1534,6 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
                 weapon = str(weapon+",")
             weaponsonscreenarray.append(weapon)
         onscreentext(bot, [instigator], weaponsonscreenarray)
-        
-        #weapons = get_trigger_arg(weaponslist, 'list')
-        #chunks = weapons.split()
-        #per_line = 20
-        #weaponline = ''
-        #for i in range(0, len(chunks), per_line):
-        #    weaponline = " ".join(chunks[i:i + per_line])
-        #    bot.notice(str(weaponline), instigator)
-        #if weaponline == '':
-        #    bot.notice(instigator + ", There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
     elif target != instigator and not trigger.admin:
         bot.notice(instigator + ", You may not adjust somebody elses locker.", instigator)
     elif adjustmentdirection == 'reset':
@@ -1769,8 +1759,60 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         reset_database_value(bot, bot.nick, 'roulettespinarray')
         for user in botvisibleusers:
             reset_database_value(bot, user, 'roulettepayout')
-
-    #elif subcommand == 'stats':
+    elif subcommand == 'stats':
+        incorrectdisplay = "A correct command use is .duel admin stats target set/reset stat"
+        target = get_trigger_arg(triggerargsarray, 3)
+        subcommand = get_trigger_arg(triggerargsarray, 4)
+        statset = get_trigger_arg(triggerargsarray, 5)
+        newvalue = get_trigger_arg(triggerargsarray, 6)
+        if not target:
+            bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
+        elif target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
+            bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
+        elif not subcommand:
+            bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
+        elif subcommand not in statsadminchangearray:
+            bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
+        elif not statset:
+            bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
+        elif statset not in duelstatsadminarray and statset != 'all':
+            bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
+        elif not trigger.admin:
+            bot.notice(instigator + "This is an admin only function.", instigator)
+        else:
+            if target.lower() in tiercommandarray:
+                bot.notice("It looks like that nick is unable to play duels.",instigator)
+                return
+            target = actualname(bot, target)
+            if subcommand == 'reset':
+                newvalue = None
+            if subcommand == 'set' and newvalue == None:
+                bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
+            elif target == 'everyone':
+                set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+                reset_database_value(bot, duelrecorduser, 'levelingtier')
+                reset_database_value(bot, duelrecorduser, 'specevent')
+                for u in bot.users:
+                    statreset(bot, target)
+                    if statset == 'all':
+                         for x in duelstatsadminarray:
+                             set_database_value(bot, u, x, newvalue)
+                    else:
+                        set_database_value(bot, u, statset, newvalue)
+                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+            else:
+                statreset(bot, target)
+                try:
+                    if newvalue.isdigit():
+                        newvalue = int(newvalue)
+                except AttributeError:
+                    newvalue = newvalue
+                if statset == 'all':
+                    for x in duelstatsadminarray:
+                        set_database_value(bot, target, x, newvalue)
+                else:
+                    set_database_value(bot, target, statset, newvalue)
+                bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
 
