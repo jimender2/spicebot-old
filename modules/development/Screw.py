@@ -10,9 +10,16 @@ from SpicebotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-    execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    bot.say("Screw you all, " + instigator + " is going home.")
+    target = get_trigger_arg(triggerargarry, 1) or ''
+    if target == ''
+        bot.say("Screw you all, " + instigator + " is going home.")
+    else:
+        if target.lower() not in [u.lower() for u in bot.users]:
+            bot.say("Screw someone, " + instigator + " is going home.")
+        else:
+            bot.say("Screw " + target + ", " + instigator + " is going home.")
   
