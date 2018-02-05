@@ -14,7 +14,7 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    target = get_trigger_arg(triggerargarry, 1) or ''
+    target = get_trigger_arg(triggerargsarray, 1) or ''
     if target == '':
         bot.say("Screw you all, " + instigator + " is going home.")
     else:
