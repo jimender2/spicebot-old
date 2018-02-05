@@ -286,7 +286,7 @@ def execute_main(bot, trigger, triggerargsarray):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            canduel = mustpassthesetoduel(bot, trigger, u, u, dowedisplay) ## TODO
+            canduel = mustpassthesetoduel(bot, trigger, player, player, dowedisplay) ## TODO
             if canduel:
                 canduelarray.append(player)
     for h in canduelarray:
