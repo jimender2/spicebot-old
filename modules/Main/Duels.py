@@ -868,18 +868,18 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
         dispmsgarray.append("Best Win streak= " + str(best_wins) + ".")
     if int(worst_losses) > 1:
         dispmsgarray.append("Worst Losing streak= " + str(worst_losses) + ".")
-    if dispmsgarray == []:
-        bot.say(target + " has no streaks.")
-    else:
+    if dispmsgarray != []:
         dispmsgarrayb = []
         dispmsgarrayb.append(target + "'s streaks:")
         for x in dispmsgarray:
-            dispmsgarrayb.append(x)
-        onscreentext(bot, 'say', dispmsgarrayb)
-
+            dispmsgarrayb.append(x)    
+    else:
+        dispmsgarrayb.append(target + " has no streaks.")
+    onscreentext(bot, 'say', dispmsgarrayb)
 ## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
+    
     if target.lower() not in [u.lower() for u in bot.users]:
         bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
