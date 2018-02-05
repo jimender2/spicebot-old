@@ -404,7 +404,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, canduelarray)
+    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
         return
@@ -767,7 +767,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
         else:
             bot.notice(instigator + ", It looks like nobody can duel at the moment.",instigator)
     else:
-        validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, canduelarray)
+        validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
