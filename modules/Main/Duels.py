@@ -104,6 +104,34 @@ konamiset = 600 ## for cheaters that actually read the code slightly
 ###############
 ## Old stuff ##
 ###############
+## Tiers
+stocktierratio = 1
+tierratioone = 1.1
+tierratiotwo = 1.2
+tierratiothree = 1.3
+tierratiofour = 1.4
+tierratiofive = 1.5
+tierratiosix = 1.6
+tierratioseven = 1.7
+tierratioeight = 1.8
+tierrationine = 1.9
+tierratioten = 2
+tierratioeleven = 2.1
+tierratiotwelve = 2.2
+tierratiothirteen = 2.3
+tierratiofourteen = 2.4
+tierratiofifteen = 2.5
+tiercommandarray = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+tierunlocktier, tierunlockdocs, tierunlockadmin, tierunlockauthor, tierunlockon, tierunlockoff, tierunlockusage, tierunlockupupdowndownleftrightleftrightba = 1,1,1,1,1,1,1,1
+tierunlockstreaks, tierunlockbounty, tierunlockharakiri = 2,2,2
+tierunlockweaponslocker, tierunlockclass, tierunlockmagic = 3,3,3
+tierunlockleaderboard, tierunlockwarroom = 4,4
+tierunlockstats, tierunlockloot,tierunlockrandom = 5,5,5
+tierunlockroulette, tierunlockarmor = 6,6
+tierunlockassault = 7
+tierunlockcolosseum = 8
+tierunlocktitle = 9
+peppertierarray = ['pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin']
 
 ## Timeouts
 USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
