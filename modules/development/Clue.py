@@ -5,6 +5,7 @@ import sopel.module
 import sys
 import os
 import random
+#import Points
 shareddir = os.path.dirname(os.path.dirname(__file__))
 
 sys.path.append(shareddir)
