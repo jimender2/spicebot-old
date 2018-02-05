@@ -104,6 +104,7 @@ konamiset = 600 ## for cheaters that actually read the code slightly
 ###############
 ## Old stuff ##
 ###############
+
 ## Tiers
 stocktierratio = 1
 tierratioone = 1.1
@@ -1888,9 +1889,9 @@ def duelcriteria(bot, trigger, instigator, target, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    #if bot.nick.endswith(devbot):
-    #    validtarget = 1
-    #    return validtarget, validtargetmsg
+    if bot.nick.endswith(devbot):
+        validtarget = 1
+        return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
     if instigator == channellastinstigator and instigatortime <= INSTIGATORTIMEOUT:
