@@ -305,6 +305,7 @@ def execute_main(bot, trigger, triggerargsarray):
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator):
     
     ## New Vars
+    fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     
     ## Alternative commands
