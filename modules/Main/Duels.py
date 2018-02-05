@@ -890,6 +890,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
     target = actualname(bot, target)
     #healthcheck(bot, target)
     statreset(bot, target)
+    dispmsgarray = []
     for x in duelstatsarray:
         if x in statsbypassarray:
             scriptdef = str('get_' + x + '(bot,target)')
@@ -899,18 +900,20 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if gethowmany:
             if x == 'winlossratio':
                 gethowmany = format(gethowmany, '.3f')
-            addstat = str(' ' + str(x) + "=" + str(gethowmany))
-            displaymessage = str(displaymessage + addstat)
-    if displaymessage != '':
+            dispmsgarray.append(str(x) + "=" + str(gethowmany))
+    dispmsgarrayb = []
+    if dispmsgarray != []:
         pepper = get_pepper(bot, target)
         if not pepper or pepper == '':
             targetname = target
         else:
             targetname = str("(" + str(pepper) + ") " + target)
-        displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
-        bot.say(displaymessage)
+        dispmsgarrayb.append(targetname + "'s " + commandortarget + ":")
+        for y in dispmsgarray:
+            dispmsgarrayb.append(y)
     else:
-        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+    onscreentext(bot, ['say'], dispmsgarrayb)
 
 ## Leaderboard ## TODO
 def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval):
