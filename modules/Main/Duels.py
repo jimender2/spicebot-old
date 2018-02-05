@@ -283,14 +283,6 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
     
-    ## Make a list of valid targets
-    validtargetsarray = []
-    for u in dueloptedinarray:
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
-        if validtarget:
-            validtargetsarray.append(u)
-    bot.say(str(validtargetsarray))
-    
     ## Stat check TODO: revamp these functions
     statreset(bot, instigator)
     healthcheck(bot, instigator)
@@ -1815,19 +1807,19 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Offline User
     if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " is offline right now.")
+        validtargetmsg = str(instigator + ", " + target + " is offline right now.")
         return validtarget, validtargetmsg
     
     ## Opted Out
     if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " has duels disabled.")
+        validtargetmsg = str(instigator + ", " + target + " has duels disabled.")
         return validtarget, validtargetmsg
 
     ## None of the above
     if target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + str(target) + " is either not here, or not a valid nick to target.")
+        validtargetmsg = str(instigator + ", " + target + " is either not here, or not a valid nick to target.")
         return validtarget, validtargetmsg
 
     validtarget = 1
