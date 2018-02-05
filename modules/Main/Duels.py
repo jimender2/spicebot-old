@@ -535,8 +535,8 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
     elif target == instigator:
         bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
     else:
-        deathmsgb = suicidekill(bot,instigator) ## TODO
-        bot.say(deathmsgb)
+        suicidetextarray = suicidekill(bot,instigator)
+        onscreentext(bot, ['say'], suicidetext)
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray):
@@ -608,8 +608,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         currenthealth = get_database_value(bot, instigator, 'health')
         if currenthealth <= 0:
             dispmsgarray.append(instigator + ' dies forcing a respawn!!')
-            deathmsgb = suicidekill(bot,instigator) ## TODO
-            dispmsgarray.append(deathmsgb)
+            suicidetextarray = suicidekill(bot,instigator)
+            for s in suicidetextarray:
+                dispmsgarray.append(s)
         uniquewinnersarray = []
         for x in roulettewinners:
             if x not in uniquewinnersarray and x != instigator:
@@ -1936,6 +1937,32 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     return damage, damagetextarray 
     
+###################
+## Living Status ##
+###################
+
+def suicidekill(bot,loser):
+    suicidetextarray = []
+    suicidetextarray.append(loser + " committed suicide.")
+    ## Reset mana
+    reset_database_value(bot, loser, 'mana')
+    suicidetextarray.append(loser + " lose all mana.")
+    ## Stock health
+    set_database_value(bot, loser, 'health', stockhealth)
+    ## update deaths
+    adjust_database_value(bot, loser, 'respawns', defaultadjust)
+    ## bounty
+    bountyonloser = get_database_value(bot, loser, 'bounty')
+    if bountyonloser:
+        suicidetextarray.append(loser + " wastes the bounty of " + str(bountyonloser) + " coin.")
+    reset_database_value(bot, loser, 'bounty')
+    ## rangers don't lose their stuff
+    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+    if loserclass != 'ranger':
+        for x in lootitemsarray:
+            reset_database_value(bot, loser, x)
+        suicidetextarray.append(loser + " loses all loot.")
+    return suicidetextarray
     
 ######################
 ## On Screen Text ##
@@ -2653,108 +2680,7 @@ def get_pepper(bot, nick):
         set_database_value(bot, nick, 'levelingtier', tiernumber)
     return pepper
 
-def get_tierpepper(bot, tiernumber):
-    if not tiernumber:
-        pepper = ''
-    elif tiernumber == 1:
-        pepper = 'Pimiento'
-    elif tiernumber == 2:
-        pepper = 'Sonora'
-    elif tiernumber == 3:
-        pepper = 'Anaheim'
-    elif tiernumber == 4:
-        pepper = 'Poblano'
-    elif tiernumber == 5:
-        pepper = 'Jalapeno'
-    elif tiernumber == 6:
-        pepper = 'Serrano'
-    elif tiernumber == 7:
-        pepper = 'Chipotle'
-    elif tiernumber == 8:
-        pepper = 'Tabasco'
-    elif tiernumber == 9:
-        pepper = 'Cayenne'
-    elif tiernumber == 10:
-        pepper = 'Thai Pepper'
-    elif tiernumber == 11:
-        pepper = 'Datil'
-    elif tiernumber == 12:
-        pepper = 'Habanero'
-    elif tiernumber == 13:
-        pepper = 'Ghost Chili'
-    elif tiernumber == 14:
-        pepper = 'Mace'
-    elif tiernumber == 15:
-        pepper = 'Pure Capsaicin'
-    else:
-        pepper = ''
-    return pepper
 
-def get_peppertier(bot, pepper):
-    if not pepper:
-        tiernumber = 1
-    elif pepper == 'pimiento':
-        tiernumber = 1
-    elif pepper == 'sonora':
-        tiernumber = 2
-    elif pepper == 'anaheim':
-        tiernumber = 3
-    elif pepper == 'poblano':
-        tiernumber = 4
-    elif pepper == 'jalapeno':
-        tiernumber = 5
-    elif pepper == 'serrano':
-        tiernumber = 6
-    elif pepper == 'chipotle':
-        tiernumber = 7
-    elif pepper == 'tabasco':
-        tiernumber = 8
-    elif pepper == 'cayenne':
-        tiernumber = 9
-    elif pepper == 'thai pepper':
-        tiernumber = 10
-    elif pepper == 'datil':
-        tiernumber = 11
-    elif pepper == 'habanero':
-        tiernumber = 12
-    elif pepper == 'ghost chili':
-        tiernumber = 13
-    elif pepper == 'mace':
-        tiernumber = 14
-    elif pepper == 'pure capsaicin':
-        tiernumber = 15
-    else:
-        tiernumber = 1
-    return tiernumber
-
-
-    
-
-    
-
-
-###################
-## Living Status ##
-###################
-
-def suicidekill(bot,loser):
-    returntext = str(loser + " committed suicide ")
-    ## Reset mana and health
-    reset_database_value(bot, loser, 'mana')
-    set_database_value(bot, loser, 'health', stockhealth)
-    ## update deaths
-    adjust_database_value(bot, loser, 'respawns', defaultadjust)
-    loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
-    ## bounty
-    bountyonloser = get_database_value(bot, loser, 'bounty')
-    if bountyonloser:
-        returntext = str(returntext + "and wastes the bounty of " + str(bountyonloser) + " coin.")
-    reset_database_value(bot, loser, 'bounty')
-    ## rangers don't lose their stuff
-    if loserclass != 'ranger':
-        for x in lootitemsarray:
-            reset_database_value(bot, loser, x)
-    return returntext
 
 def whokilledwhom(bot, winner, loser):
     returntext = ''
