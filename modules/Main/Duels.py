@@ -1026,7 +1026,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             for y in dispmsgarray:
                 dispmsgarrayb.append(y)
         else:
-            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif subcommand == 'buy':
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
