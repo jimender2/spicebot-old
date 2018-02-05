@@ -1038,7 +1038,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                         if statamount < statleadernumber and statamount > 0:
                             statleadernumber = statamount
                             statleadername = u
-           if statleadername != '':
+            if statleadername != '':
                 bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
             else:
                 bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
