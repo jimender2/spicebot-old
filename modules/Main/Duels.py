@@ -387,13 +387,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             return
         duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
-#####################
-## Main Duel Usage ##
-#####################
-## TODO
-def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray):
-    getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
-        
 #######################
 ## Subcommands Usage ##
 #######################
@@ -431,6 +424,14 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     adjust_database_value(bot, instigator, 'usage_total', 1)
     adjust_database_value(bot, instigator, 'usage_'+commandortarget, 1) ## NEW, update subcommand
 
+#####################
+## Main Duel Usage ##
+#####################
+
+## TODO
+def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray):
+    getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
+        
 #################
 ## Subcommands ##
 #################
@@ -445,7 +446,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
         return
@@ -496,10 +497,10 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         futuretierlistarray.append(x)
         if currenttierlistarray != []:
             currenttierlist = get_trigger_arg(currenttierlistarray, "list")
-            dispmsgarray.append("Feature(s) currently available: " + currenttierlist + ". ")
+            dispmsgarray.append("Feature(s) currently available: " + currenttierlist + ".")
         if futuretierlistarray != []:
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
-            dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ". ")
+            dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ".")
         onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
@@ -562,7 +563,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             bot.say("Nobody is the closest to the next pepper level.")
     else:
-        validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator)
+        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
