@@ -880,41 +880,37 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
 ## Stats ## TODO
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
-    
-    if target.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-    elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
+    if int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-    else:
-        if target.lower() in commandarray_all_valid:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
-            return
-        target = actualname(bot, target)
-        #healthcheck(bot, target)
-        statreset(bot, target)
-        for x in duelstatsarray:
-            if x in statsbypassarray:
-                scriptdef = str('get_' + x + '(bot,target)')
-                gethowmany = eval(scriptdef)
-            else:
-                gethowmany = get_database_value(bot, target, x)
-            if gethowmany:
-                if x == 'winlossratio':
-                    gethowmany = format(gethowmany, '.3f')
-                addstat = str(' ' + str(x) + "=" + str(gethowmany))
-                displaymessage = str(displaymessage + addstat)
-        if displaymessage != '':
-            pepper = get_pepper(bot, target)
-            if not pepper or pepper == '':
-                targetname = target
-            else:
-                targetname = str("(" + str(pepper) + ") " + target)
-            displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
-            bot.say(displaymessage)
+        return
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
+        return
+    target = actualname(bot, target)
+    #healthcheck(bot, target)
+    statreset(bot, target)
+    for x in duelstatsarray:
+        if x in statsbypassarray:
+            scriptdef = str('get_' + x + '(bot,target)')
+            gethowmany = eval(scriptdef)
         else:
-            bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+            gethowmany = get_database_value(bot, target, x)
+        if gethowmany:
+            if x == 'winlossratio':
+                gethowmany = format(gethowmany, '.3f')
+            addstat = str(' ' + str(x) + "=" + str(gethowmany))
+            displaymessage = str(displaymessage + addstat)
+    if displaymessage != '':
+        pepper = get_pepper(bot, target)
+        if not pepper or pepper == '':
+            targetname = target
+        else:
+            targetname = str("(" + str(pepper) + ") " + target)
+        displaymessage = str(targetname + "'s " + commandortarget + ":" + displaymessage)
+        bot.say(displaymessage)
+    else:
+        bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
 
 ## Leaderboard ## TODO
 def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval):
