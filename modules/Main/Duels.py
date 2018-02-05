@@ -31,8 +31,7 @@ defaultadjust = 1 ## The default number to increase a stat
 
 ## All Commands
 commandarray_all_valid = ['bugbounty','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-## TODO
-tiercommandarray = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+
 ## bypass for Opt status
 commandarray_instigator_bypass = ['bugbounty','on','admin']
 
@@ -332,17 +331,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + ", duels must be in channel.", instigator)
-            return
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-        if not validtarget:
-            bot.notice(validtargetmsg,instigator)
-            return
-        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
-        if not executedueling:
-            bot.notice(executeduelingmsg,instigator)
-            return
         duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
 #######################
@@ -388,6 +376,17 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 
 ## TODO
 def duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray):
+    if not inchannel.startswith("#"):
+        bot.notice(instigator + ", duels must be in channel.", instigator)
+        return
+    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg,instigator)
+        return
+    executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+    if not executedueling:
+        bot.notice(executeduelingmsg,instigator)
+        return
     getreadytorumble(bot, trigger, instigator, [commandortarget], 'say', fullcommandused, now, triggerargsarray, 'target', inchannel)
         
 #################
@@ -1782,7 +1781,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         elif not trigger.admin:
             bot.notice(instigator + "This is an admin only function.", instigator)
         else:
-            if target.lower() in tiercommandarray:
+            if target.lower() in commandarray_all_valid:
                 bot.notice("It looks like that nick is unable to play duels.",instigator)
                 return
             target = actualname(bot, target)
