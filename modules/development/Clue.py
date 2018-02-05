@@ -6,7 +6,7 @@ import sys
 import os
 import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
-import Points
+
 sys.path.append(shareddir)
 from SpicebotShared import *
 
