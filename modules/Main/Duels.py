@@ -960,11 +960,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
                 leaderscript.append(msgtoadd)
         if leaderscript == []:
-            displaymessage = str("Leaderboard appears to be empty")
-        else:
-            for msg in leaderscript:
-                displaymessage = str(displaymessage+ msg+ "  ")
-        bot.say(displaymessage)
+            leaderscript.append("Leaderboard appears to be empty")
+        onscreentext(bot, ['say'], leaderscript)
     if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
         subcommand = subcommand.lower()
         subcommanda = get_trigger_arg(triggerargsarray, 3)
