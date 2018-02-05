@@ -36,7 +36,7 @@ commandarray_instigator_bypass = ['on','admin']
 commandarray_admin = ['admin']
 
 ## Must Be inchannel
-commandarray_inchannel = ['roulette','assault','colosseum']
+commandarray_inchannel = ['roulette','assault','colosseum','bounty']
 
 ## Alternative Commands
 commandarray_alt_on = ['enable','activate']
@@ -1022,7 +1022,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 dispmsgarray.append(str(x) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
-            dispmsgarrayb.append(target + "'s " + commandortarget + " durability: ")
+            dispmsgarrayb.append(target + "'s " + commandortarget + " durability:")
             for y in dispmsgarray:
                 dispmsgarrayb.append(y)
         else:
@@ -1099,25 +1099,21 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
         return
     instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
     target = get_trigger_arg(triggerargsarray, 2)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
+        return
     target = actualname(bot, target)
     amount = get_trigger_arg(triggerargsarray, 3)
     if not amount.isdigit():
         bot.say("Invalid Amount.")
         return
-    else:
-        amount = int(amount)
-    if not target:
-        bot.say("You must pick a target.")
-    elif target.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-    elif not amount:
+    amount = int(amount)
+    if not amount:
         bot.say("How much of a bounty do you wish to place on "+target+".")
     elif int(instigatorcoin) < int(amount):
         bot.say("Insufficient Funds.")
     else:
-        if target.lower() in commandarray_all_valid:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
-            return
         adjust_database_value(bot, instigator, 'coin', -abs(amount))
         bountyontarget = get_database_value(bot, target, 'bounty') or 0
         if not bountyontarget:
@@ -1133,30 +1129,33 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
     lootcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if not lootcommand or lootcommand.lower() in [x.lower() for x in dueloptedinarray]:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
-        if target.lower() not in [u.lower() for u in bot.users]:
-            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-        elif int(tiercommandeval) > int(currenttier) and target != instigator and not bot.nick.endswith(devbot):
-            bot.notice(instigator + ", Loot for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        else:
-            if target.lower() in commandarray_all_valid:
-                bot.notice("It looks like that nick is unable to play duels.",instigator)
+        if int(tiercommandeval) > int(currenttier) and target != instigator:
+            bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+            if not bot.nick.endswith(devbot):
                 return
-            target = actualname(bot, target)
-            statreset(bot, target)
-            for x in backpackarray:
-                gethowmany = get_database_value(bot, target, x)
-                if gethowmany:
-                    if gethowmany == 1:
-                        loottype = str(x)
-                    else:
-                        loottype = str(str(x)+"s")
-                    addstat = str(' ' + str(loottype) + "=" + str(gethowmany))
-                    displaymessage = str(displaymessage + addstat)
-            if displaymessage != '':
-                displaymessage = str(target + "'s " + commandortarget + ":" + displaymessage)
-                bot.say(displaymessage)
-            else:
-                bot.say(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        target = actualname(bot, target)
+        statreset(bot, target)
+        dispmsgarray = []
+        for x in backpackarray: 
+            gethowmany = get_database_value(bot, target, x)
+            if gethowmany:
+                if gethowmany == 1:
+                    loottype = str(x)
+                else:
+                    loottype = str(str(x)+"s")
+                dispmsgarray.append(str(loottype) + "=" + str(gethowmany))
+        dispmsgarrayb = []
+        if dispmsgarray != []:
+            dispmsgarrayb.append(target + "'s " + commandortarget + ":")
+            for y in dispmsgarray:
+                dispmsgarrayb.append(y)
+        else:
+            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
+        onscreentext(bot, ['say'], dispmsgarrayb)
     elif lootcommand not in transactiontypesarray:
         transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
         bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
