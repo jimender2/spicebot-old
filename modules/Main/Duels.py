@@ -31,7 +31,8 @@ defaultadjust = 1 ## The default number to increase a stat
 
 ## All Commands
 commandarray_all_valid = ['bugbounty','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
-
+## TODO
+tiercommandarray = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
 ## bypass for Opt status
 commandarray_instigator_bypass = ['bugbounty','on','admin']
 
