@@ -1566,15 +1566,27 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
         gethowmany = get_database_array_total(bot, target, 'weaponslocker')
         bot.say(target + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv")
     elif adjustmentdirection == 'inv':
-        weapons = get_trigger_arg(weaponslist, 'list')
-        chunks = weapons.split()
-        per_line = 20
-        weaponline = ''
-        for i in range(0, len(chunks), per_line):
-            weaponline = " ".join(chunks[i:i + per_line])
-            bot.notice(str(weaponline), instigator)
-        if weaponline == '':
+        if weaponslist == []:
             bot.notice(instigator + ", There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
+            return
+        howmanyweapons = len(weaponslist)
+        weaponsonscreenarray = []
+        for weapon in weaponslist:
+            howmanyweapons = howmanyweapons - 1
+            if howmanyweapons > 0:
+                weapon = str(weapon+",")
+            weaponsonscreenarray.append(weapon)
+        onscreentext(bot, [instigator], weaponsonscreenarray)
+        
+        #weapons = get_trigger_arg(weaponslist, 'list')
+        #chunks = weapons.split()
+        #per_line = 20
+        #weaponline = ''
+        #for i in range(0, len(chunks), per_line):
+        #    weaponline = " ".join(chunks[i:i + per_line])
+        #    bot.notice(str(weaponline), instigator)
+        #if weaponline == '':
+        #    bot.notice(instigator + ", There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.", instigator)
     elif target != instigator and not trigger.admin:
         bot.notice(instigator + ", You may not adjust somebody elses locker.", instigator)
     elif adjustmentdirection == 'reset':
