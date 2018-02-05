@@ -107,6 +107,7 @@ COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
 randomcoinaward = 100
 
 ## Stats
+statsadminchangearray = ['set','reset'] ## valid admin subcommands
 duelstatsadminarray = ['codpiece','helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
 duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
