@@ -1184,7 +1184,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                             remainingarray = get_trigger_arg(canduelarray, "list")
                             dispmsgarray.append(remainingarray + " completely jump out of the way")
                     else:
-                        displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage.")
+                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage.")
                 painarray = []
                 damagearray = []
                 deatharray = []
