@@ -1195,6 +1195,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     damage = int(damage)
                     damagescale = tierratio_level(bot)
                     damage = damagescale * damage
+                    bodypart = get_trigger_arg(bodypartsarray, 'random')
                     damage, damagetextarray = damage_resistance(bot, player, damage, bodypart)
                     for j in damagetextarray:
                         dispmsgarray.append(j)
