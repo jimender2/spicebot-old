@@ -353,7 +353,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
-        duel_combat(bot, instigator, instigator, [commandortarget], fullcommandused, now, inchannel, 'target')
+        duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
         #duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
 #######################
@@ -2131,7 +2131,7 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
     return damagetext
     
     
-def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, inchannel, typeofduel):
+def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel):
     
     ## Same person can't instigate twice in a row
     if typeofduel != 'colosseum':
