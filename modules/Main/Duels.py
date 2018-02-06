@@ -645,7 +645,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             combattextarraycomplete.append("New Tier Unlocked!")
             tiercheck = eval("commandarray_tier_unlocks_"+str(currenttierend))
             if tiercheck != []:
-                newtierlist = get_trigger_arg(newtierlistarray, "list")
+                newtierlist = get_trigger_arg(tiercheck, "list")
                 combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
 
         ## Magic Attributes text
