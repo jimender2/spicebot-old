@@ -1577,7 +1577,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 extramsg = str(" restoring " + str(potionmaths) + " health.")
             elif lootitem == 'poisonpotion':
                 poisonpotionworthb = abs(poisonpotion_worth)
-                potionmaths = int(uselootarraytotal) * int(poisonpotion_worthb)
+                potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
                 extramsg = str(" draining " + str(potionmaths) + " health.")
             elif lootitem == 'manapotion':
                 if targetclass == 'mage':
@@ -2153,7 +2153,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
     ## Null Target
     if not target:
-        validtargetmsg = str(instigator + ", you must specify a target.", instigator)
+        validtargetmsg = str(instigator + ", you must specify a target.")
         return validtarget, validtargetmsg
     
     ## Target can't be a valid command
@@ -2201,7 +2201,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     userbtime = get_timesince_duels(bot, userb, 'timeout') or 0
     channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or 0
     
-    ## Last usera
+    ## Last instigator
     channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
     
     ## Current Users List
@@ -2226,7 +2226,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= timeout_duel_instigator:
-        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
+        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - useratime)))+" .")
         return validtarget, validtargetmsg
     
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
