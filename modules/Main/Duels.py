@@ -1163,34 +1163,40 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
-                adjust_database_value(bot, instigator, lootitem, -1)
                 dispmsgarray = []
-                painarray = []
-                damagearray = []
-                secondarytarget, thirdtarget, remainingarray = '','',''
+                canduelarrayorig = []
+                for u in canduelarray:
+                    canduelarrayorig.append(u)
+                    targethealth = get_database_value(bot, u, 'health')
+                adjust_database_value(bot, instigator, lootitem, -1)
+                fulltarget, secondarytarget, thirdtarget = '','',''
                 fulltarget = get_trigger_arg(canduelarray, "random")
+                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage.")
                 canduelarray.remove(fulltarget)
-                painarray.append(fulltarget)
-                damagearray.append(grenadefull)
-                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
                 if canduelarray != []:
                     secondarytarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(secondarytarget)
-                    painarray.append(secondarytarget)
-                    damagearray.append(grenadesec)
                     if canduelarray != []:
                         thirdtarget = get_trigger_arg(canduelarray, "random")
+                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage.")
                         canduelarray.remove(thirdtarget)
-                        painarray.append(thirdtarget)
-                        damagearray.append(grenadesec)
                         if canduelarray != []:
                             remainingarray = get_trigger_arg(canduelarray, "list")
-                    if thirdtarget == '':
-                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                            dispmsgarray.append(remainingarray + " completely jump out of the way")
                     else:
-                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
-                    if remainingarray == '':
-                        dispmsgarray.append(remainingarray + " completely jump out of the way")
+                        displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage.")
+                painarray = []
+                damagearray = []
+                deatharray = []
+                if fulltarget != '':
+                    painarray.append(fulltarget)
+                    damagearray.append(grenadefull)
+                if secondarytarget != '':
+                    painarray.append(secondarytarget)
+                    damagearray.append(grenadesec)
+                if thirdtarget != '':
+                    painarray.append(thirdtarget)
+                    damagearray.append(grenadesec)
                 diedinbattle = []
                 for player, damage in zip(painarray, damagearray):
                     damage = int(damage)
