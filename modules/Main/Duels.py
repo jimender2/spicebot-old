@@ -2120,11 +2120,11 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
     
     return damage
     
-def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon):
+def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner):
     
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage.')
-    elif winnerclass == 'vampire' and winner != loser:
+    elif classwinner == 'vampire' and winner != loser:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ".")
     else:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
@@ -2242,9 +2242,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         
         ## Damage Text
         if losername == "themself":
-            damagetext = duels_damage_text(bot, damage, winner, losername, bodypart, striketype, weapon)
+            damagetext = duels_damage_text(bot, damage, winner, losername, bodypart, striketype, weapon, classwinner)
         else:
-            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon)
+            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner)
         combattextarraycomplete.append(damagetext)
         
         ## Vampires gain health from wins
@@ -2307,7 +2307,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
                 damageb = duels_damage(bot, tierscaling, classloser, classwinner, loser, winner)
-                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb)
+                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser)
                 combattextarraycomplete.append(damagetextb)
                 ## Damage Resist
                 if damage > 0:
