@@ -2226,7 +2226,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
-    if target == useralastfought and howmanyduelsers > 2:
+    if userb == useralastfought and howmanyduelsers > 2:
         validtargetmsg = str(usera + ', You may not fight the same person twice in a row.')
         return validtarget, validtargetmsg
     
@@ -2236,8 +2236,8 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## Target Timeout
-    if targettime <= timeout_user_duels:
-        validtargetmsg = str(target + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - targettime)))+".")
+    if userbtime <= timeout_user_duels:
+        validtargetmsg = str(userb + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - userbtime)))+".")
         return validtarget, validtargetmsg
     
     ## Channel Timeout
