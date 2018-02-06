@@ -2153,7 +2153,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
             set_database_value(bot, target, 'lastfought', maindueler)
             
         ## Display Naming
-        mainduelername = duel_names(bot, maindueler, channel)
+        mainduelername = duel_names(bot, maindueler, inchannel)
         mainduelerpepperstart = get_pepper(bot, maindueler) ## TODO
         if target == maindueler:
             targetname = "themself"
@@ -2162,7 +2162,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
             targetname = target
             targetpepperstart = ''
         else:
-            targetname = duel_names(bot, target, channel)
+            targetname = duel_names(bot, target, inchannel)
             targetpepperstart = get_pepper(bot, target) ## TODO
 
         ## Announce Combat
