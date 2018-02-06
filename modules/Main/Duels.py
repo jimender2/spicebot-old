@@ -353,7 +353,8 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
-        duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
+        duel_combat(bot, instigator, instigator, [commandortarget], fullcommandused, now, inchannel, 'target')
+        #duelrun(bot, trigger, instigator, commandortarget, fullcommandused, now, triggerargsarray, inchannel, currentduelplayersarray)
 
 #######################
 ## Subcommands Usage ##
