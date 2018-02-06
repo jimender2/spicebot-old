@@ -2339,11 +2339,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, lootwinner, loot, 1)
         
         ## Update XP points
-        if yourclasswinner == 'ranger':
+        if classwinner == 'ranger':
             XPearnedwinner = xp_winner_ranger
         else:
             XPearnedwinner = xp_winner
-        if yourclassloser == 'ranger':
+        if classloser == 'ranger':
             XPearnedloser = xp_loser_ranger
         else:
             XPearnedloser = xp_loser
