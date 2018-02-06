@@ -78,75 +78,82 @@ commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','ja
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
 
 ## Dev bot
-devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
+development_bot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 
-## people to recognize
-botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+## Dev Team
+development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
 
 ## On/off
-OPTTIMEOUT = 1800 ## Time between opting in and out of the game - Half hour
+timeout_opt = 1800 ## Time between opting in and out of the game - Half hour
 
 ## Roulette
+timeout_roulette = 8
 roulette_payout_default = 5
-ROULETTETIMEOUT = 8
 roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
 
 ## Assault
-ASSAULTTIMEOUT = 1800 ## Time Between Full Channel Assaults
+timeout_assault = 1800 ## Time Between Full Channel Assaults
 
 ## Colosseum
-COLOSSEUMTIMEOUT = 1800 ## Time Between colosseum events
+timeout_colosseum = 1800 ## Time Between colosseum events
 
 ## Random Target
-randomcoinaward = 100
+random_payout = 100
 
 ## Stats
-statsadminchangearray = ['set','reset'] ## valid admin subcommands
-duelstatsadminarray = ['codpiece','helmet','gauntlets','breastplate','greaves','bounty','levelingtier','weaponslocker','currentlosestreak','magicpotion','currentwinstreak','currentstreaktype','classfreebie','grenade','shield','classtimeout','class','curse','bestwinstreak','worstlosestreak','opttime','coin','wins','losses','health','mana','healthpotion','mysterypotion','timepotion','respawns','xp','kills','timeout','poisonpotion','manapotion','lastfought','konami'] ## admin settings
-duelstatsarray = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
-statsbypassarray = ['winlossratio','timeout'] ## stats that use their own functions to get a value
+stats_admin_count = 7
+stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills','konami']
+stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
+stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
+stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
+stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
+stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
+stats_admin7 = ['curse','shield','class','coin']
+stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
+stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty'] 
+stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 
 ## Class
-classarray = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
-CLASSTIMEOUT = 86400 ## Time between changing class - One Day
-changeclasscost = 100 ## ## how many coin to change class
+class_array = ['blacksmith','barbarian','mage','scavenger','rogue','ranger','fiend','vampire','knight','paladin'] ## Valid Classes
+timeout_class = 86400 ## Time between changing class - One Day
+class_cost = 100 ## ## how many coin to change class
 
 ## Title
-changetitlecost = 100 ## ## how many coin to change title
+title_cost = 100 ## ## how many coin to change title
 
 ## Bug Bounty
-bugbountycoinaward = 100 ## users that find a bug in the code, get a reward
+bugbounty_reward = 100 ## users that find a bug in the code, get a reward
 
 ## Loot
-lootitemsarray = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
-backpackarray = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
-transactiontypesarray = ['buy','sell','trade','use'] ## valid commands for loot
+loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
+potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
+loot_transaction_types = ['buy','sell','trade','use'] ## valid commands for loot
 ### Buy
-lootbuycostscavenger = 80 ## cost to buy a loot item for scavengers
-lootbuycost = 100 ## normal cost to buy a loot item
+loot_buy = 100 ## normal cost to buy a loot item
+loot_buy_scavenger = 80 ## cost to buy a loot item for scavengers
 ### Sell
-lootsellrewardscavenger = 40 ## coin rewarded in selling loot for scavengers
-lootsellreward = 25 ## normal coin rewarded in selling loot
+loot_sell = 25 ## normal coin rewarded in selling loot
+loot_sell_scavenger = 40 ## coin rewarded in selling loot for scavengers
 ### Trade
-traderatioscavenger = 2 ## scavengers can trade at a 2:1 ratio
-traderatio = 3 ## normal trading ratio 3:1
+loot_trade = 3 ## normal trading ratio 3:1
+loot_trade_scavenger = 2 ## scavengers can trade at a 2:1 ratio
 ### Grenades
-grenadefull = 100
-grenadesec = 50
+grenade_full_damage = 100
+grenade_secondary_damage = 50
 ### Health Potions
-healthpotionworthbarbarian = 125 ## health potion worth for barbarians
-healthpotionworth = 100 ## normal health potion worth
-healthpotiondispmsg = str(": worth " + str(healthpotionworth) + " health.")
+healthpotion_worth = 100 ## normal health potion worth
+healthpotion_worth_barbarian = 125 ## health potion worth for barbarians
+healthpotiondispmsg = str(": worth " + str(healthpotion_worth) + " health.")
 ### Mana Potions
-manapotionworthmage = 125 ## manapotion worth for mages
-manapotionworth = 100 ##normal mana potion worth
-manapotiondispmsg = str(": worth " + str(manapotionworth) + " mana.")
+manapotion_worth = 100 ##normal mana potion worth
+manapotion_worth_mage = 125 ## manapotion worth for mages
+manapotiondispmsg = str(": worth " + str(manapotion_worth) + " mana.")
 ### Poison Potions
-poisonpotionworth = -50 ## poisonpotion damage
-poisonpotiondispmsg = str(": worth " + str(poisonpotionworth) + " health.")
+poisonpotion_worth = -50 ## poisonpotion damage
+poisonpotiondispmsg = str(": worth " + str(poisonpotion_worth) + " health.")
 ### Mystery Potions
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
-nulllootitemsarray = ['water','vinegar','mud']
+loot_null = ['water','vinegar','mud']
 ### Time Potions
 timepotiondispmsg = str(": Removes multiple timeouts.")
 timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
@@ -155,48 +162,54 @@ timepotiontimeoutarray = ['timeout','lastfullroomcolosseum','lastfullroomassult'
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
 ## Weapons Locker
-weaponmaxlength = 70
+weapon_name_length = 70 ## prevents text that destroys OSD
 
 ## Magic
-magicoptionsarray = ['curse','shield']
-magemanamagiccut = .9 ## mages only need 90% of the mana requirements below
-manarequiredmagicshield = 300 ## mana required for magic shield
-magicshielddamage = 80 ## damage caused by a magic shield usage
-shieldduration = 200 ## how long a shield lasts
-manarequiredmagiccurse = 500 ## mana required for magic curse
-magiccursedamage = -80 ## damage caused by a magic curse
-curseduration = 4 ## how long a curse lasts
+magic_types = ['curse','shield']
+magic_usage_mage = .9 ## mages only need 90% of the mana requirements below
+magic_mana_required_shield = 300 ## mana required for magic shield
+magic_mana_required_curse = 500 ## mana required for magic curse
+magic_shield_health = 80 ## health restored by a magic shield usage
+magic_shield_duration = 200 ## how long a shield lasts
+magic_curse_damage = -80 ## damage caused by a magic curse
+magic_curse_duration = 4 ## how long a curse lasts
 
 ## Armor
+armor_cost = 500
+armor_cost_blacksmith_cut = .8 ## TODO
+armor_durability = 10
+armor_durability_blacksmith = 15
+armor_relief_percentage = 33 ## has to be converted to decimal later
 bodypartsarray = ['head','chest','arm','junk','leg']
 armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
-armormaxdurability = 10
-armormaxdurabilityblacksmith = 15
-armorhitpercentage = 33 ## has to be converted to decimal later
-armorcost = 500
 
 ## Half Hour Timer
-AUTOLOGOUT = 259200 ## Opt out users after 3 days of inactivity
-healthregen,healthregenmax = 50,500 ## health regen rate
-magemanaregen, magemanaregenmax = 50, 500 ## mages regenerate mana: rate
-halfhourcoinaward = 15 ## coin gain per half hour
+timeout_auto_opt_out = 259200 ## Opt out users after 3 days of inactivity
+halfhour_regen_health, halfhour_regen_health_max = 50,500 ## health regen rate
+halfhour_regen_mage_mana, halfhour_regen_mage_mana_max = 50, 500 ## mages regenerate mana: rate
+halfhour_coin = 15 ## coin gain per half hour
 
 ## Main Duel Runs
-duelhittypesarray = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
-botdamage = 150 ## The bot deals a set damage
-USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
-CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
-INSTIGATORTIMEOUT = 1800 ## Time between instigation, unless another user plays
-speceventreward = 500 ## Every 50 duels, instigator wins 500 coins
-### Class advantages
-scavegerfindpercent = 60 ## scavengers have a higher percent chance of finding loot
-barbarianminimumdamge = 60 ## Barbarians always strike a set value or above
-vampiremaximumdamge = 50 ## Vampires have a max damage, but drain that amount from enemy into their own health
+duel_hit_types = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
+bot_damage = 150 ## The bot deals a set damage
+timeout_user_duels = 180 ## Time between a users ability to duel - 3 minutes
+timeout_channel_duels = 40 ## Time between duels in a channel - 40 seconds
+timeout_duel_instigator = 1800 ## Time between instigation, unless another user plays
+duel_special_event = 500 ## Every 50 duels, instigator wins 500 coins
+### Class (dis)advantages
+duel_advantage_scavenger_loot_find = 60 ## scavengers have a higher percent chance of finding loot
+duel_advantage_barbarian_min_damage = 60 ## Barbarians always strike a set value or above
+duel_disadvantage_vampire_max_damage = 50 ## Vampires have a max damage, but drain that amount from enemy into their own health
+duel_advantage_barbarian_rage_chance = 12
+duel_advantage_barbarian_rage_max = 25
+duel_advantage_paladin_deflect_chance = 12
+duel_advantage_knight_retaliate_chance = 12
+
 ### XP points awarded
-XPearnedwinnerranger = 20 ## xp earned as a winner and ranger
-XPearnedloserranger = 15 ## xp earned as a loser and ranger
-XPearnedwinnerstock = 15 ## default xp earned as a winner
-XPearnedloserstock = 10 ## default xp earned as a loser
+xp_winner = 15 ## default xp earned as a winner
+xp_winner_ranger = 20 ## xp earned as a winner and ranger
+xp_loser = 10 ## default xp earned as a loser
+xp_loser_ranger = 15 ## xp earned as a loser and ranger
 
 ## Health
 konamiset = 600 ## for cheaters that actually read the code slightly
@@ -367,7 +380,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
             bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-            if not bot.nick.endswith(devbot):
+            if not bot.nick.endswith(development_bot):
                 return
 
     ## usage counter
@@ -412,8 +425,8 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < OPTTIMEOUT:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
+    if instigatoropttime < timeout_opt:
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))), instigator)
         return
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels on.", instigator)
@@ -425,8 +438,8 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < OPTTIMEOUT:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((OPTTIMEOUT - targetopttime))), instigator)
+    if instigatoropttime < timeout_opt:
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))), instigator)
         return
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels off.", instigator)
@@ -541,8 +554,8 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
     ## Small timeout
-    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or ROULETTETIMEOUT
-    if getlastusage < ROULETTETIMEOUT and not bot.nick.endswith(devbot):
+    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeout_roulette
+    if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
@@ -789,19 +802,19 @@ def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, current
     else:
         titletoset = str(titletoset)
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        if instigatorcoin < changeclasscost:
-            bot.notice(instigator + ", changing your title costs " + str(changetitlecost) + " coin. You need more funding.", instigator)
+        if instigatorcoin < class_cost:
+            bot.notice(instigator + ", changing your title costs " + str(title_cost) + " coin. You need more funding.", instigator)
         elif len(titletoset) > 10:
             bot.notice(instigator + ", purchased titles can be no longer than 10 characters", instigator)
         else:
             set_database_value(bot, instigator, 'title', titletoset)
-            adjust_database_value(bot, instigator, 'coin', -abs(changetitlecost))
+            adjust_database_value(bot, instigator, 'coin', -abs(title_cost))
             bot.say(instigator + ", your title is now " + titletoset)
 
 ## Class
 def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommandarray = ['set','change']
-    classes = get_trigger_arg(classarray, "list")
+    classes = get_trigger_arg(class_array, "list")
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     setclass = get_trigger_arg(triggerargsarray, 3).lower()
     instigatorclass = get_database_value(bot, instigator, 'class')
@@ -813,15 +826,15 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
     elif not subcommand:
         bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-    elif classtime < CLASSTIMEOUT and not bot.nick.endswith(devbot):
-        bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((CLASSTIMEOUT - instigatorclasstime)))+" to change.")
+    elif classtime < timeout_class and not bot.nick.endswith(development_bot):
+        bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((timeout_class - instigatorclasstime)))+" to change.")
     elif subcommand not in subcommandarray:
         bot.say("Invalid command. Options are set or change.")
     elif not setclass:
         bot.say("Which class would you like to use? Options are: " + classes +".")
-    elif instigatorcoin < changeclasscost and instigatorfreebie:
-        bot.say("Changing class costs " + str(changeclasscost) + " coin. You need more funding.")
-    elif setclass not in classarray:
+    elif instigatorcoin < class_cost and instigatorfreebie:
+        bot.say("Changing class costs " + str(class_cost) + " coin. You need more funding.")
+    elif setclass not in class_array:
         bot.say("Invalid class. Options are: " + classes +".")
     elif setclass == instigatorclass:
         bot.say('Your class is already set to ' +  setclass)
@@ -830,7 +843,7 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.say('Your class is now set to ' +  setclass)
         set_database_value(bot, instigator, 'classtimeout', now)
         if instigatorfreebie:
-            adjust_database_value(bot, instigator, 'coin', -abs(changeclasscost))
+            adjust_database_value(bot, instigator, 'coin', -abs(class_cost))
         else:
             set_database_value(bot, instigator, 'classfreebie', 1)
 
@@ -839,7 +852,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        if not bot.nick.endswith(devbot):
+        if not bot.nick.endswith(development_bot):
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -878,7 +891,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        if not bot.nick.endswith(devbot):
+        if not bot.nick.endswith(development_bot):
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -886,8 +899,8 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         return
     target = actualname(bot, target)
     dispmsgarray = []
-    for x in duelstatsarray:
-        if x in statsbypassarray:
+    for x in stats_view:
+        if x in stats_view_functions:
             scriptdef = str('get_' + x + '(bot,target)')
             gethowmany = eval(scriptdef)
         else:
@@ -959,7 +972,13 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         subcommanda = get_trigger_arg(triggerargsarray, 3)
         if not subcommanda:
             bot.say("What stat do you want to check highest/losest?")
-        elif subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
+            return
+        duelstatsadminarray = []
+        for i in range(1,16):
+            stats_view = eval("stats_admin"+str(i))
+            for duelstat in stats_view:
+                duelstatsadminarray.append(duelstat)
+        if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
             bot.say("This stat is either not comparable at the moment or invalid.")
         else:
             subcommanda = subcommanda.lower()
@@ -1019,16 +1038,16 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         if not typearmor or typearmor not in armorarray:
             armors = get_trigger_arg(armorarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
-        elif instigatorcoin < armorcost:
+        elif instigatorcoin < armor_cost:
             bot.say("Insufficient Funds")
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
             if getarmor and getarmor > 0:
                 bot.say("It looks like you already have a " + typearmor + ".")
             else:
-                bot.say(instigator + " bought " + typearmor + " for " + str(armorcost) + " coins.")
-                adjust_database_value(bot, instigator, 'coin', -abs(armorcost))
-                set_database_value(bot, instigator, typearmor, armormaxdurability)
+                bot.say(instigator + " bought " + typearmor + " for " + str(armor_cost) + " coins.")
+                adjust_database_value(bot, instigator, 'coin', -abs(armor_cost))
+                set_database_value(bot, instigator, typearmor, armor_durability)
     elif subcommand == 'sell':
         if not typearmor or typearmor not in armorarray:
             armors = get_trigger_arg(armorarray, 'list')
@@ -1041,8 +1060,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 bot.say("Your armor is too damaged to sell.")
                 reset_database_value(bot, instigator, typearmor)
             else:
-                durabilityremaining = getarmor / armormaxdurability
-                sellingamount = durabilityremaining * armorcost
+                durabilityremaining = getarmor / armor_durability
+                sellingamount = durabilityremaining * armor_cost
                 if sellingamount <= 0:
                     bot.say("Your armor is too damaged to sell.")
                 else:
@@ -1056,9 +1075,9 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
             instigatorclass = get_database_value(bot, instigator, 'class')
-            durabilitycompare = armormaxdurability
-            if instigatorclass == 'armormaxdurability':
-                durabilitycompare = armormaxdurabilityblacksmith
+            durabilitycompare = armor_durability
+            if instigatorclass == 'blacksmith':
+                durabilitycompare = armor_durability_blacksmith
             if not getarmor:
                 bot.say("You don't have a " + typearmor + " to repair.")
             elif getarmor >= durabilitycompare:
@@ -1070,7 +1089,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
                     costinvolved  = durabilitytorepair / durabilitycompare
-                    costinvolved = costinvolved * armorcost
+                    costinvolved = costinvolved * armor_cost
                     if instigatorcoin < costinvolved:
                         bot.say("Insufficient Funds.")
                     else:
@@ -1117,7 +1136,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         if int(tiercommandeval) > int(currenttier) and target != instigator:
             bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-            if not bot.nick.endswith(devbot):
+            if not bot.nick.endswith(development_bot):
                 return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
@@ -1125,7 +1144,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             return
         target = actualname(bot, target)
         dispmsgarray = []
-        for x in backpackarray: 
+        for x in loot_view: 
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
                 if gethowmany == 1:
@@ -1146,7 +1165,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-        elif lootitem not in lootitemsarray and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade':
             bot.notice(instigator + ", Invalid loot item.", instigator)
         elif not gethowmanylootitem:
             bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
@@ -1168,32 +1187,32 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 adjust_database_value(bot, instigator, lootitem, -1)
                 fulltarget, secondarytarget, thirdtarget = '','',''
                 fulltarget = get_trigger_arg(canduelarray, "random")
-                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage.")
+                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenade_full_damage)) + " damage.")
                 canduelarray.remove(fulltarget)
                 if canduelarray != []:
                     secondarytarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(secondarytarget)
                     if canduelarray != []:
                         thirdtarget = get_trigger_arg(canduelarray, "random")
-                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage.")
+                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenade_secondary_damage)) + " damage.")
                         canduelarray.remove(thirdtarget)
                         if canduelarray != []:
                             remainingarray = get_trigger_arg(canduelarray, "list")
                             dispmsgarray.append(remainingarray + " completely jump out of the way")
                     else:
-                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage.")
+                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenade_secondary_damage)) + " damage.")
                 painarray = []
                 damagearray = []
                 deatharray = []
                 if fulltarget != '':
                     painarray.append(fulltarget)
-                    damagearray.append(grenadefull)
+                    damagearray.append(grenade_full_damage)
                 if secondarytarget != '':
                     painarray.append(secondarytarget)
-                    damagearray.append(grenadesec)
+                    damagearray.append(grenade_secondary_damage)
                 if thirdtarget != '':
                     painarray.append(thirdtarget)
-                    damagearray.append(grenadesec)
+                    damagearray.append(grenade_secondary_damage)
                 diedinbattle = []
                 for player, damage in zip(painarray, damagearray):
                     damage = int(damage)
@@ -1262,9 +1281,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if lootitem == 'mysterypotion':
                 while int(quantity) > 0:
                     quantity = quantity - 1
-                    loot = get_trigger_arg(lootitemsarray, 'random')
+                    loot = get_trigger_arg(potion_types, 'random')
                     if loot == 'mysterypotion' or loot == 'magicpotion':
-                        loot = get_trigger_arg(nulllootitemsarray, 'random')
+                        loot = get_trigger_arg(loot_null, 'random')
                     uselootarray.append(loot)
             else:
                 while int(quantity) > 0:
@@ -1274,19 +1293,19 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             extramsg = '.'
             if lootitem == 'healthpotion':
                 if targetclass == 'barbarian':
-                    potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
+                    potionmaths = int(uselootarraytotal) * healthpotion_worth_barbarian
                 else:
-                    potionmaths = int(uselootarraytotal) * healthpotionworth
+                    potionmaths = int(uselootarraytotal) * healthpotion_worth
                 extramsg = str(" restoring " + str(potionmaths) + " health.")
             elif lootitem == 'poisonpotion':
-                poisonpotionworthb = abs(poisonpotionworth)
-                potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
+                poisonpotionworthb = abs(poisonpotion_worth)
+                potionmaths = int(uselootarraytotal) * int(poisonpotion_worthb)
                 extramsg = str(" draining " + str(potionmaths) + " health.")
             elif lootitem == 'manapotion':
                 if targetclass == 'mage':
-                    potionmaths = int(uselootarraytotal) * manapotionworthmage
+                    potionmaths = int(uselootarraytotal) * manapotion_worth_mage
                 else:
-                    potionmaths = int(uselootarraytotal) * manapotionworth
+                    potionmaths = int(uselootarraytotal) * manapotion_worth
                 extramsg = str(" restoring " + str(potionmaths) + " mana.")
             elif lootitem == 'timepotion':
                 extramsg = str(" removing timeouts.")        
@@ -1303,16 +1322,16 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for x in uselootarray:
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
-                        adjust_database_value(bot, target, 'health', healthpotionworthbarbarian)
+                        adjust_database_value(bot, target, 'health', healthpotion_worth_barbarian)
                     else:
-                        adjust_database_value(bot, target, 'health', healthpotionworth)
+                        adjust_database_value(bot, target, 'health', healthpotion_worth)
                 elif x == 'poisonpotion':
-                    adjust_database_value(bot, target, 'health', poisonpotionworth)
+                    adjust_database_value(bot, target, 'health', poisonpotion_worth)
                 elif x == 'manapotion':
                     if targetclass == 'mage':
-                        adjust_database_value(bot, target, 'mana', manapotionworthmage)
+                        adjust_database_value(bot, target, 'mana', manapotion_worth_mage)
                     else:
-                        adjust_database_value(bot, target, 'mana', manapotionworth)
+                        adjust_database_value(bot, target, 'mana', manapotion_worth)
                 elif x == 'timepotion':
                     reset_database_value(bot, target, 'lastfought')
                     for k in timepotiontargetarray:
@@ -1355,7 +1374,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         lootitem = get_trigger_arg(triggerargsarray, 3).lower()
         if not lootitem:
             bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-        elif lootitem not in lootitemsarray and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade':
             bot.notice(instigator + ", Invalid loot item.", instigator)
         elif lootitem == 'magicpotion':
             bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
@@ -1363,17 +1382,17 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             quantity = get_trigger_arg(triggerargsarray, 4).lower() or 1
             if quantity == 'all':
                 if instigatorclass == 'scavenger':
-                    quantity = int(instigatorcoin) / lootbuycostscavenger
+                    quantity = int(instigatorcoin) / loot_buy_scavenger
                 else:
-                    quantity = int(instigatorcoin) / lootbuycostscavenger
+                    quantity = int(instigatorcoin) / loot_buy_scavenger
                 if not quantity > 1:
                     bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
                     return
             quantity = int(quantity)
             if instigatorclass == 'scavenger':
-                coinrequired = lootbuycostscavenger * int(quantity)
+                coinrequired = loot_buy_scavenger * int(quantity)
             else:
-                coinrequired = lootbuycost * int(quantity)
+                coinrequired = loot_buy * int(quantity)
             if instigatorcoin < coinrequired:
                 bot.notice(instigator + ", You do not have enough coin for this action.", instigator)
             else:
@@ -1385,7 +1404,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-        elif lootitem not in lootitemsarray and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade':
             bot.notice(instigator + ", Invalid loot item.", instigator)
         elif not gethowmanylootitem:
             bot.notice(instigator + ", You do not have any " +  lootitem + "!", instigator)
@@ -1400,9 +1419,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             else:
                 quantity = int(quantity)
                 if instigatorclass == 'scavenger':
-                    reward = lootsellrewardscavenger * int(quantity)
+                    reward = loot_sell_scavenger * int(quantity)
                 else:
-                    reward = lootsellreward * int(quantity)
+                    reward = loot_sell * int(quantity)
                 adjust_database_value(bot, instigator, 'coin', reward)
                 adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                 bot.say(instigator + " sold " + str(quantity) + " "+ lootitem + "s for " +str(reward)+ " coins.")
@@ -1411,7 +1430,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         lootitemb = get_trigger_arg(triggerargsarray, 4).lower()
         if not lootitem or not lootitemb:
             bot.notice(instigator + ", What do you want to " + str(lootcommand) + "?", instigator)
-        elif lootitem not in lootitemsarray or lootitemb not in lootitemsarray:
+        elif lootitem not in potion_types or lootitemb not in potion_types:
             bot.notice(instigator + ", Invalid loot item.", instigator)
         elif lootitem == 'grenade' or lootitemb == 'grenade':
             bot.notice(instigator + ", You can't trade for grenades.", instigator)
@@ -1423,9 +1442,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if lootitem == 'magicpotion':
                 tradingratio = 1
             elif instigatorclass == 'scavenger':
-                tradingratio = traderatioscavenger
+                tradingratio = loot_trade_scavenger
             else:
-                tradingratio = traderatio
+                tradingratio = loot_trade
             if quantity == 'all':
                 quantity = gethowmanylootitem / tradingratio
             if quantity < 0:
@@ -1440,8 +1459,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 quantity = int(quantity)
                 bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
     else:
-        transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
-        bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
+        transactiontypesarraylist = get_trigger_arg(loot_transaction_types, "list")
+        bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + loot_transaction_typeslist, instigator)
             
 ## Weaponslocker ## TODO
 def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -1491,8 +1510,8 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
             bot.notice(weaponchange + " is already in weapons locker.", instigator)
         elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
             bot.notice(weaponchange + " is already not in weapons locker.", instigator)
-        elif adjustmentdirection == 'add' and len(weaponchange) > weaponmaxlength:
-            bot.notice("That weapon exceeds the character limit of "+str(weaponmaxlength)+".", instigator)
+        elif adjustmentdirection == 'add' and len(weaponchange) > weapon_name_length:
+            bot.notice("That weapon exceeds the character limit of "+str(weapon_name_length)+".", instigator)
         else:
             if adjustmentdirection == 'add':
                 weaponlockerstatus = 'now'
@@ -1507,8 +1526,8 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
     instigatorclass = get_database_value(bot, instigator, 'class')
     instigatormana = get_database_value(bot, instigator, 'mana')
     magicusage = get_trigger_arg(triggerargsarray, 2)
-    if not magicusage or magicusage not in magicoptionsarray:
-        magicoptions = get_trigger_arg(magicoptionsarray, 'list')
+    if not magicusage or magicusage not in magic_types:
+        magicoptions = get_trigger_arg(magic_types, 'list')
         bot.say('Magic uses include: '+ magicoptions)
     else:
         targnum = get_trigger_arg(triggerargsarray, 3).lower()
@@ -1552,13 +1571,13 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
             return
         if magicusage == 'curse':
-            manarequired = manarequiredmagiccurse
+            manarequired = magic_mana_required_curse
         elif magicusage == 'shield':
-            manarequired = manarequiredmagicshield
+            manarequired = magic_mana_required_shield
         else:
             return
         if instigatorclass == 'mage':
-            manarequired = manarequired * magemanamagiccut
+            manarequired = manarequired * magic_usage_mage
         actualmanarequired = int(manarequired) * int(quantity)
         if int(actualmanarequired) > int(instigatormana):
             manamath = int(int(actualmanarequired) - int(instigatormana))
@@ -1568,13 +1587,13 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             manarequired = -abs(actualmanarequired)
             adjust_database_value(bot, instigator, 'mana', manarequired)
             if magicusage == 'curse':
-                damagedealt = magiccursedamage * int(quantity)
-                set_database_value(bot, target, 'curse', curseduration)
-                specialtext = str("which forces " + target + " to lose the next " + str(curseduration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
+                damagedealt = magic_curse_damage * int(quantity)
+                set_database_value(bot, target, 'curse', magic_curse_duration)
+                specialtext = str("which forces " + target + " to lose the next " + str(magic_curse_duration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
                 adjust_database_value(bot, target, 'health', int(damagedealt))
             elif magicusage == 'shield':
-                damagedealt = magicshielddamage * int(quantity)
-                actualshieldduration = int(quantity) * int(shieldduration)
+                damagedealt = magic_shield_health * int(quantity)
+                actualshieldduration = int(quantity) * int(magic_shield_duration)
                 adjust_database_value(bot, target, 'shield', actualshieldduration)
                 specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
                 adjust_database_value(bot, target, 'health', int(damagedealt))
@@ -1592,7 +1611,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    if subcommand not in commandarray_all_valid and subcommand != 'konami' and subcommand != 'bugbounty':
+    if subcommand not in commandarray_all_valid and subcommand != 'konami' and subcommand != 'bugbounty' and subcommand != 'channel':
         bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
         return
     if subcommand == 'on' or subcommand == 'off':
@@ -1645,8 +1664,8 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + ", This looks to be an invalid command.")
     elif subcommand == 'bugbounty':
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
-        bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
-        adjust_database_value(bot, target, 'coin', bugbountycoinaward)
+        bot.say(target + ' is awarded ' + str(bugbounty_reward) + " coin for finding a bug in duels.")
+        adjust_database_value(bot, target, 'coin', bugbounty_reward)
     elif subcommand == 'konami':
         command = get_trigger_arg(triggerargsarray, 3).lower()
         if not command:
@@ -1687,24 +1706,24 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         subcommand = get_trigger_arg(triggerargsarray, 4)
         statset = get_trigger_arg(triggerargsarray, 5)
         newvalue = get_trigger_arg(triggerargsarray, 6)
+        duelstatsadminarray = []
+        for i in range(1,16):
+            stats_view = eval("stats_admin"+str(i))
+            for duelstat in stats_view:
+                duelstatsadminarray.append(duelstat)
         if not target:
             bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-        elif target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
+        elif target.lower() not in [u.lower() for u in botvisibleusers] and target != 'everyone':
             bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
         elif not subcommand:
             bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
-        elif subcommand not in statsadminchangearray:
+        elif subcommand not in stat_admin_commands:
             bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
         elif not statset:
             bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
         elif statset not in duelstatsadminarray and statset != 'all':
             bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-        elif not trigger.admin:
-            bot.notice(instigator + "This is an admin only function.", instigator)
         else:
-            if target.lower() in commandarray_all_valid:
-                bot.notice("It looks like that nick is unable to play duels.",instigator)
-                return
             target = actualname(bot, target)
             if subcommand == 'reset':
                 newvalue = None
@@ -1714,7 +1733,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
                 reset_database_value(bot, duelrecorduser, 'levelingtier')
                 reset_database_value(bot, duelrecorduser, 'specevent')
-                for u in bot.users:
+                for u in botvisibleusers:
                     if statset == 'all':
                          for x in duelstatsadminarray:
                              set_database_value(bot, u, x, newvalue)
@@ -1733,28 +1752,25 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     set_database_value(bot, target, statset, newvalue)
                 bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-    elif subcommand == 'colosseum':
-        bot.say("TODO")
-    elif subcommand == 'assault':
-        bot.say("TODO")
-    elif subcommand == 'usage':
-        bot.say("TODO")
-    elif subcommand == 'title':
-        bot.say("TODO")
-    elif subcommand == 'class':
-        bot.say("TODO")
-    elif subcommand == 'streaks':
-        bot.say("TODO")
-    elif subcommand == 'armor':
-        bot.say("TODO")
-    elif subcommand == 'bounty':
-        bot.say("TODO")
-    elif subcommand == 'loot':
-        bot.say("TODO")
-    elif subcommand == 'weaponslocker':
-        bot.say("TODO")
-    elif subcommand == 'magic':
-        bot.say("TODO")
+    elif subcommand == 'channel':
+        if not settingchange:
+            bot.notice(instigator + ", What channel setting do you want to change?", instigator)
+        elif settingchange == 'lastassault':
+            reset_database_value(bot, bot.nick, 'lastfullroomassultinstigator')
+            bot.notice("Last Assault Instigator removed.", instigator)
+            reset_database_value(bot, bot.nick, 'lastfullroomassult')
+        elif settingchange == 'lastroman':
+            reset_database_value(bot, bot.nick, 'lastfullroomcolosseuminstigator')
+            bot.notice("Last Colosseum Instigator removed.", instigator)
+            reset_database_value(bot, bot.nick, 'lastfullroomcolosseum')
+        elif settingchange == 'lastinstigator':
+            reset_database_value(bot, bot.nick, 'lastinstigator')
+            bot.notice("Last Fought Instigator removed.", instigator)
+        elif settingchange == 'halfhoursim':
+            bot.notice("Simulating the half hour automated events.", instigator)
+            halfhourtimer(bot)
+        else:
+            bot.notice("Must be an invalid command.", instigator)
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
 
@@ -1843,13 +1859,13 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    if bot.nick.endswith(devbot):
+    if bot.nick.endswith(development_bot):
         validtarget = 1
         return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
-    if instigator == channellastinstigator and instigatortime <= INSTIGATORTIMEOUT:
-        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
+    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
+        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
     
     ## Instigator can't duel the same person twice in a row, unless there are only two people in the channel
@@ -1858,18 +1874,18 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## Instigator Timeout
-    if instigatortime <= USERTIMEOUT:
-        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - instigatortime)))+".")
+    if instigatortime <= timeout_user_duels:
+        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - instigatortime)))+".")
         return validtarget, validtargetmsg
     
     ## Target Timeout
-    if targettime <= USERTIMEOUT:
-        validtargetmsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime)))+".")
+    if targettime <= timeout_user_duels:
+        validtargetmsg = str(target + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - targettime)))+".")
         return validtarget, validtargetmsg
     
     ## Channel Timeout
-    if channeltime <= CHANTIMEOUT:
-        validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+    if channeltime <= timeout_channel_duels:
+        validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((timeout_channel_duels - channeltime)))+".")
         return validtarget, validtargetmsg
     
     validtarget = 1
@@ -1887,7 +1903,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    if bot.nick.endswith(devbot):
+    if bot.nick.endswith(development_bot):
        validtarget = 1
        return validtarget, validtargetmsg
     
@@ -1895,7 +1911,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
         return validtarget, validtargetmsg
     
-    timeouteval = eval(commandortarget.upper() + "TIMEOUT")
+    timeouteval = eval("timeout_"+commandortarget.loser())
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
     getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
     
@@ -1938,7 +1954,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     armorloser = get_database_value(bot, nick, armortype) or 0
     if armorloser and damage > 0:
         adjust_database_value(bot, loser, armortype, -1)
-        damagepercent = randint(1, armorhitpercentage) / 100
+        damagepercent = randint(1, armor_relief_percentage) / 100
         damagereduced = damage * damagepercent
         damagereduced = int(damagereduced)
         damage = damage - damagereduced
@@ -1976,7 +1992,7 @@ def whokilledwhom(bot, winner, loser):
         winnertextarray.append(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
-        for x in lootitemsarray:
+        for x in potion_types:
             gethowmany = get_database_value(bot, loser, x)
             ## TODO array of loot won
             adjust_database_value(bot, winner, x, gethowmany)
@@ -2002,7 +2018,7 @@ def suicidekill(bot,loser):
     ## rangers don't lose their stuff
     loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
     if loserclass != 'ranger':
-        for x in lootitemsarray:
+        for x in potion_types:
             reset_database_value(bot, loser, x)
         suicidetextarray.append(loser + " loses all loot.")
     return suicidetextarray
@@ -2034,132 +2050,8 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 bot.msg(user, combinedline)
             else:
                 bot.notice(combinedline, user)
-    
-###############
-## OLD STUFF ##
-###############
 
-def allthingsmustdie():
-    ## Commands that can't be run via privmsg
-    mustbeinchannelarray = []
-    ## Initial ARGS of importance
-    #dowedisplay = 0
-    #displaymessage = ''
-    #typeofduel = 'target'
-    ## User/channel Arrays
-    #canduelarray, targetarray = [], []
-    ## bot does not need stats or backpack items
-    #refreshbot(bot)
-    ## Determine if the arg after .duel is a target or a command
-    if commandortarget.lower() in commandarray_all_valid:
-        commandortarget = commandortarget.lower()
-        ## usage counter
-        adjust_database_value(bot, instigator, 'usage', 1)
-        if not commandortarget:
-            bot.say("temp fix")
-
-        ## Admin Commands
-        elif commandortarget == 'admin':
-            subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-            settingchange = get_trigger_arg(triggerargsarray, 3).lower()
-            if not subcommand:
-                bot.notice(instigator + ", What Admin change do you want to make?", instigator)
-            
-            elif subcommand == 'channel':
-                if not settingchange:
-                    bot.notice(instigator + ", What channel setting do you want to change?", instigator)
-                elif settingchange == 'lastassault':
-                    reset_database_value(bot, bot.nick, 'lastfullroomassultinstigator')
-                    bot.notice("Last Assault Instigator removed.", instigator)
-                    reset_database_value(bot, bot.nick, 'lastfullroomassult')
-                elif settingchange == 'lastroman':
-                    reset_database_value(bot, bot.nick, 'lastfullroomcolosseuminstigator')
-                    bot.notice("Last Colosseum Instigator removed.", instigator)
-                    reset_database_value(bot, bot.nick, 'lastfullroomcolosseum')
-                elif settingchange == 'lastinstigator':
-                    reset_database_value(bot, bot.nick, 'lastinstigator')
-                    bot.notice("Last Fought Instigator removed.", instigator)
-                elif settingchange == 'halfhoursim':
-                    bot.notice("Simulating the half hour automated events.", instigator)
-                    halfhourtimer(bot)
-                else:
-                    bot.notice("Must be an invalid command.", instigator)
-            elif subcommand == 'stats':
-                incorrectdisplay = "A correct command use is .duel admin stats target set/reset stat"
-                target = get_trigger_arg(triggerargsarray, 3)
-                subcommand = get_trigger_arg(triggerargsarray, 4)
-                statset = get_trigger_arg(triggerargsarray, 5)
-                newvalue = get_trigger_arg(triggerargsarray, 6)
-                if not target:
-                    bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
-                elif target.lower() not in [u.lower() for u in bot.users] and target != 'everyone':
-                    bot.notice(instigator + ", It looks like " + str(target) + " is either not here, or not a valid person.", instigator)
-                elif not subcommand:
-                    bot.notice(instigator + ", Subcommand Missing. " + incorrectdisplay, instigator)
-                elif subcommand not in statsadminchangearray:
-                    bot.notice(instigator + ", Invalid subcommand. " + incorrectdisplay, instigator)
-                elif not statset:
-                    bot.notice(instigator + ", Stat Missing. " + incorrectdisplay, instigator)
-                elif statset not in duelstatsadminarray and statset != 'all':
-                    bot.notice(instigator + ", Invalid stat. " + incorrectdisplay, instigator)
-                elif not trigger.admin:
-                    bot.notice(instigator + "This is an admin only function.", instigator)
-                else:
-                    if target.lower() in commandarray_all_valid:
-                        bot.notice("It looks like that nick is unable to play duels.",instigator)
-                        return
-                    target = actualname(bot, target)
-                    if subcommand == 'reset':
-                        newvalue = None
-                    if subcommand == 'set' and newvalue == None:
-                        bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
-                    elif target == 'everyone':
-                        set_database_value(bot, bot.nick, 'chanstatsreset', now)
-                        reset_database_value(bot, bot.nick, 'levelingtier')
-                        reset_database_value(bot, bot.nick, 'specevent')
-                        for u in bot.users:
-                            if statset == 'all':
-                                for x in duelstatsadminarray:
-                                    set_database_value(bot, u, x, newvalue)
-                            else:
-                                set_database_value(bot, u, statset, newvalue)
-                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-                    else:
-                        try:
-                            if newvalue.isdigit():
-                                newvalue = int(newvalue)
-                        except AttributeError:
-                            newvalue = newvalue
-                        if statset == 'all':
-                            for x in duelstatsadminarray:
-                                set_database_value(bot, target, x, newvalue)
-                        else:
-                            set_database_value(bot, target, statset, newvalue)
-                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
-
-        ## Command Valid, but not coded yet
-        else:
-            bot.notice(instigator + " This command is a Work In Progress.", instigator)
-             
-    ## not in the room
-    elif commandortarget.lower() not in [u.lower() for u in bot.users]:
-        bot.notice(instigator + ", It looks like " + str(commandortarget) + " is either not here, or not a valid person.", instigator)
-
-    ## warning if user doesn't have duels enabled
-    elif commandortarget.lower() not in [x.lower() for x in dueloptedinarray] and commandortarget != bot.nick:
-        commandortarget = actualname(bot, commandortarget)
-        bot.notice(instigator + ", It looks like " + commandortarget + " has duels off.", instigator)
-    
-    ## Duels must be in a channel
-    elif not inchannel.startswith("#"):
-        bot.notice(instigator + ", Duels must be in a channel.", instigator)
-
-    else:
-        
-
-    ## bot does not need stats or backpack items
-        refreshbot(bot)
-
+### Duels
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
     
 
@@ -2234,7 +2126,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         lootwinnermsg = ''
         randominventoryfind = randominventory(bot, instigator)
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
-            loot = get_trigger_arg(lootitemsarray, 'random')
+            loot = get_trigger_arg(potion_types, 'random')
             loot_text = eval(loot+"dispmsg")
             lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
             combattextarraycomplete.append(lootwinnermsg)
@@ -2335,13 +2227,13 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
 
         ## Update XP points
         if yourclasswinner == 'ranger':
-            XPearnedwinner = XPearnedwinnerranger
+            XPearnedwinner = xp_winner_ranger
         else:
-            XPearnedwinner = XPearnedwinnerstock
+            XPearnedwinner = xp_winner
         if yourclassloser == 'ranger':
-            XPearnedloser = XPearnedloserranger
+            XPearnedloser = xp_loser_ranger
         else:
-            XPearnedloser = XPearnedloserstock
+            XPearnedloser = xp_loser
         if instigator != target:
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
@@ -2391,8 +2283,8 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
         if speceventtotal >= 49:
             set_database_value(bot, bot.nick, 'specevent', 1)
-            speceventtext = str(instigator + " triggered the special event! Winnings are "+str(speceventreward)+" Coins!")
-            adjust_database_value(bot, instigator, 'coin', speceventreward)
+            speceventtext = str(instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+            adjust_database_value(bot, instigator, 'coin', duel_special_event)
             combattextarraycomplete.append(speceventtext)
         else:
             adjust_database_value(bot, bot.nick, 'specevent', 1)
@@ -2434,7 +2326,7 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         
         ## Random Bonus
         if typeofduel == 'random' and winner == instigator:
-            adjust_database_value(bot, winner, 'coin', randomcoinaward)
+            adjust_database_value(bot, winner, 'coin', random_payout)
             
         ## End Of assault
         if typeofduel == 'assault':
@@ -2462,8 +2354,8 @@ def halfhourtimer(bot):
     
     ## Tier the stats
     tierratio = tierratio_level(bot)
-    healthregencurrent = tierratio * healthregenmax
-    magemanaregencurrent = tierratio * magemanaregenmax
+    healthregencurrent = tierratio * halfhour_regen_health_max
+    magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
     
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -2482,7 +2374,7 @@ def halfhourtimer(bot):
             ## Log out users that aren't playing
             lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
             lastping = get_timesince_duels(bot, u, 'lastping') or 0
-            if AUTOLOGOUT < lastcommandusedtime and lastping < AUTOLOGOUT:
+            if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
                 logoutarray.append(u)
                 reset_database_value(bot, u, 'lastping')
             else:  
@@ -2498,11 +2390,11 @@ def halfhourtimer(bot):
                     randomuarray.append(u)
 
                 ## award coin to all
-                adjust_database_value(bot, u, 'coin', halfhourcoinaward)
+                adjust_database_value(bot, u, 'coin', halfhour_coin)
 
                 ## health regenerates for all
                 if int(health) < healthregencurrent:
-                    adjust_database_value(bot, u, 'health', healthregen)
+                    adjust_database_value(bot, u, 'health', halfhour_regen_health)
                     health = get_database_value(bot, u, 'health')
                     if int(health) > healthregencurrent:
                         set_database_value(bot, u, 'health', healthregencurrent)
@@ -2510,7 +2402,7 @@ def halfhourtimer(bot):
                 ## mages regen mana
                 if uclass == 'mage':
                     if int(mana) < magemanaregencurrent:
-                        adjust_database_value(bot, u, 'mana', magemanaregen)
+                        adjust_database_value(bot, u, 'mana', halfhour_regen_mage_mana)
                         mana = get_database_value(bot, u, 'mana')
                         if int(mana) > magemanaregencurrent:
                             set_database_value(bot, u, 'mana', magemanaregencurrent)
@@ -2554,20 +2446,20 @@ def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
             totalduelusersarray.append(u)
     howmanyduelsers = len(totalduelusersarray)
     target = actualname(bot, target)
-    if instigator == channellastinstigator and instigatortime <= INSTIGATORTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - instigatortime)))+" .")
-    elif target == instigatorlastfought and not bot.nick.endswith(devbot) and howmanyduelsers > 2:
+    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator and not bot.nick.endswith(development_bot):
+        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
+    elif target == instigatorlastfought and not bot.nick.endswith(development_bot) and howmanyduelsers > 2:
         displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
     elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ", It looks like you have disabled duels. Run .duel on to re-enable.")
     elif target.lower() not in [x.lower() for x in dueloptedinarray]:
         displaymsg = str(instigator + ', It looks like ' + target + ' has disabled duels.')
-    elif instigatortime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - instigatortime)))+".")
-    elif targettime <= USERTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - targettime)))+".")
-    elif channeltime <= CHANTIMEOUT and not bot.nick.endswith(devbot):
-        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+    elif instigatortime <= timeout_user_duels and not bot.nick.endswith(development_bot):
+        displaymsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - instigatortime)))+".")
+    elif targettime <= timeout_user_duels and not bot.nick.endswith(development_bot):
+        displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - targettime)))+".")
+    elif channeltime <= timeout_channel_duels and not bot.nick.endswith(development_bot):
+        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((timeout_channel_duels - channeltime)))+".")
     else:
         displaymsg = ''
         executedueling = 1
@@ -2589,8 +2481,8 @@ def nicktitles(bot, nick, channel):
             nickname = str(nicktitle+" " + nickname)
         elif nick.lower() in bot.config.core.owner.lower():
             nickname = str("The Legendary " + nickname)
-    ## botdevteam
-        elif nick in botdevteam:
+    ## development_team
+        elif nick in development_team:
             nickname = str("The Extraordinary " + nickname)
     ## OP
         elif bot.privileges[channel.lower()][nick.lower()] == OP:
@@ -2745,8 +2637,8 @@ def get_timesince_duels(bot, nick, databasekey):
 
 def get_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout')
-    if time_since < USERTIMEOUT:
-        timediff = str(hours_minutes_seconds((USERTIMEOUT - time_since)))
+    if time_since < timeout_user_duels:
+        timediff = str(hours_minutes_seconds((timeout_user_duels - time_since)))
     else:
         timediff = 0
     return timediff
@@ -2820,7 +2712,7 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, instigator, 'class') or 'notclassy'
     if yourclass == 'scavenger':
-        randomfindchance = randint(scavegerfindpercent, 100)
+        randomfindchance = randint(duel_advantage_scavenger_loot_find, 100)
     else:
         randomfindchance = randint(0, 120)
     randominventoryfind = 'false'
@@ -2869,9 +2761,9 @@ def weaponofchoice(bot, nick):
     if not howmanyweapons > 1:
         reset_database_value(bot, nick, 'lastweaponused')
     for x in weaponslist:
-        if len(x) > weaponmaxlength:
+        if len(x) > weapon_name_length:
             adjust_database_array(bot, nick, [x], 'weaponslocker', 'del')
-        if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weaponmaxlength:
+        if x not in lastusedweaponarry and x != lastusedweapon and len(x) <= weapon_name_length:
             weaponslistselect.append(x)
     if weaponslistselect == [] and weaponslist != []:
         reset_database_value(bot, nick, 'lastweaponusedarray')
@@ -2953,12 +2845,12 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
     elif winner == loser:
         winnername = loser
         losername = "themself"
-        striketype = get_trigger_arg(duelhittypesarray, 'random')
+        striketype = get_trigger_arg(duel_hit_types, 'random')
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
     else:
         winnername = winner
         losername = loser
-        striketype = get_trigger_arg(duelhittypesarray, 'random')
+        striketype = get_trigger_arg(duel_hit_types, 'random')
         bodypart = get_trigger_arg(duelbodypartsarray, 'random')
 
     ## Armortype to check
@@ -2974,15 +2866,15 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
     
     ## Bot deals a set amount
     elif winner == bot.nick:
-        damage = botdamage
+        damage = bot_damage
 
     ## Barbarians get extra damage (minimum)
     elif winnerclass == 'barbarian':
-        damage = randint(barbarianminimumdamge, 120)
+        damage = randint(duel_advantage_barbarian_min_damage, 120)
     
     ## vampires have a minimum damage
     elif winnerclass == 'vampire' and winner != loser:
-        damage = randint(0, vampiremaximumdamge)
+        damage = randint(0, duel_disadvantage_vampire_max_damage)
     
     ## All Other Players
     else:
@@ -3007,16 +2899,16 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
         
     ## Berserker Rage
     if winnerclass == 'barbarian' and winner != loser:
-        rageodds = randint(1, 12)
+        rageodds = randint(1, duel_advantage_barbarian_rage_chance)
         if rageodds == 1:
-            extradamage = randint(1, 25)
+            extradamage = randint(1, duel_advantage_barbarian_rage_max)
             damagetext = str(winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage.")
             damage = damage + extradamage
             damagetextarray.append(damagetext)
     
     ## Paladin deflect
     if loserclass == 'paladin' and damage > 0 and winner != 'duelsroulettegame' and winner != loser:
-        deflectodds = randint(1, 12)
+        deflectodds = randint(1, duel_advantage_paladin_deflect_chance)
         if deflectodds == 1:
             damageb = damage
             damage = 0
@@ -3032,7 +2924,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
                 reset_database_value(bot, loser, 'shield')
             damagetext = str(winner + " absorbs " + str(absorbedb) + " of the damage. ")
             damagetextarray.append(damagetext)
-    
+
     ## Shield resistance
     if shieldloser and damage > 0 and winner != loser:
         damagemath = int(shieldloser) - damage
@@ -3051,7 +2943,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
     armorloser = get_database_value(bot, loser, armortype) or 0
     if armorloser and damage > 0 and winner != loser:
         adjust_database_value(bot, loser, armortype, -1)
-        damagepercent = randint(1, armorhitpercentage) / 100
+        damagepercent = randint(1, armor_relief_percentage) / 100
         damagereduced = damage * damagepercent
         damagereduced = int(damagereduced)
         damage = damage - damagereduced
@@ -3090,7 +2982,7 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
     
     ## Knight
     if loserclass == 'knight' and diaglevel != 2 and winner != 'duelsroulettegame' and winner != loser:
-        retaliateodds = randint(1, 12)
+        retaliateodds = randint(1, duel_advantage_knight_retaliate_chance)
         if retaliateodds == 1:
             weaponb = weaponofchoice(bot, loser)
             weaponb = weaponformatter(bot, weaponb)
