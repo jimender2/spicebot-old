@@ -407,8 +407,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel):
     
     ## Same person can't instigate twice in a row
-    if typeofduel != 'colosseum':
-        set_database_value(bot, bot.nick, 'lastinstigator', instigator)
+    set_database_value(bot, bot.nick, 'lastinstigator', instigator)
     
     ## Starting Tier
     currenttierstart = get_database_value(bot, bot.nick, 'levelingtier') or 0
@@ -2219,8 +2218,6 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
     #    return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
-    bot.say(instigator + " " + channellastinstigator)
-    bot.say(str(instigatortime) + " " + str(timeout_duel_instigator))
     if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
