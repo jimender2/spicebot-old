@@ -2248,11 +2248,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         combattextarraycomplete.append(damagetext)
         
         ## Vampires gain health from wins
-        if winnerclass == 'vampire' and winner != loser:
+        if classwinner == 'vampire' and winner != loser:
             adjust_database_value(bot, winner, 'health', damage)
         
         ## Berserker Rage
-        if winnerclass == 'barbarian' and winner != loser:
+        if classwinner == 'barbarian' and winner != loser:
             rageodds = randint(1, duel_advantage_barbarian_rage_chance)
             if rageodds == 1:
                 extradamage = randint(1, duel_advantage_barbarian_rage_max)
