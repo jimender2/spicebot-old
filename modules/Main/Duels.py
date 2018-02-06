@@ -1191,6 +1191,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
                     if remainingarray == '':
                         dispmsgarray.append(remainingarray + " completely jump out of the way")
+                diedinbattle = []
                 for player, damage in zip(painarray, damagearray):
                     damage = int(damage)
                     damagescale = tierratio_level(bot)
