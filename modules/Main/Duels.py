@@ -725,22 +725,14 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
     if targetcom in commandarray_all_valid:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         targetname = target
-        if targetcom == 'channel':
-            targetcom = bot.nick
-        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-        if not validtarget:
-            bot.notice(validtargetmsg, instigator)
-            return
+        if target == 'channel':
+            target = bot.nick
         totaluses = get_database_value(bot, target, 'usage_'+targetcom)
         target = actualname(bot, target)
         bot.say(target + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
         return
     if targetcom == 'channel':
         targetcom = bot.nick
-    validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-    if not validtarget:
-        bot.notice(validtargetmsg, instigator)
-        return
     totaluses = get_database_value(bot, targetcom, 'usage_total')
     targetcom = actualname(bot, targetcomname)
     bot.say(targetcom + " has used duels " + str(totaluses) + " times.")
