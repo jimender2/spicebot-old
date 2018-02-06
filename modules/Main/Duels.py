@@ -1141,9 +1141,6 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         else:
             dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
-    elif lootcommand not in transactiontypesarray:
-        transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
-        bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
     elif lootcommand == 'use':
         lootitem = get_trigger_arg(triggerargsarray, 3).lower()
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
@@ -1239,123 +1236,121 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             elif targnum == 'all':
                 target = instigator
                 quantity = int(gethowmanylootitem)
-            if not target or not quantity:
+            if not quantity:
                 bot.say("Invalid command.")
                 return
-            if target.lower() not in [x.lower() for x in dueloptedinarray]:
-                bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
+            if target == bot.nick:
+                bot.notice(instigator + ", I am immune to " + lootitem, instigator)
                 return
-            elif target.lower() not in [u.lower() for u in bot.users]:
-                bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
+            
+            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+            if not validtarget:
+                bot.notice(validtargetmsg, instigator)
                 return
+            target = actualname(bot, target)
             targetclass = get_database_value(bot, target, 'class') or 'notclassy'
             if int(gethowmanylootitem) < int(quantity):
                 bot.notice(instigator + ", You do not have enough " +  lootitem + " to use this command!", instigator)
-            elif target == bot.nick:
-                bot.notice(instigator + ", I am immune to " + lootitem, instigator)
-            elif target.lower() != instigator.lower() and targetclass == 'fiend':
+                return
+            if target.lower() != instigator.lower() and targetclass == 'fiend':
                 bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use potions.", instigator)
                 adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+                return
+            uselootarray = []
+            adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+            lootusedeaths = 0
+            if lootitem == 'mysterypotion':
+                while int(quantity) > 0:
+                    quantity = quantity - 1
+                    loot = get_trigger_arg(lootitemsarray, 'random')
+                    if loot == 'mysterypotion' or loot == 'magicpotion':
+                        loot = get_trigger_arg(nulllootitemsarray, 'random')
+                    uselootarray.append(loot)
             else:
-                if target.lower() in commandarray_all_valid:
-                    bot.notice("It looks like that nick is unable to play duels.",instigator)
-                    return
-                target = actualname(bot, target)
-                uselootarray = []
-                adjust_database_value(bot, instigator, lootitem, -abs(quantity))
-                lootusedeaths = 0
-                if lootitem == 'mysterypotion':
-                    while int(quantity) > 0:
-                        quantity = quantity - 1
-                        loot = get_trigger_arg(lootitemsarray, 'random')
-                        if loot == 'mysterypotion' or loot == 'magicpotion':
-                            loot = get_trigger_arg(nulllootitemsarray, 'random')
-                        uselootarray.append(loot)
+                while int(quantity) > 0:
+                    quantity = quantity - 1
+                    uselootarray.append(lootitem)
+            uselootarraytotal = len(uselootarray)
+            extramsg = '.'
+            if lootitem == 'healthpotion':
+                if targetclass == 'barbarian':
+                    potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
                 else:
-                    while int(quantity) > 0:
-                        quantity = quantity - 1
-                        uselootarray.append(lootitem)
-                uselootarraytotal = len(uselootarray)
-                extramsg = '.'
-                if lootitem == 'healthpotion':
+                    potionmaths = int(uselootarraytotal) * healthpotionworth
+                extramsg = str(" restoring " + str(potionmaths) + " health.")
+            elif lootitem == 'poisonpotion':
+                poisonpotionworthb = abs(poisonpotionworth)
+                potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
+                extramsg = str(" draining " + str(potionmaths) + " health.")
+            elif lootitem == 'manapotion':
+                if targetclass == 'mage':
+                    potionmaths = int(uselootarraytotal) * manapotionworthmage
+                else:
+                    potionmaths = int(uselootarraytotal) * manapotionworth
+                extramsg = str(" restoring " + str(potionmaths) + " mana.")
+            elif lootitem == 'timepotion':
+                extramsg = str(" removing timeouts.")        
+            if target == instigator:
+                if int(uselootarraytotal) == 1:
+                    mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
+                else:
+                    mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
+            else:
+                if int(uselootarraytotal) == 1:
+                    mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + extramsg)
+                else:
+                    mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +extramsg)
+            for x in uselootarray:
+                if x == 'healthpotion':
                     if targetclass == 'barbarian':
-                        potionmaths = int(uselootarraytotal) * healthpotionworthbarbarian
+                        adjust_database_value(bot, target, 'health', healthpotionworthbarbarian)
                     else:
-                        potionmaths = int(uselootarraytotal) * healthpotionworth
-                    extramsg = str(" restoring " + str(potionmaths) + " health.")
-                elif lootitem == 'poisonpotion':
-                    poisonpotionworthb = abs(poisonpotionworth)
-                    potionmaths = int(uselootarraytotal) * int(poisonpotionworthb)
-                    extramsg = str(" draining " + str(potionmaths) + " health.")
-                elif lootitem == 'manapotion':
+                        adjust_database_value(bot, target, 'health', healthpotionworth)
+                elif x == 'poisonpotion':
+                    adjust_database_value(bot, target, 'health', poisonpotionworth)
+                elif x == 'manapotion':
                     if targetclass == 'mage':
-                        potionmaths = int(uselootarraytotal) * manapotionworthmage
+                        adjust_database_value(bot, target, 'mana', manapotionworthmage)
                     else:
-                        potionmaths = int(uselootarraytotal) * manapotionworth
-                    extramsg = str(" restoring " + str(potionmaths) + " mana.")
-                elif lootitem == 'timepotion':
-                    extramsg = str(" removing timeouts.")        
-                if target == instigator:
-                    if int(uselootarraytotal) == 1:
-                        mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
+                        adjust_database_value(bot, target, 'mana', manapotionworth)
+                elif x == 'timepotion':
+                    reset_database_value(bot, target, 'lastfought')
+                    for k in timepotiontargetarray:
+                        targetequalcheck = get_database_value(bot, bot.nick, k) or bot.nick
+                        if targetequalcheck == target:
+                            reset_database_value(bot, bot.nick, k)
+                    for j in timepotiontimeoutarray:
+                        reset_database_value(bot, target, j)
+                    reset_database_value(bot, bot.nick, 'timeout')
+                targethealth = get_database_value(bot, target, 'health')
+                if targethealth <= 0:
+                    lootusedeaths = lootusedeaths + 1
+                    if target == instigator:
+                        deathmsgb = suicidekill(bot,loser)
                     else:
-                        mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
+                        deathmsgb = whokilledwhom(bot, instigator, target) or ''
+                    mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
+            if lootitem == 'mysterypotion':
+                actualpotionmathedarray = []
+                alreadyprocessedarray = []
+                for fluid in uselootarray:
+                    if fluid not in alreadyprocessedarray:
+                        alreadyprocessedarray.append(fluid)
+                        countedeval = uselootarray.count(fluid)
+                        if countedeval > 1:
+                           actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
+                        else:
+                            actualpotionmathedarray.append(fluid)
+                postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
+                mainlootusemessage = str(mainlootusemessage + " Potion(s) used: " + postionsusedarray)
+            if lootusedeaths > 0:
+                if lootusedeaths == 1:
+                    mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
                 else:
-                    if int(uselootarraytotal) == 1:
-                        mainlootusemessage = str(instigator + ' uses ' + lootitem + ' on ' + target + extramsg)
-                    else:
-                        mainlootusemessage = str(instigator + " used " + str(uselootarraytotal) + " " + lootitem + "s on " + target +extramsg)
-                for x in uselootarray:
-                    if x == 'healthpotion':
-                        if targetclass == 'barbarian':
-                            adjust_database_value(bot, target, 'health', healthpotionworthbarbarian)
-                        else:
-                            adjust_database_value(bot, target, 'health', healthpotionworth)
-                    elif x == 'poisonpotion':
-                        adjust_database_value(bot, target, 'health', poisonpotionworth)
-                    elif x == 'manapotion':
-                        if targetclass == 'mage':
-                            adjust_database_value(bot, target, 'mana', manapotionworthmage)
-                        else:
-                            adjust_database_value(bot, target, 'mana', manapotionworth)
-                    elif x == 'timepotion':
-                        reset_database_value(bot, target, 'lastfought')
-                        for k in timepotiontargetarray:
-                            targetequalcheck = get_database_value(bot, bot.nick, k) or bot.nick
-                            if targetequalcheck == target:
-                                reset_database_value(bot, bot.nick, k)
-                        for j in timepotiontimeoutarray:
-                            reset_database_value(bot, target, j)
-                        reset_database_value(bot, bot.nick, 'timeout')
-                    targethealth = get_database_value(bot, target, 'health')
-                    if targethealth <= 0:
-                        lootusedeaths = lootusedeaths + 1
-                        if target == instigator:
-                            deathmsgb = suicidekill(bot,loser)
-                        else:
-                            deathmsgb = whokilledwhom(bot, instigator, target) or ''
-                        mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
-                if lootitem == 'mysterypotion':
-                    actualpotionmathedarray = []
-                    alreadyprocessedarray = []
-                    for fluid in uselootarray:
-                        if fluid not in alreadyprocessedarray:
-                            alreadyprocessedarray.append(fluid)
-                            countedeval = uselootarray.count(fluid)
-                            if countedeval > 1:
-                                actualpotionmathedarray.append(str(str(countedeval) + " "+fluid + "s"))
-                            else:
-                                actualpotionmathedarray.append(fluid)
-                    postionsusedarray = get_trigger_arg(actualpotionmathedarray, "list")
-                    mainlootusemessage = str(mainlootusemessage + " Potion(s) used: " + postionsusedarray)
-                if lootusedeaths > 0:
-                    if lootusedeaths == 1:
-                        mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
-                    else:
-                        mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
-                bot.say(mainlootusemessage)
-                if target != instigator and not inchannel.startswith("#"):
-                    bot.notice(mainlootusemessage, target)
+                    mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
+            bot.say(mainlootusemessage)
+            if target != instigator and not inchannel.startswith("#"):
+                bot.notice(mainlootusemessage, target)
     elif lootcommand == 'buy':
         lootitem = get_trigger_arg(triggerargsarray, 3).lower()
         if not lootitem:
@@ -1444,6 +1439,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 adjust_database_value(bot, instigator, lootitemb, quantity)
                 quantity = int(quantity)
                 bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
+    else:
+        transactiontypesarraylist = get_trigger_arg(transactiontypesarray, "list")
+        bot.notice(instigator + ", It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + transactiontypesarraylist, instigator)
             
 ## Weaponslocker ## TODO
 def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -1457,8 +1455,9 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
         adjustmentdirection = get_trigger_arg(triggerargsarray, 3).lower()
         weaponchange = get_trigger_arg(triggerargsarray, '4+')
     weaponslist = get_database_value(bot, target, 'weaponslocker') or []
-    if target.lower() in commandarray_all_valid:
-        bot.notice("It looks like that nick is unable to play duels.",instigator)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg, instigator)
         return
     target = actualname(bot, target)
     if not adjustmentdirection:
@@ -1531,31 +1530,28 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             else:
                 bot.say("Invalid command.")
                 return
-        elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-            bot.notice(instigator + ", It looks like " + target + " has duels off.", instigator)
-        elif target.lower() not in [u.lower() for u in bot.users]:
-            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
-        elif target == bot.nick:
-            bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
-        elif not instigatormana:
+        if not instigatormana:
             bot.notice(instigator + " you don't have any mana.", instigator)
-        else:
-            bot.say("Invalid command.")
             return
-        if target.lower() in commandarray_all_valid:
-            bot.notice("It looks like that nick is unable to play duels.",instigator)
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        if target == bot.nick:
+            bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
             return
         target = actualname(bot, target)
-        targetcurse = get_database_value(bot, target, 'curse') or 0
         targetclass = get_database_value(bot, target, 'class') or 'notclassy'
         if target.lower() != instigator.lower() and targetclass == 'fiend':
             bot.notice(instigator + ", It looks like " + target + " is a fiend and can only self-use magic.", instigator)
             manarequired = -abs(manarequired)
             adjust_database_value(bot, instigator, 'mana', manarequired)
-        elif magicusage == 'curse' and targetcurse:
+            return
+        targetcurse = get_database_value(bot, target, 'curse') or 0
+        if magicusage == 'curse' and targetcurse:
             bot.notice(instigator + " it looks like " + target + " is already cursed.", instigator)
             return
-        elif magicusage == 'curse':
+        if magicusage == 'curse':
             manarequired = manarequiredmagiccurse
         elif magicusage == 'shield':
             manarequired = manarequiredmagicshield
