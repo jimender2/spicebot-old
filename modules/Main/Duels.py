@@ -2208,12 +2208,10 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
     
-    bot.say("test")
-    
     ## Shields
     if damage > 0:
-        bot.say("dam shield")
         shieldloser = get_database_value(bot, nick, 'shield') or 0
+        bot.say(str(shieldloser))
         if shieldloser:
             bot.say("shield")
             damagemath = int(shieldloser) - damage
@@ -2229,7 +2227,6 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Armor
     if damage > 0:
-        bot.say("dam armor")
         bodypartnumber = bodypartsarray.index(bodypart)
         armortype = get_trigger_arg(armorarray, bodypartnumber)
         armorloser = get_database_value(bot, nick, armortype) or 0
