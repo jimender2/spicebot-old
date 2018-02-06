@@ -101,7 +101,7 @@ timeout_colosseum = 1800 ## Time Between colosseum events
 random_payout = 100
 
 ## Stats
-stats_admin_count = 7
+stats_admin_count = 8
 stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills','konami']
 stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
 stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
