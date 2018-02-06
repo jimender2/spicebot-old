@@ -2183,35 +2183,35 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     return validtarget, validtargetmsg  
 
 # mustpassthesetoduel
-def duelcriteria(bot, instigator, target, currentduelplayersarray):
+def duelcriteria(bot, usera, userb, currentduelplayersarray):
     
     ## Guilty until proven Innocent
     validtarget = 0
     validtargetmsg = ''
     
-    ## Instigator ignores lastfought
-    instigatorclass = get_database_value(bot, instigator, 'class') or 'notclassy'
-    if instigatorclass != 'knight':
-        instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
+    ## usera ignores lastfought
+    useraclass = get_database_value(bot, usera, 'class') or 'notclassy'
+    if useraclass != 'knight':
+        useralastfought = get_database_value(bot, usera, 'lastfought') or ''
     else:
-        instigatorlastfought = bot.nick
+        useralastfought = bot.nick
         
     ## Timeout Retrieval
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or 0
-    targettime = get_timesince_duels(bot, target, 'timeout') or 0
+    useratime = get_timesince_duels(bot, usera, 'timeout') or 0
+    userbtime = get_timesince_duels(bot, userb, 'timeout') or 0
     channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or 0
     
-    ## Last Instigator
+    ## Last usera
     channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
     
     ## Current Users List
     howmanyduelsers = len(currentduelplayersarray)
     
-    ## Correct Target Name
-    target = actualname(bot, target)
+    ## Correct userb Name
+    userb = actualname(bot, userb)
     
     ## Just in case Error Handling
-    if not target or target not in currentduelplayersarray:
+    if not userb or userb not in currentduelplayersarray:
         validtargetmsg = str("Invalid Target")
         return validtarget, validtargetmsg
     
@@ -2220,19 +2220,19 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
     #    validtarget = 1
     #    return validtarget, validtargetmsg
     
-    ## Don't allow Instigator to duel twice in a row
-    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
+    ## Don't allow usera to duel twice in a row
+    if usera == channellastinstigator and useratime <= timeout_duel_instigator:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
     
-    ## Instigator can't duel the same person twice in a row, unless there are only two people in the channel
-    if target == instigatorlastfought:# and howmanyduelsers > 2:
-        validtargetmsg = str(instigator + ', You may not fight the same person twice in a row.')
+    ## usera can't duel the same person twice in a row, unless there are only two people in the channel
+    if target == useralastfought and howmanyduelsers > 2:
+        validtargetmsg = str(usera + ', You may not fight the same person twice in a row.')
         return validtarget, validtargetmsg
     
-    ## Instigator Timeout
-    if instigatortime <= timeout_user_duels:
-        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - instigatortime)))+".")
+    ## usera Timeout
+    if useratime <= timeout_user_duels:
+        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - useratime)))+".")
         return validtarget, validtargetmsg
     
     ## Target Timeout
