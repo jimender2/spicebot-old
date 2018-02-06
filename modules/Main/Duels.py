@@ -670,6 +670,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     for x in canduelarray:
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
+        bodypart = get_trigger_arg(bodypartsarray, 'random')
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
         for j in damagetextarray:
             dispmsgarray.append(j)
