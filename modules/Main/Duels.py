@@ -1175,7 +1175,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     canduelarray.remove(secondarytarget)
                     thirdtarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(thirdtarget)
-                    continue
+                    
                 displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
                 if secondarytarget != '' and thirdtarget != '':
                     displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
