@@ -2370,15 +2370,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         currenttierend = get_database_value(bot, bot.nick, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
             combattextarraycomplete.append("New Tier Unlocked!")
-            if currenttierend != 1:
-                newtierlistarray = []
-                for x in commandarray_all_valid:
-                    newtiereval = eval("tierunlock"+x)
-                    if newtiereval == currenttierend:
-                        newtierlistarray.append(x)
-                if newtierlistarray != []:
-                    newtierlist = get_trigger_arg(newtierlistarray, "list")
-                    combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
+            tiercheck = eval("commandarray_tier_unlocks_"+str(currenttierend))
+            if tiercheck != []:
+                newtierlist = get_trigger_arg(newtierlistarray, "list")
+                combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
 
         ## Magic Attributes text
         if maindueler != target:
