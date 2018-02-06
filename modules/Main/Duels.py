@@ -2220,12 +2220,12 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
     #    return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
-    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
+    if instigator == channellastinstigator:# and instigatortime <= timeout_duel_instigator:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
     
     ## Instigator can't duel the same person twice in a row, unless there are only two people in the channel
-    if target == instigatorlastfought and howmanyduelsers > 2:
+    if target == instigatorlastfought:# and howmanyduelsers > 2:
         validtargetmsg = str(instigator + ', You may not fight the same person twice in a row.')
         return validtarget, validtargetmsg
     
