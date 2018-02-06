@@ -2081,6 +2081,9 @@ def duel_names(bot, nick, channel):
                 nickname = str(nickname + " " + nicknameadd)
             else:
                 nickname = nicknameadd
+    if nickname == '':
+        nickname = nick
+    return nickname
             
 def duel_colosseum(bot):
     bot.say("wip")
