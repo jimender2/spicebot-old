@@ -2261,7 +2261,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 
         ## Paladin deflect
         persontotakedamage = loser
-        if loserclass == 'paladin' and damage > 0 and winner != loser:
+        if classloser == 'paladin' and damage > 0 and winner != loser:
             deflectodds = randint(1, duel_advantage_paladin_deflect_chance)
             if deflectodds == 1:
                 persontotakedamage = winner
@@ -2294,7 +2294,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         combattextarraycomplete.append(x)
                     
         ## Knight Retaliation
-        if loserclass == 'knight' and winner != loser:
+        if classloser == 'knight' and winner != loser:
             retaliateodds = randint(1, duel_advantage_knight_retaliate_chance)
             if retaliateodds == 1:
                 ## Weapon
@@ -2326,9 +2326,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Chance that maindueler loses found loot
         if randominventoryfind == 'true' and target != bot.nick and maindueler != target:
             ## Barbarians get a 50/50 chance of getting loot even if they lose
-            loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+            classloser = get_database_value(bot, loser, 'class') or 'notclassy'
             barbarianstealroll = randint(0, 100)
-            if loserclass == 'barbarian' and barbarianstealroll >= 50:
+            if classloser == 'barbarian' and barbarianstealroll >= 50:
                 combattextarraycomplete.append(loser + " steals the " + str(loot))
                 lootwinner = loser
             elif winner == target:
@@ -2566,9 +2566,9 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         if randominventoryfind == 'true' and target != bot.nick and instigator != target:
             lootwinnermsgb = ''
             ## Barbarians get a 50/50 chance of getting loot even if they lose
-            loserclass = get_database_value(bot, loser, 'class') or 'notclassy'
+            classloser = get_database_value(bot, loser, 'class') or 'notclassy'
             barbarianstealroll = randint(0, 100)
-            if loserclass == 'barbarian' and barbarianstealroll >= 50:
+            if classloser == 'barbarian' and barbarianstealroll >= 50:
                 lootwinnermsgb = str(loser + " steals the " + str(loot))
                 lootwinner = loser
             elif winner == target:
