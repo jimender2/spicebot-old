@@ -643,3 +643,28 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'myhand', myhand)
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
+
+    
+def set_time_out(bot,nick,databasekey)
+    now = time.time()
+    last = get_database_value(bot, nick, databasekey)
+    return abs(now - int(last))
+
+def hours_minutes_seconds(countdownseconds):
+    time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['hour','minute','second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
