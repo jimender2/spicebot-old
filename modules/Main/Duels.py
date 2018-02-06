@@ -2225,6 +2225,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Armor
     if damage > 0:
+        bot.say(str(bodypart))
         bodypartnumber = bodypartsarray.index(bodypart.lower())
         bot.say(str(bodypartnumber))
         armortype = get_trigger_arg(armorarray, bodypartnumber)
@@ -2276,7 +2277,6 @@ def whokilledwhom(bot, winner, loser):
             adjust_database_value(bot, winner, x, gethowmany)
             reset_database_value(bot, loser, x)
     return winnertextarray
-
 
 def suicidekill(bot,loser):
     suicidetextarray = []
