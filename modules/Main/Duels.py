@@ -2210,39 +2210,39 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Shields
     if damage > 0:
-        shieldloser = get_database_value(bot, nick, 'shield') or 0
-        bot.say(str(shieldloser))
-        if shieldloser:
+        shieldnick = get_database_value(bot, nick, 'shield') or 0
+        bot.say(str(shieldnick))
+        if shieldnick:
             bot.say("shield")
-            damagemath = int(shieldloser) - damage
+            damagemath = int(shieldnick) - damage
             if int(damagemath) > 0:
-                adjust_database_value(bot, loser, 'shield', -abs(damage))
+                adjust_database_value(bot, nick, 'shield', -abs(damage))
                 damage = 0
                 absorbed = 'all'
             else:
                 absorbed = damagemath + damage
                 damage = abs(damagemath)
-                reset_database_value(bot, loser, 'shield')
+                reset_database_value(bot, nick, 'shield')
             damagetextarray.append(nick + " absorbs " + str(absorbed) + " of the damage. ")
     
     ## Armor
     if damage > 0:
         bodypartnumber = bodypartsarray.index(bodypart)
         armortype = get_trigger_arg(armorarray, bodypartnumber)
-        armorloser = get_database_value(bot, nick, armortype) or 0
-        if armorloser:
+        armornick = get_database_value(bot, nick, armortype) or 0
+        if armornick:
             bot.say("armor")
-            adjust_database_value(bot, loser, armortype, -1)
+            adjust_database_value(bot, nick, armortype, -1)
             damagepercent = randint(1, armor_relief_percentage) / 100
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(loser + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
-            armorloser = get_database_value(bot, loser, armortype) or 0
-            if armorloser <= 0:
-                reset_database_value(bot, loser, armortype)
+            damagetext = str(nick + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
+            armornick = get_database_value(bot, nick, armortype) or 0
+            if armornick <= 0:
+                reset_database_value(bot, nick, armortype)
                 damagetext = str(damagetext + ", causing the armor to break!")
-            elif armorloser <= 5:
+            elif armornick <= 5:
                 damagetext = str(damagetext + ", causing the armor to be in need of repair!")
             else:
                 damagetext = str(damagetext + ".")
