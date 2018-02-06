@@ -720,7 +720,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     bot.say("todo")
     #getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
             
-## Usage ## TODO
+## Usage
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
     targetcomname = targetcom
@@ -731,7 +731,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
             target = bot.nick
         totaluses = get_database_value(bot, target, 'usage_'+targetcom)
         target = actualname(bot, target)
-        bot.say(target + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
+        bot.say(targetname + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
         return
     if targetcom == 'channel':
         targetcom = bot.nick
@@ -739,7 +739,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
     targetcom = actualname(bot, targetcomname)
     bot.say(targetcom + " has used duels " + str(totaluses) + " times.")
 
-## War Room ## TODO
+## War Room
 def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if not subcommand:
@@ -777,7 +777,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
         if subcommand in canduelarray and instigator in canduelarray:
             bot.notice(instigator + ", It looks like you can duel " + subcommand + ".", instigator)
 
-## Title ## TODO
+## Title 
 def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatortitle = get_database_value(bot, instigator, 'title')
     titletoset = get_trigger_arg(triggerargsarray, "2+")
@@ -798,7 +798,7 @@ def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, current
             adjust_database_value(bot, instigator, 'coin', -abs(changetitlecost))
             bot.say(instigator + ", your title is now " + titletoset)
 
-## Class ## TODO
+## Class
 def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommandarray = ['set','change']
     classes = get_trigger_arg(classarray, "list")
@@ -834,7 +834,7 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
         else:
             set_database_value(bot, instigator, 'classfreebie', 1)
 
-## Streaks ## TODO
+## Streaks
 def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
@@ -873,7 +873,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
         dispmsgarrayb.append(target + " has no streaks.")
     onscreentext(bot, ['say'], dispmsgarrayb)
 
-## Stats ## TODO
+## Stats
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
@@ -910,7 +910,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
     onscreentext(bot, ['say'], dispmsgarrayb)
 
-## Leaderboard ## TODO
+## Leaderboard
 def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommand = get_trigger_arg(triggerargsarray, 2)
     if not subcommand:
