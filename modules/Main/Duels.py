@@ -2347,7 +2347,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             XPearnedloser = xp_loser_ranger
         else:
             XPearnedloser = xp_loser
-        if instigator != target:
+        if maindueler != target:
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
             if winnertier < currenttierstart:
@@ -2358,12 +2358,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
         
         ## new pepper level?
-        instigatorpeppernow = get_pepper(bot, instigator) ## TODO
-        if instigatorpeppernow != instigatorpepperstart and instigator != target:
-            combattextarraycomplete.append(instigator + " graduates to " + instigatorpeppernow + "! ")
+        mainduelerpeppernow = get_pepper(bot, maindueler) ## TODO
+        if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
+            combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
             assault_levelups = assault_levelups + 1
         targetpeppernow = get_pepper(bot, target) ## TODO
-        if targetpeppernow != targetpepperstart and instigator != target:
+        if targetpeppernow != targetpepperstart and maindueler != target:
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
         ## Tier update
@@ -2381,7 +2381,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
 
         ## Magic Attributes text
-        if instigator != target:
+        if maindueler != target:
             magicattributestext = get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershieldstart, winnercursestart , losercursestart)
             for x in magicattributestext:
                 combattextarraycomplete.append(x)
@@ -2391,13 +2391,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
         if speceventtotal >= 49:
             set_database_value(bot, bot.nick, 'specevent', 1)
-            combattextarraycomplete.append(instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-            adjust_database_value(bot, instigator, 'coin', duel_special_event)
+            combattextarraycomplete.append(maindueler + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+            adjust_database_value(bot, maindueler, 'coin', duel_special_event)
         else:
             adjust_database_value(bot, bot.nick, 'specevent', 1)
 
         ## Streaks Text
-        if instigator != target:
+        if maindueler != target:
             streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
             if streaktext != '':
                 combattextarraycomplete.append(streaktext)
