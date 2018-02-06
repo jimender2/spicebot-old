@@ -2267,7 +2267,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
         return validtarget, validtargetmsg
     
-    timeouteval = eval("timeout_"+commandortarget.loser())
+    timeouteval = eval("timeout_"+commandortarget.lower())
     getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
     getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
     
