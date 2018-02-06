@@ -684,7 +684,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
             diedinbattle.append(x)
     if diedinbattle != []:
         displaymessage = get_trigger_arg(diedinbattle, "list")
-        dispmsgarray.append(displaymessage + " died in this event." + " "+ deathmsgb)
+        dispmsgarray.append(displaymessage + " died in this event.")
     adjust_database_value(bot, winner, 'coin', riskcoins)
     onscreentext(bot, [inchannel], dispmsgarray)
 
@@ -1164,59 +1164,53 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
                 adjust_database_value(bot, instigator, lootitem, -1)
+                dispmsgarray = []
                 painarray = []
                 damagearray = []
-                fulltarget, secondarytarget, thirdtarget = '','',''
-                while canduelarray != []:
-                    fulltarget = get_trigger_arg(canduelarray, "random")
-                    canduelarray.remove(fulltarget)
+                secondarytarget, thirdtarget, remainingarray = '','',''
+                fulltarget = get_trigger_arg(canduelarray, "random")
+                canduelarray.remove(fulltarget)
+                painarray.append(fulltarget)
+                damagearray.append(grenadefull)
+                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
+                if canduelarray != []:
                     secondarytarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(secondarytarget)
-                    thirdtarget = get_trigger_arg(canduelarray, "random")
-                    canduelarray.remove(thirdtarget)
-                    
-                displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
-                if secondarytarget != '' and thirdtarget != '':
-                    displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
-                elif secondarytarget != '':
-                    displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
-                if canduelarray != []:
-                    remainingarray = get_trigger_arg(canduelarray, "list")
-                    displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
-                
-                deatharray = []
-                if fulltarget != '':
-                    painarray.append(fulltarget)
-                    damagearray.append(grenadefull)
-                if secondarytarget != '':
                     painarray.append(secondarytarget)
                     damagearray.append(grenadesec)
-                if thirdtarget != '':
-                    painarray.append(thirdtarget)
-                    damagearray.append(grenadesec)
-                deathmsgb = ''
-                for x, damage in zip(painarray, damagearray):
+                    if canduelarray != []:
+                        thirdtarget = get_trigger_arg(canduelarray, "random")
+                        canduelarray.remove(thirdtarget)
+                        painarray.append(thirdtarget)
+                        damagearray.append(grenadesec)
+                        if canduelarray != []:
+                            remainingarray = get_trigger_arg(canduelarray, "list")
+                    if thirdtarget == '':
+                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                    else:
+                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
+                    if remainingarray == '':
+                        dispmsgarray.append(remainingarray + " completely jump out of the way")
+                for player, damage in zip(painarray, damagearray):
                     damage = int(damage)
-                    shieldloser = get_database_value(bot, x, 'shield') or 0
-                    if shieldloser and damage > 0:
-                        damagemath = int(shieldloser) - damage
-                        if int(damagemath) > 0:
-                            adjust_database_value(bot, x, 'shield', -abs(damage))
-                            damage = 0
-                        else:
-                            damage = abs(damagemath)
-                            reset_database_value(bot, x, 'shield')
+                    damagescale = tierratio_level(bot)
+                    damage = damagescale * damage
+                    damage, damagetextarray = damage_resistance(bot, player, damage, bodypart)
+                    for j in damagetextarray:
+                        dispmsgarray.append(j)
                     if damage > 0:
-                        adjust_database_value(bot, x, 'health', -abs(damage))
-                    xhealth = get_database_value(bot, x, 'health') or 0
-                    if int(xhealth) <= 0:
-                        deathmsgb = whokilledwhom(bot, instigator, x) or ''
-                        deatharray.append(x)
-                if deatharray != []:
-                    deadarray = get_trigger_arg(deatharray, "list")
-                    displaymsg = str(displaymsg + "    " + deadarray + " died by this grenade volley. " + deathmsgb)
-                if displaymsg != '':
-                    bot.say(displaymsg)
+                        adjust_database_value(bot, player, 'health', -abs(damage))
+                    currenthealth = get_database_value(bot, player, 'health')
+                    if currenthealth <= 0:
+                        dispmsgarray.append(player + ' dies forcing a respawn!!')
+                        winnertextarray = whokilledwhom(bot, instigator, player)
+                        for s in winnertextarray:
+                            dispmsgarray.append(s)
+                        diedinbattle.append(x)
+                if diedinbattle != []:
+                    displaymessage = get_trigger_arg(diedinbattle, "list")
+                    dispmsgarray.append(displaymessage + " died by this grenade volley.")
+                onscreentext(bot, [inchannel], dispmsgarray)
         else:
             targnum = get_trigger_arg(triggerargsarray, 4).lower()
             if not targnum:
