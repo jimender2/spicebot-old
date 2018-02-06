@@ -309,12 +309,12 @@ def execute_main(bot, trigger, triggerargsarray):
         daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
+            daisychaincount = daisychaincount + 1
             if daisychaincount <= 5:
                 triggerargsarraypart = get_trigger_arg(comsplit, 'create')
                 commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
-                daisychaincount = daisychaincount + 1
             else:
-                bot.notice(insigator + ", you may only daisychain 5 commands.", instigator)
+                bot.notice(instigator + ", you may only daisychain 5 commands.", instigator)
                 return
          
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray):
