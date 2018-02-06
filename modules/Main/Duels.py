@@ -645,7 +645,7 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, bot.nick, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
-## Colosseum ## TODO
+## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
@@ -720,18 +720,30 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
             
 ## Usage ## TODO
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    target = get_trigger_arg(triggerargsarray, 2) or instigator
-    ## TODO: if target in commandarray_all_valid:
-    targetname = target
-    if target == 'channel':
-        target = bot.nick
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
+    targetcomname = targetcom
+    if targetcom in commandarray_all_valid:
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        targetname = target
+        if targetcom == 'channel':
+            targetcom = bot.nick
+        validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        totaluses = get_database_value(bot, target, 'usage_'+targetcom)
+        target = actualname(bot, target)
+        bot.say(target + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
+        return
+    if targetcom == 'channel':
+        targetcom = bot.nick
+    validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
         return
-    totaluses = get_database_value(bot, target, 'usage')
-    targetname = actualname(bot, targetname)
-    bot.say(targetname + " has used duels " + str(totaluses) + " times.")
+    totaluses = get_database_value(bot, targetcom, 'usage_total')
+    targetcom = actualname(bot, targetcomname)
+    bot.say(targetcom + " has used duels " + str(totaluses) + " times.")
 
 ## War Room ## TODO
 def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
