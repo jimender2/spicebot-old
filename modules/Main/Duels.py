@@ -372,8 +372,9 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
-    specificusage = str('usage_'+commandortarget.lower())
-    adjust_database_value(bot, instigator, specificusage, 1) ## NEW, update subcommand
+    adjust_database_value(bot, instigator, 'usage_'+commandortarget.lower(), 1)
+    adjust_database_value(bot, bot.nick, 'usage_total', 1)
+    adjust_database_value(bot, bot.nick, 'usage_'+commandortarget.lower(), 1)
     
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath)')
@@ -724,7 +725,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
     targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
     targetcomname = targetcom
     if targetcom in commandarray_all_valid:
-        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        target = get_trigger_arg(triggerargsarray, 3) or instigator
         targetname = target
         if target == 'channel':
             target = bot.nick
