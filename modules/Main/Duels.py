@@ -2272,7 +2272,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
                     winnercurrenthealth = get_database_value(bot, winner, 'health')
                     if winnercurrenthealth <= 0:
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
-                        for x in loserkilledwinner
+                        for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
                 damage = 0
   
