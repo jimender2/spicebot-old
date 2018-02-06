@@ -354,6 +354,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             bot.notice(executeduelingmsg,instigator)
             return
         duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
+        ## usage counter
+        adjust_database_value(bot, instigator, 'usage_total', 1)
+        adjust_database_value(bot, instigator, 'usage_combat', 1)
+        adjust_database_value(bot, bot.nick, 'usage_total', 1)
+        adjust_database_value(bot, bot.nick, 'usage_combat', 1)
+    
 
 #######################
 ## Subcommands Usage ##
@@ -506,6 +512,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         
         ## Damage
         damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
+        damage = int(damage)
         
         ## Damage Text
         if losername == "themself":
@@ -2200,6 +2207,8 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
+    
+    damage = int(damage)
     
     ## Shields
     shieldloser = get_database_value(bot, nick, 'shield') or 0
