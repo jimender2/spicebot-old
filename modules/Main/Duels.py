@@ -2195,9 +2195,9 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
         instigatorlastfought = bot.nick
         
     ## Timeout Retrieval
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
-    targettime = get_timesince_duels(bot, target, 'timeout') or ''
-    channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or ''
+    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or 0
+    targettime = get_timesince_duels(bot, target, 'timeout') or 0
+    channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or 0
     
     ## Last Instigator
     channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
@@ -2214,11 +2214,13 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    if bot.nick.endswith(development_bot):
-        validtarget = 1
-        return validtarget, validtargetmsg
+    #if bot.nick.endswith(development_bot):
+    #    validtarget = 1
+    #    return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
+    bot.say(instigator + " " + channellastinstigator)
+    bot.say(str(instigatortime) + " " + str(timeout_duel_instigator))
     if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
