@@ -2016,7 +2016,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                              set_database_value(bot, u, x, newvalue)
                     else:
                         set_database_value(bot, u, statset, newvalue)
-                        bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
+                bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             else:
                 try:
                     if newvalue.isdigit():
