@@ -1164,11 +1164,10 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
                 adjust_database_value(bot, instigator, lootitem, -1)
-                canduelarrayorig = []
-                for u in canduelarray:
-                    canduelarrayorig.append(u)
+                painarray = []
+                damagearray = []
                 fulltarget, secondarytarget, thirdtarget = '','',''
-                while len(canduelarray) > 0:
+                while canduelarray != []:
                     fulltarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(fulltarget)
                     secondarytarget = get_trigger_arg(canduelarray, "random")
@@ -1184,8 +1183,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 if canduelarray != []:
                     remainingarray = get_trigger_arg(canduelarray, "list")
                     displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
-                painarray = []
-                damagearray = []
+                
                 deatharray = []
                 if fulltarget != '':
                     painarray.append(fulltarget)
