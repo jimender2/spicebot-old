@@ -306,10 +306,16 @@ def execute_main(bot, trigger, triggerargsarray):
     if "&&" not in fullcommandusedtotal:
         commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
     else:
+        daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
-            triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-            commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
+            if daisychaincount <= 5:
+                triggerargsarraypart = get_trigger_arg(comsplit, 'create')
+                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
+                daisychaincount = daisychaincount + 1
+            else:
+                bot.notice(insigator + ", you may only daisychain 5 commands.", instigator)
+                return
          
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray):
     
@@ -708,7 +714,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < timeout_opt:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))), instigator)
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels on.", instigator)
@@ -721,7 +727,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < timeout_opt:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))), instigator)
+        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels off.", instigator)
@@ -1541,13 +1547,15 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             elif targnum == 'all':
                 target = instigator
                 quantity = int(gethowmanylootitem)
+            else:
+                bot.say("Invalid command.")
+                return
             if not quantity:
                 bot.say("Invalid command.")
                 return
             if target == bot.nick:
                 bot.notice(instigator + ", I am immune to " + lootitem, instigator)
                 return
-            
             validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
             if not validtarget:
                 bot.notice(validtargetmsg, instigator)
