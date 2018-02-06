@@ -431,6 +431,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             set_database_value(bot, maindueler, 'lastfought', target)
             set_database_value(bot, target, 'lastfought', maindueler)
             
+        ## Update Time Of Combat
+        set_database_value(bot, maindueler, 'timeout', now)
+        set_database_value(bot, target, 'timeout', now)
+        set_database_value(bot, duelrecorduser, 'timeout', now)
+        
         ## Display Naming
         mainduelername = duel_names(bot, maindueler, inchannel)
         mainduelerpepperstart = get_pepper(bot, maindueler) ## TODO
@@ -1626,9 +1631,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 if targethealth <= 0:
                     lootusedeaths = lootusedeaths + 1
                     if target == instigator:
-                        deathmsgb = suicidekill(bot,loser)
+                        deathmsgb = suicidekill(bot,loser) ## TODO array
                     else:
-                        deathmsgb = whokilledwhom(bot, instigator, target) or ''
+                        deathmsgb = whokilledwhom(bot, instigator, target) or ''  ## TODO array
                     mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
             if lootitem == 'mysterypotion':
                 actualpotionmathedarray = []
@@ -2216,12 +2221,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     
     ## Correct userb Name
     userb = actualname(bot, userb)
-    
-    ## Just in case Error Handling
-    if not userb or userb not in currentduelplayersarray:
-        validtargetmsg = str("Invalid Target")
-        return validtarget, validtargetmsg
-    
+
     ## Devroom bypass
     #if bot.nick.endswith(development_bot):
     #    validtarget = 1
