@@ -272,7 +272,7 @@ def execute_main(bot, trigger, triggerargsarray):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            canduel = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+            canduel = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
             if canduel:
                 canduelarray.append(player)
                 statreset(bot, player) ## TODO
@@ -335,7 +335,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
             return
-        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+        executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
@@ -710,7 +710,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
 ## Random Target ## TODO
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
         bot.notice(validtargetmsg,instigator)
         return
     if canduelarray == []:
@@ -740,7 +740,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if not subcommand:
         if instigator not in canduelarray:
-            canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, subcommand, currentduelplayersarray)
+            canduel, validtargetmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray)
             bot.notice(validtargetmsg,instigator)
         bot.notice(instigator + ", It looks like you can duel.", instigator)
     elif subcommand == 'colosseum' or subcommand == 'assault':
@@ -765,7 +765,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
-        executedueling, executeduelingmsg = duelcriteria(bot, trigger, instigator, subcommand, currentduelplayersarray)
+        executedueling, executeduelingmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray)
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
@@ -1810,7 +1810,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     validtarget = 1
     return validtarget, validtargetmsg  
 
-def duelcriteria(bot, trigger, instigator, target, currentduelplayersarray):
+def duelcriteria(bot, instigator, target, currentduelplayersarray):
     
     ## Guilty until proven Innocent
     validtarget = 0
@@ -1887,12 +1887,12 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    #f bot.nick.endswith(devbot):
-    #   validtarget = 1
-    #   return validtarget, validtargetmsg
+    f bot.nick.endswith(devbot):
+       validtarget = 1
+       return validtarget, validtargetmsg
     
     if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
         return validtarget, validtargetmsg
     
     timeouteval = eval(commandortarget.upper() + "TIMEOUT")
