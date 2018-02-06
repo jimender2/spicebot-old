@@ -939,26 +939,25 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 statleadernumber = 0
             else:
                 statleadernumber = 99999999
-            for u in bot.users:
+            for u in currentduelplayersarray:
                 #healthcheck(bot, u)
                 statreset(bot, u)
-                if u in dueloptedinarray:
-                    if x != 'winlossratio':
-                        statamount = get_database_value(bot, u, x)
+                if x != 'winlossratio':
+                    statamount = get_database_value(bot, u, x)
+                else:
+                    scriptdef = str('get_' + x + '(bot,u)')
+                    statamount = eval(scriptdef)
+                if statamount == statleadernumber and statamount > 0:
+                    statleadername = str(statleadername+ " "+ u)
+                else:
+                    if x != 'health':
+                        if statamount > statleadernumber:
+                            statleadernumber = statamount
+                            statleadername = u
                     else:
-                        scriptdef = str('get_' + x + '(bot,u)')
-                        statamount = eval(scriptdef)
-                    if statamount == statleadernumber and statamount > 0:
-                        statleadername = str(statleadername+ " "+ u)
-                    else:
-                        if x != 'health':
-                            if statamount > statleadernumber:
-                                statleadernumber = statamount
-                                statleadername = u
-                        else:
-                            if statamount < statleadernumber and statamount > 0:
-                                statleadernumber = statamount
-                                statleadername = u
+                        if statamount < statleadernumber and statamount > 0:
+                            statleadernumber = statamount
+                            statleadername = u
             if x == 'winlossratio':
                 statleadernumber = format(statleadernumber, '.3f')
             if statleadername != '':
