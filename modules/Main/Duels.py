@@ -2135,6 +2135,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
     
     ## Starting Tier
     currenttierstart = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    tierscaling = tierratio_level(bot)
     
     ## Targetarray Start
     targetarraytotal = len(targetarray)
@@ -2233,8 +2234,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
         striketype = get_trigger_arg(duel_hit_types, 'random')
         
         ## Damage
-        damagescale = tierratio_level(bot)
-        damage = duels_damage(bot, damagescale, classwinner, classloser, winner, loser)
+        damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
         
         ## Damage Text
         if losername == "themself":
@@ -2302,7 +2302,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
-                damageb = duels_damage(bot, damagescale, classloser, classwinner, loser, winner)
+                damageb = duels_damage(bot, tierscaling, classloser, classwinner, loser, winner)
                 damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb)
                 combattextarraycomplete.append(damagetextb)
                 ## Damage Resist
@@ -2346,30 +2346,26 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
         if instigator != target:
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
-            xptier = tierratio_level(bot)
             if winnertier < currenttierstart:
-                XPearnedwinner = XPearnedwinner * xptier
+                XPearnedwinner = XPearnedwinner * tierscaling
             if losertier < currenttierstart:
-                XPearnedloser = XPearnedloser * xptier
+                XPearnedloser = XPearnedloser * tierscaling
             adjust_database_value(bot, winner, 'xp', XPearnedwinner)
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
         
         ## new pepper level?
-        instigatorpeppernow = get_pepper(bot, instigator)
+        instigatorpeppernow = get_pepper(bot, instigator) ## TODO
         if instigatorpeppernow != instigatorpepperstart and instigator != target:
-            pepperstatuschangemsg = str(instigator + " graduates to " + instigatorpeppernow + "! ")
+            combattextarraycomplete.append(instigator + " graduates to " + instigatorpeppernow + "! ")
             assault_levelups = assault_levelups + 1
-            combattextarraycomplete.append(pepperstatuschangemsg)
-        targetpeppernow = get_pepper(bot, target)
+        targetpeppernow = get_pepper(bot, target) ## TODO
         if targetpeppernow != targetpepperstart and instigator != target:
-            pepperstatuschangemsg = str(target + " graduates to " + targetpeppernow + "! ")
-            combattextarraycomplete.append(pepperstatuschangemsg)
+            combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
         ## Tier update
-        tierchangemsg = ''
         currenttierend = get_database_value(bot, bot.nick, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
-            tierchangemsg = str("New Tier Unlocked!")
+            combattextarraycomplete.append("New Tier Unlocked!")
             if currenttierend != 1:
                 newtierlistarray = []
                 for x in commandarray_all_valid:
@@ -2378,43 +2374,36 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
                         newtierlistarray.append(x)
                 if newtierlistarray != []:
                     newtierlist = get_trigger_arg(newtierlistarray, "list")
-                    tierchangemsg = str(tierchangemsg + " Feature(s) now available: " + newtierlist)
-                combattextarraycomplete.append(tierchangemsg)
+                    combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
 
         ## Magic Attributes text
         if instigator != target:
-            magicattributestext = get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
-            if magicattributestext and magicattributestext != '':
-                combattextarraycomplete.append(magicattributestext)
+            magicattributestext = get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershieldstart, winnercursestart , losercursestart)
+            for x in magicattributestext:
+                combattextarraycomplete.append(x)
                 
         ## Special Event
         speceventtext = ''
         speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
         if speceventtotal >= 49:
             set_database_value(bot, bot.nick, 'specevent', 1)
-            speceventtext = str(instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+            combattextarraycomplete.append(instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
             adjust_database_value(bot, instigator, 'coin', duel_special_event)
-            combattextarraycomplete.append(speceventtext)
         else:
             adjust_database_value(bot, bot.nick, 'specevent', 1)
 
         ## Streaks Text
-        streaktext = ''
         if instigator != target:
             streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
             if streaktext != '':
                 combattextarraycomplete.append(streaktext)
 
         ## On Screen Text
-        texttargetarray = []
-        if OSDTYPE == 'say':
-            texttargetarray.append(channel)
-        elif OSDTYPE == 'notice':
-            texttargetarray.append(instigator)
-            texttargetarray.append(target)
+        if typeofduel != 'assault' and typeofduel != 'colosseum':
+            onscreentext(bot, [inchannel], combattextarraycomplete)
         else:
-            texttargetarray.append(instigator)
-        onscreentext(bot, texttargetarray, combattextarraycomplete)
+            onscreentext(bot, [winner,loser], combattextarraycomplete)
+       
                 
 ### Duels Old
 ### Duels
