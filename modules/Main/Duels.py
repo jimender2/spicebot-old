@@ -275,10 +275,8 @@ def execute_main(bot, trigger, triggerargsarray):
             canduel = duelcriteria(bot, trigger, instigator, commandortarget, currentduelplayersarray)
             if canduel:
                 canduelarray.append(player)
-    
-    ## Stat check 
-    statreset(bot, instigator)
-    healthcheck(bot, instigator) # TODO: revamp these functions
+                statreset(bot, player) ## TODO
+                healthcheck(bot, player) ## TODO
     
     ## Time when Module use started
     now = time.time()
@@ -620,8 +618,6 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
             if x not in uniquewinnersarray and x != instigator:
                 uniquewinnersarray.append(x)
         for x in uniquewinnersarray:
-            statreset(bot, x) ## TODO: find a more uniform time to run these
-            healthcheck(bot, x) ## also TODO
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
             if roulettepayoutx > biggestpayout:
                 biggestpayoutwinner = x
@@ -664,8 +660,6 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-    statreset(bot, instigator)
-    healthcheck(bot, instigator)
     totalplayers = len(canduelarray)
     riskcoins = int(totalplayers) * 30
     damage = riskcoins
@@ -674,8 +668,6 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     diedinbattle = []
     canduelarray.remove(winner)
     for x in canduelarray:
-        statreset(bot, x)
-        healthcheck(bot, x)
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
@@ -830,8 +822,6 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
     elif setclass == instigatorclass:
         bot.say('Your class is already set to ' +  setclass)
     else:
-        statreset(bot, instigator)
-        healthcheck(bot, instigator)
         set_database_value(bot, instigator, 'class', setclass)
         bot.say('Your class is now set to ' +  setclass)
         set_database_value(bot, instigator, 'classtimeout', now)
@@ -852,8 +842,6 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
         bot.notice(validtargetmsg, instigator)
         return
     target = actualname(bot, target)
-    healthcheck(bot, target)
-    statreset(bot, target)
     streak_type = get_database_value(bot, target, 'currentstreaktype') or 'none'
     best_wins = get_database_value(bot, target, 'bestwinstreak') or 0
     worst_losses = get_database_value(bot, target, 'worstlosestreak') or 0
@@ -893,8 +881,6 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.notice(validtargetmsg, instigator)
         return
     target = actualname(bot, target)
-    #healthcheck(bot, target)
-    statreset(bot, target)
     dispmsgarray = []
     for x in duelstatsarray:
         if x in statsbypassarray:
@@ -940,8 +926,6 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             else:
                 statleadernumber = 99999999
             for u in currentduelplayersarray:
-                #healthcheck(bot, u)
-                statreset(bot, u)
                 if x != 'winlossratio':
                     statamount = get_database_value(bot, u, x)
                 else:
@@ -1013,7 +997,6 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(validtargetmsg, instigator)
             return
         target = actualname(bot, target)
-        statreset(bot, target)
         dispmsgarray = []
         for x in armorarray: 
             gethowmany = get_database_value(bot, target, x)
@@ -1137,7 +1120,6 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             bot.notice(validtargetmsg, instigator)
             return
         target = actualname(bot, target)
-        statreset(bot, target)
         dispmsgarray = []
         for x in backpackarray: 
             gethowmany = get_database_value(bot, target, x)
@@ -1174,35 +1156,34 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.notice(instigator + ", grenades must be used in channel.", instigator)
                 return
             instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
-            for u in bot.users:
-                if u in dueloptedinarray and u != bot.nick and u != instigator:
-                    canduelarray.append(u)
-                    statreset(bot, u)
-                    healthcheck(bot, u)
+            if instigator in canduelarray:
+                canduelarray.remove(instigator)
+            if instigator in bot.nick:
+                canduelarray.remove(bot.nick)
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
+                adjust_database_value(bot, instigator, lootitem, -1)
                 canduelarrayorig = []
                 for u in canduelarray:
                     canduelarrayorig.append(u)
-                    targethealth = get_database_value(bot, u, 'health')
-                adjust_database_value(bot, instigator, lootitem, -1)
                 fulltarget, secondarytarget, thirdtarget = '','',''
-                fulltarget = get_trigger_arg(canduelarray, "random")
-                displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
-                canduelarray.remove(fulltarget)
-                if canduelarray != []:
+                while len(canduelarray) > 0:
+                    fulltarget = get_trigger_arg(canduelarray, "random")
+                    canduelarray.remove(fulltarget)
                     secondarytarget = get_trigger_arg(canduelarray, "random")
                     canduelarray.remove(secondarytarget)
-                    if canduelarray != []:
-                        thirdtarget = get_trigger_arg(canduelarray, "random")
-                        displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
-                        canduelarray.remove(thirdtarget)
-                        if canduelarray != []:
-                            remainingarray = get_trigger_arg(canduelarray, "list")
-                            displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
-                    else:
-                        displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                    thirdtarget = get_trigger_arg(canduelarray, "random")
+                    canduelarray.remove(thirdtarget)
+                    continue
+                displaymsg = str(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenadefull)) + " damage. ")
+                if secondarytarget != '' and thirdtarget != '':
+                    displaymsg = str(displaymsg + secondarytarget + " jumps away but still takes " + str(abs(grenadesec)) + " damage. ")
+                elif secondarytarget != '':
+                    displaymsg = str(displaymsg + secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenadesec)) + " damage. ")
+                if canduelarray != []:
+                    remainingarray = get_trigger_arg(canduelarray, "list")
+                    displaymsg = str(displaymsg + remainingarray + " completely jump out of the way")
                 painarray = []
                 damagearray = []
                 deatharray = []
@@ -1479,7 +1460,6 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
         adjustmentdirection = get_trigger_arg(triggerargsarray, 3).lower()
         weaponchange = get_trigger_arg(triggerargsarray, '4+')
     weaponslist = get_database_value(bot, target, 'weaponslocker') or []
-    statreset(bot, target)
     if target.lower() in commandarray_all_valid:
         bot.notice("It looks like that nick is unable to play duels.",instigator)
         return
@@ -1569,8 +1549,6 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice("It looks like that nick is unable to play duels.",instigator)
             return
         target = actualname(bot, target)
-        statreset(bot, target)
-        healthcheck(bot, target)
         targetcurse = get_database_value(bot, target, 'curse') or 0
         targetclass = get_database_value(bot, target, 'class') or 'notclassy'
         if target.lower() != instigator.lower() and targetclass == 'fiend':
@@ -1674,7 +1652,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + ", This looks to be an invalid command.")
     elif subcommand == 'bugbounty':
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
-        statreset(bot, target) ## TODO
         bot.say(target + ' is awarded ' + str(bugbountycoinaward) + " coin for finding a bug in duels.")
         adjust_database_value(bot, target, 'coin', bugbountycoinaward)
     elif subcommand == 'konami':
@@ -1745,7 +1722,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 reset_database_value(bot, duelrecorduser, 'levelingtier')
                 reset_database_value(bot, duelrecorduser, 'specevent')
                 for u in bot.users:
-                    statreset(bot, target)
                     if statset == 'all':
                          for x in duelstatsadminarray:
                              set_database_value(bot, u, x, newvalue)
@@ -1753,7 +1729,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                         set_database_value(bot, u, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
             else:
-                statreset(bot, target)
                 try:
                     if newvalue.isdigit():
                         newvalue = int(newvalue)
@@ -1995,7 +1970,7 @@ def whokilledwhom(bot, winner, loser):
     winnertextarray = []
     ## Reset mana and health
     reset_database_value(bot, loser, 'mana')
-    healthcheck(bot, loser)
+    healthcheck(bot, loser) ## TODO, replace with just building the health
     ## update kills/deaths
     adjust_database_value(bot, winner, 'kills', 1)
     adjust_database_value(bot, loser, 'respawns', 1)
@@ -2087,9 +2062,6 @@ def allthingsmustdie():
         commandortarget = commandortarget.lower()
         ## usage counter
         adjust_database_value(bot, instigator, 'usage', 1)
-        ## Stat check
-        statreset(bot, instigator)
-        healthcheck(bot, instigator)
         if not commandortarget:
             bot.say("temp fix")
 
@@ -2153,7 +2125,6 @@ def allthingsmustdie():
                         reset_database_value(bot, bot.nick, 'levelingtier')
                         reset_database_value(bot, bot.nick, 'specevent')
                         for u in bot.users:
-                            statreset(bot, target)
                             if statset == 'all':
                                 for x in duelstatsadminarray:
                                     set_database_value(bot, u, x, newvalue)
@@ -2161,7 +2132,6 @@ def allthingsmustdie():
                                 set_database_value(bot, u, statset, newvalue)
                         bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
                     else:
-                        statreset(bot, target)
                         try:
                             if newvalue.isdigit():
                                 newvalue = int(newvalue)
@@ -2199,7 +2169,7 @@ def allthingsmustdie():
 
 def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
     
-    healthcheck(bot, instigator)
+
     assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
     getreadytorumblenamearray = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
     ## clean empty stats
@@ -2213,11 +2183,6 @@ def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommand
         ## Cleanup
         combattextarraycomplete = []
         texttargetarray = []
-        
-        ## Check for new player health
-        healthcheck(bot, target)
-        ## verify stats aren't old
-        statreset(bot, target)
         
         ## Assault does not touch lastfought
         if typeofduel == 'assault':
@@ -2530,7 +2495,6 @@ def halfhourtimer(bot):
             else:  
                 set_database_value(bot, u, 'lastping', now)
                 
-                healthcheck(bot, u)
                 uclass = get_database_value(bot, u, 'class') or 'notclassy'
                 mana = get_database_value(bot, u, 'mana') or 0
                 health = get_database_value(bot, u, 'health') or 0
