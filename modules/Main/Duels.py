@@ -2231,9 +2231,9 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     userb = actualname(bot, userb)
 
     ## Devroom bypass
-    #if bot.nick.endswith(development_bot):
-    #    validtarget = 1
-    #    return validtarget, validtargetmsg
+    if bot.nick.endswith(development_bot):
+        validtarget = 1
+        return validtarget, validtargetmsg
     
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
