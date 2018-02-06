@@ -369,14 +369,15 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
             if not bot.nick.endswith(devbot):
                 return
+
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    specificusage = str('usage_'+commandortarget.lower())
+    adjust_database_value(bot, instigator, specificusage, 1) ## NEW, update subcommand
     
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath)')
     eval(subcommand_run)
-    
-    ## usage counter
-    adjust_database_value(bot, instigator, 'usage_total', 1)
-    adjust_database_value(bot, instigator, 'usage_'+commandortarget, 1) ## NEW, update subcommand
 
 #####################
 ## Main Duel Usage ##
