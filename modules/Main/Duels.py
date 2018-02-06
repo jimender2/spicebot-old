@@ -2287,7 +2287,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
                 losercurrenthealth  = get_database_value(bot, loser, 'health')
                 if losercurrenthealth  <= 0:
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
-                    for x in winnerkilledloser
+                    for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
                     
         ## Knight Retaliation
@@ -2317,7 +2317,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, fullcommandused, now, 
                         winnercurrenthealth = get_database_value(bot, winner, 'health')
                         if winnercurrenthealth <= 0:
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
-                            for x in loserkilledwinner
+                            for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
                 
         ## Chance that maindueler loses found loot
