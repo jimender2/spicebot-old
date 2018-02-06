@@ -2225,8 +2225,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Armor
     if damage > 0:
-        bot.say(str(bodypart))
-        bodypartnumber = bodypartsarray.index(bodypart.lower())
+        bodypartnumber = bodypartsarray.index(str(bodypart))
         bot.say(str(bodypartnumber))
         armortype = get_trigger_arg(armorarray, bodypartnumber)
         armornick = get_database_value(bot, nick, armortype) or 0
