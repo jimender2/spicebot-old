@@ -3452,7 +3452,7 @@ def winnerdicerolling(bot, nick, rolls):
 def get_current_magic_attributes(bot, nick):
     nickshield = get_database_value(bot, nick, 'shield') or 0
     nickcurse = get_database_value(bot, nick, 'curse') or 0
-    return nickshield, nickcurse, nickcurse
+    return nickshield, nickcurse
 
 def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershieldstart, winnercursestart, losercursestart):
     attributetext = []
