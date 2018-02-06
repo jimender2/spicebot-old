@@ -2205,7 +2205,11 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
     
     ## Current Users List
-    howmanyduelsers = len(currentduelplayersarray)
+    dueluserslist = []
+    for x in currentduelplayersarray:
+        if x != bot.nick:
+            dueluserslist.append(x)
+    howmanyduelsers = len(dueluserslist)
     
     ## Correct userb Name
     userb = actualname(bot, userb)
