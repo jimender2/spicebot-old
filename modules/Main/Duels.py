@@ -2551,9 +2551,6 @@ def actualname(bot,nick):
             actualnick = u
     return actualnick
             
-
-
-             
 ##################
 ## Pepper level ##
 ##################
@@ -2570,13 +2567,14 @@ def get_pepper(bot, nick):
     
     currenttier = get_database_value(bot, bot.nick, 'levelingtier')
     nicktier = get_database_value(bot, nick, 'levelingtier')
-    
+    xplast = 0
+    tiernumber = 0
     xplen = len(commandarray_xp_levels)
     for x in commandarray_xp_levels:
         xplen = xplen - 1
-        if x > xp:
-            tiernumber = xplen - 1
-            continue
+        if x > xp and xp > xplast:
+            tiernumber = xplen
+        xplast = x
     pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
     bot.say(str(pepper) + str(tiernumber))
 
