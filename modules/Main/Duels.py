@@ -727,7 +727,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
         targetname = target
         if targetcom == 'channel':
             targetcom = bot.nick
-        validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
