@@ -2182,6 +2182,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     validtarget = 1
     return validtarget, validtargetmsg  
 
+# mustpassthesetoduel
 def duelcriteria(bot, instigator, target, currentduelplayersarray):
     
     ## Guilty until proven Innocent
@@ -2220,7 +2221,7 @@ def duelcriteria(bot, instigator, target, currentduelplayersarray):
     #    return validtarget, validtargetmsg
     
     ## Don't allow Instigator to duel twice in a row
-    if instigator == channellastinstigator:# and instigatortime <= timeout_duel_instigator:
+    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
         return validtarget, validtargetmsg
     
