@@ -935,6 +935,9 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, instigator, 'roulettepayout')
 
 ## Colosseum
+    ## TODO tie this in with duel_combat
+    ### go through the target array for instigator
+    ### change instigator throughout that function for lastfought purposes
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
@@ -2058,6 +2061,84 @@ def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarra
     else:
         bot.notice(instigator + " you can only cheat once.", instigator)
 
+##########################
+## 30 minute automation ##
+##########################
+
+@sopel.module.interval(1800)
+def halfhourtimer(bot):
+    now = time.time()
+    
+    ## Tier the stats
+    tierratio = tierratio_level(bot)
+    healthregencurrent = tierratio * halfhour_regen_health_max
+    magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
+    
+    ## bot does not need stats or backpack items
+    refreshbot(bot)
+    
+    ## Who gets to win a mysterypotion?
+    randomuarray = []
+    duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
+    
+    ## Log Out Array
+    logoutarray = []
+    
+    for u in bot.users:
+        ## must have duels enabled, but has to use the game every so often
+        if u in duelusersarray and u != bot.nick:
+            
+            ## Log out users that aren't playing
+            lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
+            lastping = get_timesince_duels(bot, u, 'lastping') or 0
+            if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
+                logoutarray.append(u)
+                reset_database_value(bot, u, 'lastping')
+            else:  
+                set_database_value(bot, u, 'lastping', now)
+                
+                uclass = get_database_value(bot, u, 'class') or 'notclassy'
+                mana = get_database_value(bot, u, 'mana') or 0
+                health = get_database_value(bot, u, 'health') or 0
+    
+                ## Random user gets a mysterypotion
+                lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
+                if u != lasttimedlootwinner:
+                    randomuarray.append(u)
+
+                ## award coin to all
+                adjust_database_value(bot, u, 'coin', halfhour_coin)
+
+                ## health regenerates for all
+                if int(health) < healthregencurrent:
+                    adjust_database_value(bot, u, 'health', halfhour_regen_health)
+                    health = get_database_value(bot, u, 'health')
+                    if int(health) > healthregencurrent:
+                        set_database_value(bot, u, 'health', healthregencurrent)
+
+                ## mages regen mana
+                if uclass == 'mage':
+                    if int(mana) < magemanaregencurrent:
+                        adjust_database_value(bot, u, 'mana', halfhour_regen_mage_mana)
+                        mana = get_database_value(bot, u, 'mana')
+                        if int(mana) > magemanaregencurrent:
+                            set_database_value(bot, u, 'mana', magemanaregencurrent)
+
+    ## Log Out Users
+    adjust_database_array(bot, bot.nick, logoutarray, 'duelusers', 'del')
+    
+    ## Random winner select
+    if randomuarray != []:
+        lootwinner = halfhourpotionwinner(bot, randomuarray)
+        loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
+        adjust_database_value(bot, lootwinner, 'mysterypotion', 1)
+        lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
+        bot.notice(lootwinnermsg, lootwinner)
+
+    ## bot does not need stats or backpack items
+    refreshbot(bot)
+        
+        
 #####################
 ## Target Criteria ##
 #####################
@@ -2204,6 +2285,45 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 ## Damage ##
 ############
 
+def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
+
+    ## Rogue can't be hurt by themselves or bot
+    roguearraynodamage = [bot.nick,loser]
+    if classloser == 'rogue' and winner in roguearraynodamage:
+        damage = 0
+        
+    ## Bot deals a set amount
+    elif winner == bot.nick:
+        damage = bot_damage
+
+    ## Barbarians get extra damage (minimum)
+    elif classwinner == 'barbarian':
+        damage = randint(duel_advantage_barbarian_min_damage, 120)
+    
+    ## vampires have a minimum damage
+    elif classwinner == 'vampire' and winner != loser:
+        damage = randint(0, duel_disadvantage_vampire_max_damage)
+    
+    ## All Other Players
+    else:
+        damage = randint(0, 120)
+       
+    ## Damage Tiers
+    if damage > 0:
+        damage = damagescale * damage
+    
+    return damage
+    
+def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner):
+    
+    if damage == 0:
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage.')
+    elif classwinner == 'vampire' and winner != loser:
+        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ".")
+    else:
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
+    return damagetext
+
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
@@ -2231,7 +2351,6 @@ def damage_resistance(bot, nick, damage, bodypart):
             if part == bodypart:
                 bodypartnumber = bodypartlen
         #bodypartnumber = bodypartsarray.index(str(bodypart))
-        bot.say(str(bodypartnumber))
         armortype = get_trigger_arg(armorarray, bodypartnumber + 1)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
@@ -2344,11 +2463,10 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 bot.msg(user, combinedline)
             else:
                 bot.notice(combinedline, user)
-
-                
-#####################
-## NEW DUEL FORMAT ##
-#####################
+        
+################
+## DUEL Names ##
+################
 
 def duel_names(bot, nick, channel):
     nickname = ''
@@ -2363,472 +2481,6 @@ def duel_names(bot, nick, channel):
     if nickname == '':
         nickname = nick
     return nickname
-            
-def duel_colosseum(bot):
-    bot.say("wip")
-    ## TODO tie this in with duel_combat
-    ### go through the target array for instigator
-    ### change instigator throughout that function for lastfought purposes
-    
-def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
-
-    ## Rogue can't be hurt by themselves or bot
-    roguearraynodamage = [bot.nick,loser]
-    if classloser == 'rogue' and winner in roguearraynodamage:
-        damage = 0
-        
-    ## Bot deals a set amount
-    elif winner == bot.nick:
-        damage = bot_damage
-
-    ## Barbarians get extra damage (minimum)
-    elif classwinner == 'barbarian':
-        damage = randint(duel_advantage_barbarian_min_damage, 120)
-    
-    ## vampires have a minimum damage
-    elif classwinner == 'vampire' and winner != loser:
-        damage = randint(0, duel_disadvantage_vampire_max_damage)
-    
-    ## All Other Players
-    else:
-        damage = randint(0, 120)
-       
-    ## Damage Tiers
-    if damage > 0:
-        damage = damagescale * damage
-    
-    return damage
-    
-def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner):
-    
-    if damage == 0:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage.')
-    elif classwinner == 'vampire' and winner != loser:
-        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ".")
-    else:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
-    return damagetext
-             
-### Duels Old
-### Duels
-def getreadytorumble(bot, trigger, instigator, targetarray, OSDTYPE, fullcommandused, now, triggerargsarray, typeofduel, channel):
-    
-
-    assaultstatsarray = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
-    getreadytorumblenamearray = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
-    ## clean empty stats
-    assaultdisplay = ''
-    assault_xp, assault_wins, assault_losses, assault_potionswon, assault_potionslost, assault_deaths, assault_kills, assault_damagetaken, assault_damagedealt, assault_levelups = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-
-    targetarraytotal = len(targetarray)
-    for target in targetarray:
-        targetarraytotal = targetarraytotal - 1
-        
-        ## Cleanup
-        combattextarraycomplete = []
-        texttargetarray = []
-        
-        ## Assault does not touch lastfought
-        if typeofduel == 'assault':
-            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
-        
-        ## Same person can't instigate twice in a row
-        set_database_value(bot, bot.nick, 'lastinstigator', instigator)
-        
-        ## Update last fought
-        if instigator != target:
-            set_database_value(bot, instigator, 'lastfought', target)
-            set_database_value(bot, target, 'lastfought', instigator)
-        
-        ## Update Time Of Combat
-        set_database_value(bot, instigator, 'timeout', now)
-        set_database_value(bot, target, 'timeout', now)
-        set_database_value(bot, bot.nick, 'timeout', now)
-        
-        ## Starting Tier
-        currenttierstart = get_database_value(bot, bot.nick, 'levelingtier') or 0
-
-        ## Magic Attributes Start
-        instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart = get_current_magic_attributes(bot, instigator, target)
-
-        ## Display Naming
-        instigatorname = ''
-        targetname = ''
-        instigatorpepperstart = get_pepper(bot, instigator)
-        for q in getreadytorumblenamearray:
-            instigatorscriptdef = str(q + "(bot, instigator, channel)")
-            instigatornameadd = eval(instigatorscriptdef)
-            instigatornameadd = str(instigatornameadd)
-            if instigatorname == '':
-                instigatorname = str(instigatornameadd)
-            else:
-                instigatorname = str(instigatorname + " " + instigatornameadd)
-        if instigator == target:
-            targetname = "themself"
-            targetpepperstart = ''
-        else:
-            targetpepperstart = get_pepper(bot, target)
-            for q in getreadytorumblenamearray:
-                targetscriptdef = str(q + "(bot, target, channel)")
-                targetnameadd = eval(targetscriptdef)
-                targetnameadd = str(targetnameadd)
-                if targetname == '':
-                    targetname = str(targetnameadd)
-                else:
-                    targetname = str(targetname + " " + targetnameadd)
-
-        ## Announce Combat
-        announcecombatmsg = str(instigatorname + " versus " + targetname)
-        combattextarraycomplete.append(announcecombatmsg)
-            
-        ## Chance of Instigator finding loot
-        lootwinnermsg = ''
-        randominventoryfind = randominventory(bot, instigator)
-        if randominventoryfind == 'true' and target != bot.nick and instigator != target:
-            loot = get_trigger_arg(potion_types, 'random')
-            loot_text = eval(loot+"dispmsg")
-            lootwinnermsg = str(instigator + ' found a ' + str(loot) + ' ' + str(loot_text))
-            combattextarraycomplete.append(lootwinnermsg)
-        
-        ## Select Winner
-        if target == bot.nick:
-            winner = bot.nick
-            loser = instigator
-        else:
-            nickarray = [instigator, target]
-            winner = selectwinner(bot, nickarray)
-            if winner == instigator:
-                loser = target
-            else:
-                loser = instigator
-        
-        ## classes
-        yourclasswinner = get_database_value(bot, winner, 'class') or 'notclassy'
-        yourclassloser = get_database_value(bot, loser, 'class') or 'notclassy'
-        
-        ## Current Streaks
-        winner_loss_streak, loser_win_streak = get_current_streaks(bot, winner, loser)
-
-        ## Update Wins and Losses
-        if instigator != target:
-            adjust_database_value(bot, winner, 'wins', 1)
-            adjust_database_value(bot, loser, 'losses', 1)
-            set_current_streaks(bot, winner, 'win')
-            set_current_streaks(bot, loser, 'loss')
-        
-        ## Manual weapon
-        weapon = get_trigger_arg(triggerargsarray, '2+')
-        if winner == instigator and weapon and currenttierstart >= tierunlockweaponslocker:
-            if weapon == 'all':
-                weapon = getallchanweaponsrandom(bot)
-            elif weapon == 'target':
-                weapon = weaponofchoice(bot, target)
-                weapon = str(target + "'s " + weapon)
-        elif winner == bot.nick:
-            weapon = ''
-        else:
-            weapon = weaponofchoice(bot, winner)
-        weapon = weaponformatter(bot, weapon)
-        if weapon != '':
-            weapon = str(" " + weapon)
-        
-        ## Combat Process
-        damage, winnermsgarray, assault_kills, assault_deaths = damagedone(bot, winner, loser, instigator, weapon, 1, assault_kills, assault_deaths)
-        for x in winnermsgarray:
-            combattextarraycomplete.append(x)
-            
-        ## Update Health Of Loser, respawn, allow winner to loot
-        losercurrenthealth = get_database_value(bot, loser, 'health')
-        if instigator == target:
-            loser = targetname
-        if losercurrenthealth <= 0:
-            if winner == loser:
-                deathmsgb = suicidekill(bot,loser)
-            else:
-                deathmsgb = whokilledwhom(bot, winner, loser) or ''
-            winnermsg = str(loser + ' dies forcing a respawn!!')
-            if winner == instigator:
-                assault_kills = assault_kills + 1
-            else:
-                assault_deaths = assault_deaths + 1
-            combattextarraycomplete.append(winnermsg)
-            if deathmsgb != '':
-                combattextarraycomplete.append(deathmsgb)
-        
-        ## Knight/Paladin
-        winnercurrenthealth = get_database_value(bot, winner, 'health')
-        if winnercurrenthealth <= 0 and winner != loser:
-            deathmsgb = whokilledwhom(bot, winner, loser) or ''
-            
-        
-        
-        ## Chance that Instigator looses found loot
-        if randominventoryfind == 'true' and target != bot.nick and instigator != target:
-            lootwinnermsgb = ''
-            ## Barbarians get a 50/50 chance of getting loot even if they lose
-            classloser = get_database_value(bot, loser, 'class') or 'notclassy'
-            barbarianstealroll = randint(0, 100)
-            if classloser == 'barbarian' and barbarianstealroll >= 50:
-                lootwinnermsgb = str(loser + " steals the " + str(loot))
-                lootwinner = loser
-            elif winner == target:
-                lootwinnermsgb = str(winner + " gains the " + str(loot))
-                lootwinner = winner
-            else:
-                lootwinner = winner
-            adjust_database_value(bot, lootwinner, loot, 1)
-            if lootwinner == instigator:
-                assault_potionswon = assault_potionswon + 1
-            else:
-                assault_potionslost = assault_potionslost + 1
-            if lootwinnermsgb != '':
-                combattextarraycomplete.append(lootwinnermsgb)
-
-        ## Update XP points
-        if yourclasswinner == 'ranger':
-            XPearnedwinner = xp_winner_ranger
-        else:
-            XPearnedwinner = xp_winner
-        if yourclassloser == 'ranger':
-            XPearnedloser = xp_loser_ranger
-        else:
-            XPearnedloser = xp_loser
-        if instigator != target:
-            winnertier = get_database_value(bot, winner, 'levelingtier')
-            losertier = get_database_value(bot, loser, 'levelingtier')
-            xptier = tierratio_level(bot)
-            if winnertier < currenttierstart:
-                XPearnedwinner = XPearnedwinner * xptier
-            if losertier < currenttierstart:
-                XPearnedloser = XPearnedloser * xptier
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
-        
-        ## new pepper level?
-        instigatorpeppernow = get_pepper(bot, instigator)
-        if instigatorpeppernow != instigatorpepperstart and instigator != target:
-            pepperstatuschangemsg = str(instigator + " graduates to " + instigatorpeppernow + "! ")
-            assault_levelups = assault_levelups + 1
-            combattextarraycomplete.append(pepperstatuschangemsg)
-        targetpeppernow = get_pepper(bot, target)
-        if targetpeppernow != targetpepperstart and instigator != target:
-            pepperstatuschangemsg = str(target + " graduates to " + targetpeppernow + "! ")
-            combattextarraycomplete.append(pepperstatuschangemsg)
-        
-        ## Tier update
-        tierchangemsg = ''
-        currenttierend = get_database_value(bot, bot.nick, 'levelingtier') or 1
-        if int(currenttierend) > int(currenttierstart):
-            tierchangemsg = str("New Tier Unlocked!")
-            if currenttierend != 1:
-                newtierlistarray = []
-                for x in commandarray_all_valid:
-                    newtiereval = eval("tierunlock"+x)
-                    if newtiereval == currenttierend:
-                        newtierlistarray.append(x)
-                if newtierlistarray != []:
-                    newtierlist = get_trigger_arg(newtierlistarray, "list")
-                    tierchangemsg = str(tierchangemsg + " Feature(s) now available: " + newtierlist)
-                combattextarraycomplete.append(tierchangemsg)
-
-        ## Magic Attributes text
-        if instigator != target:
-            magicattributestext = get_magic_attributes_text(bot, instigator, target, instigatorshieldstart, targetshieldstart, instigatorcursestart, targetcursestart)
-            if magicattributestext and magicattributestext != '':
-                combattextarraycomplete.append(magicattributestext)
-                
-        ## Special Event
-        speceventtext = ''
-        speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
-        if speceventtotal >= 49:
-            set_database_value(bot, bot.nick, 'specevent', 1)
-            speceventtext = str(instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-            adjust_database_value(bot, instigator, 'coin', duel_special_event)
-            combattextarraycomplete.append(speceventtext)
-        else:
-            adjust_database_value(bot, bot.nick, 'specevent', 1)
-
-        ## Streaks Text
-        streaktext = ''
-        if instigator != target:
-            streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
-            if streaktext != '':
-                combattextarraycomplete.append(streaktext)
-
-        ## On Screen Text
-        texttargetarray = []
-        if OSDTYPE == 'say':
-            texttargetarray.append(channel)
-        elif OSDTYPE == 'notice':
-            texttargetarray.append(instigator)
-            texttargetarray.append(target)
-        else:
-            texttargetarray.append(instigator)
-        onscreentext(bot, texttargetarray, combattextarraycomplete)
-        
-        ## update assault stats
-        if winner == instigator:
-            assault_wins = assault_wins + 1
-            assault_damagedealt = assault_damagedealt + int(damage)
-            assault_xp = assault_xp + XPearnedwinner
-            if yourclasswinner == 'vampire':
-                assault_damagetaken = assault_damagetaken - int(damage)
-        if loser == instigator:
-            assault_losses = assault_losses + 1
-            assault_damagetaken = assault_damagetaken + int(damage)
-            assault_xp = assault_xp + XPearnedloser
-
-        ## Pause Between duels
-        if typeofduel == 'assault':
-            bot.notice("  ", instigator)
-            time.sleep(5)
-        
-        ## Random Bonus
-        if typeofduel == 'random' and winner == instigator:
-            adjust_database_value(bot, winner, 'coin', random_payout)
-            
-        ## End Of assault
-        if typeofduel == 'assault':
-            set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
-            if targetarraytotal == 0:
-                bot.notice(instigator + ", It looks like the Full Channel Assault has completed.", instigator)
-                
-                for x in assaultstatsarray:
-                    workingvar = eval("assault_"+x)
-                    if workingvar > 0:
-                        newline = str(x + " = " + str(workingvar))
-                        if assaultdisplay != '':
-                            assaultdisplay = str(assaultdisplay + " " + newline)
-                        else:
-                            assaultdisplay = str(newline)
-                ##onscreentext(bot, [inchannel], dispmsgarray) TODO: make the assualt stats an array
-                bot.say(instigator + "'s Full Channel Assault results: " + assaultdisplay)
-                
-## End Of Duels ###################################################################################################################
-
-## 30 minute automation
-@sopel.module.interval(1800)
-def halfhourtimer(bot):
-    now = time.time()
-    
-    ## Tier the stats
-    tierratio = tierratio_level(bot)
-    healthregencurrent = tierratio * halfhour_regen_health_max
-    magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
-    
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
-    
-    ## Who gets to win a mysterypotion?
-    randomuarray = []
-    duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
-    
-    ## Log Out Array
-    logoutarray = []
-    
-    for u in bot.users:
-        ## must have duels enabled, but has to use the game every so often
-        if u in duelusersarray and u != bot.nick:
-            
-            ## Log out users that aren't playing
-            lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
-            lastping = get_timesince_duels(bot, u, 'lastping') or 0
-            if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
-                logoutarray.append(u)
-                reset_database_value(bot, u, 'lastping')
-            else:  
-                set_database_value(bot, u, 'lastping', now)
-                
-                uclass = get_database_value(bot, u, 'class') or 'notclassy'
-                mana = get_database_value(bot, u, 'mana') or 0
-                health = get_database_value(bot, u, 'health') or 0
-    
-                ## Random user gets a mysterypotion
-                lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
-                if u != lasttimedlootwinner:
-                    randomuarray.append(u)
-
-                ## award coin to all
-                adjust_database_value(bot, u, 'coin', halfhour_coin)
-
-                ## health regenerates for all
-                if int(health) < healthregencurrent:
-                    adjust_database_value(bot, u, 'health', halfhour_regen_health)
-                    health = get_database_value(bot, u, 'health')
-                    if int(health) > healthregencurrent:
-                        set_database_value(bot, u, 'health', healthregencurrent)
-
-                ## mages regen mana
-                if uclass == 'mage':
-                    if int(mana) < magemanaregencurrent:
-                        adjust_database_value(bot, u, 'mana', halfhour_regen_mage_mana)
-                        mana = get_database_value(bot, u, 'mana')
-                        if int(mana) > magemanaregencurrent:
-                            set_database_value(bot, u, 'mana', magemanaregencurrent)
-
-    ## Log Out Users
-    adjust_database_array(bot, bot.nick, logoutarray, 'duelusers', 'del')
-    
-    ## Random winner select
-    if randomuarray != []:
-        lootwinner = halfhourpotionwinner(bot, randomuarray)
-        loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
-        adjust_database_value(bot, lootwinner, 'mysterypotion', 1)
-        lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
-        bot.notice(lootwinnermsg, lootwinner)
-
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
-
-## Functions ######################################################################################################################
-
-######################
-## Criteria to duel ##
-######################
-
-def mustpassthesetoduel(bot, trigger, instigator, target, dowedisplay):
-    displaymsg = ''
-    executedueling = 0
-    instigatorclass = get_database_value(bot, instigator, 'class') or 'notclassy'
-    if instigatorclass != 'knight':
-        instigatorlastfought = get_database_value(bot, instigator, 'lastfought') or ''
-    else:
-        instigatorlastfought = bot.nick
-    instigatortime = get_timesince_duels(bot, instigator, 'timeout') or ''
-    targettime = get_timesince_duels(bot, target, 'timeout') or ''
-    channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or ''
-    channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
-    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
-    totalduelusersarray = []
-    for u in bot.users:
-        if u in dueloptedinarray and u != bot.nick:
-            totalduelusersarray.append(u)
-    howmanyduelsers = len(totalduelusersarray)
-    target = actualname(bot, target)
-    if instigator == channellastinstigator and instigatortime <= timeout_duel_instigator and not bot.nick.endswith(development_bot):
-        displaymsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - instigatortime)))+" .")
-    elif target == instigatorlastfought and not bot.nick.endswith(development_bot) and howmanyduelsers > 2:
-        displaymsg = str(instigator + ', You may not fight the same person twice in a row.')
-    elif instigator.lower() not in [x.lower() for x in dueloptedinarray]:
-        displaymsg = str(instigator + ", It looks like you have disabled duels. Run .duel on to re-enable.")
-    elif target.lower() not in [x.lower() for x in dueloptedinarray]:
-        displaymsg = str(instigator + ', It looks like ' + target + ' has disabled duels.')
-    elif instigatortime <= timeout_user_duels and not bot.nick.endswith(development_bot):
-        displaymsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - instigatortime)))+".")
-    elif targettime <= timeout_user_duels and not bot.nick.endswith(development_bot):
-        displaymsg = str(target + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - targettime)))+".")
-    elif channeltime <= timeout_channel_duels and not bot.nick.endswith(development_bot):
-        displaymsg = str("Channel can't duel for "+str(hours_minutes_seconds((timeout_channel_duels - channeltime)))+".")
-    else:
-        displaymsg = ''
-        executedueling = 1
-    if dowedisplay:
-        bot.notice(displaymsg, instigator)
-    return executedueling
-
-###########
-## Names ##
-###########
 
 def nicktitles(bot, nick, channel):
     nickname = actualname(bot,nick)
@@ -2898,78 +2550,88 @@ def actualname(bot,nick):
         if u.lower() == nick.lower():
             actualnick = u
     return actualnick
+            
 
+
+             
 ##################
 ## Pepper level ##
 ##################
 
 def get_pepper(bot, nick):
-    tiernumber = 0
-    nicktier = get_database_value(bot, nick, 'levelingtier')
-    nickpepper = get_database_value(bot, nick, 'levelingpepper')
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
-    xp = get_database_value(bot, nick, 'xp')
+    
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
-    elif not xp:
+        return pepper
+    xp = get_database_value(bot, nick, 'xp') or 0
+    if not xp:
         pepper = ''
-    elif xp > 0 and xp < 100:
-        pepper = 'Pimiento'
-        tiernumber = 1
-    elif xp >= 100 and xp < 250:
-        pepper = 'Sonora'
-        tiernumber = 2
-    elif xp >= 250 and xp < 500:
-        pepper = 'Anaheim'
-        tiernumber = 3
-    elif xp >= 500 and xp < 1000:
-        pepper = 'Poblano'
-        tiernumber = 4
-    elif xp >= 1000 and xp < 2500:
-        pepper = 'Jalapeno'
-        tiernumber = 5
-    elif xp >= 2500 and xp < 5000:
-        pepper = 'Serrano'
-        tiernumber = 6
-    elif xp >= 5000 and xp < 7500:
-        pepper = 'Chipotle'
-        tiernumber = 7
-    elif xp >= 7500 and xp < 10000:
-        pepper = 'Tabasco'
-        tiernumber = 8
-    elif xp >= 10000 and xp < 15000:
-        pepper = 'Cayenne'
-        tiernumber = 9
-    elif xp >= 15000 and xp < 25000:
-        pepper = 'Thai Pepper'
-        tiernumber = 10
-    elif xp >= 25000 and xp < 45000:
-        pepper = 'Datil'
-        tiernumber = 11
-    elif xp >= 45000 and xp < 70000:
-        pepper = 'Habanero'
-        tiernumber = 12
-    elif xp >= 70000 and xp < 100000:
-        pepper = 'Ghost Chili'
-        tiernumber = 13
-    elif xp >= 100000 and xp < 250000:
-        pepper = 'Mace'
-        tiernumber = 14
-    elif xp >= 250000:
-        pepper = 'Pure Capsaicin'
-        tiernumber = 15
-    ## advance respawn tier
-    if tiernumber > currenttier:
-        set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
-    if tiernumber != nicktier:
-        set_database_value(bot, nick, 'levelingtier', tiernumber)
-    return pepper
+        return pepper
+    
+    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
+    nicktier = get_database_value(bot, nick, 'levelingtier')
+    
+    xplen = len(commandarray_xp_levels)
+    for x in commandarray_xp_levels:
+        xplen = xplen - 1
+        if x > xp:
+            tiernumber = xplen - 1
+            continue
+    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
+    bot.say(str(pepper) + str(tiernumber))
 
-
-
-
-
-        
+    #if xp > 0 and xp < 100:
+    #    pepper = 'Pimiento'
+    #    tiernumber = 1
+    #elif xp >= 100 and xp < 250:
+    #    pepper = 'Sonora'
+    #    tiernumber = 2
+    #elif xp >= 250 and xp < 500:
+    #    pepper = 'Anaheim'
+    #    tiernumber = 3
+    #elif xp >= 500 and xp < 1000:
+    #    pepper = 'Poblano'
+    #    tiernumber = 4
+    #elif xp >= 1000 and xp < 2500:
+    #    pepper = 'Jalapeno'
+    #    tiernumber = 5
+    #elif xp >= 2500 and xp < 5000:
+    #    pepper = 'Serrano'
+    #    tiernumber = 6
+    #elif xp >= 5000 and xp < 7500:
+    #    pepper = 'Chipotle'
+    #    tiernumber = 7
+    #elif xp >= 7500 and xp < 10000:
+    #    pepper = 'Tabasco'
+    #    tiernumber = 8
+    #elif xp >= 10000 and xp < 15000:
+    #    pepper = 'Cayenne'
+    #    tiernumber = 9
+    #elif xp >= 15000 and xp < 25000:
+    #    pepper = 'Thai Pepper'
+    #    tiernumber = 10
+    #elif xp >= 25000 and xp < 45000:
+    #    pepper = 'Datil'
+    #    tiernumber = 11
+    #elif xp >= 45000 and xp < 70000:
+    #    pepper = 'Habanero'
+    #    tiernumber = 12
+    #elif xp >= 70000 and xp < 100000:
+    #    pepper = 'Ghost Chili'
+    #    tiernumber = 13
+    #elif xp >= 100000 and xp < 250000:
+    #    pepper = 'Mace'
+    #    tiernumber = 14
+    #elif xp >= 250000:
+    #    pepper = 'Pure Capsaicin'
+    #    tiernumber = 15
+    
+    # advance respawn tier
+    #if tiernumber > currenttier:
+    #    set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
+    #if tiernumber != nicktier:
+    #    set_database_value(bot, nick, 'levelingtier', tiernumber)
+    #return pepper
 
 ##########
 ## Time ##
