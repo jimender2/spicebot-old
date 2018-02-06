@@ -678,10 +678,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
             adjust_database_value(bot, instigator, 'health', -abs(damage))
         currenthealth = get_database_value(bot, instigator, 'health')
         if currenthealth <= 0:
-            dispmsgarray.append(instigator + ' dies forcing a respawn!!')
             winnertextarray = whokilledwhom(bot, winner, x)
-            for s in winnertextarray:
-                dispmsgarray.append(s)
             diedinbattle.append(x)
     if diedinbattle != []:
         displaymessage = get_trigger_arg(diedinbattle, "list")
