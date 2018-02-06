@@ -2564,72 +2564,61 @@ def get_pepper(bot, nick):
     if not xp:
         pepper = ''
         return pepper
-    
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier')
-    nicktier = get_database_value(bot, nick, 'levelingtier')
-    xplast = 0
-    tiernumber = 0
-    xplen = len(commandarray_xp_levels)
-    for x in commandarray_xp_levels:
-        xplen = xplen - 1
-        if x > xp and xp > xplast:
-            tiernumber = xplen
-        xplast = x
-    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
-    bot.say(str(pepper) + str(tiernumber))
-
-    #if xp > 0 and xp < 100:
-    #    pepper = 'Pimiento'
-    #    tiernumber = 1
-    #elif xp >= 100 and xp < 250:
-    #    pepper = 'Sonora'
-    #    tiernumber = 2
-    #elif xp >= 250 and xp < 500:
-    #    pepper = 'Anaheim'
-    #    tiernumber = 3
-    #elif xp >= 500 and xp < 1000:
-    #    pepper = 'Poblano'
-    #    tiernumber = 4
-    #elif xp >= 1000 and xp < 2500:
-    #    pepper = 'Jalapeno'
-    #    tiernumber = 5
-    #elif xp >= 2500 and xp < 5000:
-    #    pepper = 'Serrano'
-    #    tiernumber = 6
-    #elif xp >= 5000 and xp < 7500:
-    #    pepper = 'Chipotle'
-    #    tiernumber = 7
-    #elif xp >= 7500 and xp < 10000:
-    #    pepper = 'Tabasco'
-    #    tiernumber = 8
-    #elif xp >= 10000 and xp < 15000:
-    #    pepper = 'Cayenne'
-    #    tiernumber = 9
-    #elif xp >= 15000 and xp < 25000:
-    #    pepper = 'Thai Pepper'
-    #    tiernumber = 10
-    #elif xp >= 25000 and xp < 45000:
-    #    pepper = 'Datil'
-    #    tiernumber = 11
-    #elif xp >= 45000 and xp < 70000:
-    #    pepper = 'Habanero'
-    #    tiernumber = 12
-    #elif xp >= 70000 and xp < 100000:
-    #    pepper = 'Ghost Chili'
-    #    tiernumber = 13
-    #elif xp >= 100000 and xp < 250000:
-    #    pepper = 'Mace'
-    #    tiernumber = 14
-    #elif xp >= 250000:
-    #    pepper = 'Pure Capsaicin'
-    #    tiernumber = 15
+    if xp > 0 and xp < 100:
+        pepper = 'Pimiento'
+        tiernumber = 1
+    elif xp >= 100 and xp < 250:
+        pepper = 'Sonora'
+        tiernumber = 2
+    elif xp >= 250 and xp < 500:
+        pepper = 'Anaheim'
+        tiernumber = 3
+    elif xp >= 500 and xp < 1000:
+        pepper = 'Poblano'
+        tiernumber = 4
+    elif xp >= 1000 and xp < 2500:
+        pepper = 'Jalapeno'
+        tiernumber = 5
+    elif xp >= 2500 and xp < 5000:
+        pepper = 'Serrano'
+        tiernumber = 6
+    elif xp >= 5000 and xp < 7500:
+        pepper = 'Chipotle'
+        tiernumber = 7
+    elif xp >= 7500 and xp < 10000:
+        pepper = 'Tabasco'
+        tiernumber = 8
+    elif xp >= 10000 and xp < 15000:
+        pepper = 'Cayenne'
+        tiernumber = 9
+    elif xp >= 15000 and xp < 25000:
+        pepper = 'Thai Pepper'
+        tiernumber = 10
+    elif xp >= 25000 and xp < 45000:
+        pepper = 'Datil'
+        tiernumber = 11
+    elif xp >= 45000 and xp < 70000:
+        pepper = 'Habanero'
+        tiernumber = 12
+    elif xp >= 70000 and xp < 100000:
+        pepper = 'Ghost Chili'
+        tiernumber = 13
+    elif xp >= 100000 and xp < 250000:
+        pepper = 'Mace'
+        tiernumber = 14
+    elif xp >= 250000:
+        pepper = 'Pure Capsaicin'
+        tiernumber = 15
+    else:
+        pepper = ''
+        tiernumber = 0
     
     # advance respawn tier
-    #if tiernumber > currenttier:
-    #    set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
-    #if tiernumber != nicktier:
-    #    set_database_value(bot, nick, 'levelingtier', tiernumber)
-    #return pepper
+    if tiernumber > currenttier:
+        set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
+    if tiernumber != nicktier:
+        set_database_value(bot, nick, 'levelingtier', tiernumber)
+    return pepper
 
 ##########
 ## Time ##
