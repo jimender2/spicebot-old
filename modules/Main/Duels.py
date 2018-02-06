@@ -976,7 +976,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             bot.say("What stat do you want to check highest/losest?")
             return
         duelstatsadminarray = []
-        for i in range(1,16):
+        for i in range(1,stats_admin_count):
             stats_view = eval("stats_admin"+str(i))
             for duelstat in stats_view:
                 duelstatsadminarray.append(duelstat)
@@ -1709,7 +1709,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         statset = get_trigger_arg(triggerargsarray, 5)
         newvalue = get_trigger_arg(triggerargsarray, 6)
         duelstatsadminarray = []
-        for i in range(1,16):
+        for i in range(1,stats_admin_count):
             stats_view = eval("stats_admin"+str(i))
             for duelstat in stats_view:
                 duelstatsadminarray.append(duelstat)
