@@ -2556,7 +2556,6 @@ def actualname(bot,nick):
 ##################
 
 def get_pepper(bot, nick):
-    
     if nick == bot.nick:
         pepper = 'Dragon Breath Chilli'
         return pepper
@@ -2565,6 +2564,7 @@ def get_pepper(bot, nick):
         pepper = ''
         return pepper
     currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    nicktier = get_database_value(bot, nick, 'levelingtier')
     if xp > 0 and xp < 100:
         pepper = 'Pimiento'
         tiernumber = 1
