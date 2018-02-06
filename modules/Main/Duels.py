@@ -217,6 +217,9 @@ xp_loser_ranger = 15 ## xp earned as a loser and ranger
 konamiset = 600 ## for cheaters that actually read the code slightly
 stockhealth = 1000
 
+## Records
+duelrecorduser = 'duelrecorduser'
+
 ########################
 ## Main Command Usage ##
 ########################
@@ -251,7 +254,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     
     ## user lists
-    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
+    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
     currentuserlistarray = []
     botvisibleusersappendarray = []
     for user in bot.users:
@@ -259,8 +262,8 @@ def execute_main(bot, trigger, triggerargsarray):
             currentuserlistarray.append(user)
             if user not in botvisibleusers:
                 botvisibleusersappendarray.append(user)
-    adjust_database_array(bot, bot.nick, botvisibleusersappendarray, 'botvisibleusers', 'add')
-    botvisibleusers = get_database_value(bot, bot.nick, 'botvisibleusers') or []
+    adjust_database_array(bot, duelrecorduser, botvisibleusersappendarray, 'botvisibleusers', 'add')
+    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
 
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
@@ -275,7 +278,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return
     
     ## Check if Instigator is Opted in
-    dueloptedinarray = get_database_value(bot, bot.nick, 'duelusers') or []
+    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     if instigator not in dueloptedinarray and commandortarget.lower() not in commandarray_instigator_bypass:
         bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
         return
@@ -358,8 +361,8 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         ## usage counter
         adjust_database_value(bot, instigator, 'usage_total', 1)
         adjust_database_value(bot, instigator, 'usage_combat', 1)
-        adjust_database_value(bot, bot.nick, 'usage_total', 1)
-        adjust_database_value(bot, bot.nick, 'usage_combat', 1)
+        adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+        adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
     
 
 #######################
@@ -382,7 +385,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
             continue
     
     ## Is the Tier Unlocked?
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
@@ -394,8 +397,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
     adjust_database_value(bot, instigator, 'usage_'+commandortarget.lower(), 1)
-    adjust_database_value(bot, bot.nick, 'usage_total', 1)
-    adjust_database_value(bot, bot.nick, 'usage_'+commandortarget.lower(), 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_'+commandortarget.lower(), 1)
     
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath)')
@@ -408,10 +411,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel):
     
     ## Same person can't instigate twice in a row
-    set_database_value(bot, bot.nick, 'lastinstigator', instigator)
+    set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
     
     ## Starting Tier
-    currenttierstart = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierscaling = tierratio_level(bot)
     
     ## Targetarray Start
@@ -428,6 +431,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             set_database_value(bot, maindueler, 'lastfought', target)
             set_database_value(bot, target, 'lastfought', maindueler)
             
+        ## Update Time Of Combat
+        set_database_value(bot, maindueler, 'timeout', now)
+        set_database_value(bot, target, 'timeout', now)
+        set_database_value(bot, duelrecorduser, 'timeout', now)
+        
         ## Display Naming
         mainduelername = duel_names(bot, maindueler, inchannel)
         mainduelerpepperstart = get_pepper(bot, maindueler) ## TODO
@@ -640,7 +648,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
         ## Tier update
-        currenttierend = get_database_value(bot, bot.nick, 'levelingtier') or 1
+        currenttierend = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
         if int(currenttierend) > int(currenttierstart):
             combattextarraycomplete.append("New Tier Unlocked!")
             tiercheck = eval("commandarray_tier_unlocks_"+str(currenttierend))
@@ -656,13 +664,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 
         ## Special Event
         speceventtext = ''
-        speceventtotal = get_database_value(bot, bot.nick, 'specevent') or 0
+        speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
         if speceventtotal >= 49:
-            set_database_value(bot, bot.nick, 'specevent', 1)
+            set_database_value(bot, duelrecorduser, 'specevent', 1)
             combattextarraycomplete.append(maindueler + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
             adjust_database_value(bot, maindueler, 'coin', duel_special_event)
         else:
-            adjust_database_value(bot, bot.nick, 'specevent', 1)
+            adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
         ## Streaks Text
         if maindueler != target:
@@ -705,7 +713,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels on.", instigator)
         return
-    adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'add')
+    adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
@@ -718,7 +726,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels off.", instigator)
         return
-    adjust_database_array(bot, bot.nick, [instigator], 'duelusers', 'del')
+    adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'del')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
 
@@ -829,14 +837,14 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     ## Small timeout
-    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeout_roulette
+    getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
     if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
-    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     ## Check who last pulled the trigger, or if it's a new chamber
-    roulettelastplayer = get_database_value(bot, bot.nick, 'roulettelastplayer') or bot.nick
-    roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+    roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
+    roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
     if roulettelastplayer == instigator: ## Odds increase
         bot.say(instigator + " spins the revolver and pulls the trigger.")
     elif roulettecount == 1:
@@ -844,12 +852,12 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
     ## Get the selected chamber from the database,, or set one
-    roulettechamber = get_database_value(bot, bot.nick, 'roulettechamber')
+    roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
     if not roulettechamber:
         roulettechamber = randint(1, 6)
-        set_database_value(bot, bot.nick, 'roulettechamber', roulettechamber)
+        set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
-    roulettespinarray = get_database_value(bot, bot.nick, 'roulettespinarray') or [1,2,3,4,5,6]
+    roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
         if len(roulettespinarray) > 1:
             temparray = []
@@ -859,12 +867,12 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             randomremove = get_trigger_arg(temparray, "random")
             roulettespinarray.remove(randomremove)
             currentspin = get_trigger_arg(roulettespinarray, "random")
-            set_database_value(bot, bot.nick, 'roulettespinarray', roulettespinarray)
+            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
         else:
             currentspin = roulettechamber ## if only one location left
-            reset_database_value(bot, bot.nick, 'roulettespinarray')
+            reset_database_value(bot, duelrecorduser, 'roulettespinarray')
     else:
-        reset_database_value(bot, bot.nick, 'roulettespinarray')
+        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
     ## determine if current spin equals bullet loacation
     currentspin = get_trigger_arg(roulettespinarray, "random")
     ### current spin is safe
@@ -874,14 +882,14 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-        adjust_database_value(bot, bot.nick, 'roulettecount', 1)
-        set_database_value(bot, bot.nick, 'roulettelastplayer', instigator)
-        adjust_database_array(bot, bot.nick, [instigator], 'roulettewinners', 'add')
+        adjust_database_value(bot, duelrecorduser, 'roulettecount', 1)
+        set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
+        adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
     ### instigator shoots themself in the head
     else:
         dispmsgarray = []
         biggestpayout, biggestpayoutwinner = 0,''
-        roulettewinners = get_database_value(bot, bot.nick, 'roulettewinners') or []
+        roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
         revolver = get_trigger_arg(roulette_revolver_list, 'random')
         damage = randint(50, 120)
         damagescale = tierratio_level(bot)
@@ -923,16 +931,16 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             dispmsgarray.append("Winners: " + displaymessage + ".")
         if biggestpayoutwinner != '':
             dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
-        roulettecount = get_database_value(bot, bot.nick, 'roulettecount') or 1
+        roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
         if roulettecount > 1:
             roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
         onscreentext(bot, [inchannel], dispmsgarray)
         ### Reset for next run
-        reset_database_value(bot, bot.nick, 'roulettelastplayer')
-        reset_database_value(bot, bot.nick, 'roulettechamber')
-        reset_database_value(bot, bot.nick, 'roulettewinners')
-        reset_database_value(bot, bot.nick, 'roulettecount')
+        reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
+        reset_database_value(bot, duelrecorduser, 'roulettechamber')
+        reset_database_value(bot, duelrecorduser, 'roulettewinners')
+        reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
 ## Colosseum
@@ -951,8 +959,8 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     dispmsgarray = []
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
-    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
-    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     totalplayers = len(canduelarray)
     riskcoins = int(totalplayers) * 30
     damage = riskcoins
@@ -991,8 +999,8 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
         canduelarray.remove(instigator)
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
-    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget), now)
-    set_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
     bot.say("todo")
     #getreadytorumble(bot, trigger, instigator, canduelarray, 'notice', fullcommandused, now, triggerargsarray, 'assault', inchannel)
@@ -1623,9 +1631,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 if targethealth <= 0:
                     lootusedeaths = lootusedeaths + 1
                     if target == instigator:
-                        deathmsgb = suicidekill(bot,loser)
+                        deathmsgb = suicidekill(bot,loser) ## TODO array
                     else:
-                        deathmsgb = whokilledwhom(bot, instigator, target) or ''
+                        deathmsgb = whokilledwhom(bot, instigator, target) or ''  ## TODO array
                     mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
             if lootitem == 'mysterypotion':
                 actualpotionmathedarray = []
@@ -1896,9 +1904,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
         if target == 'everyone':
             if subcommand == 'on':
-                adjust_database_array(bot, bot.nick, botvisibleusers, 'duelusers', 'add')
+                adjust_database_array(bot, duelrecorduser, botvisibleusers, 'duelusers', 'add')
             else:
-                reset_database_value(bot, bot.nick, 'duelusers')
+                reset_database_value(bot, duelrecorduser, 'duelusers')
             bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
             return
         if target not in [y.lower() for y in botvisibleusers]:
@@ -1912,9 +1920,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + ", It looks like " + target + " already has duels off.", instigator)
             return
         if subcommand == 'on':
-            adjust_database_array(bot, bot.nick, [target], 'duelusers', 'add')
+            adjust_database_array(bot, duelrecorduser, [target], 'duelusers', 'add')
         else:
-            adjust_database_array(bot, bot.nick, [target], 'duelusers', 'del')
+            adjust_database_array(bot, duelrecorduser, [target], 'duelusers', 'del')
         set_database_value(bot, target, 'opttime', now)
         bot.notice(instigator + ", duels should now be " +  subcommand + ' for ' + target + '.', instigator)
     elif subcommand == 'tier':
@@ -1971,11 +1979,11 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice(instigator + ", what did you intend to do with roulette?", instigator)
             return
         bot.notice(instigator + ", Roulette should now be reset.", instigator)
-        reset_database_value(bot, bot.nick, 'roulettelastplayer')
-        reset_database_value(bot, bot.nick, 'roulettechamber')
-        reset_database_value(bot, bot.nick, 'roulettewinners')
-        reset_database_value(bot, bot.nick, 'roulettecount')
-        reset_database_value(bot, bot.nick, 'roulettespinarray')
+        reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
+        reset_database_value(bot, duelrecorduser, 'roulettechamber')
+        reset_database_value(bot, duelrecorduser, 'roulettewinners')
+        reset_database_value(bot, duelrecorduser, 'roulettecount')
+        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         for user in botvisibleusers:
             reset_database_value(bot, user, 'roulettepayout')
     elif subcommand == 'stats':
@@ -2008,9 +2016,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             if subcommand == 'set' and newvalue == None:
                 bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
             elif target == 'everyone':
-                set_database_value(bot, bot.nick, 'chanstatsreset', now)
-                reset_database_value(bot, bot.nick, 'levelingtier')
-                reset_database_value(bot, bot.nick, 'specevent')
+                set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+                reset_database_value(bot, duelrecorduser, 'levelingtier')
+                reset_database_value(bot, duelrecorduser, 'specevent')
                 for u in botvisibleusers:
                     if statset == 'all':
                          for x in duelstatsadminarray:
@@ -2034,15 +2042,15 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         if not settingchange:
             bot.notice(instigator + ", What channel setting do you want to change?", instigator)
         elif settingchange == 'lastassault':
-            reset_database_value(bot, bot.nick, 'lastfullroomassultinstigator')
+            reset_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator')
             bot.notice("Last Assault Instigator removed.", instigator)
-            reset_database_value(bot, bot.nick, 'lastfullroomassult')
+            reset_database_value(bot, duelrecorduser, 'lastfullroomassult')
         elif settingchange == 'lastroman':
-            reset_database_value(bot, bot.nick, 'lastfullroomcolosseuminstigator')
+            reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseuminstigator')
             bot.notice("Last Colosseum Instigator removed.", instigator)
-            reset_database_value(bot, bot.nick, 'lastfullroomcolosseum')
+            reset_database_value(bot, duelrecorduser, 'lastfullroomcolosseum')
         elif settingchange == 'lastinstigator':
-            reset_database_value(bot, bot.nick, 'lastinstigator')
+            reset_database_value(bot, duelrecorduser, 'lastinstigator')
             bot.notice("Last Fought Instigator removed.", instigator)
         elif settingchange == 'halfhoursim':
             bot.notice("Simulating the half hour automated events.", instigator)
@@ -2080,7 +2088,7 @@ def halfhourtimer(bot):
     
     ## Who gets to win a mysterypotion?
     randomuarray = []
-    duelusersarray = get_database_value(bot, bot.nick, 'duelusers')
+    duelusersarray = get_database_value(bot, duelrecorduser, 'duelusers')
     
     ## Log Out Array
     logoutarray = []
@@ -2103,7 +2111,7 @@ def halfhourtimer(bot):
                 health = get_database_value(bot, u, 'health') or 0
     
                 ## Random user gets a mysterypotion
-                lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
+                lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
                 if u != lasttimedlootwinner:
                     randomuarray.append(u)
 
@@ -2126,7 +2134,7 @@ def halfhourtimer(bot):
                             set_database_value(bot, u, 'mana', magemanaregencurrent)
 
     ## Log Out Users
-    adjust_database_array(bot, bot.nick, logoutarray, 'duelusers', 'del')
+    adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
     
     ## Random winner select
     if randomuarray != []:
@@ -2199,10 +2207,10 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     ## Timeout Retrieval
     useratime = get_timesince_duels(bot, usera, 'timeout') or 0
     userbtime = get_timesince_duels(bot, userb, 'timeout') or 0
-    channeltime = get_timesince_duels(bot, bot.nick, 'timeout') or 0
+    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout') or 0
     
     ## Last instigator
-    channellastinstigator = get_database_value(bot, bot.nick, 'lastinstigator') or bot.nick
+    channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
     
     ## Current Users List
     dueluserslist = []
@@ -2213,12 +2221,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     
     ## Correct userb Name
     userb = actualname(bot, userb)
-    
-    ## Just in case Error Handling
-    if not userb or userb not in currentduelplayersarray:
-        validtargetmsg = str("Invalid Target")
-        return validtarget, validtargetmsg
-    
+
     ## Devroom bypass
     #if bot.nick.endswith(development_bot):
     #    validtarget = 1
@@ -2273,8 +2276,8 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         return validtarget, validtargetmsg
     
     timeouteval = eval("timeout_"+commandortarget.lower())
-    getlastusage = get_timesince_duels(bot, bot.nick, str('lastfullroom' + commandortarget)) or timeouteval
-    getlastinstigator = get_database_value(bot, bot.nick, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
+    getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
+    getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
     
     if getlastusage < timeouteval:
         validtargetmsg = str(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".")
@@ -2569,7 +2572,7 @@ def get_pepper(bot, nick):
     if not xp:
         pepper = ''
         return pepper
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     nicktier = get_database_value(bot, nick, 'levelingtier')
     if xp > 0 and xp < 100:
         pepper = 'Pimiento'
@@ -2622,7 +2625,7 @@ def get_pepper(bot, nick):
     
     # advance respawn tier
     if tiernumber > currenttier:
-        set_database_value(bot, bot.nick, 'levelingtier', tiernumber)
+        set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
     return pepper
@@ -2723,20 +2726,20 @@ def randominventory(bot, instigator):
 
 def halfhourpotionwinner(bot, randomuarray):
     winnerselectarray = []
-    recentwinnersarray = get_database_value(bot, bot.nick, 'lasttimedlootwinners') or []
-    lasttimedlootwinner = get_database_value(bot, bot.nick, 'lasttimedlootwinner') or bot.nick
+    recentwinnersarray = get_database_value(bot, duelrecorduser, 'lasttimedlootwinners') or []
+    lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
     howmanyusers = len(randomuarray)
     if not howmanyusers > 1:
-        reset_database_value(bot, bot.nick, 'lasttimedlootwinner')
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinner')
     for x in randomuarray:
         if x not in recentwinnersarray and x != lasttimedlootwinner:
             winnerselectarray.append(x)
     if winnerselectarray == [] and randomuarray != []:
-        reset_database_value(bot, bot.nick, 'lasttimedlootwinners')
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinners')
         return halfhourpotionwinner(bot, randomuarray)
     lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
-    adjust_database_array(bot, bot.nick, [lootwinner], 'lasttimedlootwinners', 'add')
-    set_database_value(bot, bot.nick, 'lasttimedlootwinner', lootwinner)
+    adjust_database_array(bot, duelrecorduser, [lootwinner], 'lasttimedlootwinners', 'add')
+    set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', lootwinner)
     return lootwinner
 
 ######################
@@ -2800,9 +2803,9 @@ def weaponformatter(bot, weapon):
 
 def statreset(bot, nick): ## TODO update
     now = time.time()
-    getlastchanstatreset = get_database_value(bot, bot.nick, 'chanstatsreset')
+    getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
     if not getlastchanstatreset:
-        set_database_value(bot, bot.nick, 'chanstatsreset', now)
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
     getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
     if getnicklastreset < getlastchanstatreset:
         duelstatsadminarray = []
@@ -2819,7 +2822,7 @@ def statreset(bot, nick): ## TODO update
 ################
 
 def tierratio_level(bot):
-    currenttier = get_database_value(bot, bot.nick, 'levelingtier') or 0
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
     return tierratio
 
