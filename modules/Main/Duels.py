@@ -191,6 +191,7 @@ halfhour_regen_mage_mana, halfhour_regen_mage_mana_max = 50, 500 ## mages regene
 halfhour_coin = 15 ## coin gain per half hour
 
 ## Main Duel Runs
+duel_lockout_timer = 300
 duel_nick_order = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
 duel_hit_types = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 bot_damage = 150 ## The bot deals a set damage
@@ -352,6 +353,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
+        duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+        if duelslockout:
+            lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+            if lockoutsince < duel_lockout_timer:
+                bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+                return
+            reset_database_value(bot, duelrecorduser, 'duelslockout') 
         if not inchannel.startswith("#"):
             bot.notice(instigator + ", duels must be in channel.", instigator)
             return
@@ -363,7 +371,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
+        set_database_value(bot, duelrecorduser, 'duelslockout', now)
         duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
         ## usage counter
         adjust_database_value(bot, instigator, 'usage_total', 1)
         adjust_database_value(bot, instigator, 'usage_combat', 1)
