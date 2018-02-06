@@ -1158,16 +1158,12 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
             if instigator in canduelarray:
                 canduelarray.remove(instigator)
-            if instigator in bot.nick:
+            if bot.nick in canduelarray:
                 canduelarray.remove(bot.nick)
             if canduelarray == []:
                 bot.notice(instigator + ", It looks like using a grenade right now won't hurt anybody.", instigator)
             else:
                 dispmsgarray = []
-                canduelarrayorig = []
-                for u in canduelarray:
-                    canduelarrayorig.append(u)
-                    targethealth = get_database_value(bot, u, 'health')
                 adjust_database_value(bot, instigator, lootitem, -1)
                 fulltarget, secondarytarget, thirdtarget = '','',''
                 fulltarget = get_trigger_arg(canduelarray, "random")
@@ -1210,10 +1206,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         adjust_database_value(bot, player, 'health', -abs(damage))
                     currenthealth = get_database_value(bot, player, 'health')
                     if currenthealth <= 0:
-                        dispmsgarray.append(player + ' dies forcing a respawn!!')
                         winnertextarray = whokilledwhom(bot, instigator, player)
-                        for s in winnertextarray:
-                            dispmsgarray.append(s)
                         diedinbattle.append(x)
                 if diedinbattle != []:
                     displaymessage = get_trigger_arg(diedinbattle, "list")
