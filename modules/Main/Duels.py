@@ -1887,7 +1887,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         return validtarget, validtargetmsg
     
     ## Devroom bypass
-    f bot.nick.endswith(devbot):
+    if bot.nick.endswith(devbot):
        validtarget = 1
        return validtarget, validtargetmsg
     
