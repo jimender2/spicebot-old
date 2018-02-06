@@ -2091,7 +2091,7 @@ def duel_colosseum(bot):
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
     
-def duels_damage(bot, damagescale, classwinner, classloser):
+def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
