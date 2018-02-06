@@ -2799,6 +2799,11 @@ def statreset(bot, nick): ## TODO update
         set_database_value(bot, bot.nick, 'chanstatsreset', now)
     getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
     if getnicklastreset < getlastchanstatreset:
+        duelstatsadminarray = []
+        for i in range(1,stats_admin_count):
+            stats_view = eval("stats_admin"+str(i))
+            for duelstat in stats_view:
+                duelstatsadminarray.append(duelstat)
         for x in duelstatsadminarray:
             reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
