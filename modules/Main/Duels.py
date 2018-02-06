@@ -2232,7 +2232,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         losershieldstart, losercursestart = get_current_magic_attributes(bot, loser)
 
         ## Body Part Hit
-        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+        bodypart = get_trigger_arg(bodypartsarray, 'random')
         
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
@@ -2302,7 +2302,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 weaponb = weaponformatter(bot, weaponb)
                 weaponb = str(" "+ weaponb)
                 ## Body Part Hit
-                bodypartb = get_trigger_arg(duelbodypartsarray, 'random')
+                bodypartb = get_trigger_arg(bodypartsarray, 'random')
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
@@ -3186,17 +3186,17 @@ def damagedone(bot, winner, loser, instigator, weapon, diaglevel, assault_kills,
         winnername = winner
         losername = loser
         striketype = "retaliates against"
-        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+        bodypart = get_trigger_arg(bodypartsarray, 'random')
     elif winner == loser:
         winnername = loser
         losername = "themself"
         striketype = get_trigger_arg(duel_hit_types, 'random')
-        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+        bodypart = get_trigger_arg(bodypartsarray, 'random')
     else:
         winnername = winner
         losername = loser
         striketype = get_trigger_arg(duel_hit_types, 'random')
-        bodypart = get_trigger_arg(duelbodypartsarray, 'random')
+        bodypart = get_trigger_arg(bodypartsarray, 'random')
 
     ## Armortype to check
     armortype = eval("armor"+bodypart)
