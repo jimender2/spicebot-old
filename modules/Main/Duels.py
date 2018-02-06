@@ -2007,9 +2007,9 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             if subcommand == 'set' and newvalue == None:
                 bot.notice(instigator + ", When using set, you must specify a value. " + incorrectdisplay, instigator)
             elif target == 'everyone':
-                set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-                reset_database_value(bot, duelrecorduser, 'levelingtier')
-                reset_database_value(bot, duelrecorduser, 'specevent')
+                set_database_value(bot, bot.nick, 'chanstatsreset', now)
+                reset_database_value(bot, bot.nick, 'levelingtier')
+                reset_database_value(bot, bot.nick, 'specevent')
                 for u in botvisibleusers:
                     if statset == 'all':
                          for x in duelstatsadminarray:
