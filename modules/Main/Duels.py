@@ -2208,42 +2208,46 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
     
-    damage = int(damage)
+    bot.say("test")
     
     ## Shields
-    shieldloser = get_database_value(bot, nick, 'shield') or 0
-    if shieldloser and damage > 0:
-        damagemath = int(shieldloser) - damage
-        if int(damagemath) > 0:
-            adjust_database_value(bot, loser, 'shield', -abs(damage))
-            damage = 0
-            absorbed = 'all'
-        else:
-            absorbed = damagemath + damage
-            damage = abs(damagemath)
-            reset_database_value(bot, loser, 'shield')
-        damagetextarray.append(nick + " absorbs " + str(absorbed) + " of the damage. ")
+    if damage > 0:
+        shieldloser = get_database_value(bot, nick, 'shield') or 0
+        if shieldloser:
+            bot.say("shield")
+            damagemath = int(shieldloser) - damage
+            if int(damagemath) > 0:
+                adjust_database_value(bot, loser, 'shield', -abs(damage))
+                damage = 0
+                absorbed = 'all'
+            else:
+                absorbed = damagemath + damage
+                damage = abs(damagemath)
+                reset_database_value(bot, loser, 'shield')
+            damagetextarray.append(nick + " absorbs " + str(absorbed) + " of the damage. ")
     
     ## Armor
-    bodypartnumber = bodypartsarray.index(bodypart)
-    armortype = get_trigger_arg(armorarray, bodypartnumber)
-    armorloser = get_database_value(bot, nick, armortype) or 0
-    if armorloser and damage > 0:
-        adjust_database_value(bot, loser, armortype, -1)
-        damagepercent = randint(1, armor_relief_percentage) / 100
-        damagereduced = damage * damagepercent
-        damagereduced = int(damagereduced)
-        damage = damage - damagereduced
-        damagetext = str(loser + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
-        armorloser = get_database_value(bot, loser, armortype) or 0
-        if armorloser <= 0:
-            reset_database_value(bot, loser, armortype)
-            damagetext = str(damagetext + ", causing the armor to break!")
-        elif armorloser <= 5:
-            damagetext = str(damagetext + ", causing the armor to be in need of repair!")
-        else:
-            damagetext = str(damagetext + ".")
-        damagetextarray.append(damagetext)
+    if damage > 0:
+        bodypartnumber = bodypartsarray.index(bodypart)
+        armortype = get_trigger_arg(armorarray, bodypartnumber)
+        armorloser = get_database_value(bot, nick, armortype) or 0
+        if armorloser:
+            bot.say("armor")
+            adjust_database_value(bot, loser, armortype, -1)
+            damagepercent = randint(1, armor_relief_percentage) / 100
+            damagereduced = damage * damagepercent
+            damagereduced = int(damagereduced)
+            damage = damage - damagereduced
+            damagetext = str(loser + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
+            armorloser = get_database_value(bot, loser, armortype) or 0
+            if armorloser <= 0:
+                reset_database_value(bot, loser, armortype)
+                damagetext = str(damagetext + ", causing the armor to break!")
+            elif armorloser <= 5:
+                damagetext = str(damagetext + ", causing the armor to be in need of repair!")
+            else:
+                damagetext = str(damagetext + ".")
+            damagetextarray.append(damagetext)
     
     return damage, damagetextarray 
     
