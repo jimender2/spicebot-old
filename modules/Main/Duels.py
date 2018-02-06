@@ -194,9 +194,9 @@ halfhour_coin = 15 ## coin gain per half hour
 duel_nick_order = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
 duel_hit_types = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 bot_damage = 150 ## The bot deals a set damage
-timeout_user_duels = 180 ## Time between a users ability to duel - 3 minutes
-timeout_channel_duels = 40 ## Time between duels in a channel - 40 seconds
-timeout_duel_instigator = 1800 ## Time between instigation, unless another user plays
+USERTIMEOUT = 180 ## Time between a users ability to duel - 3 minutes
+CHANTIMEOUT = 40 ## Time between duels in a channel - 40 seconds
+INSTIGATORTIMEOUT = 1800 ## Time between instigation, unless another user plays
 duel_special_event = 500 ## Every 50 duels, instigator wins 500 coins
 ### Class (dis)advantages
 duel_advantage_scavenger_loot_find = 60 ## scavengers have a higher percent chance of finding loot
@@ -2225,8 +2225,8 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     #    return validtarget, validtargetmsg
     
     ## Don't allow usera to duel twice in a row
-    if usera == channellastinstigator and useratime <= timeout_duel_instigator:
-        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((timeout_duel_instigator - useratime)))+" .")
+    if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
+        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         return validtarget, validtargetmsg
     
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
@@ -2235,18 +2235,18 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
         return validtarget, validtargetmsg
     
     ## usera Timeout
-    if useratime <= timeout_user_duels:
-        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((timeout_user_duels - useratime)))+".")
+    if useratime <= USERTIMEOUT:
+        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
         return validtarget, validtargetmsg
     
     ## Target Timeout
-    if userbtime <= timeout_user_duels:
-        validtargetmsg = str(userb + " can't duel for "+str(hours_minutes_seconds((timeout_user_duels - userbtime)))+".")
+    if userbtime <= USERTIMEOUT:
+        validtargetmsg = str(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
         return validtarget, validtargetmsg
     
     ## Channel Timeout
-    if channeltime <= timeout_channel_duels:
-        validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((timeout_channel_duels - channeltime)))+".")
+    if channeltime <= CHANTIMEOUT:
+        validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
         return validtarget, validtargetmsg
     
     validtarget = 1
@@ -2638,8 +2638,8 @@ def get_timesince_duels(bot, nick, databasekey):
 
 def get_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout')
-    if time_since < timeout_user_duels:
-        timediff = str(hours_minutes_seconds((timeout_user_duels - time_since)))
+    if time_since < USERTIMEOUT:
+        timediff = str(hours_minutes_seconds((USERTIMEOUT - time_since)))
     else:
         timediff = 0
     return timediff
