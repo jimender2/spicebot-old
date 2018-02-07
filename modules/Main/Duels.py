@@ -826,9 +826,19 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             nexttier = currenttier + 1
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
-            bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
+            dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
+            nextpepper = pepper_tier(bot, nexttier)
+            tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
+            if tiercheck != []:
+                tierlist = get_trigger_arg(tiercheck, "list")
+                dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+            else:
+                dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+            tiermath = int(command) - currenttier
+            if tiermath > 0:
+                dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         else:
-            bot.say("Nobody is the closest to the next pepper level.")
+            dispmsgarray.append("Nobody is the closest to the next pepper level.")
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
