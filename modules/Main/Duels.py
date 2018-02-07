@@ -775,7 +775,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         nextpepper = pepper_tier(bot, nexttier)
         tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
         if tiercheck != []:
-            tierlist = get_trigger_arg(pickarray, "list")
+            tierlist = get_trigger_arg(tiercheck, "list")
             dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier))
@@ -788,7 +788,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         onscreentext(bot, ['say'], dispmsgarray)
-    elif command.isdigit() or command.lower() in commandarray_pepper_levels or command.lower() == 'next':
+    elif command.isdigit() or command.lower() in commandarray_pepper_levels:
         pickarray = []
         dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         if command.isdigit():
@@ -800,9 +800,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif command.lower() in commandarray_pepper_levels:
             tiernumber = commandarray_pepper_levels.index(command.lower())
             pepper = command.lower()
-        elif command.lower() == 'next':
-            tiernumber = currenttier + 1
-            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
         else:
             bot.say("Invalid Tier to Check.")
             return
