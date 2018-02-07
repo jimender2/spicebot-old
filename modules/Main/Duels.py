@@ -642,6 +642,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                                 combattextarraycomplete.append(x)
                 
         ## Chance that maindueler loses found loot
+        randominventoryfind = randominventory(bot, maindueler)
         if randominventoryfind == 'true' and target != bot.nick and maindueler != target:
             ## Barbarians get a 50/50 chance of getting loot even if they lose
             classloser = get_database_value(bot, loser, 'class') or 'notclassy'
