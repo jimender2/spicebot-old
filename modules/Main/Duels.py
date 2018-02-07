@@ -961,7 +961,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
         if len(roulettespinarray) > 1:
-            roulettetemp = []
+            bot.say(str())
+            roulettetemp = [roulettespinarray]
             for x in roulettespinarray:
                 if x != roulettechamber:
                     roulettetemp.append(x)
