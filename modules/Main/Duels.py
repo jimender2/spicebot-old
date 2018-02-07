@@ -282,7 +282,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if gameenabledchannels == []:
         bot.notice(instigator + ", Duels has not been enabled in any channels. Talk to a bot admin.", instigator)
         return
-    if inchannel not in gameenabledchannels and not inchannel.startswith("#"):
+    if inchannel not in gameenabledchannels and inchannel.startswith("#"):
         bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
         return
 
