@@ -981,6 +981,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = get_trigger_arg(roulettespinarray, "random")
     
+    bot.say(str(currentspin))
     ### current spin is safe
     if currentspin != roulettechamber:
         time.sleep(2) # added to build suspense
