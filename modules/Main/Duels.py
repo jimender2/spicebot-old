@@ -395,8 +395,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     
     ## What Tier Command?
     for i in range(0,16):
-        bot.say(str(i))
         tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+        bot.say(str(tiercheck))
         if commandortarget.lower() in tiercheck:
             tiercommandeval = int(i)
             continue
