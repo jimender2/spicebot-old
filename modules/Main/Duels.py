@@ -942,12 +942,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-    if roulettelastplayer == instigator: ## Odds increase
-        bot.say(instigator + " spins the revolver and pulls the trigger.")
-    elif roulettecount == 1:
-        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
-    else:
-        bot.say(instigator + " spins the cylinder and pulls the trigger.")
     
     ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
@@ -955,6 +949,14 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
     
+    ## Display Text
+    if roulettelastplayer == instigator: ## Odds increase
+        bot.say(instigator + " spins the revolver and pulls the trigger.")
+    elif roulettecount == 1:
+        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
+    else:
+        bot.say(instigator + " spins the cylinder and pulls the trigger.")
+
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
     roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
@@ -962,14 +964,11 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettetemp = []
             for x in roulettespinarray:
                 if x != roulettechamber:
-                    bot.say(str(x) + " yes")
                     roulettetemp.append(x)
-                else:
-                    bot.say(str(x) + " no")
             rouletteremove = get_trigger_arg(roulettetemp, "random")
-            bot.say(str(rouletteremove))
-            roulettespinarray.remove(rouletteremove)
-            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
+            roulettetemp.remove(rouletteremove)
+            roulettetemp.append(roulettechamber)
+            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettetemp)
             currentspin = get_trigger_arg(roulettespinarray, "random")
         else:
             currentspin = roulettechamber ## if only one location left
