@@ -959,7 +959,16 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
         if len(roulettespinarray) > 1:
-            roulettespinarray.remove(get_trigger_arg(roulettespinarray, "random"))
+            roulettetemp = []
+            for x in roulettespinarray:
+                if x != roulettechamber:
+                    bot.say(x + " yes")
+                    roulettetemp.append(x)
+                else:
+                    bot.say(x + " no")
+            rouletteremove = get_trigger_arg(roulettetemp, "random")
+            bot.say(str(rouletteremove))
+            roulettespinarray.remove(rouletteremove)
             set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
             currentspin = get_trigger_arg(roulettespinarray, "random")
         else:
