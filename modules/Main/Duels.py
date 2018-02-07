@@ -2393,6 +2393,8 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     item = ''
     indexnumber = arraytoindex.index(indexitem)
+    indexnumber = indexnumber + 1
+    bot.say(str(indexnumber))
     item = get_trigger_arg(arraytocompare, indexnumber)
     return item
 
