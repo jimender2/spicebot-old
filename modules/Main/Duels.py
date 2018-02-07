@@ -2392,6 +2392,7 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     item = ''
+    i = 0
     while i < len(arraytoindex):
         index = testlist.index(indexitem,i)
         i = index + 1
