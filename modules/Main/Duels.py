@@ -1134,6 +1134,8 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
             return
         reset_database_value(bot, duelrecorduser, 'duelslockout')
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    if bot.nick not in canduelarray:
+        canduelarray.append(bot.nick)
     target = get_trigger_arg(canduelarray, 'random')
     duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'target')
     reset_database_value(bot, duelrecorduser, 'duelslockout')
