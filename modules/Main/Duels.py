@@ -2394,7 +2394,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     item = ''
     i = 0
     while i < len(arraytoindex):
-        index = testlist.index(indexitem,i)
+        index = arraytoindex.index(indexitem,i)
         i = index + 1
         indexnumber = index
     bot.say(str(indexnumber))
