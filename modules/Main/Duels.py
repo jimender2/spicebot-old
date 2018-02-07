@@ -765,9 +765,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if futuretierlistarray != []:
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ".")
-        onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
+        return
     elif command.lower() == 'next':
         nexttier = currenttier + 1
         if nexttier > 15:
@@ -780,7 +780,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
-        onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
         commandpepper = pepper_tier(bot, commandtier)
@@ -820,7 +819,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             tiermath = int(tiernumber) - currenttier
             if tiermath > 0:
                 dispmsgarray.append(str(tiermath) + " tier(s) to go!")
-        onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
@@ -843,7 +841,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             return
         targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
-        onscreentext(bot, ['say'], dispmsgarray)
+    onscreentext(bot, ['say'], dispmsgarray)
         
 ## Suicide/harakiri
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
