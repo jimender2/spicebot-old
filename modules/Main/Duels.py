@@ -2395,6 +2395,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     for x, y in zip(arraytoindex, arraytocompare):
         if x == indexitem:
             item = x
+    bot.say(str(item))
     return item
 
 ## Damage Resistance
