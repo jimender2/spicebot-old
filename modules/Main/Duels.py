@@ -966,10 +966,13 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
                 if x != roulettechamber:
                     roulettetemp.append(x)
             rouletteremove = get_trigger_arg(roulettetemp, "random")
-            roulettetemp.remove(rouletteremove)
-            roulettetemp.append(roulettechamber)
-            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettetemp)
-            currentspin = get_trigger_arg(roulettespinarray, "random")
+            roulettetempb = []
+            roulettetempb.append(roulettechamber)
+            for j in roulettetemp:
+                if j != rouletteremove:
+                    roulettetempb.append(j)
+            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettetempb)
+            roulettetempb = get_trigger_arg(roulettespinarray, "random")
         else:
             currentspin = roulettechamber ## if only one location left
             reset_database_value(bot, duelrecorduser, 'roulettespinarray')
