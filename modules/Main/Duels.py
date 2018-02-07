@@ -3071,12 +3071,12 @@ def get_trigger_arg(triggerargsarray, number):
     ## Random Entry from array
     if number == 'random':
         try:
-            #temparray = []
-            #for d in triggerargsarray:
-            #    temparray.append(d)
-            #shuffledarray = random.shuffle(triggerargsarray)
-            randomselected = random.randint(0,len(triggerargsarray) - 1)
-            triggerarg = str(triggerargsarray [randomselected])
+            temparray = []
+            for d in triggerargsarray:
+                temparray.append(d)
+            #shuffledarray = random.shuffle(temparray)
+            randomselected = random.randint(0,len(temparray) - 1)
+            triggerarg = str(temparray [randomselected])
         except TypeError:
             triggerarg = get_trigger_arg(triggerargsarray, 1)
         return triggerarg
@@ -3088,14 +3088,11 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerarg
     ## Complete
     if number == 0:
-        try:
-            for x in triggerargsarray:
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + x)
-                else:
-                    triggerarg = str(x)
-        except TypeError:
-            triggerarg = ''
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + x)
+            else:
+                triggerarg = str(x)
         return triggerarg
     ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
