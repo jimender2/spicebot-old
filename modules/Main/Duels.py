@@ -2405,14 +2405,18 @@ def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
     
     #item = array_compare(bot, bodypart, bodypartsarray, armorarray)
-    i = 0
-    while i < len(bodypartsarray):
-        index = bodypartsarray.index(bodypart,i)
-        i = index + 1
-        indexnumber = index
-    bot.say(str(indexnumber))
-    item = get_trigger_arg(arraytocompare, indexnumber + 1)
-    bot.say(bodypart + " = " + str(item))
+    for part, armor in zip(bodypartsarray, armorarray):
+        if part == bodypart:
+            armortype = armor
+    bot.say(str(armortype))
+    #i = 0
+    #while i < len(bodypartsarray):
+    #    index = bodypartsarray.index(bodypart,i)
+    #    i = index + 1
+    #    indexnumber = index
+    #bot.say(str(indexnumber))
+    #item = get_trigger_arg(arraytocompare, indexnumber + 1)
+    #bot.say(bodypart + " = " + str(item))
 
     ## Shields
     if damage > 0:
