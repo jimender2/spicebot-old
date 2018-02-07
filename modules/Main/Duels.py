@@ -2392,13 +2392,9 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     item = ''
-    #for x, y in zip(arraytoindex, arraytocompare):
-    #    if x == indexitem:
-    #        item = y
-    for i, j in enumerate(arraytoindex):
-        if j == indexitem:
-            itemposition = i
-    bot.say(str(i))
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = y
     return item
 
 ## Damage Resistance
