@@ -2391,7 +2391,6 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
     return damagetext
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    item = ''
     i = 0
     while i < len(arraytoindex):
         index = arraytoindex.index(indexitem,i)
@@ -2405,10 +2404,16 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
     
-    item = array_compare(bot, bodypart, bodypartsarray, armorarray)
+    #item = array_compare(bot, bodypart, bodypartsarray, armorarray)
+    i = 0
+    while i < len(bodypartsarray):
+        index = bodypartsarray.index(bodypart,i)
+        i = index + 1
+        indexnumber = index
+    bot.say(str(indexnumber))
+    item = get_trigger_arg(arraytocompare, indexnumber + 1)
     bot.say(bodypart + " = " + str(item))
-    
-    
+
     ## Shields
     if damage > 0:
         shieldnick = get_database_value(bot, nick, 'shield') or 0
