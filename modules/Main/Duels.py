@@ -772,7 +772,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         commandpepper = pepper_tier(bot, commandtier)
         dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(currenttierpepper) + ").")
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
-        tiermath = tiereval - currenttier
+        tiermath = commandtier - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         onscreentext(bot, ['say'], dispmsgarray)
