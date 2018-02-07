@@ -3070,16 +3070,14 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerarg
     ## Random Entry from array
     if number == 'random':
-        try:
-            temparray = []
-            for d in triggerargsarray:
-                temparray.append(d)
-            #shuffledarray = random.shuffle(temparray)
-            randomselected = random.randint(0,len(temparray) - 1)
-            triggerarg = str(temparray [randomselected])
-        except TypeError:
-            triggerarg = get_trigger_arg(triggerargsarray, 1)
-        return triggerarg
+        if triggerargsarray == []:
+            return triggerarg
+        temparray = []
+        for d in triggerargsarray:
+            temparray.append(d)
+        shuffledarray = random.shuffle(temparray)
+        randomselected = random.randint(0,len(temparray) - 1)
+        triggerarg = str(temparray [randomselected])
     ## Last
     if number == 'last':
         if totalarray > 1:
