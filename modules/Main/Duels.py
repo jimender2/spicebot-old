@@ -743,7 +743,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < timeout_opt:
+    if instigatoropttime < timeout_opt and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
     
@@ -768,7 +768,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
-    if instigatoropttime < timeout_opt:
+    if instigatoropttime < timeout_opt and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
     
