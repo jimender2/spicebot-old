@@ -932,12 +932,14 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+    
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
     if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
@@ -947,30 +949,33 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
+    
     ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
     if not roulettechamber:
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
+    
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
     roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
-    if roulettelastplayer == instigator:
-        if len(roulettespinarray) > 1:
-            temparray = []
-            for x in roulettespinarray:
-                if x != roulettechamber:
-                    temparray.append(x)
-            randomremove = get_trigger_arg(temparray, "random")
-            roulettespinarray.remove(randomremove)
-            currentspin = get_trigger_arg(roulettespinarray, "random")
-            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
-        else:
-            currentspin = roulettechamber ## if only one location left
-            reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+    if roulettelastplayer == instigator and not len(roulettespinarray) > 1:
+        currentspin = roulettechamber ## if only one location left
+        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+    elif roulettelastplayer == instigator and len(roulettespinarray) > 1:
+        tempoarray = []
+        for x in roulettespinarray:
+            if x != roulettechamber:
+                tempoarray.append(x)
+        randomremove = get_trigger_arg(tempoarray, "random")
+        roulettespinarray.remove(randomremove)
+        currentspin = get_trigger_arg(roulettespinarray, "random")
+        set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
     else:
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+    
     ## determine if current spin equals bullet loacation
     currentspin = get_trigger_arg(roulettespinarray, "random")
+    
     ### current spin is safe
     if currentspin != roulettechamber:
         time.sleep(2) # added to build suspense
@@ -981,6 +986,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, duelrecorduser, 'roulettecount', 1)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
+    
     ### instigator shoots themself in the head
     else:
         dispmsgarray = []
@@ -2708,7 +2714,8 @@ def get_pepper(bot, nick):
     nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
-    pepper = pepper.capitalize()
+    #pepper = pepper.capitalize()
+    pepper = pepper.title()
     return pepper
 
 ##########
