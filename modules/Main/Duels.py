@@ -824,6 +824,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 statleadernumber = statamount
         if statleadername != '':
             nexttier = currenttier + 1
+            if int(nexttier) > 15:
+                bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+                return
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
             dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
@@ -834,7 +837,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
             else:
                 dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
-            tiermath = int(command) - currenttier
+            tiermath = int(nexttier) - currenttier
             if tiermath > 0:
                 dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         else:
