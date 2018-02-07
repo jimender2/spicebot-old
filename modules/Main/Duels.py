@@ -756,10 +756,9 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
-    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-    for x in gameenabledchannels:
-        bot.say(x)
+    
     ## Anounce to channels
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     dispmsgarray = []
     dispmsgarray.append(instigator + " has entered the arena!")
     onscreentext(bot, gameenabledchannels, dispmsgarray)
@@ -784,6 +783,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     
     ## Anounce to channels
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     dispmsgarray = []
     dispmsgarray.append(instigator + " has left the arena! What a coward!")
     onscreentext(bot, gameenabledchannels, dispmsgarray)
