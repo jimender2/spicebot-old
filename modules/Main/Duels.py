@@ -779,7 +779,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             tierlist = get_trigger_arg(tiercheck, "list")
             dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
         else:
-            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier))
+            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
         onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
@@ -790,7 +790,15 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         onscreentext(bot, ['say'], dispmsgarray)
-    elif command.isdigit() or command.lower() in commandarray_pepper_levels:
+    elif command.lower() in commandarray_pepper_levels:
+        commandtier = tier_pepper(bot, command)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(tiercheck, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command) + ").")
+    elif command.isdigit():
         pickarray = []
         dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         if command.isdigit():
@@ -799,9 +807,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.say("Tiers don't go that high.")
                 return
             pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
-        elif command.lower() in commandarray_pepper_levels:
-            tiernumber = commandarray_pepper_levels.index(command.lower())
-            pepper = command.lower()
         else:
             bot.say("Invalid Tier to Check.")
             return
