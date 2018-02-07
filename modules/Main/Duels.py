@@ -2391,32 +2391,15 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
     return damagetext
 
 def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    i = 0
-    while i < len(arraytoindex):
-        index = arraytoindex.index(indexitem,i)
-        i = index + 1
-        indexnumber = index
-    bot.say(str(indexnumber))
-    item = get_trigger_arg(arraytocompare, indexnumber + 1)
+    item = ''
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = x
     return item
 
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
-    
-    #item = array_compare(bot, bodypart, bodypartsarray, armorarray)
-    for part, armor in zip(bodypartsarray, armorarray):
-        if part == bodypart:
-            armortype = armor
-    bot.say(str(armortype))
-    #i = 0
-    #while i < len(bodypartsarray):
-    #    index = bodypartsarray.index(bodypart,i)
-    #    i = index + 1
-    #    indexnumber = index
-    #bot.say(str(indexnumber))
-    #item = get_trigger_arg(arraytocompare, indexnumber + 1)
-    #bot.say(bodypart + " = " + str(item))
 
     ## Shields
     if damage > 0:
@@ -2435,16 +2418,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Armor
     if damage > 0:
-        #for i, j in enumerate(bodypartsarray):
-        #    if j == bodypart:
-        #        bodypartnumber = i
-        #bodypartlen = len(bodypartsarray)
-        #for part in bodypartsarray:
-        #    bodypartlen = bodypartlen - 1
-        #    if part == bodypart:
-        #        bodypartnumber = bodypartlen
-        #bodypartnumber = bodypartsarray.index(bodypart)
-        #armortype = get_trigger_arg(armorarray, bodypartnumber)
+        armortype = array_compare(bot, bodypart, bodypartsarray, armorarray)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
             adjust_database_value(bot, nick, armortype, -1)
