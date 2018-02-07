@@ -756,7 +756,12 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
-    ## bot.announce fuckery TODO
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+    
+    ## Anounce to channels
+    dispmsgarray = []
+    dispmsgarray.append(instigator + " has entered the arena!")
+    onscreentext(bot, gameenabledchannels, dispmsgarray)
     
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -776,6 +781,11 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'del')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
+    
+    ## Anounce to channels
+    dispmsgarray = []
+    dispmsgarray.append(instigator + " has left the arena! What a coward!")
+    onscreentext(bot, gameenabledchannels, dispmsgarray)
 
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
