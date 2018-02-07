@@ -88,7 +88,7 @@ development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM',
 timeout_opt = 1800 ## Time between opting in and out of the game - Half hour
 
 ## Roulette
-timeout_roulette = 8
+timeout_roulette = 5
 roulette_payout_default = 5
 roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
 
@@ -718,7 +718,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [inchannel], combattextarraycomplete)
         else:
             onscreentext(bot, [winner,loser], combattextarraycomplete)
-    
+
 #################
 ## Subcommands ##
 #################
@@ -733,7 +733,6 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    
     ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -958,23 +957,22 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
     roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
-    if roulettelastplayer == instigator and not len(roulettespinarray) > 1:
-        currentspin = roulettechamber ## if only one location left
-        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
-    elif roulettelastplayer == instigator and len(roulettespinarray) > 1:
-        tempoarray = []
-        for x in roulettespinarray:
-            if x != roulettechamber:
-                tempoarray.append(x)
-        randomremove = get_trigger_arg(tempoarray, "random")
-        roulettespinarray.remove(randomremove)
-        currentspin = get_trigger_arg(roulettespinarray, "random")
-        set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
+    if roulettelastplayer == instigator:
+        if len(roulettespinarray) > 1:
+            tempoarray = []
+            for x in roulettespinarray:
+                if x != roulettechamber:
+                    tempoarray.append(x)
+            randomremove = get_trigger_arg(tempoarray, "random")
+            tempoarray.remove(randomremove)
+            tempoarray.append(roulettechamber)
+            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
+        else:
+            currentspin = roulettechamber ## if only one location left
+            reset_database_value(bot, duelrecorduser, 'roulettespinarray')
     else:
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
-    
-    ## determine if current spin equals bullet loacation
-    currentspin = get_trigger_arg(roulettespinarray, "random")
+        currentspin = get_trigger_arg(roulettespinarray, "random")
     
     ### current spin is safe
     if currentspin != roulettechamber:
@@ -1038,6 +1036,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
         onscreentext(bot, [inchannel], dispmsgarray)
+        
         ### Reset for next run
         reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
         reset_database_value(bot, duelrecorduser, 'roulettechamber')
