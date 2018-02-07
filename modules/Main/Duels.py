@@ -797,6 +797,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
         elif command.lower() in commandarray_pepper_levels:
             tiernumber = commandarray_pepper_levels.index(command.lower())
+            tiernumber = tiernumber - 1
             pepper = command.lower()
         elif command.lower() == 'next':
             tiernumber = currenttier + 1
@@ -2351,9 +2352,19 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
     return damagetext
 
+def array_compare(bot, indexitem, arraytoindex, arraytocompare):
+    item = ''
+    indexnumber = arraytoindex.index(indexitem)
+    item = get_trigger_arg(arraytocompare, indexnumber)
+    return item
+
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
+    
+    item = array_compare(bot, 'chipotle', commandarray_pepper_levels, commandarray_tier_ratio)
+    bot.say(str(item))
+    
     
     ## Shields
     if damage > 0:
@@ -2381,7 +2392,7 @@ def damage_resistance(bot, nick, damage, bodypart):
         #    if part == bodypart:
         #        bodypartnumber = bodypartlen
         #bodypartnumber = bodypartsarray.index(bodypart)
-        armortype = get_trigger_arg(armorarray, bodypartnumber + 1)
+        armortype = get_trigger_arg(armorarray, bodypartnumber)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
             adjust_database_value(bot, nick, armortype, -1)
