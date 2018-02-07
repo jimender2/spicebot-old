@@ -2708,6 +2708,7 @@ def get_pepper(bot, nick):
     nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
+    pepper = pepper.capitalize()
     return pepper
 
 ##########
