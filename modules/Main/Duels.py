@@ -18,9 +18,9 @@ from os.path import exists
 from num2words import num2words
 
 ## not needed if using without spicebot
-shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
-sys.path.append(shareddir) ## not needed if using without spicebot
-from SpicebotShared import * ## not needed if using without spicebot
+#shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
+#sys.path.append(shareddir) ## not needed if using without spicebot
+#from SpicebotShared import * ## not needed if using without spicebot
 
 ###################
 ## Configurables ##
