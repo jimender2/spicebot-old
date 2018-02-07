@@ -378,6 +378,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + ", duels must be in channel.", instigator)
+            return
         duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
         if duelslockout:
             lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
@@ -385,9 +388,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
                 return
             reset_database_value(bot, duelrecorduser, 'duelslockout') 
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + ", duels must be in channel.", instigator)
-            return
+        
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
@@ -404,7 +405,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         adjust_database_value(bot, instigator, 'usage_combat', 1)
         adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
         adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
-    
+
 
 #######################
 ## Subcommands Usage ##
@@ -1057,7 +1058,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## TODO tie this in with duel_combat
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
-def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+    def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     if instigator in canduelarray:
@@ -1113,7 +1114,6 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
     bot.say("todo")
-    #getreadytorumble(bot, trigger, instigator, canduelarray, 'notice', fullcommandused, now, triggerargsarray, 'assault', inchannel)
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
 ## Random Target ## TODO
@@ -1125,10 +1125,23 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
     target = get_trigger_arg(canduelarray, 'random')
-    bot.say("todo")
-    #getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
-            
+    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'target')
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+     
 ## Usage
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
