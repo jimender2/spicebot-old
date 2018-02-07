@@ -363,6 +363,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
         bot.notice(instigator + ", duel " + commandortarget + " must be in channel.", instigator)
+        return
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
@@ -2318,6 +2319,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Null Target
     if not target:
         validtargetmsg = str(instigator + ", you must specify a target.")
+        return validtarget, validtargetmsg
+    
+    ## Bot
+    if target == bot.nick or target == 'duelrecorduser':
+        validtargetmsg = str(instigator + ", " + target + "can't be targeted.")
         return validtarget, validtargetmsg
     
     ## Target can't be a valid command
