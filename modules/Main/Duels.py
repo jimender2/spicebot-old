@@ -384,7 +384,17 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 #######################
 ## Subcommands Usage ##
 #######################
-        
+    
+def tier_command(bot, command):
+    tiercommandeval = 0
+    for i in range(0,16):
+        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+        bot.say(str(tiercheck))
+        if command.lower() in tiercheck:
+            tiercommandeval = int(i)
+            continue
+    return tiercommandeval
+    
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray):
     
@@ -394,12 +404,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         return
     
     ## What Tier Command?
-    for i in range(0,16):
-        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-        bot.say(str(tiercheck))
-        if commandortarget.lower() in tiercheck:
-            tiercommandeval = int(i)
-            continue
+    tiercommandeval = tier_command(bot, commandortarget)
     
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
