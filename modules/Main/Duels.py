@@ -828,7 +828,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 bot.say("Tiers do not got past 15 (Pure Capsaicin).")
                 return
             xptier = tier_xp(bot, statleadernumber)
-            bot.say("xp "+ str(statleadernumber) " = tier " + str(xptier))
+            bot.say("xp " + str(statleadernumber) + " = tier " + str(xptier))
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
             dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
