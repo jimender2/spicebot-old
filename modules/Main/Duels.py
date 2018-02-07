@@ -827,7 +827,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if int(nexttier) > 15:
                 bot.say("Tiers do not got past 15 (Pure Capsaicin).")
                 return
-            xptier = tier_xp(bot, statleadernumber)
+            xptier = tier_xp(bot, statleadernumber) ## TESTING
             bot.say("xp " + str(statleadernumber) + " = tier " + str(xptier))
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
@@ -2201,6 +2201,7 @@ def tier_xp(bot, xp):
     smallerxparray = []
     for x in commandarray_xp_levels:
         if x < xp:
+            bot.say(str(x))
             smallerxparray.append(x)
     if smallerxparray != []:
         smallestxp = min(smallerxparray)
