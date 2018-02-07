@@ -767,6 +767,18 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
+    elif command.lower() == 'next':
+        nexttier = currenttier + 1
+        if nexttier > 15:
+            bot.say("Tiers do not got past 15.")
+            return
+        nextpepper = pepper_tier(bot, nexttier)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(pickarray, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier))
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
         commandpepper = pepper_tier(bot, commandtier)
