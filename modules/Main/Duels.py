@@ -827,6 +827,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if int(nexttier) > 15:
                 bot.say("Tiers do not got past 15 (Pure Capsaicin).")
                 return
+            xptier = tier_xp(bot, statleadernumber)
+            bot.say("xp "+ str(statleadernumber) " = tier " + str(xptier))
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
             dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
@@ -850,7 +852,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
     onscreentext(bot, ['say'], dispmsgarray)
-        
+  
 ## Suicide/harakiri
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -2194,6 +2196,17 @@ def pepper_tier(bot, tiernumber):
     pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
     return pepper
         
+def tier_xp(bot, xp):
+    tiernumber = 0
+    smallerxparray = []
+    for x in commandarray_xp_levels:
+        if x < xp:
+            smallerxparray.append(x)
+    if smallerxparray != []:
+        smallestxp = min(smallerxparray)
+        tiernumber = commandarray_xp_levels.index(smallestxp)
+    return tiernumber
+
 #####################
 ## Target Criteria ##
 #####################
@@ -2629,62 +2642,45 @@ def get_pepper(bot, nick):
         return pepper
     xp = get_database_value(bot, nick, 'xp') or 0
     if not xp:
-        pepper = ''
+        pepper = 'n00b'
         return pepper
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-    nicktier = get_database_value(bot, nick, 'levelingtier')
     if xp > 0 and xp < 100:
         pepper = 'Pimiento'
-        tiernumber = 1
     elif xp >= 100 and xp < 250:
         pepper = 'Sonora'
-        tiernumber = 2
     elif xp >= 250 and xp < 500:
         pepper = 'Anaheim'
-        tiernumber = 3
     elif xp >= 500 and xp < 1000:
         pepper = 'Poblano'
-        tiernumber = 4
     elif xp >= 1000 and xp < 2500:
         pepper = 'Jalapeno'
-        tiernumber = 5
     elif xp >= 2500 and xp < 5000:
         pepper = 'Serrano'
-        tiernumber = 6
     elif xp >= 5000 and xp < 7500:
         pepper = 'Chipotle'
-        tiernumber = 7
     elif xp >= 7500 and xp < 10000:
         pepper = 'Tabasco'
-        tiernumber = 8
     elif xp >= 10000 and xp < 15000:
         pepper = 'Cayenne'
-        tiernumber = 9
     elif xp >= 15000 and xp < 25000:
         pepper = 'Thai Pepper'
-        tiernumber = 10
     elif xp >= 25000 and xp < 45000:
         pepper = 'Datil'
-        tiernumber = 11
     elif xp >= 45000 and xp < 70000:
         pepper = 'Habanero'
-        tiernumber = 12
     elif xp >= 70000 and xp < 100000:
         pepper = 'Ghost Chili'
-        tiernumber = 13
     elif xp >= 100000 and xp < 250000:
         pepper = 'Mace'
-        tiernumber = 14
     elif xp >= 250000:
         pepper = 'Pure Capsaicin'
-        tiernumber = 15
-    else:
-        pepper = ''
-        tiernumber = 0
     
     # advance respawn tier
+    tiernumber = tier_pepper(bot, pepper)
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
     return pepper
