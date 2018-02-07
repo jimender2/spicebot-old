@@ -399,7 +399,7 @@ def tier_pepper(bot, pepper):
     return tiernumber
 
 def pepper_tier(bot, tiernumber):
-    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
+    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
     return pepper
     
     
