@@ -744,8 +744,9 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     command = get_trigger_arg(triggerargsarray, 2)
     dispmsgarray = []
+    currenttierpepper = pepper_tier(bot, currenttier)
+    dispmsgarray.append("The current tier is " + str(currenttier)+ " ("+ str(currenttierpepper) + ").")
     if not command:
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         currenttierlistarray = []
         futuretierlistarray = []
         for i in range(0,16):
@@ -767,18 +768,13 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
     elif command.lower() in commandarray_all_valid:
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
-        for i in range(0,16):
-            tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-            if command.lower() in tiercheck:
-                tiereval = i + 1
-                continue
-        tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiereval)
+        commandtier = tier_command(bot, command)
+        commandpepper = pepper_tier(bot, commandtier)
+        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(currenttierpepper) + ").")
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         tiermath = tiereval - currenttier
-        if tiereval <= currenttier:
-            dispmsgarray.append(command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
-        else:
-            dispmsgarray.append(command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         onscreentext(bot, ['say'], dispmsgarray)
     elif command.isdigit() or command.lower() in commandarray_pepper_levels or command.lower() == 'next':
         pickarray = []
