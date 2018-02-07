@@ -384,25 +384,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 #######################
 ## Subcommands Usage ##
 #######################
-    
-def tier_command(bot, command):
-    tiercommandeval = 0
-    for i in range(0,16):
-        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-        if command.lower() in tiercheck:
-            tiercommandeval = int(i)
-            continue
-    return tiercommandeval
-    
-def tier_pepper(bot, pepper):
-    tiernumber = commandarray_pepper_levels.index(pepper.lower())
-    return tiernumber
 
-def pepper_tier(bot, tiernumber):
-    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
-    return pepper
-    
-    
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray):
     
@@ -2177,6 +2159,26 @@ def halfhourtimer(bot):
     ## bot does not need stats or backpack items
     refreshbot(bot)
         
+###########
+## Tiers ##
+###########
+
+def tier_command(bot, command):
+    tiercommandeval = 0
+    for i in range(0,16):
+        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+        if command.lower() in tiercheck:
+            tiercommandeval = int(i)
+            continue
+    return tiercommandeval
+    
+def tier_pepper(bot, pepper):
+    tiernumber = commandarray_pepper_levels.index(pepper.lower())
+    return tiernumber
+
+def pepper_tier(bot, tiernumber):
+    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
+    return pepper
         
 #####################
 ## Target Criteria ##
