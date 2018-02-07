@@ -770,7 +770,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
         commandpepper = pepper_tier(bot, commandtier)
-        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(currenttierpepper) + ").")
+        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper) + ").")
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         tiermath = commandtier - currenttier
         if tiermath > 0:
