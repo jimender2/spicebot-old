@@ -3071,7 +3071,10 @@ def get_trigger_arg(triggerargsarray, number):
     ## Random Entry from array
     if number == 'random':
         try:
-            shuffledarray = random.shuffle(triggerargsarray)
+            temparray = []
+            for d in triggerargsarray:
+                temparray.append(d)
+            shuffledarray = random.shuffle(temparray)
             randomselected = random.randint(0,len(shuffledarray) - 1)
             triggerarg = str(shuffledarray [randomselected])
         except TypeError:
