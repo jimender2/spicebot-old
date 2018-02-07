@@ -948,7 +948,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     if not roulettechamber:
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
-    bot.say(str(roulettechamber))
+    
     ## Display Text
     if roulettelastplayer == instigator: ## Odds increase
         bot.say(instigator + " spins the revolver and pulls the trigger.")
@@ -961,10 +961,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     if roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
         if not roulettespinarray:
-            bot.say("not")
             roulettespinarray = [1,2,3,4,5,6]
         if len(roulettespinarray) > 1:
-            bot.say(str(roulettespinarray))
             roulettetemp = []
             for x in roulettespinarray:
                 if int(x) != int(roulettechamber):
@@ -985,7 +983,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = get_trigger_arg(roulettespinarray, "random")
     
-    bot.say(str(currentspin))
     ### current spin is safe
     if int(currentspin) != int(roulettechamber):
         time.sleep(2) # added to build suspense
