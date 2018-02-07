@@ -480,10 +480,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             targetname = target
-            targetpepperstart = ''
+            targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
-            targetpepperstart = get_pepper(bot, target) ## TODO
+            targetpepperstart = get_pepper(bot, target)
 
         ## Announce Combat
         combattextarraycomplete.append(mainduelername + " versus " + targetname)
@@ -666,7 +666,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             XPearnedloser = xp_loser_ranger
         else:
             XPearnedloser = xp_loser
-        if maindueler != target:
+        if maindueler != target and target != bot.nick:
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
             if winnertier < currenttierstart:
@@ -681,7 +681,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
             combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
         targetpeppernow = get_pepper(bot, target) ## TODO
-        if targetpeppernow != targetpepperstart and maindueler != target:
+        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
         ## Tier update
