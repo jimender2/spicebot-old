@@ -2378,7 +2378,7 @@ def damage_resistance(bot, nick, damage, bodypart):
             if part == bodypart:
                 bodypartnumber = bodypartlen
         #bodypartnumber = bodypartsarray.index(str(bodypart))
-        armortype = get_trigger_arg(armorarray, bodypartnumber)
+        armortype = get_trigger_arg(armorarray, bodypartnumber - 1)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
             adjust_database_value(bot, nick, armortype, -1)
