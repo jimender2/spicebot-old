@@ -2200,11 +2200,10 @@ def tier_xp(bot, xp):
     tiernumber = 0
     smallerxparray = []
     for x in commandarray_xp_levels:
-        if x < xp:
+        if x <= xp:
             smallerxparray.append(x)
     if smallerxparray != []:
         bigestxp = max(smallerxparray)
-        bot.say(str(bigestxp))
         tiernumber = commandarray_xp_levels.index(bigestxp)
     return tiernumber
 
@@ -2645,37 +2644,8 @@ def get_pepper(bot, nick):
     if not xp:
         pepper = 'n00b'
         return pepper
-    if xp > 0 and xp < 100:
-        pepper = 'Pimiento'
-    elif xp >= 100 and xp < 250:
-        pepper = 'Sonora'
-    elif xp >= 250 and xp < 500:
-        pepper = 'Anaheim'
-    elif xp >= 500 and xp < 1000:
-        pepper = 'Poblano'
-    elif xp >= 1000 and xp < 2500:
-        pepper = 'Jalapeno'
-    elif xp >= 2500 and xp < 5000:
-        pepper = 'Serrano'
-    elif xp >= 5000 and xp < 7500:
-        pepper = 'Chipotle'
-    elif xp >= 7500 and xp < 10000:
-        pepper = 'Tabasco'
-    elif xp >= 10000 and xp < 15000:
-        pepper = 'Cayenne'
-    elif xp >= 15000 and xp < 25000:
-        pepper = 'Thai Pepper'
-    elif xp >= 25000 and xp < 45000:
-        pepper = 'Datil'
-    elif xp >= 45000 and xp < 70000:
-        pepper = 'Habanero'
-    elif xp >= 70000 and xp < 100000:
-        pepper = 'Ghost Chili'
-    elif xp >= 100000 and xp < 250000:
-        pepper = 'Mace'
-    elif xp >= 250000:
-        pepper = 'Pure Capsaicin'
-    
+    xptier = tier_xp(bot, xp)
+    pepper = pepper_tier(bot, xptier)
     # advance respawn tier
     tiernumber = tier_pepper(bot, pepper)
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
