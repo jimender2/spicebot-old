@@ -43,6 +43,7 @@ commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
 commandarray_alt_random = ['anyone','somebody','available']
 commandarray_alt_assault = ['everyone']
+commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
@@ -230,20 +231,20 @@ duelrecorduser = 'duelrecorduser'
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    if not enablestatus: ## not needed if using without spicebot
-        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+    triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    #if not enablestatus: ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
-    #execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    if not enablestatus: ## not needed if using without spicebot
-        execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+    triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    #if not enablestatus: ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
 
 ####################################
 ## Seperate Targets from Commands ##
@@ -251,6 +252,22 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     
+    ## Game Enabled in what channels
+    firstcommand = get_trigger_arg(triggerargsarray, 1)
+    if firstcommand == 'gameon' or firstcommand == 'gameoff':
+        if not trigger.admin:
+            bot.notice(trigger.nick + ", Duels has not been enabled in " + trigger.sender + ". Talk to a bot admin.", trigger.nick)
+            return
+        if firstcommand == 'gameon':
+            adjust_database_array(bot, duelrecorduser, [trigger.sender], 'gameenabled', 'del')
+        else:
+            adjust_database_array(bot, duelrecorduser, [trigger.sender], 'gameenabled', 'del')
+    
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+    if trigger.sender not in gameenabledchannels:
+        bot.notice(trigger.nick + ", Duels has not been enabled in " + trigger.sender + ". Talk to a bot admin.", trigger.nick)
+        return
+
     ## Instigator
     instigator = trigger.nick
     
@@ -708,6 +725,8 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
+    
+    ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
         bot.notice(validtargetmsg, instigator)
@@ -716,27 +735,39 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+    
+    ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < timeout_opt:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
+    
+    ## check if player already has duels on
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels on.", instigator)
         return
+    
+    ## make the adjustment
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
-    ## bot.announce fuckery
+    ## bot.announce fuckery TODO
     
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+    
+    ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'opttime')
     if instigatoropttime < timeout_opt:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
+    
+    ## check if player already has duels off
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
         bot.notice(instigator + ", It looks like you already have duels off.", instigator)
         return
+    
+    ## make the adjustment
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'del')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
@@ -747,6 +778,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     dispmsgarray = []
     currenttierpepper = pepper_tier(bot, currenttier)
     dispmsgarray.append("The current tier is " + str(currenttier)+ " ("+ str(currenttierpepper) + ").")
+    
+    ## Display current/future features
     if not command:
         currenttierlistarray = []
         futuretierlistarray = []
@@ -765,9 +798,13 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if futuretierlistarray != []:
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ".")
+    
+    ## Don't show cheat
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
         return
+    
+    ## What tier is next
     elif command.lower() == 'next':
         nexttier = currenttier + 1
         if nexttier > 15:
@@ -780,6 +817,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+    
+    ## Find what tier a command is in
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
         commandpepper = pepper_tier(bot, commandtier)
@@ -788,6 +827,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiermath = commandtier - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
+    
+    ## find what tier a pepper level is
     elif command.lower() in commandarray_pepper_levels:
         commandtier = tier_pepper(bot, command)
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
@@ -799,6 +840,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiermath = int(commandtier) - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
+    
+    ## process a tier number
     elif command.isdigit():
         command = int(command)
         if int(command) > 15:
@@ -814,6 +857,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiermath = int(command) - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
+    
+    ## find the player with the most xp, and how long until they reach a new tier
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
@@ -842,6 +887,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         else:
             dispmsgarray.append("Nobody is the closest to the next pepper level.")
+    
+    ## anything else is deemed a target, see what tier they are on if valid
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
@@ -849,6 +896,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             return
         targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
+    
+    ## display the info
     onscreentext(bot, ['say'], dispmsgarray)
   
 ## Suicide/harakiri
