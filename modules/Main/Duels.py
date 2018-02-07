@@ -2266,6 +2266,7 @@ def tier_pepper(bot, pepper):
 
 def pepper_tier(bot, tiernumber):
     pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
+    pepper = pepper.title()
     return pepper
         
 def tier_xp(bot, xp):
@@ -2714,8 +2715,6 @@ def get_pepper(bot, nick):
     nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
-    #pepper = pepper.capitalize()
-    pepper = pepper.title()
     return pepper
 
 ##########
