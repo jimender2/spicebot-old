@@ -363,6 +363,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
         bot.notice(instigator + ", duel " + commandortarget + " must be in channel.", instigator)
+        return
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
@@ -378,6 +379,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + ", duels must be in channel.", instigator)
+            return
         duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
         if duelslockout:
             lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
@@ -385,9 +389,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
                 return
             reset_database_value(bot, duelrecorduser, 'duelslockout') 
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + ", duels must be in channel.", instigator)
-            return
+        
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
@@ -404,7 +406,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         adjust_database_value(bot, instigator, 'usage_combat', 1)
         adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
         adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
-    
+
 
 #######################
 ## Subcommands Usage ##
@@ -479,10 +481,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             targetname = target
-            targetpepperstart = ''
+            targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
-            targetpepperstart = get_pepper(bot, target) ## TODO
+            targetpepperstart = get_pepper(bot, target)
 
         ## Announce Combat
         combattextarraycomplete.append(mainduelername + " versus " + targetname)
@@ -641,19 +643,20 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                                 combattextarraycomplete.append(x)
                 
         ## Chance that maindueler loses found loot
-        if randominventoryfind == 'true' and target != bot.nick and maindueler != target:
-            ## Barbarians get a 50/50 chance of getting loot even if they lose
-            classloser = get_database_value(bot, loser, 'class') or 'notclassy'
-            barbarianstealroll = randint(0, 100)
-            if classloser == 'barbarian' and barbarianstealroll >= 50:
-                combattextarraycomplete.append(loser + " steals the " + str(loot))
-                lootwinner = loser
-            elif winner == target:
-                combattextarraycomplete.append(winner + " gains the " + str(loot))
-                lootwinner = winner
-            else:
-                lootwinner = winner
-            adjust_database_value(bot, lootwinner, loot, 1)
+        if target != bot.nick and maindueler != target:
+            if randominventoryfind == 'true':
+                ## Barbarians get a 50/50 chance of getting loot even if they lose
+                classloser = get_database_value(bot, loser, 'class') or 'notclassy'
+                barbarianstealroll = randint(0, 100)
+                if classloser == 'barbarian' and barbarianstealroll >= 50:
+                    combattextarraycomplete.append(loser + " steals the " + str(loot))
+                    lootwinner = loser
+                elif winner == target:
+                    combattextarraycomplete.append(winner + " gains the " + str(loot))
+                    lootwinner = winner
+                else:
+                    lootwinner = winner
+                adjust_database_value(bot, lootwinner, loot, 1)
         
         ## Update XP points
         if classwinner == 'ranger':
@@ -664,7 +667,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             XPearnedloser = xp_loser_ranger
         else:
             XPearnedloser = xp_loser
-        if maindueler != target:
+        if maindueler != target and target != bot.nick:
             winnertier = get_database_value(bot, winner, 'levelingtier')
             losertier = get_database_value(bot, loser, 'levelingtier')
             if winnertier < currenttierstart:
@@ -679,7 +682,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
             combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
         targetpeppernow = get_pepper(bot, target) ## TODO
-        if targetpeppernow != targetpepperstart and maindueler != target:
+        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
         ## Tier update
@@ -1113,7 +1116,6 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
     bot.say("todo")
-    #getreadytorumble(bot, trigger, instigator, canduelarray, 'notice', fullcommandused, now, triggerargsarray, 'assault', inchannel)
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
 
 ## Random Target ## TODO
@@ -1125,10 +1127,26 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    if bot.nick not in canduelarray:
+        canduelarray.append(bot.nick)
     target = get_trigger_arg(canduelarray, 'random')
-    bot.say("todo")
-    #getreadytorumble(bot, trigger, instigator, [target], 'say', fullcommandused, now, triggerargsarray, 'random', inchannel)
-            
+    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'target')
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+    
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+     
 ## Usage
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -2302,6 +2320,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Null Target
     if not target:
         validtargetmsg = str(instigator + ", you must specify a target.")
+        return validtarget, validtargetmsg
+    
+    ## Bot
+    if target == bot.nick or target == 'duelrecorduser':
+        validtargetmsg = str(instigator + ", " + target + " can't be targeted.")
         return validtarget, validtargetmsg
     
     ## Target can't be a valid command
