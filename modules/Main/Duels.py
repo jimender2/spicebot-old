@@ -191,6 +191,7 @@ halfhour_regen_mage_mana, halfhour_regen_mage_mana_max = 50, 500 ## mages regene
 halfhour_coin = 15 ## coin gain per half hour
 
 ## Main Duel Runs
+duel_lockout_timer = 300
 duel_nick_order = ['nicktitles','nickpepper','nickmagicattributes','nickarmor']
 duel_hit_types = ['hits','strikes','beats','pummels','bashes','smacks','knocks','bonks','chastises','clashes','clobbers','slugs','socks','swats','thumps','wallops','whops']
 bot_damage = 150 ## The bot deals a set damage
@@ -352,6 +353,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Run Target Check
     else:
+        duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+        if duelslockout:
+            lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+            if lockoutsince < duel_lockout_timer:
+                bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+                return
+            reset_database_value(bot, duelrecorduser, 'duelslockout') 
         if not inchannel.startswith("#"):
             bot.notice(instigator + ", duels must be in channel.", instigator)
             return
@@ -363,7 +371,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if not executedueling:
             bot.notice(executeduelingmsg,instigator)
             return
+        set_database_value(bot, duelrecorduser, 'duelslockout', now)
         duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
         ## usage counter
         adjust_database_value(bot, instigator, 'usage_total', 1)
         adjust_database_value(bot, instigator, 'usage_combat', 1)
@@ -374,7 +384,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 #######################
 ## Subcommands Usage ##
 #######################
-        
+
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray):
     
@@ -383,16 +393,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
         return
     
-    ## What Tier Command?
-    for i in range(0,16):
-        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-        if commandortarget.lower() in tiercheck:
-            tiercommandeval = int(i)
-            continue
-    
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-    tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiercommandeval)
+    tiercommandeval = tier_command(bot, commandortarget)
+    tierpepperrequired = pepper_tier(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
@@ -722,6 +726,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
+    ## bot.announce fuckery
     
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -740,8 +745,9 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     command = get_trigger_arg(triggerargsarray, 2)
     dispmsgarray = []
+    currenttierpepper = pepper_tier(bot, currenttier)
+    dispmsgarray.append("The current tier is " + str(currenttier)+ " ("+ str(currenttierpepper) + ").")
     if not command:
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
         currenttierlistarray = []
         futuretierlistarray = []
         for i in range(0,16):
@@ -759,52 +765,55 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if futuretierlistarray != []:
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ".")
-        onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
-    elif command.lower() in commandarray_all_valid:
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
-        for i in range(0,16):
-            tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-            if command.lower() in tiercheck:
-                tiereval = i
-                continue
-        tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiereval)
-        tiermath = tiereval - currenttier
-        if tiereval <= currenttier:
-            dispmsgarray.append(command+ " is available as of tier " + str(tiereval)+ " "+str(tierpepperrequired)+". ")
-        else:
-            dispmsgarray.append(command +" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-        onscreentext(bot, ['say'], dispmsgarray)
-    elif command.isdigit() or command.lower() in commandarray_pepper_levels or command.lower() == 'next':
-        pickarray = []
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
-        if command.isdigit():
-            tiernumber = int(command)
-            if tiernumber > 15:
-                bot.say("Tiers don't go that high.")
-                return
-            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
-        elif command.lower() in commandarray_pepper_levels:
-            tiernumber = commandarray_pepper_levels.index(command.lower())
-            pepper = command.lower()
-        elif command.lower() == 'next':
-            tiernumber = currenttier + 1
-            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
-        else:
-            bot.say("Invalid Tier to Check.")
+        return
+    elif command.lower() == 'next':
+        nexttier = currenttier + 1
+        if nexttier > 15:
+            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
             return
-        tiercheck = eval("commandarray_tier_unlocks_"+str(tiernumber))
-        for x in tiercheck:
-            if x not in commandarray_tier_display_exclude:
-                pickarray.append(x)
-        if pickarray != []:
-            tierlist = get_trigger_arg(pickarray, "list")
-            dispmsgarray.append("Feature(s) that are available at tier " + str(tiernumber) + " (" + str(pepper) +"): " + tierlist + ".")
-            tiermath = int(tiernumber) - currenttier
-            if tiermath > 0:
-                dispmsgarray.append(str(tiermath) + " tier(s) to go!")
-        onscreentext(bot, ['say'], dispmsgarray)
+        nextpepper = pepper_tier(bot, nexttier)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(tiercheck, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+    elif command.lower() in commandarray_all_valid:
+        commandtier = tier_command(bot, command)
+        commandpepper = pepper_tier(bot, commandtier)
+        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper) + ").")
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
+        tiermath = commandtier - currenttier
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
+    elif command.lower() in commandarray_pepper_levels:
+        commandtier = tier_pepper(bot, command)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(tiercheck, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command) + ").")
+        tiermath = int(commandtier) - currenttier
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
+    elif command.isdigit():
+        command = int(command)
+        if int(command) > 15:
+            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+            return
+        commandpepper = pepper_tier(bot, command)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(command))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(tiercheck, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(command) + " (" + str(commandpepper) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(command) + " (" + str(commandpepper) + ").")
+        tiermath = int(command) - currenttier
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
@@ -815,11 +824,24 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 statleadernumber = statamount
         if statleadername != '':
             nexttier = currenttier + 1
+            if int(nexttier) > 15:
+                bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+                return
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
-            bot.say("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
+            dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(abs(tierxpmath)) + " xp away.")
+            nextpepper = pepper_tier(bot, nexttier)
+            tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
+            if tiercheck != []:
+                tierlist = get_trigger_arg(tiercheck, "list")
+                dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+            else:
+                dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+            tiermath = int(nexttier) - currenttier
+            if tiermath > 0:
+                dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
         else:
-            bot.say("Nobody is the closest to the next pepper level.")
+            dispmsgarray.append("Nobody is the closest to the next pepper level.")
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
@@ -827,8 +849,8 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             return
         targettier = get_database_value(bot, command, 'levelingtier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
-        onscreentext(bot, ['say'], dispmsgarray)
-        
+    onscreentext(bot, ['say'], dispmsgarray)
+  
 ## Suicide/harakiri
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -2091,8 +2113,6 @@ def halfhourtimer(bot):
     healthregencurrent = tierratio * halfhour_regen_health_max
     magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
     
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
     
     ## Who gets to win a mysterypotion?
     randomuarray = []
@@ -2152,10 +2172,39 @@ def halfhourtimer(bot):
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
         
+###########
+## Tiers ##
+###########
+
+def tier_command(bot, command):
+    tiercommandeval = 0
+    for i in range(0,16):
+        tiercheck = eval("commandarray_tier_unlocks_"+str(i))
+        if command.lower() in tiercheck:
+            tiercommandeval = int(i)
+            continue
+    return tiercommandeval
+    
+def tier_pepper(bot, pepper):
+    tiernumber = commandarray_pepper_levels.index(pepper.lower())
+    return tiernumber
+
+def pepper_tier(bot, tiernumber):
+    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
+    return pepper
         
+def tier_xp(bot, xp):
+    tiernumber = 0
+    smallerxparray = []
+    for x in commandarray_xp_levels:
+        if x <= xp:
+            smallerxparray.append(x)
+    if smallerxparray != []:
+        bigestxp = max(smallerxparray)
+        tiernumber = commandarray_xp_levels.index(bigestxp)
+    return tiernumber
+
 #####################
 ## Target Criteria ##
 #####################
@@ -2231,9 +2280,9 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray):
     userb = actualname(bot, userb)
 
     ## Devroom bypass
-    #if bot.nick.endswith(development_bot):
-    #    validtarget = 1
-    #    return validtarget, validtargetmsg
+    if bot.nick.endswith(development_bot):
+        validtarget = 1
+        return validtarget, validtargetmsg
     
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
@@ -2341,10 +2390,17 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
     return damagetext
 
+def array_compare(bot, indexitem, arraytoindex, arraytocompare):
+    item = ''
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = y
+    return item
+
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
-    
+
     ## Shields
     if damage > 0:
         shieldnick = get_database_value(bot, nick, 'shield') or 0
@@ -2362,13 +2418,7 @@ def damage_resistance(bot, nick, damage, bodypart):
     
     ## Armor
     if damage > 0:
-        bodypartlen = len(bodypartsarray)
-        for part in bodypartsarray:
-            bodypartlen = bodypartlen - 1
-            if part == bodypart:
-                bodypartnumber = bodypartlen
-        #bodypartnumber = bodypartsarray.index(str(bodypart))
-        armortype = get_trigger_arg(armorarray, bodypartnumber + 1)
+        armortype = array_compare(bot, bodypart, bodypartsarray, armorarray)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
             adjust_database_value(bot, nick, armortype, -1)
@@ -2578,62 +2628,16 @@ def get_pepper(bot, nick):
         return pepper
     xp = get_database_value(bot, nick, 'xp') or 0
     if not xp:
-        pepper = ''
+        pepper = 'n00b'
         return pepper
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-    nicktier = get_database_value(bot, nick, 'levelingtier')
-    if xp > 0 and xp < 100:
-        pepper = 'Pimiento'
-        tiernumber = 1
-    elif xp >= 100 and xp < 250:
-        pepper = 'Sonora'
-        tiernumber = 2
-    elif xp >= 250 and xp < 500:
-        pepper = 'Anaheim'
-        tiernumber = 3
-    elif xp >= 500 and xp < 1000:
-        pepper = 'Poblano'
-        tiernumber = 4
-    elif xp >= 1000 and xp < 2500:
-        pepper = 'Jalapeno'
-        tiernumber = 5
-    elif xp >= 2500 and xp < 5000:
-        pepper = 'Serrano'
-        tiernumber = 6
-    elif xp >= 5000 and xp < 7500:
-        pepper = 'Chipotle'
-        tiernumber = 7
-    elif xp >= 7500 and xp < 10000:
-        pepper = 'Tabasco'
-        tiernumber = 8
-    elif xp >= 10000 and xp < 15000:
-        pepper = 'Cayenne'
-        tiernumber = 9
-    elif xp >= 15000 and xp < 25000:
-        pepper = 'Thai Pepper'
-        tiernumber = 10
-    elif xp >= 25000 and xp < 45000:
-        pepper = 'Datil'
-        tiernumber = 11
-    elif xp >= 45000 and xp < 70000:
-        pepper = 'Habanero'
-        tiernumber = 12
-    elif xp >= 70000 and xp < 100000:
-        pepper = 'Ghost Chili'
-        tiernumber = 13
-    elif xp >= 100000 and xp < 250000:
-        pepper = 'Mace'
-        tiernumber = 14
-    elif xp >= 250000:
-        pepper = 'Pure Capsaicin'
-        tiernumber = 15
-    else:
-        pepper = ''
-        tiernumber = 0
-    
+    xptier = tier_xp(bot, xp)
+    pepper = pepper_tier(bot, xptier)
     # advance respawn tier
+    tiernumber = tier_pepper(bot, pepper)
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     if tiernumber > currenttier:
         set_database_value(bot, duelrecorduser, 'levelingtier', tiernumber)
+    nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
     return pepper
@@ -3066,12 +3070,14 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerarg
     ## Random Entry from array
     if number == 'random':
-        try:
-            shuffledarray = random.shuffle(triggerargsarray)
-            randomselected = random.randint(0,len(shuffledarray) - 1)
-            triggerarg = str(shuffledarray [randomselected])
-        except TypeError:
-            triggerarg = get_trigger_arg(triggerargsarray, 1)
+        if triggerargsarray == []:
+            return triggerarg
+        temparray = []
+        for d in triggerargsarray:
+            temparray.append(d)
+        shuffledarray = random.shuffle(temparray)
+        randomselected = random.randint(0,len(temparray) - 1)
+        triggerarg = str(temparray [randomselected])
         return triggerarg
     ## Last
     if number == 'last':
@@ -3081,14 +3087,11 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerarg
     ## Complete
     if number == 0:
-        try:
-            for x in triggerargsarray:
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + x)
-                else:
-                    triggerarg = str(x)
-        except TypeError:
-            triggerarg = ''
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + x)
+            else:
+                triggerarg = str(x)
         return triggerarg
     ## Other
     if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
