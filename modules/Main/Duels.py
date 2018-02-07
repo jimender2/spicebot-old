@@ -2394,7 +2394,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     item = ''
     for x, y in zip(arraytoindex, arraytocompare):
         if x == indexitem:
-            item = x
+            item = y
     bot.say(str(item))
     return item
 
