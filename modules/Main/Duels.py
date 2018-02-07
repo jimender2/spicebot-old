@@ -771,7 +771,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.lower() == 'next':
         nexttier = currenttier + 1
         if nexttier > 15:
-            bot.say("Tiers do not got past 15.")
+            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
             return
         nextpepper = pepper_tier(bot, nexttier)
         tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
@@ -788,7 +788,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiermath = commandtier - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
-        onscreentext(bot, ['say'], dispmsgarray)
     elif command.lower() in commandarray_pepper_levels:
         commandtier = tier_pepper(bot, command)
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
@@ -797,28 +796,23 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command) +"): " + tierlist + ".")
         else:
             dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command) + ").")
+        tiermath = int(commandtier) - currenttier
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
     elif command.isdigit():
-        pickarray = []
-        dispmsgarray.append("The current tier is " + str(currenttier)+ ". ")
-        if command.isdigit():
-            tiernumber = int(command)
-            if tiernumber > 15:
-                bot.say("Tiers don't go that high.")
-                return
-            pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
-        else:
-            bot.say("Invalid Tier to Check.")
+        if int(command) > 15:
+            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
             return
-        tiercheck = eval("commandarray_tier_unlocks_"+str(tiernumber))
-        for x in tiercheck:
-            if x not in commandarray_tier_display_exclude:
-                pickarray.append(x)
-        if pickarray != []:
-            tierlist = get_trigger_arg(pickarray, "list")
-            dispmsgarray.append("Feature(s) that are available at tier " + str(tiernumber) + " (" + str(pepper) +"): " + tierlist + ".")
-            tiermath = int(tiernumber) - currenttier
-            if tiermath > 0:
-                dispmsgarray.append(str(tiermath) + " tier(s) to go!")
+        commandpepper = pepper_tier(bot, commandtier)
+        tiercheck = eval("commandarray_tier_unlocks_"+str(command))
+        if tiercheck != []:
+            tierlist = get_trigger_arg(tiercheck, "list")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(command) + " (" + str(commandpepper) +"): " + tierlist + ".")
+        else:
+            dispmsgarray.append("No New Feature(s) available at tier " + str(command) + " (" + str(commandpepper) + ").")
+        tiermath = int(command) - currenttier
+        if tiermath > 0:
+            dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
     elif command.lower() == 'closest':
         statleadername = ''
         statleadernumber  = 0
