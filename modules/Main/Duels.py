@@ -962,10 +962,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettetemp = []
             for x in roulettespinarray:
                 if x != roulettechamber:
-                    bot.say(x + " yes")
+                    bot.say(str(x) + " yes")
                     roulettetemp.append(x)
                 else:
-                    bot.say(x + " no")
+                    bot.say(str(x) + " no")
             rouletteremove = get_trigger_arg(roulettetemp, "random")
             bot.say(str(rouletteremove))
             roulettespinarray.remove(rouletteremove)
