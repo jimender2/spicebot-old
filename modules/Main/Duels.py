@@ -797,7 +797,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
         elif command.lower() in commandarray_pepper_levels:
             tiernumber = commandarray_pepper_levels.index(command.lower())
-            tiernumber = tiernumber - 1
+            tiernumber = tiernumber + 1
             pepper = command.lower()
         elif command.lower() == 'next':
             tiernumber = currenttier + 1
