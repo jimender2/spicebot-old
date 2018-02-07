@@ -2100,8 +2100,6 @@ def halfhourtimer(bot):
     healthregencurrent = tierratio * halfhour_regen_health_max
     magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
     
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
     
     ## Who gets to win a mysterypotion?
     randomuarray = []
@@ -2161,8 +2159,6 @@ def halfhourtimer(bot):
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
         
 ###########
 ## Tiers ##
