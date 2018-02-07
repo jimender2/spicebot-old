@@ -389,11 +389,19 @@ def tier_command(bot, command):
     tiercommandeval = 0
     for i in range(0,16):
         tiercheck = eval("commandarray_tier_unlocks_"+str(i))
-        bot.say(str(tiercheck))
         if command.lower() in tiercheck:
             tiercommandeval = int(i)
             continue
     return tiercommandeval
+    
+def tier_pepper(bot, pepper):
+    tiernumber = commandarray_pepper_levels.index(pepper.lower())
+    return tiernumber
+
+def pepper_tier(bot, tiernumber):
+    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
+    return pepper
+    
     
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray):
@@ -403,12 +411,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
         bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
         return
     
-    ## What Tier Command?
-    tiercommandeval = tier_command(bot, commandortarget)
-    
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
-    tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiercommandeval)
+    tiercommandeval = tier_command(bot, commandortarget)
+    tierpepperrequired = pepper_tier(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self:
