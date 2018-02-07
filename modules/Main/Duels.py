@@ -1140,6 +1140,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     target = get_trigger_arg(canduelarray, 'random')
     duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'target')
     reset_database_value(bot, duelrecorduser, 'duelslockout')
+    
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
     adjust_database_value(bot, instigator, 'usage_combat', 1)
