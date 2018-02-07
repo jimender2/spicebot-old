@@ -958,19 +958,22 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
 
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
-    roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
     if roulettelastplayer == instigator:
+        roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
+        if not roulettespinarray:
+            bot.say("not")
+            roulettespinarray = [1,2,3,4,5,6]
         if len(roulettespinarray) > 1:
             bot.say(str(roulettespinarray))
             roulettetemp = []
             for x in roulettespinarray:
-                if x != roulettechamber:
+                if int(x) != int(roulettechamber):
                     roulettetemp.append(x)
             rouletteremove = get_trigger_arg(roulettetemp, "random")
             roulettetempb = []
             roulettetempb.append(roulettechamber)
             for j in roulettetemp:
-                if j != rouletteremove:
+                if int(j) != int(rouletteremove):
                     roulettetempb.append(j)
             set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettetempb)
             currentspin = get_trigger_arg(roulettetempb, "random")
@@ -978,12 +981,13 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             currentspin = roulettechamber ## if only one location left
             reset_database_value(bot, duelrecorduser, 'roulettespinarray')
     else:
+        roulettespinarray = [1,2,3,4,5,6]
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = get_trigger_arg(roulettespinarray, "random")
     
     bot.say(str(currentspin))
     ### current spin is safe
-    if currentspin != roulettechamber:
+    if int(currentspin) != int(roulettechamber):
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
