@@ -88,7 +88,7 @@ development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM',
 timeout_opt = 1800 ## Time between opting in and out of the game - Half hour
 
 ## Roulette
-timeout_roulette = 8
+timeout_roulette = 5
 roulette_payout_default = 5
 roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
 
@@ -718,7 +718,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [inchannel], combattextarraycomplete)
         else:
             onscreentext(bot, [winner,loser], combattextarraycomplete)
-    
+
 #################
 ## Subcommands ##
 #################
@@ -733,7 +733,6 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not target:
         bot.say("Online Docs: " + GITWIKIURL)
         return
-    
     ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -943,12 +942,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-    if roulettelastplayer == instigator: ## Odds increase
-        bot.say(instigator + " spins the revolver and pulls the trigger.")
-    elif roulettecount == 1:
-        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
-    else:
-        bot.say(instigator + " spins the cylinder and pulls the trigger.")
     
     ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
@@ -956,28 +949,42 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
     
-    ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
-    roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray') or [1,2,3,4,5,6]
-    if roulettelastplayer == instigator and not len(roulettespinarray) > 1:
-        currentspin = roulettechamber ## if only one location left
-        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
-    elif roulettelastplayer == instigator and len(roulettespinarray) > 1:
-        tempoarray = []
-        for x in roulettespinarray:
-            if x != roulettechamber:
-                tempoarray.append(x)
-        randomremove = get_trigger_arg(tempoarray, "random")
-        roulettespinarray.remove(randomremove)
-        currentspin = get_trigger_arg(roulettespinarray, "random")
-        set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettespinarray)
+    ## Display Text
+    if roulettelastplayer == instigator: ## Odds increase
+        bot.say(instigator + " spins the revolver and pulls the trigger.")
+    elif roulettecount == 1:
+        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
+        bot.say(instigator + " spins the cylinder and pulls the trigger.")
+
+    ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
+    if roulettelastplayer == instigator:
+        roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
+        if not roulettespinarray:
+            roulettespinarray = [1,2,3,4,5,6]
+        if len(roulettespinarray) > 1:
+            roulettetemp = []
+            for x in roulettespinarray:
+                if int(x) != int(roulettechamber):
+                    roulettetemp.append(x)
+            rouletteremove = get_trigger_arg(roulettetemp, "random")
+            roulettetempb = []
+            roulettetempb.append(roulettechamber)
+            for j in roulettetemp:
+                if int(j) != int(rouletteremove):
+                    roulettetempb.append(j)
+            set_database_value(bot, duelrecorduser, 'roulettespinarray', roulettetempb)
+            currentspin = get_trigger_arg(roulettetempb, "random")
+        else:
+            currentspin = roulettechamber ## if only one location left
+            reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+    else:
+        roulettespinarray = [1,2,3,4,5,6]
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
-    
-    ## determine if current spin equals bullet loacation
-    currentspin = get_trigger_arg(roulettespinarray, "random")
+        currentspin = get_trigger_arg(roulettespinarray, "random")
     
     ### current spin is safe
-    if currentspin != roulettechamber:
+    if int(currentspin) != int(roulettechamber):
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
@@ -1038,6 +1045,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
         onscreentext(bot, [inchannel], dispmsgarray)
+        
         ### Reset for next run
         reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
         reset_database_value(bot, duelrecorduser, 'roulettechamber')
