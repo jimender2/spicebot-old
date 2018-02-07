@@ -800,6 +800,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
     elif command.isdigit():
+        command = int(command)
         if int(command) > 15:
             bot.say("Tiers do not got past 15 (Pure Capsaicin).")
             return
