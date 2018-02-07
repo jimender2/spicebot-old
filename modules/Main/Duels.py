@@ -1058,7 +1058,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## TODO tie this in with duel_combat
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
-    def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     if instigator in canduelarray:
