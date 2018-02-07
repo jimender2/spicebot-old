@@ -827,8 +827,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if int(nexttier) > 15:
                 bot.say("Tiers do not got past 15 (Pure Capsaicin).")
                 return
-            xptier = tier_xp(bot, statleadernumber) ## TESTING
-            bot.say("xp " + str(statleadernumber) + " = tier " + str(xptier))
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
             dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(abs(tierxpmath)) + " xp away.")
@@ -2402,8 +2400,8 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 def damage_resistance(bot, nick, damage, bodypart):
     damagetextarray = []
     
-    item = array_compare(bot, 'chipotle', commandarray_pepper_levels, commandarray_tier_ratio)
-    bot.say(str(item))
+    item = array_compare(bot, bodypart, bodypartsarray, armorarray)
+    bot.say(bodypart + " = " + str(item))
     
     
     ## Shields
