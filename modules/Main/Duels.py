@@ -796,7 +796,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     command = get_trigger_arg(triggerargsarray, 2)
     dispmsgarray = []
     currenttierpepper = pepper_tier(bot, currenttier)
-    dispmsgarray.append("The current tier is " + str(currenttier)+ " ("+ str(currenttierpepper) + ").")
+    dispmsgarray.append("The current tier is " + str(currenttier)+ " ("+ str(currenttierpepper.title()) + ").")
     
     ## Display current/future features
     if not command:
@@ -833,15 +833,15 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
         if tiercheck != []:
             tierlist = get_trigger_arg(tiercheck, "list")
-            dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper.title()) +"): " + tierlist + ".")
         else:
-            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+            dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper.title()) + ").")
     
     ## Find what tier a command is in
     elif command.lower() in commandarray_all_valid:
         commandtier = tier_command(bot, command)
         commandpepper = pepper_tier(bot, commandtier)
-        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper) + ").")
+        dispmsgarray.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         tiermath = commandtier - currenttier
         if tiermath > 0:
@@ -853,9 +853,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         if tiercheck != []:
             tierlist = get_trigger_arg(tiercheck, "list")
-            dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command) +"): " + tierlist + ".")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(commandtier) + " (" + str(command.title()) +"): " + tierlist + ".")
         else:
-            dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command) + ").")
+            dispmsgarray.append("No New Feature(s) available at tier " + str(commandtier) + " (" + str(command.title()) + ").")
         tiermath = int(commandtier) - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
@@ -870,9 +870,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiercheck = eval("commandarray_tier_unlocks_"+str(command))
         if tiercheck != []:
             tierlist = get_trigger_arg(tiercheck, "list")
-            dispmsgarray.append("Feature(s) that are available at tier " + str(command) + " (" + str(commandpepper) +"): " + tierlist + ".")
+            dispmsgarray.append("Feature(s) that are available at tier " + str(command) + " (" + str(commandpepper.title()) +"): " + tierlist + ".")
         else:
-            dispmsgarray.append("No New Feature(s) available at tier " + str(command) + " (" + str(commandpepper) + ").")
+            dispmsgarray.append("No New Feature(s) available at tier " + str(command) + " (" + str(commandpepper.title()) + ").")
         tiermath = int(command) - currenttier
         if tiermath > 0:
             dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
@@ -898,9 +898,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
             if tiercheck != []:
                 tierlist = get_trigger_arg(tiercheck, "list")
-                dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper) +"): " + tierlist + ".")
+                dispmsgarray.append("Feature(s) that are available at tier " + str(nexttier) + " (" + str(nextpepper.title()) +"): " + tierlist + ".")
             else:
-                dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper) + ").")
+                dispmsgarray.append("No New Feature(s) available at tier " + str(nexttier) + " (" + str(nextpepper.title()) + ").")
             tiermath = int(nexttier) - currenttier
             if tiermath > 0:
                 dispmsgarray.append(str(tiermath) + " tier(s) remaining!")
@@ -1239,7 +1239,7 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
 def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
-        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         if not bot.nick.endswith(development_bot):
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
@@ -1278,7 +1278,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
 def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
-        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+        bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         if not bot.nick.endswith(development_bot):
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
@@ -1303,7 +1303,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if not pepper or pepper == '':
             targetname = target
         else:
-            targetname = str("(" + str(pepper) + ") " + target)
+            targetname = str("(" + str(pepper.title()) + ") " + target)
         dispmsgarrayb.append(targetname + "'s " + commandortarget + ":")
         for y in dispmsgarray:
             dispmsgarrayb.append(y)
@@ -1523,7 +1523,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not lootcommand or lootcommand.lower() in [x.lower() for x in dueloptedinarray]:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         if int(tiercommandeval) > int(currenttier) and target != instigator:
-            bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+            bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
             if not bot.nick.endswith(development_bot):
                 return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
@@ -2658,7 +2658,7 @@ def nickpepper(bot, nick, channel):
     if not pepperstart or pepperstart == '':
         nickname = "(n00b)"
     else:
-        nickname = str("(" + pepperstart + ")")
+        nickname = str("(" + pepperstart.title() + ")")
     return nickname
 
 def nickmagicattributes(bot, nick, channel):
@@ -2715,6 +2715,7 @@ def get_pepper(bot, nick):
     nicktier = get_database_value(bot, nick, 'levelingtier')
     if tiernumber != nicktier:
         set_database_value(bot, nick, 'levelingtier', tiernumber)
+    pepper = pepper.title()
     return pepper
 
 ##########
