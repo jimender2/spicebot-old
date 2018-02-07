@@ -3078,6 +3078,7 @@ def get_trigger_arg(triggerargsarray, number):
         shuffledarray = random.shuffle(temparray)
         randomselected = random.randint(0,len(temparray) - 1)
         triggerarg = str(temparray [randomselected])
+        return triggerarg
     ## Last
     if number == 'last':
         if totalarray > 1:
