@@ -803,7 +803,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if int(command) > 15:
             bot.say("Tiers do not got past 15 (Pure Capsaicin).")
             return
-        commandpepper = pepper_tier(bot, commandtier)
+        commandpepper = pepper_tier(bot, command)
         tiercheck = eval("commandarray_tier_unlocks_"+str(command))
         if tiercheck != []:
             tierlist = get_trigger_arg(tiercheck, "list")
