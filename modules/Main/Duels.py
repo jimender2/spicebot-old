@@ -255,20 +255,29 @@ def execute_main(bot, trigger, triggerargsarray):
     ## Instigator
     instigator = trigger.nick
     
+    ## Check command was issued
+    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
+    commandortarget = get_trigger_arg(triggerargsarray, 1)
+    if not fullcommandusedtotal:
+        bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
+        return
+    
     ## Game Enabled in what channels
     inchannel = trigger.sender
-    firstcommand = get_trigger_arg(triggerargsarray, 1)
-    if firstcommand == 'gameon' or firstcommand == 'gameoff':
+    if commandortarget.lower() == 'gameon' or commandortarget.lower() == 'gameoff':
         if not trigger.admin:
-            bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+            bot.notice(instigator + "Talk to a bot admin to enable duels in " + inchannel + ".", instigator)
             return
         if not inchannel.startswith("#"):
             bot.notice(instigator + ", Duels must be enabled in a channel.", instigator)
             return
-        if firstcommand == 'gameon':
-            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
+        if commandortarget == 'gameon':
+            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
+            bot.notice(instigator + ", Duels  is now on in " + inchannel + ".", instigator)
         else:
             adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
+            bot.notice(instigator + ", Duels  is now off in " + inchannel + ".", instigator)
+        return
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if inchannel not in gameenabledchannels:
         bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
@@ -286,13 +295,6 @@ def execute_main(bot, trigger, triggerargsarray):
     adjust_database_array(bot, duelrecorduser, botvisibleusersappendarray, 'botvisibleusers', 'add')
     botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
 
-    ## Check command was issued
-    fullcommandusedtotal = get_trigger_arg(triggerargsarray, 0)
-    commandortarget = get_trigger_arg(triggerargsarray, 1)
-    if not fullcommandusedtotal:
-        bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
-        return
-    
     ## Instigator can't be a command, and can't enable duels
     if instigator.lower() in commandarray_all_valid:
         bot.notice(instigator + ", your nick is the same as a valid command for duels.", instigator)
