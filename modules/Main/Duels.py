@@ -777,7 +777,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         for i in range(0,16):
             tiercheck = eval("commandarray_tier_unlocks_"+str(i))
             if command.lower() in tiercheck:
-                tiereval = i
+                tiereval = i + 1
                 continue
         tierpepperrequired = get_trigger_arg(commandarray_pepper_levels, tiereval)
         tiermath = tiereval - currenttier
@@ -797,7 +797,6 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber)
         elif command.lower() in commandarray_pepper_levels:
             tiernumber = commandarray_pepper_levels.index(command.lower())
-            tiernumber = tiernumber + 1
             pepper = command.lower()
         elif command.lower() == 'next':
             tiernumber = currenttier + 1
