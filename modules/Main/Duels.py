@@ -831,7 +831,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             bot.say("xp " + str(statleadernumber) + " = tier " + str(xptier))
             tierxprequired = get_trigger_arg(commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
-            dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(tierxpmath) + " xp away.")
+            dispmsgarray.append("The leader in xp is " + statleadername + " with " + str(statleadernumber) + ". The next tier is " + str(abs(tierxpmath)) + " xp away.")
             nextpepper = pepper_tier(bot, nexttier)
             tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
             if tiercheck != []:
@@ -2201,11 +2201,11 @@ def tier_xp(bot, xp):
     smallerxparray = []
     for x in commandarray_xp_levels:
         if x < xp:
-            bot.say(str(x))
             smallerxparray.append(x)
     if smallerxparray != []:
-        smallestxp = min(smallerxparray)
-        tiernumber = commandarray_xp_levels.index(smallestxp)
+        bigestxp = max(smallerxparray)
+        bot.say(str(bigestxp))
+        tiernumber = commandarray_xp_levels.index(bigestxp)
     return tiernumber
 
 #####################
