@@ -757,7 +757,8 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     set_database_value(bot, instigator, 'opttime', now)
     bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-    
+    for x in gameenabledchannels:
+        bot.say(x)
     ## Anounce to channels
     dispmsgarray = []
     dispmsgarray.append(instigator + " has entered the arena!")
