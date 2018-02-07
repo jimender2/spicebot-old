@@ -252,25 +252,28 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     
-    ## Game Enabled in what channels
-    firstcommand = get_trigger_arg(triggerargsarray, 1)
-    if firstcommand == 'gameon' or firstcommand == 'gameoff':
-        if not trigger.admin:
-            bot.notice(trigger.nick + ", Duels has not been enabled in " + trigger.sender + ". Talk to a bot admin.", trigger.nick)
-            return
-        if firstcommand == 'gameon':
-            adjust_database_array(bot, duelrecorduser, [trigger.sender], 'gameenabled', 'del')
-        else:
-            adjust_database_array(bot, duelrecorduser, [trigger.sender], 'gameenabled', 'del')
-    
-    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-    if trigger.sender not in gameenabledchannels:
-        bot.notice(trigger.nick + ", Duels has not been enabled in " + trigger.sender + ". Talk to a bot admin.", trigger.nick)
-        return
-
     ## Instigator
     instigator = trigger.nick
     
+    ## Game Enabled in what channels
+    inchannel = trigger.sender
+    firstcommand = get_trigger_arg(triggerargsarray, 1)
+    if firstcommand == 'gameon' or firstcommand == 'gameoff':
+        if not trigger.admin:
+            bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+            return
+        if not inchannel.startswith("#"):
+            bot.notice(instigator + ", Duels must be enabled in a channel.", instigator)
+            return
+        if firstcommand == 'gameon':
+            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
+        else:
+            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+    if inchannel not in gameenabledchannels:
+        bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+        return
+
     ## user lists
     botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
     currentuserlistarray = []
