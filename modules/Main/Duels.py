@@ -2323,7 +2323,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     
     ## Bot
     if target == bot.nick or target == 'duelrecorduser':
-        validtargetmsg = str(instigator + ", " + target + "can't be targeted.")
+        validtargetmsg = str(instigator + ", " + target + " can't be targeted.")
         return validtarget, validtargetmsg
     
     ## Target can't be a valid command
