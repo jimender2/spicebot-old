@@ -66,7 +66,7 @@ commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 ## Admin Stats Cycling
 stats_admin_types = ['health','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
-stats_health = ['health_head','health_chest','health_arm','health_junk','health_leg']
+stats_health = ['health_base','health_head','health_chest','health_arm','health_junk','health_leg']
 ## Armor Stats
 stats_armor = ['armor_codpiece','armor_helmet','armor_gauntlets','armor_breastplate','armor_greaves']
 ## Loot Stats
@@ -910,7 +910,9 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         ## TODO total health
         gethowmany = get_database_value(bot, target, x)
         if gethowmany:
-            dispmsgarray.append(str(x) + "=" + str(gethowmany))
+            xname = x.split("_", 1)[1]
+            xname = xname.title()
+            dispmsgarray.append(str(xname) + "=" + str(gethowmany))
     dispmsgarrayb = []
     if dispmsgarray != []:
         dispmsgarrayb.append(target + "'s " + commandortarget + ":")
