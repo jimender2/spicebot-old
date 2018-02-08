@@ -354,7 +354,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     
-    if command.isdigit():
+    if commandortarget.isdigit():
         bot.notice(instigator + ", commands can't be numbers.", instigator)
         return
     
@@ -367,7 +367,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 continue
         except NameError:
             dummyvar = 1
-    
+    bot.say("test")
     ## Inchannel Block
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
