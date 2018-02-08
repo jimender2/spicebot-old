@@ -48,7 +48,7 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off']
+commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','health'] ## move health to self later
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -911,6 +911,10 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     dispmsgarray = []
     dispmsgarray.append(instigator + " has left the arena! What a coward!")
     onscreentext(bot, gameenabledchannels, dispmsgarray)
+
+## On Subcommand
+def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
+    bot.say("wip")
 
 ## Tier Subcommand  
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
