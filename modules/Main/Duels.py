@@ -27,7 +27,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 ###################
 
 ## All Commands
-commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
+commandarray_all_valid = ['health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 
 ## bypass for Opt status
 commandarray_instigator_bypass = ['on','admin']
@@ -204,7 +204,7 @@ magic_shield_duration = 200 ## how long a shield lasts
 magic_curse_damage = -80 ## damage caused by a magic curse
 magic_curse_duration = 4 ## how long a curse lasts
 
-## Armor
+## Body/Armor
 armor_cost = 500
 armor_cost_blacksmith_cut = .8 ## TODO
 armor_durability = 10
@@ -212,6 +212,15 @@ armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
 bodypartsarray = ['head','chest','arm','junk','leg']
 armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
+## Bodypart damage modifiers
+
+## Health
+stockhealth = 1000
+health_stock_head = 300
+health_stock_chest = 300
+health_stock_arm = 300
+health_stock_junk = 300
+health_stock_leg = 300
 
 ## Half Hour Timer
 timeout_auto_opt_out = 259200 ## Opt out users after 3 days of inactivity
@@ -242,10 +251,7 @@ xp_winner = 15 ## default xp earned as a winner
 xp_winner_ranger = 20 ## xp earned as a winner and ranger
 xp_loser = 10 ## default xp earned as a loser
 xp_loser_ranger = 15 ## xp earned as a loser and ranger
-
-## Health
-stockhealth = 1000
-
+            
 ## Records
 duelrecorduser = 'duelrecorduser'
 
