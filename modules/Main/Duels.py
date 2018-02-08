@@ -925,7 +925,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         for y in dispmsgarray:
             dispmsgarrayb.append(y)
     else:
-        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
     onscreentext(bot, ['say'], dispmsgarrayb)
     
 ## Tier Subcommand
@@ -1520,7 +1520,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         for y in dispmsgarray:
             dispmsgarrayb.append(y)
     else:
-        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".", instigator)
+        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
     onscreentext(bot, ['say'], dispmsgarrayb)
 
 ## Leaderboard
