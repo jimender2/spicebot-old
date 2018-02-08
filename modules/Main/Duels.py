@@ -1044,7 +1044,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
     roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
-    bot.say(str(roulettecount))
+    
     ## Get the selected chamber from the database,, or set one
     roulettechamber = get_database_value(bot, duelrecorduser, 'roulettechamber')
     if not roulettechamber:
@@ -1101,7 +1101,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-        adjust_database_value(bot, duelrecorduser, 'roulettecount', 1)
+        set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
     
