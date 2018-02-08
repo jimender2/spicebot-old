@@ -1020,14 +1020,12 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    bot.say("test1")
+    
     ## instigator must wait until the next round
-    roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot')
+    roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
     if roulettelastshot == instigator:
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
-    
-    bot.say("test2")
     
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
