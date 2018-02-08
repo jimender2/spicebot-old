@@ -367,7 +367,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 continue
         except NameError:
             dummyvar = 1
-    bot.say("test")
+    
     ## Inchannel Block
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
@@ -450,7 +450,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     adjust_database_value(bot, instigator, 'usage_'+commandortarget.lower(), 1)
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_'+commandortarget.lower(), 1)
-    bot.say("test")
+
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath)')
     eval(subcommand_run)
@@ -1020,12 +1020,14 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    
+    bot.say("test1")
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot')
     if roulettelastshot == instigator:
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
+    
+    bot.say("test2")
     
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
@@ -1033,7 +1035,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
-    
     
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
