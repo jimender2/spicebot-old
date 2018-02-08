@@ -2418,7 +2418,7 @@ def halfhourtimer(bot):
 def duels_valid_stats(bot):
     duelstatsadminarray = []
     for stattype in stats_admin_types:
-        stattypeeval = eval("stat_"+stattype)
+        stattypeeval = eval("stats_"+stattype)
         for duelstat in stattypeeval:
             duelstatsadminarray.append(duelstat)
     return duelstatsadminarray
