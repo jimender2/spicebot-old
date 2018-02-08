@@ -1152,7 +1152,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             reset_database_value(bot, x, 'roulettepayout')
         if uniquewinnersarray != []:
             displaymessage = get_trigger_arg(uniquewinnersarray, "list")
-            dispmsgarray.append("Winners: " + displaymessage + ".")
+            if len(uniquewinnersarray) > 1:
+                dispmsgarray.append("Winners: " + displaymessage + ".")
+            else:
+                dispmsgarray.append("Winner: " + displaymessage + ".")
         if biggestpayoutwinner != '':
             dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
         roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
