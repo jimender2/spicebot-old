@@ -903,32 +903,34 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    target = get_trigger_arg(triggerargsarray, 2) or instigator
-    #if int(tiercommandeval) > int(currenttier) and target != instigator:
-    #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-    #    if not bot.nick.endswith(development_bot):
-    #        return
-    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-    if not validtarget:
-        bot.notice(validtargetmsg, instigator)
-        return
-    target = actualname(bot, target)
-    dispmsgarray = []
-    for x in stats_health:
-        ## TODO total health
-        gethowmany = get_database_value(bot, target, x)
-        if gethowmany:
-            xname = x.split("_", 1)[1]
-            xname = xname.title()
-            dispmsgarray.append(str(xname) + "=" + str(gethowmany))
-    dispmsgarrayb = []
-    if dispmsgarray != []:
-        dispmsgarrayb.append(target + "'s " + commandortarget + ":")
-        for y in dispmsgarray:
-            dispmsgarrayb.append(y)
-    else:
-        dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
-    onscreentext(bot, ['say'], dispmsgarrayb)
+    healthcommand = get_trigger_arg(triggerargsarray, 2).lower()
+    if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
+        target = get_trigger_arg(triggerargsarray, 3) or instigator
+        #if int(tiercommandeval) > int(currenttier) and target != instigator:
+        #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+        #    if not bot.nick.endswith(development_bot):
+        #        return
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        if not validtarget:
+            bot.notice(validtargetmsg, instigator)
+            return
+        target = actualname(bot, target)
+        dispmsgarray = []
+        for x in stats_health:
+            ## TODO total health
+            gethowmany = get_database_value(bot, target, x)
+            if gethowmany:
+                xname = x.split("_", 1)[1]
+                xname = xname.title()
+                dispmsgarray.append(str(xname) + "=" + str(gethowmany))
+        dispmsgarrayb = []
+        if dispmsgarray != []:
+            dispmsgarrayb.append(target + "'s " + commandortarget + ":")
+            for y in dispmsgarray:
+                dispmsgarrayb.append(y)
+        else:
+            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
+        onscreentext(bot, ['say'], dispmsgarrayb)
 
 ## Tier Subcommand
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
