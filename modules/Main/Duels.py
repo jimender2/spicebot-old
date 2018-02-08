@@ -242,7 +242,7 @@ stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
 stats_admin7 = ['curse','shield','class','coin']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health_base','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
-stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
+stats_view_functions = ['winlossratio','timeout','health_base'] ## stats that use their own functions to get a value
 
 
 ########################
@@ -904,7 +904,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    healthcommand = get_trigger_arg(triggerargsarray, 2).lower()
+    healthcommand = get_trigger_arg(triggerargsarray, 2) or instigator
     if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
         #if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
         #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
@@ -2785,6 +2785,18 @@ def healthcheck(bot, nick):
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
+
+## health
+def get_health_base(bot,nick):
+    totalhealth = 0
+    basehealth = get_database_value(bot, nick, 'health_base')
+    if basehealth:
+        totalhealth = totalhealth + basehealth
+        for x in stats_healthbodyparts:
+            gethowmany = get_database_value(bot, nick, x)
+            if gethowmany:
+                totalhealth = totalhealth + gethowmany
+    return totalhealth
 
 ######################
 ## On Screen Text ##
