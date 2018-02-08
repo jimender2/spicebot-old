@@ -1059,11 +1059,14 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
 
-    ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
+    ## Default 6 possible locations for bullet. 
+    ### curses
     instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
     if instigatorcurse:
+        adjust_database_value(bot, instigator, 'curse', -1)
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = roulettechamber
+    ### If instigator uses multiple times in a row, decrease odds of success
     elif roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
         if not roulettespinarray:
