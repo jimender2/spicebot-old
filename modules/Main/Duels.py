@@ -1017,12 +1017,19 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     
+    ## instigator must wait until the next round
+    roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot')
+    if roulettelastshot == instigator:
+        bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
+        return
+    
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
     if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    
     
     ## Check who last pulled the trigger, or if it's a new chamber
     roulettelastplayer = get_database_value(bot, duelrecorduser, 'roulettelastplayer') or bot.nick
@@ -1130,6 +1137,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
         onscreentext(bot, [inchannel], dispmsgarray)
+        
+        ## instigator must wait until the next round
+        reset_database_value(bot, duelrecorduser, 'roulettelastplayershot')
+        set_database_value(bot, duelrecorduser, 'roulettelastplayershot', instigator)
         
         ### Reset for next run
         reset_database_value(bot, duelrecorduser, 'roulettelastplayer')
