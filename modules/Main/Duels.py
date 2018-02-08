@@ -231,6 +231,14 @@ duelrecorduser = 'duelrecorduser'
 ###############
 
 ## Stats
+stats_admin_count = 8
+stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills','konami']
+stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
+stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
+stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
+stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
+stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
+stats_admin7 = ['curse','shield','class','coin']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
@@ -921,7 +929,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
     else:
         dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
     onscreentext(bot, ['say'], dispmsgarrayb)
-    
+
 ## Tier Subcommand
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     command = get_trigger_arg(triggerargsarray, 2)
