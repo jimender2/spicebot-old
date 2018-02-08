@@ -67,9 +67,9 @@ commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 stats_admin_types = ['health','healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
 stats_health = ['health_base']
-stats_healthbodyparts = ['health_head','health_chest','health_left_arm','health_right_arm','health_junk','health_left_leg','health_right_leg']
+stats_healthbodyparts = ['health_head','health_chest','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
-stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_codpiece','armor_left_greave','armor_right_greave']
+stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
 ## Loot Stats
 stats_loot = ['loot_magicpotion','loot_healthpotion','loot_mysterypotion','loot_timepotion','loot_poisonpotion','loot_manapotion','loot_grenade','loot_coin']
 ## Duel Record Stats
@@ -182,8 +182,8 @@ armor_cost_blacksmith_cut = .8 ## TODO
 armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
-bodypartsarray = ['head','chest','arm','junk','leg']
-armorarray = ['helmet','breastplate','gauntlets','codpiece','greaves']
+bodypartsarray = ['head','chest','arm','leg']
+armorarray = ['helmet','breastplate','gauntlets','greaves']
 ## Bodypart damage modifiers
 
 ## Health
@@ -191,7 +191,6 @@ stockhealth = 1000
 health_stock_head = 300
 health_stock_chest = 300
 health_stock_arm = 300
-health_stock_junk = 300
 health_stock_leg = 300
 
 ## Half Hour Timer
@@ -234,7 +233,7 @@ duelrecorduser = 'duelrecorduser'
 ## Stats
 stats_admin_count = 8
 stats_admin1 = ['mana','wins','losses','xp','respawns','kills']
-stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
+stats_admin2 = ['helmet','gauntlets','breastplate','greaves']
 stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
 stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
 stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
@@ -906,10 +905,10 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     healthcommand = get_trigger_arg(triggerargsarray, 2) or instigator
     if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
-        #if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
-        #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        #    if not bot.nick.endswith(development_bot):
-        #        return
+        if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
+            bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
+            if not bot.nick.endswith(development_bot):
+                return
         validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
