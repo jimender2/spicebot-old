@@ -917,7 +917,10 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             return
         target = actualname(bot, target)
         dispmsgarray = []
-        for x in stats_health:
+        basehealth = get_database_value(bot, target, 'health_base')
+        if basehealth:
+            dispmsgarray.append("Base Health" + "=" + str(gethowmany))
+        for x in stats_healthbodyparts:
             ## TODO total health
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
