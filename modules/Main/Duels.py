@@ -906,7 +906,6 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     healthcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
-        healthcommand = get_trigger_arg(triggerargsarray, 3) or instigator
         #if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
         #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         #    if not bot.nick.endswith(development_bot):
