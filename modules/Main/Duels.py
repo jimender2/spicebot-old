@@ -1113,12 +1113,12 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
                 dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
             else:
                 dispmsgarray.append("First in the chamber. What bad luck.")
+        revolver = get_trigger_arg(roulette_revolver_list, 'random')
         dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
         
         ## Dish out the pain
         damage = randint(50, 120)
         bodypart = 'head'
-        revolver = get_trigger_arg(roulette_revolver_list, 'random')
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
