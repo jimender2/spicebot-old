@@ -233,7 +233,7 @@ duelrecorduser = 'duelrecorduser'
 
 ## Stats
 stats_admin_count = 8
-stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills','konami']
+stats_admin1 = ['mana','wins','losses','xp','respawns','kills']
 stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
 stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
 stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
@@ -1231,11 +1231,11 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
-## Colosseum/ hungergames
+## Colosseum/hungergames
+def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     ## TODO tie this in with duel_combat
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
-def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     if instigator in canduelarray:
@@ -1275,7 +1275,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     adjust_database_value(bot, winner, 'coin', riskcoins)
     onscreentext(bot, [inchannel], dispmsgarray)
 
-## Assault ## TODO
+## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
@@ -1308,7 +1308,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
-## Random Target ## TODO
+## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
