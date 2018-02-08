@@ -446,7 +446,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     adjust_database_value(bot, instigator, 'usage_'+commandortarget.lower(), 1)
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_'+commandortarget.lower(), 1)
-    
+    bot.say("test")
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath)')
     eval(subcommand_run)
