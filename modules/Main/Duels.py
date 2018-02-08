@@ -906,34 +906,34 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     healthcommand = get_trigger_arg(triggerargsarray, 2).lower()
     if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
-        target = get_trigger_arg(triggerargsarray, 3) or instigator
-        #if int(tiercommandeval) > int(currenttier) and target != instigator:
+        healthcommand = get_trigger_arg(triggerargsarray, 3) or instigator
+        #if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
         #    bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
         #    if not bot.nick.endswith(development_bot):
         #        return
-        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+        validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg, instigator)
             return
-        target = actualname(bot, target)
+        healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
-        basehealth = get_database_value(bot, target, 'health_base')
+        basehealth = get_database_value(bot, healthcommand, 'health_base')
         if basehealth:
             dispmsgarray.append("Base Health" + "=" + str(basehealth))
         for x in stats_healthbodyparts:
             ## TODO total health
-            gethowmany = get_database_value(bot, target, x)
+            gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
                 xname = x.split("_", 1)[1]
                 xname = xname.title()
                 dispmsgarray.append(str(xname) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
-            dispmsgarrayb.append(target + "'s " + commandortarget + ":")
+            dispmsgarrayb.append(healthcommand + "'s " + commandortarget + ":")
             for y in dispmsgarray:
                 dispmsgarrayb.append(y)
         else:
-            dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
+            dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  commandortarget + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
 
 ## Tier Subcommand
