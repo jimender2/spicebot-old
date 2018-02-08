@@ -376,7 +376,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         if commandtype != 'actionduel':
             subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
         else:
-            bot.notice(instigator + ", action duels should not be able to run commands. Targets Only". instigator)
+            bot.notice(instigator + ", action duels should not be able to run commands. Targets Only", instigator)
             return
     
     ## Instigator versus Bot
