@@ -2423,6 +2423,11 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
         validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.")
         return validtarget, validtargetmsg
     
+    ## Target can't be duelrecorduser
+    if target.lower() == duelrecorduser:
+        validtargetmsg = str(instigator + ", " + target + "'s nick is unusable for duels.")
+        return validtarget, validtargetmsg
+    
     ## Offline User
     if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
