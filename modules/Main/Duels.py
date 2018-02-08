@@ -2789,11 +2789,11 @@ def healthcheck(bot, nick):
 ## health
 def get_health_base(bot,nick):
     totalhealth = 0
-    basehealth = get_database_value(bot, healthcommand, 'health_base')
+    basehealth = get_database_value(bot, nick, 'health_base')
     if basehealth:
         totalhealth = totalhealth + basehealth
         for x in stats_healthbodyparts:
-            gethowmany = get_database_value(bot, healthcommand, x)
+            gethowmany = get_database_value(bot, nick, x)
             if gethowmany:
                 totalhealth = totalhealth + gethowmany
     return totalhealth
