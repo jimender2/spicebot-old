@@ -1024,13 +1024,13 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
-    if roulettelastshot == instigator:
+    if roulettelastshot == instigator and not bot.nick.endswith(development_bot):
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
     
     ## Instigator must wait a day after death
     getlastdeath = get_timesince_duels(bot, instigator, 'roulettedeath') or roulette_death_timeout
-    if getlastdeath < roulette_death_timeout:
+    if getlastdeath < roulette_death_timeout and not bot.nick.endswith(development_bot):
         bot.notice(instigator + ", you must wait 24 hours between roulette deaths.", instigator)
         return
     
