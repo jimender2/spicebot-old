@@ -241,7 +241,7 @@ stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poiso
 stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
 stats_admin7 = ['curse','shield','class','coin']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
+stats_view = ['class','health_base','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 
 
@@ -1516,7 +1516,11 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if gethowmany:
             if x == 'winlossratio':
                 gethowmany = format(gethowmany, '.3f')
-            dispmsgarray.append(str(x) + "=" + str(gethowmany))
+            if x != 'health_base':
+                statname = x.title()
+                dispmsgarray.append(str(statname) + "=" + str(gethowmany))
+            else:
+                dispmsgarray.append("Health" + "=" + str(gethowmany))
     dispmsgarrayb = []
     if dispmsgarray != []:
         pepper = get_pepper(bot, target)
