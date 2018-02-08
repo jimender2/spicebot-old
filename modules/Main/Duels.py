@@ -447,6 +447,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 
 def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel):
     
+    
     ## Same person can't instigate twice in a row
     set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
     
@@ -454,6 +455,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierscaling = tierratio_level(bot)
     
+    ## Assault Stats
+    for astat in assault_results:
+        reset_database_value(bot, duelrecorduser, "assault_" + astat)
+
     ## Targetarray Start
     targetarraytotal = len(targetarray)
     for target in targetarray:
@@ -467,6 +472,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
             set_database_value(bot, maindueler, 'lastfought', target)
             set_database_value(bot, target, 'lastfought', maindueler)
+            
+        ## Assault does not touch lastfought
+        if typeofduel == 'assault':
+            targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
             
         ## Update Time Of Combat
         set_database_value(bot, maindueler, 'timeout', now)
@@ -514,6 +523,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             else:
                 loser = maindueler
                 losername = mainduelername
+        if winner == maindueler:
+            adjust_database_value(bot, duelrecorduser, 'assault_wins', 1)
+        else:
+            adjust_database_value(bot, duelrecorduser, 'assault_losses', 1)
         
         ## Classes
         classwinner = get_database_value(bot, winner, 'class') or 'notclassy'
@@ -589,10 +602,18 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 for x in damagetextarray:
                     combattextarraycomplete.append(x)
                 if damage > 0:
+                    if winner == maindueler:
+                        adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
+                    else:
+                        adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
                     adjust_database_value(bot, loser, 'health', -abs(damage))
                     ## Update Health Of winner, respawn, allow loser to loot
                     winnercurrenthealth = get_database_value(bot, winner, 'health')
                     if winnercurrenthealth <= 0:
+                        if winner == maindueler:
+                            adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
+                        else:
+                            adjust_database_value(bot, duelrecorduser, 'assault_kills', 1)
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                         for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
@@ -604,10 +625,18 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             for x in damagetextarray:
                 combattextarraycomplete.append(x)
             if damage > 0:
+                if winner == maindueler:
+                    adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
+                else:
+                    adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
                 adjust_database_value(bot, loser, 'health', -abs(damage))
                 ## Update Health Of loser, respawn, allow winner to loot
                 losercurrenthealth  = get_database_value(bot, loser, 'health')
                 if losercurrenthealth  <= 0:
+                    if winner == maindueler:
+                        adjust_database_value(bot, duelrecorduser, 'assault_kills', 1)
+                    else:
+                        adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
                     for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
@@ -634,10 +663,18 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     for x in damagetextarray:
                         combattextarraycomplete.append(x)
                     if damage > 0:
+                        if winner == maindueler:
+                            adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
+                        else:
+                            adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
                         adjust_database_value(bot, winner, 'health', -abs(damage))
                         ## Update Health Of winner, respawn, allow loser to loot
                         winnercurrenthealth = get_database_value(bot, winner, 'health')
                         if winnercurrenthealth <= 0:
+                            if winner == maindueler:
+                                adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
+                            else:
+                                adjust_database_value(bot, duelrecorduser, 'assault_kills', 1)
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                             for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
@@ -657,6 +694,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 else:
                     lootwinner = winner
                 adjust_database_value(bot, lootwinner, loot, 1)
+                if lootwinner == maindueler:
+                    adjust_database_value(bot, duelrecorduser, 'assault_potionswon', 1)
+                else:
+                    adjust_database_value(bot, duelrecorduser, 'assault_potionslost', 1)
         
         ## Update XP points
         if classwinner == 'ranger':
@@ -676,12 +717,17 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 XPearnedloser = XPearnedloser * tierscaling
             adjust_database_value(bot, winner, 'xp', XPearnedwinner)
             adjust_database_value(bot, loser, 'xp', XPearnedloser)
+            if winner == maindueler:
+                adjust_database_value(bot, duelrecorduser, 'assault_xp', XPearnedwinner)
+            else:
+                adjust_database_value(bot, duelrecorduser, 'assault_xp', XPearnedloser)
         
         ## new pepper level?
-        mainduelerpeppernow = get_pepper(bot, maindueler) ## TODO
+        mainduelerpeppernow = get_pepper(bot, maindueler)
         if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
             combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
-        targetpeppernow = get_pepper(bot, target) ## TODO
+            adjust_database_value(bot, duelrecorduser, 'assault_levelups', 1)
+        targetpeppernow = get_pepper(bot, target)
         if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
         
@@ -721,6 +767,29 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [inchannel], combattextarraycomplete)
         else:
             onscreentext(bot, [winner,loser], combattextarraycomplete)
+            
+        ## Pause Between duels
+        if typeofduel == 'assault':
+            bot.notice("  ", instigator)
+            time.sleep(5)
+            
+        ## Random Bonus
+        if typeofduel == 'random' and winner == instigator:
+            adjust_database_value(bot, winner, 'coin', random_payout)
+        
+        ## End Of assault
+        if typeofduel == 'assault':
+            set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
+            if targetarraytotal == 0:
+                bot.notice(maindueler + ", It looks like the Full Channel Assault has completed.", maindueler)
+                assaultstatsarray = []
+                assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
+                for astat in assault_results:
+                    astateval = get_database_value(bot, duelrecorduser, "assault_" + astat) or 0
+                    if astateval:
+                        assaultstatsarray.append(astat + " = " + astateval)
+                        reset_database_value(bot, duelrecorduser, "assault_" + astat)
+                onscreentext(bot, [inchannel], assaultstatsarray)
 
 #################
 ## Subcommands ##
@@ -1108,6 +1177,14 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     if not executedueling:
         bot.notice(executeduelingmsg,instigator)
         return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     displaymessage = get_trigger_arg(canduelarray, "list")
@@ -1115,8 +1192,9 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'lastfought')
-    bot.say("todo")
+    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault')
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
 
 ## Random Target ## TODO
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -1138,7 +1216,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if bot.nick not in canduelarray:
         canduelarray.append(bot.nick)
     target = get_trigger_arg(canduelarray, 'random')
-    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'target')
+    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random')
     reset_database_value(bot, duelrecorduser, 'duelslockout')
     
     ## usage counter
