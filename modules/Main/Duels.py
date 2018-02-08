@@ -231,14 +231,6 @@ duelrecorduser = 'duelrecorduser'
 ###############
 
 ## Stats
-stats_admin_count = 8
-stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills']
-stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
-stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
-stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
-stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
-stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
-stats_admin7 = ['curse','shield','class','coin','title']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
 stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
@@ -1573,11 +1565,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         if not subcommanda:
             bot.say("What stat do you want to check highest/losest?")
             return
-        duelstatsadminarray = []
-        for i in range(1,stats_admin_count):
-            stats_view = eval("stats_admin"+str(i))
-            for duelstat in stats_view:
-                duelstatsadminarray.append(duelstat)
+        duelstatsadminarray = duels_valid_stats(bot)
         if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
             bot.say("This stat is either not comparable at the moment or invalid.")
         else:
@@ -2287,11 +2275,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         subcommand = get_trigger_arg(triggerargsarray, 4)
         statset = get_trigger_arg(triggerargsarray, 5)
         newvalue = get_trigger_arg(triggerargsarray, 6)
-        duelstatsadminarray = []
-        for i in range(1,stats_admin_count):
-            stats_view = eval("stats_admin"+str(i))
-            for duelstat in stats_view:
-                duelstatsadminarray.append(duelstat)
+        duelstatsadminarray = duels_valid_stats(bot)
         if not target:
             bot.notice(instigator + ", Target Missing. " + incorrectdisplay, instigator)
         elif target.lower() not in [u.lower() for u in botvisibleusers] and target != 'everyone':
@@ -2427,6 +2411,17 @@ def halfhourtimer(bot):
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
+#######################
+## Valid Stats Array ##
+#######################
+
+def duels_valid_stats(bot):
+    duelstatsadminarray = []
+    for stattype in stats_admin_types:
+        stattypeeval = eval("stat_"+stattype)
+        for duelstat in stattypeeval:
+            duelstatsadminarray.append(duelstat)
+    return duelstatsadminarray
 
 ###########
 ## Tiers ##
@@ -3087,11 +3082,7 @@ def statreset(bot, nick): ## TODO update
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
     getnicklastreset = get_database_value(bot, nick, 'chanstatsreset')
     if getnicklastreset < getlastchanstatreset:
-        duelstatsadminarray = []
-        for i in range(1,stats_admin_count):
-            stats_view = eval("stats_admin"+str(i))
-            for duelstat in stats_view:
-                duelstatsadminarray.append(duelstat)
+        duelstatsadminarray = duels_valid_stats(bot)
         for x in duelstatsadminarray:
             reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
