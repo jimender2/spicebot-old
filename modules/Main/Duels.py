@@ -27,7 +27,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 ###################
 
 ## All Commands
-commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum','upupdowndownleftrightleftrightba']
+commandarray_all_valid = ['harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 
 ## bypass for Opt status
 commandarray_instigator_bypass = ['on','admin']
@@ -48,7 +48,7 @@ commandarray_alt_docs = ['help','man']
 
 ## Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','upupdowndownleftrightleftrightba']
+commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -70,7 +70,7 @@ commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,
 
 ## Tier Ratios
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5]
-commandarray_tier_display_exclude = ['admin','upupdowndownleftrightleftrightba'] ## only people that read the code should know about this. Do NOT display
+commandarray_tier_display_exclude = ['admin'] ## only people that read the code should know about this. Do NOT display
 
 ## Pepper Levels
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] 
@@ -103,9 +103,36 @@ timeout_colosseum = 1800 ## Time Between colosseum events
 ## Random Target
 random_payout = 100
 
+## Admin Stats Cycling
+stats_admin_types = ['health','armor','loot','duel_record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
+## Health Stats
+stats_health = ['health_head','health_chest','health_arm','health_junk','health_leg']
+## Armor Stats
+stats_armor = ['armor_codpiece','armor_helmet','armor_gauntlets','armor_breastplate','armor_greaves']
+## Loot Stats
+stats_loot = ['loot_magicpotion','loot_healthpotion','loot_mysterypotion','loot_timepotion','loot_poisonpotion','loot_manapotion','loot_grenade','loot_coin']
+## Duel Record Stats
+stats_record = ['record_wins','record_losses','record_xp','record_respawns','record_kills','record_lastfought'']
+## Streak Stats
+stats_streak = ['streak_loss_current','streak_win_current','streak_type_current','streak_win_best','streak_loss_best']
+## Magic Stats
+stats_magic = ['magic_mana','magic_curse','magic_shield']
+## Timeout Stats
+stats_timeout = ['timeout_class','timeout_opttime','timeout_timeout']
+## Class Stats
+stats_class = ['class_setting','class_freebie']            
+## Title Stats
+stats_title = ['title_setting']
+## Bounty Stats
+stats_bounty = ['bounty_amount']
+## Weaponslocker Stats
+stats_weaponslocker = ['weaponslocker_complete','weaponslocker_lastweaponusedarray','weaponslocker_lastweaponused']
+## Leveling Stats
+stats_leveling = ['levelingtier']
+
 ## Stats
 stats_admin_count = 8
-stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills','konami']
+stats_admin1 = ['health','mana','wins','losses','xp','respawns','kills']
 stats_admin2 = ['codpiece','helmet','gauntlets','breastplate','greaves']
 stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
 stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
@@ -217,7 +244,6 @@ xp_loser = 10 ## default xp earned as a loser
 xp_loser_ranger = 15 ## xp earned as a loser and ranger
 
 ## Health
-konamiset = 600 ## for cheaters that actually read the code slightly
 stockhealth = 1000
 
 ## Records
@@ -907,7 +933,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
             futuretierlist = get_trigger_arg(futuretierlistarray, "list")
             dispmsgarray.append("Feature(s) not yet unlocked: " + futuretierlist + ".")
     
-    ## Don't show cheat
+    ## Don't show list
     elif command.lower() in commandarray_tier_display_exclude:
         bot.notice(instigator + ", that appears to be an invalid command.", instigator)
         return
@@ -2165,7 +2191,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     subcommand = get_trigger_arg(triggerargsarray, 2).lower()
-    if subcommand not in commandarray_all_valid and subcommand != 'konami' and subcommand != 'bugbounty' and subcommand != 'channel':
+    if subcommand not in commandarray_all_valid and subcommand != 'bugbounty' and subcommand != 'channel':
         bot.notice(instigator + ", What Admin adjustment do you want to make?", instigator)
         return
     if subcommand == 'on' or subcommand == 'off':
@@ -2220,27 +2246,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         target = get_trigger_arg(triggerargsarray, 3).lower() or instigator
         bot.say(target + ' is awarded ' + str(bugbounty_reward) + " coin for finding a bug in duels.")
         adjust_database_value(bot, target, 'coin', bugbounty_reward)
-    elif subcommand == 'konami':
-        command = get_trigger_arg(triggerargsarray, 3).lower()
-        if not command:
-            bot.notice(instigator + ", what did you intend to do with konami?")
-            return
-        target = get_trigger_arg(triggerargsarray, 4).lower() or instigator
-        if command == 'view':
-            viewedkonami = get_database_value(bot, target, 'konami')
-            bot.notice(instigator + ", " + str(target) + "'s konami is currently " + str(viewedkonami) + ".", instigator)
-        elif command == 'reset':
-            bot.notice(instigator + ", " +  str(target) + "'s konami has been reset.", instigator)
-            reset_database_value(bot, target, 'konami')
-        elif command == 'set':
-            newsetting = get_trigger_arg(triggerargsarray, 5)
-            if not newsetting or not newsetting.isdigit():
-                bot.notice(instigator + ", you must specify a number setting.", instigator)
-                return
-            bot.notice(instigator + ", " +  str(target) + "'s konami " + str(newsetting) + ".", instigator)
-            set_database_value(bot, target, 'konami', int(newsetting))
-        else:
-            bot.notice(instigator + ", This looks to be an invalid command.")
     elif subcommand == 'roulette':
         command = get_trigger_arg(triggerargsarray, 3).lower()
         if command != 'reset':
@@ -2327,16 +2332,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.notice("Must be an invalid command.", instigator)
     else:
         bot.notice(instigator + ", an admin command has not been written for the " + subcommand + " command.", instigator)
-
-## Konami
-def subcommand_upupdowndownleftrightleftrightba(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
-    konami = get_database_value(bot, instigator, 'konami')
-    if not konami:
-        set_database_value(bot, instigator, 'konami', 1)
-        bot.notice(instigator + " you have found the cheatcode easter egg!!!", instigator)
-        adjust_database_value(bot, instigator, 'health', konamiset)
-    else:
-        bot.notice(instigator + " you can only cheat once.", instigator)
 
 ##########################
 ## 30 minute automation ##
