@@ -64,7 +64,7 @@ commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','ja
 commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 
 ## Admin Stats Cycling
-stats_admin_types = ['health','armor','loot','duel_record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
+stats_admin_types = ['health','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
 stats_health = ['health_head','health_chest','health_arm','health_junk','health_leg']
 ## Armor Stats
