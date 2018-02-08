@@ -1052,16 +1052,18 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
     
     ## Display Text
-    if roulettelastplayer == instigator: ## Odds increase
+    instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
+    if instigatorcurse:
+        bot.say(instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
+    elif roulettelastplayer == instigator and int(roulettecount) > 1:
         bot.say(instigator + " spins the revolver and pulls the trigger.")
-    elif roulettecount == 1:
+    elif int(roulettecount) == 1:
         bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
 
     ## Default 6 possible locations for bullet. 
     ### curses
-    instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
     if instigatorcurse:
         adjust_database_value(bot, instigator, 'curse', -1)
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
@@ -1106,16 +1108,17 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ### instigator shoots themself in the head
     else:
         dispmsgarray = []
-        biggestpayout, biggestpayoutwinner = 0,''
-        roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
-        revolver = get_trigger_arg(roulette_revolver_list, 'random')
-        damage = randint(50, 120)
-        damagescale = tierratio_level(bot)
-        damage = damagescale * damage
-        bodypart = 'head'
         if roulettecount == 1:
-            dispmsgarray.append("First in the chamber. What bad luck.")
+            if instigatorcurse:
+                dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
+            else:
+                dispmsgarray.append("First in the chamber. What bad luck.")
         dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        
+        ## Dish out the pain
+        damage = randint(50, 120)
+        bodypart = 'head'
+        revolver = get_trigger_arg(roulette_revolver_list, 'random')
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
@@ -1123,13 +1126,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             dispmsgarray.append(x)
         if damage > 0:
             adjust_database_value(bot, instigator, 'health', -abs(damage))
-        currenthealth = get_database_value(bot, instigator, 'health')
-        if currenthealth <= 0:
-            set_database_value(bot, instigator, 'roulettedeath', now)
-            dispmsgarray.append(instigator + ' dies forcing a respawn!!')
-            suicidetextarray = suicidekill(bot,instigator)
-            for s in suicidetextarray:
-                dispmsgarray.append(s)
+            instigatorcurrenthealth  = get_database_value(bot, instigator, 'health')
+            if instigatorcurrenthealth  <= 0:
+                suicidetextarray = suicidekill(bot,instigator)
+                for x in suicidetextarray:
+                    dispmsgarray.append(x)
+        
+        ## Payouts
+        biggestpayout, biggestpayoutwinner = 0,''
+        roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
         uniquewinnersarray = []
         for x in roulettewinners:
             if x not in uniquewinnersarray and x != instigator:
@@ -2711,7 +2716,7 @@ def whokilledwhom(bot, winner, loser):
 
 def suicidekill(bot,loser):
     suicidetextarray = []
-    suicidetextarray.append(loser + " committed suicide.")
+    suicidetextarray.append(loser + " committed suicide, forcing a respawn.")
     ## Reset mana
     reset_database_value(bot, loser, 'mana')
     suicidetextarray.append(loser + " lose all mana.")
