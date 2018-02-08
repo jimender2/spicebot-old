@@ -787,7 +787,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 for astat in assault_results:
                     astateval = get_database_value(bot, duelrecorduser, "assault_" + astat) or 0
                     if astateval:
-                        astatstr = str(astat + " = " + astateval)
+                        astatstr = str(str(astat) + " = " + str(astateval))
                         assaultstatsarray.append(astatstr)
                         reset_database_value(bot, duelrecorduser, "assault_" + astat)
                 onscreentext(bot, [inchannel], assaultstatsarray)
