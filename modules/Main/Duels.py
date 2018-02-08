@@ -18,9 +18,9 @@ from os.path import exists
 from num2words import num2words
 
 ## not needed if using without spicebot
-#shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
-#sys.path.append(shareddir) ## not needed if using without spicebot
-#from SpicebotShared import * ## not needed if using without spicebot
+shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
+sys.path.append(shareddir) ## not needed if using without spicebot
+from SpicebotShared import * ## not needed if using without spicebot
 
 ###################
 ## Configurables ##
@@ -111,7 +111,7 @@ stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
 stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
 stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
 stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
-stats_admin7 = ['curse','shield','class','coin']
+stats_admin7 = ['curse','shield','class','coin','title']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty'] 
 stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
@@ -232,20 +232,20 @@ duelrecorduser = 'duelrecorduser'
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
-    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
-    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
 
 ####################################
 ## Seperate Targets from Commands ##
@@ -1060,7 +1060,11 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
 
     ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
-    if roulettelastplayer == instigator:
+    instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
+    if instigatorcurse:
+        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+        currentspin = roulettechamber
+    elif roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
         if not roulettespinarray:
             roulettespinarray = [1,2,3,4,5,6]
