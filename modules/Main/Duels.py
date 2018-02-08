@@ -112,7 +112,7 @@ stats_armor = ['armor_codpiece','armor_helmet','armor_gauntlets','armor_breastpl
 ## Loot Stats
 stats_loot = ['loot_magicpotion','loot_healthpotion','loot_mysterypotion','loot_timepotion','loot_poisonpotion','loot_manapotion','loot_grenade','loot_coin']
 ## Duel Record Stats
-stats_record = ['record_wins','record_losses','record_xp','record_respawns','record_kills','record_lastfought'']
+stats_record = ['record_wins','record_losses','record_xp','record_respawns','record_kills','record_lastfought']
 ## Streak Stats
 stats_streak = ['streak_loss_current','streak_win_current','streak_type_current','streak_win_best','streak_loss_best']
 ## Magic Stats
