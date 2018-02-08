@@ -242,7 +242,7 @@ stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
 stats_admin7 = ['curse','shield','class','coin']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health_base','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
-stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
+stats_view_functions = ['winlossratio','timeout','health_base'] ## stats that use their own functions to get a value
 
 
 ########################
@@ -2785,6 +2785,18 @@ def healthcheck(bot, nick):
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
+
+## health
+def get_health(bot,nick)
+    totalhealth = 0
+    basehealth = get_database_value(bot, healthcommand, 'health_base')
+    if basehealth:
+        totalhealth = totalhealth + basehealth
+        for x in stats_healthbodyparts:
+            gethowmany = get_database_value(bot, healthcommand, x)
+            if gethowmany:
+                totalhealth = totalhealth + gethowmany
+    return totalhealth
 
 ######################
 ## On Screen Text ##
