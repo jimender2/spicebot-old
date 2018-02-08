@@ -2787,7 +2787,7 @@ def healthcheck(bot, nick):
         reset_database_value(bot, nick, 'mana')
 
 ## health
-def get_health(bot,nick)
+def get_health(bot,nick):
     totalhealth = 0
     basehealth = get_database_value(bot, healthcommand, 'health_base')
     if basehealth:
