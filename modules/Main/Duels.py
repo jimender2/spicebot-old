@@ -1230,6 +1230,12 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault')
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
+    
+    ## usage counter ## TODO use len(canduelarray)
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
 ## Random Target ## TODO
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
@@ -1264,7 +1270,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
     targetcom = get_trigger_arg(triggerargsarray, 2) or instigator
     targetcomname = targetcom
-    if targetcom in commandarray_all_valid:
+    if targetcom in commandarray_all_valid or targetcom == 'combat':
         target = get_trigger_arg(triggerargsarray, 3) or instigator
         targetname = target
         if target == 'channel':
