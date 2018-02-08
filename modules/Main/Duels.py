@@ -232,25 +232,25 @@ duelrecorduser = 'duelrecorduser'
 @module.require_chanmsg
 def duel_action(bot, trigger):
     triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
     #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
     triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray) # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
     #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray) ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
 
 ####################################
 ## Seperate Targets from Commands ##
 ####################################
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, commandtype):
     
     ## Instigator
     instigator = trigger.nick
@@ -303,6 +303,11 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.notice(instigator + ", your nick is the same as a valid command for duels.", instigator)
         return
     
+    ## Instigator can't duelrecorduser
+    if instigator.lower() == duelrecorduser:
+        bot.notice(instigator + ", your nick is not able to play duels.", instigator)
+        return
+    
     ## Check if Instigator is Opted in
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     if instigator not in dueloptedinarray and commandortarget.lower() not in commandarray_instigator_bypass:
@@ -330,7 +335,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
-        commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
+        commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype)
     else:
         daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
@@ -338,12 +343,12 @@ def execute_main(bot, trigger, triggerargsarray):
             daisychaincount = daisychaincount + 1
             if daisychaincount <= 5:
                 triggerargsarraypart = get_trigger_arg(comsplit, 'create')
-                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray)
+                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype)
             else:
                 bot.notice(instigator + ", you may only daisychain 5 commands.", instigator)
                 return
          
-def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray):
+def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype):
     
     ## New Vars
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
@@ -367,7 +372,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     
     ## Subcommand Versus Target
     if commandortarget.lower() in commandarray_all_valid:
-        subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
+        ## If command was issued as an action
+        if commandtype != 'actionduel':
+            subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
+        else:
+            bot.notice(instigator + ", action duels should not be able to run commands. Targets Only". instigator)
+            return
     
     ## Instigator versus Bot
     elif commandortarget.lower() == bot.nick.lower():
@@ -389,7 +399,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
                 return
             reset_database_value(bot, duelrecorduser, 'duelslockout') 
-        
+    
         validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
             bot.notice(validtargetmsg,instigator)
@@ -449,7 +459,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     
     
     ## Same person can't instigate twice in a row
-    set_database_value(bot, duelrecorduser, 'lastinstigator', instigator)
+    set_database_value(bot, duelrecorduser, 'lastinstigator', maindueler)
     
     ## Starting Tier
     currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
@@ -589,6 +599,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             if rageodds == 1:
                 extradamage = randint(1, duel_advantage_barbarian_rage_max)
                 combattextarraycomplete.append(winner + " goes into Berserker Rage for an extra " + str(extradamage) + " damage.")
+                extradamage = extradamage * tierscaling
                 damage = damage + extradamage
                 
         ## Paladin deflect
@@ -761,7 +772,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
             if streaktext != '':
                 combattextarraycomplete.append(streaktext)
-
+        
+        ## Random Bonus
+        if typeofduel == 'random' and winner == maindueler:
+            adjust_database_value(bot, winner, 'coin', random_payout)
+            combattextarraycomplete.append(maindueler + " won the random attack payout!")
+                
         ## On Screen Text
         if typeofduel != 'assault' and typeofduel != 'colosseum':
             onscreentext(bot, [inchannel], combattextarraycomplete)
@@ -770,13 +786,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             
         ## Pause Between duels
         if typeofduel == 'assault':
-            bot.notice("  ", instigator)
+            bot.notice("  ", maindueler)
             time.sleep(5)
-            
-        ## Random Bonus
-        if typeofduel == 'random' and winner == instigator:
-            adjust_database_value(bot, winner, 'coin', random_payout)
-        
+
         ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
@@ -2611,7 +2623,7 @@ def damage_resistance(bot, nick, damage, bodypart):
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(nick + "s "+ armortype + " aleviated "+str(damagereduced)+" of the damage ")
+            damagetext = str(nick + "s "+ armortype + " alleviated "+str(damagereduced)+" of the damage ")
             armornick = get_database_value(bot, nick, armortype) or 0
             if armornick <= 0:
                 reset_database_value(bot, nick, armortype)
