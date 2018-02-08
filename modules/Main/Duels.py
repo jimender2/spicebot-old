@@ -88,6 +88,7 @@ development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM',
 timeout_opt = 1800 ## Time between opting in and out of the game - Half hour
 
 ## Roulette
+roulette_death_timeout = 86400
 timeout_roulette = 5
 roulette_payout_default = 5
 roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt Single Action Army 45','Ruger Super Blackhawk','Remington Model 1875','Russian Nagant M1895 revolver','Smith and Wesson Model 27']
@@ -1027,6 +1028,12 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
     
+    ## Instigator must wait a day after death
+    getlastdeath = get_timesince_duels(bot, instigator, 'roulettedeath') or roulette_death_timeout
+    if getlastdeath < roulette_death_timeout:
+        bot.notice(instigator + ", you must wait 24 hours between roulette deaths.", instigator)
+        return
+    
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
     if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
@@ -1111,6 +1118,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             adjust_database_value(bot, instigator, 'health', -abs(damage))
         currenthealth = get_database_value(bot, instigator, 'health')
         if currenthealth <= 0:
+            set_database_value(bot, instigator, 'roulettedeath', now)
             dispmsgarray.append(instigator + ' dies forcing a respawn!!')
             suicidetextarray = suicidekill(bot,instigator)
             for s in suicidetextarray:
@@ -1152,7 +1160,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
-## Colosseum
+## Colosseum/ hungergames
     ## TODO tie this in with duel_combat
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
