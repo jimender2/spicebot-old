@@ -354,6 +354,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
     
+    if command.isdigit():
+        bot.notice(instigator + ", commands can't be numbers.", instigator)
+        return
+    
     ## Alternative commands
     for subcom in commandarray_all_valid:
         try:
