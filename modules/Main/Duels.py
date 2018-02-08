@@ -1281,6 +1281,10 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
         return
     if targetcom == 'channel':
         targetcom = bot.nick
+    validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget and targetcom != bot.nick:
+        bot.notice(validtargetmsg, instigator)
+        return
     totaluses = get_database_value(bot, targetcom, 'usage_total')
     targetcom = actualname(bot, targetcomname)
     bot.say(targetcom + " has used duels " + str(totaluses) + " times.")
