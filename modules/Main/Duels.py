@@ -18,9 +18,9 @@ from os.path import exists
 from num2words import num2words
 
 ## not needed if using without spicebot
-#shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
-#sys.path.append(shareddir) ## not needed if using without spicebot
-#from SpicebotShared import * ## not needed if using without spicebot
+shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
+sys.path.append(shareddir) ## not needed if using without spicebot
+from SpicebotShared import * ## not needed if using without spicebot
 
 ###################
 ## Configurables ##
@@ -111,7 +111,7 @@ stats_admin3 = ['bounty','levelingtier','weaponslocker','classfreebie']
 stats_admin4 = ['currentlosestreak','currentwinstreak','currentstreaktype','bestwinstreak','worstlosestreak']
 stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade']
 stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
-stats_admin7 = ['curse','shield','class','coin']
+stats_admin7 = ['curse','shield','class','coin','title']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class','health','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty'] 
 stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
@@ -232,20 +232,20 @@ duelrecorduser = 'duelrecorduser'
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
-    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
-    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    #if not enablestatus: ## not needed if using without spicebot
-    #    execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
+    #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
+    #execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    if not enablestatus: ## not needed if using without spicebot
+        execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
 
 ####################################
 ## Seperate Targets from Commands ##
@@ -1024,13 +1024,13 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
-    if roulettelastshot == instigator:
+    if roulettelastshot == instigator and not bot.nick.endswith(development_bot):
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
     
     ## Instigator must wait a day after death
     getlastdeath = get_timesince_duels(bot, instigator, 'roulettedeath') or roulette_death_timeout
-    if getlastdeath < roulette_death_timeout:
+    if getlastdeath < roulette_death_timeout and not bot.nick.endswith(development_bot):
         bot.notice(instigator + ", you must wait 24 hours between roulette deaths.", instigator)
         return
     
@@ -1052,15 +1052,24 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
     
     ## Display Text
-    if roulettelastplayer == instigator: ## Odds increase
+    instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
+    if instigatorcurse:
+        bot.say(instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
+    elif roulettelastplayer == instigator and int(roulettecount) > 1:
         bot.say(instigator + " spins the revolver and pulls the trigger.")
-    elif roulettecount == 1:
+    elif int(roulettecount) == 1:
         bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
         bot.say(instigator + " spins the cylinder and pulls the trigger.")
 
-    ## Default 6 possible locations for bullet. If instigator uses multiple times in a row, decrease odds of success
-    if roulettelastplayer == instigator:
+    ## Default 6 possible locations for bullet. 
+    ### curses
+    if instigatorcurse:
+        adjust_database_value(bot, instigator, 'curse', -1)
+        reset_database_value(bot, duelrecorduser, 'roulettespinarray')
+        currentspin = roulettechamber
+    ### If instigator uses multiple times in a row, decrease odds of success
+    elif roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
         if not roulettespinarray:
             roulettespinarray = [1,2,3,4,5,6]
@@ -1092,37 +1101,40 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-        adjust_database_value(bot, duelrecorduser, 'roulettecount', 1)
+        set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
     
     ### instigator shoots themself in the head
     else:
         dispmsgarray = []
-        biggestpayout, biggestpayoutwinner = 0,''
-        roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
-        revolver = get_trigger_arg(roulette_revolver_list, 'random')
-        damage = randint(50, 120)
-        damagescale = tierratio_level(bot)
-        damage = damagescale * damage
-        bodypart = 'head'
         if roulettecount == 1:
-            dispmsgarray.append("First in the chamber. What bad luck.")
-        dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+            if instigatorcurse:
+                dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
+            else:
+                dispmsgarray.append("First in the chamber. What bad luck.")
+                
+        ## Dish out the pain
+        damage = randint(50, 120)
+        bodypart = 'head'
+        revolver = get_trigger_arg(roulette_revolver_list, 'random')
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
+        dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
         for x in damagetextarray:
             dispmsgarray.append(x)
         if damage > 0:
             adjust_database_value(bot, instigator, 'health', -abs(damage))
-        currenthealth = get_database_value(bot, instigator, 'health')
-        if currenthealth <= 0:
-            set_database_value(bot, instigator, 'roulettedeath', now)
-            dispmsgarray.append(instigator + ' dies forcing a respawn!!')
-            suicidetextarray = suicidekill(bot,instigator)
-            for s in suicidetextarray:
-                dispmsgarray.append(s)
+            instigatorcurrenthealth  = get_database_value(bot, instigator, 'health')
+            if instigatorcurrenthealth  <= 0:
+                suicidetextarray = suicidekill(bot,instigator)
+                for x in suicidetextarray:
+                    dispmsgarray.append(x)
+        
+        ## Payouts
+        biggestpayout, biggestpayoutwinner = 0,''
+        roulettewinners = get_database_value(bot, duelrecorduser, 'roulettewinners') or []
         uniquewinnersarray = []
         for x in roulettewinners:
             if x not in uniquewinnersarray and x != instigator:
@@ -2704,7 +2716,7 @@ def whokilledwhom(bot, winner, loser):
 
 def suicidekill(bot,loser):
     suicidetextarray = []
-    suicidetextarray.append(loser + " committed suicide.")
+    suicidetextarray.append(loser + " committed suicide, forcing a respawn.")
     ## Reset mana
     reset_database_value(bot, loser, 'mana')
     suicidetextarray.append(loser + " lose all mana.")
