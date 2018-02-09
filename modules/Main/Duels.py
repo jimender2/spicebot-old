@@ -2792,8 +2792,9 @@ def healthcheck(bot, nick):
         maxhealthpart = array_compare(bot, x, stats_healthbodyparts, health_bodypart_max)
         maxhealthpart = int(maxhealthpart)
         currenthealthtier = currenthealthtier * maxhealthpart
+        currenthealthtier = int(currenthealthtier)
         gethowmany = get_database_value(bot, nick, x)
-        if not gethowmany or gethowmany < 0 or gethowmany > currenthealthtier:
+        if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
             set_database_value(bot, nick, x, currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
