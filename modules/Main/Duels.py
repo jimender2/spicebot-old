@@ -29,13 +29,14 @@ from SpicebotShared import * ## not needed if using without spicebot
 ## Command Structure
 commandarray_all_valid = ['health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 commandarray_instigator_bypass = ['on','admin'] ## bypass for Opt status
+commandarray_channel_activate = ['gameon','gameoff']
 commandarray_admin = ['admin'] ## Admin Functions
 commandarray_inchannel = ['roulette','assault','colosseum','bounty'] ## Must Be inchannel
 ### Alternative Commands
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
-commandarray_alt_random = ['anyone','somebody','available']
-commandarray_alt_assault = ['everyone']
+commandarray_alt_random = ['anyone','somebody','available','someone']
+commandarray_alt_assault = ['everyone','everybody']
 commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
@@ -63,16 +64,19 @@ commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
 commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 
+## more stuff
+bodyparts_required = ['torso','head']
+
 ## Admin Stats Cycling
 stats_admin_types = ['health','healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
 stats_health = ['health_base']
-stats_healthbodyparts = ['health_head','health_chest','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
+stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
 stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
 ## Loot Stats
 stats_loot = ['loot_magicpotion','loot_healthpotion','loot_mysterypotion','loot_timepotion','loot_poisonpotion','loot_manapotion','loot_grenade','loot_coin']
-## Duel Record Stats
+## Record Stats
 stats_record = ['record_wins','record_losses','record_xp','record_respawns','record_kills','record_lastfought']
 ## Streak Stats
 stats_streak = ['streak_loss_current','streak_win_current','streak_type_current','streak_win_best','streak_loss_best']
@@ -182,14 +186,14 @@ armor_cost_blacksmith_cut = .8 ## TODO
 armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
-bodypartsarray = ['head','chest','arm','leg']
+bodypartsarray = ['head','torso','arm','leg']
 armorarray = ['helmet','breastplate','gauntlets','greaves']
 ## Bodypart damage modifiers
 
 ## Health
 stockhealth = 1000
 health_stock_head = 300
-health_stock_chest = 300
+health_stock_torso = 300
 health_stock_arm = 300
 health_stock_leg = 300
 
@@ -286,26 +290,26 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Game Enabled in what channels
     inchannel = trigger.sender
-    if commandortarget.lower() == 'gameon' or commandortarget.lower() == 'gameoff':
+    if commandortarget.lower() in commandarray_channel_activate:
         if not trigger.admin:
-            bot.notice(instigator + "Talk to a bot admin to enable duels in " + inchannel + ".", instigator)
+            bot.notice(instigator + ", talk to a bot admin to enable duels in " + inchannel + ".", instigator)
             return
         if not inchannel.startswith("#"):
-            bot.notice(instigator + ", Duels must be enabled in a channel.", instigator)
+            bot.notice(instigator + ", duels must be enabled in a channel.", instigator)
             return
         if commandortarget == 'gameon':
             adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
-            bot.notice(instigator + ", Duels  is now on in " + inchannel + ".", instigator)
+            bot.notice(instigator + ", duels  is now on in " + inchannel + ".", instigator)
         else:
             adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
-            bot.notice(instigator + ", Duels  is now off in " + inchannel + ".", instigator)
+            bot.notice(instigator + ", duels  is now off in " + inchannel + ".", instigator)
         return
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if gameenabledchannels == []:
-        bot.notice(instigator + ", Duels has not been enabled in any channels. Talk to a bot admin.", instigator)
+        bot.notice(instigator + ", duels has not been enabled in any channels. Talk to a bot admin.", instigator)
         return
     if inchannel not in gameenabledchannels and inchannel.startswith("#"):
-        bot.notice(instigator + ", Duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+        bot.notice(instigator + ", duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
         return
 
     ## user lists
@@ -362,6 +366,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
+            ## Freenode kicks bot for excess flood if this is overdone
             daisychaincount = daisychaincount + 1
             if daisychaincount <= 5:
                 triggerargsarraypart = get_trigger_arg(comsplit, 'create')
@@ -376,6 +381,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
     commandortarget = get_trigger_arg(triggerargsarray, 1)
 
+    ## Cheap error handling for people that like to find issues
     if commandortarget.isdigit():
         bot.notice(instigator + ", commands can't be numbers.", instigator)
         return
@@ -388,7 +394,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                 commandortarget = subcom
                 continue
         except NameError:
-            dummyvar = 1
+            continue
 
     ## Inchannel Block
     inchannel = trigger.sender
