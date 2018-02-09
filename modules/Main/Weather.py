@@ -64,8 +64,11 @@ def get_chill(parsed):
         chill = int(wind_data['@chill'])
     except (KeyError, ValueError):
         return 'unknown'
-    f = round((chill * 1.8) + 32, 2)
-    return (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
+    if chill <= 0:
+        f = round((chill * 1.8) + 32, 2)
+        return "WindChill " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
+    else:
+        return 'unknown'
 
 def get_wind(parsed):
     try:
