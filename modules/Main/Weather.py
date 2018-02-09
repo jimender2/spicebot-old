@@ -63,12 +63,12 @@ def get_chill(parsed):
         wind_data = parsed['channel']['yweather:wind']
         chill = int(wind_data['@chill'])
     except (KeyError, ValueError):
-        return 'unknown'
+        return ''
     if chill <= 0:
         f = round((chill * 1.8) + 32, 2)
         return "Windchill: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
     else:
-        return 'unknown'
+        return ''
 
 def get_wind(parsed):
     try:
