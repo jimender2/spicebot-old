@@ -245,8 +245,8 @@ stats_admin5 = ['magicpotion','healthpotion','mysterypotion','timepotion','poiso
 stats_admin6 = ['classtimeout','opttime','timeout','lastfought']
 stats_admin7 = ['curse','shield','class','coin']
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class','health_base','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
-stats_view_functions = ['winlossratio','timeout','health_base'] ## stats that use their own functions to get a value
+stats_view = ['class','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout','bounty']
+stats_view_functions = ['winlossratio','timeout'] ## stats that use their own functions to get a value
 
 
 ########################
