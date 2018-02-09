@@ -1529,7 +1529,8 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if gethowmany:
             if x == 'winlossratio':
                 gethowmany = format(gethowmany, '.3f')
-            dispmsgarray.append(statname.title() + "=" + str(gethowmany))
+            statname = x.title()
+            dispmsgarray.append(statname + "=" + str(gethowmany))
                 
     dispmsgarrayb = []
     if dispmsgarray != []:
