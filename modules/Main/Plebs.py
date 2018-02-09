@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, '1+')
     if target:
-        bot.say(str(target) + " needs more plebs!")
+        bot.say(str.title(target) + " needs more plebs!")
     else:
         bot.say("Plebs are needed!")
         
