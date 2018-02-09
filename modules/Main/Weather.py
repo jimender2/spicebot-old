@@ -65,7 +65,7 @@ def get_chill(parsed):
     except (KeyError, ValueError):
         return 'unknown'
     f = round((chill * 1.8) + 32, 2)
-    return (u'%d\u00B0C (%d\u00B0F)' % (temp, f))
+    return (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
 
 def get_wind(parsed):
     try:
@@ -190,7 +190,7 @@ def execute_main(bot, trigger, triggerargsarray):
         humidity = get_humidity(results)
         wind = get_wind(results)
         windchill = get_chill(results)
-        bot.say(u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind,windchill))
+        bot.say(u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
                               
 #An example of how to use a different command in the same module
 #@commands('setlocation', 'setwoeid')
