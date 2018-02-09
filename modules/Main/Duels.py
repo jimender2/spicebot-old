@@ -2788,13 +2788,12 @@ def suicidekill(bot,loser):
 
 def healthcheck(bot, nick):
     currenthealthtier = tierratio_level(bot)
-    currenthealthtier = currenthealthtier * stockhealth
-    health = get_database_value(bot, nick, 'health_base')
-    if not health or health < 0:
-        set_database_value(bot, nick, 'health_base', currenthealthtier)
     for x in stats_healthbodyparts:
+        maxhealthpart = array_compare(bot, x, stats_healthbodyparts, health_bodypart_max)
+        maxhealthpart = int(maxhealthpart)
+        currenthealthtier = currenthealthtier * maxhealthpart
         gethowmany = get_database_value(bot, nick, x)
-        if not gethowmany or gethowmany < 0:
+        if not gethowmany or gethowmany < 0 or gethowmany > currenthealthtier:
             set_database_value(bot, nick, x, currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
