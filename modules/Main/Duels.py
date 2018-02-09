@@ -407,47 +407,57 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         ## If command was issued as an action
         if commandtype != 'actionduel':
             subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray)
+            return
         else:
             bot.notice(instigator + ", action duels should not be able to run commands. Targets Only", instigator)
             return
 
     ## Instigator versus Bot
-    elif commandortarget.lower() == bot.nick.lower():
+    if commandortarget.lower() == bot.nick.lower():
         bot.say("I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        return
 
     ## Instigator versus Instigator
-    elif commandortarget.lower() == instigator.lower():
+    if commandortarget.lower() == instigator.lower():
         bot.say("If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command")
+        return
 
-    ## Run Target Check
-    else:
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + ", duels must be in channel.", instigator)
-            return
-        duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
-        if duelslockout:
-            lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
-            if lockoutsince < duel_lockout_timer:
-                bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
-                return
-            reset_database_value(bot, duelrecorduser, 'duelslockout')
+    ## Targets must be dueled in channel
+    if not inchannel.startswith("#"):
+        bot.notice(instigator + ", duels must be in channel.", instigator)
+        return
 
-        validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
-        if not validtarget:
-            bot.notice(validtargetmsg,instigator)
+    ## Lockout Check, don't allow multiple duels simultaneously
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
             return
-        executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
-        if not executedueling:
-            bot.notice(executeduelingmsg,instigator)
-            return
-        set_database_value(bot, duelrecorduser, 'duelslockout', now)
-        duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
         reset_database_value(bot, duelrecorduser, 'duelslockout')
-        ## usage counter
-        adjust_database_value(bot, instigator, 'usage_total', 1)
-        adjust_database_value(bot, instigator, 'usage_combat', 1)
-        adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
-        adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+
+    ## Check if target is valid
+    validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
+    if not validtarget:
+        bot.notice(validtargetmsg,instigator)
+        return
+
+    ## Check that the target doesn't have a timeout preventing them from playing
+    executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
+    if not executedueling:
+        bot.notice(executeduelingmsg,instigator)
+        return
+    
+    ## Perform Lockout, run target duel, then unlock
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target')
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
 
 #######################
@@ -468,10 +478,9 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     tierpepperrequired = pepper_tier(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
-        if commandortarget.lower() not in commandarray_tier_self:
-            bot.say("Duel "+commandortarget+" will be unlocked when somebody reaches " + str(tierpepperrequired) + ". "+str(tiermath) + " tier(s) remaining!")
-            if not bot.nick.endswith(development_bot):
-                return
+        if commandortarget.lower() not in commandarray_tier_self and not bot.nick.endswith(development_bot):
+            bot.say("Duel " + commandortarget + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
+            return
 
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
@@ -615,10 +624,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         damage = int(damage)
 
         ## Damage Text
-        if losername == "themself":
-            damagetext = duels_damage_text(bot, damage, winner, losername, bodypart, striketype, weapon, classwinner)
-        else:
-            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner)
+        damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
@@ -2670,6 +2676,9 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
 def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner):
 
+    if losername == winnername:
+        losername = "themself"
+
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winner != loser:
@@ -2780,12 +2789,15 @@ def suicidekill(bot,loser):
     return suicidetextarray
 
 def healthcheck(bot, nick):
+    currenthealthtier = tierratio_level(bot)
+    currenthealthtier = currenthealthtier * stockhealth
     health = get_database_value(bot, nick, 'health_base')
     if not health or health < 0:
-        if nick != bot.nick:
-            currenthealthtier = tierratio_level(bot)
-            currenthealthtier = currenthealthtier * stockhealth
-            set_database_value(bot, nick, 'health_base', currenthealthtier)
+        set_database_value(bot, nick, 'health_base', currenthealthtier)
+    for x in stats_healthbodyparts:
+        gethowmany = get_database_value(bot, nick, x)
+        if not gethowmany or gethowmany < 0:
+            set_database_value(bot, nick, x, currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
