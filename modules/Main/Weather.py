@@ -66,7 +66,7 @@ def get_chill(parsed):
         return 'unknown'
     if chill <= 0:
         f = round((chill * 1.8) + 32, 2)
-        return "WindChill " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
+        return "Windchill: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
     else:
         return 'unknown'
 
