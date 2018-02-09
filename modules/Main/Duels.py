@@ -70,7 +70,7 @@ bodyparts_required = ['torso','head']
 ## Admin Stats Cycling
 stats_admin_types = ['health','healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
-stats_health = ['health_base']
+# stats_health = ['health_base'] ## replace this value throughout
 stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
 stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
@@ -188,6 +188,7 @@ armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
 bodypartsarray = ['head','torso','arm','leg']
 armorarray = ['helmet','breastplate','gauntlets','greaves']
+health_bodypart_max = [330,1000,250,250,500,500]
 ## Bodypart damage modifiers
 
 ## Health
@@ -928,10 +929,6 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
         totalhealth = 0
-        basehealth = get_database_value(bot, healthcommand, 'health_base')
-        if basehealth:
-            dispmsgarray.append("Base Health" + "=" + str(basehealth))
-            totalhealth = totalhealth + basehealth
         for x in stats_healthbodyparts:
             gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
@@ -1520,6 +1517,9 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         return
     target = actualname(bot, target)
     dispmsgarray = []
+    totalhealth = get_health(bot,target)
+    if totalhealth:
+        dispmsgarray.append("Health="+str(totalhealth))
     for x in stats_view:
         if x in stats_view_functions:
             scriptdef = str('get_' + x + '(bot,target)')
@@ -1529,11 +1529,8 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if gethowmany:
             if x == 'winlossratio':
                 gethowmany = format(gethowmany, '.3f')
-            if x != 'health_base':
-                statname = x.title()
-                dispmsgarray.append(str(statname) + "=" + str(gethowmany))
-            else:
-                dispmsgarray.append("Health" + "=" + str(gethowmany))
+            dispmsgarray.append(statname.title() + "=" + str(gethowmany))
+                
     dispmsgarrayb = []
     if dispmsgarray != []:
         pepper = get_pepper(bot, target)
@@ -2804,15 +2801,12 @@ def healthcheck(bot, nick):
         reset_database_value(bot, nick, 'mana')
 
 ## health
-def get_health_base(bot,nick):
+def get_health(bot,nick):
     totalhealth = 0
-    basehealth = get_database_value(bot, nick, 'health_base')
-    if basehealth:
-        totalhealth = totalhealth + basehealth
-        for x in stats_healthbodyparts:
-            gethowmany = get_database_value(bot, nick, x)
-            if gethowmany:
-                totalhealth = totalhealth + gethowmany
+    for x in stats_healthbodyparts:
+        gethowmany = get_database_value(bot, nick, x)
+        if gethowmany:
+            totalhealth = totalhealth + gethowmany
     return totalhealth
 
 ######################
