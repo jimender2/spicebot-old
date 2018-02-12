@@ -456,7 +456,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 #######################
 
 ## Subcommands
-def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray):
+def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels):
 
     ## Admin Command Blocker
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
