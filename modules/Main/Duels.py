@@ -98,7 +98,6 @@ stats_leveling = ['leveling_tier']
 
 ## Documentation and Development
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
-development_bot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## Dev Team
 
 ## On/off
@@ -470,7 +469,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     tierpepperrequired = pepper_tier(bot, tiercommandeval)
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
-        if commandortarget.lower() not in commandarray_tier_self and not bot.nick.endswith(development_bot):
+        if commandortarget.lower() not in commandarray_tier_self and not inchannel in devenabledchannels:
             bot.say("Duel " + commandortarget + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
             return
 
@@ -893,7 +892,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
-    if instigatoropttime < timeout_opt and not bot.nick.endswith(development_bot):
+    if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
 
@@ -918,7 +917,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
-    if instigatoropttime < timeout_opt and not bot.nick.endswith(development_bot):
+    if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
         bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
         return
 
@@ -944,7 +943,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
     if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
         if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
             bot.notice(instigator + ", health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-            if not bot.nick.endswith(development_bot):
+            if not inchannel in devenabledchannels:
                 return
         validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
@@ -1115,19 +1114,19 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
-    if roulettelastshot == instigator and not bot.nick.endswith(development_bot):
+    if roulettelastshot == instigator and not inchannel in devenabledchannels:
         bot.notice(instigator + ", you must wait for the current round to complete, until you may play again.", instigator)
         return
 
     ## Instigator must wait a day after death
     getlastdeath = get_timesince_duels(bot, instigator, 'roulettedeath') or roulette_death_timeout
-    if getlastdeath < roulette_death_timeout and not bot.nick.endswith(development_bot):
+    if getlastdeath < roulette_death_timeout and not inchannel in devenabledchannels:
         bot.notice(instigator + ", you must wait 24 hours between roulette deaths.", instigator)
         return
 
     ## Small timeout
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeout_roulette
-    if getlastusage < timeout_roulette and not bot.nick.endswith(development_bot):
+    if getlastusage < timeout_roulette and not inchannel in devenabledchannels:
         bot.notice(instigator + " Roulette has a small timeout.", instigator)
         return
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
@@ -1481,7 +1480,7 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
     elif not subcommand:
         bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
-    elif classtime < timeout_class and not bot.nick.endswith(development_bot):
+    elif classtime < timeout_class and not inchannel in devenabledchannels:
         bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((timeout_class - instigatorclasstime)))+" to change.")
     elif subcommand not in subcommandarray:
         bot.say("Invalid command. Options are set or change.")
@@ -1507,7 +1506,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        if not bot.nick.endswith(development_bot):
+        if not inchannel in devenabledchannels:
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -1546,7 +1545,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
     target = get_trigger_arg(triggerargsarray, 2) or instigator
     if int(tiercommandeval) > int(currenttier) and target != instigator:
         bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-        if not bot.nick.endswith(development_bot):
+        if not inchannel in devenabledchannels:
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
     if not validtarget:
@@ -1807,7 +1806,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         if int(tiercommandeval) > int(currenttier) and target != instigator:
             bot.notice(instigator + ", Stats for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!", instigator)
-            if not bot.nick.endswith(development_bot):
+            if not inchannel in devenabledchannels:
                 return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
         if not validtarget:
@@ -2663,7 +2662,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Devroom bypass
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
-    if bot.nick.endswith(development_bot):
+    if inchannel in devenabledchannels:
         validtarget = 1
         return validtarget, validtargetmsg
 
@@ -2708,7 +2707,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 
     ## Devroom bypass
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
-    if bot.nick.endswith(development_bot):
+    if inchannel in devenabledchannels:
        validtarget = 1
        return validtarget, validtargetmsg
 
