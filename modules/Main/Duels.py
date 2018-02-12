@@ -3240,7 +3240,7 @@ def selectwinner(bot, nickarray):
             statscore = 99999999
         statleader = ''
         for u in nickarray:
-            if x != health:
+            if x != 'health':
                 value = get_database_value(bot, u, x) or 0
             else:
                 scriptdef = str('get_' + x + '(bot,u)')
