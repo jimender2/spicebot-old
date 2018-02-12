@@ -1986,13 +1986,13 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
                         splitdamage = healthpotion_worth_barbarian / 6
-                        bot.say(str(splitdamage))
                         for part in stats_healthbodyparts:
-                            bot.say(str(part))
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                     else:
                         splitdamage = healthpotion_worth / 6
+                        bot.say(str(splitdamage))
                         for part in stats_healthbodyparts:
+                            bot.say(str(part))
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                 elif x == 'poisonpotion':
                     splitdamage = poisonpotion_worth / 6
