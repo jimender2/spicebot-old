@@ -68,9 +68,9 @@ commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 bodyparts_required = ['torso','head']
 
 ## Admin Stats Cycling
-stats_admin_types = ['health','healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
+stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
-stats_health = ['health_base'] ## replace this value throughout
+# stats_health = ['health_b4se'] ## replace this value throughout
 stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
 stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
@@ -615,6 +615,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Body Part Hit
         bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
         bodypartname = bodypart.split("_", 1)[1]
+        bodypartnameb = bodypartname.replace("_", " ")
 
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
@@ -629,7 +630,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Vampires gain health from wins
         if classwinner == 'vampire' and winner != loser:
-            adjust_database_value(bot, winner, 'health_base', damage)
+            splitdamage = damage / 6
+            for part in stats_healthbodyparts:
+                adjust_database_value(bot, winner, part, splitdamage)
 
         ## Berserker Rage
         if classwinner == 'barbarian' and winner != loser:
@@ -711,6 +714,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Body Part Hit
                 bodypartb = get_trigger_arg(stats_healthbodyparts, 'random')
                 bodypartnameb = bodypartb.split("_", 1)[1]
+                bodypartnameb = bodypartname.replace("_", " ")
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
@@ -742,7 +746,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         else:
                             winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
                             if winnercurrenthealthbody  <= 0:
-                                combattextarraycomplete.append(winner + "'s " + bodypartname + " has become crippled!")
+                                combattextarraycomplete.append(winner + "'s " + bodypartnameb + " has become crippled!")
 
         ## Chance that maindueler loses found loot
         if target != bot.nick and maindueler != target:
@@ -1207,8 +1211,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         for x in damagetextarray:
             dispmsgarray.append(x)
         if damage > 0:
-            adjust_database_value(bot, instigator, 'health_base', -abs(damage))
-            instigatorcurrenthealth  = get_database_value(bot, instigator, 'health_base')
+            adjust_database_value(bot, instigator, 'health_head', -abs(damage))
+            instigatorcurrenthealth  = get_database_value(bot, instigator, 'health_head')
             if instigatorcurrenthealth  <= 0:
                 suicidetextarray = suicidekill(bot,instigator)
                 for x in suicidetextarray:
@@ -1291,11 +1295,21 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
-            adjust_database_value(bot, instigator, 'health_base', -abs(damage))
-        currenthealth = get_database_value(bot, instigator, 'health_base')
-        if currenthealth <= 0:
-            winnertextarray = whokilledwhom(bot, winner, x)
-            diedinbattle.append(x)
+            splitdamage = damage / 6
+            for part in stats_healthbodyparts:
+                adjust_database_value(bot, x, part, -abs(splitdamage))
+            loserheadhealth = get_database_value(bot, loser, 'health_head')
+            losertorsohealth = get_database_value(bot, loser, 'health_torso')
+            if loserheadhealth  <= 0 or losertorsohealth <= 0:
+                winnertextarray = whokilledwhom(bot, winner, x)
+                diedinbattle.append(x)
+            else:
+                for part in stats_healthbodyparts:
+                    losercurrenthealthbody  = get_database_value(bot, loser, part)
+                    if losercurrenthealthbody  <= 0:
+                        bodypartname = bodypart.split("_", 1)[1]
+                        bodypartname = bodypartname.replace("_", " ")
+                        combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
     if diedinbattle != []:
         displaymessage = get_trigger_arg(diedinbattle, "list")
         dispmsgarray.append(displaymessage + " died in this event.")
@@ -1568,22 +1582,22 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
     subcommand = get_trigger_arg(triggerargsarray, 2)
     if not subcommand:
         leaderscript = []
-        leaderboardarraystats = ['winlossratio','kills','respawns','health_base','bestwinstreak','worstlosestreak','bounty']
+        leaderboardarraystats = ['winlossratio','kills','respawns','health','bestwinstreak','worstlosestreak','bounty']
         worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
         winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
         killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
         respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
-        health_basedispmsg, health_basedispmsgb = "Closest To Death:", "health"
+        healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
         bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
         bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
             statleadername = ''
-            if x != 'health_base':
+            if x != 'health':
                 statleadernumber = 0
             else:
                 statleadernumber = 99999999
             for u in currentduelplayersarray:
-                if x != 'winlossratio':
+                if x != 'winlossratio' and x != 'health':
                     statamount = get_database_value(bot, u, x)
                 else:
                     scriptdef = str('get_' + x + '(bot,u)')
@@ -1591,7 +1605,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 if statamount == statleadernumber and statamount > 0:
                     statleadername = str(statleadername+ " "+ u)
                 else:
-                    if x != 'health_base':
+                    if x != 'health':
                         if statamount > statleadernumber:
                             statleadernumber = statamount
                             statleadername = u
@@ -1875,11 +1889,21 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     for j in damagetextarray:
                         dispmsgarray.append(j)
                     if damage > 0:
-                        adjust_database_value(bot, player, 'health_base', -abs(damage))
-                    currenthealth = get_database_value(bot, player, 'health_base')
-                    if currenthealth <= 0:
-                        winnertextarray = whokilledwhom(bot, instigator, player)
-                        diedinbattle.append(x)
+                        splitdamage = damage / 6
+                        for part in stats_healthbodyparts:
+                            adjust_database_value(bot, x, part, -abs(splitdamage))
+                        loserheadhealth = get_database_value(bot, loser, 'health_head')
+                        losertorsohealth = get_database_value(bot, loser, 'health_torso')
+                        if loserheadhealth  <= 0 or losertorsohealth <= 0:
+                            winnertextarray = whokilledwhom(bot, instigator, player)
+                            diedinbattle.append(player)
+                        else:
+                            for part in stats_healthbodyparts:
+                                losercurrenthealthbody  = get_database_value(bot, loser, part)
+                                if losercurrenthealthbody  <= 0:
+                                    bodypartname = bodypart.split("_", 1)[1]
+                                    bodypartname = bodypartname.replace("_", " ")
+                                    dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
                 if diedinbattle != []:
                     displaymessage = get_trigger_arg(diedinbattle, "list")
                     dispmsgarray.append(displaymessage + " died by this grenade volley.")
@@ -1976,11 +2000,17 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for x in uselootarray:
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
-                        adjust_database_value(bot, target, 'health_base', healthpotion_worth_barbarian)
+                        splitdamage = healthpotion_worth_barbarian / 6
+                        for part in stats_healthbodyparts:
+                            adjust_database_value(bot, x, part, -abs(splitdamage))
                     else:
-                        adjust_database_value(bot, target, 'health_base', healthpotion_worth)
+                        splitdamage = healthpotion_worth / 6
+                        for part in stats_healthbodyparts:
+                            adjust_database_value(bot, x, part, -abs(splitdamage))
                 elif x == 'poisonpotion':
-                    adjust_database_value(bot, target, 'health_base', poisonpotion_worth)
+                    splitdamage = poisonpotion_worth / 6
+                    for part in stats_healthbodyparts:
+                        adjust_database_value(bot, x, part, splitdamage)
                 elif x == 'manapotion':
                     if targetclass == 'mage':
                         adjust_database_value(bot, target, 'mana', manapotion_worth_mage)
@@ -1995,14 +2025,15 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     for j in timepotiontimeoutarray:
                         reset_database_value(bot, target, j)
                     reset_database_value(bot, bot.nick, 'timeout')
-                targethealth = get_database_value(bot, target, 'health_base')
-                if targethealth <= 0:
-                    lootusedeaths = lootusedeaths + 1
-                    if target == instigator:
-                        deathmsgb = suicidekill(bot,loser) ## TODO array
-                    else:
-                        deathmsgb = whokilledwhom(bot, instigator, target) or ''  ## TODO array
-                    mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
+                    targetheadhealth = get_database_value(bot, target, 'health_head')
+                    targettorsohealth = get_database_value(bot, target, 'health_torso')
+                    if targetheadhealth  <= 0 or targettorsohealth <= 0:
+                        if target == instigator:
+                            deathmsgb = suicidekill(bot,loser) ## TODO array
+                        else:
+                            deathmsgb = whokilledwhom(bot, instigator, target) or ''  ## TODO array
+                        lootusedeaths = lootusedeaths + 1
+                        mainlootusemessage = str(mainlootusemessage + " "+ deathmsgb)
             if lootitem == 'mysterypotion':
                 actualpotionmathedarray = []
                 alreadyprocessedarray = []
@@ -2243,14 +2274,18 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             if magicusage == 'curse':
                 damagedealt = magic_curse_damage * int(quantity)
                 set_database_value(bot, target, 'curse', magic_curse_duration)
-                specialtext = str("which forces " + target + " to lose the next " + str(magic_curse_duration) + " duels AND deals " + str(abs(damagedealt))+ " damage.")
-                adjust_database_value(bot, target, 'health_base', int(damagedealt))
+                specialtext = str("which forces " + target + " to lose the next " + str(magic_curse_duration) + " duels.")
+                splitdamage = int(damagedealt) / 6
+                for part in stats_healthbodyparts:
+                    adjust_database_value(bot, target, part, -abs(splitdamage))
             elif magicusage == 'shield':
                 damagedealt = magic_shield_health * int(quantity)
                 actualshieldduration = int(quantity) * int(magic_shield_duration)
                 adjust_database_value(bot, target, 'shield', actualshieldduration)
                 specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
-                adjust_database_value(bot, target, 'health_base', int(damagedealt))
+                splitdamage = int(damagedealt) / 6
+                for part in stats_healthbodyparts:
+                    adjust_database_value(bot, target, part, splitdamage)
             if instigator == target:
                 displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
             else:
@@ -2413,7 +2448,7 @@ def halfhourtimer(bot):
 
     ## Tier the stats
     tierratio = tierratio_level(bot)
-    healthregencurrent = tierratio * halfhour_regen_health_max
+    #healthregencurrent = tierratio * halfhour_regen_health_max
     magemanaregencurrent = tierratio * halfhour_regen_mage_mana_max
 
 
@@ -2439,7 +2474,7 @@ def halfhourtimer(bot):
 
                 uclass = get_database_value(bot, u, 'class') or 'notclassy'
                 mana = get_database_value(bot, u, 'mana') or 0
-                health = get_database_value(bot, u, 'health_base') or 0
+                #health = get_database_value(bot, u, 'health_b4se') or 0
 
                 ## Random user gets a mysterypotion
                 lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
@@ -2450,11 +2485,11 @@ def halfhourtimer(bot):
                 adjust_database_value(bot, u, 'coin', halfhour_coin)
 
                 ## health regenerates for all
-                if int(health) < healthregencurrent:
-                    adjust_database_value(bot, u, 'health_base', halfhour_regen_health)
-                    health = get_database_value(bot, u, 'health_base')
-                    if int(health) > healthregencurrent:
-                        set_database_value(bot, u, 'health_base', healthregencurrent)
+                #if int(health) < healthregencurrent:
+                    #adjust_database_value(bot, u, 'health_b4se', halfhour_regen_health)
+                    #health = get_database_value(bot, u, 'health_b4se')
+                    #if int(health) > healthregencurrent:
+                        #set_database_value(bot, u, 'health_b4se', healthregencurrent)
 
                 ## mages regen mana
                 if uclass == 'mage':
@@ -2716,8 +2751,6 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
     if losername == winnername:
         losername = "themself"
-
-    bodypartname = bodypartname.replace("_", " ")
     
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
@@ -2807,7 +2840,8 @@ def suicidekill(bot,loser):
     reset_database_value(bot, loser, 'mana')
     suicidetextarray.append(loser + " lose all mana.")
     ## Stock health
-    set_database_value(bot, loser, 'health_base', stockhealth)
+    #set_database_value(bot, loser, 'health_b4se', stockhealth)
+    healthcheck(bot, loser) ## TODO: non-tiered
     ## update deaths
     adjust_database_value(bot, loser, 'respawns', 1)
     ## bounty
@@ -3185,7 +3219,7 @@ def tierratio_level(bot):
 ###################
 
 def selectwinner(bot, nickarray):
-    statcheckarray = ['health_base','xp','kills','respawns','currentwinstreak']
+    statcheckarray = ['health','xp','kills','respawns','currentwinstreak']
 
     ## empty var to start
     for user in nickarray:
@@ -3206,7 +3240,11 @@ def selectwinner(bot, nickarray):
             statscore = 99999999
         statleader = ''
         for u in nickarray:
-            value = get_database_value(bot, u, x) or 0
+            if x != health:
+                value = get_database_value(bot, u, x) or 0
+            else:
+                scriptdef = str('get_' + x + '(bot,u)')
+                value = eval(scriptdef)
             if x == 'respawns' or x == 'currentwinstreak':
                 if int(value) < statscore:
                     statleader = u
