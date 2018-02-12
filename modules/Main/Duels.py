@@ -2784,7 +2784,7 @@ def damage_resistance(bot, nick, damage, bodypart):
         armortype = array_compare(bot, "health_"+bodypart, stats_healthbodyparts, stats_armor)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
-            if "_" in armorname:
+            if "_" in armortype:
                 armorname = armortype.split("_", 1)[1]
                 armorname = armorname.replace("_", " ")
             else:
