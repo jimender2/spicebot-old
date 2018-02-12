@@ -2862,14 +2862,10 @@ def suicidekill(bot,loser):
     return suicidetextarray
 
 def healthcheck(bot, nick):
-    currenthealthtier = tierratio_level(bot)
     ## logic for crippled bodyparts
     for part in stats_healthbodyparts:
+        currenthealthtier = tierratio_level(bot)
         maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
-        bot.say(str(part) + " " + str(maxhealthpart))
-
-        
-
         maxhealthpart = int(maxhealthpart)
         currenthealthtier = currenthealthtier * int(maxhealthpart)
         currenthealthtier = int(currenthealthtier)
