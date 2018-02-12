@@ -669,7 +669,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                             combattextarraycomplete.append(x)
                     else:
                         winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
-                        if winnercurrenthealth  <= 0:
+                        if winnercurrenthealthbody  <= 0:
                             combattextarraycomplete.append(winner + "'s " + bodypartname + " has become crippled!")
                 damage = 0
 
@@ -697,7 +697,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         combattextarraycomplete.append(x)
                 else:
                     losercurrenthealthbody  = get_database_value(bot, loser, bodypart)
-                    if losercurrenthealth  <= 0:
+                    if losercurrenthealthbody  <= 0:
                         combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
 
         ## Knight Retaliation
@@ -741,7 +741,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                                 combattextarraycomplete.append(x)
                         else:
                             winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
-                            if winnercurrenthealth  <= 0:
+                            if winnercurrenthealthbody  <= 0:
                                 combattextarraycomplete.append(winner + "'s " + bodypartname + " has become crippled!")
 
         ## Chance that maindueler loses found loot
