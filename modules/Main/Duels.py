@@ -2420,6 +2420,8 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
         settingchange = get_trigger_arg(triggerargsarray, 3)
         if not settingchange:
             bot.notice(instigator + ", What channel setting do you want to change?", instigator)
+        elif settingchange == 'statreset':
+            set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
         elif settingchange == 'lastassault':
             reset_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator')
             bot.notice("Last Assault Instigator removed.", instigator)
