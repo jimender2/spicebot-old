@@ -503,6 +503,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
     ## Starting Tier
     currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+    tierunlockweaponslocker = tier_command(bot, 'weaponslocker')
+    bot.say(str(currenttierstart) + " " + str(tierunlockweaponslocker))
     tierscaling = tierratio_level(bot)
 
     ## Assault Stats
@@ -593,7 +595,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             set_current_streaks(bot, loser, 'loss')
 
         ## Manual weapon
-        tierunlockweaponslocker = tier_command(bot, 'weaponslocker')
         weapon = get_trigger_arg(triggerargsarray, '2+')
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
@@ -616,7 +617,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Body Part Hit
         bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
         bodypartname = bodypart.split("_", 1)[1]
-        bodypartnameb = bodypartname.replace("_", " ")
+        bodypartname = bodypartname.replace("_", " ")
 
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
@@ -715,7 +716,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Body Part Hit
                 bodypartb = get_trigger_arg(stats_healthbodyparts, 'random')
                 bodypartnameb = bodypartb.split("_", 1)[1]
-                bodypartnameb = bodypartname.replace("_", " ")
+                bodypartnameb = bodypartnameb.replace("_", " ")
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
