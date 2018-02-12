@@ -58,6 +58,18 @@ def get_humidity(parsed):
         return 'unknown'
     return "Humidity: %s%%" % humidity
 
+def get_chill(parsed):
+    try:
+        wind_data = parsed['channel']['yweather:wind']
+        chill = int(wind_data['@chill'])
+    except (KeyError, ValueError):
+        return 'unknown'
+    if chill <= 10:
+        f = round((chill * 1.8) + 32, 2)
+        return "Windchill: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
+    else:
+        return 'no windchill'
+
 def get_wind(parsed):
     try:
         wind_data = parsed['channel']['yweather:wind']
@@ -180,8 +192,9 @@ def execute_main(bot, trigger, triggerargsarray):
         temp = get_temp(results)
         humidity = get_humidity(results)
         wind = get_wind(results)
-        bot.say(u'%s: %s, %s, %s, %s' % (location, cover, temp, humidity, wind))
-
+        windchill = get_chill(results)
+        bot.say(u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
+                              
 #An example of how to use a different command in the same module
 #@commands('setlocation', 'setwoeid')
 #@example('.setlocation Columbus, OH')
