@@ -3215,6 +3215,7 @@ def statreset(bot, nick): ## TODO update
 def tierratio_level(bot):
     currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
+    bot.say(str(tierratio))
     return tierratio
 
 ###################
