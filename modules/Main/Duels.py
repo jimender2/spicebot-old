@@ -595,7 +595,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         losershieldstart, losercursestart = get_current_magic_attributes(bot, loser)
 
         ## Body Part Hit
-        bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+        currentbodypartsarray = bodypartarray(bot, loser)
+        bodypart = get_trigger_arg(currentbodypartsarray, 'random')
         bodypartname = bodypart.split("_", 1)[1]
         bodypartname = bodypartname.replace("_", " ")
 
@@ -700,7 +701,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 weaponb = weaponformatter(bot, weaponb)
                 weaponb = str(" "+ weaponb)
                 ## Body Part Hit
-                bodypartb = get_trigger_arg(stats_healthbodyparts, 'random')
+                currentbodypartsarrayb = bodypartarray(bot, winner)
+                bodypartb = get_trigger_arg(currentbodypartsarrayb, 'random')
                 bodypartnameb = bodypartb.split("_", 1)[1]
                 bodypartnameb = bodypartnameb.replace("_", " ")
                 ## Strike Type
@@ -1662,6 +1664,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         for x in stats_armor:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
+                bot.say(x)
                 xname = x.split("_", 1)[1]
                 xname = xname.replace("_", " ")
                 xname = xname.title()
@@ -2893,6 +2896,14 @@ def get_health(bot,nick):
         if gethowmany:
             totalhealth = totalhealth + gethowmany
     return totalhealth
+
+def bodypartarray(bot, nick):
+    currentbodypartsarray = []
+    for x in stats_healthbodyparts:
+        gethowmany = get_database_value(bot, nick, x)
+        if gethowmany:
+            currentbodypartsarray.append(x)
+    return currentbodypartsarray
 
 ######################
 ## On Screen Text ##
