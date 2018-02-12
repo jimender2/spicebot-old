@@ -325,8 +325,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            canduel = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
-            if canduel:
+            executedueling, executeduelingmsg = duelcriteria(bot, instigator, player, currentduelplayersarray)
+            if executedueling == 1:
                 canduelarray.append(player)
                 statreset(bot, player) ## TODO
                 healthcheck(bot, player) ## TODO
@@ -607,12 +607,18 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         damage = int(damage)
 
         ## Damage Text
-        damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+        roguearray = [bot.nick]
+        if winner == loser:
+            roguearray.append(winner)
+        if classloser == 'rogue' and winner in roguearray:
+            damagetext = str(loser + " takes no damage in this encounter")
+        else:
+            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
         if classwinner == 'vampire' and winner != loser:
-            splitdamage = damage / 6
+            splitdamage = int(damage) / 6
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, winner, part, splitdamage)
 
@@ -1277,7 +1283,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
-            splitdamage = damage / 6
+            splitdamage = int(damage) / 6
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, x, part, -abs(splitdamage))
             loserheadhealth = get_database_value(bot, loser, 'health_head')
@@ -1794,10 +1800,13 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         for x in loot_view:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
+                xname = x.split("_", 1)[1]
+                xname = xname.replace("_", " ")
+                xname = xname.title()
                 if gethowmany == 1:
-                    loottype = str(x)
+                    loottype = str(xname)
                 else:
-                    loottype = str(str(x)+"s")
+                    loottype = str(str(xname)+"s")
                 dispmsgarray.append(str(loottype) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
@@ -1871,7 +1880,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     for j in damagetextarray:
                         dispmsgarray.append(j)
                     if damage > 0:
-                        splitdamage = damage / 6
+                        splitdamage = int(damage) / 6
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                         loserheadhealth = get_database_value(bot, loser, 'health_head')
@@ -1984,15 +1993,15 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     if targetclass == 'barbarian':
                         splitdamage = healthpotion_worth_barbarian / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(splitdamage))
+                            adjust_database_value(bot, target, part, splitdamage)
                     else:
                         splitdamage = healthpotion_worth / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(splitdamage))
+                            adjust_database_value(bot, target, part, splitdamage)
                 elif x == 'poisonpotion':
                     splitdamage = poisonpotion_worth / 6
                     for part in stats_healthbodyparts:
-                        adjust_database_value(bot, x, part, splitdamage)
+                        adjust_database_value(bot, target, part, splitdamage)
                 elif x == 'manapotion':
                     if targetclass == 'mage':
                         adjust_database_value(bot, target, 'magic_mana', manapotion_worth_mage)
