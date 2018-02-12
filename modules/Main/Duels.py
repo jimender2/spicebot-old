@@ -935,6 +935,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
                 xname = x.split("_", 1)[1]
+                xname = xname.replace("_", " ")
                 xname = xname.title()
                 dispmsgarray.append(str(xname) + "=" + str(gethowmany))
                 totalhealth = totalhealth + gethowmany
@@ -2701,6 +2702,8 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
     if losername == winnername:
         losername = "themself"
 
+    bodypartname = bodypartname.replace("_", " ")
+    
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winner != loser:
