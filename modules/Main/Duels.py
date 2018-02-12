@@ -325,8 +325,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            canduel = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray)
-            if canduel:
+            executedueling, executeduelingmsg = duelcriteria(bot, instigator, player, currentduelplayersarray)
+            if executedueling == 1:
                 canduelarray.append(player)
                 statreset(bot, player) ## TODO
                 healthcheck(bot, player) ## TODO
