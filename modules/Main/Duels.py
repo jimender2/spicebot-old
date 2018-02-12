@@ -2337,7 +2337,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             return
         target = get_trigger_arg(triggerargsarray, 4).lower() or instigator
         if target == 'channel':
-            target = bot.nick
+            target = duelrecorduser
         if command == 'view':
             viewedtier = get_database_value(bot, target, 'levelingtier')
             bot.notice(instigator + ", " + str(target) + " is at tier " + str(viewedtier) + ".", instigator)
