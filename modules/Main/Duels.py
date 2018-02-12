@@ -593,6 +593,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             set_current_streaks(bot, loser, 'loss')
 
         ## Manual weapon
+        tierunlockweaponslocker = tier_command(bot, 'weaponslocker')
         weapon = get_trigger_arg(triggerargsarray, '2+')
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
