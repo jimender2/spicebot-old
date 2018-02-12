@@ -504,7 +504,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     ## Starting Tier
     currenttierstart = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
     tierunlockweaponslocker = tier_command(bot, 'weaponslocker')
-    bot.say(str(currenttierstart) + " " + str(tierunlockweaponslocker))
     tierscaling = tierratio_level(bot)
 
     ## Assault Stats
@@ -2553,7 +2552,7 @@ def tier_pepper(bot, pepper):
 
 def pepper_tier(bot, tiernumber):
     if not tiernumber:
-        pepper == 'n00b'
+        pepper = 'n00b'
     else:
         pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
         pepper = pepper.title()
