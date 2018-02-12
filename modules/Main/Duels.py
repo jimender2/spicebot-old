@@ -1300,7 +1300,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
                     if xcurrenthealthbody  <= 0:
                         bodypartname = bodypart.split("_", 1)[1]
                         bodypartname = bodypartname.replace("_", " ")
-                        combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
+                        dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
     if diedinbattle != []:
         displaymessage = get_trigger_arg(diedinbattle, "list")
         dispmsgarray.append(displaymessage + " died in this event.")
