@@ -611,8 +611,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Body Part Hit
         currentbodypartsarray = bodypartarray(bot, loser)
         bodypart = get_trigger_arg(currentbodypartsarray, 'random')
-        bodypartname = bodypart.split("_", 1)[1]
-        bodypartname = bodypartname.replace("_", " ")
+        if "_" in bodypart:
+            bodypartname = bodypart.split("_", 1)[1]
+            bodypartname = bodypartname.replace("_", " ")
+        else:
+            bodypartname = bodypart
 
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
