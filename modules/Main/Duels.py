@@ -1269,6 +1269,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+    bot.say("todo")
     #totalplayers = len(canduelarray)
     #riskcoins = int(totalplayers) * 30
     #damage = riskcoins
