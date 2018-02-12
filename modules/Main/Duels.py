@@ -607,7 +607,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         damage = int(damage)
 
         ## Damage Text
-        damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+        roguearray = [bot.nick]
+        if winner == loser:
+            roguearray.append(winner)
+        if classloser == 'rogue' and winner in roguearray:
+            damagetext = str(loser + " takes no damage in this encounter")
+        else:
+            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
@@ -1987,11 +1993,11 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     if targetclass == 'barbarian':
                         splitdamage = healthpotion_worth_barbarian / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, target, part, -abs(splitdamage))
+                            adjust_database_value(bot, target, part, splitdamage)
                     else:
                         splitdamage = healthpotion_worth / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, target, part, -abs(splitdamage))
+                            adjust_database_value(bot, target, part, splitdamage)
                 elif x == 'poisonpotion':
                     splitdamage = poisonpotion_worth / 6
                     for part in stats_healthbodyparts:
