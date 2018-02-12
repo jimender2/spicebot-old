@@ -2552,8 +2552,11 @@ def tier_pepper(bot, pepper):
     return tiernumber
 
 def pepper_tier(bot, tiernumber):
-    pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
-    pepper = pepper.title()
+    if not tiernumber:
+        pepper == 'n00b'
+    else:
+        pepper = get_trigger_arg(commandarray_pepper_levels, tiernumber + 1)
+        pepper = pepper.title()
     return pepper
 
 def tier_xp(bot, xp):
