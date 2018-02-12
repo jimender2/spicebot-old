@@ -147,15 +147,15 @@ loot_trade_scavenger = 2 ## scavengers can trade at a 2:1 ratio
 grenade_full_damage = 100
 grenade_secondary_damage = 50
 ### Health Potions
-healthpotion_worth = 100 ## normal health potion worth
-healthpotion_worth_barbarian = 125 ## health potion worth for barbarians
+healthpotion_worth = 16 ## normal health potion worth
+healthpotion_worth_barbarian = 20 ## health potion worth for barbarians
 healthpotiondispmsg = str(": worth " + str(healthpotion_worth) + " health.")
 ### Mana Potions
 manapotion_worth = 100 ##normal mana potion worth
 manapotion_worth_mage = 125 ## manapotion worth for mages
 manapotiondispmsg = str(": worth " + str(manapotion_worth) + " mana.")
 ### Poison Potions
-poisonpotion_worth = -50 ## poisonpotion damage
+poisonpotion_worth = -8 ## poisonpotion damage
 poisonpotiondispmsg = str(": worth " + str(poisonpotion_worth) + " health.")
 ### Mystery Potions
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
@@ -612,7 +612,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Vampires gain health from wins
         if classwinner == 'vampire' and winner != loser:
-            splitdamage = damage / 6
+            splitdamage = int(damage) / 6
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, winner, part, splitdamage)
 
@@ -1277,7 +1277,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
-            splitdamage = damage / 6
+            splitdamage = int(damage) / 6
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, x, part, -abs(splitdamage))
             loserheadhealth = get_database_value(bot, loser, 'health_head')
@@ -1794,10 +1794,13 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         for x in loot_view:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
+                xname = x.split("_", 1)[1]
+                xname = xname.replace("_", " ")
+                xname = xname.title()
                 if gethowmany == 1:
-                    loottype = str(x)
+                    loottype = str(xname)
                 else:
-                    loottype = str(str(x)+"s")
+                    loottype = str(str(xname)+"s")
                 dispmsgarray.append(str(loottype) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
@@ -1871,7 +1874,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     for j in damagetextarray:
                         dispmsgarray.append(j)
                     if damage > 0:
-                        splitdamage = damage / 6
+                        splitdamage = int(damage) / 6
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                         loserheadhealth = get_database_value(bot, loser, 'health_head')
@@ -1982,17 +1985,14 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for x in uselootarray:
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
-                        splitdamage = healthpotion_worth_barbarian / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(splitdamage))
+                            adjust_database_value(bot, x, part, -abs(healthpotion_worth_barbarian))
                     else:
-                        splitdamage = healthpotion_worth / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(splitdamage))
+                            adjust_database_value(bot, x, part, -abs(healthpotion_worth))
                 elif x == 'poisonpotion':
-                    splitdamage = poisonpotion_worth / 6
                     for part in stats_healthbodyparts:
-                        adjust_database_value(bot, x, part, splitdamage)
+                        adjust_database_value(bot, x, part, poisonpotion_worth)
                 elif x == 'manapotion':
                     if targetclass == 'mage':
                         adjust_database_value(bot, target, 'magic_mana', manapotion_worth_mage)
