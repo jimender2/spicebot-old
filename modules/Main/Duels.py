@@ -1344,7 +1344,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'record_lastfought')
-    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault')
+    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
     set_database_value(bot, instigator, 'record_lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
@@ -1374,7 +1374,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if bot.nick not in canduelarray:
         canduelarray.append(bot.nick)
     target = get_trigger_arg(canduelarray, 'random')
-    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random')
+    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter
