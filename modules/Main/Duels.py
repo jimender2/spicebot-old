@@ -613,7 +613,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if classloser == 'rogue' and winner in roguearray:
             damagetext = str(loser + " takes no damage in this encounter")
         else:
-            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname, winner, loser)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
@@ -707,7 +707,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
                 damageb = duels_damage(bot, tierscaling, classloser, classwinner, loser, winner)
-                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser, bodypartnameb)
+                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser, bodypartnameb, loser, winner)
                 combattextarraycomplete.append(damagetextb)
                 ## Damage Resist
                 if damage > 0:
@@ -2744,7 +2744,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     return damage
 
-def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname):
+def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname, winner, loser):
 
     if losername == winnername:
         losername = "themself"
@@ -2810,7 +2810,7 @@ def whokilledwhom(bot, winner, loser):
     winnertextarray.append(loser + ' dies forcing a respawn!!')
     ## Reset mana and health
     reset_database_value(bot, loser, 'magic_mana')
-    healthcheck(bot, loser) ## TODO, replace with just building the health
+    healthfresh(bot, loser) ## TODO, replace with just building the health
     ## update kills/deaths
     adjust_database_value(bot, winner, 'record_kills', 1)
     adjust_database_value(bot, loser, 'record_respawns', 1)
@@ -2838,7 +2838,7 @@ def suicidekill(bot,loser):
     suicidetextarray.append(loser + " lose all mana.")
     ## Stock health
     #set_database_value(bot, loser, 'health_b4se', stockhealth)
-    healthcheck(bot, loser) ## TODO: non-tiered
+    healthfresh(bot, loser) ## TODO: non-tiered
     ## update deaths
     adjust_database_value(bot, loser, 'record_respawns', 1)
     ## bounty
@@ -2865,6 +2865,21 @@ def healthcheck(bot, nick):
         gethowmany = get_database_value(bot, nick, part) or 0
         if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
             set_database_value(bot, nick, part, currenthealthtier)
+    ## no mana at respawn
+    mana = get_database_value(bot, nick, 'magic_mana')
+    if int(mana) <= 0:
+        reset_database_value(bot, nick, 'magic_mana')
+
+def healthfresh(bot, nick):
+    ## logic for crippled bodyparts
+    for part in stats_healthbodyparts:
+        currenthealthtier = tierratio_level(bot)
+        maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
+        maxhealthpart = int(maxhealthpart)
+        currenthealthtier = currenthealthtier * int(maxhealthpart)
+        currenthealthtier = int(currenthealthtier)
+        gethowmany = get_database_value(bot, nick, part) or 0
+        set_database_value(bot, nick, part, currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'magic_mana')
     if int(mana) <= 0:
