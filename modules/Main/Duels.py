@@ -1570,7 +1570,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         record_killsdispmsg, record_killsdispmsgb = "Most Kills:", "kills"
         record_respawnsdispmsg, record_respawnsdispmsgb = "Most Deaths:", "respawns"
         healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
-        streak_loss_bestdispmsg, streak_loss_bestdispmsgb = "Best Win Streak:", ""
+        streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
         bounty_amountdispmsg, bounty_amountdispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
             statleadername = ''
