@@ -1258,12 +1258,12 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     ### change instigator throughout that function for lastfought purposes
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
-    if instigator in canduelarray:
-        canduelarray.remove(instigator)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray)
     if not executedueling:
         bot.notice(executeduelingmsg,instigator)
         return
+    if instigator in canduelarray:
+        canduelarray.remove(instigator)
     dispmsgarray = []
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
