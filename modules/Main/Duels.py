@@ -1662,9 +1662,9 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         target = actualname(bot, target)
         dispmsgarray = []
         for x in stats_armor:
+            bot.say(x)
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                bot.say(x)
                 xname = x.split("_", 1)[1]
                 xname = xname.replace("_", " ")
                 xname = xname.title()
