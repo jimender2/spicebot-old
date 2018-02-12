@@ -3332,8 +3332,9 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
         else:
             scanningperson = loser
         for x in magicattributesarray:
-            workingvarnow = eval(j+x+"now")
-            workingvarstart = eval(j+x+"start")
+            magicname = x.replace("magic_", "")
+            workingvarnow = eval(j+magicname+"now")
+            workingvarstart = eval(j+magicname+"start")
             if workingvarnow == 0 and workingvarnow != workingvarstart:
                 attributetext.append(scanningperson + " is no longer affected by " + x + ".")
     return attributetext
