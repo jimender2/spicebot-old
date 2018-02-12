@@ -617,7 +617,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Body Part Hit
         bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
         bodypartname = bodypart.split("_", 1)[1]
-        bodypartnameb = bodypartname.replace("_", " ")
+        bodypartname = bodypartname.replace("_", " ")
 
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
@@ -716,7 +716,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Body Part Hit
                 bodypartb = get_trigger_arg(stats_healthbodyparts, 'random')
                 bodypartnameb = bodypartb.split("_", 1)[1]
-                bodypartnameb = bodypartname.replace("_", " ")
+                bodypartnameb = bodypartnameb.replace("_", " ")
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
