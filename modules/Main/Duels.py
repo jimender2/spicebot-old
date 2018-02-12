@@ -1269,7 +1269,6 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-    bot.say("todo")
     totalplayers = len(canduelarray)
     riskcoins = int(totalplayers) * 30
     damage = riskcoins
@@ -1280,9 +1279,10 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     for x in canduelarray:
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
-        bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+        currentbodypartsarray = bodypartarray(bot, x)
+        bodypart = get_trigger_arg(currentbodypartsarray, 'random')
         bodypartname = bodypart.split("_", 1)[1]
-        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart, bodypartname)
+        damage, damagetextarray = damage_resistance(bot, x, damage, bodypart)
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
