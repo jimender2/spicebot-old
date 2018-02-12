@@ -147,15 +147,15 @@ loot_trade_scavenger = 2 ## scavengers can trade at a 2:1 ratio
 grenade_full_damage = 100
 grenade_secondary_damage = 50
 ### Health Potions
-healthpotion_worth = 16 ## normal health potion worth
-healthpotion_worth_barbarian = 20 ## health potion worth for barbarians
+healthpotion_worth = 100 ## normal health potion worth
+healthpotion_worth_barbarian = 125 ## health potion worth for barbarians
 healthpotiondispmsg = str(": worth " + str(healthpotion_worth) + " health.")
 ### Mana Potions
 manapotion_worth = 100 ##normal mana potion worth
 manapotion_worth_mage = 125 ## manapotion worth for mages
 manapotiondispmsg = str(": worth " + str(manapotion_worth) + " mana.")
 ### Poison Potions
-poisonpotion_worth = -8 ## poisonpotion damage
+poisonpotion_worth = -50 ## poisonpotion damage
 poisonpotiondispmsg = str(": worth " + str(poisonpotion_worth) + " health.")
 ### Mystery Potions
 mysterypotiondispmsg = str(": The label fell off. Use at your own risk!")
@@ -1985,14 +1985,19 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for x in uselootarray:
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
+                        splitdamage = healthpotion_worth_barbarian / 6
+                        bot.say(str(splitdamage))
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(healthpotion_worth_barbarian))
+                            bot.say(str(part))
+                            adjust_database_value(bot, x, part, -abs(splitdamage))
                     else:
+                        splitdamage = healthpotion_worth / 6
                         for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(healthpotion_worth))
+                            adjust_database_value(bot, x, part, -abs(splitdamage))
                 elif x == 'poisonpotion':
+                    splitdamage = poisonpotion_worth / 6
                     for part in stats_healthbodyparts:
-                        adjust_database_value(bot, x, part, poisonpotion_worth)
+                        adjust_database_value(bot, x, part, splitdamage)
                 elif x == 'manapotion':
                     if targetclass == 'mage':
                         adjust_database_value(bot, target, 'magic_mana', manapotion_worth_mage)
