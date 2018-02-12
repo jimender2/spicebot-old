@@ -2859,12 +2859,12 @@ def suicidekill(bot,loser):
 
 def healthcheck(bot, nick):
     currenthealthtier = tierratio_level(bot)
+    currenthealthtier = int(currenthealthtier)
     ## logic for crippled bodyparts
     for x in stats_healthbodyparts:
         maxhealthpart = array_compare(bot, x, stats_healthbodyparts, health_bodypart_max)
         maxhealthpart = int(maxhealthpart)
-        currenthealthtier = currenthealthtier * maxhealthpart
-        currenthealthtier = int(currenthealthtier)
+        currenthealthtier = currenthealthtier * int(maxhealthpart)
         gethowmany = get_database_value(bot, nick, x) or 0
         if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
             set_database_value(bot, nick, x, currenthealthtier)
