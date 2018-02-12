@@ -1269,42 +1269,42 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-    totalplayers = len(canduelarray)
-    riskcoins = int(totalplayers) * 30
-    damage = riskcoins
-    winner = selectwinner(bot, canduelarray)
-    dispmsgarray.append("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
-    diedinbattle = []
-    canduelarray.remove(winner)
-    for x in canduelarray:
-        damagescale = tierratio_level(bot)
-        damage = damagescale * damage
-        bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
-        bodypartname = bodypart.split("_", 1)[1]
-        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart, bodypartname)
-        for j in damagetextarray:
-            dispmsgarray.append(j)
-        if damage > 0:
-            splitdamage = int(damage) / 6
-            for part in stats_healthbodyparts:
-                adjust_database_value(bot, x, part, -abs(splitdamage))
-            loserheadhealth = get_database_value(bot, loser, 'health_head')
-            losertorsohealth = get_database_value(bot, loser, 'health_torso')
-            if loserheadhealth  <= 0 or losertorsohealth <= 0:
-                winnertextarray = whokilledwhom(bot, winner, x)
-                diedinbattle.append(x)
-            else:
-                for part in stats_healthbodyparts:
-                    losercurrenthealthbody  = get_database_value(bot, loser, part)
-                    if losercurrenthealthbody  <= 0:
-                        bodypartname = bodypart.split("_", 1)[1]
-                        bodypartname = bodypartname.replace("_", " ")
-                        combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
-    if diedinbattle != []:
-        displaymessage = get_trigger_arg(diedinbattle, "list")
-        dispmsgarray.append(displaymessage + " died in this event.")
-    adjust_database_value(bot, winner, 'loot_coin', riskcoins)
-    onscreentext(bot, [inchannel], dispmsgarray)
+    #totalplayers = len(canduelarray)
+    #riskcoins = int(totalplayers) * 30
+    #damage = riskcoins
+    #winner = selectwinner(bot, canduelarray)
+    #dispmsgarray.append("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+    #diedinbattle = []
+    #canduelarray.remove(winner)
+    #for x in canduelarray:
+    #    damagescale = tierratio_level(bot)
+    #    damage = damagescale * damage
+    #    bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+    #    bodypartname = bodypart.split("_", 1)[1]
+    #    damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart, bodypartname)
+    #    for j in damagetextarray:
+    #        dispmsgarray.append(j)
+    #    if damage > 0:
+    #        splitdamage = int(damage) / 6
+    #        for part in stats_healthbodyparts:
+    #            adjust_database_value(bot, x, part, -abs(splitdamage))
+    #        loserheadhealth = get_database_value(bot, loser, 'health_head')
+    #        losertorsohealth = get_database_value(bot, loser, 'health_torso')
+    #        if loserheadhealth  <= 0 or losertorsohealth <= 0:
+    #            winnertextarray = whokilledwhom(bot, winner, x)
+    #            diedinbattle.append(x)
+    #        else:
+    #            for part in stats_healthbodyparts:
+    #                losercurrenthealthbody  = get_database_value(bot, loser, part)
+    #                if losercurrenthealthbody  <= 0:
+    #                    bodypartname = bodypart.split("_", 1)[1]
+    #                    bodypartname = bodypartname.replace("_", " ")
+    #                    combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
+    #if diedinbattle != []:
+    #    displaymessage = get_trigger_arg(diedinbattle, "list")
+    #    dispmsgarray.append(displaymessage + " died in this event.")
+    #adjust_database_value(bot, winner, 'loot_coin', riskcoins)
+    #onscreentext(bot, [inchannel], dispmsgarray)
 
 ## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath):
