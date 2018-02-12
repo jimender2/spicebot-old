@@ -3469,7 +3469,7 @@ def get_trigger_arg(triggerargsarray, number):
     if number == 0:
         for x in triggerargsarray:
             if triggerarg != '':
-                triggerarg = str(triggerarg + " " + x)
+                triggerarg = str(triggerarg + " " + str(x))
             else:
                 triggerarg = str(x)
         return triggerarg
