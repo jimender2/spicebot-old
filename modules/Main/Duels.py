@@ -655,10 +655,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
                     else:
                         adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
-                    adjust_database_value(bot, loser, 'health_base', -abs(damage))
+                    adjust_database_value(bot, loser, bodypart, -abs(damage))
                     ## Update Health Of winner, respawn, allow loser to loot
-                    winnercurrenthealth = get_database_value(bot, winner, 'health_base') ## todo
-                    if winnercurrenthealth <= 0:
+                    winnerheadhealth = get_database_value(bot, winner, 'health_head')
+                    winnertorsohealth = get_database_value(bot, winner, 'health_torso')
+                    if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
                         else:
@@ -666,6 +667,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                         for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
+                    else:
+                        winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
+                        if winnercurrenthealth  <= 0:
+                            combattextarraycomplete.append(winner + "'s " + bodypartname + " has become crippled!")
                 damage = 0
 
         ## Damage Resist
@@ -678,12 +683,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
                 else:
                     adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
-                adjust_database_value(bot, loser, 'health_base', -abs(damage))
-
-
+                adjust_database_value(bot, loser, bodypart, -abs(damage))
                 ## Update Health Of loser, respawn, allow winner to loot
-                losercurrenthealth  = get_database_value(bot, loser, 'health_base')
-                if losercurrenthealth  <= 0:
+                loserheadhealth = get_database_value(bot, loser, 'health_head')
+                losertorsohealth = get_database_value(bot, loser, 'health_torso')
+                if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, duelrecorduser, 'assault_kills', 1)
                     else:
@@ -691,6 +695,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
                     for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
+                else:
+                    losercurrenthealthbody  = get_database_value(bot, loser, bodypart)
+                    if losercurrenthealth  <= 0:
+                        combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
 
         ## Knight Retaliation
         if classloser == 'knight' and winner != loser:
@@ -719,10 +727,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                             adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
                         else:
                             adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
-                        adjust_database_value(bot, winner, 'health_base', -abs(damage))
+                        adjust_database_value(bot, winner, bodypartb, -abs(damage))
                         ## Update Health Of winner, respawn, allow loser to loot
-                        winnercurrenthealth = get_database_value(bot, winner, 'health_base')
-                        if winnercurrenthealth <= 0:
+                        winnerheadhealth = get_database_value(bot, winner, 'health_head')
+                        winnertorsohealth = get_database_value(bot, winner, 'health_torso')
+                        if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                             if winner == maindueler:
                                 adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
                             else:
@@ -730,6 +739,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                             for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
+                        else:
+                            winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
+                            if winnercurrenthealth  <= 0:
+                                combattextarraycomplete.append(winner + "'s " + bodypartname + " has become crippled!")
 
         ## Chance that maindueler loses found loot
         if target != bot.nick and maindueler != target:
