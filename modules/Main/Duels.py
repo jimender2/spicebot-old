@@ -2417,6 +2417,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                     set_database_value(bot, target, statset, newvalue)
                 bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
     elif subcommand == 'channel':
+        settingchange = get_trigger_arg(triggerargsarray, 3)
         if not settingchange:
             bot.notice(instigator + ", What channel setting do you want to change?", instigator)
         elif settingchange == 'lastassault':
@@ -2859,12 +2860,12 @@ def suicidekill(bot,loser):
 
 def healthcheck(bot, nick):
     currenthealthtier = tierratio_level(bot)
-    currenthealthtier = int(currenthealthtier)
     ## logic for crippled bodyparts
     for x in stats_healthbodyparts:
         maxhealthpart = array_compare(bot, x, stats_healthbodyparts, health_bodypart_max)
         maxhealthpart = int(maxhealthpart)
         currenthealthtier = currenthealthtier * int(maxhealthpart)
+        currenthealthtier = int(currenthealthtier)
         gethowmany = get_database_value(bot, nick, x) or 0
         if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
             set_database_value(bot, nick, x, currenthealthtier)
