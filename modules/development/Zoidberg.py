@@ -18,6 +18,6 @@ def execute_main(bot, trigger, triggerargsarray):
     string = get_trigger_arg(triggerargsarray, 0)
     instigator = trigger.nick
     if string:
-        bot.say("Your " + str(string) + "s are bad, and you should feel bad!")
+        bot.say("Your " + str(string) + " is bad, and you should feel bad!")
     else:
         bot.say("Hey " + instigator + ": your face is bad and you should feel bad!")
