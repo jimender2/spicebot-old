@@ -1647,8 +1647,10 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         for x in stats_armor:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                armorname = x.split("_", 1)[1]
-                dispmsgarray.append(str(armorname) + "=" + str(gethowmany))
+                xname = x.split("_", 1)[1]
+                xname = xname.replace("_", " ")
+                xname = xname.title()
+                dispmsgarray.append(str(xname) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
             dispmsgarrayb.append(target + "'s " + commandortarget + " durability:")
@@ -2742,7 +2744,7 @@ def damage_resistance(bot, nick, damage, bodypart):
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(nick + "s "+ armorname.title() + " alleviated " + str(damagereduced) + " of the damage.")
+            damagetext = str(nick + "s "+ armorname + " alleviated " + str(damagereduced) + " of the damage.")
             armornick = get_database_value(bot, nick, armortype) or 0
             if armornick <= 0:
                 reset_database_value(bot, nick, armortype)
