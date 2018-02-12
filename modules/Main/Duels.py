@@ -2787,6 +2787,8 @@ def damage_resistance(bot, nick, damage, bodypart):
             if "_" in armorname:
                 armorname = armortype.split("_", 1)[1]
                 armorname = armorname.replace("_", " ")
+            else:
+                armorname = armortype
             adjust_database_value(bot, nick, armortype, -1)
             damagepercent = randint(1, armor_relief_percentage) / 100
             damagereduced = damage * damagepercent
