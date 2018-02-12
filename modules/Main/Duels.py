@@ -1688,7 +1688,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         elif instigatorcoin < armor_cost:
             bot.say("Insufficient Funds")
         else:
-            getarmor = get_database_value(bot, instigator, typearmor) or 0
+            getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
             if getarmor and getarmor > 0:
                 bot.say("It looks like you already have a " + typearmor + ".")
             else:
