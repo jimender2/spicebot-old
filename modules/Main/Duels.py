@@ -593,6 +593,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             set_current_streaks(bot, loser, 'loss')
 
         ## Manual weapon
+        tierunlockweaponslocker = tier_command(bot, 'weaponslocker')
         weapon = get_trigger_arg(triggerargsarray, '2+')
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
@@ -2417,8 +2418,11 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                     set_database_value(bot, target, statset, newvalue)
                 bot.notice(instigator + ", Possibly done Adjusting stat(s).", instigator)
     elif subcommand == 'channel':
+        settingchange = get_trigger_arg(triggerargsarray, 3)
         if not settingchange:
             bot.notice(instigator + ", What channel setting do you want to change?", instigator)
+        elif settingchange == 'statreset':
+            set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
         elif settingchange == 'lastassault':
             reset_database_value(bot, duelrecorduser, 'lastfullroomassultinstigator')
             bot.notice("Last Assault Instigator removed.", instigator)
@@ -2858,16 +2862,16 @@ def suicidekill(bot,loser):
     return suicidetextarray
 
 def healthcheck(bot, nick):
-    currenthealthtier = tierratio_level(bot)
     ## logic for crippled bodyparts
-    for x in stats_healthbodyparts:
-        maxhealthpart = array_compare(bot, x, stats_healthbodyparts, health_bodypart_max)
+    for part in stats_healthbodyparts:
+        currenthealthtier = tierratio_level(bot)
+        maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
         maxhealthpart = int(maxhealthpart)
-        currenthealthtier = currenthealthtier * maxhealthpart
+        currenthealthtier = currenthealthtier * int(maxhealthpart)
         currenthealthtier = int(currenthealthtier)
-        gethowmany = get_database_value(bot, nick, x) or 0
+        gethowmany = get_database_value(bot, nick, part) or 0
         if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
-            set_database_value(bot, nick, x, currenthealthtier)
+            set_database_value(bot, nick, part, currenthealthtier)
     ## no mana at respawn
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
@@ -3210,7 +3214,7 @@ def statreset(bot, nick): ## TODO update
 ################
 
 def tierratio_level(bot):
-    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 0
+    currenttier = get_database_value(bot, duelrecorduser, 'levelingtier') or 1
     tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
     return tierratio
 
@@ -3469,7 +3473,7 @@ def get_trigger_arg(triggerargsarray, number):
     if number == 0:
         for x in triggerargsarray:
             if triggerarg != '':
-                triggerarg = str(triggerarg + " " + x)
+                triggerarg = str(triggerarg + " " + str(x))
             else:
                 triggerarg = str(x)
         return triggerarg
