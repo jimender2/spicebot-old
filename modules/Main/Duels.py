@@ -367,7 +367,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
                 bot.notice(instigator + ", you may only daisychain 5 commands.", instigator)
                 return
 
-def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype):
+def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels):
 
     ## New Vars
     fullcommandused = get_trigger_arg(triggerargsarray, 0)
