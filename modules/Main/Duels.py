@@ -30,7 +30,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 commandarray_all_valid = ['health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 commandarray_instigator_bypass = ['on','admin'] ## bypass for Opt status
 commandarray_channel_activate = ['gameon','gameoff']
-commandarray_channel_dev = ['devon','devoff']
+commandarray_channel_dev = ['devmodeon','devmodeoff']
 commandarray_admin = ['admin'] ## Admin Functions
 commandarray_inchannel = ['roulette','assault','colosseum','bounty'] ## Must Be inchannel
 ### Alternative Commands
@@ -295,7 +295,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         if not trigger.admin:
             bot.notice(instigator + ", talk to a bot admin to enable devmode in " + inchannel + ".", instigator)
             return
-        if commandortarget == 'devon':
+        if commandortarget == 'devmodeon':
             adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
             bot.notice(instigator + ", devmode  is now on in " + inchannel + ".", instigator)
         else:
