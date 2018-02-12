@@ -26,6 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
     todaydate = datetime.date.today()  
     storedate = str(todaydate)
     okaytoclaim = 1
+    maxtime = 14
     if not inchannel.startswith("#"):
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
@@ -74,7 +75,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > 30:
+            if timepassed.days > int(maxtime):
                 bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
@@ -86,7 +87,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > 30:
+            if timepassed.days > int(maxtime):
                 if claimedby == '':
                     bot.say(instigator + " urinates on " + target + "! Claimed!")
                 else:
