@@ -70,7 +70,7 @@ bodyparts_required = ['torso','head']
 ## Admin Stats Cycling
 stats_admin_types = ['health','healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
 ## Health Stats
-# stats_health = ['health_base'] ## replace this value throughout
+stats_health = ['health_base'] ## replace this value throughout
 stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
 stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
@@ -186,8 +186,6 @@ armor_cost_blacksmith_cut = .8 ## TODO
 armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
-bodypartsarray = ['head','torso','arm','leg']
-armorarray = ['helmet','breastplate','gauntlets','greaves']
 health_bodypart_max = [330,1000,250,250,500,500]
 ## Bodypart damage modifiers
 
@@ -615,7 +613,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         losershieldstart, losercursestart = get_current_magic_attributes(bot, loser)
 
         ## Body Part Hit
-        bodypart = get_trigger_arg(bodypartsarray, 'random')
+        bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+        bodypartname = bodypart.split("_", 1)[1]
 
         ## Strike Type
         striketype = get_trigger_arg(duel_hit_types, 'random')
@@ -625,7 +624,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         damage = int(damage)
 
         ## Damage Text
-        damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner)
+        damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
@@ -658,7 +657,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         adjust_database_value(bot, duelrecorduser, 'assault_damagedealt', damage)
                     adjust_database_value(bot, loser, 'health_base', -abs(damage))
                     ## Update Health Of winner, respawn, allow loser to loot
-                    winnercurrenthealth = get_database_value(bot, winner, 'health_base')
+                    winnercurrenthealth = get_database_value(bot, winner, 'health_base') ## todo
                     if winnercurrenthealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, duelrecorduser, 'assault_deaths', 1)
@@ -680,6 +679,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 else:
                     adjust_database_value(bot, duelrecorduser, 'assault_damagetaken', damage)
                 adjust_database_value(bot, loser, 'health_base', -abs(damage))
+
+
                 ## Update Health Of loser, respawn, allow winner to loot
                 losercurrenthealth  = get_database_value(bot, loser, 'health_base')
                 if losercurrenthealth  <= 0:
@@ -700,12 +701,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 weaponb = weaponformatter(bot, weaponb)
                 weaponb = str(" "+ weaponb)
                 ## Body Part Hit
-                bodypartb = get_trigger_arg(bodypartsarray, 'random')
+                bodypartb = get_trigger_arg(stats_healthbodyparts, 'random')
+                bodypartnameb = bodypartb.split("_", 1)[1]
                 ## Strike Type
                 striketypeb = get_trigger_arg(duel_hit_types, 'random')
                 ## Damage
                 damageb = duels_damage(bot, tierscaling, classloser, classwinner, loser, winner)
-                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser)
+                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser, bodypartnameb)
                 combattextarraycomplete.append(damagetextb)
                 ## Damage Resist
                 if damage > 0:
@@ -1269,8 +1271,9 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     for x in canduelarray:
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
-        bodypart = get_trigger_arg(bodypartsarray, 'random')
-        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
+        bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+        bodypartname = bodypart.split("_", 1)[1]
+        damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart, bodypartname)
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
@@ -1640,10 +1643,11 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             return
         target = actualname(bot, target)
         dispmsgarray = []
-        for x in armorarray:
+        for x in stats_armor:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                dispmsgarray.append(str(x) + "=" + str(gethowmany))
+                armorname = x.split("_", 1)[1]
+                dispmsgarray.append(str(armorname) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
             dispmsgarrayb.append(target + "'s " + commandortarget + " durability:")
@@ -1654,8 +1658,12 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif subcommand == 'buy':
         instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        if not typearmor or typearmor not in armorarray:
-            armors = get_trigger_arg(armorarray, 'list')
+        if not typearmor or "armor_"+typearmor not in stats_armor:
+            temparmorlistarray = []
+            for x in stats_armor:
+                armorname = x.split("_", 1)[1]
+                temparmorlistarray.append(armorname)
+            armors = get_trigger_arg(temparmorlistarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         elif instigatorcoin < armor_cost:
             bot.say("Insufficient Funds")
@@ -1668,8 +1676,12 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 adjust_database_value(bot, instigator, 'coin', -abs(armor_cost))
                 set_database_value(bot, instigator, typearmor, armor_durability)
     elif subcommand == 'sell':
-        if not typearmor or typearmor not in armorarray:
-            armors = get_trigger_arg(armorarray, 'list')
+        if not typearmor or "armor_"+typearmor not in stats_armor:
+            temparmorlistarray = []
+            for x in stats_armor:
+                armorname = x.split("_", 1)[1]
+                temparmorlistarray.append(armorname)
+            armors = get_trigger_arg(temparmorlistarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
@@ -1688,8 +1700,12 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     adjust_database_value(bot, instigator, 'coin', sellingamount)
                     reset_database_value(bot, instigator, typearmor)
     elif subcommand == 'repair':
-        if not typearmor or typearmor not in armorarray:
-            armors = get_trigger_arg(armorarray, 'list')
+        if not typearmor or "armor_"+typearmor not in stats_armor:
+            temparmorlistarray = []
+            for x in stats_armor:
+                armorname = x.split("_", 1)[1]
+                temparmorlistarray.append(armorname)
+            armors = get_trigger_arg(temparmorlistarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         else:
             getarmor = get_database_value(bot, instigator, typearmor) or 0
@@ -1837,8 +1853,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     damage = int(damage)
                     damagescale = tierratio_level(bot)
                     damage = damagescale * damage
-                    bodypart = get_trigger_arg(bodypartsarray, 'random')
-                    damage, damagetextarray = damage_resistance(bot, player, damage, bodypart)
+                    bodypart = get_trigger_arg(stats_healthbodyparts, 'random')
+                    bodypartname = bodypart.split("_", 1)[1]
+                    damage, damagetextarray = damage_resistance(bot, player, damage, bodypart, bodypartname)
                     for j in damagetextarray:
                         dispmsgarray.append(j)
                     if damage > 0:
@@ -2454,6 +2471,13 @@ def duels_valid_stats(bot):
             duelstatsadminarray.append(duelstat)
     return duelstatsadminarray
 
+def array_compare(bot, indexitem, arraytoindex, arraytocompare):
+    item = ''
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = y
+    return item
+    
 ###########
 ## Tiers ##
 ###########
@@ -2672,25 +2696,18 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     return damage
 
-def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner):
+def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname):
 
     if losername == winnername:
         losername = "themself"
 
     if damage == 0:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ', but deals no damage.')
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winner != loser:
-        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypart + ".")
+        damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypartname + ".")
     else:
-        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypart + weapon + ", dealing " + str(damage) + " damage.")
+        damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ", dealing " + str(damage) + " damage.")
     return damagetext
-
-def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    item = ''
-    for x, y in zip(arraytoindex, arraytocompare):
-        if x == indexitem:
-            item = y
-    return item
 
 ## Damage Resistance
 def damage_resistance(bot, nick, damage, bodypart):
@@ -2713,15 +2730,16 @@ def damage_resistance(bot, nick, damage, bodypart):
 
     ## Armor
     if damage > 0:
-        armortype = array_compare(bot, bodypart, bodypartsarray, armorarray)
+        armortype = array_compare(bot, bodypart, stats_healthbodyparts, stats_armor)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
+            armorname = armortype.split("_", 1)[1]
             adjust_database_value(bot, nick, armortype, -1)
             damagepercent = randint(1, armor_relief_percentage) / 100
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(nick + "s "+ armortype + " alleviated "+str(damagereduced)+" of the damage ")
+            damagetext = str(nick + "s "+ armorname.title() + " alleviated " + str(damagereduced) + " of the damage.")
             armornick = get_database_value(bot, nick, armortype) or 0
             if armornick <= 0:
                 reset_database_value(bot, nick, armortype)
@@ -2913,7 +2931,7 @@ def nickmagicattributes(bot, nick, channel):
 
 def nickarmor(bot, nick, channel):
     nickname = ''
-    for x in armorarray:
+    for x in stats_armor:
         gethowmany = get_database_value(bot, nick, x)
         if gethowmany:
             nickname = "{Armored}"
