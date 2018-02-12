@@ -1289,15 +1289,15 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
             splitdamage = int(damage) / 6
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, x, part, -abs(splitdamage))
-            loserheadhealth = get_database_value(bot, loser, 'health_head')
-            losertorsohealth = get_database_value(bot, loser, 'health_torso')
-            if loserheadhealth  <= 0 or losertorsohealth <= 0:
+            xheadhealth = get_database_value(bot, x, 'health_head')
+            xtorsohealth = get_database_value(bot, x, 'health_torso')
+            if xheadhealth  <= 0 or xtorsohealth <= 0:
                 winnertextarray = whokilledwhom(bot, winner, x)
                 diedinbattle.append(x)
             else:
                 for part in stats_healthbodyparts:
-                    losercurrenthealthbody  = get_database_value(bot, loser, part)
-                    if losercurrenthealthbody  <= 0:
+                    xcurrenthealthbody  = get_database_value(bot, x, part)
+                    if xcurrenthealthbody  <= 0:
                         bodypartname = bodypart.split("_", 1)[1]
                         bodypartname = bodypartname.replace("_", " ")
                         combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
