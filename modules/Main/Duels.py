@@ -1565,13 +1565,13 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
     if not subcommand:
         leaderscript = []
         leaderboardarraystats = ['winlossratio','record_kills','record_respawns','health','streak_win_best','streak_loss_best','bounty_amount']
-        worstlosestreakdispmsg, worstlosestreakdispmsgb = "Worst Losing Streak:", ""
+        streak_loss_bestdispmsg, streak_loss_bestdispmsgb = "Worst Losing Streak:", ""
         winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
-        killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
-        respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
+        record_killsdispmsg, record_killsdispmsgb = "Most Kills:", "kills"
+        record_respawnsdispmsg, record_respawnsdispmsgb = "Most Deaths:", "respawns"
         healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
-        bestwinstreakdispmsg, bestwinstreakdispmsgb = "Best Win Streak:", ""
-        bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
+        streak_loss_bestdispmsg, streak_loss_bestdispmsgb = "Best Win Streak:", ""
+        bounty_amountdispmsg, bounty_amountdispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
             statleadername = ''
             if x != 'health':
