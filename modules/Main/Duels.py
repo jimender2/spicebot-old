@@ -437,7 +437,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
-
 #######################
 ## Subcommands Usage ##
 #######################
@@ -494,6 +493,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     for target in targetarray:
         targetarraytotal = targetarraytotal - 1
 
+        ## target actual
+        target = actualname(bot,target)
+        
         ## Cleanup from Previous runs
         combattextarraycomplete = []
         texttargetarray = []
