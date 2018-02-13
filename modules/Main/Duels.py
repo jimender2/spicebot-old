@@ -1350,57 +1350,30 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     dispmsgarray = []
     bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
     winnerorder = []
-    while totaltributes > 1:
+    while totaltributes > 0:
         totaltributes = totaltributes - 1
         winner = selectwinner(bot, canduelarray)
         winnerorder.append(winner)
         canduelarray.remove(winner)
-    bot.say("original " + str(winnerorder))
     reversedorder = get_trigger_arg(winnerorder, 'reverse')
-    bot.say("reverse " + str(reversedorder))
-    bot.say("original " + str(winnerorder))
-    #if totaltributes == 2:
-    #    winner = selectwinner(bot, canduelarray)
-    #    bot.say("The victor is " + winner)
-    #    return
-    #if totaltributes == 3:
-    #    winner = selectwinner(bot, canduelarray)
-    #    canduelarray.remove(winner)
-    #    winnerb = selectwinner(bot, canduelarray)
-    #    bot.say("The first to die was " + str(canduelarray[1]) + " The victor is " + winner)
-    #    return
-    #tributes = []
-    #weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
-    #for tribute in canduelarray:
-    #    random.shuffle(weapons)
-    #    tributerow = [tribute, 100, weapons[0]]
-    #    tributes.append(tributerow)
-    #totaltributes = len(tributes)
-    #while totaltributes > 1:
-    #    random.shuffle(tributes)
-    #    damageone = randint(50, 80)
-    #    damagetwo = randint(50, 80)
-    #    if damagetwo == damageone:
-    #        while damageone == damagetwo:
-    #            damageone = randint(50, 80)
-    #            damagetwo = randint(50, 80)
-    #    bot.notice(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ", trigger.nick)
-    #    tributes[0][1] = tributes[0][1] - damageone
-    #    tributes[1][1] = tributes[1][1] - damageone
-    #    if tributes[0][1] <= 0:
-    #        bot.notice(tributes[1][0] + " killed " + tributes[0][0], trigger.nick)
-    #    if tributes[1][1] <= 0:
-    #        if len(tributes) > 1:
-    #            bot.notice(tributes[0][0] + " killed " + tributes[1][0], trigger.nick)
-    #    if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
-    #        tributes.pop(1)
-    #    if tributes[0][1] <= 0:
-    #        if len(tributes) > 1:
-    #            tributes.pop(0)
-    #    totaltributes = len(tributes)
-    #bot.say("The victor is " + tributes[0][0])
-
-    #onscreentext(bot, ['say'], dispmsgarray)
+    lastkilled = ''
+    firsttodie = ''
+    firstkill = 0
+    for player in reversedorder:
+        if lastkilled != '':
+            classplayer = get_database_value(bot, player, 'class_setting') or 'notclassy'
+            classlastkilled = get_database_value(bot, lastkilled, 'class_setting') or 'notclassy'
+            weapon = weaponofchoice(bot, player)
+            weapon = weaponformatter(bot, weapon)
+            dispmsgarray.append(player + " hits " + lastkilled + weapon + ', forcing a respawn.')
+            if not firstkill:
+                dispmsgarray.append(lastkilled + " was the first to die.")
+                firstkill = 1
+        else:
+            firsttodie = player
+        lastkilled = player
+    dispmsgarray.append(player + " is the victor!")
+    onscreentext(bot, ['say'], dispmsgarray)
     
 
 ## Colosseum
@@ -2712,7 +2685,7 @@ def halfhourtimer(bot):
     if randomuarray != []:
         lootwinner = halfhourpotionwinner(bot, randomuarray)
         loot_text = str(mysterypotiondispmsg + " Use .duel loot use mysterypotion to consume.")
-        adjust_database_value(bot, lootwinner, 'mysterypotion', 1)
+        adjust_database_value(bot, lootwinner, 'loot_mysterypotion', 1)
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
