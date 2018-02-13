@@ -118,6 +118,9 @@ timeout_colosseum = 1800 ## Time Between colosseum events
 ## hungergames
 timeout_hungergames = 1800
 
+## mayhem
+timeout_mayhem = 1800
+
 ## Random Target
 random_payout = 100
 
@@ -862,7 +865,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if typeofduel == 'assault':
             set_database_value(bot, target, 'record_lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
-                bot.notice(maindueler + ", It looks like the Full Channel Assault has completed.", maindueler)
                 assaultstatsarray = []
                 assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
                 for astat in assault_results:
@@ -1327,11 +1329,31 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
+## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
-    bot.say("WIP")
-    ## TODO tie this in with duel_combat
-    ### go through the target array for instigator
-    ### change instigator throughout that function for lastfought purposes
+    if instigator not in canduelarray:
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+        bot.notice(validtargetmsg,instigator)
+        return
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
+    if not executedueling:
+        bot.notice(executeduelingmsg,instigator)
+        return
+    if canduelarray == []:
+        bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+        return
+    displaymessage = get_trigger_arg(canduelarray, "list")
+    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    for maindueler in canduelarray:
+        targetarray = []
+        for player in canduelarray:
+            if player != maindueler:
+                targetarray.append(player)
+        duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
 
 ## Hunger Games
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):

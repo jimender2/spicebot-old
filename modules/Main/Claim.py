@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
     todaydate = datetime.date.today()  
     storedate = str(todaydate)
     okaytoclaim = 1
-    maxtime = 14
+    maxtime = 7
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     if not inchannel.startswith("#"):
         okaytoclaim = 0
