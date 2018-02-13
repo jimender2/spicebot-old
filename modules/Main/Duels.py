@@ -1365,7 +1365,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
             classlastkilled = get_database_value(bot, lastkilled, 'class_setting') or 'notclassy'
             weapon = weaponofchoice(bot, player)
             weapon = weaponformatter(bot, weapon)
-            dispmsgarray.append(player + " hits " + lastkilled + weapon + ', forcing a respawn.')
+            dispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
             if not firstkill:
                 dispmsgarray.append(lastkilled + " was the first to die.")
                 firstkill = 1
