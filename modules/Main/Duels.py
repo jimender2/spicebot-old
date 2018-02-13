@@ -1351,6 +1351,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     if totaltributes == 1:
         bot.notice(instigator + ", there is only one tribute.  Try again later.", instigator)
         return
+    currenttierstart = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
     dispmsgarray = []
     bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
     winnerorder = []
