@@ -24,6 +24,11 @@ def execute_main(bot, trigger, triggerargsarray):
         if firstitem.endswith('ing') and substring != 'empty':
             itema = item
             itemb = firstitem.replace('ing','') + ' ' + substring
+        elif firstitem.endswith('e') and substring != 'empty':
+            itema = firstitem[:-1]+"ing" + ' ' + substring
+            bot.say(str(itema))
+            itemb = item
+            bot.say(str(itemb))
         elif not item.endswith('ing'):
             itema = str(item + "ing")
             itemb = item

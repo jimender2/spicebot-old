@@ -26,18 +26,40 @@ def execute_main(bot, trigger, triggerargsarray):
     todaydate = datetime.date.today()  
     storedate = str(todaydate)
     okaytoclaim = 1
+    maxtime = 14
+    mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     if not inchannel.startswith("#"):
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
     elif not target:
         okaytoclaim = 0
         bot.say("Who do you want to claim?")
+    elif target == 'check':
+        okaytoclaim = 0
+        if not admintarget:
+            admintarget = instigator
+        claimdate = bot.db.get_nick_value(admintarget, 'claimdate')
+        claimedby = bot.db.get_nick_value(admintarget,'claimed')
+        if not claimedby:
+            if admintarget == instigator:
+                bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
+            else:
+                bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
+        else:
+            if admintarget == instigator:
+                bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+            else:
+                bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
     elif target == instigator:
         okaytoclaim = 0
         bot.say("You can't claim yourself!")
     elif target == bot.nick:
         okaytoclaim = 0
-        bot.say("I have already been claimed by " + owner +"!")    
+        bot.say("I have already been claimed by " + owner +"!")
+    elif target == mastername:
+        okaytoclaim = 0
+        bot.action("facepalms")
+        bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
     elif target == 'reset':
         okaytoclaim = 0
         if trigger.admin:
@@ -74,7 +96,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > 30:
+            if timepassed.days > int(maxtime):
                 bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
@@ -86,7 +108,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > 30:
+            if timepassed.days > int(maxtime):
                 if claimedby == '':
                     bot.say(instigator + " urinates on " + target + "! Claimed!")
                 else:
