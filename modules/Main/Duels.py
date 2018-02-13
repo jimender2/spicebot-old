@@ -952,7 +952,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     command = get_trigger_arg(triggerargsarray, 2)
     if not command:
-        bot.notice("On/Off")
+        bot.notice("On/Off", instigator)
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
@@ -965,7 +965,7 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     command = get_trigger_arg(triggerargsarray, 2)
     if not command:
-        bot.notice("On/Off")
+        bot.notice("On/Off", instigator)
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
@@ -1399,6 +1399,8 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     dispmsgarray.append(player + " is the victor!")
     reverseddisplay = get_trigger_arg(dispmsgarray, 'reverse')
     onscreentext(bot, ['say'], reverseddisplay)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
