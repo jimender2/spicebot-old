@@ -42,7 +42,8 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("I have already been claimed by " + owner +"!")
     elif target == mastername:
         okaytoclaim = 0
-        bot.say(target + " already has a claim on you, " + instigator + ".")
+        bot.action("facepalms")
+        bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
     elif target == 'reset':
         okaytoclaim = 0
         if trigger.admin:
