@@ -183,7 +183,9 @@ magic_curse_duration = 4 ## how long a curse lasts
 
 ## Body/Armor
 armor_cost = 500
-armor_cost_blacksmith_cut = .8 ## TODO
+armor_repair_cost = .5
+armor_cost_blacksmith_cut = .8
+armor_sell_blacksmith_cut = 1.5
 armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
@@ -1704,10 +1706,11 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             else:
                 bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
-## Armor ## TODO
+## Armor
 def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     subcommand = get_trigger_arg(triggerargsarray, 2)
     typearmor = get_trigger_arg(triggerargsarray, 3)
+    instigatorclass = get_database_value(bot, instigator, 'class_setting')
     if not subcommand or subcommand.lower() in [x.lower() for x in dueloptedinarray]:
         target = get_trigger_arg(triggerargsarray, 2) or instigator
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray)
@@ -1735,6 +1738,10 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif subcommand == 'buy':
         instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
+        costinvolved = armor_cost
+        if instigatorclass == 'blacksmith':
+            costinvolved = costinvolved * armor_cost_blacksmith_cut
+        costinvolved = int(costinvolved)
         if not typearmor or "armor_"+typearmor not in stats_armor:
             temparmorlistarray = []
             for x in stats_armor:
@@ -1742,15 +1749,15 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 temparmorlistarray.append(armorname)
             armors = get_trigger_arg(temparmorlistarray, 'list')
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
-        elif instigatorcoin < armor_cost:
+        elif instigatorcoin < costinvolved:
             bot.say("Insufficient Funds")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
             if getarmor and getarmor > 0:
                 bot.say("It looks like you already have a " + typearmor + ".")
             else:
-                bot.say(instigator + " bought " + typearmor + " for " + str(armor_cost) + " coins.")
-                adjust_database_value(bot, instigator, 'loot_coin', -abs(armor_cost))
+                bot.say(instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
+                adjust_database_value(bot, instigator, 'loot_coin', -abs(costinvolved))
                 set_database_value(bot, instigator, "armor_"+typearmor, armor_durability)
     elif subcommand == 'sell':
         if not typearmor or "armor_"+typearmor not in stats_armor:
@@ -1770,6 +1777,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             else:
                 durabilityremaining = getarmor / armor_durability
                 sellingamount = durabilityremaining * armor_cost
+                if instigatorclass == 'blacksmith':
+                    sellingamount = sellingamount * armor_sell_blacksmith_cut
                 sellingamount = int(sellingamount)
                 if sellingamount <= 0:
                     bot.say("Your armor is too damaged to sell.")
@@ -1787,7 +1796,6 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
-            instigatorclass = get_database_value(bot, instigator, 'class_setting')
             durabilitycompare = armor_durability
             if instigatorclass == 'blacksmith':
                 durabilitycompare = armor_durability_blacksmith
@@ -1803,6 +1811,9 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
                     costinvolved  = durabilitytorepair / durabilitycompare
                     costinvolved = costinvolved * armor_cost
+                    costinvolved = costinvolved * armor_repair_cost
+                    if instigatorclass == 'blacksmith':
+                        costinvolved = costinvolved * armor_cost_blacksmith_cut
                     costinvolved = int(costinvolved)
                     if instigatorcoin < costinvolved:
                         bot.say("Insufficient Funds.")
