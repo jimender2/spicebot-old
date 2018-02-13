@@ -1343,61 +1343,64 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
     totaltributes = len(canduelarray)
+    totaltributesstart = totaltributes
     if totaltributes == 1:
         bot.notice(instigator + ", there is only one tribute.  Try again later.", instigator)
         return
     dispmsgarray = []
     bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
-    if totaltributes == 2:
-        random.shuffle(canduelarray)
-        bot.say("The victor is " + str(canduelarray[0]))
-        return
-    if totaltributes == 3:
-        random.shuffle(canduelarray)
-        bot.say("The first to die was " + str(canduelarray[1]) + " The victor is " + str(canduelarray[0]))
-        return
-    tributes = []
-    weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
-    for tribute in canduelarray:
-        random.shuffle(weapons)
-        tributerow = [tribute, 100, weapons[0]]
-        tributes.append(tributerow)
-    totaltributes = len(tributes)
+    winnerorder = []
     while totaltributes > 1:
-        random.shuffle(tributes)
-        damageone = randint(50, 80)
-        damagetwo = randint(50, 80)
-        if damagetwo == damageone:
-            while damageone == damagetwo:
-                damageone = randint(50, 80)
-                damagetwo = randint(50, 80)
-        bot.notice(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ", trigger.nick)
-        tributes[0][1] = tributes[0][1] - damageone
-        tributes[1][1] = tributes[1][1] - damageone
-        if tributes[0][1] <= 0:
-            bot.notice(tributes[1][0] + " killed " + tributes[0][0], trigger.nick)
-        if tributes[1][1] <= 0:
-            if len(tributes) > 1:
-                bot.notice(tributes[0][0] + " killed " + tributes[1][0], trigger.nick)
-        if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
-            tributes.pop(1)
-        if tributes[0][1] <= 0:
-            if len(tributes) > 1:
-                tributes.pop(0)
-        totaltributes = len(tributes)
-    bot.say("The victor is " + tributes[0][0])
+        totaltributes = totaltributes - 1
+        winner = selectwinner(bot, canduelarray)
+        winnerorder.append(winner)
+        canduelarray.remove(winner)
+    bot.say("original " + str(winnerorder))
+    reversedorder = winnerorder.reverse()
+    bot.say("reverse " + str(winnerorder))
+        
+    #if totaltributes == 2:
+    #    winner = selectwinner(bot, canduelarray)
+    #    bot.say("The victor is " + winner)
+    #    return
+    #if totaltributes == 3:
+    #    winner = selectwinner(bot, canduelarray)
+    #    canduelarray.remove(winner)
+    #    winnerb = selectwinner(bot, canduelarray)
+    #    bot.say("The first to die was " + str(canduelarray[1]) + " The victor is " + winner)
+    #    return
+    #tributes = []
+    #weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
+    #for tribute in canduelarray:
+    #    random.shuffle(weapons)
+    #    tributerow = [tribute, 100, weapons[0]]
+    #    tributes.append(tributerow)
+    #totaltributes = len(tributes)
+    #while totaltributes > 1:
+    #    random.shuffle(tributes)
+    #    damageone = randint(50, 80)
+    #    damagetwo = randint(50, 80)
+    #    if damagetwo == damageone:
+    #        while damageone == damagetwo:
+    #            damageone = randint(50, 80)
+    #            damagetwo = randint(50, 80)
+    #    bot.notice(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ", trigger.nick)
+    #    tributes[0][1] = tributes[0][1] - damageone
+    #    tributes[1][1] = tributes[1][1] - damageone
+    #    if tributes[0][1] <= 0:
+    #        bot.notice(tributes[1][0] + " killed " + tributes[0][0], trigger.nick)
+    #    if tributes[1][1] <= 0:
+    #        if len(tributes) > 1:
+    #            bot.notice(tributes[0][0] + " killed " + tributes[1][0], trigger.nick)
+    #    if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
+    #        tributes.pop(1)
+    #    if tributes[0][1] <= 0:
+    #        if len(tributes) > 1:
+    #            tributes.pop(0)
+    #    totaltributes = len(tributes)
+    #bot.say("The victor is " + tributes[0][0])
 
-
-
-
-
-
-
-
-
-
-
-    onscreentext(bot, ['say'], dispmsgarray)
+    #onscreentext(bot, ['say'], dispmsgarray)
     
 
 ## Colosseum
