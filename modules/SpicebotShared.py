@@ -292,6 +292,17 @@ def quote(string, safe='/'):
 ## Time ##
 ##########
 
+def enoughdaysbetween(earlydate, laterdate, numberofdays):
+    datea = arrow.get(laterdate)
+    dateb = arrow.get(earlydate)
+    timepassed = datea - dateb
+    dayspassed = timepassed.days
+    if timepassed.days > int(numberofdays):
+        longenough = 1
+    else:
+        longenough = 0
+    return longenough
+
 def get_timesince(bot, nick, databasekey):
     now = time.time()
     last = get_botdatabase_value(bot, nick, databasekey) or 0
