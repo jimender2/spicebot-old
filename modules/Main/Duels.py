@@ -1360,23 +1360,22 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         canduelarray.remove(winner)
     reversedorder = get_trigger_arg(winnerorder, 'reverse')
     lastkilled = ''
-    firsttodie = ''
-    firstkill = 0
     for player in reversedorder:
         if lastkilled != '':
+            minidispmsgarray = []
             classplayer = get_database_value(bot, player, 'class_setting') or 'notclassy'
             classlastkilled = get_database_value(bot, lastkilled, 'class_setting') or 'notclassy'
             weapon = weaponofchoice(bot, player)
             weapon = weaponformatter(bot, weapon)
-            dispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
-            if not firstkill:
-                dispmsgarray.append(lastkilled + " was the first to die.")
-                firstkill = 1
+            minidispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
+            whokilledwhom(bot, player, lastkilled)
+            onscreentext(bot, [player,lastkilled], minidispmsgarray)
         else:
-            firsttodie = player
+            dispmsgarray.append(player + " was the first to die.")
         lastkilled = player
     dispmsgarray.append(player + " is the victor!")
-    onscreentext(bot, ['say'], dispmsgarray)
+    reverseddisplay = get_trigger_arg(dispmsgarray, 'reverse')
+    onscreentext(bot, ['say'], reverseddisplay)
     
 
 ## Colosseum
