@@ -1339,6 +1339,14 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
         bot.notice(validtargetmsg,instigator)
         return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
