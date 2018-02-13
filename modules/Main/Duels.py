@@ -69,9 +69,8 @@ commandarray_tier_display_exclude = ['admin'] ## Do NOT display
 bodyparts_required = ['torso','head']
 
 ## Admin Stats Cycling
-stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling']
+stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other']
 ## Health Stats
-# stats_health = ['health_b4se'] ## replace this value throughout
 stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
 ## Armor Stats
 stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
@@ -95,6 +94,8 @@ stats_bounty = ['bounty_amount']
 stats_weaponslocker = ['weaponslocker_complete','weaponslocker_lastweaponusedarray','weaponslocker_lastweaponused']
 ## Leveling Stats
 stats_leveling = ['leveling_tier']
+## Other
+stats_other = ['chanstatsreset']
 
 ## Documentation and Development
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
@@ -439,7 +440,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if not executedueling:
         bot.notice(executeduelingmsg,instigator)
         return
-    
+
     ## Perform Lockout, run target duel, then unlock
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target', devenabledchannels)
@@ -509,7 +510,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## target actual
         target = actualname(bot,target)
-        
+
         ## Cleanup from Previous runs
         combattextarraycomplete = []
         texttargetarray = []
@@ -798,6 +799,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             else:
                 adjust_database_value(bot, duelrecorduser, 'assault_xp', XPearnedloser)
 
+        ## Streaks Text
+        if maindueler != target:
+            streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
+            if streaktext != '':
+                combattextarraycomplete.append(streaktext)
+
         ## new pepper level?
         mainduelerpeppernow = get_pepper(bot, maindueler)
         if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
@@ -832,14 +839,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         else:
             adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
-        ## Streaks Text
-        if maindueler != target:
-            streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
-            if streaktext != '':
-                combattextarraycomplete.append(streaktext)
-
         ## Random Bonus
-        if typeofduel == 'random' and winner == maindueler:
+        if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser:
             adjust_database_value(bot, winner, 'loot_coin', random_payout)
             combattextarraycomplete.append(maindueler + " won the random attack payout!")
 
@@ -1570,7 +1571,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
                 gethowmany = format(gethowmany, '.3f')
             statname = x.title()
             dispmsgarray.append(statname + "=" + str(gethowmany))
-                
+
     dispmsgarrayb = []
     if dispmsgarray != []:
         pepper = get_pepper(bot, target)
@@ -2498,7 +2499,7 @@ def halfhourtimer(bot):
                 ## award coin to all
                 adjust_database_value(bot, u, 'loot_coin', halfhour_coin)
 
-                ## health regenerates for all
+                ## health regenerates for all ## TODO: distribute health
                 #if int(health) < healthregencurrent:
                     #adjust_database_value(bot, u, 'health_b4se', halfhour_regen_health)
                     #health = get_database_value(bot, u, 'health_b4se')
@@ -2514,7 +2515,13 @@ def halfhourtimer(bot):
                             set_database_value(bot, u, 'magic_mana', magemanaregencurrent)
 
     ## Log Out Users
-    adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
+    gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+    if logoutarray != []:
+        dispmsgarray = []
+        logoutusers = get_trigger_arg(logoutarray, 'list')
+        dispmsgarray.append(logoutusers + " has/have been logged out of duels for inactivity!")
+        onscreentext(bot, gameenabledchannels, dispmsgarray)
+        adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
 
     ## Random winner select
     if randomuarray != []:
@@ -2542,7 +2549,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
         if x == indexitem:
             item = y
     return item
-    
+
 ###########
 ## Tiers ##
 ###########
@@ -2770,7 +2777,7 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
     if losername == winnername:
         losername = "themself"
-    
+
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winner != loser:
@@ -3238,7 +3245,33 @@ def weaponformatter(bot, weapon):
 ## Stat Reset ##
 ################
 
-def statreset(bot, nick): ## TODO update
+def chanstatreset(bot, duelrecorduser): ## TODO
+    now = time.time()
+    duelstatsadminarray = duels_valid_stats(bot)
+    for x in duelstatsadminarray:
+        reset_database_value(bot, duelrecorduser, "usage_"+x)
+        reset_database_value(bot, bot.nick, "usage_"+x)
+        reset_database_value(bot, duelrecorduser, "usage_total")
+        reset_database_value(bot, bot.nick, "usage_total")
+        reset_database_value(bot, bot.nick, x)
+        reset_database_value(bot, duelrecorduser, x)
+    set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+
+def duelrecordwipe(bot, duelrecorduser): ## TODO
+    chanrecordsarray = ['gameenabled','devenabled','botvisibleusers','duelusers','duelslockout','leveling_tier','lastinstigator','timeout_timeout','specevent','roulettelastplayershot','roulettelastplayer','roulettecount','roulettechamber','roulettespinarray','roulettewinners','lasttimedlootwinner']
+    eventsarray = ['roulette','colosseum','assault']
+    for event in eventsarray:
+        reset_database_value(bot, duelrecorduser, "lastfullroom" + event)
+        reset_database_value(bot, bot.nick, "lastfullroom" + event)
+    for astat in assault_results:
+        reset_database_value(bot, duelrecorduser, "assault_" + astat)
+        reset_database_value(bot, bot.nick, "assault_" + astat)
+    for record in chanrecordsarray:
+        reset_database_value(bot, duelrecorduser, record)
+        reset_database_value(bot, bot.nick, record)
+    
+
+def statreset(bot, nick):
     now = time.time()
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
     if not getlastchanstatreset:
@@ -3247,8 +3280,12 @@ def statreset(bot, nick): ## TODO update
     if getnicklastreset < getlastchanstatreset:
         duelstatsadminarray = duels_valid_stats(bot)
         for x in duelstatsadminarray:
+            reset_database_value(bot, nick, "usage_"+x)
             reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
+    reset_database_value(bot, nick, "usage_combat")
+    reset_database_value(bot, nick, "usage_total")
+    reset_database_value(bot, nick, "roulettepayout")
 
 ################
 ## Tier ratio ##
