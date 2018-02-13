@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
     storedate = str(todaydate)
     okaytoclaim = 1
     maxtime = 14
-    masterclaim = bot.db.get_nick_value(instigator,'claimed') or ''
+    mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     if not inchannel.startswith("#"):
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == bot.nick:
         okaytoclaim = 0
         bot.say("I have already been claimed by " + owner +"!")
-    elif target == claimedby:
+    elif target == mastername:
         okaytoclaim = 0
         bot.say(target + " already has a claim on you, " + instigator + ".")
     elif target == 'reset':
