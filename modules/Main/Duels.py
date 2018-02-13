@@ -1381,15 +1381,15 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
             if playertier < currenttierstart:
                 XPearnedplayer = XPearnedplayer * tierscaling
             adjust_database_value(bot, player, 'record_xp', XPearnedplayer)
-            classlastkilled = get_database_value(bot, x, 'class_setting')
-            lastkilledtier = get_database_value(bot, x, 'leveling_tier')
+            classlastkilled = get_database_value(bot, lastkilled, 'class_setting')
+            lastkilledtier = get_database_value(bot, lastkilled, 'leveling_tier')
             if classlastkilled == 'ranger':
                 XPearnedlastkilled = xp_loser_ranger
             else:
                 XPearnedlastkilled = xp_loser
             if lastkilledtier < currenttierstart:
                 XPearnedlastkilled = XPearnedlastkilled * tierscaling
-            adjust_database_value(bot, x, 'record_xp', XPearnedlastkilled)
+            adjust_database_value(bot, lastkilled, 'record_xp', XPearnedlastkilled)
             onscreentext(bot, [player,lastkilled], minidispmsgarray)
         else:
             dispmsgarray.append(player + " was the first to die.")
