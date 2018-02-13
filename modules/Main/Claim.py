@@ -34,6 +34,22 @@ def execute_main(bot, trigger, triggerargsarray):
     elif not target:
         okaytoclaim = 0
         bot.say("Who do you want to claim?")
+    elif target == 'check':
+        okaytoclaim = 0
+        if not admintarget:
+            admintarget = instigator
+        claimdate = bot.db.get_nick_value(admintarget, 'claimdate')
+        claimedby = bot.db.get_nick_value(target,'claimed')
+        if not claimedby:
+            if admintarget == instigator:
+                bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
+            else:
+                bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
+        else:
+            if admintarget == instigator:
+                bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+            else:
+                bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
     elif target == instigator:
         okaytoclaim = 0
         bot.say("You can't claim yourself!")
