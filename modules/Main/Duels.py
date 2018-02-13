@@ -1235,6 +1235,17 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             else:
                 dispmsgarray.append("First in the chamber. What bad luck.")
 
+        ## XP
+        loserclass = get_database_value(bot, instigator, 'class_setting')
+        losertier = get_database_value(bot, instigator, 'leveling_tier')
+        if classloser == 'ranger':
+            XPearnedloser = xp_loser_ranger
+        else:
+            XPearnedloser = xp_loser
+        if losertier < currenttierstart:
+            XPearnedloser = XPearnedloser * tierscaling
+        adjust_database_value(bot, instigator, 'record_xp', XPearnedloser)
+        
         ## Dish out the pain
         damage = randint(50, 120)
         bodypart = 'head'
@@ -1261,6 +1272,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if x not in uniquewinnersarray and x != instigator:
                 uniquewinnersarray.append(x)
         for x in uniquewinnersarray:
+            winnerclass = get_database_value(bot, x, 'class_setting')
+            winnertier = get_database_value(bot, x, 'leveling_tier')
+            if classwinner == 'ranger':
+                XPearnedwinner = xp_winner_ranger
+            else:
+                XPearnedwinner = xp_winner
+            if winnertier < currenttierstart:
+                XPearnedwinner = XPearnedwinner * tierscaling
+            adjust_database_value(bot, x, 'record_xp', XPearnedwinner)
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
             if roulettepayoutx > biggestpayout:
                 biggestpayoutwinner = x
@@ -1321,7 +1341,25 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     dispmsgarray.append("The Winner is: " + winner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
     diedinbattle = []
     canduelarray.remove(winner)
+    winnerclass = get_database_value(bot, winner, 'class_setting')
+    winnertier = get_database_value(bot, winner, 'leveling_tier')
+    if classwinner == 'ranger':
+        XPearnedwinner = xp_winner_ranger
+    else:
+        XPearnedwinner = xp_winner
+    if winnertier < currenttierstart:
+        XPearnedwinner = XPearnedwinner * tierscaling
+    adjust_database_value(bot, winner, 'record_xp', XPearnedwinner)
     for x in canduelarray:
+        loserclass = get_database_value(bot, x, 'class_setting')
+        losertier = get_database_value(bot, x, 'leveling_tier')
+        if classloser == 'ranger':
+            XPearnedloser = xp_loser_ranger
+        else:
+            XPearnedloser = xp_loser
+        if losertier < currenttierstart:
+            XPearnedloser = XPearnedloser * tierscaling
+        adjust_database_value(bot, x, 'record_xp', XPearnedloser)
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
         currentbodypartsarray = bodypartarray(bot, x)
