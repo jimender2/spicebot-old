@@ -1369,7 +1369,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
     for user in canduelarray:
         assaultstatsarray = []
-        assaultstatsarray.append(user + "'s Full Channel Assault results:")
+        assaultstatsarray.append(user + "'s Full Channel Mayhem results:")
         for astat in assault_results:
             astateval = get_database_value(bot, user, "assault_" + astat) or 0
             if astateval:
