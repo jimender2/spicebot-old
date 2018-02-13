@@ -1349,16 +1349,16 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     dispmsgarray = []
     bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
     if totaltributes == 2:
-        random.shuffle(randomtargetarray)
-        bot.say("The victor is " + str(randomtargetarray[0]))
+        random.shuffle(canduelarray)
+        bot.say("The victor is " + str(canduelarray[0]))
         return
     if totaltributes == 3:
-        random.shuffle(randomtargetarray)
-        bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
+        random.shuffle(canduelarray)
+        bot.say("The first to die was " + str(canduelarray[1]) + " The victor is " + str(canduelarray[0]))
         return
     tributes = []
     weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
-    for tribute in randomtargetarray:
+    for tribute in canduelarray:
         random.shuffle(weapons)
         tributerow = [tribute, 100, weapons[0]]
         tributes.append(tributerow)
