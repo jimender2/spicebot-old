@@ -29,7 +29,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 ## Command Structure
 commandarray_all_valid = ['devmode','game','mayhem','hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
-commandarray_admin = ['admin','devmode'] ## Admin Functions
+commandarray_admin = ['admin','devmode','game'] ## Admin Functions
 commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames','devmode'] ## Must Be inchannel
 ### Alternative Commands
 commandarray_alt_on = ['enable','activate']
