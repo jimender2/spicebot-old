@@ -1356,7 +1356,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         winnerorder.append(winner)
         canduelarray.remove(winner)
     bot.say("original " + str(winnerorder))
-    reversedorder = get_trigger_argb(bot, winnerorder, 'reverse')
+    reversedorder = get_trigger_arg(winnerorder, 'reverse')
     bot.say("reverse " + str(reversedorder))
     bot.say("original " + str(winnerorder))
     #if totaltributes == 2:
@@ -3698,108 +3698,6 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ##########
 
 def get_trigger_arg(triggerargsarray, number):
-    ## Create
-    if number == 'create':
-        triggerargsarraynew = []
-        if triggerargsarray:
-            for word in triggerargsarray.split():
-                triggerargsarraynew.append(word)
-        return triggerargsarraynew
-    totalarray = len(triggerargsarray)
-    ## Reversed
-    if number == 'reverse':
-        if totalarray == 1:
-            return triggerargsarray
-        temparray = []
-        for d in triggerargsarray:
-            temparray.append(d)
-            bot.say(str(d))
-        reversedorder = temparray.reverse()
-        return reversedorder
-    totalarray = len(triggerargsarray)
-    totalarray = totalarray + 1
-    triggerarg = ''
-    ## Comma Seperated List
-    if number == 'list':
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg  = str(triggerarg  + ", " + x)
-            else:
-                triggerarg  = str(x)
-        return triggerarg
-    ## Random Entry from array
-    if number == 'random':
-        if triggerargsarray == []:
-            return triggerarg
-        temparray = []
-        for d in triggerargsarray:
-            temparray.append(d)
-        shuffledarray = random.shuffle(temparray)
-        randomselected = random.randint(0,len(temparray) - 1)
-        triggerarg = str(temparray [randomselected])
-        return triggerarg
-    ## Last
-    if number == 'last':
-        if totalarray > 1:
-            totalarray = totalarray -2
-            triggerarg = str(triggerargsarray[totalarray])
-        return triggerarg
-    ## Complete
-    if number == 0:
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg = str(triggerarg + " " + str(x))
-            else:
-                triggerarg = str(x)
-        return triggerarg
-    ## Other
-    if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
-        if str(number).endswith("+"):
-            rangea = re.sub(r"\+", '', str(number))
-            rangea = int(rangea)
-            rangeb = totalarray
-        elif str(number).endswith("-"):
-            rangea = 1
-            rangeb = re.sub(r"-", '', str(number))
-            rangeb = int(rangeb) + 1
-        elif str(number).endswith(">"):
-            rangea = re.sub(r">", '', str(number))
-            rangea = int(rangea) + 1
-            rangeb = totalarray
-        elif str(number).endswith("<"):
-            rangea = 1
-            rangeb = re.sub(r"<", '', str(number))
-            rangeb = int(rangeb)
-        elif "^" in str(number):
-            rangea = number.split("^", 1)[0]
-            rangeb = number.split("^", 1)[1]
-            rangea = int(rangea)
-            rangeb = int(rangeb) + 1
-        if rangea <= totalarray:
-            for i in range(rangea,rangeb):
-                arg = get_trigger_arg(triggerargsarray, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
-                else:
-                    triggerarg = str(arg)
-    elif str(number).endswith("!"):
-        number = re.sub(r"!", '', str(number))
-        for i in range(1,totalarray):
-            if int(i) != int(number):
-                arg = get_trigger_arg(triggerargsarray, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
-                else:
-                    triggerarg = str(arg)
-    else:
-        number = int(number) - 1
-        try:
-            triggerarg = triggerargsarray[number]
-        except IndexError:
-            triggerarg = ''
-    return triggerarg
-
-def get_trigger_argb(bot, triggerargsarray, number):
     ## Create
     if number == 'create':
         triggerargsarraynew = []
