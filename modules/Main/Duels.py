@@ -505,14 +505,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     tierunlockweaponslocker = tier_command(bot, 'weaponslocker_complete')
     tierscaling = tierratio_level(bot)
 
-    ## Assault Stats
-    for astat in assault_results:
-        reset_database_value(bot, duelrecorduser, "assault_" + astat)
-
     ## Targetarray Start
     targetarraytotal = len(targetarray)
     for target in targetarray:
-        targetarraytotal = targetarraytotal - 1
 
         ## target actual
         target = actualname(bot,target)
@@ -864,16 +859,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'record_lastfought', targetlastfoughtstart)
-            if targetarraytotal == 0:
-                assaultstatsarray = []
-                assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
-                for astat in assault_results:
-                    astateval = get_database_value(bot, duelrecorduser, "assault_" + astat) or 0
-                    if astateval:
-                        astatstr = str(str(astat) + " = " + str(astateval))
-                        assaultstatsarray.append(astatstr)
-                        reset_database_value(bot, duelrecorduser, "assault_" + astat)
-                onscreentext(bot, [inchannel], assaultstatsarray)
+
 
 #################
 ## Subcommands ##
@@ -1346,6 +1332,9 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         return
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    for user in canduelarray:
+        for astat in assault_results:
+            reset_database_value(bot, instigator, "assault_" + astat)
     for maindueler in canduelarray:
         targetarray = []
         for player in canduelarray:
@@ -1520,7 +1509,28 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'record_lastfought')
+    ## Assault Stats
+    for astat in assault_results:
+        reset_database_value(bot, instigator, "assault_" + astat)
+    for player in canduelarray:
+        for astat in assault_results:
+            reset_database_value(bot, player, "assault_" + astat)
     duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    maindueler = instigator
+    bot.notice(maindueler + ", It looks like the Full Channel Assault has completed.", maindueler)
+    assaultstatsarray = []
+    assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
+    for astat in assault_results:
+        astateval = get_database_value(bot, instigator, "assault_" + astat) or 0
+        if astateval:
+            astatstr = str(str(astat) + " = " + str(astateval))
+            assaultstatsarray.append(astatstr)
+            reset_database_value(bot, instigator, "assault_" + astat)
+    for player in canduelarray:
+        for astat in assault_results:
+            reset_database_value(bot, player, "assault_" + astat)
+    onscreentext(bot, [inchannel], assaultstatsarray)
+    
     set_database_value(bot, instigator, 'record_lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
