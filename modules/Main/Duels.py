@@ -1658,7 +1658,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 statleadernumber = format(statleadernumber, '.3f')
             if statleadername != '':
                 leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
-                if x != 'health' and leaderclass == 'vampire':
+                if x == 'health' and leaderclass == 'vampire':
                     statleadernumber = int(statleadernumber)
                     statleadernumber = -abs(statleadernumber)
                 msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
