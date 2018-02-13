@@ -919,6 +919,9 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 ## Off Subcommand
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
 
+    ## array of insulting departures
+    cowardarray = ['A man that flies from his fear may find that he has only taken a short cut to meet it. ― J.R.R. Tolkien','He was just a coward and that was the worst luck any many could have. - Ernest Hemingway','The coward fears the prick of Fate, not he who dares all, becoming himself the dreaded one. - Elise Pumpelly Cabot']
+    
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
@@ -938,7 +941,8 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     ## Anounce to channels
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     dispmsgarray = []
-    dispmsgarray.append(instigator + " has left the arena! What a coward!")
+    cowardterm = get_trigger_arg(cowardarray, 'random')
+    dispmsgarray.append(instigator + " has left the arena! " + cowardterm)
     onscreentext(bot, gameenabledchannels, dispmsgarray)
 
 ## Health Subcommand
@@ -2481,7 +2485,8 @@ def halfhourtimer(bot):
             ## Log out users that aren't playing
             lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
             lastping = get_timesince_duels(bot, u, 'lastping') or 0
-            if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
+            if bot.nick.lower() == 'spicebotdev':
+            #if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
                 logoutarray.append(u)
                 reset_database_value(bot, u, 'lastping')
             else:
@@ -2489,7 +2494,6 @@ def halfhourtimer(bot):
 
                 uclass = get_database_value(bot, u, 'class_setting') or 'notclassy'
                 mana = get_database_value(bot, u, 'magic_mana') or 0
-                #health = get_database_value(bot, u, 'health_b4se') or 0
 
                 ## Random user gets a mysterypotion
                 lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
@@ -2499,12 +2503,23 @@ def halfhourtimer(bot):
                 ## award coin to all
                 adjust_database_value(bot, u, 'loot_coin', halfhour_coin)
 
-                ## health regenerates for all ## TODO: distribute health
-                #if int(health) < healthregencurrent:
-                    #adjust_database_value(bot, u, 'health_b4se', halfhour_regen_health)
-                    #health = get_database_value(bot, u, 'health_b4se')
-                    #if int(health) > healthregencurrent:
-                        #set_database_value(bot, u, 'health_b4se', healthregencurrent)
+                ## health regenerates for all
+                for part in stats_healthbodyparts:
+                    currenthealthtier = tierratio_level(bot)
+                    maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
+                    maxhealthpart = int(maxhealthpart)
+                    currenthealthtier = currenthealthtier * int(maxhealthpart)
+                    currenthealthtier = int(currenthealthtier)
+                    currenthealthsplit = maxhealthpart / 2
+                    healthsplit = halfhour_regen_health / 6
+                    gethowmany = get_database_value(bot, u, part) or 0
+                    if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
+                        set_database_value(bot, u, part, currenthealthtier)
+                    elif gethowmany < currenthealthsplit:
+                        adjust_database_value(bot, u, part, healthsplit)
+                        gethowmany = get_database_value(bot, u, part) or 0
+                        if gethowmany > currenthealthsplit:
+                            set_database_value(bot, u, part, currenthealthsplit)
 
                 ## mages regen mana
                 if uclass == 'mage':
