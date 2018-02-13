@@ -452,6 +452,15 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+    ## reset the game ## TODO
+    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
+    if currenttier >= 15:
+        dispmsgarray = []
+        dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
+        gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+        onscreentext(bot, gameenabledchannels, dispmsgarray)
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+
 #######################
 ## Subcommands Usage ##
 #######################
@@ -483,6 +492,15 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels)')
     eval(subcommand_run)
+
+    ## reset the game ## TODO
+    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
+    if currenttier >= 15:
+        dispmsgarray = []
+        dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
+        gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+        onscreentext(bot, gameenabledchannels, dispmsgarray)
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
 #####################
 ## Main Duel Usage ##
@@ -960,12 +978,15 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
         totalhealth = 0
+        targetclass = get_database_value(bot, healthcommand, 'class_setting') or 'notclassy'
         for x in stats_healthbodyparts:
             gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
                 xname = x.split("_", 1)[1]
                 xname = xname.replace("_", " ")
                 xname = xname.title()
+                if targetclass == 'vampire':
+                    gethowmany = -abs(gethowmany)
                 dispmsgarray.append(str(xname) + "=" + str(gethowmany))
                 totalhealth = totalhealth + gethowmany
         dispmsgarrayb = []
@@ -1560,9 +1581,12 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         bot.notice(validtargetmsg, instigator)
         return
     target = actualname(bot, target)
+    targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
     dispmsgarray = []
     totalhealth = get_health(bot,target)
     if totalhealth:
+        if targetclass == 'vampire':
+            totalhealth = -abs(totalhealth)
         dispmsgarray.append("Health="+str(totalhealth))
     for x in stats_view:
         if x in stats_view_functions:
@@ -1629,6 +1653,9 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             if x == 'winlossratio':
                 statleadernumber = format(statleadernumber, '.3f')
             if statleadername != '':
+                leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
+                if x != 'health' and leaderclass == 'vampire':
+                    statleadernumber = -abs(statleadernumber)
                 msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
                 leaderscript.append(msgtoadd)
         if leaderscript == []:
@@ -1690,6 +1717,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 xname = x.split("_", 1)[1]
                 xname = xname.replace("_", " ")
                 xname = xname.title()
+                if gethowmany > armor_durability:
+                    xname = str("Enhanced " + xname)
                 dispmsgarray.append(str(xname) + "=" + str(gethowmany))
         dispmsgarrayb = []
         if dispmsgarray != []:
@@ -2148,7 +2177,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 tradingratio = loot_trade
             if quantity == 'all':
                 quantity = gethowmanylootitem / tradingratio
-            if quantity < 0:
+            if quantity <= 0:
                 bot.notice(instigator + ", You do not have enough "+lootitem+" for this action.", instigator)
                 return
             quantitymath = tradingratio * int(quantity)
@@ -2485,8 +2514,7 @@ def halfhourtimer(bot):
             ## Log out users that aren't playing
             lastcommandusedtime = get_timesince_duels(bot, u, 'lastcommand') or 0
             lastping = get_timesince_duels(bot, u, 'lastping') or 0
-            if bot.nick.lower() == 'spicebotdev':
-            #if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
+            if timeout_auto_opt_out < lastcommandusedtime and lastping < timeout_auto_opt_out:
                 logoutarray.append(u)
                 reset_database_value(bot, u, 'lastping')
             else:
