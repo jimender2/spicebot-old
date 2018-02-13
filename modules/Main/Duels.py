@@ -1345,6 +1345,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
+    displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     for maindueler in canduelarray:
         targetarray = []
