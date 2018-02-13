@@ -27,7 +27,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 ###################
 
 ## Command Structure
-commandarray_all_valid = ['hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
+commandarray_all_valid = ['mayhem','hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 commandarray_instigator_bypass = ['on','admin'] ## bypass for Opt status
 commandarray_channel_activate = ['gameon','gameoff']
 commandarray_channel_dev = ['devmodeon','devmodeoff']
@@ -54,7 +54,7 @@ commandarray_tier_unlocks_8 = ['roulette']
 commandarray_tier_unlocks_9 = ['random']
 commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
-commandarray_tier_unlocks_12 = []
+commandarray_tier_unlocks_12 = ['mayhem']
 commandarray_tier_unlocks_13 = ['hungergames']
 commandarray_tier_unlocks_14 = []
 commandarray_tier_unlocks_15 = []
@@ -1331,6 +1331,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
 
+## Hunger Games
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
@@ -1369,6 +1370,24 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
             weapon = weaponformatter(bot, weapon)
             minidispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
             whokilledwhom(bot, player, lastkilled)
+            classplayer = get_database_value(bot, player, 'class_setting')
+            playertier = get_database_value(bot, player, 'leveling_tier')
+            if classplayer == 'ranger':
+                XPearnedplayer = xp_winner_ranger
+            else:
+                XPearnedplayer = xp_winner
+            if playertier < currenttierstart:
+                XPearnedplayer = XPearnedplayer * tierscaling
+            adjust_database_value(bot, player, 'record_xp', XPearnedplayer)
+            classlastkilled = get_database_value(bot, x, 'class_setting')
+            lastkilledtier = get_database_value(bot, x, 'leveling_tier')
+            if classlastkilled == 'ranger':
+                XPearnedlastkilled = xp_loser_ranger
+            else:
+                XPearnedlastkilled = xp_loser
+            if lastkilledtier < currenttierstart:
+                XPearnedlastkilled = XPearnedlastkilled * tierscaling
+            adjust_database_value(bot, x, 'record_xp', XPearnedlastkilled)
             onscreentext(bot, [player,lastkilled], minidispmsgarray)
         else:
             dispmsgarray.append(player + " was the first to die.")
@@ -1377,7 +1396,6 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     reverseddisplay = get_trigger_arg(dispmsgarray, 'reverse')
     onscreentext(bot, ['say'], reverseddisplay)
     
-
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     if bot.nick in canduelarray:
