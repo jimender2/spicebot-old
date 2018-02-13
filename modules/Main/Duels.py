@@ -1770,6 +1770,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             else:
                 durabilityremaining = getarmor / armor_durability
                 sellingamount = durabilityremaining * armor_cost
+                sellingamount = int(sellingamount)
                 if sellingamount <= 0:
                     bot.say("Your armor is too damaged to sell.")
                 else:
@@ -1802,6 +1803,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
                     costinvolved  = durabilitytorepair / durabilitycompare
                     costinvolved = costinvolved * armor_cost
+                    costinvolved = int(costinvolved)
                     if instigatorcoin < costinvolved:
                         bot.say("Insufficient Funds.")
                     else:
