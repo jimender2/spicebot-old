@@ -27,7 +27,7 @@ from SpicebotShared import * ## not needed if using without spicebot
 ###################
 
 ## Command Structure
-commandarray_all_valid = ['health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
+commandarray_all_valid = ['hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
 commandarray_instigator_bypass = ['on','admin'] ## bypass for Opt status
 commandarray_channel_activate = ['gameon','gameoff']
 commandarray_channel_dev = ['devmodeon','devmodeoff']
@@ -54,7 +54,7 @@ commandarray_tier_unlocks_8 = ['roulette']
 commandarray_tier_unlocks_9 = ['random']
 commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
-commandarray_tier_unlocks_12 = []
+commandarray_tier_unlocks_12 = ['hungergames']
 commandarray_tier_unlocks_13 = []
 commandarray_tier_unlocks_14 = []
 commandarray_tier_unlocks_15 = []
@@ -345,8 +345,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             executedueling, executeduelingmsg = duelcriteria(bot, instigator, player, currentduelplayersarray, inchannel)
             if executedueling == 1:
                 canduelarray.append(player)
-                statreset(bot, player) ## TODO
-                healthcheck(bot, player) ## TODO
+                statreset(bot, player)
+                healthcheck(bot, player)
 
     ## Time when Module use started
     now = time.time()
@@ -454,13 +454,15 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
-    ## reset the game ## TODO
+    ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
     if currenttier >= 15:
         dispmsgarray = []
         dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
         gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
         onscreentext(bot, gameenabledchannels, dispmsgarray)
+        chanstatreset(bot)
+        duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
 #######################
@@ -495,13 +497,15 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     subcommand_run = str('subcommand_' + commandortarget + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels)')
     eval(subcommand_run)
 
-    ## reset the game ## TODO
+    ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
     if currenttier >= 15:
         dispmsgarray = []
         dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
         gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
         onscreentext(bot, gameenabledchannels, dispmsgarray)
+        chanstatreset(bot)
+        duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
 #####################
@@ -551,7 +555,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Display Naming
         mainduelername = duel_names(bot, maindueler, inchannel)
-        mainduelerpepperstart = get_pepper(bot, maindueler) ## TODO
+        mainduelerpepperstart = get_pepper(bot, maindueler)
         if target == maindueler:
             targetname = "themself"
             targetpepperstart = mainduelerpepperstart
@@ -1318,11 +1322,14 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
-## Colosseum/hungergames
-def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
+def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
+    bot.say("WIP")
     ## TODO tie this in with duel_combat
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
+
+## Colosseum/hungergames
+def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
@@ -3348,7 +3355,7 @@ def weaponformatter(bot, weapon):
 ## Stat Reset ##
 ################
 
-def chanstatreset(bot, duelrecorduser): ## TODO
+def chanstatreset(bot):
     now = time.time()
     duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
@@ -3360,7 +3367,7 @@ def chanstatreset(bot, duelrecorduser): ## TODO
         reset_database_value(bot, duelrecorduser, x)
     set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
-def duelrecordwipe(bot, duelrecorduser): ## TODO
+def duelrecordwipe(bot):
     chanrecordsarray = ['gameenabled','devenabled','botvisibleusers','duelusers','duelslockout','leveling_tier','lastinstigator','timeout_timeout','specevent','roulettelastplayershot','roulettelastplayer','roulettecount','roulettechamber','roulettespinarray','roulettewinners','lasttimedlootwinner']
     eventsarray = ['roulette','colosseum','assault']
     for event in eventsarray:
