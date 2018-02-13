@@ -1327,11 +1327,29 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
 
+## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
-    bot.say("WIP")
-    ## TODO tie this in with duel_combat
-    ### go through the target array for instigator
-    ### change instigator throughout that function for lastfought purposes
+    if instigator not in canduelarray:
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+        bot.notice(validtargetmsg,instigator)
+        return
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
+    if not executedueling:
+        bot.notice(executeduelingmsg,instigator)
+        return
+    if canduelarray == []:
+        bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
+        return
+    for maindueler in canduelarray:
+        targetarray = []
+        for player in canduelarray:
+            if player != maindueler:
+                targetarray.append(player)
+        duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
 
 ## Hunger Games
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
