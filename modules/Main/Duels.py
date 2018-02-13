@@ -1356,8 +1356,8 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         winnerorder.append(winner)
         canduelarray.remove(winner)
     bot.say("original " + str(winnerorder))
-    reversedorder = winnerorder.reverse()
-    bot.say("reverse " + str(winnerorder))
+    reversedorder = get_trigger_arg(winnerorder, 'reverse')
+    bot.say("reverse " + str(reversedorder))
     bot.say("original " + str(winnerorder))
     #if totaltributes == 2:
     #    winner = selectwinner(bot, canduelarray)
@@ -3705,6 +3705,15 @@ def get_trigger_arg(triggerargsarray, number):
             for word in triggerargsarray.split():
                 triggerargsarraynew.append(word)
         return triggerargsarraynew
+    ## Reversed
+    if number == 'reverse':
+        if triggerargsarray == []:
+            return triggerarg
+        temparray = []
+        for d in triggerargsarray:
+            temparray.append(d)
+        reversedorder = winnerorder.reverse()
+        return reversedorder
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
