@@ -27,12 +27,10 @@ from SpicebotShared import * ## not needed if using without spicebot
 ###################
 
 ## Command Structure
-commandarray_all_valid = ['hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
-commandarray_instigator_bypass = ['on','admin'] ## bypass for Opt status
-commandarray_channel_activate = ['gameon','gameoff']
-commandarray_channel_dev = ['devmodeon','devmodeoff']
-commandarray_admin = ['admin'] ## Admin Functions
-commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames'] ## Must Be inchannel
+commandarray_all_valid = ['devmode','game','mayhem','hungergames','health','harakiri','tier','bounty','armor','title','docs','admin','author','on','off','usage','stats','loot','streaks','leaderboard','warroom','weaponslocker','class','magic','random','roulette','assault','colosseum']
+commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
+commandarray_admin = ['admin','devmode','game'] ## Admin Functions
+commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames','devmode'] ## Must Be inchannel
 ### Alternative Commands
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
@@ -42,7 +40,7 @@ commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['tier', 'docs', 'admin', 'author', 'on', 'off','health'] ## move health to self later
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','health','devmode'] ## move health to self later
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -54,7 +52,7 @@ commandarray_tier_unlocks_8 = ['roulette']
 commandarray_tier_unlocks_9 = ['random']
 commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
-commandarray_tier_unlocks_12 = []
+commandarray_tier_unlocks_12 = ['mayhem']
 commandarray_tier_unlocks_13 = ['hungergames']
 commandarray_tier_unlocks_14 = []
 commandarray_tier_unlocks_15 = []
@@ -63,7 +61,7 @@ commandarray_tier_unlocks_15 = []
 commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000] ## XP
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5] ## Tier Ratios
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
-commandarray_tier_display_exclude = ['admin'] ## Do NOT display
+commandarray_tier_display_exclude = ['admin','game','devmode'] ## Do NOT display
 
 ## more stuff
 bodyparts_required = ['torso','head']
@@ -274,40 +272,18 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Game Enabled in what channels
     inchannel = trigger.sender
-    if commandortarget.lower() in commandarray_channel_activate:
-        if not trigger.admin:
-            bot.notice(instigator + ", talk to a bot admin to enable duels in " + inchannel + ".", instigator)
-            return
-        if not inchannel.startswith("#"):
-            bot.notice(instigator + ", duels must be enabled in a channel.", instigator)
-            return
-        if commandortarget == 'gameon':
-            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
-            bot.notice(instigator + ", duels  is now on in " + inchannel + ".", instigator)
-        else:
-            adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
-            bot.notice(instigator + ", duels  is now off in " + inchannel + ".", instigator)
-        return
+    ## Game Enabled in what channels
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if gameenabledchannels == []:
-        bot.notice(instigator + ", duels has not been enabled in any channels. Talk to a bot admin.", instigator)
-        return
+        if not trigger.admin:
+            bot.notice(instigator + ", duels has not been enabled in any channels. Talk to a bot admin.", instigator)
+            return
     if inchannel not in gameenabledchannels and inchannel.startswith("#"):
-        bot.notice(instigator + ", duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
-        return
+        if not trigger.admin:
+            bot.notice(instigator + ", duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+            return
 
     ## dev bypass
-    if commandortarget.lower() in commandarray_channel_dev:
-        if not trigger.admin:
-            bot.notice(instigator + ", talk to a bot admin to enable devmode in " + inchannel + ".", instigator)
-            return
-        if commandortarget == 'devmodeon':
-            adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
-            bot.notice(instigator + ", devmode  is now on in " + inchannel + ".", instigator)
-        else:
-            adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
-            bot.notice(instigator + ", devmode  is now off in " + inchannel + ".", instigator)
-        return
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
 
     ## user lists
@@ -972,6 +948,32 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     dispmsgarray.append(instigator + " has left the arena! " + cowardterm)
     onscreentext(bot, gameenabledchannels, dispmsgarray)
 
+## Enable game
+def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
+    command = get_trigger_arg(triggerargsarray, 2)
+    if not command:
+        bot.notice("On/Off", instigator)
+        return
+    if command == 'on':
+        adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
+        bot.notice(instigator + ", duels  is now on in " + inchannel + ".", instigator)
+    else:
+        adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
+        bot.notice(instigator + ", duels  is now off in " + inchannel + ".", instigator)
+
+## dev bypass
+def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
+    command = get_trigger_arg(triggerargsarray, 2)
+    if not command:
+        bot.notice("On/Off", instigator)
+        return
+    if command == 'on':
+        adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
+        bot.notice(instigator + ", devmode  is now on in " + inchannel + ".", instigator)
+    else:
+        adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
+        bot.notice(instigator + ", devmode  is now off in " + inchannel + ".", instigator)
+
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     healthcommand = get_trigger_arg(triggerargsarray, 2) or instigator
@@ -1331,6 +1333,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     ### go through the target array for instigator
     ### change instigator throughout that function for lastfought purposes
 
+## Hunger Games
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
@@ -1350,6 +1353,8 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     if totaltributes == 1:
         bot.notice(instigator + ", there is only one tribute.  Try again later.", instigator)
         return
+    currenttierstart = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
+    tierscaling = tierratio_level(bot)
     dispmsgarray = []
     bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
     winnerorder = []
@@ -1360,25 +1365,43 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         canduelarray.remove(winner)
     reversedorder = get_trigger_arg(winnerorder, 'reverse')
     lastkilled = ''
-    firsttodie = ''
-    firstkill = 0
     for player in reversedorder:
         if lastkilled != '':
+            minidispmsgarray = []
             classplayer = get_database_value(bot, player, 'class_setting') or 'notclassy'
             classlastkilled = get_database_value(bot, lastkilled, 'class_setting') or 'notclassy'
             weapon = weaponofchoice(bot, player)
             weapon = weaponformatter(bot, weapon)
-            dispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
-            if not firstkill:
-                dispmsgarray.append(lastkilled + " was the first to die.")
-                firstkill = 1
+            minidispmsgarray.append(player + " hits " + lastkilled + " " + weapon + ', forcing a respawn.')
+            whokilledwhom(bot, player, lastkilled)
+            classplayer = get_database_value(bot, player, 'class_setting')
+            playertier = get_database_value(bot, player, 'leveling_tier')
+            if classplayer == 'ranger':
+                XPearnedplayer = xp_winner_ranger
+            else:
+                XPearnedplayer = xp_winner
+            if playertier < currenttierstart:
+                XPearnedplayer = XPearnedplayer * tierscaling
+            adjust_database_value(bot, player, 'record_xp', XPearnedplayer)
+            classlastkilled = get_database_value(bot, lastkilled, 'class_setting')
+            lastkilledtier = get_database_value(bot, lastkilled, 'leveling_tier')
+            if classlastkilled == 'ranger':
+                XPearnedlastkilled = xp_loser_ranger
+            else:
+                XPearnedlastkilled = xp_loser
+            if lastkilledtier < currenttierstart:
+                XPearnedlastkilled = XPearnedlastkilled * tierscaling
+            adjust_database_value(bot, lastkilled, 'record_xp', XPearnedlastkilled)
+            onscreentext(bot, [player,lastkilled], minidispmsgarray)
         else:
-            firsttodie = player
+            dispmsgarray.append(player + " was the first to die.")
         lastkilled = player
     dispmsgarray.append(player + " is the victor!")
-    onscreentext(bot, ['say'], dispmsgarray)
+    reverseddisplay = get_trigger_arg(dispmsgarray, 'reverse')
+    onscreentext(bot, ['say'], reverseddisplay)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     
-
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
     if bot.nick in canduelarray:
