@@ -118,6 +118,9 @@ timeout_colosseum = 1800 ## Time Between colosseum events
 ## hungergames
 timeout_hungergames = 1800
 
+## mayhem
+timeout_mayhem = 1800
+
 ## Random Target
 random_payout = 100
 
@@ -1342,6 +1345,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
         return
+    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     for maindueler in canduelarray:
         targetarray = []
         for player in canduelarray:
