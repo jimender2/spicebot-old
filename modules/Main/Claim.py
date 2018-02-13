@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if not admintarget:
             admintarget = instigator
         claimdate = bot.db.get_nick_value(admintarget, 'claimdate')
-        claimedby = bot.db.get_nick_value(target,'claimed')
+        claimedby = bot.db.get_nick_value(admintarget,'claimed')
         if not claimedby:
             if admintarget == instigator:
                 bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
