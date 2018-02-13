@@ -879,7 +879,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if typeofduel == 'assault':
             set_database_value(bot, target, 'record_lastfought', targetlastfoughtstart)
 
-
 #################
 ## Subcommands ##
 #################
@@ -1370,6 +1369,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
                 assaultstatsarray.append(astatstr)
                 reset_database_value(bot, user, "assault_" + astat)
         onscreentext(bot, [inchannel], assaultstatsarray)
+        time.sleep(1)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
 
@@ -1396,7 +1396,9 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     currenttierstart = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
     tierscaling = tierratio_level(bot)
     dispmsgarray = []
-    bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
+    displaymessage = get_trigger_arg(canduelarray, "list")
+    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    #bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
     winnerorder = []
     while totaltributes > 0:
         totaltributes = totaltributes - 1
