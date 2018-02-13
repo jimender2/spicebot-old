@@ -1356,7 +1356,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         winnerorder.append(winner)
         canduelarray.remove(winner)
     bot.say("original " + str(winnerorder))
-    reversedorder = get_trigger_argb(winnerorder, 'reverse')
+    reversedorder = get_trigger_argb(bot, winnerorder, 'reverse')
     bot.say("reverse " + str(reversedorder))
     bot.say("original " + str(winnerorder))
     #if totaltributes == 2:
