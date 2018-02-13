@@ -865,7 +865,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if typeofduel == 'assault':
             set_database_value(bot, target, 'record_lastfought', targetlastfoughtstart)
             if targetarraytotal == 0:
-                bot.notice(maindueler + ", It looks like the Full Channel Assault has completed.", maindueler)
                 assaultstatsarray = []
                 assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
                 for astat in assault_results:
