@@ -1597,9 +1597,13 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
         if gethowmany:
             if x == 'winlossratio':
                 gethowmany = format(gethowmany, '.3f')
-            statname = x.title()
+            statname = x
+            if statname == 'class_setting':
+                statname = 'class'
+            if "record_" in statname or "magic_" in statname:
+                statname = statname.split("_", 1)[1]
+            statname = statname.title()
             dispmsgarray.append(statname + "=" + str(gethowmany))
-
     dispmsgarrayb = []
     if dispmsgarray != []:
         pepper = get_pepper(bot, target)
@@ -1655,6 +1659,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             if statleadername != '':
                 leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
                 if x != 'health' and leaderclass == 'vampire':
+                    statleadernumber = int(statleadernumber)
                     statleadernumber = -abs(statleadernumber)
                 msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
                 leaderscript.append(msgtoadd)
