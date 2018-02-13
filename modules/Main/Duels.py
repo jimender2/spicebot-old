@@ -573,8 +573,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 losername = mainduelername
         if winner == maindueler:
             adjust_database_value(bot, maindueler, 'assault_wins', 1)
+            adjust_database_value(bot, target, 'assault_losses', 1)
         else:
             adjust_database_value(bot, maindueler, 'assault_losses', 1)
+            adjust_database_value(bot, target, 'assault_wins', 1)
 
         ## Classes
         classwinner = get_database_value(bot, winner, 'class_setting') or 'notclassy'
@@ -663,9 +665,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     combattextarraycomplete.append(x)
                 if damage > 0:
                     if winner == maindueler:
-                        adjust_database_value(bot, maindueler, 'assault_damagetaken', damage)
+                        adjust_database_value(bot, target, 'assault_damagetaken', damage)
+                        adjust_database_value(bot, target, 'assault_damagedealt', damage)
                     else:
                         adjust_database_value(bot, maindueler, 'assault_damagedealt', damage)
+                        adjust_database_value(bot, target, 'assault_damagetaken', damage)
                     adjust_database_value(bot, loser, bodypart, -abs(damage))
                     ## Update Health Of winner, respawn, allow loser to loot
                     winnerheadhealth = get_database_value(bot, winner, 'health_head')
@@ -673,8 +677,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, maindueler, 'assault_deaths', 1)
+                            adjust_database_value(bot, target, 'assault_kills', 1)
                         else:
                             adjust_database_value(bot, maindueler, 'assault_kills', 1)
+                            adjust_database_value(bot, target, 'assault_deaths', 1)
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                         for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
@@ -692,8 +698,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             if damage > 0:
                 if winner == maindueler:
                     adjust_database_value(bot, maindueler, 'assault_damagedealt', damage)
+                    adjust_database_value(bot, target, 'assault_damagetaken', damage)
                 else:
                     adjust_database_value(bot, maindueler, 'assault_damagetaken', damage)
+                    adjust_database_value(bot, target, 'assault_damagedealt', damage)
                 adjust_database_value(bot, loser, bodypart, -abs(damage))
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'health_head')
@@ -701,8 +709,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
+                        adjust_database_value(bot, target, 'assault_deaths', 1)
                     else:
                         adjust_database_value(bot, maindueler, 'assault_deaths', 1)
+                        adjust_database_value(bot, target, 'assault_kills', 1)
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
                     for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
@@ -738,8 +748,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     if damage > 0:
                         if winner == maindueler:
                             adjust_database_value(bot, maindueler, 'assault_damagetaken', damage)
+                            adjust_database_value(bot, target, 'assault_damagedealt', damage)
                         else:
                             adjust_database_value(bot, maindueler, 'assault_damagedealt', damage)
+                            adjust_database_value(bot, target, 'assault_damagetaken', damage)
                         adjust_database_value(bot, winner, bodypartb, -abs(damage))
                         ## Update Health Of winner, respawn, allow loser to loot
                         winnerheadhealth = get_database_value(bot, winner, 'health_head')
@@ -747,8 +759,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                             if winner == maindueler:
                                 adjust_database_value(bot, maindueler, 'assault_deaths', 1)
+                                adjust_database_value(bot, target, 'assault_kills', 1)
                             else:
                                 adjust_database_value(bot, maindueler, 'assault_kills', 1)
+                                adjust_database_value(bot, target, 'assault_deaths', 1)
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                             for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
@@ -774,8 +788,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 adjust_database_value(bot, lootwinner, "loot_"+loot, 1)
                 if lootwinner == maindueler:
                     adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
+                    adjust_database_value(bot, target, 'assault_potionslost', 1)
                 else:
                     adjust_database_value(bot, maindueler, 'assault_potionslost', 1)
+                    adjust_database_value(bot, target, 'assault_potionswon', 1)
 
         ## Update XP points
         if classwinner == 'ranger':
@@ -797,8 +813,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, loser, 'record_xp', XPearnedloser)
             if winner == maindueler:
                 adjust_database_value(bot, maindueler, 'assault_xp', XPearnedwinner)
+                adjust_database_value(bot, target, 'assault_xp', XPearnedloser)
             else:
                 adjust_database_value(bot, maindueler, 'assault_xp', XPearnedloser)
+                adjust_database_value(bot, target, 'assault_xp', XPearnedwinner)
 
         ## Streaks Text
         if maindueler != target:
@@ -813,6 +831,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, maindueler, 'assault_levelups', 1)
         targetpeppernow = get_pepper(bot, target)
         if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
+            adjust_database_value(bot, target, 'assault_levelups', 1)
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
 
         ## Tier update
@@ -1341,6 +1360,16 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
             if player != maindueler:
                 targetarray.append(player)
         duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    for user in canduelarray:
+        assaultstatsarray = []
+        assaultstatsarray.append(user + "'s Full Channel Assault results:")
+        for astat in assault_results:
+            astateval = get_database_value(bot, user, "assault_" + astat) or 0
+            if astateval:
+                astatstr = str(str(astat) + " = " + str(astateval))
+                assaultstatsarray.append(astatstr)
+                reset_database_value(bot, user, "assault_" + astat)
+        onscreentext(bot, [inchannel], assaultstatsarray)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
 
@@ -1509,7 +1538,6 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'record_lastfought')
-    ## Assault Stats
     for astat in assault_results:
         reset_database_value(bot, instigator, "assault_" + astat)
     for player in canduelarray:
@@ -1526,10 +1554,10 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
             astatstr = str(str(astat) + " = " + str(astateval))
             assaultstatsarray.append(astatstr)
             reset_database_value(bot, instigator, "assault_" + astat)
+    onscreentext(bot, [inchannel], assaultstatsarray)
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    onscreentext(bot, [inchannel], assaultstatsarray)
     
     set_database_value(bot, instigator, 'record_lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
