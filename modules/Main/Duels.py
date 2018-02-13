@@ -3707,8 +3707,6 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerargsarraynew
     ## Reversed
     if number == 'reverse':
-        if triggerargsarray == []:
-            return triggerarg
         temparray = []
         for d in triggerargsarray:
             temparray.append(d)
