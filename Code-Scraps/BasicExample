@@ -132,7 +132,9 @@ def adjust_database_value(bot, nick, databasekey, value):
 # weaponslist.append(weaponchange)
 # weaponslist.remove(weaponchange)
 
-## Compare two dates, count days between (arrow needs importing)
+## Compare two dates
+## within own module:
+# count days between (arrow needs importing)
 # import arrow
 # date1 = '2018-01-28' (datetime.date.today() returns this format, but still needs casting to str()
 # date2 = '2017-12-19' (any date in this format can be used)
@@ -143,3 +145,9 @@ def adjust_database_value(bot, nick, databasekey, value):
 # in this case, dayspassed would return an int of 40.
 # if dayspassed > 30: (would be true)
 # if dayspassed < 30: (would be false)
+
+## Compare two dates (spicebotshared)
+# Can be called like a boolean function
+# longenough = enoughdaysbetween(2012-12-13, 2012-12-18, 8)
+# if longenough: (etc)
+# The above would return false - that's only 5 days.
