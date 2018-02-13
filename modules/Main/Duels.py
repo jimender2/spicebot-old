@@ -3815,9 +3815,8 @@ def get_trigger_argb(bot, triggerargsarray, number):
         temparray = []
         for d in triggerargsarray:
             temparray.append(d)
-            bot.say(str(d))
-        reversedorder = temparray.reverse()
-        return reversedorder
+        temparray.reverse()
+        return temparray
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
