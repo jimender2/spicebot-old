@@ -3712,7 +3712,7 @@ def get_trigger_arg(triggerargsarray, number):
         temparray = []
         for d in triggerargsarray:
             temparray.append(d)
-        reversedorder = winnerorder.reverse()
+        reversedorder = temparray.reverse()
         return reversedorder
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
