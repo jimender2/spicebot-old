@@ -1228,6 +1228,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ### instigator shoots themself in the head
     else:
+        tierscaling = tierratio_level(bot)
         currenttierstart = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
         dispmsgarray = []
         if roulettecount == 1:
@@ -1331,6 +1332,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     currenttierstart = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
+    tierscaling = tierratio_level(bot)
     dispmsgarray = []
     displaymessage = get_trigger_arg(canduelarray, "list")
     bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
