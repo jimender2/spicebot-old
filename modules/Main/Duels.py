@@ -117,6 +117,9 @@ assault_results = ['wins','losses','potionswon','potionslost','kills','deaths','
 ## Colosseum
 timeout_colosseum = 1800 ## Time Between colosseum events
 
+## hungergames
+timeout_hungergames = 1800
+
 ## Random Target
 random_payout = 100
 
