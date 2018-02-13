@@ -3705,11 +3705,15 @@ def get_trigger_arg(triggerargsarray, number):
             for word in triggerargsarray.split():
                 triggerargsarraynew.append(word)
         return triggerargsarraynew
+    totalarray = len(triggerargsarray)
     ## Reversed
     if number == 'reverse':
+        if totalarray == 1:
+            return triggerargsarray
         temparray = []
         for d in triggerargsarray:
             temparray.append(d)
+            bot.say(str(d))
         reversedorder = temparray.reverse()
         return reversedorder
     totalarray = len(triggerargsarray)
