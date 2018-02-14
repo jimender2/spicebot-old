@@ -1235,12 +1235,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
-        bot.say("count "+str(roulettecount))
         roulettepayout = roulette_payout_default * roulettecount
-        bot.say("payout "+str(roulettepayout))
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
-        bot.say("current "+str(currentpayout))
-        adjust_database_value(bot, instigator, 'roulettepayout', int(roulettepayout))
+        adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
@@ -3741,6 +3738,7 @@ def reset_database_value(bot, nick, databasekey):
     bot.db.set_nick_value(nick, databasecolumn, None)
 
 def adjust_database_value(bot, nick, databasekey, value):
+    bot.say(str(value))
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
