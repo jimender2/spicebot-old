@@ -3795,8 +3795,8 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ####################################
 
 def testarraystuff(bot):
-    inputarray = ['this','is','a','test','array']
-    inputstring = "this is a test string"
+    inputarray = ['this','is','a','test','array','with','tons','of','extra','added','words','for','the','purpose','of','being','a','test']
+    inputstring = "this is a test string with tons of extra added words for the purpose of being a test"
 
     #createtest = get_trigger_arg(bot, inputarray, 'create')
     #bot.say("create from array     " + str(createtest))
