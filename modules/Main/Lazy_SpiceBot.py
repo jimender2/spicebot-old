@@ -15,4 +15,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
+    target = get_trigger_arg(triggerargsarray,1)
+    if not target:
+        bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
+   else:
+        if get.lower() not in bot.privileges[channel.lower()]:
+            bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
+        else:
+            bot.say('I do not tell you how to do your job, ' + target + '!!')
