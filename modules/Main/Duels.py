@@ -1239,6 +1239,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettepayout = roulette_payout_default * roulettecount
         bot.say("payout "+str(roulettepayout))
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
+        bot.say("current "+str(currentpayout))
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
@@ -1306,7 +1307,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
             ## coin
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-            bot.say(str(roulettepayoutx))
             if roulettepayoutx > biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = x
                 biggestpayout = roulettepayoutx
