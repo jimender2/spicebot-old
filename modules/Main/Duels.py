@@ -3942,7 +3942,7 @@ def range_array(bot, inputs, rangea, rangeb):
     string = ''
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
-    for i in range(rangea,rangeb + 1):
+    for i in range(int(rangea),int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
