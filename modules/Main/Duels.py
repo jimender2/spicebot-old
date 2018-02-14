@@ -3833,11 +3833,6 @@ def testarraystuff(bot):
     numtest = get_trigger_arg(bot, inputstring, 4)
     bot.say("4 from string     " + str(numtest))
 
-    rangetest = get_trigger_arg(bot, inputarray, 1, 4)
-    bot.say("range 1-4 from string    " + str(rangetest))
-    rangetest = get_trigger_arg(bot, inputstring, 1, 4)
-    bot.say("range 1-4 from array     " + str(rangetest))
-
     excludetest = get_trigger_arg(bot, inputarray, '3!')
     bot.say("exclude 3 from string    " + str(excludetest))
     excludetest = get_trigger_arg(bot, inputstring, '3!')
