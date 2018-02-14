@@ -3818,16 +3818,16 @@ def testarraystuff(bot):
     lasttest = get_trigger_arg(bot, inputstring, 'last')
     bot.say("last from string     " + str(lasttest))
 
+    randomtest = get_trigger_arg(bot, inputarray, 'random')
+    bot.say("random from array     " + str(randomtest))
+    randomtest = get_trigger_arg(bot, inputstring, 'random')
+    bot.say("random from string     " + str(randomtest))
 
-    
-    
+    listtest = get_trigger_arg(bot, inputarray, 'list')
+    bot.say("list from array     " + str(listtest))
+    listtest = get_trigger_arg(bot, inputstring, 'list')
+    bot.say("list from string     " + str(listtest))
 
-    #lasttest = get_trigger_arg(bot, createtest, 'last')
-    #bot.say('last '+ lasttest)
-    #randomtest = get_trigger_arg(bot, createtest, 'random')
-    #bot.say('random '+ randomtest)
-    #listtest = get_trigger_arg(bot, createtest, 'list')
-    #bot.say('list '+ listtest)
     
 ## Convert String to array
 def create_array(bot, inputs):
