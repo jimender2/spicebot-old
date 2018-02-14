@@ -3817,15 +3817,6 @@ def reverse_array(bot, inputs):
         temparray.append(d)
     temparray.reverse()
     return temparray
-    
-
-
-        
-        tempvar = targetarray
-        targetarray = []
-        targetarray.append(tempvar)
-    
-    totalarray = len(triggerargsarray)
 
 def get_trigger_arg(triggerargsarray, outputtask):
     totalarray = len(triggerargsarray)
