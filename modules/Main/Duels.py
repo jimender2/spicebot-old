@@ -3813,11 +3813,15 @@ def testarraystuff(bot):
     zerotest = get_trigger_arg(bot, inputstring, 0)
     bot.say("zero from string     " + str(zerotest))
 
+    lasttest = get_trigger_arg(bot, inputarray, 'last')
+    bot.say("last from array     " + str(lasttest))
+    lasttest = get_trigger_arg(bot, inputstring, 'last')
+    bot.say("last from string     " + str(lasttest))
+
 
     
     
-    #zerotest = get_trigger_arg(bot, createtest, 0)
-    #bot.say('0 '+ zerotest)
+
     #lasttest = get_trigger_arg(bot, createtest, 'last')
     #bot.say('last '+ lasttest)
     #randomtest = get_trigger_arg(bot, createtest, 'random')
