@@ -4010,7 +4010,7 @@ def get_trigger_arg(bot, inputs, outputtask):
     if str(outputtask).endswith("!"):
         return excludefrom_array(bot, inputs, outputtask)
     ## Inclusive range starting at
-    if str(outputtask).endswith("+"):
+    #if str(outputtask).endswith("+"):
 
     ## Inclusive range ending at
     #if str(outputtask).endswith("-"):
@@ -4023,7 +4023,7 @@ def get_trigger_arg(bot, inputs, outputtask):
 
     ## Range Between Numbers
     if "^" in str(outputtask):
-        rangebetween_array(bot, inputs, outputtask)
+        return rangebetween_array(bot, inputs, outputtask)
 
 
     string = ''
