@@ -3793,7 +3793,7 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 #############################
 
 ## Convert String to array
-def create_array(bot, input):
+def create_array(bot, inputs):
     output = []
     if inputs:
         for word in inputs.split():
@@ -3838,16 +3838,25 @@ def list_array(bot, inputs):
             string  = str(x)
     return string
 
-def get_trigger_arg(triggerargsarray, outputtask):
-    totalarray = len(triggerargsarray)
+def get_trigger_arg(inputs, outputtask):
+    ## Create
+    if outputtask == 'create':
+        return create_array(bot, inputs)
+    ## reverse
+    if outputtask == 'reverse':
+        return reverse_array(bot, inputs)
+    ## Comma Seperated List
+    if outputtask == 'list':
+        return list_array(bot, inputs)
+    totalarray = len(inputs)
     totalarray = totalarray + 1
     triggerarg = ''
     ## Random Entry from array
     if outputtask == 'random':
-        if triggerargsarray == []:
+        if inputs == []:
             return triggerarg
         temparray = []
-        for d in triggerargsarray:
+        for d in inputs:
             temparray.append(d)
         shuffledarray = random.shuffle(temparray)
         randomselected = random.randint(0,len(temparray) - 1)
@@ -3857,11 +3866,11 @@ def get_trigger_arg(triggerargsarray, outputtask):
     if outputtask == 'last':
         if totalarray > 1:
             totalarray = totalarray -2
-            triggerarg = str(triggerargsarray[totalarray])
+            triggerarg = str(inputs[totalarray])
         return triggerarg
     ## Complete
     if outputtask == 0:
-        for x in triggerargsarray:
+        for x in inputs:
             if triggerarg != '':
                 triggerarg = str(triggerarg + " " + str(x))
             else:
@@ -3892,7 +3901,7 @@ def get_trigger_arg(triggerargsarray, outputtask):
             rangeb = int(rangeb) + 1
         if rangea <= totalarray:
             for i in range(rangea,rangeb):
-                arg = get_trigger_arg(triggerargsarray, i)
+                arg = get_trigger_arg(inputs, i)
                 if triggerarg != '':
                     triggerarg = str(triggerarg + " " + arg)
                 else:
@@ -3901,7 +3910,7 @@ def get_trigger_arg(triggerargsarray, outputtask):
         outputtask = re.sub(r"!", '', str(outputtask))
         for i in range(1,totalarray):
             if int(i) != int(outputtask):
-                arg = get_trigger_arg(triggerargsarray, i)
+                arg = get_trigger_arg(inputs, i)
                 if triggerarg != '':
                     triggerarg = str(triggerarg + " " + arg)
                 else:
@@ -3909,7 +3918,7 @@ def get_trigger_arg(triggerargsarray, outputtask):
     else:
         outputtask = int(outputtask) - 1
         try:
-            triggerarg = triggerargsarray[outputtask]
+            triggerarg = inputs[outputtask]
         except IndexError:
             triggerarg = ''
     return triggerarg
