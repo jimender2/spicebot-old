@@ -3725,25 +3725,19 @@ def get_winlossratio(bot,target):
 ##############
 
 def get_database_value(bot, nick, databasekey):
-    databasecolumn = str('duels_' + databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+    database_value = bot.db.get_nick_value(nick, 'duels_'+databasekey)
     return database_value
 
 def set_database_value(bot, nick, databasekey, value):
-    databasecolumn = str('duels_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
+    bot.db.set_nick_value(nick, 'duels_'+databasekey, value)
 
 def reset_database_value(bot, nick, databasekey):
-    databasecolumn = str('duels_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, None)
+    bot.db.set_nick_value(nick, 'duels_' + databasekey, None)
 
 def adjust_database_value(bot, nick, databasekey, value):
-    databasecolumn = str('duels_' + databasekey)
-    oldvalue = get_database_value(bot, nick, databasekey) or 0
-    if not oldvalue:
-        bot.db.set_nick_value(nick, databasecolumn, int(value))
-    else:
-        bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    oldvalue = bot.db.get_nick_value(nick, 'duels_'+databasekey)
+    bot.say(str(oldvalue)+ " " + str(value))
+    bot.db.set_nick_value(nick, 'duels_'+databasekey, int(oldvalue) + int(value))
 
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
