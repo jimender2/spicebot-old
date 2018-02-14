@@ -136,7 +136,7 @@ def increment_counter(bot, trigger, commandused):
 ####################################
 
 ## Hub
-def get_trigger_arg(bot, inputs, outputtask):
+def get_trigger_argnew(bot, inputs, outputtask):
     ## Create
     if outputtask == 'create':
         return create_array(bot, inputs)
@@ -375,6 +375,99 @@ def excrange_minus_array(bot, inputs, number):
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
+
+#############
+## Old arg ##
+#############
+
+def create_args_array(fullstring):
+    triggerargsarray = []
+    if fullstring:
+        for word in fullstring.split():
+            triggerargsarray.append(word)
+    return triggerargsarray
+
+def get_trigger_arg(triggerargsarray, number):
+    if number == 'create':
+        triggerargsarraynew = []
+        if triggerargsarray:
+            for word in triggerargsarray.split():
+                triggerargsarraynew.append(word)
+        return triggerargsarraynew
+    totalarray = len(triggerargsarray)
+    totalarray = totalarray + 1
+    triggerarg = ''
+    if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
+        if str(number).endswith("+"):
+            rangea = re.sub(r"\+", '', str(number))
+            rangea = int(rangea)
+            rangeb = totalarray
+        elif str(number).endswith("-"):
+            rangea = 1
+            rangeb = re.sub(r"-", '', str(number))
+            rangeb = int(rangeb) + 1
+        elif str(number).endswith(">"):
+            rangea = re.sub(r">", '', str(number))
+            rangea = int(rangea) + 1
+            rangeb = totalarray
+        elif str(number).endswith("<"):
+            rangea = 1
+            rangeb = re.sub(r"<", '', str(number))
+            rangeb = int(rangeb)
+        elif "^" in str(number):
+            rangea = number.split("^", 1)[0]
+            rangeb = number.split("^", 1)[1]
+            rangea = int(rangea)
+            rangeb = int(rangeb) + 1
+        elif number == 0:
+            rangea = 1
+            rangeb = totalarray
+        if rangea <= totalarray:
+            for i in range(rangea,rangeb):
+                arg = get_trigger_arg(triggerargsarray, i)
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
+    elif number == 'last':
+        if totalarray > 1:
+            totalarray = totalarray -2
+            triggerarg = str(triggerargsarray[totalarray])
+    elif str(number).endswith("!"):
+        number = re.sub(r"!", '', str(number))
+        for i in range(1,totalarray):
+            if int(i) != int(number):
+                arg = get_trigger_arg(triggerargsarray, i)
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
+    elif number == 'random':
+        if totalarray > 1:
+            try:
+                shuffledarray = random.shuffle(triggerargsarray)
+                randomselected = random.randint(0,len(shuffledarray) - 1)
+                triggerarg = str(shuffledarray [randomselected])
+            except TypeError:
+                triggerarg = get_trigger_arg(triggerargsarray, 1)
+        else:
+            triggerarg = get_trigger_arg(triggerargsarray, 1)
+    elif number == 'list':
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg  = str(triggerarg  + ", " + x)
+            else:
+                triggerarg  = str(x)
+    else:
+        number = int(number) - 1
+        try:
+            triggerarg = triggerargsarray[number]
+        except IndexError:
+            triggerarg = ''
+    return triggerarg
+
+
+
 
 ##############
 ## Database ##
