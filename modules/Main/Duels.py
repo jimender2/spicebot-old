@@ -962,10 +962,10 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
-        bot.notice(instigator + ", duels  is now on in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", duels  is on in " + inchannel + ".", instigator)
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
-        bot.notice(instigator + ", duels  is now off in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", duels  is off in " + inchannel + ".", instigator)
 
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
@@ -975,10 +975,10 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
-        bot.notice(instigator + ", devmode  is now on in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", devmode  is on in " + inchannel + ".", instigator)
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
-        bot.notice(instigator + ", devmode  is now off in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", devmode  is off in " + inchannel + ".", instigator)
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
@@ -1236,6 +1236,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say("*click*")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
+        currentpayout = get_database_value(bot, instigator, 'roulettepayout')
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
@@ -1289,6 +1290,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if x not in uniquewinnersarray and x != instigator:
                 uniquewinnersarray.append(x)
         for x in uniquewinnersarray:
+
+            ## Award XP
             classwinner = get_database_value(bot, x, 'class_setting')
             winnertier = get_database_value(bot, x, 'leveling_tier')
             if classwinner == 'ranger':
@@ -1298,16 +1301,21 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if winnertier < currenttierstart:
                 XPearnedwinner = XPearnedwinner * tierscaling
             adjust_database_value(bot, x, 'record_xp', XPearnedwinner)
+
+            ## coin
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-            if roulettepayoutx > biggestpayout:
+            if roulettepayoutx > biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = x
                 biggestpayout = roulettepayoutx
-            elif roulettepayoutx == biggestpayout:
+            elif roulettepayoutx == biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
                 biggestpayout = roulettepayoutx
             adjust_database_value(bot, x, 'loot_coin', roulettepayoutx)
-            bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+            if roulettepayoutx > 0:
+                bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
             reset_database_value(bot, x, 'roulettepayout')
+
+        ## unique winner list
         if uniquewinnersarray != []:
             displaymessage = get_trigger_arg(uniquewinnersarray, "list")
             if len(uniquewinnersarray) > 1:
@@ -1339,6 +1347,14 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
         bot.notice(validtargetmsg,instigator)
         return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
@@ -1361,7 +1377,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
     for user in canduelarray:
         assaultstatsarray = []
-        assaultstatsarray.append(user + "'s Full Channel Assault results:")
+        assaultstatsarray.append(user + "'s Full Channel Mayhem results:")
         for astat in assault_results:
             astateval = get_database_value(bot, user, "assault_" + astat) or 0
             if astateval:
@@ -3529,9 +3545,9 @@ def statreset(bot, nick):
             reset_database_value(bot, nick, "usage_"+x)
             reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
-    reset_database_value(bot, nick, "usage_combat")
-    reset_database_value(bot, nick, "usage_total")
-    reset_database_value(bot, nick, "roulettepayout")
+        reset_database_value(bot, nick, "usage_combat")
+        reset_database_value(bot, nick, "usage_total")
+        reset_database_value(bot, nick, "roulettepayout")
 
 ################
 ## Tier ratio ##
