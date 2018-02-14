@@ -3798,10 +3798,14 @@ def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
     inputstring = "this is a test array"
 
-    createtest = get_trigger_arg(bot, inputarray, 'create')
-    bot.say("create from array     " + str(createtest))
-    createtest = get_trigger_arg(bot, inputstring, 'create')
-    bot.say("create from string     " + str(createtest))
+    test = range_array(bot, inputarray, 1, 4)
+    bot.say(test)
+    test = range_array(bot, inputstring, 1, 4)
+    bot.say(test)
+    #createtest = get_trigger_arg(bot, inputarray, 'create')
+    #bot.say("create from array     " + str(createtest))
+    #createtest = get_trigger_arg(bot, inputstring, 'create')
+    #bot.say("create from string     " + str(createtest))
 
     #reversetest = get_trigger_arg(bot, inputarray, 'reverse')
     #bot.say("reverse from array     " + str(reversetest))
@@ -3828,10 +3832,10 @@ def testarraystuff(bot):
     #listtest = get_trigger_arg(bot, inputstring, 'list')
     #bot.say("list from string     " + str(listtest))
 
-    numtest = number_array(bot, inputarray, 3)
-    bot.say("3 from array     " + str(numtest))
-    numtest = number_array(bot, inputstring, 3)
-    bot.say("3 from string     " + str(numtest))
+    #numtest = number_array(bot, inputarray, 3)
+    #bot.say("3 from array     " + str(numtest))
+    #numtest = number_array(bot, inputstring, 3)
+    #bot.say("3 from string     " + str(numtest))
 
     
 ## Convert String to array
@@ -3924,6 +3928,19 @@ def number_array(bot, inputs, number):
         if numberadjust< len(inputs) and numberadjust >= 0:
             number = int(number) - 1
             string = inputs[number]
+    return string
+
+def range_array(bot, inputs, rangea, rangeb):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if rangea <= len(inputs):
+        for i in range(rangea,rangeb):
+            arg = number_array(bot, inputs, i)
+            if string != '':
+                string = str(string + " " + arg)
+            else:
+                string = str(arg)
     return string
 
 def get_trigger_arg(bot, inputs, outputtask):
