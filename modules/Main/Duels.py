@@ -3919,7 +3919,7 @@ def get_trigger_arg(bot, inputs, outputtask):
             triggerarg = ''
     return triggerarg
 
-def get_trigger_arg(bot, _orig(bot, triggerargsarray, outputtask):
+def get_trigger_arg(bot, triggerargsarray, outputtask):
     ## Create
     if outputtask == 'create':
         triggerargsarraynew = []
