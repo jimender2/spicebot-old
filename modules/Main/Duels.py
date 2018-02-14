@@ -1240,7 +1240,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say("payout "+str(roulettepayout))
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
         bot.say("current "+str(currentpayout))
-        adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
+        adjust_database_value(bot, instigator, 'roulettepayout', int(roulettepayout))
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
