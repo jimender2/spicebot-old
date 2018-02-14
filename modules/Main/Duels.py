@@ -3801,10 +3801,14 @@ def testarraystuff(bot):
     bot.say("create from array " + str(createtest))
     createtest = get_trigger_arg(bot, inputstring, 'create')
     bot.say("create from string" + str(createtest))
-    #reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    #bot.say("reverse from string " + str(reversetest))
-    #reversetest = get_trigger_arg(bot, createtest, 'reverse')
-    #bot.say("reverse " + str(reversetest))
+    reversetest = get_trigger_arg(bot, inputarray, 'reverse')
+    bot.say("reverse from array " + str(createtest))
+    reversetest = get_trigger_arg(bot, inputstring, 'reverse')
+    bot.say("reverse from string" + str(createtest))
+
+
+    
+    
     #zerotest = get_trigger_arg(bot, createtest, 0)
     #bot.say('0 '+ zerotest)
     #lasttest = get_trigger_arg(bot, createtest, 'last')
