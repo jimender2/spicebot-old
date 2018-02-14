@@ -3838,10 +3838,10 @@ def testarraystuff(bot):
     numtest = number_array(bot, inputstring, 4)
     bot.say("4 from string     " + str(numtest))
 
-    #rangetest = range_array(bot, inputarray, 1, 4)
-    #bot.say("range 1-4 from string    " + str(rangetest))
-    #rangetest = range_array(bot, inputstring, 1, 4)
-    #bot.say("range 1-4 from array     " + str(rangetest))
+    rangetest = range_array(bot, inputarray, 1, 4)
+    bot.say("range 1-4 from string    " + str(rangetest))
+    rangetest = range_array(bot, inputstring, 1, 4)
+    bot.say("range 1-4 from array     " + str(rangetest))
 
     
 ## Convert String to array
@@ -3940,13 +3940,12 @@ def range_array(bot, inputs, rangea, rangeb):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
     string = ''
-    if rangea <= len(inputs):
-        for i in range(rangea,rangeb):
-            arg = number_array(bot, inputs, i)
-            if string != '':
-                string = str(string + " " + arg)
-            else:
-                string = str(arg)
+    for i in range(rangea,rangeb + 1):
+        arg = number_array(bot, inputs, i)
+        if string != '':
+            string = str(string + " " + arg)
+        else:
+            string = str(arg)
     return string
 
 def get_trigger_arg(bot, inputs, outputtask):
