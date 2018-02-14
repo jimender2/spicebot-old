@@ -3824,7 +3824,7 @@ def create_array(bot, inputs):
             else:
                 string = str(x)
         inputs = string
-    output = []
+    outputs = []
     if inputs:
         for word in inputs.split():
             outputs.append(word)
