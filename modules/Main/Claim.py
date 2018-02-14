@@ -9,6 +9,7 @@ import datetime
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
+import Spicebucks
 
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
