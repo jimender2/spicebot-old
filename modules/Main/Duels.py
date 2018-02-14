@@ -3828,9 +3828,9 @@ def testarraystuff(bot):
     #listtest = get_trigger_arg(bot, inputstring, 'list')
     #bot.say("list from string     " + str(listtest))
 
-    numtest = number_array(bot, inputarray, 'test')
+    numtest = number_array(bot, inputarray, 3)
     bot.say("3 from array     " + str(numtest))
-    numtest = number_array(bot, inputstring, 'test')
+    numtest = number_array(bot, inputstring, 3)
     bot.say("3 from string     " + str(numtest))
 
     
@@ -3946,7 +3946,7 @@ def get_trigger_arg(bot, inputs, outputtask):
 
     totalarray = len(inputs)
     totalarray = totalarray + 1
-    triggerarg = ''
+    string = ''
     ## Other
     if "^" in str(outputtask) or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
         if str(outputtask).endswith("+"):
@@ -3973,26 +3973,23 @@ def get_trigger_arg(bot, inputs, outputtask):
         if rangea <= totalarray:
             for i in range(rangea,rangeb):
                 arg = get_trigger_arg(bot, inputs, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
+                if string != '':
+                    string = str(string + " " + arg)
                 else:
-                    triggerarg = str(arg)
+                    string = str(arg)
     elif str(outputtask).endswith("!"):
         outputtask = re.sub(r"!", '', str(outputtask))
         for i in range(1,totalarray):
             if int(i) != int(outputtask):
                 arg = get_trigger_arg(bot, inputs, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
+                if string != '':
+                    string = str(string + " " + arg)
                 else:
-                    triggerarg = str(arg)
+                    string = str(arg)
     else:
-        outputtask = int(outputtask) - 1
-        try:
-            triggerarg = inputs[outputtask]
-        except IndexError:
-            triggerarg = ''
-    return triggerarg
+        string = number_array(bot, inputs, outputtask)
+        
+    return string
 
 def get_trigger_arg_orig(bot, triggerargsarray, outputtask):
     ## Create
