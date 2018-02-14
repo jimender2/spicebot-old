@@ -266,8 +266,6 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator
     instigator = trigger.nick
 
-    testarraystuff(bot) ## remove
-
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
     commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
@@ -3768,6 +3766,8 @@ def get_database_array_total(bot, nick, databasekey):
 
 ## array stored in database, add or remove elements
 def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
+    if not isinstance(entries, list):
+        entries = [entries]
     adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
@@ -3794,74 +3794,48 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ## Array/List/String Manipulation ##
 ####################################
 
-def testarraystuff(bot):
-    inputarray = ['this','is','a','test','array','with','tons','of','extra','added','words','for','the','purpose','of','being','a','test']
-    inputstring = "this is a test string with tons of extra added words for the purpose of being a test"
-
-    #createtest = get_trigger_arg(bot, inputarray, 'create')
-    #bot.say("create from array     " + str(createtest))
-    #createtest = get_trigger_arg(bot, inputstring, 'create')
-    #bot.say("create from string     " + str(createtest))
-
-    #reversetest = get_trigger_arg(bot, inputarray, 'reverse')
-    #bot.say("reverse from array     " + str(reversetest))
-    #reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    #bot.say("reverse from string     " + str(reversetest))
-
-    #zerotest = get_trigger_arg(bot, inputarray, 0)
-    #bot.say("zero from array     " + str(zerotest))
-    #zerotest = get_trigger_arg(bot, inputstring, 0)
-    #bot.say("zero from string     " + str(zerotest))
-
-    #lasttest = get_trigger_arg(bot, inputarray, 'last')
-    #bot.say("last from array     " + str(lasttest))
-    #lasttest = get_trigger_arg(bot, inputstring, 'last')
-    #bot.say("last from string     " + str(lasttest))
-
-    #randomtest = get_trigger_arg(bot, inputarray, 'random')
-    #bot.say("random from array     " + str(randomtest))
-    #randomtest = get_trigger_arg(bot, inputstring, 'random')
-    #bot.say("random from string     " + str(randomtest))
-
-    #listtest = get_trigger_arg(bot, inputarray, 'list')
-    #bot.say("list from array     " + str(listtest))
-    #listtest = get_trigger_arg(bot, inputstring, 'list')
-    #bot.say("list from string     " + str(listtest))
-
-    #numtest = get_trigger_arg(bot, inputarray, 4)
-    #bot.say("4 from array     " + str(numtest))
-    #numtest = get_trigger_arg(bot, inputstring, 4)
-    #bot.say("4 from string     " + str(numtest))
-
-    #excludetest = get_trigger_arg(bot, inputarray, '3!')
-    #bot.say("exclude 3 from string    " + str(excludetest))
-    #excludetest = get_trigger_arg(bot, inputstring, '3!')
-    #bot.say("exclude 3 from array     " + str(excludetest))
-
-    #betweentest = get_trigger_arg(bot, inputarray, '2^4')
-    #bot.say("2^4 from string    " + str(betweentest))
-    #betweentest = get_trigger_arg(bot, inputstring, '2^4')
-    #bot.say("2^4 from array     " + str(betweentest))
-
-    plustest = get_trigger_arg(bot, inputarray, '5+')
-    bot.say("5+ from string    " + str(plustest))
-    plustest = get_trigger_arg(bot, inputstring, '5+')
-    bot.say("5+ from array     " + str(plustest))
-
-    minustest = get_trigger_arg(bot, inputarray, '5-')
-    bot.say("5- from string    " + str(minustest))
-    minustest = get_trigger_arg(bot, inputstring, '5-')
-    bot.say("5- from array     " + str(minustest))
-
-    plustest = get_trigger_arg(bot, inputarray, '5>')
-    bot.say("5> from string    " + str(plustest))
-    plustest = get_trigger_arg(bot, inputstring, '5>')
-    bot.say("5> from array     " + str(plustest))
-
-    minustest = get_trigger_arg(bot, inputarray, '5<')
-    bot.say("5< from string    " + str(minustest))
-    minustest = get_trigger_arg(bot, inputstring, '5<')
-    bot.say("5< from array     " + str(minustest))
+## Hub
+def get_trigger_arg(bot, inputs, outputtask):
+    ## Create
+    if outputtask == 'create':
+        return create_array(bot, inputs)
+    ## reverse
+    if outputtask == 'reverse':
+        return reverse_array(bot, inputs)
+    ## Comma Seperated List
+    if outputtask == 'list':
+        return list_array(bot, inputs)
+    if outputtask == 'random':
+        return random_array(bot, inputs)
+    ## Last element
+    if outputtask == 'last':
+        return last_array(bot, inputs)
+    ## Complete String
+    if outputtask == 0 or outputtask == 'complete' or outputtask == 'string':
+        return string_array(bot, inputs)
+    ## Number
+    if str(outputtask).isdigit():
+        return number_array(bot, inputs, outputtask)
+    ## Exlude from array
+    if str(outputtask).endswith("!"):
+        return excludefrom_array(bot, inputs, outputtask)
+    ## Inclusive range starting at
+    if str(outputtask).endswith("+"):
+        return incrange_plus_array(bot, inputs, outputtask)
+    ## Inclusive range ending at
+    if str(outputtask).endswith("-"):
+        return incrange_minus_array(bot, inputs, outputtask)
+    ## Exclusive range starting at
+    if str(outputtask).endswith(">"):
+        return excrange_plus_array(bot, inputs, outputtask)
+    ## Exclusive range ending at
+    if str(outputtask).endswith("<"):
+        return excrange_minus_array(bot, inputs, outputtask)
+    ## Range Between Numbers
+    if "^" in str(outputtask):
+        return rangebetween_array(bot, inputs, outputtask)
+    string = ''
+    return string
     
 ## Convert String to array
 def create_array(bot, inputs):
@@ -4060,45 +4034,3 @@ def excrange_minus_array(bot, inputs, number):
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
-    
-def get_trigger_arg(bot, inputs, outputtask):
-    ## Create
-    if outputtask == 'create':
-        return create_array(bot, inputs)
-    ## reverse
-    if outputtask == 'reverse':
-        return reverse_array(bot, inputs)
-    ## Comma Seperated List
-    if outputtask == 'list':
-        return list_array(bot, inputs)
-    if outputtask == 'random':
-        return random_array(bot, inputs)
-    ## Last element
-    if outputtask == 'last':
-        return last_array(bot, inputs)
-    ## Complete String
-    if outputtask == 0 or outputtask == 'complete' or outputtask == 'string':
-        return string_array(bot, inputs)
-    ## Number
-    if str(outputtask).isdigit():
-        return number_array(bot, inputs, outputtask)
-    ## Exlude from array
-    if str(outputtask).endswith("!"):
-        return excludefrom_array(bot, inputs, outputtask)
-    ## Inclusive range starting at
-    if str(outputtask).endswith("+"):
-        return incrange_plus_array(bot, inputs, outputtask)
-    ## Inclusive range ending at
-    if str(outputtask).endswith("-"):
-        return incrange_minus_array(bot, inputs, outputtask)
-    ## Exclusive range starting at
-    if str(outputtask).endswith(">"):
-        return excrange_plus_array(bot, inputs, outputtask)
-    ## Exclusive range ending at
-    if str(outputtask).endswith("<"):
-        return excrange_minus_array(bot, inputs, outputtask)
-    ## Range Between Numbers
-    if "^" in str(outputtask):
-        return rangebetween_array(bot, inputs, outputtask)
-    string = ''
-    return string
