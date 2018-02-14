@@ -3798,55 +3798,55 @@ def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
     inputstring = "this is a test string"
 
-    #createtest = get_trigger_arg(bot, inputarray, 'create')
-    #bot.say("create from array     " + str(createtest))
-    #createtest = get_trigger_arg(bot, inputstring, 'create')
-    #bot.say("create from string     " + str(createtest))
+    createtest = get_trigger_arg(bot, inputarray, 'create')
+    bot.say("create from array     " + str(createtest))
+    createtest = get_trigger_arg(bot, inputstring, 'create')
+    bot.say("create from string     " + str(createtest))
 
-    #reversetest = get_trigger_arg(bot, inputarray, 'reverse')
-    #bot.say("reverse from array     " + str(reversetest))
-    #reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    #bot.say("reverse from string     " + str(reversetest))
+    reversetest = get_trigger_arg(bot, inputarray, 'reverse')
+    bot.say("reverse from array     " + str(reversetest))
+    reversetest = get_trigger_arg(bot, inputstring, 'reverse')
+    bot.say("reverse from string     " + str(reversetest))
 
-    #zerotest = get_trigger_arg(bot, inputarray, 0)
-    #bot.say("zero from array     " + str(zerotest))
-    #zerotest = get_trigger_arg(bot, inputstring, 0)
-    #bot.say("zero from string     " + str(zerotest))
+    zerotest = get_trigger_arg(bot, inputarray, 0)
+    bot.say("zero from array     " + str(zerotest))
+    zerotest = get_trigger_arg(bot, inputstring, 0)
+    bot.say("zero from string     " + str(zerotest))
 
-    #lasttest = get_trigger_arg(bot, inputarray, 'last')
-    #bot.say("last from array     " + str(lasttest))
-    #lasttest = get_trigger_arg(bot, inputstring, 'last')
-    #bot.say("last from string     " + str(lasttest))
+    lasttest = get_trigger_arg(bot, inputarray, 'last')
+    bot.say("last from array     " + str(lasttest))
+    lasttest = get_trigger_arg(bot, inputstring, 'last')
+    bot.say("last from string     " + str(lasttest))
 
-    #randomtest = get_trigger_arg(bot, inputarray, 'random')
-    #bot.say("random from array     " + str(randomtest))
-    #randomtest = get_trigger_arg(bot, inputstring, 'random')
-    #bot.say("random from string     " + str(randomtest))
+    randomtest = get_trigger_arg(bot, inputarray, 'random')
+    bot.say("random from array     " + str(randomtest))
+    randomtest = get_trigger_arg(bot, inputstring, 'random')
+    bot.say("random from string     " + str(randomtest))
 
-    #listtest = get_trigger_arg(bot, inputarray, 'list')
-    #bot.say("list from array     " + str(listtest))
-    #listtest = get_trigger_arg(bot, inputstring, 'list')
-    #bot.say("list from string     " + str(listtest))
+    listtest = get_trigger_arg(bot, inputarray, 'list')
+    bot.say("list from array     " + str(listtest))
+    listtest = get_trigger_arg(bot, inputstring, 'list')
+    bot.say("list from string     " + str(listtest))
 
-    #numtest = number_array(bot, inputarray, 1)
-    #bot.say("1 from array     " + str(numtest))
-    #numtest = number_array(bot, inputstring, 1)
-    #bot.say("1 from string     " + str(numtest))
+    numtest = get_trigger_arg(bot, inputarray, 4)
+    bot.say("4 from array     " + str(numtest))
+    numtest = get_trigger_arg(bot, inputstring, 4)
+    bot.say("4 from string     " + str(numtest))
 
-    #numtest = number_array(bot, inputarray, 4)
-    #bot.say("4 from array     " + str(numtest))
-    #numtest = number_array(bot, inputstring, 4)
-    #bot.say("4 from string     " + str(numtest))
+    rangetest = get_trigger_arg(bot, inputarray, 1, 4)
+    bot.say("range 1-4 from string    " + str(rangetest))
+    rangetest = get_trigger_arg(bot, inputstring, 1, 4)
+    bot.say("range 1-4 from array     " + str(rangetest))
 
-    #rangetest = range_array(bot, inputarray, 1, 4)
-    #bot.say("range 1-4 from string    " + str(rangetest))
-    #rangetest = range_array(bot, inputstring, 1, 4)
-    #bot.say("range 1-4 from array     " + str(rangetest))
-
-    excludetest = excludefrom_array(bot, inputarray, '3!')
+    excludetest = get_trigger_arg(bot, inputarray, '3!')
     bot.say("exclude 3 from string    " + str(excludetest))
-    excludetest = excludefrom_array(bot, inputstring, '3!')
+    excludetest = get_trigger_arg(bot, inputstring, '3!')
     bot.say("exclude 3 from array     " + str(excludetest))
+
+    betweentest = get_trigger_arg(bot, inputarray, '2^4')
+    bot.say("2^4 from string    " + str(betweentest))
+    betweentest = get_trigger_arg(bot, inputstring, '2^4')
+    bot.say("2^4 from array     " + str(betweentest))
 
     
 ## Convert String to array
@@ -3945,6 +3945,8 @@ def range_array(bot, inputs, rangea, rangeb):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
     string = ''
+    if not str(rangea).isdigit() or not str(rangeb).isdigit():
+        return string
     for i in range(rangea,rangeb + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
@@ -3968,6 +3970,20 @@ def excludefrom_array(bot, inputs, number):
                 else:
                     string = str(arg)
     return string
+
+def rangebetween_array(bot, inputs, number):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    rangea = 'error'
+    rangeb = 'handling'
+    if "^" in str(number):
+        rangea = outputtask.split("^", 1)[0]
+        rangeb = outputtask.split("^", 1)[1]
+    if not str(rangea).isdigit() or not str(rangeb).isdigit():
+        return string
+    return range_array(bot, inputs, rangea, rangeb)
+    
 
 def get_trigger_arg(bot, inputs, outputtask):
     ## Create
@@ -3993,18 +4009,30 @@ def get_trigger_arg(bot, inputs, outputtask):
     ## Exlude from array
     if str(outputtask).endswith("!"):
         return excludefrom_array(bot, inputs, outputtask)
-        
+    ## Inclusive range starting at
+    if str(outputtask).endswith("+"):
+
+    ## Inclusive range ending at
+    #if str(outputtask).endswith("-"):
+
+    ## Exclusive range starting at
+    #if str(outputtask).endswith(">"):
+
+    ## Exclusive range ending at
+    #if str(outputtask).endswith("<"):
+
+    ## Range Between Numbers
+    if "^" in str(outputtask):
+        rangebetween_array(bot, inputs, outputtask)
 
 
-    totalarray = len(inputs)
-    totalarray = totalarray + 1
     string = ''
     ## Other
-    if "^" in str(outputtask) or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
+    if str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
         if str(outputtask).endswith("+"):
             rangea = re.sub(r"\+", '', str(outputtask))
             rangea = int(rangea)
-            rangeb = totalarray
+            rangeb = len(inputs)
         elif str(outputtask).endswith("-"):
             rangea = 1
             rangeb = re.sub(r"-", '', str(outputtask))
@@ -4012,125 +4040,13 @@ def get_trigger_arg(bot, inputs, outputtask):
         elif str(outputtask).endswith(">"):
             rangea = re.sub(r">", '', str(outputtask))
             rangea = int(rangea) + 1
-            rangeb = totalarray
+            rangeb = len(inputs)
         elif str(outputtask).endswith("<"):
             rangea = 1
             rangeb = re.sub(r"<", '', str(outputtask))
             rangeb = int(rangeb)
-        elif "^" in str(outputtask):
-            rangea = outputtask.split("^", 1)[0]
-            rangeb = outputtask.split("^", 1)[1]
-            rangea = int(rangea)
-            rangeb = int(rangeb) + 1
-        if rangea <= totalarray:
-            for i in range(rangea,rangeb):
-                arg = get_trigger_arg(bot, inputs, i)
-                if string != '':
-                    string = str(string + " " + arg)
-                else:
-                    string = str(arg)
+        return range_array(bot, inputs, rangea, rangeb)
     else:
         string = number_array(bot, inputs, outputtask)
         
     return string
-
-def get_trigger_arg_orig(bot, triggerargsarray, outputtask):
-    ## Create
-    if outputtask == 'create':
-        triggerargsarraynew = []
-        if triggerargsarray:
-            for word in triggerargsarray.split():
-                triggerargsarraynew.append(word)
-        return triggerargsarraynew
-    totalarray = len(triggerargsarray)
-    ## Reversed
-    if outputtask == 'reverse':
-        if totalarray == 1:
-            return triggerargsarray
-        temparray = []
-        for d in triggerargsarray:
-            temparray.append(d)
-        temparray.reverse()
-        return temparray
-    totalarray = len(triggerargsarray)
-    totalarray = totalarray + 1
-    triggerarg = ''
-    ## Comma Seperated List
-    if outputtask == 'list':
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg  = str(triggerarg  + ", " + x)
-            else:
-                triggerarg  = str(x)
-        return triggerarg
-    ## Random Entry from array
-    if outputtask == 'random':
-        if triggerargsarray == []:
-            return triggerarg
-        temparray = []
-        for d in triggerargsarray:
-            temparray.append(d)
-        shuffledarray = random.shuffle(temparray)
-        randomselected = random.randint(0,len(temparray) - 1)
-        triggerarg = str(temparray [randomselected])
-        return triggerarg
-    ## Last
-    if outputtask == 'last':
-        if totalarray > 1:
-            totalarray = totalarray -2
-            triggerarg = str(triggerargsarray[totalarray])
-        return triggerarg
-    ## Complete
-    if outputtask == 0:
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg = str(triggerarg + " " + str(x))
-            else:
-                triggerarg = str(x)
-        return triggerarg
-    ## Other
-    if "^" in str(outputtask) or outputtask == 0 or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
-        if str(outputtask).endswith("+"):
-            rangea = re.sub(r"\+", '', str(outputtask))
-            rangea = int(rangea)
-            rangeb = totalarray
-        elif str(outputtask).endswith("-"):
-            rangea = 1
-            rangeb = re.sub(r"-", '', str(outputtask))
-            rangeb = int(rangeb) + 1
-        elif str(outputtask).endswith(">"):
-            rangea = re.sub(r">", '', str(outputtask))
-            rangea = int(rangea) + 1
-            rangeb = totalarray
-        elif str(outputtask).endswith("<"):
-            rangea = 1
-            rangeb = re.sub(r"<", '', str(outputtask))
-            rangeb = int(rangeb)
-        elif "^" in str(outputtask):
-            rangea = outputtask.split("^", 1)[0]
-            rangeb = outputtask.split("^", 1)[1]
-            rangea = int(rangea)
-            rangeb = int(rangeb) + 1
-        if rangea <= totalarray:
-            for i in range(rangea,rangeb):
-                arg = get_trigger_arg(bot, triggerargsarray, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
-                else:
-                    triggerarg = str(arg)
-    elif str(outputtask).endswith("!"):
-        outputtask = re.sub(r"!", '', str(outputtask))
-        for i in range(1,totalarray):
-            if int(i) != int(outputtask):
-                arg = get_trigger_arg(bot, triggerargsarray, i)
-                if triggerarg != '':
-                    triggerarg = str(triggerarg + " " + arg)
-                else:
-                    triggerarg = str(arg)
-    else:
-        outputtask = int(outputtask) - 1
-        try:
-            triggerarg = triggerargsarray[outputtask]
-        except IndexError:
-            triggerarg = ''
-    return triggerarg
