@@ -3920,8 +3920,8 @@ def number_array(bot, inputs, number):
         inputs = create_array(bot, inputs)
     string = ''
     if str(number).isdigit() and not int(number) - 1 > len(inputs):
-        outputtask = int(outputtask) - 1
-        string = inputs[outputtask]
+        number = int(number) - 1
+        string = inputs[number]
     return string
 
 def get_trigger_arg(bot, inputs, outputtask):
