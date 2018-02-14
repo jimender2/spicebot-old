@@ -3796,7 +3796,7 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 
 def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
-    inputstring = "this is a test array"
+    inputstring = "this is a test string"
 
     #createtest = get_trigger_arg(bot, inputarray, 'create')
     #bot.say("create from array     " + str(createtest))
@@ -3843,9 +3843,9 @@ def testarraystuff(bot):
     #rangetest = range_array(bot, inputstring, 1, 4)
     #bot.say("range 1-4 from array     " + str(rangetest))
 
-    excludetest = excludefrom_array(bot, inputarray, 3)
+    excludetest = excludefrom_array(bot, inputarray, '3!')
     bot.say("exclude 3 from string    " + str(excludetest))
-    excludetest = excludefrom_array(bot, inputstring, 3)
+    excludetest = excludefrom_array(bot, inputstring, '3!')
     bot.say("exclude 3 from array     " + str(excludetest))
 
     
@@ -3957,9 +3957,8 @@ def excludefrom_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
     string = ''
-    if not str(number).endswith("!"):
-        return number_array(bot, inputs, number)
-    number = re.sub(r"!", '', str(number))
+    if str(number).endswith("!"):
+        number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
         for i in range(1,len(inputs)):
             if int(i) != int(outputtask):
