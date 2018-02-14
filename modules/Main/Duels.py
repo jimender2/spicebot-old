@@ -962,10 +962,10 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
-        bot.notice(instigator + ", duels  is now on in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", duels  is on in " + inchannel + ".", instigator)
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
-        bot.notice(instigator + ", duels  is now off in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", duels  is off in " + inchannel + ".", instigator)
 
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
@@ -975,10 +975,10 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
-        bot.notice(instigator + ", devmode  is now on in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", devmode  is on in " + inchannel + ".", instigator)
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
-        bot.notice(instigator + ", devmode  is now off in " + inchannel + ".", instigator)
+        bot.notice(instigator + ", devmode  is off in " + inchannel + ".", instigator)
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels):
@@ -1236,7 +1236,11 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         bot.say("*click*")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
-        adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
+        currentpayout = get_database_value(bot, instigator, 'roulettepayout')
+        if not currentpayout:
+            set_database_value(bot, instigator, 'roulettepayout', roulettepayout)
+        else:
+            adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
@@ -1299,14 +1303,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
                 XPearnedwinner = XPearnedwinner * tierscaling
             adjust_database_value(bot, x, 'record_xp', XPearnedwinner)
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
-            if roulettepayoutx > biggestpayout:
+            if roulettepayoutx > biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = x
                 biggestpayout = roulettepayoutx
-            elif roulettepayoutx == biggestpayout:
+            elif roulettepayoutx == biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = str(biggestpayoutwinner+ " " + x)
                 biggestpayout = roulettepayoutx
             adjust_database_value(bot, x, 'loot_coin', roulettepayoutx)
-            bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
+            if roulettepayoutx > 0:
+                bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
             reset_database_value(bot, x, 'roulettepayout')
         if uniquewinnersarray != []:
             displaymessage = get_trigger_arg(uniquewinnersarray, "list")
