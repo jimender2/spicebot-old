@@ -3797,14 +3797,21 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
     inputstring = "this is a test array"
+
     createtest = get_trigger_arg(bot, inputarray, 'create')
-    bot.say("create from array " + str(createtest))
+    bot.say("create from array     " + str(createtest))
     createtest = get_trigger_arg(bot, inputstring, 'create')
-    bot.say("create from string" + str(createtest))
+    bot.say("create from string     " + str(createtest))
+
     reversetest = get_trigger_arg(bot, inputarray, 'reverse')
-    bot.say("reverse from array " + str(reversetest))
+    bot.say("reverse from array     " + str(reversetest))
     reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    bot.say("reverse from string" + str(reversetest))
+    bot.say("reverse from string     " + str(reversetest))
+
+    zerotest = get_trigger_arg(bot, inputarray, 0)
+    bot.say("zero from array     " + str(zerotest))
+    zerotest = get_trigger_arg(bot, inputstring, 0)
+    bot.say("zero from string     " + str(zerotest))
 
 
     
