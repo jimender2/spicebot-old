@@ -1,0 +1,5 @@
+ ## Target Array
+    if not isinstance(targetarray, list):
+        tempvar = targetarray
+        targetarray = []
+        targetarray.append(tempvar)
