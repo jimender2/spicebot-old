@@ -4014,7 +4014,7 @@ def incrange_plus_array(bot, inputs, number):
     rangea = 'error'
     rangeb = 'handling'
     if str(number).endswith("+"):
-        rangea = re.sub(r"\+", '', str(outputtask))
+        rangea = re.sub(r"\+", '', str(number))
         rangeb = len(inputs)
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
@@ -4026,9 +4026,9 @@ def incrange_minus_array(bot, inputs, number):
     string = ''
     rangea = 'error'
     rangeb = 'handling'
-    if str(outputtask).endswith("-"):
+    if str(number).endswith("-"):
         rangea = 1
-        rangeb = re.sub(r"-", '', str(outputtask))
+        rangeb = re.sub(r"-", '', str(number))
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
@@ -4039,8 +4039,8 @@ def excrange_plus_array(bot, inputs, number):
     string = ''
     rangea = 'error'
     rangeb = 'handling'
-    if str(outputtask).endswith(">"):
-        rangea = re.sub(r">", '', str(outputtask))
+    if str(number).endswith(">"):
+        rangea = re.sub(r">", '', str(number))
         rangea = int(rangea) + 1
         rangeb = len(inputs)
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
@@ -4053,9 +4053,9 @@ def excrange_minus_array(bot, inputs, number):
     string = ''
     rangea = 'error'
     rangeb = 'handling'
-    if str(outputtask).endswith("<"):
+    if str(number).endswith("<"):
         rangea = 1
-        rangeb = re.sub(r"<", '', str(outputtask))
+        rangeb = re.sub(r"<", '', str(number))
         rangeb = int(rangeb) - 1
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
