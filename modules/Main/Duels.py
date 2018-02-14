@@ -3860,7 +3860,7 @@ def testarraystuff(bot):
 
     minustest = get_trigger_arg(bot, inputarray, '5<')
     bot.say("5< from string    " + str(minustest))
-    minustest = get_trigger_arg(bot, inputstring, '5<)
+    minustest = get_trigger_arg(bot, inputstring, '5<')
     bot.say("5< from array     " + str(minustest))
     
 ## Convert String to array
