@@ -3738,10 +3738,12 @@ def reset_database_value(bot, nick, databasekey):
     bot.db.set_nick_value(nick, databasecolumn, None)
 
 def adjust_database_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey) or 0
-    bot.say(str(oldvalue))
     databasecolumn = str('duels_' + databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
+    if not oldvalue:
+        bot.db.set_nick_value(nick, databasecolumn, int(value))
+    else:
+        bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
