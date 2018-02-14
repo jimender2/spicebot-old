@@ -266,11 +266,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator
     instigator = trigger.nick
 
-    fulltestarray = ['this','is','a','test','array']
-    fulltest = get_trigger_arg(bot, fulltestarray, 0)
-    lasttest = get_trigger_arg(bot, fulltestarray, 'last')
-    bot.say('last '+ fulltest)
-    bot.say('last '+ lasttest)
+    testarraystuff(bot) ## remove
 
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
@@ -3798,8 +3794,36 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ## Array Manipulation ##
 ########################
 
+def testarraystuff(bot):
+    inputarray = ['this','is','a','test','array']
+    inputstring = "this is a test array"
+    createtest = get_trigger_arg(bot, inputarray, 'create')
+    bot.say("create from array " + str(createtest))
+    createtest = get_trigger_arg(bot, inputstring, 'create')
+    bot.say("create from string" + str(createtest))
+    #reversetest = get_trigger_arg(bot, inputstring, 'reverse')
+    #bot.say("reverse from string " + str(reversetest))
+    #reversetest = get_trigger_arg(bot, createtest, 'reverse')
+    #bot.say("reverse " + str(reversetest))
+    #zerotest = get_trigger_arg(bot, createtest, 0)
+    #bot.say('0 '+ zerotest)
+    #lasttest = get_trigger_arg(bot, createtest, 'last')
+    #bot.say('last '+ lasttest)
+    #randomtest = get_trigger_arg(bot, createtest, 'random')
+    #bot.say('random '+ randomtest)
+    #listtest = get_trigger_arg(bot, createtest, 'list')
+    #bot.say('list '+ listtest)
+    
 ## Convert String to array
 def create_array(bot, inputs):
+    if isinstance(inputs, list):
+        string = ''
+        for x in inputs:
+            if string != '':
+                string = str(string + " " + str(x))
+            else:
+                string = str(x)
+        inputs = string
     output = []
     if inputs:
         for word in inputs.split():
