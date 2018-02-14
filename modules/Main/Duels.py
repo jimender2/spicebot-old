@@ -3828,9 +3828,9 @@ def testarraystuff(bot):
     #listtest = get_trigger_arg(bot, inputstring, 'list')
     #bot.say("list from string     " + str(listtest))
 
-    numtest = number_array(bot, inputarray, 3)
+    numtest = number_array(bot, inputarray, 'test')
     bot.say("3 from array     " + str(numtest))
-    numtest = number_array(bot, inputstring, 3)
+    numtest = number_array(bot, inputstring, 'test')
     bot.say("3 from string     " + str(numtest))
 
     
