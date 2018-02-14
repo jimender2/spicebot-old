@@ -3545,9 +3545,9 @@ def statreset(bot, nick):
             reset_database_value(bot, nick, "usage_"+x)
             reset_database_value(bot, nick, x)
         set_database_value(bot, nick, 'chanstatsreset', now)
-    reset_database_value(bot, nick, "usage_combat")
-    reset_database_value(bot, nick, "usage_total")
-    reset_database_value(bot, nick, "roulettepayout")
+        reset_database_value(bot, nick, "usage_combat")
+        reset_database_value(bot, nick, "usage_total")
+        reset_database_value(bot, nick, "roulettepayout")
 
 ################
 ## Tier ratio ##
