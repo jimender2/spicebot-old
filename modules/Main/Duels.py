@@ -3973,8 +3973,8 @@ def rangebetween_array(bot, inputs, number):
     rangea = 'error'
     rangeb = 'handling'
     if "^" in str(number):
-        rangea = outputtask.split("^", 1)[0]
-        rangeb = outputtask.split("^", 1)[1]
+        rangea = number.split("^", 1)[0]
+        rangeb = number.split("^", 1)[1]
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
