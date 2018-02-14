@@ -3828,20 +3828,25 @@ def testarraystuff(bot):
     #listtest = get_trigger_arg(bot, inputstring, 'list')
     #bot.say("list from string     " + str(listtest))
 
-    numtest = number_array(bot, inputarray, 1)
-    bot.say("1 from array     " + str(numtest))
-    numtest = number_array(bot, inputstring, 1)
-    bot.say("1 from string     " + str(numtest))
+    #numtest = number_array(bot, inputarray, 1)
+    #bot.say("1 from array     " + str(numtest))
+    #numtest = number_array(bot, inputstring, 1)
+    #bot.say("1 from string     " + str(numtest))
 
-    numtest = number_array(bot, inputarray, 4)
-    bot.say("4 from array     " + str(numtest))
-    numtest = number_array(bot, inputstring, 4)
-    bot.say("4 from string     " + str(numtest))
+    #numtest = number_array(bot, inputarray, 4)
+    #bot.say("4 from array     " + str(numtest))
+    #numtest = number_array(bot, inputstring, 4)
+    #bot.say("4 from string     " + str(numtest))
 
-    rangetest = range_array(bot, inputarray, 1, 4)
-    bot.say("range 1-4 from string    " + str(rangetest))
-    rangetest = range_array(bot, inputstring, 1, 4)
-    bot.say("range 1-4 from array     " + str(rangetest))
+    #rangetest = range_array(bot, inputarray, 1, 4)
+    #bot.say("range 1-4 from string    " + str(rangetest))
+    #rangetest = range_array(bot, inputstring, 1, 4)
+    #bot.say("range 1-4 from array     " + str(rangetest))
+
+    excludetest = excludefrom_array(bot, inputarray, 3)
+    bot.say("exclude 3 from string    " + str(excludetest))
+    excludetest = excludefrom_array(bot, inputstring, 3)
+    bot.say("exclude 3 from array     " + str(excludetest))
 
     
 ## Convert String to array
@@ -3948,6 +3953,23 @@ def range_array(bot, inputs, rangea, rangeb):
             string = str(arg)
     return string
 
+def excludefrom_array(bot, inputs, number):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if not str(number).endswith("!"):
+        return number_array(bot, inputs, number)
+    number = re.sub(r"!", '', str(number))
+    if str(number).isdigit():
+        for i in range(1,len(inputs)):
+            if int(i) != int(outputtask):
+                arg = number_array(bot, inputs, i)
+                if string != '':
+                    string = str(string + " " + arg)
+                else:
+                    string = str(arg)
+    return string
+
 def get_trigger_arg(bot, inputs, outputtask):
     ## Create
     if outputtask == 'create':
@@ -3966,6 +3988,13 @@ def get_trigger_arg(bot, inputs, outputtask):
     ## Complete String
     if outputtask == 0 or outputtask == 'complete' or outputtask == 'string':
         return string_array(bot, inputs)
+    ## Number
+    if str(outputtask).isdigit():
+        return number_array(bot, inputs, outputtask)
+    ## Exlude from array
+    if str(outputtask).endswith("!"):
+        return excludefrom_array(bot, inputs, outputtask)
+        
 
 
     totalarray = len(inputs)
@@ -3996,15 +4025,6 @@ def get_trigger_arg(bot, inputs, outputtask):
             rangeb = int(rangeb) + 1
         if rangea <= totalarray:
             for i in range(rangea,rangeb):
-                arg = get_trigger_arg(bot, inputs, i)
-                if string != '':
-                    string = str(string + " " + arg)
-                else:
-                    string = str(arg)
-    elif str(outputtask).endswith("!"):
-        outputtask = re.sub(r"!", '', str(outputtask))
-        for i in range(1,totalarray):
-            if int(i) != int(outputtask):
                 arg = get_trigger_arg(bot, inputs, i)
                 if string != '':
                     string = str(string + " " + arg)
