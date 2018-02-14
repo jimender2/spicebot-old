@@ -3919,7 +3919,7 @@ def number_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
     string = ''
-    if str(number).isdigit() and not int(number) - 1 > len(inputs):
+    if str(number).isdigit() and not int(number) - 1 > len(inputs) and not int(number) - 1 < 0:
         number = int(number) - 1
         string = inputs[number]
     return string
