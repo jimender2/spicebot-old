@@ -3918,6 +3918,7 @@ def last_array(bot, inputs):
     string = inputs[len(inputs)-1]
     return string
 
+## select a number
 def number_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -3929,6 +3930,7 @@ def number_array(bot, inputs, number):
             string = inputs[number]
     return string
 
+## range
 def range_array(bot, inputs, rangea, rangeb):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -3952,6 +3954,7 @@ def range_array(bot, inputs, rangea, rangeb):
             string = str(arg)
     return string
 
+## exclude a number
 def excludefrom_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -3968,6 +3971,7 @@ def excludefrom_array(bot, inputs, number):
                     string = str(arg)
     return string
 
+## range between
 def rangebetween_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -3981,6 +3985,7 @@ def rangebetween_array(bot, inputs, number):
         return string
     return range_array(bot, inputs, rangea, rangeb)
 
+## inclusive forward
 def incrange_plus_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -3994,6 +3999,7 @@ def incrange_plus_array(bot, inputs, number):
         return string
     return range_array(bot, inputs, rangea, rangeb)
 
+## inclusive reverse
 def incrange_minus_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -4007,6 +4013,7 @@ def incrange_minus_array(bot, inputs, number):
         return string
     return range_array(bot, inputs, rangea, rangeb)
 
+## excluding forward
 def excrange_plus_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
@@ -4021,6 +4028,7 @@ def excrange_plus_array(bot, inputs, number):
         return string
     return range_array(bot, inputs, rangea, rangeb)
 
+## excluding reverse
 def excrange_minus_array(bot, inputs, number):
     if not isinstance(inputs, list):
         inputs = create_array(bot, inputs)
