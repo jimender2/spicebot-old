@@ -403,27 +403,31 @@ def get_botdatabase_array_total(bot, nick, databasekey):
     entriestotal = len(array)
     return entriestotal
 
-def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
+def adjust_botdatabase_array(bot, nick, entries, databasekey, adjustmentdirection):
+    if not isinstance(entries, list):
+        entries = [entries]
     adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
         adjustarraynew.append(x)
-    set_botdatabase_value(bot, nick, databasekey, None)
+    reset_botdatabase_value(bot, nick, databasekey)
     adjustarray = []
     if adjustmentdirection == 'add':
-        if entry not in adjustarraynew:
-            adjustarraynew.append(entry)
+        for y in entries:
+            if y not in adjustarraynew:
+                adjustarraynew.append(y)
     elif adjustmentdirection == 'del':
-        if entry in adjustarraynew:
-            adjustarraynew.remove(entry)
+        for y in entries:
+            if y in adjustarraynew:
+                adjustarraynew.remove(y)
     for x in adjustarraynew:
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
-        set_botdatabase_value(bot, nick, databasekey, None)
+        reset_botdatabase_value(bot, nick, databasekey)
     else:
         set_botdatabase_value(bot, nick, databasekey, adjustarray)
-
+        
 ############################
 ## Fix unicode in strings ##
 ############################
