@@ -3798,10 +3798,6 @@ def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
     inputstring = "this is a test array"
 
-    rangetest = range_array(bot, inputarray, 1, 4)
-    bot.say("range 1-4 from string    " + str(rangetest))
-    rangetest = range_array(bot, inputstring, 1, 4)
-    bot.say("range 1-4 from array     " + str(rangetest))
     #createtest = get_trigger_arg(bot, inputarray, 'create')
     #bot.say("create from array     " + str(createtest))
     #createtest = get_trigger_arg(bot, inputstring, 'create')
@@ -3832,10 +3828,20 @@ def testarraystuff(bot):
     #listtest = get_trigger_arg(bot, inputstring, 'list')
     #bot.say("list from string     " + str(listtest))
 
-    #numtest = number_array(bot, inputarray, 3)
-    #bot.say("3 from array     " + str(numtest))
-    #numtest = number_array(bot, inputstring, 3)
-    #bot.say("3 from string     " + str(numtest))
+    numtest = number_array(bot, inputarray, 1)
+    bot.say("1 from array     " + str(numtest))
+    numtest = number_array(bot, inputstring, 1)
+    bot.say("1 from string     " + str(numtest))
+
+    numtest = number_array(bot, inputarray, 4)
+    bot.say("4 from array     " + str(numtest))
+    numtest = number_array(bot, inputstring, 4)
+    bot.say("4 from string     " + str(numtest))
+
+    #rangetest = range_array(bot, inputarray, 1, 4)
+    #bot.say("range 1-4 from string    " + str(rangetest))
+    #rangetest = range_array(bot, inputstring, 1, 4)
+    #bot.say("range 1-4 from array     " + str(rangetest))
 
     
 ## Convert String to array
