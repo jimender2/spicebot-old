@@ -3802,9 +3802,9 @@ def testarraystuff(bot):
     createtest = get_trigger_arg(bot, inputstring, 'create')
     bot.say("create from string" + str(createtest))
     reversetest = get_trigger_arg(bot, inputarray, 'reverse')
-    bot.say("reverse from array " + str(createtest))
+    bot.say("reverse from array " + str(reversetest))
     reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    bot.say("reverse from string" + str(createtest))
+    bot.say("reverse from string" + str(reversetest))
 
 
     
