@@ -3811,7 +3811,7 @@ def reverse_array(bot, inputs):
         inputs = []
         for element in temparray:
             inputs.append(element)
-    if len(totalarray) == 1:
+    if len(inputs) == 1:
         return inputs
     outputs = []
     for d in inputs:
