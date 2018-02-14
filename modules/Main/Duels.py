@@ -3797,9 +3797,10 @@ def create_array(bot, input):
     output = []
     if inputs:
         for word in inputs.split():
-            output.append(word)
-    return output
+            outputs.append(word)
+    return outputs
 
+## output reverse order
 def reverse_array(bot, inputs):
     if not isinstance(inputs, list):
         temparray = []
@@ -3812,24 +3813,35 @@ def reverse_array(bot, inputs):
             inputs.append(element)
     if len(totalarray) == 1:
         return inputs
-    temparray = []
+    outputs = []
     for d in inputs:
-        temparray.append(d)
-    temparray.reverse()
-    return temparray
+        outputs.append(d)
+    outputs.reverse()
+    return outputs
+
+## Comma Seperated List
+def list_array(bot, inputs):
+    if not isinstance(inputs, list):
+        temparray = []
+        for word in inputs.split():
+            temparray.append(word)
+        inputs = []
+        for element in temparray:
+            inputs.append(element)
+    string = ''
+    if inputs == []:
+        return string
+    for x in inputs:
+        if string != '':
+            string  = str(string  + ", " + x)
+        else:
+            string  = str(x)
+    return string
 
 def get_trigger_arg(triggerargsarray, outputtask):
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     triggerarg = ''
-    ## Comma Seperated List
-    if outputtask == 'list':
-        for x in triggerargsarray:
-            if triggerarg != '':
-                triggerarg  = str(triggerarg  + ", " + x)
-            else:
-                triggerarg  = str(x)
-        return triggerarg
     ## Random Entry from array
     if outputtask == 'random':
         if triggerargsarray == []:
