@@ -1237,10 +1237,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
-        if not currentpayout:
-            set_database_value(bot, instigator, 'roulettepayout', roulettepayout)
-        else:
-            adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
+        bot.say(str(currentpayout))
+        adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
         adjust_database_array(bot, duelrecorduser, [instigator], 'roulettewinners', 'add')
@@ -1293,6 +1291,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if x not in uniquewinnersarray and x != instigator:
                 uniquewinnersarray.append(x)
         for x in uniquewinnersarray:
+
+            ## Award XP
             classwinner = get_database_value(bot, x, 'class_setting')
             winnertier = get_database_value(bot, x, 'leveling_tier')
             if classwinner == 'ranger':
@@ -1302,7 +1302,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if winnertier < currenttierstart:
                 XPearnedwinner = XPearnedwinner * tierscaling
             adjust_database_value(bot, x, 'record_xp', XPearnedwinner)
+
+            ## coin
             roulettepayoutx = get_database_value(bot, x, 'roulettepayout')
+            bot.say(str(roulettepayoutx))
             if roulettepayoutx > biggestpayout and roulettepayoutx != 0:
                 biggestpayoutwinner = x
                 biggestpayout = roulettepayoutx
@@ -1313,6 +1316,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             if roulettepayoutx > 0:
                 bot.notice(x + ", your roulette payouts = " + str(roulettepayoutx) + " coins!", x)
             reset_database_value(bot, x, 'roulettepayout')
+
+        ## unique winner list
         if uniquewinnersarray != []:
             displaymessage = get_trigger_arg(uniquewinnersarray, "list")
             if len(uniquewinnersarray) > 1:
