@@ -1235,9 +1235,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         time.sleep(2) # added to build suspense
         bot.say("*click*")
         roulettecount = roulettecount + 1
+        bot.say(str(roulettecount))
         roulettepayout = roulette_payout_default * roulettecount
+        bot.say(str(roulettepayout))
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
-        bot.say(str(currentpayout))
         adjust_database_value(bot, instigator, 'roulettepayout', roulettepayout)
         set_database_value(bot, duelrecorduser, 'roulettecount', roulettecount)
         set_database_value(bot, duelrecorduser, 'roulettelastplayer', instigator)
