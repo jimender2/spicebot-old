@@ -3790,9 +3790,9 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     else:
         set_database_value(bot, nick, databasekey, adjustarray)
 
-########################
-## Array Manipulation ##
-########################
+####################################
+## Array/List/String Manipulation ##
+####################################
 
 def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
@@ -3803,30 +3803,35 @@ def testarraystuff(bot):
     createtest = get_trigger_arg(bot, inputstring, 'create')
     bot.say("create from string     " + str(createtest))
 
-    reversetest = get_trigger_arg(bot, inputarray, 'reverse')
-    bot.say("reverse from array     " + str(reversetest))
-    reversetest = get_trigger_arg(bot, inputstring, 'reverse')
-    bot.say("reverse from string     " + str(reversetest))
+    #reversetest = get_trigger_arg(bot, inputarray, 'reverse')
+    #bot.say("reverse from array     " + str(reversetest))
+    #reversetest = get_trigger_arg(bot, inputstring, 'reverse')
+    #bot.say("reverse from string     " + str(reversetest))
 
-    zerotest = get_trigger_arg(bot, inputarray, 0)
-    bot.say("zero from array     " + str(zerotest))
-    zerotest = get_trigger_arg(bot, inputstring, 0)
-    bot.say("zero from string     " + str(zerotest))
+    #zerotest = get_trigger_arg(bot, inputarray, 0)
+    #bot.say("zero from array     " + str(zerotest))
+    #zerotest = get_trigger_arg(bot, inputstring, 0)
+    #bot.say("zero from string     " + str(zerotest))
 
-    lasttest = get_trigger_arg(bot, inputarray, 'last')
-    bot.say("last from array     " + str(lasttest))
-    lasttest = get_trigger_arg(bot, inputstring, 'last')
-    bot.say("last from string     " + str(lasttest))
+    #lasttest = get_trigger_arg(bot, inputarray, 'last')
+    #bot.say("last from array     " + str(lasttest))
+    #lasttest = get_trigger_arg(bot, inputstring, 'last')
+    #bot.say("last from string     " + str(lasttest))
 
-    randomtest = get_trigger_arg(bot, inputarray, 'random')
-    bot.say("random from array     " + str(randomtest))
-    randomtest = get_trigger_arg(bot, inputstring, 'random')
-    bot.say("random from string     " + str(randomtest))
+    #randomtest = get_trigger_arg(bot, inputarray, 'random')
+    #bot.say("random from array     " + str(randomtest))
+    #randomtest = get_trigger_arg(bot, inputstring, 'random')
+    #bot.say("random from string     " + str(randomtest))
 
-    listtest = get_trigger_arg(bot, inputarray, 'list')
-    bot.say("list from array     " + str(listtest))
-    listtest = get_trigger_arg(bot, inputstring, 'list')
-    bot.say("list from string     " + str(listtest))
+    #listtest = get_trigger_arg(bot, inputarray, 'list')
+    #bot.say("list from array     " + str(listtest))
+    #listtest = get_trigger_arg(bot, inputstring, 'list')
+    #bot.say("list from string     " + str(listtest))
+
+    numtest = number_array(bot, inputarray, 3)
+    bot.say("3 from array     " + str(numtest))
+    numtest = number_array(bot, inputstring, 3)
+    bot.say("3 from string     " + str(numtest))
 
     
 ## Convert String to array
@@ -3910,6 +3915,15 @@ def last_array(bot, inputs):
     string = inputs[len(inputs)-1]
     return string
 
+def number_array(bot, inputs, number):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if number.isdigit() and not int(number) - 1 > len(inputs):
+        outputtask = int(outputtask) - 1
+        string = inputs[outputtask]
+    return string
+
 def get_trigger_arg(bot, inputs, outputtask):
     ## Create
     if outputtask == 'create':
@@ -3934,7 +3948,7 @@ def get_trigger_arg(bot, inputs, outputtask):
     totalarray = totalarray + 1
     triggerarg = ''
     ## Other
-    if "^" in str(outputtask) or outputtask == 0 or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
+    if "^" in str(outputtask) or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
         if str(outputtask).endswith("+"):
             rangea = re.sub(r"\+", '', str(outputtask))
             rangea = int(rangea)
