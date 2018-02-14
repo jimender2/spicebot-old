@@ -3798,10 +3798,10 @@ def testarraystuff(bot):
     inputarray = ['this','is','a','test','array']
     inputstring = "this is a test array"
 
-    test = range_array(bot, inputarray, 1, 4)
-    bot.say(test)
-    test = range_array(bot, inputstring, 1, 4)
-    bot.say(test)
+    rangetest = range_array(bot, inputarray, 1, 4)
+    bot.say("range 1-4 from string    " + str(rangetest))
+    rangetest = range_array(bot, inputstring, 1, 4)
+    bot.say("range 1-4 from array     " + str(rangetest))
     #createtest = get_trigger_arg(bot, inputarray, 'create')
     #bot.say("create from array     " + str(createtest))
     #createtest = get_trigger_arg(bot, inputstring, 'create')
