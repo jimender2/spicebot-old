@@ -266,6 +266,12 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator
     instigator = trigger.nick
 
+    fulltestarray = ['this','is','a','test','array']
+    fulltest = get_trigger_arg(bot, fulltestarray, 0)
+    lasttest = get_trigger_arg(bot, fulltestarray, 'last')
+    bot.say('last '+ fulltest)
+    bot.say('last '+ lasttest)
+
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
     commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
@@ -3800,6 +3806,18 @@ def create_array(bot, inputs):
             outputs.append(word)
     return outputs
 
+## Convert Array to String
+def string_array(bot, inputs):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    for x in inputs:
+        if string != '':
+            string = str(string + " " + str(x))
+        else:
+            string = str(x)
+    return string
+
 ## output reverse order
 def reverse_array(bot, inputs):
     if not isinstance(inputs, list):
@@ -3843,6 +3861,16 @@ def random_array(bot, inputs):
     string = str(temparray [randomselected])
     return string
 
+## Last element
+def last_array(bot, inputs):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if inputs == []:
+        return string
+    string = inputs[len(inputs)-1]
+    return string
+
 def get_trigger_arg(bot, inputs, outputtask):
     ## Create
     if outputtask == 'create':
@@ -3855,23 +3883,17 @@ def get_trigger_arg(bot, inputs, outputtask):
         return list_array(bot, inputs)
     if outputtask == 'random':
         return random_array(bot, inputs)
+    ## Last element
+    if outputtask == 'last':
+        return last_array(bot, inputs)
+    ## Complete String
+    if outputtask == 0 or outputtask == 'complete' or outputtask == 'string':
+        return string_array(bot, inputs)
+
+
     totalarray = len(inputs)
     totalarray = totalarray + 1
     triggerarg = ''
-    ## Last
-    if outputtask == 'last':
-        if totalarray > 1:
-            totalarray = totalarray -2
-            triggerarg = str(inputs[totalarray])
-        return triggerarg
-    ## Complete
-    if outputtask == 0:
-        for x in inputs:
-            if triggerarg != '':
-                triggerarg = str(triggerarg + " " + str(x))
-            else:
-                triggerarg = str(x)
-        return triggerarg
     ## Other
     if "^" in str(outputtask) or outputtask == 0 or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
         if str(outputtask).endswith("+"):
