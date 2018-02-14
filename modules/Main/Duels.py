@@ -3738,8 +3738,8 @@ def reset_database_value(bot, nick, databasekey):
     bot.db.set_nick_value(nick, databasecolumn, None)
 
 def adjust_database_value(bot, nick, databasekey, value):
-    bot.say(str(value))
     oldvalue = get_database_value(bot, nick, databasekey) or 0
+    bot.say(str(oldvalue))
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
