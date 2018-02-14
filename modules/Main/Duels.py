@@ -242,7 +242,7 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    #triggerargsarray = get_trigger_arg(trigger.group(1), 'create') # enable if not using with spicebot
+    #triggerargsarray = create_array(bot, trigger.group(1)) # enable if not using with spicebot
     #execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
@@ -251,7 +251,7 @@ def duel_action(bot, trigger):
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    #triggerargsarray = get_trigger_arg(trigger.group(2), 'create') # enable if not using with spicebot
+    #triggerargsarray = create_array(bot, trigger.group(2)) # enable if not using with spicebot
     #execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     if not enablestatus: ## not needed if using without spicebot
@@ -346,7 +346,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             ## Freenode kicks bot for excess flood if this is overdone
             daisychaincount = daisychaincount + 1
             if daisychaincount <= 5:
-                triggerargsarraypart = get_trigger_arg(comsplit, 'create')
+                triggerargsarraypart = create_array(bot, comsplit)
                 commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels)
             else:
                 bot.notice(instigator + ", you may only daisychain 5 commands.", instigator)
@@ -1421,7 +1421,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         winner = selectwinner(bot, canduelarray)
         winnerorder.append(winner)
         canduelarray.remove(winner)
-    reversedorder = get_trigger_arg(winnerorder, 'reverse')
+    reversedorder = reverse_array(bot, winnerorder)
     lastkilled = ''
     for player in reversedorder:
         if lastkilled != '':
@@ -1455,7 +1455,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
             dispmsgarray.append(player + " was the first to die.")
         lastkilled = player
     dispmsgarray.append(player + " is the victor!")
-    reverseddisplay = get_trigger_arg(dispmsgarray, 'reverse')
+    reverseddisplay = reverse_array(bot, dispmsgarray)
     onscreentext(bot, ['say'], reverseddisplay)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
@@ -2793,6 +2793,25 @@ def halfhourtimer(bot):
         lootwinnermsg = str(lootwinner + ' is awarded a mysterypotion ' + str(loot_text))
         bot.notice(lootwinnermsg, lootwinner)
 
+## Select winner of potion
+def halfhourpotionwinner(bot, randomuarray):
+    winnerselectarray = []
+    recentwinnersarray = get_database_value(bot, duelrecorduser, 'lasttimedlootwinners') or []
+    lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
+    howmanyusers = len(randomuarray)
+    if not howmanyusers > 1:
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinner')
+    for x in randomuarray:
+        if x not in recentwinnersarray and x != lasttimedlootwinner:
+            winnerselectarray.append(x)
+    if winnerselectarray == [] and randomuarray != []:
+        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinners')
+        return halfhourpotionwinner(bot, randomuarray)
+    lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
+    adjust_database_array(bot, duelrecorduser, [lootwinner], 'lasttimedlootwinners', 'add')
+    set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', lootwinner)
+    return lootwinner
+
 #######################
 ## Valid Stats Array ##
 #######################
@@ -2847,6 +2866,32 @@ def tier_xp(bot, xp):
         bigestxp = max(smallerxparray)
         tiernumber = commandarray_xp_levels.index(bigestxp)
     return tiernumber
+
+def get_pepper(bot, nick):
+    if nick == bot.nick:
+        pepper = 'Dragon Breath Chilli'
+        return pepper
+    xp = get_database_value(bot, nick, 'record_xp') or 0
+    if not xp:
+        pepper = 'n00b'
+        return pepper
+    xptier = tier_xp(bot, xp)
+    pepper = pepper_tier(bot, xptier)
+    # advance respawn tier
+    tiernumber = tier_pepper(bot, pepper)
+    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
+    if tiernumber > currenttier:
+        set_database_value(bot, duelrecorduser, 'leveling_tier', tiernumber)
+    nicktier = get_database_value(bot, nick, 'leveling_tier')
+    if tiernumber != nicktier:
+        set_database_value(bot, nick, 'leveling_tier', tiernumber)
+    pepper = pepper.title()
+    return pepper
+
+def tierratio_level(bot):
+    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 1
+    tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
+    return tierratio
 
 #####################
 ## Target Criteria ##
@@ -3006,6 +3051,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 ## Damage ##
 ############
 
+## Damage Caused
 def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     ## Rogue can't be hurt by themselves or bot
@@ -3035,6 +3081,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     return damage
 
+## Damage Text
 def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname, winner, loser):
 
     if losername == winnername:
@@ -3099,6 +3146,7 @@ def damage_resistance(bot, nick, damage, bodypart):
 ## Living Status ##
 ###################
 
+## player killed a player
 def whokilledwhom(bot, winner, loser):
     winnertextarray = []
     winnertextarray.append(loser + ' dies forcing a respawn!!')
@@ -3124,6 +3172,7 @@ def whokilledwhom(bot, winner, loser):
             reset_database_value(bot, loser, x)
     return winnertextarray
 
+## player killed themself
 def suicidekill(bot,loser):
     suicidetextarray = []
     suicidetextarray.append(loser + " committed suicide, forcing a respawn.")
@@ -3148,6 +3197,7 @@ def suicidekill(bot,loser):
         suicidetextarray.append(loser + " loses all loot.")
     return suicidetextarray
 
+## Verify health is not below zero, and not above max
 def healthcheck(bot, nick):
     ## logic for crippled bodyparts
     for part in stats_healthbodyparts:
@@ -3164,6 +3214,7 @@ def healthcheck(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'magic_mana')
 
+## Health after death
 def healthfresh(bot, nick):
     ## logic for crippled bodyparts
     for part in stats_healthbodyparts:
@@ -3179,7 +3230,7 @@ def healthfresh(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'magic_mana')
 
-## health
+## Total Health
 def get_health(bot,nick):
     totalhealth = 0
     for x in stats_healthbodyparts:
@@ -3188,6 +3239,7 @@ def get_health(bot,nick):
             totalhealth = totalhealth + gethowmany
     return totalhealth
 
+## Non-Crippled Body Parts
 def bodypartarray(bot, nick):
     currentbodypartsarray = []
     for x in stats_healthbodyparts:
@@ -3225,9 +3277,10 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 bot.notice(combinedline, user)
 
 ################
-## DUEL Names ##
+## User Nicks ##
 ################
 
+## Build Duel Name Text
 def duel_names(bot, nick, channel):
     nickname = ''
     for q in duel_nick_order:
@@ -3242,6 +3295,7 @@ def duel_names(bot, nick, channel):
         nickname = nick
     return nickname
 
+## Titles
 def nicktitles(bot, nick, channel):
     nickname = actualname(bot,nick)
     ## custom title
@@ -3271,6 +3325,7 @@ def nicktitles(bot, nick, channel):
         nickname = str(nickname)
     return nickname
 
+## Pepper
 def nickpepper(bot, nick, channel):
     pepperstart = get_pepper(bot, nick)
     if not pepperstart or pepperstart == '':
@@ -3279,6 +3334,7 @@ def nickpepper(bot, nick, channel):
         nickname = str("(" + pepperstart.title() + ")")
     return nickname
 
+## Magic
 def nickmagicattributes(bot, nick, channel):
     nickname = ''
     nickcurse = get_database_value(bot, nick, 'magic_curse')
@@ -3296,6 +3352,7 @@ def nickmagicattributes(bot, nick, channel):
                 nickname = x
     return nickname
 
+## Armored
 def nickarmor(bot, nick, channel):
     nickname = ''
     for x in stats_armor:
@@ -3304,6 +3361,7 @@ def nickarmor(bot, nick, channel):
             nickname = "{Armored}"
     return nickname
 
+## Outputs Nicks with correct capitalization
 def actualname(bot,nick):
     actualnick = nick
     for u in bot.users:
@@ -3311,40 +3369,17 @@ def actualname(bot,nick):
             actualnick = u
     return actualnick
 
-##################
-## Pepper level ##
-##################
-
-def get_pepper(bot, nick):
-    if nick == bot.nick:
-        pepper = 'Dragon Breath Chilli'
-        return pepper
-    xp = get_database_value(bot, nick, 'record_xp') or 0
-    if not xp:
-        pepper = 'n00b'
-        return pepper
-    xptier = tier_xp(bot, xp)
-    pepper = pepper_tier(bot, xptier)
-    # advance respawn tier
-    tiernumber = tier_pepper(bot, pepper)
-    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 0
-    if tiernumber > currenttier:
-        set_database_value(bot, duelrecorduser, 'leveling_tier', tiernumber)
-    nicktier = get_database_value(bot, nick, 'leveling_tier')
-    if tiernumber != nicktier:
-        set_database_value(bot, nick, 'leveling_tier', tiernumber)
-    pepper = pepper.title()
-    return pepper
-
 ##########
 ## Time ##
 ##########
 
+## compare timestamps
 def get_timesince_duels(bot, nick, databasekey):
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
 
+## Get timediff for user timeouts for stats display
 def get_timeout_timeout(bot, nick):
     time_since = get_timesince_duels(bot, nick, 'timeout_timeout')
     if time_since < USERTIMEOUT:
@@ -3353,6 +3388,7 @@ def get_timeout_timeout(bot, nick):
         timediff = 0
     return timediff
 
+## Convert seconds to a readable format
 def hours_minutes_seconds(countdownseconds):
     time = float(countdownseconds)
     time = time % (24 * 3600)
@@ -3419,6 +3455,7 @@ def get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak):
 ## Inventory ##
 ###############
 
+## Chance of Finding loot in a duel
 def randominventory(bot, instigator):
     yourclass = get_database_value(bot, instigator, 'class_setting') or 'notclassy'
     if yourclass == 'scavenger':
@@ -3429,24 +3466,6 @@ def randominventory(bot, instigator):
     if randomfindchance >= 90:
         randominventoryfind = 'true'
     return randominventoryfind
-
-def halfhourpotionwinner(bot, randomuarray):
-    winnerselectarray = []
-    recentwinnersarray = get_database_value(bot, duelrecorduser, 'lasttimedlootwinners') or []
-    lasttimedlootwinner = get_database_value(bot, duelrecorduser, 'lasttimedlootwinner') or bot.nick
-    howmanyusers = len(randomuarray)
-    if not howmanyusers > 1:
-        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinner')
-    for x in randomuarray:
-        if x not in recentwinnersarray and x != lasttimedlootwinner:
-            winnerselectarray.append(x)
-    if winnerselectarray == [] and randomuarray != []:
-        reset_database_value(bot, duelrecorduser, 'lasttimedlootwinners')
-        return halfhourpotionwinner(bot, randomuarray)
-    lootwinner = get_trigger_arg(winnerselectarray, 'random') or bot.nick
-    adjust_database_array(bot, duelrecorduser, [lootwinner], 'lasttimedlootwinners', 'add')
-    set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', lootwinner)
-    return lootwinner
 
 ######################
 ## Weapon Selection ##
@@ -3532,7 +3551,6 @@ def duelrecordwipe(bot):
         reset_database_value(bot, duelrecorduser, record)
         reset_database_value(bot, bot.nick, record)
     
-
 def statreset(bot, nick):
     now = time.time()
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
@@ -3549,19 +3567,11 @@ def statreset(bot, nick):
         reset_database_value(bot, nick, "usage_total")
         reset_database_value(bot, nick, "roulettepayout")
 
-################
-## Tier ratio ##
-################
+######################
+## Winner Selection ##
+######################
 
-def tierratio_level(bot):
-    currenttier = get_database_value(bot, duelrecorduser, 'leveling_tier') or 1
-    tierratio = get_trigger_arg(commandarray_tier_ratio, currenttier) or 1
-    return tierratio
-
-###################
-## Select Winner ##
-###################
-
+## Select winner from an array (stat based)
 def selectwinner(bot, nickarray):
     statcheckarray = ['health','record_xp','record_kills','record_respawns','streak_win_current']
 
@@ -3651,6 +3661,7 @@ def selectwinner(bot, nickarray):
 
     return winner
 
+## Max diceroll
 def winnerdicerolling(bot, nick, rolls):
     nickclass = get_database_value(bot, nick, 'class_setting') or ''
     rolla = 0
@@ -3701,6 +3712,7 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
 ## ScoreCard ##
 ###############
 
+## compare wins/losses
 def get_winlossratio(bot,target):
     wins = get_database_value(bot, target, 'record_wins')
     wins = int(wins)
@@ -3724,29 +3736,35 @@ def get_winlossratio(bot,target):
 ## Database ##
 ##############
 
+## Get a value
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
+## set a value
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
 
+## set a value to None
 def reset_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, None)
 
+## add or subtract from current value
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('duels_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
+## array stored in database length
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
 
+## array stored in database, add or remove elements
 def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
@@ -3770,13 +3788,132 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     else:
         set_database_value(bot, nick, databasekey, adjustarray)
 
-##########
-## ARGS ##
-##########
+#############################
+## Array/List Manipulation ##
+#############################
 
-def get_trigger_arg(triggerargsarray, number):
+## Convert String to array
+def create_array(bot, input):
+    output = []
+    if inputs:
+        for word in inputs.split():
+            output.append(word)
+    return output
+
+def reverse_array(bot, inputs):
+    if not isinstance(inputs, list):
+        temparray = []
+        for word in inputs.split():
+            temparray.append(word)
+        if len(temparray) == 1:
+            return temparray
+        inputs = []
+        for element in temparray:
+            inputs.append(element)
+    if len(totalarray) == 1:
+        return inputs
+    temparray = []
+    for d in inputs:
+        temparray.append(d)
+    temparray.reverse()
+    return temparray
+    
+
+
+        
+        tempvar = targetarray
+        targetarray = []
+        targetarray.append(tempvar)
+    
+    totalarray = len(triggerargsarray)
+
+def get_trigger_arg(triggerargsarray, outputtask):
+    totalarray = len(triggerargsarray)
+    totalarray = totalarray + 1
+    triggerarg = ''
+    ## Comma Seperated List
+    if outputtask == 'list':
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg  = str(triggerarg  + ", " + x)
+            else:
+                triggerarg  = str(x)
+        return triggerarg
+    ## Random Entry from array
+    if outputtask == 'random':
+        if triggerargsarray == []:
+            return triggerarg
+        temparray = []
+        for d in triggerargsarray:
+            temparray.append(d)
+        shuffledarray = random.shuffle(temparray)
+        randomselected = random.randint(0,len(temparray) - 1)
+        triggerarg = str(temparray [randomselected])
+        return triggerarg
+    ## Last
+    if outputtask == 'last':
+        if totalarray > 1:
+            totalarray = totalarray -2
+            triggerarg = str(triggerargsarray[totalarray])
+        return triggerarg
+    ## Complete
+    if outputtask == 0:
+        for x in triggerargsarray:
+            if triggerarg != '':
+                triggerarg = str(triggerarg + " " + str(x))
+            else:
+                triggerarg = str(x)
+        return triggerarg
+    ## Other
+    if "^" in str(outputtask) or outputtask == 0 or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
+        if str(outputtask).endswith("+"):
+            rangea = re.sub(r"\+", '', str(outputtask))
+            rangea = int(rangea)
+            rangeb = totalarray
+        elif str(outputtask).endswith("-"):
+            rangea = 1
+            rangeb = re.sub(r"-", '', str(outputtask))
+            rangeb = int(rangeb) + 1
+        elif str(outputtask).endswith(">"):
+            rangea = re.sub(r">", '', str(outputtask))
+            rangea = int(rangea) + 1
+            rangeb = totalarray
+        elif str(outputtask).endswith("<"):
+            rangea = 1
+            rangeb = re.sub(r"<", '', str(outputtask))
+            rangeb = int(rangeb)
+        elif "^" in str(outputtask):
+            rangea = outputtask.split("^", 1)[0]
+            rangeb = outputtask.split("^", 1)[1]
+            rangea = int(rangea)
+            rangeb = int(rangeb) + 1
+        if rangea <= totalarray:
+            for i in range(rangea,rangeb):
+                arg = get_trigger_arg(triggerargsarray, i)
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
+    elif str(outputtask).endswith("!"):
+        outputtask = re.sub(r"!", '', str(outputtask))
+        for i in range(1,totalarray):
+            if int(i) != int(outputtask):
+                arg = get_trigger_arg(triggerargsarray, i)
+                if triggerarg != '':
+                    triggerarg = str(triggerarg + " " + arg)
+                else:
+                    triggerarg = str(arg)
+    else:
+        outputtask = int(outputtask) - 1
+        try:
+            triggerarg = triggerargsarray[outputtask]
+        except IndexError:
+            triggerarg = ''
+    return triggerarg
+
+def get_trigger_arg_orig(triggerargsarray, outputtask):
     ## Create
-    if number == 'create':
+    if outputtask == 'create':
         triggerargsarraynew = []
         if triggerargsarray:
             for word in triggerargsarray.split():
@@ -3784,7 +3921,7 @@ def get_trigger_arg(triggerargsarray, number):
         return triggerargsarraynew
     totalarray = len(triggerargsarray)
     ## Reversed
-    if number == 'reverse':
+    if outputtask == 'reverse':
         if totalarray == 1:
             return triggerargsarray
         temparray = []
@@ -3796,7 +3933,7 @@ def get_trigger_arg(triggerargsarray, number):
     totalarray = totalarray + 1
     triggerarg = ''
     ## Comma Seperated List
-    if number == 'list':
+    if outputtask == 'list':
         for x in triggerargsarray:
             if triggerarg != '':
                 triggerarg  = str(triggerarg  + ", " + x)
@@ -3804,7 +3941,7 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg  = str(x)
         return triggerarg
     ## Random Entry from array
-    if number == 'random':
+    if outputtask == 'random':
         if triggerargsarray == []:
             return triggerarg
         temparray = []
@@ -3815,13 +3952,13 @@ def get_trigger_arg(triggerargsarray, number):
         triggerarg = str(temparray [randomselected])
         return triggerarg
     ## Last
-    if number == 'last':
+    if outputtask == 'last':
         if totalarray > 1:
             totalarray = totalarray -2
             triggerarg = str(triggerargsarray[totalarray])
         return triggerarg
     ## Complete
-    if number == 0:
+    if outputtask == 0:
         for x in triggerargsarray:
             if triggerarg != '':
                 triggerarg = str(triggerarg + " " + str(x))
@@ -3829,26 +3966,26 @@ def get_trigger_arg(triggerargsarray, number):
                 triggerarg = str(x)
         return triggerarg
     ## Other
-    if "^" in str(number) or number == 0 or str(number).endswith("+") or str(number).endswith("-") or str(number).endswith("<") or str(number).endswith(">"):
-        if str(number).endswith("+"):
-            rangea = re.sub(r"\+", '', str(number))
+    if "^" in str(outputtask) or outputtask == 0 or str(outputtask).endswith("+") or str(outputtask).endswith("-") or str(outputtask).endswith("<") or str(outputtask).endswith(">"):
+        if str(outputtask).endswith("+"):
+            rangea = re.sub(r"\+", '', str(outputtask))
             rangea = int(rangea)
             rangeb = totalarray
-        elif str(number).endswith("-"):
+        elif str(outputtask).endswith("-"):
             rangea = 1
-            rangeb = re.sub(r"-", '', str(number))
+            rangeb = re.sub(r"-", '', str(outputtask))
             rangeb = int(rangeb) + 1
-        elif str(number).endswith(">"):
-            rangea = re.sub(r">", '', str(number))
+        elif str(outputtask).endswith(">"):
+            rangea = re.sub(r">", '', str(outputtask))
             rangea = int(rangea) + 1
             rangeb = totalarray
-        elif str(number).endswith("<"):
+        elif str(outputtask).endswith("<"):
             rangea = 1
-            rangeb = re.sub(r"<", '', str(number))
+            rangeb = re.sub(r"<", '', str(outputtask))
             rangeb = int(rangeb)
-        elif "^" in str(number):
-            rangea = number.split("^", 1)[0]
-            rangeb = number.split("^", 1)[1]
+        elif "^" in str(outputtask):
+            rangea = outputtask.split("^", 1)[0]
+            rangeb = outputtask.split("^", 1)[1]
             rangea = int(rangea)
             rangeb = int(rangeb) + 1
         if rangea <= totalarray:
@@ -3858,19 +3995,19 @@ def get_trigger_arg(triggerargsarray, number):
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
-    elif str(number).endswith("!"):
-        number = re.sub(r"!", '', str(number))
+    elif str(outputtask).endswith("!"):
+        outputtask = re.sub(r"!", '', str(outputtask))
         for i in range(1,totalarray):
-            if int(i) != int(number):
+            if int(i) != int(outputtask):
                 arg = get_trigger_arg(triggerargsarray, i)
                 if triggerarg != '':
                     triggerarg = str(triggerarg + " " + arg)
                 else:
                     triggerarg = str(arg)
     else:
-        number = int(number) - 1
+        outputtask = int(outputtask) - 1
         try:
-            triggerarg = triggerargsarray[number]
+            triggerarg = triggerargsarray[outputtask]
         except IndexError:
             triggerarg = ''
     return triggerarg
