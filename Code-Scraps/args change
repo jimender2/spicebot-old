@@ -1,0 +1,6 @@
+
+## old
+get_trigger_arg(triggerargsarray, 0)
+
+## new
+get_trigger_arg(bot, triggerargsarray, 0)
