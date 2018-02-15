@@ -76,7 +76,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("This function is only available for bot admins.")
     elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset':
         bot.say("I'm not sure who that is.")
-    elif isntigator == 'IT_Sean':
+    elif instigator == 'IT_Sean':
         okaytoclaim = 0
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
         if claimedby == '':
