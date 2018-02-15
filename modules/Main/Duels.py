@@ -894,7 +894,7 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     target = get_trigger_arg(bot, triggerargsarray, 2)
     if not target:
-        onscreentext(bot, gameenabledchannels, "Online Docs: " + GITWIKIURL)
+        onscreentext(bot, inchannel, "Online Docs: " + GITWIKIURL)
         #bot.say("Online Docs: " + GITWIKIURL)
         return
     ## private message player
