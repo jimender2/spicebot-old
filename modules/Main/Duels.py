@@ -418,7 +418,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check if target is valid
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg,instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
 
     ## Check that the target doesn't have a timeout preventing them from playing
@@ -628,7 +628,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Damage
         if classloser == 'rogue':
-            bot.say(winner)
             if winner == loser or winner == bot.nick:
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
@@ -900,7 +899,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     bot.notice("Online Docs: " + GITWIKIURL, target)
 
@@ -994,7 +993,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
                 return
         validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
@@ -1140,7 +1139,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         targettier = get_database_value(bot, command, 'leveling_tier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
@@ -1636,7 +1635,7 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
         targetcom = bot.nick
     validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget and targetcom != bot.nick:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     totaluses = get_database_value(bot, targetcom, 'usage_total')
     targetcom = actualname(bot, targetcomname)
@@ -1670,7 +1669,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
     else:
         validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         executedueling, executeduelingmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
         if not executedueling:
@@ -1746,7 +1745,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     target = actualname(bot, target)
     streak_type = get_database_value(bot, target, 'streak_type_current') or 'none'
@@ -1785,7 +1784,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     target = actualname(bot, target)
     targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
@@ -1920,7 +1919,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         target = actualname(bot, target)
         dispmsgarray = []
@@ -2029,14 +2028,11 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
 
 ## Bounty ## TODO
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    if not inchannel.startswith("#"):
-        bot.notice(instigator + " Bounties must be in channel.", instigator)
-        return
     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
     target = get_trigger_arg(bot, triggerargsarray, 2)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     target = actualname(bot, target)
     amount = get_trigger_arg(bot, triggerargsarray, 3)
@@ -2070,7 +2066,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         target = actualname(bot, target)
         dispmsgarray = []
@@ -2210,7 +2206,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 return
             validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
             if not validtarget:
-                bot.notice(validtargetmsg, instigator)
+                onscreentext(bot, [instigator], validtargetmsg)
                 return
             target = actualname(bot, target)
             targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
@@ -2429,7 +2425,7 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
     weaponslist = get_database_value(bot, target, 'weaponslocker_complete') or []
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.notice(validtargetmsg, instigator)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     target = actualname(bot, target)
     if not adjustmentdirection:
@@ -2507,7 +2503,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            bot.notice(validtargetmsg, instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
             return
         if target == bot.nick:
             bot.notice(instigator + ", I am immune to magic " + magicusage, instigator)
@@ -2913,48 +2909,54 @@ def tierratio_level(bot):
 def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands):
 
     ## Guilty until proven Innocent
-    validtarget = 0
-    validtargetmsg = ''
+    validtarget = 1
+    validtargetmsg = []
+    validtargetmsga = []
 
     ## Null Target
     if not target:
-        validtargetmsg = str(instigator + ", you must specify a target.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append("You must specify a target.")
 
     ## Bot
     if target == bot.nick or target == 'duelrecorduser':
-        validtargetmsg = str(instigator + ", " + target + " can't be targeted.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append(target + " can't be targeted.")
 
     ## Target can't be a valid command
     if target.lower() in validcommands:
-        validtargetmsg = str(instigator + ", " + target + "'s nick is the same as a valid command for duels.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append(target + "'s nick is the same as a valid command for duels.")
 
     ## Target can't be duelrecorduser
     if target.lower() == duelrecorduser:
-        validtargetmsg = str(instigator + ", " + target + "'s nick is unusable for duels.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append(target + "'s nick is unusable for duels.")
 
     ## Offline User
     if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
+        validtarget = 0
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + target + " is offline right now.")
-        return validtarget, validtargetmsg
+        validtargetmsga.append(target + " is offline right now.")
 
     ## Opted Out
     if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + target + " has duels disabled.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append(target + " has duels disabled.")
 
     ## None of the above
     if target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
-        validtargetmsg = str(instigator + ", " + target + " is either not here, or not a valid nick to target.")
-        return validtarget, validtargetmsg
+        validtarget = 0
+        validtargetmsga.append(target + " is either not here, or not a valid nick to target.")
 
-    validtarget = 1
+    if validtarget == 0:
+        validtargetmsg.append(instigator + ", ")
+        for x in validtargetmsga:
+            validtargetmsg.append(x)
+        
+
     return validtarget, validtargetmsg
 
 # mustpassthesetoduel
