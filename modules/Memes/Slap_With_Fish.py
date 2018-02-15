@@ -16,11 +16,24 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
+    reason = get_trigger_arg(triggerargsarray, '2+')
+    message = "Whoops, something went wrong."
+    # Nothing specified
     if not target:
-        bot.say("Who would you like to slap with a fish?")
-    elif target.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
-    elif target == bot.nick:
+        bot.say("Who/what would you like to slap with a fish?")
+    
+    # Can't slap the bot
+    if target == bot.nick:
         bot.say("I will not do that!!")
+    
+    # Target is fine
     else:
-        bot.say(trigger.nick + " slaps " + target + " with a fish.")
+        if not reason:
+            message = trigger.nick + " slaps " + target + " with a fish."
+        else:
+            reason.startswith('for'):
+                message = trigger.nick + " slaps " + target + " with a fish " + reason + "."
+            else:
+                message = trigger.nick + " slaps " + target + " with a fish for " + reason + "."
+        bot.say(message)
+        
