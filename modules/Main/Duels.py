@@ -2908,7 +2908,7 @@ def tierratio_level(bot):
 #####################
 
 ## Target
-def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands, validcommands):
+def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands):
 
     ## Guilty until proven Innocent
     validtarget = 0
