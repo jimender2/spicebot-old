@@ -418,7 +418,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check if target is valid
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, instigator, validtargetmsg)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
 
     ## Check that the target doesn't have a timeout preventing them from playing
@@ -2030,7 +2030,6 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
 
 ## Bounty ## TODO
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
     target = get_trigger_arg(bot, triggerargsarray, 2)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
@@ -2038,22 +2037,25 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
         return
     target = actualname(bot, target)
     amount = get_trigger_arg(bot, triggerargsarray, 3)
-    if not amount.isdigit():
+    if not str(amount).isdigit():
+        onscreentext(bot, instigator, "Invalid Amount.")
         bot.say("Invalid Amount.")
         return
     amount = int(amount)
     if not amount:
         bot.say("How much of a bounty do you wish to place on "+target+".")
-    elif int(instigatorcoin) < int(amount):
+        return
+    instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
+    if int(instigatorcoin) < int(amount):
         bot.say("Insufficient Funds.")
+        return
+    adjust_database_value(bot, instigator, 'loot_coin', -abs(amount))
+    bountyontarget = get_database_value(bot, target, 'bounty_amount') or 0
+    if not bountyontarget:
+       bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
     else:
-        adjust_database_value(bot, instigator, 'loot_coin', -abs(amount))
-        bountyontarget = get_database_value(bot, target, 'bounty_amount') or 0
-        if not bountyontarget:
-           bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
-        else:
-           bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
-        adjust_database_value(bot, target, 'bounty_amount', amount)
+       bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
+    adjust_database_value(bot, target, 'bounty_amount', amount)
 
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
