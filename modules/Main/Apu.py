@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    decide = random.randint(1,3)
+    decide = random.randint(1,10)
     if decide == 1:
         bot.action("needs the Kwik-E-Mart")
         time.sleep(2)
