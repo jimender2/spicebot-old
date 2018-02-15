@@ -559,8 +559,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Select winner Based on Stats
         if target == bot.nick:
             winner = bot.nick
-            loser = mainduelername
-            losername = targetname
+            loser = maindueler
+            losername = maindueler
         elif target == maindueler:
             winner = maindueler
             loser = maindueler
@@ -572,7 +572,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 losername = targetname
             else:
                 loser = maindueler
-                losername = mainduelername
+                losername = maindueler
         if winner == maindueler:
             adjust_database_value(bot, maindueler, 'assault_wins', 1)
             adjust_database_value(bot, target, 'assault_losses', 1)
