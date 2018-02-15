@@ -424,7 +424,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check that the target doesn't have a timeout preventing them from playing
     executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
     if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
 
     ## Perform Lockout, run target duel, then unlock
@@ -1348,7 +1348,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        bot.notice(validtargetmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
@@ -1396,7 +1396,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        bot.notice(validtargetmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
@@ -1593,7 +1593,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        bot.notice(validtargetmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
@@ -1647,7 +1647,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
     if not subcommand:
         if instigator not in canduelarray:
             canduel, validtargetmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
-            bot.notice(validtargetmsg,instigator)
+            onscreentext(bot, [instigator], validtargetmsg)
         bot.notice(instigator + ", It looks like you can duel.", instigator)
     elif subcommand == 'colosseum' or subcommand == 'assault':
         ## TODO: alt commands
@@ -1673,7 +1673,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
             return
         executedueling, executeduelingmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
         if not executedueling:
-            bot.notice(executeduelingmsg,instigator)
+            onscreentext(bot, [instigator], executeduelingmsg)
             return
         subcommand = actualname(bot, subcommand)
         if subcommand in canduelarray and instigator in canduelarray:
@@ -3000,27 +3000,27 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
-        validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+        validtargetmsga.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     if userb == useralastfought and howmanyduelsers > 2:
-        validtargetmsg = str(usera + ', You may not fight the same person twice in a row.')
+        validtargetmsga.append('You may not fight the same person twice in a row.')
         validtarget = 0
 
     ## usera Timeout
     if useratime <= USERTIMEOUT:
-        validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
+        validtargetmsga.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
         validtarget = 0
 
     ## Target Timeout
     if userbtime <= USERTIMEOUT:
-        validtargetmsg = str(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
+        validtargetmsga.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
         validtarget = 0
 
     ## Channel Timeout
     if channeltime <= CHANTIMEOUT:
-        validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+        validtargetmsga.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
         validtarget = 0
 
     if validtarget == 0:
@@ -3033,37 +3033,45 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 ## Events
 def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel):
 
-    ## Pass Go is no
-    validtarget = 0
-    validtargetmsg = ''
+    ## Guilty until proven Innocent
+    validtarget = 1
+    validtargetmsg = []
+    validtargetmsga = []
 
     if canduelarray == []:
-        validtargetmsg = str(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.")
+        validtarget = 0
+        validtargetmsga.append(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.")
         return validtarget, validtargetmsg
 
     ## Devroom bypass
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
     if inchannel in devenabledchannels:
-       validtarget = 1
        return validtarget, validtargetmsg
 
     if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, instigator, instigator, currentduelplayersarray, inchannel)
-        return validtarget, validtargetmsg
+        validtarget = 0
+        canduel, validtargetmsgb = duelcriteria(bot, instigator, instigator, currentduelplayersarray, inchannel)
+        for x in validtargetmsgb:
+            validtargetmsga.append(x)
+
 
     timeouteval = eval("timeout_"+commandortarget.lower())
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
     getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
 
     if getlastusage < timeouteval:
-        validtargetmsg = str(instigator + ", full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".")
-        return validtarget, validtargetmsg
+        validtargetmsga.append("Full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".")
+        validtarget = 0
 
     if getlastinstigator == instigator:
-        validtargetmsg = str(instigator + ", You may not instigate a full channel " + commandortarget + " event twice in a row.")
-        return validtarget, validtargetmsg
+        validtargetmsga.append("You may not instigate a full channel " + commandortarget + " event twice in a row.")
+        validtarget = 0
 
-    validtarget = 1
+    if validtarget == 0:
+        validtargetmsg.append(instigator + ", ")
+        for x in validtargetmsga:
+            validtargetmsg.append(x)
+    
     return validtarget, validtargetmsg
 
 ############
