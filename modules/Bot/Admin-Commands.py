@@ -88,9 +88,9 @@ def main_command(bot, trigger):
             elif commandtoenable == 'all':
                 if dircommand == 'enable':
                     for x in cmdarray:
-                        adjust_database_array(bot, channel, x, 'channelmodules', 'add')
+                        adjust_botdatabase_array(bot, channel, x, 'channelmodules', 'add')
                 else:
-                    adjust_database_array(bot, channel, x, 'channelmodules', None)
+                    adjust_botdatabase_array(bot, channel, x, 'channelmodules', None)
                 bot.say("All Commands should now be "+str(dircommand)+"d for " + channel + ".")
             elif dircommand == 'enable' and commandtoenable not in cmdarray:
                 bot.say("It looks like that is an invalid command to enable.")
@@ -100,9 +100,9 @@ def main_command(bot, trigger):
                 bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + channel + ".")
             else:
                 if dircommand == 'enable':
-                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'add')
+                    adjust_botdatabase_array(bot, channel, commandtoenable, 'channelmodules', 'add')
                 else:
-                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'del')
+                    adjust_botdatabase_array(bot, channel, commandtoenable, 'channelmodules', 'del')
                 bot.say(commandtoenable + " should now be "+str(dircommand)+"d for " + channel + ".")
 
     ## do a /me action for the bot in channel
