@@ -937,7 +937,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
-        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime)))
+        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))))
         return
 
     ## check if player already has duels off
