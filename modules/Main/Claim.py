@@ -150,7 +150,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dayspassed = timepassed.days
             if timepassed.days > int(maxtime):
                 if instigator == 'Reginald':
-                    message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!")
+                    message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!"
                 else:
                     message = instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!"
                 bot.say(message)
