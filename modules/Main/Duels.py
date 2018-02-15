@@ -269,7 +269,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
     commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
     if not fullcommandusedtotal:
-        bot.notice(instigator + ", you must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL, instigator)
+        osd_notice(bot, instigator, "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
         return
 
     ## Game Enabled in what channels
@@ -278,11 +278,11 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if gameenabledchannels == []:
         if not trigger.admin:
-            bot.notice(instigator + ", duels has not been enabled in any channels. Talk to a bot admin.", instigator)
+            osd_notice(bot, instigator, "Duels has not been enabled in any channels. Talk to a bot admin.")
             return
     if inchannel not in gameenabledchannels and inchannel.startswith("#"):
         if not trigger.admin:
-            bot.notice(instigator + ", duels has not been enabled in " + inchannel + ". Talk to a bot admin.", instigator)
+            osd_notice(bot, instigator, "Duels has not been enabled in " + inchannel + ". Talk to a bot admin.")
             return
 
     ## dev bypass
@@ -305,18 +305,18 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Instigator can't be a command, and can't enable duels
     if instigator.lower() in validcommands:
-        bot.notice(instigator + ", your nick is the same as a valid command for duels.", instigator)
+        osd_notice(bot, instigator, "Your nick is the same as a valid command for duels.")
         return
 
     ## Instigator can't duelrecorduser
     if instigator.lower() == duelrecorduser:
-        bot.notice(instigator + ", your nick is not able to play duels.", instigator)
+        osd_notice(bot, instigator, "Your nick is not able to play duels.")
         return
 
     ## Check if Instigator is Opted in
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     if instigator not in dueloptedinarray and commandortarget.lower() not in commandarray_instigator_bypass:
-        bot.notice(instigator + ", you are not opted into duels. Run `.duel on` to enable duels.", instigator)
+        osd_notice(bot, instigator, "You are not opted into duels. Run `.duel on` to enable duels.")
         return
 
     ## Current Duelable Players
@@ -351,7 +351,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
                 triggerargsarraypart = get_trigger_arg(bot, comsplit, 'create')
                 commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands)
             else:
-                bot.notice(instigator + ", you may only daisychain 5 commands.", instigator)
+                osd_notice(bot, instigator, "You may only daisychain 5 commands.")
                 return
 
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands):
@@ -362,7 +362,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 
     ## Cheap error handling for people that like to find issues
     if commandortarget.isdigit():
-        bot.notice(instigator + ", commands can't be numbers.", instigator)
+        osd_notice(bot, instigator, "Commands can't be numbers.")
         return
 
     ## Alternative commands
@@ -378,7 +378,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Inchannel Block
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
-        bot.notice(instigator + ", duel " + commandortarget + " must be in channel.", instigator)
+        osd_notice(bot, instigator, "Duel " + commandortarget + " must be in channel.")
         return
 
     ## Subcommand Versus Target
@@ -388,7 +388,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
             return
         else:
-            bot.notice(instigator + ", action duels should not be able to run commands. Targets Only", instigator)
+            osd_notice(bot, instigator, "Action duels should not be able to run commands. Targets Only")
             return
 
     ## Instigator versus Bot
@@ -403,7 +403,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 
     ## Targets must be dueled in channel
     if not inchannel.startswith("#"):
-        bot.notice(instigator + ", duels must be in channel.", instigator)
+        osd_notice(bot, instigator, "Duels must be in channel.")
         return
 
     ## Lockout Check, don't allow multiple duels simultaneously
@@ -411,7 +411,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if duelslockout:
         lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
         if lockoutsince < duel_lockout_timer:
-            bot.notice(instigator + ", duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.", instigator)
+            osd_notice(bot, instigator, "Duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.")
             return
         reset_database_value(bot, duelrecorduser, 'duelslockout')
 
@@ -458,7 +458,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 
     ## Admin Command Blocker
     if commandortarget.lower() in commandarray_admin and not trigger.admin:
-        bot.notice(instigator + ", this admin function is only available to bot admins.", instigator)
+        osd_notice(bot, instigator, "This admin function is only available to bot admins.")
         return
 
     ## Is the Tier Unlocked?
@@ -901,7 +901,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not validtarget:
         onscreentext(bot, [instigator], validtargetmsg)
         return
-    bot.notice("Online Docs: " + GITWIKIURL, target)
+    osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
 
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -909,18 +909,18 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
+        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime)))
         return
 
     ## check if player already has duels on
     if instigator.lower() in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like you already have duels on.", instigator)
+        osd_notice(bot, instigator, "It looks like you already have duels on.")
         return
 
     ## make the adjustment
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
     set_database_value(bot, instigator, 'timeout_opttime', now)
-    bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
+    osd_notice(bot, instigator, "Duels should now be " +  commandortarget + " for you.")
 
     ## Anounce to channels
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
@@ -937,18 +937,18 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
-        bot.notice(instigator + " It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))), instigator)
+        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime)))
         return
 
     ## check if player already has duels off
     if instigator.lower() not in [x.lower() for x in dueloptedinarray]:
-        bot.notice(instigator + ", It looks like you already have duels off.", instigator)
+        osd_notice(bot, instigator, "It looks like you already have duels off.")
         return
 
     ## make the adjustment
     adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'del')
     set_database_value(bot, instigator, 'timeout_opttime', now)
-    bot.notice(instigator + ", duels should now be " +  commandortarget + " for you.", instigator)
+    osd_notice(bot, instigator, "Duels should now be " +  commandortarget + " for you.")
 
     ## Anounce to channels
     gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
@@ -961,27 +961,27 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     command = get_trigger_arg(bot, triggerargsarray, 2)
     if not command:
-        bot.notice("On/Off", instigator)
+        osd_notice(bot, instigator, "Options are On or Off.")
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
-        bot.notice(instigator + ", duels  is on in " + inchannel + ".", instigator)
+        osd_notice(bot, instigator, "Duels is on in " + inchannel + ".")
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
-        bot.notice(instigator + ", duels  is off in " + inchannel + ".", instigator)
+        osd_notice(bot, instigator, "Duels is off in " + inchannel + ".")
 
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     command = get_trigger_arg(bot, triggerargsarray, 2)
     if not command:
-        bot.notice("On/Off", instigator)
+        osd_notice(bot, instigator, "Options are On or Off.")
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
-        bot.notice(instigator + ", devmode  is on in " + inchannel + ".", instigator)
+        osd_notice(bot, instigator, "Devmode is on in " + inchannel + ".")
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
-        bot.notice(instigator + ", devmode  is off in " + inchannel + ".", instigator)
+        osd_notice(bot, instigator, "Devmode is off in " + inchannel + ".")
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -2915,51 +2915,44 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     ## Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
-    validtargetmsga = []
 
     ## Null Target
     if not target:
         validtarget = 0
-        validtargetmsga.append("You must specify a target.")
+        validtargetmsg.append("You must specify a target.")
 
     ## Bot
     if target == bot.nick or target == 'duelrecorduser':
         validtarget = 0
-        validtargetmsga.append(target + " can't be targeted.")
+        validtargetmsg.append(target + " can't be targeted.")
 
     ## Target can't be a valid command
     if target.lower() in validcommands:
         validtarget = 0
-        validtargetmsga.append(target + "'s nick is the same as a valid command for duels.")
+        validtargetmsg.append(target + "'s nick is the same as a valid command for duels.")
 
     ## Target can't be duelrecorduser
     if target.lower() == duelrecorduser:
         validtarget = 0
-        validtargetmsga.append(target + "'s nick is unusable for duels.")
+        validtargetmsg.append(target + "'s nick is unusable for duels.")
 
     ## Offline User
     if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
         validtarget = 0
         target = actualname(bot, target)
-        validtargetmsga.append(target + " is offline right now.")
+        validtargetmsg.append(target + " is offline right now.")
 
     ## Opted Out
     if target.lower() in [x.lower() for x in currentuserlistarray] and target.lower() not in [j.lower() for j in dueloptedinarray]:
         target = actualname(bot, target)
         validtarget = 0
-        validtargetmsga.append(target + " has duels disabled.")
+        validtargetmsg.append(target + " has duels disabled.")
 
     ## None of the above
     if target.lower() not in [y.lower() for y in currentuserlistarray]:
         target = actualname(bot, target)
         validtarget = 0
-        validtargetmsga.append(target + " is either not here, or not a valid nick to target.")
-
-    if validtarget == 0:
-        validtargetmsg.append(instigator + ", ")
-        for x in validtargetmsga:
-            validtargetmsg.append(x)
-        
+        validtargetmsg.append(target + " is either not here, or not a valid nick to target.")
 
     return validtarget, validtargetmsg
 
@@ -2969,7 +2962,6 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
     ## Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
-    validtargetmsga = []
 
     ## usera ignores lastfought
     useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
@@ -3004,33 +2996,28 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
-        validtargetmsga.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+        validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     if userb == useralastfought and howmanyduelsers > 2:
-        validtargetmsga.append('You may not fight the same person twice in a row.')
+        validtargetmsg.append('You may not fight the same person twice in a row.')
         validtarget = 0
 
     ## usera Timeout
     if useratime <= USERTIMEOUT:
-        validtargetmsga.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
+        validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
         validtarget = 0
 
     ## Target Timeout
     if userbtime <= USERTIMEOUT:
-        validtargetmsga.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
+        validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
         validtarget = 0
 
     ## Channel Timeout
     if channeltime <= CHANTIMEOUT:
-        validtargetmsga.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+        validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
         validtarget = 0
-
-    if validtarget == 0:
-        validtargetmsg.append(usera + ", ")
-        for x in validtargetmsga:
-            validtargetmsg.append(x)
             
     return validtarget, validtargetmsg
 
@@ -3040,11 +3027,10 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
     ## Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
-    validtargetmsga = []
 
     if canduelarray == []:
         validtarget = 0
-        validtargetmsga.append(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.")
+        validtargetmsg.append(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.")
         return validtarget, validtargetmsg
 
     ## Devroom bypass
@@ -3056,7 +3042,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         validtarget = 0
         canduel, validtargetmsgb = duelcriteria(bot, instigator, instigator, currentduelplayersarray, inchannel)
         for x in validtargetmsgb:
-            validtargetmsga.append(x)
+            validtargetmsg.append(x)
 
 
     timeouteval = eval("timeout_"+commandortarget.lower())
@@ -3064,17 +3050,13 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
     getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
 
     if getlastusage < timeouteval:
-        validtargetmsga.append("Full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".")
+        validtargetmsg.append("Full channel " + commandortarget + " event can't be used for "+str(hours_minutes_seconds((timeouteval - getlastusage)))+".")
         validtarget = 0
 
     if getlastinstigator == instigator:
-        validtargetmsga.append("You may not instigate a full channel " + commandortarget + " event twice in a row.")
+        validtargetmsg.append("You may not instigate a full channel " + commandortarget + " event twice in a row.")
         validtarget = 0
 
-    if validtarget == 0:
-        validtargetmsg.append(instigator + ", ")
-        for x in validtargetmsga:
-            validtargetmsg.append(x)
     
     return validtarget, validtargetmsg
 
@@ -3799,6 +3781,17 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ######################
 ## On Screen Text ##
 ######################
+
+def osd_notice(bot, target, textarraycomplete):
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    passthrough = []
+    passthrough.append(target + ", ")
+    for x in textarraycomplete:
+        passthrough.append(x)
+    onscreentext(bot, [target], passthrough)
 
 def onscreentext(bot, texttargetarray, textarraycomplete):
     if not isinstance(textarraycomplete, list):
