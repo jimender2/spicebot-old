@@ -25,9 +25,9 @@ def execute_main(bot, trigger, triggerargsarray):
     requested = get_trigger_arg(triggerargsarray, 0)
     myline = ''
     if not bot.nick.endswith(devbot):
-        filetocheck=cookies #Master branch
+        filetocheck=compliments #Master branch
     else:
-        filetocheck=devcookies #Dev branch
+        filetocheck=devcompliments #Dev branch
     if not requested:
         myline = randomcompliment(filetocheck)
     else:
