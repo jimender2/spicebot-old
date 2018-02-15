@@ -116,7 +116,7 @@ def execute_main(bot, trigger, triggerargsarray):
         # First time claimed
         if claimedby == '':
             if instigator == 'Reginald':
-                message = instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + claimed +"!"
+                message = instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!"
             else:
                 message = instigator + " urinates on " + target + "! Claimed!"
             bot.say(message)
