@@ -25,6 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(triggerargsarray, 1)
     admintarget = get_trigger_arg(triggerargsarray, 2)
+    masterurinator = 'Reginald'
     
     # Names of channel
     inchannel = trigger.sender
@@ -104,7 +105,8 @@ def execute_main(bot, trigger, triggerargsarray):
         okaytoclaim = 0
         bot.action("facepalms")
         bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
-        #take spicebucks
+        # Take Spicebucks from instigator (masterclaim)
+        Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
 
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
@@ -115,14 +117,16 @@ def execute_main(bot, trigger, triggerargsarray):
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
         # First time claimed
         if claimedby == '':
-            if instigator == 'Reginald':
+            if instigator == masterurinator:
                 message = instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!"
             else:
                 message = instigator + " urinates on " + target + "! Claimed!"
             bot.say(message)
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
-            #spicebucks give instigator,firstclaim
+            # Pay instigator Spicebucks (firstclaim)
+            Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
+            
         # Renewed claim
         elif claimedby == instigator:
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
@@ -131,14 +135,15 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > int(maxtime):
-                if instigator == 'Reginald':
+                if instigator == masterurinator:
                     message = instigator + " releases the contents of his bladder on " + target + " again! All should recognize this almighty renewal of ownership over " + target + "!"
                 else:
                     message = instigator + " urinates on " + target + " again! The claim has been renewed!"
                 bot.say(message)
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
-                #spicebucks give instigator,renewclaim
+                # Pay instigator Spicebucks (renewclaim)
+                Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
             else:
                 bot.say(instigator + ", you already claimed " + target +".")
         else:
@@ -149,14 +154,15 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > int(maxtime):
-                if instigator == 'Reginald':
+                if instigator == masterurinator:
                     message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!"
                 else:
                     message = instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!"
                 bot.say(message)
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
-                #spicebucks give instigator,renewclaim
+                # Pay instigator Spicebucks (stolenclaim)
+                Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
                 bot.say(target + " has already been claimed by " + str(claimedby) + ", so back off!")
     else:
