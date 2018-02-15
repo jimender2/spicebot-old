@@ -15,7 +15,7 @@ compliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Te
 devcompliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/compliments.txt'
 devbot='dev' ## Enables the bot to distinguish if in test
 
-@sopel.module.commands('ferengi')
+@sopel.module.commands('compliment')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
