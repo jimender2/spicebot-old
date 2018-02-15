@@ -2963,8 +2963,9 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
 def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Guilty until proven Innocent
-    validtarget = 0
-    validtargetmsg = ''
+    validtarget = 1
+    validtargetmsg = []
+    validtargetmsga = []
 
     ## usera ignores lastfought
     useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
@@ -3000,29 +3001,33 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
         validtargetmsg = str("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
-        return validtarget, validtargetmsg
+        validtarget = 0
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     if userb == useralastfought and howmanyduelsers > 2:
         validtargetmsg = str(usera + ', You may not fight the same person twice in a row.')
-        return validtarget, validtargetmsg
+        validtarget = 0
 
     ## usera Timeout
     if useratime <= USERTIMEOUT:
         validtargetmsg = str("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
-        return validtarget, validtargetmsg
+        validtarget = 0
 
     ## Target Timeout
     if userbtime <= USERTIMEOUT:
         validtargetmsg = str(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
-        return validtarget, validtargetmsg
+        validtarget = 0
 
     ## Channel Timeout
     if channeltime <= CHANTIMEOUT:
         validtargetmsg = str("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
-        return validtarget, validtargetmsg
+        validtarget = 0
 
-    validtarget = 1
+    if validtarget == 0:
+        validtargetmsg.append(instigator + ", ")
+        for x in validtargetmsga:
+            validtargetmsg.append(x)
+            
     return validtarget, validtargetmsg
 
 ## Events
