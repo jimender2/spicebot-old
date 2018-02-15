@@ -894,7 +894,8 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     target = get_trigger_arg(bot, triggerargsarray, 2)
     if not target:
-        bot.say("Online Docs: " + GITWIKIURL)
+        onscreentext(bot, gameenabledchannels, "Online Docs: " + GITWIKIURL)
+        #bot.say("Online Docs: " + GITWIKIURL)
         return
     ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
@@ -909,7 +910,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
-        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))))
+        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
         return
 
     ## check if player already has duels on
@@ -937,7 +938,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
-        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))))
+        osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
         return
 
     ## check if player already has duels off
