@@ -25,11 +25,11 @@ def execute_main(bot, trigger, triggerargsarray):
     myline = randomcookie(filetocheck)
     bot.say(myline)
        
-# random rule
+# random cookie
 def randomcookie(filetocheck):
     htmlfile=urllib.urlopen(filetocheck)
     lines=htmlfile.read().splitlines()
     myline=random.choice(lines)
     if not myline or myline == '\n':
-        myline = randomcookie()
+        myline = randomcookie(filetocheck)
     return myline

@@ -88,9 +88,9 @@ def main_command(bot, trigger):
             elif commandtoenable == 'all':
                 if dircommand == 'enable':
                     for x in cmdarray:
-                        adjust_database_array(bot, channel, x, 'channelmodules', 'add')
+                        adjust_botdatabase_array(bot, channel, x, 'channelmodules', 'add')
                 else:
-                    adjust_database_array(bot, channel, x, 'channelmodules', None)
+                    adjust_botdatabase_array(bot, channel, x, 'channelmodules', None)
                 bot.say("All Commands should now be "+str(dircommand)+"d for " + channel + ".")
             elif dircommand == 'enable' and commandtoenable not in cmdarray:
                 bot.say("It looks like that is an invalid command to enable.")
@@ -100,9 +100,9 @@ def main_command(bot, trigger):
                 bot.say("It looks like the "+ commandtoenable +" module is already "+str(dircommand)+"d for " + channel + ".")
             else:
                 if dircommand == 'enable':
-                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'add')
+                    adjust_botdatabase_array(bot, channel, commandtoenable, 'channelmodules', 'add')
                 else:
-                    adjust_database_array(bot, channel, commandtoenable, 'channelmodules', 'del')
+                    adjust_botdatabase_array(bot, channel, commandtoenable, 'channelmodules', 'del')
                 bot.say(commandtoenable + " should now be "+str(dircommand)+"d for " + channel + ".")
 
     ## do a /me action for the bot in channel
@@ -137,10 +137,10 @@ def main_command(bot, trigger):
             bot.say("I don't know who that is.")
         else:
             if adddel == 'add':
-                adjust_database_array(bot, botchannel, target, 'blockedusers', 'add')
+                adjust_botdatabase_array(bot, botchannel, target, 'blockedusers', 'add')
                 adddelword = "added to"
             else:
-                adjust_database_array(bot, botchannel, target, 'blockedusers', 'del')
+                adjust_botdatabase_array(bot, botchannel, target, 'blockedusers', 'del')
                 adddelword = "removed from"
             bot.say(target + " has been " + adddelword + " the " + botchannel + " block list.")
     
@@ -161,10 +161,10 @@ def main_command(bot, trigger):
             bot.say("I don't know who that is.")
         else:
             if adddel == 'add':
-                adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'add')
+                adjust_botdatabase_array(bot, bot.nick, target, 'githubblockedusers', 'add')
                 adddelword = "added to"
             else:
-                adjust_database_array(bot, bot.nick, target, 'githubblockedusers', 'del')
+                adjust_botdatabase_array(bot, bot.nick, target, 'githubblockedusers', 'del')
                 adddelword = "removed from"
             bot.say(target + " has been " + adddelword + " the " + botchannel + " github block list.")
     
@@ -179,9 +179,9 @@ def main_command(bot, trigger):
         elif target == 'everyone':
             for u in allusersinroomarray:
                 if disenablevalue == 1:
-                    adjust_database_array(bot, bot.nick, u, 'botusers', 'add')
+                    adjust_botdatabase_array(bot, bot.nick, u, 'botusers', 'add')
                 else:
-                    adjust_database_array(bot, bot.nick, u, 'botusers', 'del')
+                    adjust_botdatabase_array(bot, bot.nick, u, 'botusers', 'del')
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
         elif subcommand == 'on' and target.lower() in botusersarray:
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " on.", instigator)
@@ -189,9 +189,9 @@ def main_command(bot, trigger):
             bot.notice(instigator + ", It looks like " + target + " already has " + bot.nick + " off.", instigator)
         else:
             if disenablevalue == 1:
-                adjust_database_array(bot, bot.nick, target, 'botusers', 'add')
+                adjust_botdatabase_array(bot, bot.nick, target, 'botusers', 'add')
             else:
-                adjust_database_array(bot, bot.nick, target, 'botusers', 'del')
+                adjust_botdatabase_array(bot, bot.nick, target, 'botusers', 'del')
             bot.notice(instigator + ", " + bot.nick + " should now be " +  subcommand + ' for ' + target + '.', instigator)
     
 ###### admin only block
