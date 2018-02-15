@@ -3088,7 +3088,7 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
-    elif classwinner == 'vampire' and winnername != loser:
+    elif classwinner == 'vampire' and winnername != losername:
         damagetext = str(winnername + " drains " + str(damage)+ " health from " + losername + weapon + " in the " + bodypartname + ".")
     else:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ", dealing " + str(damage) + " damage.")
