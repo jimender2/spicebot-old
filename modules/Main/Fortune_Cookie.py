@@ -31,5 +31,5 @@ def randomcookie(filetocheck):
     lines=htmlfile.read().splitlines()
     myline=random.choice(lines)
     if not myline or myline == '\n':
-        myline = randomcookie()
+        myline = randomcookie(filetocheck)
     return myline
