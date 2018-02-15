@@ -20,7 +20,16 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
+## work with /me ACTION (does not work with manual weapon)
+@module.rule('^(?:feeling|feels.*(sad|upset)).*')
+@module.intent('ACTION')
+@module.require_chanmsg
+def duel_action(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'compliment')
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
+        
 def execute_main(bot, trigger, triggerargsarray):
     requested = get_trigger_arg(triggerargsarray, 0)
     myline = ''
