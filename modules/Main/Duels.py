@@ -418,7 +418,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check if target is valid
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        onscreentext(bot, instigator, validtargetmsg)
         return
 
     ## Check that the target doesn't have a timeout preventing them from playing
@@ -3279,34 +3279,6 @@ def bodypartarray(bot, nick):
             currentbodypartsarray.append(x)
     return currentbodypartsarray
 
-######################
-## On Screen Text ##
-######################
-
-def onscreentext(bot, texttargetarray, textarraycomplete):
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= 200:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
-            else:
-                bot.notice(combinedline, user)
-
 ################
 ## User Nicks ##
 ################
@@ -3820,6 +3792,44 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
         reset_database_value(bot, nick, databasekey)
     else:
         set_database_value(bot, nick, databasekey, adjustarray)
+
+
+######################
+## On Screen Text ##
+######################
+
+def onscreentext(bot, texttargetarray, textarraycomplete):
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    if not isinstance(texttargetarray, list):
+        target = texttargetarray
+        texttargetarray = []
+        texttargetarray.append(target)
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= 200:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+    for combinedline in combinedtextarray:
+        for user in texttargetarray:
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)
+
 
 ####################################
 ## Array/List/String Manipulation ##
