@@ -26,4 +26,4 @@ def execute_main(bot, trigger, triggerargsarray):
     else:	
         answer = get_trigger_arg(replies, 'random')
         bot.say(answer)
-		
+	
