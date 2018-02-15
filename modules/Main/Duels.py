@@ -1362,7 +1362,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
@@ -1402,7 +1402,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     if canduelarray == []:
         bot.notice(instigator + ", It looks like the full channel " + commandortarget + " event target finder has failed.", instigator)
@@ -1469,7 +1469,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     if instigator in canduelarray:
         canduelarray.remove(instigator)
@@ -1542,7 +1542,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        bot.notice(executeduelingmsg,instigator)
+        onscreentext(bot, [instigator], executeduelingmsg)
         return
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
