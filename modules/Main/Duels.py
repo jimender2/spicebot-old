@@ -1648,12 +1648,14 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
         if instigator not in canduelarray:
             canduel, validtargetmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
             onscreentext(bot, [instigator], validtargetmsg)
-        bot.notice(instigator + ", It looks like you can duel.", instigator)
+        else:
+            bot.notice(instigator + ", It looks like you can duel.", instigator)
     elif subcommand == 'colosseum' or subcommand == 'assault':
+        ## TODO new event types, maybe make an event array?
         ## TODO: alt commands
         executedueling, executeduelingmsg = eventchecks(bot, canduelarray, subcommand, instigator, currentduelplayersarray, inchannel)
         if not executedueling:
-            bot.notice(executeduelingmsg,instigator)
+            onscreentext(bot, [instigator], executeduelingmsg)
         else:
             bot.notice(instigator + ", It looks like full channel " + subcommand + " event can be used.", instigator)
     elif subcommand == 'list':
