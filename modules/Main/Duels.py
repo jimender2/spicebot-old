@@ -3024,7 +3024,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         validtarget = 0
 
     if validtarget == 0:
-        validtargetmsg.append(instigator + ", ")
+        validtargetmsg.append(usera + ", ")
         for x in validtargetmsga:
             validtargetmsg.append(x)
             
