@@ -3068,6 +3068,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
     roguearraynodamage = [bot.nick,loser]
     if classloser == 'rogue' and winner in roguearraynodamage:
         damage = 0
+        bot.say('test')
 
     ## Bot deals a set amount
     elif winner == bot.nick:
