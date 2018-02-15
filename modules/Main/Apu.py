@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     decide = random.randint(1,10)
     if decide == 1:
-        bot.action("needs the Kwik-E-Mart")
+        bot.say("Who needs the Kwik-E-Mart? I do...")
         time.sleep(2)
         bot.action("starts crying")
     else:
