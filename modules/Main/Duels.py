@@ -1348,7 +1348,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        onscreentext(bot, [instigator], executeduelingmsg)
+        onscreentext(bot, [instigator], validtargetmsg)
         return
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
