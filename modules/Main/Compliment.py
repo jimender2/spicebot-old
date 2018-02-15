@@ -58,7 +58,7 @@ def execute_main(bot, trigger, triggerargsarray):
     bot.say(myline)
 
 ## work with /me ACTION (does not work with manual weapon)
-@module.rule('(?:feeling|feels.*(sad|upset)).*')
+@module.rule('(?:(feeling|feels).*(sad|upset)).*')
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
