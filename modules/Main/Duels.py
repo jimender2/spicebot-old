@@ -3064,11 +3064,11 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 ## Damage Caused
 def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
+    botnick = bot.nick
     ## Rogue can't be hurt by themselves or bot
-    roguearraynodamage = [bot.nick,loser]
+    roguearraynodamage = [botnick,loser]
     if classloser == 'rogue' and winner in roguearraynodamage:
         damage = 0
-        bot.say('test')
 
     ## Bot deals a set amount
     elif winner == bot.nick:
