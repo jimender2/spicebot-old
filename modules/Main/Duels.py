@@ -627,20 +627,18 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        roguearray = []
-        if winner == loser or winner == bot.nick:
-            roguearray.append(winner)
-        if classloser == 'rogue' and winner in roguearray:
-            damage = 0
+        if classloser == 'rogue':
+            if winner == loser or winner == bot.nick:
+                damage = 0
+                damagetext = str(loser + " takes no damage in this encounter")
+            else:
+                damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
+                damage = int(damage)
+                damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
-
-        ## Damage Text
-        if classloser == 'rogue' and winner in roguearray:
-            damagetext = str(loser + " takes no damage in this encounter")
-        else:
-            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname, winner, loser)
+            damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         combattextarraycomplete.append(damagetext)
 
         ## Vampires gain health from wins
@@ -743,7 +741,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 striketypeb = get_trigger_arg(bot, duel_hit_types, 'random')
                 ## Damage
                 damageb = duels_damage(bot, tierscaling, classloser, classwinner, loser, winner)
-                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser, bodypartnameb, loser, winner)
+                damagetextb = duels_damage_text(bot, damage, loser, winner, bodypartb, striketypeb, weaponb, classloser, bodypartnameb)
                 combattextarraycomplete.append(damagetextb)
                 ## Damage Resist
                 if damage > 0:
@@ -3068,13 +3066,15 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     ## Rogue can't be hurt by themselves or bot
-    roguearraynodamage = [bot.nick,loser]
-    if classloser == 'rogue' and winner in roguearraynodamage:
+    if classloser == 'rogue' and winner == loser:
         damage = 0
 
     ## Bot deals a set amount
     elif winner == bot.nick:
-        damage = bot_damage
+        if classloser == 'rogue':
+            damage = 0
+        else:
+            damage = bot_damage
 
     ## Barbarians get extra damage (minimum)
     elif classwinner == 'barbarian':
@@ -3095,7 +3095,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
     return damage
 
 ## Damage Text
-def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname, winner, loser):
+def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, weapon, classwinner, bodypartname):
 
     if losername == winnername:
         losername = "themself"
