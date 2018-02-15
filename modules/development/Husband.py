@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if decide > 7:
         response = get_trigger_arg(actions, 'random')
         bot.action(response)
-	else:	
+    else:	
         answer = get_trigger_arg(replies, 'random')
         bot.say(answer)
 		
