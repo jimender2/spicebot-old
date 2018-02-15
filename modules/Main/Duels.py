@@ -3792,6 +3792,11 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
     for textstring in textarraycomplete:
         if currentstring == '':
             currentstring = textstring
+        elif len(textstring) > 200:
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+                currentstring = ''
+            combinedtextarray.append(textstring)
         else:
             tempstring = str(currentstring + "   " + textstring)
             if len(tempstring) <= 200:
@@ -3804,7 +3809,7 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
     for combinedline in combinedtextarray:
         for user in texttargetarray:
             if user == 'say':
-                onscreentext(bot, inchannel, combinedline)
+                bot.say(combinedline)
             elif user.startswith("#"):
                 bot.msg(user, combinedline)
             else:
