@@ -627,13 +627,16 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
-        damage = int(damage)
+        roguearray = []
+        if winner == loser or winner == bot.nick:
+            roguearray.append(winner)
+        if classloser == 'rogue' and winner in roguearray:
+            damage = 0
+        else:
+            damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
+            damage = int(damage)
 
         ## Damage Text
-        roguearray = [bot.nick]
-        if winner == loser:
-            roguearray.append(winner)
         if classloser == 'rogue' and winner in roguearray:
             damagetext = str(loser + " takes no damage in this encounter")
         else:
@@ -3066,7 +3069,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
 
     ## Rogue can't be hurt by themselves or bot
     roguearraynodamage = [bot.nick,loser]
-    if classloser == 'rogue' and winner.lower() in [x.lower() for x in roguearraynodamage]:
+    if classloser == 'rogue' and winner in roguearraynodamage:
         damage = 0
 
     ## Bot deals a set amount
