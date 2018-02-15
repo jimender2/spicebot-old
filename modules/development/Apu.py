@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+import os
 import sopel.module
 import sys
-import os
+import time
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -18,6 +19,7 @@ def execute_main(bot, trigger, triggerargsarray):
     decide = random.randint(1,3)
     if decide == 1:
         bot.action("needs the Kwik-E-Mart")
+        time.sleep(2)
         bot.action("starts crying")
     else:
         bot.say("Thank you, come again.")
