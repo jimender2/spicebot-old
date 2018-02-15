@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(triggerargsarray, 1)
     admintarget = get_trigger_arg(triggerargsarray, 2)
-    masterurinator = 'Reginald'
+    masterurinator = 'IT_Sean'
     
     # Names of channel
     inchannel = trigger.sender
