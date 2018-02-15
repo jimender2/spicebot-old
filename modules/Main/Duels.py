@@ -393,12 +393,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
 
     ## Instigator versus Bot
     if commandortarget.lower() == bot.nick.lower():
-        bot.say("I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        onscreentext(bot, inchannel, "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
         return
 
     ## Instigator versus Instigator
     if commandortarget.lower() == instigator.lower():
-        bot.say("If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command")
+        onscreentext(bot, inchannel, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
     ## Targets must be dueled in channel
@@ -424,7 +424,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check that the target doesn't have a timeout preventing them from playing
     executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
     if not executedueling:
-        onscreentext(bot, [instigator], executeduelingmsg)
+        osd_notice(bot, instigator, executeduelingmsg)
         return
 
     ## Perform Lockout, run target duel, then unlock
@@ -468,7 +468,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     tiermath = int(tiercommandeval) - int(currenttier)
     if int(tiercommandeval) > int(currenttier):
         if commandortarget.lower() not in commandarray_tier_self and not inchannel in devenabledchannels:
-            bot.say("Duel " + commandortarget + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
+            onscreentext(bot, inchannel, "Duel " + commandortarget + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
             return
 
     ## usage counter
@@ -888,7 +888,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
 ## Author Subcommand
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    bot.say("The author of Duels is deathbybandaid.")
+    onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -899,7 +899,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     ## private message player
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
 
@@ -993,7 +993,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
                 return
         validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
@@ -1055,7 +1055,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.lower() == 'next':
         nexttier = currenttier + 1
         if nexttier > 15:
-            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+            onscreentext(bot, inchannel, "Tiers do not got past 15 (Pure Capsaicin).")
             return
         nextpepper = pepper_tier(bot, nexttier)
         tiercheck = eval("commandarray_tier_unlocks_"+str(nexttier))
@@ -1092,7 +1092,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command.isdigit():
         command = int(command)
         if int(command) > 15:
-            bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+            onscreentext(bot, inchannel, "Tiers do not got past 15 (Pure Capsaicin).")
             return
         commandpepper = pepper_tier(bot, command)
         tiercheck = eval("commandarray_tier_unlocks_"+str(command))
@@ -1117,7 +1117,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if statleadername != '':
             nexttier = currenttier + 1
             if int(nexttier) > 15:
-                bot.say("Tiers do not got past 15 (Pure Capsaicin).")
+                onscreentext(bot, inchannel, "Tiers do not got past 15 (Pure Capsaicin).")
                 return
             tierxprequired = get_trigger_arg(bot, commandarray_xp_levels, nexttier)
             tierxpmath = tierxprequired - statleadernumber
@@ -1139,7 +1139,7 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
     else:
         validtarget, validtargetmsg = targetcheck(bot, command, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         targettier = get_database_value(bot, command, 'leveling_tier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier)+ ". ")
@@ -1151,9 +1151,9 @@ def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentu
 def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
     if target != instigator and target != 'confirm':
-        bot.say("You can't suicide other people. It's called Murder.")
+        onscreentext(bot, inchannel, "You can't suicide other people. It's called Murder.")
     elif target == instigator:
-        bot.say("You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
+        onscreentext(bot, inchannel, "You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
     else:
         suicidetextarray = suicidekill(bot,instigator)
         onscreentext(bot, ['say'], suicidetextarray)
@@ -1193,13 +1193,13 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ## Display Text
     instigatorcurse = get_database_value(bot, instigator, 'magic_curse') or 0
     if instigatorcurse:
-        bot.say(instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
+        onscreentext(bot, inchannel, instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
     elif roulettelastplayer == instigator and int(roulettecount) > 1:
-        bot.say(instigator + " spins the revolver and pulls the trigger.")
+        onscreentext(bot, inchannel, instigator + " spins the revolver and pulls the trigger.")
     elif int(roulettecount) == 1:
-        bot.say(instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
+        onscreentext(bot, inchannel, instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
-        bot.say(instigator + " spins the cylinder and pulls the trigger.")
+        onscreentext(bot, inchannel, instigator + " spins the cylinder and pulls the trigger.")
 
     ## Default 6 possible locations for bullet.
     ### curses
@@ -1236,7 +1236,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     ### current spin is safe
     if int(currentspin) != int(roulettechamber):
         time.sleep(2) # added to build suspense
-        bot.say("*click*")
+        onscreentext(bot, inchannel, "*click*")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
@@ -1348,7 +1348,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
@@ -1362,13 +1362,10 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        onscreentext(bot, [instigator], executeduelingmsg)
-        return
-    if canduelarray == []:
-        osd_notice(bot, instigator, "It looks like the full channel " + commandortarget + " event target finder has failed.")
+        osd_notice(bot, instigator, executeduelingmsg)
         return
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
-    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     for user in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, instigator, "assault_" + astat)
@@ -1396,16 +1393,13 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        onscreentext(bot, [instigator], executeduelingmsg)
+        osd_notice(bot, instigator, executeduelingmsg)
         return
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        onscreentext(bot, [instigator], executeduelingmsg)
-        return
-    if canduelarray == []:
-        osd_notice(bot, instigator, "It looks like the full channel " + commandortarget + " event target finder has failed.")
+        osd_notice(bot, instigator, executeduelingmsg)
         return
     totaltributes = len(canduelarray)
     totaltributesstart = totaltributes
@@ -1416,8 +1410,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     tierscaling = tierratio_level(bot)
     dispmsgarray = []
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
-    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
-    #bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     winnerorder = []
     while totaltributes > 0:
         totaltributes = totaltributes - 1
@@ -1469,7 +1462,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        onscreentext(bot, [instigator], executeduelingmsg)
+        osd_notice(bot, instigator, executeduelingmsg)
         return
     if instigator in canduelarray:
         canduelarray.remove(instigator)
@@ -1477,7 +1470,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
     tierscaling = tierratio_level(bot)
     dispmsgarray = []
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
-    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     totalplayers = len(canduelarray)
@@ -1542,7 +1535,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
         canduelarray.remove(bot.nick)
     executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
     if not executedueling:
-        onscreentext(bot, [instigator], executeduelingmsg)
+        osd_notice(bot, instigator, executeduelingmsg)
         return
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
@@ -1555,7 +1548,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
-    bot.say(instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     lastfoughtstart = get_database_value(bot, instigator, 'record_lastfought')
@@ -1593,7 +1586,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        onscreentext(bot, [instigator], executeduelingmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     if canduelarray == []:
         osd_notice(bot, instigator, "It looks like the full channel " + commandortarget + " event target finder has failed.")
@@ -1629,17 +1622,17 @@ def subcommand_usage(bot, instigator, triggerargsarray, botvisibleusers, current
             target = bot.nick
         totaluses = get_database_value(bot, target, 'usage_'+targetcom)
         target = actualname(bot, target)
-        bot.say(targetname + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
+        onscreentext(bot, inchannel, targetname + " has used duel " + str(targetcom) + " " + str(totaluses) + " times.")
         return
     if targetcom == 'channel':
         targetcom = bot.nick
     validtarget, validtargetmsg = targetcheck(bot, targetcom, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget and targetcom != bot.nick:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     totaluses = get_database_value(bot, targetcom, 'usage_total')
     targetcom = actualname(bot, targetcomname)
-    bot.say(targetcom + " has used duels " + str(totaluses) + " times.")
+    onscreentext(bot, inchannel, targetcom + " has used duels " + str(totaluses) + " times.")
 
 ## War Room
 def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1647,7 +1640,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
     if not subcommand:
         if instigator not in canduelarray:
             canduel, validtargetmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
         else:
             osd_notice(bot, instigator, "It looks like you can duel.")
     elif subcommand == 'colosseum' or subcommand == 'assault':
@@ -1655,7 +1648,7 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
         ## TODO: alt commands
         executedueling, executeduelingmsg = eventchecks(bot, canduelarray, subcommand, instigator, currentduelplayersarray, inchannel)
         if not executedueling:
-            onscreentext(bot, [instigator], executeduelingmsg)
+            osd_notice(bot, instigator, executeduelingmsg)
         else:
             osd_notice(bot, instigator, "It looks like full channel " + subcommand + " event can be used.")
     elif subcommand == 'list':
@@ -1665,17 +1658,17 @@ def subcommand_warroom(bot, instigator, triggerargsarray, botvisibleusers, curre
             canduelarray.remove(bot.nick)
         if canduelarray != []:
             displaymessage = get_trigger_arg(bot, canduelarray, "list")
-            bot.say(instigator + ", you may duel the following users: "+ str(displaymessage ))
+            onscreentext(bot, inchannel, instigator + ", you may duel the following users: "+ str(displaymessage ))
         else:
             osd_notice(bot, instigator, "It looks like nobody can duel at the moment.")
     else:
         validtarget, validtargetmsg = targetcheck(bot, subcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         executedueling, executeduelingmsg = duelcriteria(bot, instigator, subcommand, currentduelplayersarray, inchannel)
         if not executedueling:
-            onscreentext(bot, [instigator], executeduelingmsg)
+            osd_notice(bot, instigator, executeduelingmsg)
             return
         subcommand = actualname(bot, subcommand)
         if subcommand in canduelarray and instigator in canduelarray:
@@ -1700,7 +1693,7 @@ def subcommand_title(bot, instigator, triggerargsarray, botvisibleusers, current
         else:
             set_database_value(bot, instigator, 'title', titletoset)
             adjust_database_value(bot, instigator, 'loot_coin', -abs(title_cost))
-            bot.say(instigator + ", your title is now " + titletoset)
+            osd_notice(bot, instigator, "Your title is now " + titletoset + ".")
 
 ## Class
 def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1714,24 +1707,24 @@ def subcommand_class(bot, instigator, triggerargsarray, botvisibleusers, current
     instigatorclasstime = get_timesince_duels(bot, instigator, 'class_timeout')
     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
     if not instigatorclass and not subcommand:
-        bot.say("You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
+        osd_notice(bot, instigator, "You don't appear to have a class set. Options are : " + classes + ". Run .duel class set    to set your class.")
     elif not subcommand:
-        bot.say("Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
+        osd_notice(bot, instigator, "Your class is currently set to " + str(instigatorclass) + ". Use .duel class change    to change class. Options are : " + classes + ".")
     elif classtime < timeout_class and not inchannel in devenabledchannels:
-        bot.say("You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((timeout_class - instigatorclasstime)))+" to change.")
+        osd_notice(bot, instigator, "You may not change your class more than once per 24 hours. Please wait "+str(hours_minutes_seconds((timeout_class - instigatorclasstime)))+" to change.")
     elif subcommand not in subcommandarray:
-        bot.say("Invalid command. Options are set or change.")
+        osd_notice(bot, instigator, "Invalid command. Options are set or change.")
     elif not setclass:
-        bot.say("Which class would you like to use? Options are: " + classes +".")
+        osd_notice(bot, instigator, "Which class would you like to use? Options are: " + classes +".")
     elif instigatorcoin < class_cost and instigatorfreebie:
-        bot.say("Changing class costs " + str(class_cost) + " coin. You need more funding.")
+        osd_notice(bot, instigator, "Changing class costs " + str(class_cost) + " coin. You need more funding.")
     elif setclass not in class_array:
-        bot.say("Invalid class. Options are: " + classes +".")
+        osd_notice(bot, instigator, "Invalid class. Options are: " + classes +".")
     elif setclass == instigatorclass:
-        bot.say('Your class is already set to ' +  setclass)
+        osd_notice(bot, instigator, "Your class is already set to " + setclass + ".")
     else:
         set_database_value(bot, instigator, 'class_setting', setclass)
-        bot.say('Your class is now set to ' +  setclass)
+        osd_notice(bot, instigator, "Your class is now set to " + setclass + ".")
         set_database_value(bot, instigator, 'class_timeout', now)
         if instigatorfreebie:
             adjust_database_value(bot, instigator, 'loot_coin', -abs(class_cost))
@@ -1747,7 +1740,7 @@ def subcommand_streaks(bot, instigator, triggerargsarray, botvisibleusers, curre
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     target = actualname(bot, target)
     streak_type = get_database_value(bot, target, 'streak_type_current') or 'none'
@@ -1786,7 +1779,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
             return
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     target = actualname(bot, target)
     targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
@@ -1878,11 +1871,11 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         subcommand = subcommand.lower()
         subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
         if not subcommanda:
-            bot.say("What stat do you want to check highest/losest?")
+            onscreentext(bot, inchannel, "What stat do you want to check highest/losest?")
             return
         duelstatsadminarray = duels_valid_stats(bot)
         if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
-            bot.say("This stat is either not comparable at the moment or invalid.")
+            onscreentext(bot, inchannel, "This stat is either not comparable at the moment or invalid.")
         else:
             subcommanda = subcommanda.lower()
             statleadername = ''
@@ -1908,9 +1901,9 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                             statleadernumber = statamount
                             statleadername = u
             if statleadername != '':
-                bot.say("The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber))
+                onscreentext(bot, inchannel, "The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber) + ".")
             else:
-                bot.say("There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
+                onscreentext(bot, inchannel, "There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
 ## Armor
 def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1921,7 +1914,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         target = actualname(bot, target)
         dispmsgarray = []
@@ -1954,15 +1947,15 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 armorname = x.split("_", 1)[1]
                 temparmorlistarray.append(armorname)
             armors = get_trigger_arg(bot, temparmorlistarray, 'list')
-            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         elif instigatorcoin < costinvolved:
-            bot.say("Insufficient Funds")
+            onscreentext(bot, inchannel, "Insufficient Funds.")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
             if getarmor and getarmor > 0:
-                bot.say("It looks like you already have a " + typearmor + ".")
+                onscreentext(bot, inchannel, "It looks like you already have a " + typearmor + ".")
             else:
-                bot.say(instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
+                onscreentext(bot, inchannel, instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
                 adjust_database_value(bot, instigator, 'loot_coin', -abs(costinvolved))
                 set_database_value(bot, instigator, "armor_"+typearmor, armor_durability)
     elif subcommand == 'sell':
@@ -1972,13 +1965,13 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 armorname = x.split("_", 1)[1]
                 temparmorlistarray.append(armorname)
             armors = get_trigger_arg(bot, temparmorlistarray, 'list')
-            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
             if not getarmor:
-                bot.say("You don't have a " + typearmor + " to sell.")
+                onscreentext(bot, inchannel, "You don't have a " + typearmor + " to sell.")
             elif getarmor < 0:
-                bot.say("Your armor is too damaged to sell.")
+                onscreentext(bot, inchannel, "Your armor is too damaged to sell.")
                 reset_database_value(bot, instigator, "armor_"+typearmor)
             else:
                 durabilityremaining = getarmor / armor_durability
@@ -1987,9 +1980,9 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     sellingamount = sellingamount * armor_sell_blacksmith_cut
                 sellingamount = int(sellingamount)
                 if sellingamount <= 0:
-                    bot.say("Your armor is too damaged to sell.")
+                    onscreentext(bot, inchannel, "Your armor is too damaged to sell.")
                 else:
-                    bot.say("Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
+                    onscreentext(bot, inchannel, "Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
                     adjust_database_value(bot, instigator, 'loot_coin', sellingamount)
                     reset_database_value(bot, instigator, "armor_"+typearmor)
     elif subcommand == 'repair':
@@ -1999,20 +1992,20 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 armorname = x.split("_", 1)[1]
                 temparmorlistarray.append(armorname)
             armors = get_trigger_arg(bot, temparmorlistarray, 'list')
-            bot.say("What type of armor do you wish to " + subcommand + "? Options are: " + armors)
+            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
             durabilitycompare = armor_durability
             if instigatorclass == 'blacksmith':
                 durabilitycompare = armor_durability_blacksmith
             if not getarmor:
-                bot.say("You don't have a " + typearmor + " to repair.")
+                onscreentext(bot, inchannel, "You don't have a " + typearmor + " to repair.")
             elif getarmor >= durabilitycompare:
-                bot.say("It looks like your armor does not need repair.")
+                onscreentext(bot, inchannel, "It looks like your armor does not need repair.")
             else:
                 durabilitytorepair = durabilitycompare - getarmor
                 if durabilitytorepair <= 0:
-                    bot.say("Looks like you can't repair that right now.")
+                    onscreentext(bot, inchannel, "Looks like you can't repair that right now.")
                 else:
                     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
                     costinvolved  = durabilitytorepair / durabilitycompare
@@ -2022,39 +2015,38 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                         costinvolved = costinvolved * armor_cost_blacksmith_cut
                     costinvolved = int(costinvolved)
                     if instigatorcoin < costinvolved:
-                        bot.say("Insufficient Funds.")
+                        onscreentext(bot, inchannel, "Insufficient Funds.")
                     else:
-                        bot.say(typearmor + " repaired  for " + str(costinvolved)+" coins.")
+                        onscreentext(bot, inchannel, typearmor + " repaired  for " + str(costinvolved)+" coins.")
                         adjust_database_value(bot, instigator, 'loot_coin', -abs(costinvolved))
                         set_database_value(bot, instigator, "armor_"+typearmor, durabilitycompare)
 
-## Bounty ## TODO
+## Bounty ## TODO ## NOTICE
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     target = get_trigger_arg(bot, triggerargsarray, 2)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     target = actualname(bot, target)
     amount = get_trigger_arg(bot, triggerargsarray, 3)
     if not str(amount).isdigit():
-        onscreentext(bot, instigator, "Invalid Amount.")
-        bot.say("Invalid Amount.")
+        onscreentext(bot, inchannel, "Invalid Amount.")
         return
     amount = int(amount)
     if not amount:
-        bot.say("How much of a bounty do you wish to place on "+target+".")
+        onscreentext(bot, inchannel, "How much of a bounty do you wish to place on "+target+".")
         return
     instigatorcoin = get_database_value(bot, instigator, 'loot_coin') or 0
     if int(instigatorcoin) < int(amount):
-        bot.say("Insufficient Funds.")
+        onscreentext(bot, inchannel, "Insufficient Funds.")
         return
     adjust_database_value(bot, instigator, 'loot_coin', -abs(amount))
     bountyontarget = get_database_value(bot, target, 'bounty_amount') or 0
     if not bountyontarget:
-       bot.say(instigator + " places a bounty of " + str(amount) + " on " + target)
+       onscreentext(bot, inchannel, instigator + " places a bounty of " + str(amount) + " on " + target + ".")
     else:
-       bot.say(instigator + " adds " + str(amount) + " to the bounty on " + target)
+       onscreentext(bot, inchannel, instigator + " adds " + str(amount) + " to the bounty on " + target + ".")
     adjust_database_value(bot, target, 'bounty_amount', amount)
 
 ## Loot ## TODO
@@ -2070,7 +2062,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         target = actualname(bot, target)
         dispmsgarray = []
@@ -2194,23 +2186,23 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 elif targnumb == 'all':
                     quantity = int(gethowmanylootitem)
                 else:
-                    bot.say("Invalid command.")
+                    osd_notice(bot, inchannel, "Invalid command.")
                     return
             elif targnum == 'all':
                 target = instigator
                 quantity = int(gethowmanylootitem)
             else:
-                bot.say("Invalid command.")
+                osd_notice(bot, inchannel, "Invalid command.")
                 return
             if not quantity:
-                bot.say("Invalid command.")
+                onscreentext(bot, inchannel, "Invalid command.")
                 return
             if target == bot.nick:
                 osd_notice(bot, instigator, "I am immune to " + lootitem + ".")
                 return
             validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
             if not validtarget:
-                onscreentext(bot, [instigator], validtargetmsg)
+                osd_notice(bot, instigator, validtargetmsg)
                 return
             target = actualname(bot, target)
             targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
@@ -2320,7 +2312,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     mainlootusemessage = str(mainlootusemessage + " This resulted in death.")
                 else:
                     mainlootusemessage = str(mainlootusemessage + " This resulted in "+str(lootusedeaths)+" deaths.")
-            bot.say(mainlootusemessage)
+            onscreentext(bot, inchannel, mainlootusemessage)
             if target != instigator and not inchannel.startswith("#"):
                 osd_notice(bot, target, mainlootusemessage)
     elif lootcommand == 'buy':
@@ -2351,7 +2343,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             else:
                 adjust_database_value(bot, instigator, 'loot_coin', -abs(coinrequired))
                 adjust_database_value(bot, instigator, "loot_"+lootitem, quantity)
-                bot.say(instigator + " bought " + str(quantity) +  " "+lootitem + "s for " +str(coinrequired)+ " coins.")
+                onscreentext(bot, instigator, instigator + " bought " + str(quantity) +  " "+lootitem + "s for " +str(coinrequired)+ " coins.")
     elif lootcommand == 'sell':
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
         gethowmanylootitem = get_database_value(bot, instigator, "loot_"+lootitem) or 0
@@ -2362,7 +2354,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif not gethowmanylootitem:
             osd_notice(bot, instigator, "You do not have any " +  lootitem + "!")
         elif lootitem == 'magicpotion':
-            bot.say("Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
+            onscreentext(bot, inchannel, "Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
         else:
             quantity = get_trigger_arg(bot, triggerargsarray, 4).lower() or 1
             if quantity == 'all':
@@ -2377,7 +2369,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     reward = loot_sell * int(quantity)
                 adjust_database_value(bot, instigator, 'loot_coin', reward)
                 adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantity))
-                bot.say(instigator + " sold " + str(quantity) + " "+ lootitem + "s for " +str(reward)+ " coins.")
+                onscreentext(bot, inchannel, instigator + " sold " + str(quantity) + " "+ lootitem + "s for " +str(reward)+ " coins.")
     elif lootcommand == 'trade':
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
         lootitemb = get_trigger_arg(bot, triggerargsarray, 4).lower()
@@ -2410,7 +2402,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantitymath))
                 adjust_database_value(bot, instigator, "loot_"+lootitemb, quantity)
                 quantity = int(quantity)
-                bot.say(instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
+                onscreentext(bot, inchannel, instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
     else:
         transactiontypesarraylist = get_trigger_arg(bot, loot_transaction_types, "list")
         osd_notice(bot, instigator, "It looks like " + lootcommand + " is either not here, not a valid person, or an invalid command. Valid commands are: " + loot_transaction_typeslist + ".")
@@ -2429,14 +2421,14 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
     weaponslist = get_database_value(bot, target, 'weaponslocker_complete') or []
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        onscreentext(bot, [instigator], validtargetmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     target = actualname(bot, target)
     if not adjustmentdirection:
         osd_notice(bot, instigator, "Use .duel weaponslocker add/del to adjust Locker Inventory.")
     elif adjustmentdirection == 'total':
         gethowmany = get_database_array_total(bot, target, 'weaponslocker_complete')
-        bot.say(target + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv")
+        onscreentext(bot, inchannel, target + ' has ' + str(gethowmany) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv .")
     elif adjustmentdirection == 'inv':
         if weaponslist == []:
             osd_notice(bot, instigator, "There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.")
@@ -2458,7 +2450,7 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
         if not weaponchange:
             osd_notice(bot, instigator, "What weapon would you like to add/remove?")
         elif adjustmentdirection != 'add' and adjustmentdirection != 'del':
-            bot.say('Invalid Command.')
+            onscreentext(bot, inchannel, "Invalid Command.")
         elif adjustmentdirection == 'add' and weaponchange in weaponslist:
             osd_notice(bot, instigator, weaponchange + " is already in weapons locker.")
         elif adjustmentdirection == 'del' and weaponchange not in weaponslist:
@@ -2481,7 +2473,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
     magicusage = get_trigger_arg(bot, triggerargsarray, 2)
     if not magicusage or magicusage not in magic_types:
         magicoptions = get_trigger_arg(bot, magic_types, 'list')
-        bot.say('Magic uses include: '+ magicoptions)
+        onscreentext(bot, inchannel, "Magic uses include: " + magicoptions + ".")
     else:
         targnum = get_trigger_arg(bot, triggerargsarray, 3).lower()
         if not targnum:
@@ -2500,14 +2492,14 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
             elif targnumb == 'all':
                 quantity = int(gethowmanylootitem)
             else:
-                bot.say("Invalid command.")
+                onscreentext(bot, inchannel, "Invalid command.")
                 return
         if not instigatormana:
             osd_notice(bot, instigator, "You don't have any mana.")
             return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         if target == bot.nick:
             osd_notice(bot, instigator, "I am immune to magic " + magicusage + ".")
@@ -2558,7 +2550,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
                 displaymsg = str(instigator + " uses magic " + magicusage + " " + specialtext + ".")
             else:
                 displaymsg = str(instigator + " uses magic " + magicusage + " on " + target + " " + specialtext + ".")
-            bot.say(str(displaymsg))
+            onscreentext(bot, inchannel, displaymsg)
             if not inchannel.startswith("#") and target != instigator:
                 osd_notice(bot, instigator, displaymsg)
             instigatormana = get_database_value(bot, instigator, 'magic_mana')
@@ -2582,7 +2574,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             return
         validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
         if not validtarget:
-            onscreentext(bot, [instigator], validtargetmsg)
+            osd_notice(bot, instigator, validtargetmsg)
             return
         if subcommand == 'on':
             adjust_database_array(bot, duelrecorduser, [target], 'duelusers', 'add')
@@ -2615,7 +2607,7 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             osd_notice(bot, instigator, "This looks to be an invalid command.")
     elif subcommand == 'bugbounty':
         target = get_trigger_arg(bot, triggerargsarray, 3).lower() or instigator
-        bot.say(target + ' is awarded ' + str(bugbounty_reward) + " coin for finding a bug in duels.")
+        onscreentext(bot, inchannel, target + ' is awarded ' + str(bugbounty_reward) + " coin for finding a bug in duels.")
         adjust_database_value(bot, target, 'loot_coin', bugbounty_reward)
     elif subcommand == 'roulette':
         command = get_trigger_arg(bot, triggerargsarray, 3).lower()
@@ -3775,6 +3767,7 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 ######################
 
 def osd_notice(bot, target, textarraycomplete):
+    target = actualname(bot,target)
     if not isinstance(textarraycomplete, list):
         texttoadd = str(textarraycomplete)
         textarraycomplete = []
@@ -3811,7 +3804,7 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
     for combinedline in combinedtextarray:
         for user in texttargetarray:
             if user == 'say':
-                bot.say(combinedline)
+                onscreentext(bot, inchannel, combinedline)
             elif user.startswith("#"):
                 bot.msg(user, combinedline)
             else:
