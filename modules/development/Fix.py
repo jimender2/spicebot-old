@@ -9,7 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-commandarray = ["add","remove","count","list"]
+commandarray = ["add","remove","count","list","last"]
 
 @sopel.module.commands('fix')
 def mainfunction(bot, trigger):
@@ -43,9 +43,11 @@ def execute_main(bot, trigger, triggerargsarray):
             if inchannel.startswith("#"):
                 message = "List can only be run in privmsg to avoid flooding."
             else:
-                message = "This command will tell you what is in the database eventually."
+                message = get_trigger_arg(existingfixarray, "list")
+        elif command = "last":
+            message = get_triger_arg(existingfixarray, "last")
     else:
-        message = random_array(bot, existingfixarray) or ''
+        message = get_trigger_arg(existingfixarray, "random") or ''
         if message == '':
-            message = "No string found"
+            message = "No fix found. Seek help."
     bot.say(message)
