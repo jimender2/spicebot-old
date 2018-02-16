@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = "List can only be run in privmsg to avoid flooding."
             else:
                 message = get_trigger_arg(existingfixarray, "list")
-        elif command = "last":
+        elif command == "last":
             message = get_triger_arg(existingfixarray, "last")
     else:
         message = get_trigger_arg(existingfixarray, "random") or ''
