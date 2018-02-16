@@ -159,7 +159,7 @@ def roulette(bot,trigger,arg):
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='call':
         bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
-        delaytimer(bo)
+        delaytimer(bot)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
         bot.say("Stats reset for " + trigger.nick)
