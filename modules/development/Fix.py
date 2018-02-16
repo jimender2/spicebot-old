@@ -22,8 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     command = get_trigger_arg(triggerargsarray, 1)
     fixstring = get_trigger_arg(triggerargsarray, '2+')
-    existingfixarray = get_botdatabase_value(bot, bot.nick, 'fixes')
-    bot.say(fixstring)
+    existingfixarray = get_botdatabase_value(bot, bot.nick, 'fixes') or []
     if command in commandarray:
         if command == "add":
             if fixstring not in existingfixarray:
