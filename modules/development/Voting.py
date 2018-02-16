@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ratings = []
         pollchoice = []
         voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
-        if player not in votedplayers:
+        if player not in voters:
             if choice == 'yes' or choice == 'ya':
                 adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
