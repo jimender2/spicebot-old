@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = fixstring + " added to database."
             else:
                 message = "That's already in the array"
-        if subcommand == "remove":
+        elif command == "remove":
             if fixstring not in existingfixarray:
                 message = fixstring + " not found in database."
             else:
