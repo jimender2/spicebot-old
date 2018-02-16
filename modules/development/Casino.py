@@ -159,7 +159,7 @@ def roulette(bot,trigger,arg):
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='call':
         bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
-        runroulette(bot)
+        delaytimer(bo)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
         bot.say("Stats reset for " + trigger.nick)
@@ -644,6 +644,10 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
+@sopel.module.interval(60)
+def delaytimer(bot):
+    now = time.time()
+    runroulette(bot)
     
 def set_time_out(bot,nick,databasekey)
     now = time.time()
