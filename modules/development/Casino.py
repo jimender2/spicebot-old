@@ -138,6 +138,7 @@ def roulette(bot,trigger,arg):
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     inputcheck = 0
+    maxplayers = 3
     player = trigger.nick
     
     mybet = get_trigger_arg(arg, 2) or 'nobet'
@@ -157,9 +158,9 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-    elif mybet =='call':
+    elif mybet =='call' and trigger.admin:
         bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
-        delaytimer(bot)
+        runroulette(bot)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
         bot.say("Stats reset for " + trigger.nick)
@@ -240,8 +241,10 @@ def roulette(bot,trigger,arg):
                 bot.notice("Your bet has been recorded", player)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
-                if numberofplayers>=3:
+                if numberofplayers>=maxplayers:
                     bot.say("The dealer collects all bets")
+                else:
+                    bot.say("Dealer will spin the wheel after " + (maxplayers-numberofplayers) + " have placed a bet")
                     runroulette(bot)
             else:
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
