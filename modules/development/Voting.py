@@ -32,10 +32,10 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandused == 'rate':
         if not choice:
             bot.say("Rate on scale of 1 through 10")
-        elif choice.isdigit()
+        elif choice.isdigit():
             if choice < = 10 and choice >=1
                 ratings.append(choice)
-            else
+            else:
                 bot.say("Please rate on a scale from 1 to 10")
         elif choice=='results':
             bot.say("Average rating is ")
