@@ -17,13 +17,13 @@ def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
     choice = get_trigger_arg(triggerargsarray,1)
     player=trigger.nick
-    yesvotes=0
-    novotes = 0
-    ratings = []
-    pollchoice = []
-    voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
-    if player not in votedplayers:
-        if commandused == 'vote':      
+    if commandused == 'vote': 
+        yesvotes=0
+        novotes = 0
+        ratings = []
+        pollchoice = []
+        voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
+        if player not in votedplayers:
             if choice == 'yes' or choice == 'ya':
                 adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
@@ -37,8 +37,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 clearvoting(bot)
             else:
                 bot.say("Vote yes or no")
-    else:
-        bot.say("You have already voted")
+        else:
+            bot.say("You have already voted")
         
     elif commandused == 'rate':
         if not choice:
@@ -54,7 +54,8 @@ def execute_main(bot, trigger, triggerargsarray):
              bot.say("Please rate on a scale from 1 to 10")            
             
     elif commandused == 'poll':
-        bot.say("Enter choice a through d)
+        bot.say("Enter choice a through d")
+                
 def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'novotes')
     reset_botdatabase_value(bot,bot.nick,'yesvotes')
