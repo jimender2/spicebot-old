@@ -16,19 +16,30 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
     choice = get_trigger_arg(triggerargsarray,1)
+    player=trigger.nick
     yesvotes=0
     novotes = 0
     ratings = []
     pollchoice = []
-    if commandused == 'vote':      
-        if choice == 'yes' or choice == 'ya':
-            yesvotes+=1
-        elif choice == 'no' or choice == 'na':
-            novotes+=1
-        elif choice=='results':
-            bot.say(str(yesvotes) + " votes for yes and " str(novotes) + " no votes")
-        else:
-            bot.say("Vote yes or no")
+    voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
+    if player not in votedplayers:
+        if commandused == 'vote':      
+            if choice == 'yes' or choice == 'ya':
+                adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
+                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+            elif choice == 'no' or choice == 'na':
+                adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
+                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')                
+            elif choice=='results':
+                novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
+                yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
+                bot.say(str(yesvotes) + " votes for yes and " + str(novotes) + " no votes")
+                clearvoting(bot)
+            else:
+                bot.say("Vote yes or no")
+    else:
+        bot.say("You have already voted")
+        
     elif commandused == 'rate':
         if not choice:
             bot.say("Rate on scale of 1 through 10")
@@ -44,3 +55,8 @@ def execute_main(bot, trigger, triggerargsarray):
             
     elif commandused == 'poll':
         bot.say("Enter choice a through d)
+def clearvoting(bot):
+    reset_botdatabase_value(bot,bot.nick,'novotes')
+    reset_botdatabase_value(bot,bot.nick,'yesvotes')
+    reset_botdatabase_value(bot,bot.nick,'voters')
+    
