@@ -38,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = "Fix removed from database."
         elif command == "count":
             fixcount = len(existingfixarray)
-            message = "There are currently " + str(fixcount) + " in the list."
+            message = "There are currently " + str(fixcount) + " fixes in the database."
         elif command == "list":
             if inchannel.startswith("#"):
                 message = "List can only be run in privmsg to avoid flooding."
