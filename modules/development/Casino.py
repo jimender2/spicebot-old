@@ -644,7 +644,7 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-@sopel.module.interval(60)
+#@sopel.module.interval(60)
 def delaytimer(bot):
     now = time.time()
     bot.say("Runroulette")
