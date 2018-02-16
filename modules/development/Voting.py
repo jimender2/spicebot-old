@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
-    choice = get_trigger_args(triggerargsarray,1)
+    choice = get_trigger_arg(triggerargsarray,1)
     yesvotes=0
     novotes = 0
     ratings = []
