@@ -45,7 +45,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 message = get_trigger_arg(existingfixarray, "list")
         elif command == "last":
-            message = get_triger_arg(existingfixarray, "last")
+            message = get_trigger_arg(existingfixarray, "last")
     else:
         message = get_trigger_arg(existingfixarray, "random") or ''
         if message == '':
