@@ -21,34 +21,35 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
+    databasekey = 'fixes'
     command = get_trigger_arg(triggerargsarray, 1)
-    fixstring = get_trigger_arg(triggerargsarray, '2+')
-    existingfixarray = get_botdatabase_value(bot, bot.nick, 'fixes') or []
+    inputstring = get_trigger_arg(triggerargsarray, '2+')
+    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
     if command in commandarray:
         if command == "add":
-            if fixstring not in existingfixarray:
-                adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'add')
-                message = "Fix added to database."
+            if inputstring not in existingarray:
+                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+                message = "Added to database."
             else:
-                message = "That fix is already in the database."
+                message = "That response is already in the database."
         elif command == "remove":
-            if fixstring not in existingfixarray:
-                message = "That fix was not found in the database."
+            if inputstring not in existingarray:
+                message = "That response was not found in the database."
             else:
-                adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'del')
-                message = "Fix removed from database."
+                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'del')
+                message = "Removed from database."
         elif command == "count":
-            fixcount = len(existingfixarray)
-            message = "There are currently " + str(fixcount) + " fixes in the database."
+            messagecount = len(existingarray)
+            message = "There are currently " + str(messagecount) + " responses for that in the database."
         #elif command == "list":
         #    if inchannel.startswith("#"):
         #        message = "List can only be run in privmsg to avoid flooding."
         #    else:
-        #        message = get_trigger_arg(existingfixarray, "list")
+        #        message = get_trigger_arg(existingarray, "list")
         elif command == "last":
-            message = get_trigger_arg(existingfixarray, "last")
+            message = get_trigger_arg(existingarray, "last")
     else:
-        message = get_trigger_arg(existingfixarray, "random") or ''
+        message = get_trigger_arg(existingarray, "random") or ''
         if message == '':
-            message = "No fix found. Seek help."
+            message = "No response found. Have any been added?"
     bot.say(message)
