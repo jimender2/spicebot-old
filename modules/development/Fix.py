@@ -37,5 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'del')
                 message = fixstring + " removed from database."
     else:
-        message = "No string found"
+        message = random_array(bot, existingfixarray) or ''
+        if message == '':
+            message = "No string found"
     bot.say(message)
