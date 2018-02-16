@@ -9,8 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-commandarray = ["add","remove"]
-#count, list?
+commandarray = ["add","remove","count"]
+#list?
 
 @sopel.module.commands('fix')
 def mainfunction(bot, trigger):
@@ -36,6 +36,9 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'del')
                 message = fixstring + " removed from database."
+        elif command == "count":
+            fixcount = len(existingfixarray)
+            message = "There are currently " + fixcount + " in the list."
     else:
         message = random_array(bot, existingfixarray) or ''
         if message == '':
