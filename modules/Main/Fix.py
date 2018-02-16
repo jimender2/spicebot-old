@@ -12,9 +12,9 @@ from SpicebotShared import *
 commandarray = ["add","remove","count","last"]
 #add reset and sort list
 
-@sopel.module.commands('fix')
+@sopel.module.commands('fix','user')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fix')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
