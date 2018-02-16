@@ -23,7 +23,6 @@ def execute_main(bot, trigger, triggerargsarray):
     command = get_trigger_arg(triggerargsarray, 1)
     fixstring = get_trigger_arg(triggerargsarray, '2+')
     existingfixarray = get_botdatabase_value(bot, bot.nick, 'fixes') or []
-    bot.say(str(inchannel))
     if command in commandarray:
         if command == "add":
             if fixstring not in existingfixarray:
@@ -39,9 +38,9 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = "Fix removed from database."
         elif command == "count":
             fixcount = len(existingfixarray)
-            message = "There are currently " + fixcount + " in the list."
+            message = "There are currently " + str(fixcount) + " in the list."
         elif command == "list":
-            if inchannel:
+            if inchannel.startswith("#"):
                 message = "List can only be run in privmsg to avoid flooding."
             else:
                 message = "This command will tell you what is in the database eventually."
