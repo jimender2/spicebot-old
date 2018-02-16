@@ -51,6 +51,6 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         message = get_trigger_arg(existingarray, "random") or ''
         if message == '':
-            message = "No response found. Seek help."
+            message = "No response found. Have any been added?."
     bot.say(message)
     
