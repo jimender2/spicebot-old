@@ -243,9 +243,10 @@ def roulette(bot,trigger,arg):
                 numberofplayers = len(players)
                 if numberofplayers>=maxplayers:
                     bot.say("The dealer collects all bets")
+                    runroulette(bot)
                 else:
                     bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " have placed a bet")
-                    runroulette(bot)
+                    
             else:
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
