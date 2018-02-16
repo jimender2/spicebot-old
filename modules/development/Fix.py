@@ -23,20 +23,20 @@ def execute_main(bot, trigger, triggerargsarray):
     command = get_trigger_arg(triggerargsarray, 1)
     fixstring = get_trigger_arg(triggerargsarray, '2+')
     existingfixarray = get_botdatabase_value(bot, bot.nick, 'fixes')
+    bot.say(fixstring)
     if command in commandarray:
-        #bot.say("Command detected")
         if command == "add":
-            if fixstring in existingfixarray:
-                message = "That's already in the array"
-            else:
+            if fixstring not in existingfixarray:
                 adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'add')
                 message = fixstring + " added to database."
+            else:
+                message = "That's already in the array"
         if subcommand == "remove":
-            if fixstring in existingfixarray:
+            if fixstring not in existingfixarray:
+                message = fixstring + " not found in database."
+            else:
                 adjust_botdatabase_array(bot, bot.nick, fixstring, 'fixes', 'del')
                 message = fixstring + " removed from database."
-            else:
-                message = fixstring + " not found in database."
     else:
         message = "No string found"
     bot.say(message)
