@@ -18,8 +18,8 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(triggerargsarray, 1)
     validtarget,validmsg=targetcheck(bot,get_trigger_arg(triggerargsarray, 1),trigger.nick)
     if validtarget == 1:
-      bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
-    elif validtarget==2:
-      bot(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance to take them away.")
+        bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
+    elif validtarget==2 or validtarget==3:
+        bot.action(" calls the waaaaaaaaaaahhhhhhmbulance for " + trigger.nick)    
     else:
-      bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance.")
+        bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance.")
