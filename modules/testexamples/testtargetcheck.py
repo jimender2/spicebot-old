@@ -12,7 +12,6 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-
 @sopel.module.commands('testtarget')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -20,11 +19,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-  istarget,targetmsg =targetcheck(bot,trigger.nick,get_trigger_arg(triggerargsarray, 1))
-  if istarget ==1:
-    bot.say("Target is valid")
-  else:
-    bot.say(targetmsg)
+    istarget,targetmsg =targetcheck(bot,trigger.nick,get_trigger_arg(triggerargsarray, 1))
+    if istarget ==1:
+        bot.say("Target is valid")  
+    else:
+        bot.say(targetmsg)
 ##copy below this line into spicbotshared when it is working##
 
 ####################################
@@ -40,15 +39,16 @@ def targetcheck(bot, target,instigator):
         if u in botusersarray and u != bot.nick:
             botuseron.append(u)   
     if not target:
-        validtargetmsg = str(instigator + ", you must specify a target.")
-        return validtarget, validtargetmsg
+        validtargetmsg = str(instigator + ", you must specify a target.")       
     else:
         if target == bot.nick:
             validtargetmsg = str(instigator + ", " + target + " can't be targeted.")
-            return validtarget, validtargetmsg
+        elif target == instigator:       
+            validtargetmsg = str(instigator + ", "is the target")
+             validtarget=2            
+            
         elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")
-            return validtarget, validtargetmsg
+            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")            
         else:
             validtarget = 1
-            return validtarget, validtargetmsg
+    return validtarget, validtargetmsg
