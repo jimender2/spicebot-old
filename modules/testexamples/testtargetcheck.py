@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    istarget,targetmsg =targetcheck(bot,trigger.nick,get_trigger_arg(triggerargsarray, 1))
+    istarget,targetmsg =testtargetcheck(bot,trigger.nick,get_trigger_arg(triggerargsarray, 1))
     if istarget ==1:
         bot.say("Target is valid")  
     else:
@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
 ###if target is instigator         #
 ###validtarget =2                  #
 ####################################
-def targetcheck(bot, target,instigator):
+def testtargetcheck(bot, target,instigator):
     validtarget = 0
     validtargetmsg = ''
     botusersarray=[]
