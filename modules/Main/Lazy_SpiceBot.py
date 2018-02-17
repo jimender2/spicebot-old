@@ -15,7 +15,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    validtarget,validmsg = targetcheck(bot,get_trigger_arg(triggerargsarray,1),trigger.nick)    
+    target=get_trigger_arg(triggerargsarray,1)
+    validtarget,validmsg = targetcheck(bot,target,trigger.nick)    
     if validtarget==1:
         bot.say('I do not tell you how to do your job, ' + target + '!!')
     else:       
