@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Target is valid")  
     else:
         bot.say(str(istarget) + " " +targetmsg)
-##copy below this line into spicbotshared when it is working##
+##copy of targetcheck in spicebot shared##
 
 ####################################
 ##########Check for target##########
