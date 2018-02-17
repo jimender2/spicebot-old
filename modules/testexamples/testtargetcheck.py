@@ -19,6 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    istarget = 0
     istarget,targetmsg =testtargetcheck(bot,trigger.nick,get_trigger_arg(triggerargsarray, 1))
     if istarget ==1:
         bot.say("Target is valid")  
