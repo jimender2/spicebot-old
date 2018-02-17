@@ -19,27 +19,29 @@ def execute_main(bot, trigger, triggerargsarray):
     choice = get_trigger_arg(triggerargsarray,1)
     player=trigger.nick
     if commandused == 'vote': 
-        yesvotes=0
-        novotes = 0
-        ratings = []
-        pollchoice = []
-        voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
-        if player not in voters:
-            if choice == 'yes' or choice == 'ya':
-                adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
-                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-            elif choice == 'no' or choice == 'na':
-                adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
-                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')                
-            elif choice=='results':
-                novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
-                yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
-                bot.say(str(yesvotes) + " votes for yes and " + str(novotes) + " no votes")
-                clearvoting(bot)
-            else:
-                bot.say("Vote yes or no")
+        if choice=='results':
+            novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
+            yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
+            bot.say(str(yesvotes) + " votes for yes and " + str(novotes) + " no votes")
+            clearvoting(bot)
         else:
-            bot.say("You have already voted")
+            yesvotes=0
+            novotes = 0
+            ratings = []
+            pollchoice = []
+            voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
+            if player not in voters:
+                if choice == 'yes' or choice == 'ya':
+                    adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
+                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+                elif choice == 'no' or choice == 'na':
+                    adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
+                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')             
+
+                else:
+                    bot.say("Vote yes or no")
+            else:
+                bot.say("You have already voted")
         
     elif commandused == 'rate':
         if not choice:
