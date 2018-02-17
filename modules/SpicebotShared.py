@@ -405,7 +405,7 @@ def targetcheck(bot, target,instigator):
             validtarget=3         
             
         elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")            
+            validtargetmsg = str(instigator + " " + target +  " isn't a valid target")            
         else:
             validtarget = 1
     
