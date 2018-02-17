@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if istarget ==1:
         bot.say("Target is valid")  
     else:
-        bot.say(targetmsg)
+        bot.say(istarget + " " +targetmsg)
 ##copy below this line into spicbotshared when it is working##
 
 ####################################
@@ -32,20 +32,22 @@ def execute_main(bot, trigger, triggerargsarray):
 def targetcheck(bot, target,instigator):
     validtarget = 0
     validtargetmsg = ''
-    for channel in bot.channels:
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray=[]
     botuseron=[]
+    for channel in bot.channels:
+        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')    
     for u in bot.users:
-        if u in botusersarray and u != bot.nick:
+        if u in botusersarray:
             botuseron.append(u)   
     if not target:
         validtargetmsg = str(instigator + ", you must specify a target.")       
     else:
         if target == bot.nick:
-            validtargetmsg = str(instigator + ", " + target + " can't be targeted.")
+            validtargetmsg = str(instigator + ", can't targetbot.")
+            validtarget=2  
         elif target == instigator:       
             validtargetmsg = str(instigator + ", "is the target")
-             validtarget=2            
+            validtarget=3         
             
         elif not target.lower() in [u.lower() for u in botuseron]:
             validtargetmsg = str(instigator + " " + target +  "isn't a valid target")            
