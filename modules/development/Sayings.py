@@ -14,7 +14,7 @@ commandarray = ["add","remove","count","last"]
 
 @sopel.module.commands('testquote')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'yes')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'testquote')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
