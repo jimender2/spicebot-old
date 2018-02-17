@@ -20,6 +20,6 @@ def execute_main(bot, trigger, triggerargsarray):
     if validtarget == 1:
         bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
     elif validtarget==2 or validtarget==3:
-        bot.action(" calls the waaaaaaaaaaahhhhhhmbulance for " + trigger.nick)    
+        bot.action("calls the waaaaaaaaaaahhhhhhmbulance for " + trigger.nick)    
     else:
         bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance.")
