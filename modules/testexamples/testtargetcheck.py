@@ -49,7 +49,7 @@ def testtargetcheck(bot, target,instigator):
         validtargetmsg = str(instigator + ", you must specify a target.")
         validtarget = 0
     else:
-        if target == bot.nick:
+        if target.lower() == bot.nick.lower():
             validtargetmsg = str(instigator + ", can't targetbot.")
             validtarget=2  
         elif target == instigator:       
