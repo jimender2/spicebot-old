@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     istarget = 0
-    istarget,targetmsg =targetcheck(bot,get_trigger_arg(triggerargsarray, 1),trigger.nick)
+    istarget,targetmsg =testtargetcheck(bot,get_trigger_arg(triggerargsarray, 1),trigger.nick)
     if istarget ==1:
         bot.say("Target is valid")  
     else:
@@ -48,7 +48,7 @@ def testtargetcheck(bot, target,instigator):
         validtargetmsg = str(instigator + ", you must specify a target.")
         validtarget = 0
     else:
-        if target.lower() == (bot.nick).lower():
+        if target == bot.nick:
             validtargetmsg = str(instigator + ", can't targetbot.")
             validtarget=2  
         elif target == instigator:       
