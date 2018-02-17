@@ -23,11 +23,15 @@ def execute_main(bot, trigger, triggerargsarray):
     if istarget ==1:
         bot.say("Target is valid")  
     else:
-        bot.say(istarget + " " +targetmsg)
+        bot.say(str(istarget) + " " +targetmsg)
 ##copy below this line into spicbotshared when it is working##
 
 ####################################
-## Check if target##
+##########Check for target##########
+###If target  validtarget =1       #
+###if bot is target validtarget=2  #
+###if target is instigator         #
+###validtarget =2                  #
 ####################################
 def targetcheck(bot, target,instigator):
     validtarget = 0
@@ -53,4 +57,5 @@ def targetcheck(bot, target,instigator):
             validtargetmsg = str(instigator + " " + target +  "isn't a valid target")            
         else:
             validtarget = 1
+    
     return validtarget, validtargetmsg
