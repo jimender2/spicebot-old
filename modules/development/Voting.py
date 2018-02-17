@@ -21,7 +21,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if commandused == 'vote': 
         if choice=='results':
             novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
-            yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
+            yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0            
             bot.say(str(yesvotes) + " votes for yes and " + str(novotes) + " no votes")
             clearvoting(bot)
         else:
@@ -32,9 +32,11 @@ def execute_main(bot, trigger, triggerargsarray):
             voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
             #if player not in voters:
             if choice == 'yes' or choice == 'ya':
+                bot.notice("Your yes vote has been recorded", player)
                 adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
             elif choice == 'no' or choice == 'na':
+                bot.notice("Your no vote has been recorded", player)
                 adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')             
 
