@@ -30,18 +30,18 @@ def execute_main(bot, trigger, triggerargsarray):
             ratings = []
             pollchoice = []
             voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
-            if player not in voters:
-                if choice == 'yes' or choice == 'ya':
-                    adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
-                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                elif choice == 'no' or choice == 'na':
-                    adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
-                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')             
+            #if player not in voters:
+            if choice == 'yes' or choice == 'ya':
+                adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
+                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+            elif choice == 'no' or choice == 'na':
+                adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
+                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')             
 
-                else:
-                    bot.say("Vote yes or no")
             else:
-                bot.say("You have already voted")
+                bot.say("Vote yes or no")
+            #else:
+                #bot.say("You have already voted")
         
     elif commandused == 'rate':
         if not choice:
