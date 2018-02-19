@@ -39,7 +39,7 @@ commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','health','devmode'] ## move health to self later
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','health','devmode','version'] ## move health to self later
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -60,7 +60,7 @@ commandarray_tier_unlocks_15 = []
 commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000] ## XP
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5] ## Tier Ratios
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
-commandarray_tier_display_exclude = ['admin','game','devmode'] ## Do NOT display
+commandarray_tier_display_exclude = ['admin','game','devmode','version'] ## Do NOT display
 
 ## more stuff
 bodyparts_required = ['torso','head']
@@ -68,9 +68,9 @@ bodyparts_required = ['torso','head']
 ## Admin Stats Cycling
 stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other']
 ## Health Stats
-stats_healthbodyparts = ['health_head','health_torso','health_left_arm','health_right_arm','health_left_leg','health_right_leg']
+stats_healthbodyparts = ['health_head','health_chest','health_left_arm','health_right_arm','health_left_leg','health_right_leg','health_junk']
 ## Armor Stats
-stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave']
+stats_armor = ['armor_helmet','armor_breastplate','armor_left_gauntlet','armor_right_gauntlet','armor_left_greave','armor_right_greave','armor_codpiece']
 ## Loot Stats
 stats_loot = ['loot_magicpotion','loot_healthpotion','loot_mysterypotion','loot_timepotion','loot_poisonpotion','loot_manapotion','loot_grenade','loot_coin']
 ## Record Stats
@@ -192,7 +192,7 @@ armor_sell_blacksmith_cut = 1.5
 armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
-health_bodypart_max = [330,1000,250,250,500,500]
+health_bodypart_max = [330,1000,250,250,500,500,40]
 ## Bodypart damage modifiers
 
 ## Half Hour Timer
@@ -596,6 +596,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Manual weapon
         weapon = get_trigger_arg(bot, triggerargsarray, '2+')
+        bot.say(weapon)
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
                 weapon = getallchanweaponsrandom(bot)
@@ -889,6 +890,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 ## Author Subcommand
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
+
+def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    bot.say("WIP") ## TODO
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -2278,6 +2282,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         adjust_database_value(bot, target, 'magic_mana', manapotion_worth)
                 elif x == 'timepotion':
                     reset_database_value(bot, target, 'record_lastfought')
+                    reset_database_value(bot, duelrecorduser, 'timeout_timeout')
                     for k in timepotiontargetarray:
                         targetequalcheck = get_database_value(bot, bot.nick, k) or bot.nick
                         if targetequalcheck == target:
