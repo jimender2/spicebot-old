@@ -321,6 +321,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         return
 
     ## Current Duelable Players
+    bot.say("test")
     currentduelplayersarray = []
     canduelarray = []
     dowedisplay = 0
@@ -332,6 +333,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
                 canduelarray.append(player)
                 statreset(bot, player)
                 healthcheck(bot, player)
+
+    bot.say("test")
 
     ## Time when Module use started
     now = time.time()
