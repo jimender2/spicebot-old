@@ -1826,77 +1826,102 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
         bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
-            statleadername = ''
-            if x != 'health':
-                statleadernumber = 0
-            else:
-                statleadernumber = 99999999
+            playerarray = []
+            statvaluearray = []
             for u in currentduelplayersarray:
                 if x != 'winlossratio' and x != 'health':
                     statamount = get_database_value(bot, u, x)
                 else:
                     scriptdef = str('get_' + x + '(bot,u)')
                     statamount = eval(scriptdef)
-                if statamount == statleadernumber and statamount > 0:
-                    statleadername = str(statleadername+ " "+ u)
-                else:
-                    if x != 'health':
-                        if statamount > statleadernumber:
-                            statleadernumber = statamount
-                            statleadername = u
-                    else:
-                        if statamount < statleadernumber and statamount > 0:
-                            statleadernumber = statamount
-                            statleadername = u
+                if statamount > 0:
+                    playerarray.append(u)
+                    statvaluearray.append(statamount)
+            zip(*sorted(zip(statvaluearray, playerarray)))
+            if x != 'health':
+                statleadername = get_trigger_arg(bot, triggerargsarray, 1)
+                statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
+            else:
+                statleadername = get_trigger_arg(bot, triggerargsarray, 'last')
+                statleadernumber = get_trigger_arg(bot, triggerargsarray, 'last')
             if x == 'winlossratio':
                 statleadernumber = format(statleadernumber, '.3f')
-            if statleadername != '':
-                leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
-                if x == 'health' and leaderclass == 'vampire':
-                    statleadernumber = int(statleadernumber)
-                    statleadernumber = -abs(statleadernumber)
-                msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                leaderscript.append(msgtoadd)
-        if leaderscript == []:
-            leaderscript.append("Leaderboard appears to be empty")
+            leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+                
+                    
+
+        #for x in leaderboardarraystats:
+        #    statleadername = ''
+        #    if x != 'health':
+        #        statleadernumber = 0
+        #    else:
+        #        statleadernumber = 99999999
+        #    for u in currentduelplayersarray:
+        #        if x != 'winlossratio' and x != 'health':
+        #            statamount = get_database_value(bot, u, x)
+        #        else:
+        #            scriptdef = str('get_' + x + '(bot,u)')
+        #            statamount = eval(scriptdef)
+        #        if statamount == statleadernumber and statamount > 0:
+        #            statleadername = str(statleadername+ " "+ u)
+        #        else:
+        #            if x != 'health':
+        #                if statamount > statleadernumber:
+        #                    statleadernumber = statamount
+        #                    statleadername = u
+        #            else:
+        #                if statamount < statleadernumber and statamount > 0:
+        #                    statleadernumber = statamount
+        #                    statleadername = u
+        #    if x == 'winlossratio':
+        #        statleadernumber = format(statleadernumber, '.3f')
+        #    if statleadername != '':
+        #        leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
+        #        if x == 'health' and leaderclass == 'vampire':
+        #            statleadernumber = int(statleadernumber)
+        #            statleadernumber = -abs(statleadernumber)
+        #        msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+        #        leaderscript.append(msgtoadd)
+        #if leaderscript == []:
+        #    leaderscript.append("Leaderboard appears to be empty")
         onscreentext(bot, ['say'], leaderscript)
-    if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
-        subcommand = subcommand.lower()
-        subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
-        if not subcommanda:
-            onscreentext(bot, inchannel, "What stat do you want to check highest/losest?")
-            return
-        duelstatsadminarray = duels_valid_stats(bot)
-        if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
-            onscreentext(bot, inchannel, "This stat is either not comparable at the moment or invalid.")
-        else:
-            subcommanda = subcommanda.lower()
-            statleadername = ''
-            if subcommand == 'highest':
-                statleadernumber = 0
-            else:
-                statleadernumber = 99999999
-            for u in bot.users:
-                if subcommanda != 'winlossratio':
-                    statamount = get_database_value(bot, u, subcommanda)
-                else:
-                    scriptdef = str('get_' + subcommanda + '(bot,u)')
-                    statamount = eval(scriptdef)
-                if statamount == statleadernumber and statamount > 0:
-                    statleadername = str(statleadername+ " "+ u)
-                else:
-                    if subcommand == 'highest':
-                        if statamount > statleadernumber:
-                            statleadernumber = statamount
-                            statleadername = u
-                    else:
-                        if statamount < statleadernumber and statamount > 0:
-                            statleadernumber = statamount
-                            statleadername = u
-            if statleadername != '':
-                onscreentext(bot, inchannel, "The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber) + ".")
-            else:
-                onscreentext(bot, inchannel, "There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
+    #if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
+    #    subcommand = subcommand.lower()
+    #    subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
+    #    if not subcommanda:
+    #        onscreentext(bot, inchannel, "What stat do you want to check highest/losest?")
+    #        return
+    #    duelstatsadminarray = duels_valid_stats(bot)
+    #    if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'class':
+    #        onscreentext(bot, inchannel, "This stat is either not comparable at the moment or invalid.")
+    #    else:
+    #        subcommanda = subcommanda.lower()
+    #        statleadername = ''
+    #        if subcommand == 'highest':
+    #            statleadernumber = 0
+    #        else:
+    #            statleadernumber = 99999999
+    #        for u in bot.users:
+    #            if subcommanda != 'winlossratio':
+    #                statamount = get_database_value(bot, u, subcommanda)
+    #            else:
+    #                scriptdef = str('get_' + subcommanda + '(bot,u)')
+    #                statamount = eval(scriptdef)
+    #            if statamount == statleadernumber and statamount > 0:
+    #                statleadername = str(statleadername+ " "+ u)
+    #            else:
+    #                if subcommand == 'highest':
+    #                    if statamount > statleadernumber:
+    #                        statleadernumber = statamount
+    #                        statleadername = u
+    #                else:
+    #                    if statamount < statleadernumber and statamount > 0:
+    #                        statleadernumber = statamount
+    #                        statleadername = u
+    #        if statleadername != '':
+    #            onscreentext(bot, inchannel, "The " + subcommand + " amount for "+ subcommanda+ " is " + statleadername+ " with "+ str(statleadernumber) + ".")
+    #        else:
+    #            onscreentext(bot, inchannel, "There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
 ## Armor
 def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
