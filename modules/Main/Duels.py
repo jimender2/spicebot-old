@@ -331,7 +331,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             executedueling, executeduelingmsg = duelcriteria(bot, instigator, player, currentduelplayersarray, inchannel)
             if executedueling == 1:
                 canduelarray.append(player)
-                statreset(bot, player)
+                #statreset(bot, player)
                 #healthcheck(bot, player)
 
     bot.say("test")
