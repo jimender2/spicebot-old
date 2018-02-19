@@ -2075,7 +2075,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         for x in loot_view:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                xname = xname.title()
+                xname = x.title()
                 if gethowmany == 1:
                     loottype = str(xname)
                 else:
