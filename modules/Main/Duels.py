@@ -999,7 +999,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         for x in stats_healthbodyparts:
             gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
-                xname = xname.replace("_", " ")
+                xname = x.replace("_", " ")
                 xname = xname.title()
                 if targetclass == 'vampire':
                     gethowmany = -abs(gethowmany)
