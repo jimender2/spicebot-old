@@ -341,7 +341,9 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
-        commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands)
+        fullcommandused = get_trigger_arg(bot, triggerargsarray, 0)
+        commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
+        commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
     else:
         daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
