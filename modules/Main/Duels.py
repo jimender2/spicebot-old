@@ -1854,45 +1854,12 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     statleadername = get_trigger_arg(bot, playerarray, 1)
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
                 leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-        onscreentext(bot, ['say'], leaderscript)
-                    
-
-        leaderscript = []
-        for x in leaderboardarraystats:
-            statleadername = ''
-            if x != 'health':
-                statleadernumber = 0
-            else:
-                statleadernumber = 99999999
-            for u in currentduelplayersarray:
-                if x != 'winlossratio' and x != 'health':
-                    statamount = get_database_value(bot, u, x)
-                else:
-                    scriptdef = str('get_' + x + '(bot,u)')
-                    statamount = eval(scriptdef)
-                if statamount == statleadernumber and statamount > 0:
-                    statleadername = str(statleadername+ " "+ u)
-                else:
-                    if x != 'health':
-                        if statamount > statleadernumber:
-                            statleadernumber = statamount
-                            statleadername = u
-                    else:
-                        if statamount < statleadernumber and statamount > 0:
-                            statleadernumber = statamount
-                            statleadername = u
-            if x == 'winlossratio':
-                statleadernumber = format(statleadernumber, '.3f')
-            if statleadername != '':
-                leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
-                if x == 'health' and leaderclass == 'vampire':
-                    statleadernumber = int(statleadernumber)
-                    statleadernumber = -abs(statleadernumber)
-                msgtoadd = str(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                leaderscript.append(msgtoadd)
         if leaderscript == []:
             leaderscript.append("Leaderboard appears to be empty")
         onscreentext(bot, ['say'], leaderscript)
+                    
+
+        
     elif subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
         subcommand = subcommand.lower()
         subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
