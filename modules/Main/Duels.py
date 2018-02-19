@@ -3048,7 +3048,7 @@ def bodypart_select(bot, nick):
         currentbodypartsarray = bodypartarray(bot, nick)
         bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
     if "_" in bodypart:
-        bodypartname = bodypartname.replace("_", " ")
+        bodypartname = bodypart.replace("_", " ")
     else:
         bodypartname = bodypart
     return bodypart, bodypartname
