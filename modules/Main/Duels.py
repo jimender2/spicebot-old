@@ -338,9 +338,6 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
 
-    ## bot does not need stats or backpack items
-    refreshbot(bot)
-
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
         commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands)
@@ -1823,11 +1820,11 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         leaderboardarraystats = ['winlossratio','kills','respawns','health','streak_win_best','streak_loss_best','bounty']
         streak_loss_bestdispmsg, streak_loss_bestdispmsgb = "Worst Losing Streak:", ""
         winlossratiodispmsg, winlossratiodispmsgb = "Wins/Losses:", ""
-        record_killsdispmsg, record_killsdispmsgb = "Most Kills:", "kills"
-        record_respawnsdispmsg, record_respawnsdispmsgb = "Most Deaths:", "respawns"
+        killsdispmsg, killsdispmsgb = "Most Kills:", "kills"
+        respawnsdispmsg, respawnsdispmsgb = "Most Deaths:", "respawns"
         healthdispmsg, healthdispmsgb = "Closest To Death:", "health"
         streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
-        bounty_amountdispmsg, bounty_amountdispmsgb = "Largest Bounty:", "coins"
+        bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
             statleadername = ''
             if x != 'health':
