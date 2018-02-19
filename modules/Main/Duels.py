@@ -328,7 +328,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     for player in currentuserlistarray:
         if player in dueloptedinarray:
             currentduelplayersarray.append(player)
-            executedueling, executeduelingmsg = duelcriteria(bot, instigator, player, currentduelplayersarray, inchannel)
+            executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, inchannel)
             if executedueling == 1:
                 canduelarray.append(player)
                 #statreset(bot, player)
@@ -3009,6 +3009,46 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         validtarget = 0
             
     return validtarget, validtargetmsg
+
+def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
+
+    ## Guilty until proven Innocent
+    validtarget = 0
+
+    ## Devroom bypass
+    devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
+    if inchannel in devenabledchannels:
+        return validtarget
+
+    ## Don't allow usera to duel twice in a row
+    useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
+    if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
+        return validtarget
+
+    ## usera can't duel the same person twice in a row, unless there are only two people in the channel
+    howmanyduelsers = len(currentduelplayersarray)
+    userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    if userb == useralastfought and howmanyduelusers > 2:
+        useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
+        if useraclass != 'knight':
+            return validtarget
+
+    ## usera Timeout
+    if useratime <= USERTIMEOUT:
+        return validtarget
+
+    ## Target Timeout
+    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    if userbtime <= USERTIMEOUT:
+        return validtarget
+
+    ## Channel Timeout
+    if channeltime <= CHANTIMEOUT:
+        return validtarget
+
+    validtarget = 1
+    return validtarget
 
 ## Events
 def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel):
