@@ -1914,8 +1914,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         for x in stats_armor:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                if "_" in xname:
-                    xname = xname.replace("_", " ")
+                xname = x.replace("_", " ")
                 xname = xname.title()
                 if gethowmany > armor_durability:
                     xname = str("Enhanced " + xname)
