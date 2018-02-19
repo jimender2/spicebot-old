@@ -362,6 +362,17 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
+    ## reset the game
+    currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
+    if currenttier >= 15:
+        dispmsgarray = []
+        dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
+        gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+        onscreentext(bot, gameenabledchannels, dispmsgarray)
+        chanstatreset(bot)
+        duelrecordwipe(bot)
+        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget):
 
     ## Cheap error handling for people that like to find issues
@@ -409,55 +420,32 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         osd_notice(bot, instigator, "Duels must be in channel.")
         return
 
-    ## Lockout Check, don't allow multiple duels simultaneously
-    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
-    if duelslockout:
-        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
-        if lockoutsince < duel_lockout_timer:
-            osd_notice(bot, instigator, "Duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.")
-            return
-        reset_database_value(bot, duelrecorduser, 'duelslockout')
-
     ## Check if target is valid
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
+
         ## Mis-spellings ## TODO add alternative commands
-        ## Check Commands
+        ## Build array of possible commands/targets
+        possibilitiesarray = []
         for com in validcommands:
-            similarlevel = similar(commandortarget.lower(),com)
+            possibilitiesarray.append(com)
+        for player in botvisibleusers:
+            possibilitiesarray.append(player)
+        for possible in possibilitiesarray:
+            similarlevel = similar(commandortarget.lower(),possible)
             if similarlevel >= .75:
                 commandortarget = com
-
-        ## Check players
-        if commandortarget == comorig:
-            for player in botvisibleusers:
-                similarlevel = similar(commandortarget.lower(),player)
-                if similarlevel >= .75:
-                    commandortarget = player
-
-        ## still no match
-        if commandortarget == comorig:
-            onscreentext(bot, [instigator], validtargetmsg)
-
-        ## match made
+                continue
+        ## Did we match?
         if commandortarget != comorig:
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
+        else:
+            onscreentext(bot, [instigator], validtargetmsg)
         return
 
     ## Run the duel
     duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
-
-    ## reset the game
-    currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
-    if currenttier >= 15:
-        dispmsgarray = []
-        dispmsgarray.append("Somebody has Triggered the Endgame! Stats will be reset.")
-        gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-        onscreentext(bot, gameenabledchannels, dispmsgarray)
-        chanstatreset(bot)
-        duelrecordwipe(bot)
-        set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
     ## Usage Counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
@@ -513,6 +501,15 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 #####################
 
 def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels):
+
+    ## Lockout Check, don't allow multiple duels simultaneously
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            osd_notice(bot, instigator, "Duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.")
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## Check that the target doesn't have a timeout preventing them from playing
     executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
