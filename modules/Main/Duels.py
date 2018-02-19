@@ -3967,20 +3967,16 @@ def range_array(bot, inputs, rangea, rangeb):
     string = ''
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
-    bot.say(str(rangea))
-    bot.say(str(rangeb))
     if int(rangeb) == int(rangea):
         return number_array(bot, inputs, rangeb)
     if int(rangeb) < int(rangea):
         tempa, tempb = rangeb, rangea
         rangea, rangeb = tempa, tempb
-    bot.say(str(rangea))
-    bot.say(str(rangeb))
     if int(rangea) < 1:
         rangea = 1
     if int(rangeb) > len(inputs):
         rangeb = len(inputs)
-    for i in range(int(rangea),int(rangeb) + 1):
+    for i in range(int(rangea) + 1,int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
