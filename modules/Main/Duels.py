@@ -378,6 +378,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         except NameError:
             continue
 
+    ## Mis-spellings ## TODO add alternative commands
+    for com in validcommands:
+        if similar(commandortarget.lower(),com) >= .9:
+            commandortarget = com
+            
+
     ## Inchannel Block
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
@@ -1901,7 +1907,6 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
     else:
         onscreentext(bot, inchannel, "There doesn't appear to be a "+ subcommand + " amount for "+subcommanda+".")
 
-
 ## Armor
 def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     subcommand = get_trigger_arg(bot, triggerargsarray, 2)
@@ -2005,7 +2010,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                         adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
                         set_database_value(bot, instigator, "armor_"+typearmor, durabilitycompare)
 
-## Bounty ## TODO ## NOTICE
+## Bounty
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     target = get_trigger_arg(bot, triggerargsarray, 2)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
@@ -2015,15 +2020,15 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
     target = actualname(bot, target)
     amount = get_trigger_arg(bot, triggerargsarray, 3)
     if not str(amount).isdigit():
-        onscreentext(bot, inchannel, "Invalid Amount.")
+        osd_notice(bot, instigator, "Invalid Amount.")
         return
     amount = int(amount)
     if not amount:
-        onscreentext(bot, inchannel, "How much of a bounty do you wish to place on "+target+".")
+        osd_notice(bot, instigator, "How much of a bounty do you wish to place on "+target+".")
         return
     instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
     if int(instigatorcoin) < int(amount):
-        onscreentext(bot, inchannel, "Insufficient Funds.")
+        osd_notice(bot, instigator, "Insufficient Funds.")
         return
     adjust_database_value(bot, instigator, 'coin', -abs(amount))
     bountyontarget = get_database_value(bot, target, 'bounty') or 0
