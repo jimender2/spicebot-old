@@ -16,7 +16,8 @@ import sys
 import os
 from os.path import exists
 from num2words import num2words
-import similar
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -379,27 +380,27 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         except NameError:
             continue
 
-    ## Mis-spellings ## TODO add alternative commands
-    for com in validcommands:
-        if similar(commandortarget.lower(),com) >= .9:
-            commandortarget = com
-            
-
     ## Inchannel Block
     inchannel = trigger.sender
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
         osd_notice(bot, instigator, "Duel " + commandortarget + " must be in channel.")
         return
 
+    ## Mis-spellings ## TODO add alternative commands
+    if commandortarget.lower() not in validcommands and commandortarget.lower() not in [x.lower() for x in botvisibleusers]:
+        ## Commands first
+        for com in validcommands:
+            if fuzz.ratio(commandortarget.lower(),com) >= .9:
+                commandortarget = com
+
     ## Subcommand Versus Target
     if commandortarget.lower() in validcommands:
         ## If command was issued as an action
         if commandtype != 'actionduel':
             subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
-            return
         else:
             osd_notice(bot, instigator, "Action duels should not be able to run commands. Targets Only")
-            return
+        return
 
     ## Instigator versus Bot
     if commandortarget.lower() == bot.nick.lower():
