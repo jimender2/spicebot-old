@@ -16,8 +16,7 @@ import sys
 import os
 from os.path import exists
 from num2words import num2words
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+from difflib import SequenceMatcher
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -390,7 +389,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() not in validcommands and commandortarget.lower() not in [x.lower() for x in botvisibleusers]:
         ## Commands first
         for com in validcommands:
-            if fuzz.ratio(commandortarget.lower(),com) >= 90:
+            if similar(commandortarget.lower(),com) >= .9:
                 commandortarget = com
 
     ## Subcommand Versus Target
@@ -3714,6 +3713,13 @@ def get_winlossratio(bot,target):
         winlossratio = float(wins)/losses
     return winlossratio
 
+#############
+## Similar ##
+#############
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
 ##############
 ## Database ##
 ##############
@@ -3772,7 +3778,6 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     else:
         set_database_value(bot, nick, databasekey, adjustarray)
 
-
 ######################
 ## On Screen Text ##
 ######################
@@ -3825,7 +3830,6 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 bot.msg(user, combinedline)
             else:
                 bot.notice(combinedline, user)
-
 
 ####################################
 ## Array/List/String Manipulation ##
