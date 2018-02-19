@@ -348,12 +348,12 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
             fullcommandarray.append(comsplit)
-    for minicom in fullcomsplit:
+    for minicom in fullcommandarray:
         daisychaincount = daisychaincount + 1
         if daisychaincount <= 5:
             time.sleep(randint(1, 3))
             daisychaincount = 1
-        triggerargsarraypart = get_trigger_arg(bot, comsplit, 'create')
+        triggerargsarraypart = get_trigger_arg(bot, minicom, 'create')
         fullcommandused = get_trigger_arg(bot, triggerargsarraypart, 0)
         commandortarget = get_trigger_arg(bot, triggerargsarraypart, 1)
         commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
