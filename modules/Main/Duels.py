@@ -389,7 +389,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() not in validcommands and commandortarget.lower() not in [x.lower() for x in botvisibleusers]:
         ## Commands first
         for com in validcommands:
-            if similar(commandortarget.lower(),com) >= .9:
+            similarlevel = similar(commandortarget.lower(),com)
+            bot.say(com + " " + str(similarlevel))
+            if similarlevel >= .9:
                 commandortarget = com
 
     ## Subcommand Versus Target
