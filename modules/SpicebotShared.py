@@ -285,7 +285,7 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         rangeb = len(inputs)
-    for i in range(int(rangea),int(rangeb) + 1):
+    for i in range(int(rangea) + 1,int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
@@ -375,6 +375,42 @@ def excrange_minus_array(bot, inputs, number):
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
+
+####################################
+##########Check for target##########
+###If target  validtarget =1       #
+###if bot is target validtarget=2  #
+###if target is instigator         #
+###validtarget =3                  #
+####################################
+def targetcheck(bot, target,instigator):
+    validtarget = 0
+    validtargetmsg = ''
+    botusersarray=[]
+    botuseron=[]
+    for channel in bot.channels:
+        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')    
+    for u in bot.users:
+        if u in botusersarray:
+            botuseron.append(u)   
+    if not target:
+        validtargetmsg = str(instigator + ", you must specify a target.")
+        validtarget = 0
+    else:
+        if target.lower() == bot.nick.lower():
+            validtargetmsg = str(instigator + ", can't targetbot.")
+            validtarget=2  
+        elif target == instigator:       
+            validtargetmsg = str(instigator + ", is the target")
+            validtarget=3         
+            
+        elif not target.lower() in [u.lower() for u in botuseron]:
+            validtargetmsg = str(instigator + " " + target +  " isn't a valid target")            
+        else:
+            validtarget = 1
+    
+    return validtarget, validtargetmsg
+
 
 #############
 ## Old arg ##

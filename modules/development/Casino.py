@@ -138,6 +138,7 @@ def roulette(bot,trigger,arg):
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     inputcheck = 0
+    maxplayers = 3
     player = trigger.nick
     
     mybet = get_trigger_arg(arg, 2) or 'nobet'
@@ -157,7 +158,7 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-    elif mybet =='call':
+    elif mybet =='call' and trigger.admin:
         bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
         runroulette(bot)
     elif mybet == 'reset' and trigger.admin:
@@ -240,9 +241,12 @@ def roulette(bot,trigger,arg):
                 bot.notice("Your bet has been recorded", player)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
-                if numberofplayers>=3:
+                if numberofplayers>=maxplayers:
                     bot.say("The dealer collects all bets")
                     runroulette(bot)
+                else:
+                    bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
+                    
             else:
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
@@ -644,27 +648,9 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-    
-def set_time_out(bot,nick,databasekey)
+#@sopel.module.interval(60)
+def delaytimer(bot):
     now = time.time()
-    last = get_database_value(bot, nick, databasekey)
-    return abs(now - int(last))
-
-def hours_minutes_seconds(countdownseconds):
-    time = float(countdownseconds)
-    time = time % (24 * 3600)
-    hour = time // 3600
-    time %= 3600
-    minute = time // 60
-    time %= 60
-    second = time
-    displaymsg = ''
-    timearray = ['hour','minute','second']
-    for x in timearray:
-        currenttimevar = eval(x)
-        if currenttimevar >= 1:
-            timetype = x
-            if currenttimevar > 1:
-                timetype = str(x+"s")
-            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
-    return displaymsg
+    bot.say("Runroulette")
+    runroulette(bot)
+    

@@ -1,24 +1,20 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+import os
 import sopel.module
 import sys
-import os
+import time
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('lazy','lazyfuckingspicebot','fuckinglazyspicebot','lazyspicebot')
+@sopel.module.commands('highlander')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target=get_trigger_arg(triggerargsarray,1)
-    validtarget,validmsg = targetcheck(bot,target,trigger.nick)    
-    if validtarget==1:
-        bot.say('I do not tell you how to do your job, ' + target + '!!')
-    else:       
-        bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
-   
+    bot.say("THERE CAN BE ONLY ONE!!")
+    
