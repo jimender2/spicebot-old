@@ -3974,6 +3974,8 @@ def range_array(bot, inputs, rangea, rangeb):
     if int(rangeb) < int(rangea):
         tempa, tempb = rangeb, rangea
         rangea, rangeb = tempa, tempb
+    bot.say(str(rangea))
+    bot.say(str(rangeb))
     if int(rangea) < 1:
         rangea = 1
     if int(rangeb) > len(inputs):
