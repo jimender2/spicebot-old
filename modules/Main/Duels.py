@@ -390,7 +390,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() not in validcommands and commandortarget.lower() not in [x.lower() for x in botvisibleusers]:
         ## Commands first
         for com in validcommands:
-            if fuzz.ratio(commandortarget.lower(),com) >= .9:
+            if fuzz.ratio(commandortarget.lower(),com) >= 90:
                 commandortarget = com
 
     ## Subcommand Versus Target
