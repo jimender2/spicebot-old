@@ -18,9 +18,9 @@ from os.path import exists
 from num2words import num2words
 
 ## not needed if using without spicebot
-shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
-sys.path.append(shareddir) ## not needed if using without spicebot
-from SpicebotShared import * ## not needed if using without spicebot
+#shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
+#sys.path.append(shareddir) ## not needed if using without spicebot
+#from SpicebotShared import * ## not needed if using without spicebot
 
 ###################
 ## Configurables ##
@@ -241,20 +241,20 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    #triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
-    #execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    if not enablestatus: ## not needed if using without spicebot
-        execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
+    triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
+    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    #if not enablestatus: ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
-    #triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create') # enable if not using with spicebot
-    #execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
-    if not enablestatus: ## not needed if using without spicebot
-        execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create') # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
+    #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
+    #if not enablestatus: ## not needed if using without spicebot
+    #    execute_main(bot, trigger, triggerargsarray, 'normalcom') ## not needed if using without spicebot
 
 ####################################
 ## Seperate Targets from Commands ##
@@ -4024,7 +4024,6 @@ def incrange_plus_array(bot, inputs, number):
     rangeb = 'handling'
     if str(number).endswith("+"):
         rangea = re.sub(r"\+", '', str(number))
-        rangea = int(rangea) + 1
         rangeb = len(inputs)
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
