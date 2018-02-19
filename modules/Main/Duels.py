@@ -1834,26 +1834,26 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 else:
                     scriptdef = str('get_' + x + '(bot,u)')
                     statamount = eval(scriptdef)
-                statamount = float(statamount)
                 if statamount > 0:
                     playerarray.append(u)
                     statvaluearray.append(statamount)
-            zip(*sorted(zip(statvaluearray, playerarray)))
-            if x == 'health':
-                statleadername = get_trigger_arg(bot, playerarray, 'last')
-                statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
-                leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
-                if leaderclass == 'vampire':
-                    statleadernumber = int(statleadernumber)
-                    statleadernumber = -abs(statleadernumber)
-            elif x == 'winlossratio':
-                statleadername = get_trigger_arg(bot, playerarray, 1)
-                statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
-                statleadernumber = format(statleadernumber, '.3f')
-            else:
-                statleadername = get_trigger_arg(bot, playerarray, 1)
-                statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
-            leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+            if playerarray != [] and statvaluearray != []:
+                zip(*sorted(zip(statvaluearray, playerarray)))
+                if x == 'health':
+                    statleadername = get_trigger_arg(bot, playerarray, 'last')
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
+                    leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
+                    if leaderclass == 'vampire':
+                        statleadernumber = int(statleadernumber)
+                        statleadernumber = -abs(statleadernumber)
+                elif x == 'winlossratio':
+                    statleadername = get_trigger_arg(bot, playerarray, 1)
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
+                    statleadernumber = format(statleadernumber, '.3f')
+                else:
+                    statleadername = get_trigger_arg(bot, playerarray, 1)
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
+                leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
         onscreentext(bot, ['say'], leaderscript)
                     
 
