@@ -429,25 +429,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     ## Check if target is valid
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
+        ## run misspelling
         onscreentext(bot, [instigator], validtargetmsg)
         return
 
-    ## Check that the target doesn't have a timeout preventing them from playing
-    executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
-
-    ## Perform Lockout, run target duel, then unlock
-    set_database_value(bot, duelrecorduser, 'duelslockout', now)
-    duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target', devenabledchannels)
-    reset_database_value(bot, duelrecorduser, 'duelslockout')
-
-    ## usage counter
-    adjust_database_value(bot, instigator, 'usage_total', 1)
-    adjust_database_value(bot, instigator, 'usage_combat', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+    ## Run the duel
+    duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
 
     ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
@@ -459,6 +446,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         chanstatreset(bot)
         duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+
+    ## Usage Counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+
+
 
 #######################
 ## Subcommands Usage ##
@@ -506,6 +499,25 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 #####################
 ## Main Duel Usage ##
 #####################
+
+def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels):
+
+    ## Check that the target doesn't have a timeout preventing them from playing
+    executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+    if not executedueling:
+        osd_notice(bot, instigator, executeduelingmsg)
+        return
+
+    ## Perform Lockout, run target duel, then unlock
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target', devenabledchannels)
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+
+    
 
 def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel, devenabledchannels):
 
