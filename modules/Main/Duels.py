@@ -876,7 +876,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Pause Between duels
         if typeofduel == 'assault':
             bot.notice("  ", maindueler)
-            time.sleep(5)
+            time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
         ## End Of assault
         if typeofduel == 'assault':
@@ -1238,7 +1238,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ### current spin is safe
     if int(currentspin) != int(roulettechamber):
-        time.sleep(2) # added to build suspense
+        time.sleep(randint(1, 3)) # added to build suspense
         onscreentext(bot, inchannel, "*click*")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
@@ -1334,6 +1334,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         if roulettecount > 1:
             roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
+        time.sleep(randint(1, 2)) # added to build suspense
         onscreentext(bot, [inchannel], dispmsgarray)
 
         ## instigator must wait until the next round
