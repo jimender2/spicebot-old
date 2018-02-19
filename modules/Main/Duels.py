@@ -599,7 +599,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
                 weapon = getallchanweaponsrandom(bot)
-            elif weapon == 'target':
+            elif weapon == 'target' or weapon == target:
                 weapon = weaponofchoice(bot, target)
                 weapon = str(target + "'s " + weapon)
         elif winner == bot.nick:
