@@ -390,7 +390,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         for com in validcommands:
             similarlevel = similar(commandortarget.lower(),com)
             bot.say(com + " " + str(similarlevel))
-            if similarlevel >= .85:
+            if similarlevel >= .80:
                 commandortarget = com
 
     ## Subcommand Versus Target
