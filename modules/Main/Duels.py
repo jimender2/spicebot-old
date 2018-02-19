@@ -1849,7 +1849,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             elif x == 'winlossratio':
                 statleadername = get_trigger_arg(bot, triggerargsarray, 1)
                 statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
-                statleadernumber = format(float(statleadernumber), '.3f')
+                #statleadernumber = format(statleadernumber, '.3f')
             else:
                 statleadername = get_trigger_arg(bot, triggerargsarray, 1)
                 statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
