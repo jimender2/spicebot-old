@@ -350,7 +350,9 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             daisychaincount = daisychaincount + 1
             if daisychaincount <= 5:
                 triggerargsarraypart = get_trigger_arg(bot, comsplit, 'create')
-                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands)
+                fullcommandused = get_trigger_arg(bot, triggerargsarraypart, 0)
+                commandortarget = get_trigger_arg(bot, triggerargsarraypart, 1)
+                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
             else:
                 osd_notice(bot, instigator, "You may only daisychain 5 commands.")
                 return
@@ -358,11 +360,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
-def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands):
-
-    ## New Vars
-    fullcommandused = get_trigger_arg(bot, triggerargsarray, 0)
-    commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
+def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget):
 
     ## Cheap error handling for people that like to find issues
     if commandortarget.isdigit():
@@ -384,13 +382,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() in commandarray_inchannel and not inchannel.startswith("#"):
         osd_notice(bot, instigator, "Duel " + commandortarget + " must be in channel.")
         return
-
-    ## Mis-spellings ## TODO add alternative commands
-    if commandortarget.lower() not in validcommands and commandortarget.lower() not in [x.lower() for x in botvisibleusers]:
-        for com in validcommands:
-            similarlevel = similar(commandortarget.lower(),com)
-            if similarlevel >= .75:
-                commandortarget = com
 
     ## Subcommand Versus Target
     if commandortarget.lower() in validcommands:
@@ -426,10 +417,30 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## Check if target is valid
+    comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        ## run misspelling
-        onscreentext(bot, [instigator], validtargetmsg)
+        ## Mis-spellings ## TODO add alternative commands
+        ## Check Commands
+        for com in validcommands:
+            similarlevel = similar(commandortarget.lower(),com)
+            if similarlevel >= .75:
+                commandortarget = com
+
+        ## Check players
+        if commandortarget == comorig:
+            for player in botvisibleusers:
+                similarlevel = similar(commandortarget.lower(),player)
+                if similarlevel >= .75:
+                    commandortarget = player
+
+        ## still no match
+        if commandortarget == comorig:
+            onscreentext(bot, [instigator], validtargetmsg)
+
+        ## match made
+        if commandortarget != comorig:
+            commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
         return
 
     ## Run the duel
