@@ -596,7 +596,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Manual weapon
         weapon = get_trigger_arg(bot, triggerargsarray, '2+')
-        bot.say(weapon)
         if winner == maindueler and weapon and currenttierstart >= tierunlockweaponslocker:
             if weapon == 'all':
                 weapon = getallchanweaponsrandom(bot)
@@ -4025,6 +4024,7 @@ def incrange_plus_array(bot, inputs, number):
     rangeb = 'handling'
     if str(number).endswith("+"):
         rangea = re.sub(r"\+", '', str(number))
+        rangea = int(rangea) + 1
         rangeb = len(inputs)
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
