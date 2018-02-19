@@ -16,6 +16,7 @@ import sys
 import os
 from os.path import exists
 from num2words import num2words
+import similar
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
