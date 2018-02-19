@@ -338,6 +338,9 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
 
+    ## bot does not need stats or backpack items
+    refreshbot(bot)
+
     ## Multiple Commands
     if "&&" not in fullcommandusedtotal:
         commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands)
@@ -353,6 +356,9 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             else:
                 osd_notice(bot, instigator, "You may only daisychain 5 commands.")
                 return
+
+    ## bot does not need stats or backpack items
+    refreshbot(bot)
 
 def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands):
 
@@ -3528,6 +3534,13 @@ def statreset(bot, nick):
         reset_database_value(bot, nick, "usage_combat")
         reset_database_value(bot, nick, "usage_total")
         reset_database_value(bot, nick, "roulettepayout")
+
+
+## Bot no stats
+def refreshbot(bot):
+    duelstatsadminarray = duels_valid_stats(bot)
+    for x in duelstatsadminarray:
+        set_database_value(bot, bot.nick, x, None)
 
 ######################
 ## Winner Selection ##
