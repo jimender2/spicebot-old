@@ -996,7 +996,6 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         for x in stats_healthbodyparts:
             gethowmany = get_database_value(bot, healthcommand, x)
             if gethowmany:
-                xname = x.split("_", 1)[1]
                 xname = xname.replace("_", " ")
                 xname = xname.title()
                 if targetclass == 'vampire':
@@ -1513,8 +1512,8 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
                 for part in stats_healthbodyparts:
                     xcurrenthealthbody  = get_database_value(bot, x, part)
                     if xcurrenthealthbody  <= 0:
-                        bodypartname = bodypart.split("_", 1)[1]
-                        bodypartname = bodypartname.replace("_", " ")
+                        if "_" in bodypartname:
+                            bodypartname = bodypartname.replace("_", " ")
                         dispmsgarray.append(x + "'s " + bodypartname + " has become crippled!")
     if diedinbattle != []:
         displaymessage = get_trigger_arg(bot, diedinbattle, "list")
@@ -1794,8 +1793,6 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
             statname = x
             if statname == 'class_setting':
                 statname = 'class'
-            if "record_" in statname or "magic_" in statname:
-                statname = statname.split("_", 1)[1]
             statname = statname.title()
             dispmsgarray.append(statname + "=" + str(gethowmany))
     dispmsgarrayb = []
@@ -1914,8 +1911,8 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         for x in stats_armor:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                xname = x.split("_", 1)[1]
-                xname = xname.replace("_", " ")
+                if "_" in xname:
+                    xname = xname.replace("_", " ")
                 xname = xname.title()
                 if gethowmany > armor_durability:
                     xname = str("Enhanced " + xname)
@@ -1935,11 +1932,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             costinvolved = costinvolved * armor_cost_blacksmith_cut
         costinvolved = int(costinvolved)
         if not typearmor or "armor_"+typearmor not in stats_armor:
-            temparmorlistarray = []
-            for x in stats_armor:
-                armorname = x.split("_", 1)[1]
-                temparmorlistarray.append(armorname)
-            armors = get_trigger_arg(bot, temparmorlistarray, 'list')
+            armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         elif instigatorcoin < costinvolved:
             onscreentext(bot, inchannel, "Insufficient Funds.")
@@ -1953,11 +1946,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 set_database_value(bot, instigator, "armor_"+typearmor, armor_durability)
     elif subcommand == 'sell':
         if not typearmor or "armor_"+typearmor not in stats_armor:
-            temparmorlistarray = []
-            for x in stats_armor:
-                armorname = x.split("_", 1)[1]
-                temparmorlistarray.append(armorname)
-            armors = get_trigger_arg(bot, temparmorlistarray, 'list')
+            armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
@@ -1980,11 +1969,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     reset_database_value(bot, instigator, "armor_"+typearmor)
     elif subcommand == 'repair':
         if not typearmor or "armor_"+typearmor not in stats_armor:
-            temparmorlistarray = []
-            for x in stats_armor:
-                armorname = x.split("_", 1)[1]
-                temparmorlistarray.append(armorname)
-            armors = get_trigger_arg(bot, temparmorlistarray, 'list')
+            armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
             getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
@@ -2062,8 +2047,6 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         for x in loot_view:
             gethowmany = get_database_value(bot, target, x)
             if gethowmany:
-                xname = x.split("_", 1)[1]
-                xname = xname.replace("_", " ")
                 xname = xname.title()
                 if gethowmany == 1:
                     loottype = str(xname)
@@ -2153,7 +2136,6 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                             for part in stats_healthbodyparts:
                                 losercurrenthealthbody  = get_database_value(bot, loser, part)
                                 if losercurrenthealthbody  <= 0:
-                                    bodypartname = bodypart.split("_", 1)[1]
                                     bodypartname = bodypartname.replace("_", " ")
                                     dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
                 if diedinbattle != []:
@@ -3053,7 +3035,6 @@ def bodypart_select(bot, nick):
         currentbodypartsarray = bodypartarray(bot, nick)
         bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
     if "_" in bodypart:
-        bodypartname = bodypart.split("_", 1)[1]
         bodypartname = bodypartname.replace("_", " ")
     else:
         bodypartname = bodypart
@@ -3130,10 +3111,9 @@ def damage_resistance(bot, nick, damage, bodypart):
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
             if "_" in armortype:
-                armorname = armortype.split("_", 1)[1]
                 armorname = armorname.replace("_", " ")
             else:
-                armorname = armortype
+            armorname = armortype
             adjust_database_value(bot, nick, armortype, -1)
             damagepercent = randint(1, armor_relief_percentage) / 100
             damagereduced = damage * damagepercent
