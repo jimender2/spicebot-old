@@ -1834,20 +1834,27 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 else:
                     scriptdef = str('get_' + x + '(bot,u)')
                     statamount = eval(scriptdef)
+                statamount = float(statamount)
                 if statamount > 0:
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             zip(*sorted(zip(statvaluearray, playerarray)))
-            if x != 'health':
-                statleadername = get_trigger_arg(bot, triggerargsarray, 1)
-                statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
-            else:
+            if x == 'health':
                 statleadername = get_trigger_arg(bot, triggerargsarray, 'last')
                 statleadernumber = get_trigger_arg(bot, triggerargsarray, 'last')
-            if x == 'winlossratio':
+                leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
+                if leaderclass == 'vampire':
+                    statleadernumber = int(statleadernumber)
+                    statleadernumber = -abs(statleadernumber)
+            elif x == 'winlossratio':
+                statleadername = get_trigger_arg(bot, triggerargsarray, 1)
+                statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
                 statleadernumber = format(statleadernumber, '.3f')
+            else:
+                statleadername = get_trigger_arg(bot, triggerargsarray, 1)
+                statleadernumber = get_trigger_arg(bot, triggerargsarray, 1)
             leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
-                
+        onscreentext(bot, ['say'], leaderscript)
                     
 
         #for x in leaderboardarraystats:
@@ -1884,7 +1891,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         #        leaderscript.append(msgtoadd)
         #if leaderscript == []:
         #    leaderscript.append("Leaderboard appears to be empty")
-        onscreentext(bot, ['say'], leaderscript)
+        #onscreentext(bot, ['say'], leaderscript)
     #if subcommand.lower() == 'highest' or subcommand.lower() == 'lowest':
     #    subcommand = subcommand.lower()
     #    subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
