@@ -340,24 +340,23 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     set_database_value(bot, instigator, 'lastcommand', now)
 
     ## Multiple Commands
+    fullcommandarray = []
+    daisychaincount = 0
     if "&&" not in fullcommandusedtotal:
-        fullcommandused = get_trigger_arg(bot, triggerargsarray, 0)
-        commandortarget = get_trigger_arg(bot, triggerargsarray, 1)
-        commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
+        fullcommandarray.append(fullcommandusedtotal)
     else:
-        daisychaincount = 0
         fullcomsplit = fullcommandusedtotal.split("&&")
         for comsplit in fullcomsplit:
-            ## Freenode kicks bot for excess flood if this is overdone
-            daisychaincount = daisychaincount + 1
-            if daisychaincount <= 5:
-                triggerargsarraypart = get_trigger_arg(bot, comsplit, 'create')
-                fullcommandused = get_trigger_arg(bot, triggerargsarraypart, 0)
-                commandortarget = get_trigger_arg(bot, triggerargsarraypart, 1)
-                commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
-            else:
-                osd_notice(bot, instigator, "You may only daisychain 5 commands.")
-                return
+            fullcommandarray.append(comsplit)
+    for minicom in fullcomsplit:
+        daisychaincount = daisychaincount + 1
+        if daisychaincount <= 5:
+            time.sleep(randint(1, 3))
+            daisychaincount = 1
+        triggerargsarraypart = get_trigger_arg(bot, comsplit, 'create')
+        fullcommandused = get_trigger_arg(bot, triggerargsarraypart, 0)
+        commandortarget = get_trigger_arg(bot, triggerargsarraypart, 1)
+        commandortargetsplit(bot, trigger, triggerargsarraypart, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -450,8 +449,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     adjust_database_value(bot, instigator, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
 
-
-
 #######################
 ## Subcommands Usage ##
 #######################
@@ -524,8 +521,6 @@ def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchan
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_combat', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
-
-    
 
 def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, typeofduel, devenabledchannels):
 
