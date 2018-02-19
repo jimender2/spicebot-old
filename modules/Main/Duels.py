@@ -1864,7 +1864,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
     subcommand = subcommand.lower()
     subcommanda = get_trigger_arg(bot, triggerargsarray, 3)
     if not subcommanda:
-        onscreentext(bot, inchannel, "What stat do you want to check highest/losest?")
+        onscreentext(bot, inchannel, "What stat do you want to check?")
         return
     subcommanda = subcommanda.lower()
     duelstatsadminarray = duels_valid_stats(bot)
