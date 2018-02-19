@@ -3967,6 +3967,8 @@ def range_array(bot, inputs, rangea, rangeb):
     string = ''
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
+    bot.say(str(rangea))
+    bot.say(str(rangeb))
     if int(rangeb) == int(rangea):
         return number_array(bot, inputs, rangeb)
     if int(rangeb) < int(rangea):
