@@ -332,9 +332,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             if executedueling == 1:
                 canduelarray.append(player)
                 statreset(bot, player)
-                healthcheck(bot, player)
-
-    bot.say("test")
+                #healthcheck(bot, player)
 
     ## Time when Module use started
     now = time.time()
