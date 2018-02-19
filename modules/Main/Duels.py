@@ -334,6 +334,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
                 statreset(bot, player)
                 #healthcheck(bot, player)
 
+    bot.say("test")
     ## Time when Module use started
     now = time.time()
 
