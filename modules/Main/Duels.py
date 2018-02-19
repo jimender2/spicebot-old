@@ -3043,9 +3043,15 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 
 ## bodypart selector
 def bodypart_select(bot, nick):
-    ## make array of bodyparts target has
-    currentbodypartsarray = bodypartarray(bot, nick)
-    bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
+    ## selection roll
+    hitchance = randint(1, 101)
+    if hitchance <= 50:
+        bodypart == 'health_chest'
+    elif hitchance >= 90:
+        bodypart == 'health_head'
+    else:
+        currentbodypartsarray = bodypartarray(bot, nick)
+        bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
     if "_" in bodypart:
         bodypartname = bodypart.split("_", 1)[1]
         bodypartname = bodypartname.replace("_", " ")
