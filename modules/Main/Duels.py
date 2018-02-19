@@ -3599,7 +3599,6 @@ def statreset(bot, nick):
         reset_database_value(bot, nick, "usage_total")
         reset_database_value(bot, nick, "roulettepayout")
 
-
 ## Bot no stats
 def refreshbot(bot):
     duelstatsadminarray = duels_valid_stats(bot)
@@ -3744,7 +3743,8 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
             workingvarnow = eval(j+magicname+"now")
             workingvarstart = eval(j+magicname+"start")
             if workingvarnow == 0 and workingvarnow != workingvarstart:
-                attributetext.append(scanningperson + " is no longer affected by " + x + ".")
+                message = str(scanningperson + " is no longer affected by " + x + ".")
+                attributetext.append(message)
     return attributetext
 
 ###############
