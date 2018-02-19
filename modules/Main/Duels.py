@@ -424,19 +424,18 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-
         ## Mis-spellings ## TODO add alternative commands
-        ## Build array of possible commands/targets
-        possibilitiesarray = []
+        ## Check Commands
         for com in validcommands:
-            possibilitiesarray.append(com)
-        for player in botvisibleusers:
-            possibilitiesarray.append(player)
-        for possible in possibilitiesarray:
-            similarlevel = similar(commandortarget.lower(),possible)
+            similarlevel = similar(commandortarget.lower(),com)
             if similarlevel >= .75:
                 commandortarget = com
-                continue
+        ## Check players, but only if we didn't alreayd match a command
+        if commandortarget == comorig:
+            for player in botvisibleusers:
+                similarlevel = similar(commandortarget.lower(),player)
+                if similarlevel >= .75:
+                    commandortarget = player
         ## Did we match?
         if commandortarget != comorig:
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
