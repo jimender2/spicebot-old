@@ -615,13 +615,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         losershieldstart, losercursestart = get_current_magic_attributes(bot, loser)
 
         ## Body Part Hit
-        currentbodypartsarray = bodypartarray(bot, loser)
-        bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
-        if "_" in bodypart:
-            bodypartname = bodypart.split("_", 1)[1]
-            bodypartname = bodypartname.replace("_", " ")
-        else:
-            bodypartname = bodypart
+        bodypart, bodypartname = bodypart_select(bot, loser)
 
         ## Strike Type
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
@@ -733,10 +727,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 weaponb = weaponformatter(bot, weaponb)
                 weaponb = str(" "+ weaponb)
                 ## Body Part Hit
-                currentbodypartsarrayb = bodypartarray(bot, winner)
-                bodypartb = get_trigger_arg(bot, currentbodypartsarrayb, 'random')
-                bodypartnameb = bodypartb.split("_", 1)[1]
-                bodypartnameb = bodypartnameb.replace("_", " ")
+                bodypartb, bodypartnameb = bodypart_select(bot, winner)
                 ## Strike Type
                 striketypeb = get_trigger_arg(bot, duel_hit_types, 'random')
                 ## Damage
@@ -1505,9 +1496,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         adjust_database_value(bot, x, 'record_xp', XPearnedloser)
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
-        currentbodypartsarray = bodypartarray(bot, x)
-        bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
-        bodypartname = bodypart.split("_", 1)[1]
+        bodypart, bodypartname = bodypart_select(bot, x)
         damage, damagetextarray = damage_resistance(bot, x, damage, bodypart)
         for j in damagetextarray:
             dispmsgarray.append(j)
@@ -2147,8 +2136,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     damage = int(damage)
                     damagescale = tierratio_level(bot)
                     damage = damagescale * damage
-                    bodypart = get_trigger_arg(bot, stats_healthbodyparts, 'random')
-                    bodypartname = bodypart.split("_", 1)[1]
+                    bodypart, bodypartname = bodypart_select(bot, player)
                     damage, damagetextarray = damage_resistance(bot, player, damage, bodypart, bodypartname)
                     for j in damagetextarray:
                         dispmsgarray.append(j)
@@ -3052,6 +3040,18 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
 ############
 ## Damage ##
 ############
+
+## bodypart selector
+def bodypart_select(bot, nick):
+    ## make array of bodyparts target has
+    currentbodypartsarray = bodypartarray(bot, nick)
+    bodypart = get_trigger_arg(bot, currentbodypartsarray, 'random')
+    if "_" in bodypart:
+        bodypartname = bodypart.split("_", 1)[1]
+        bodypartname = bodypartname.replace("_", " ")
+    else:
+        bodypartname = bodypart
+    return bodypart, bodypartname
 
 ## Damage Caused
 def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
