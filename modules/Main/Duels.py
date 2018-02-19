@@ -1868,16 +1868,16 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         return
     subcommanda = subcommanda.lower()
     duelstatsadminarray = duels_valid_stats(bot)
-    if subcommanda.lower() not in duelstatsadminarray:
+    if subcommanda.lower() not in duelstatsadminarray and subcommanda.lower() != 'health':
         onscreentext(bot, inchannel, "This stat is either not comparable at the moment or invalid.")
         return
     playerarray = []
     statvaluearray = []
     for u in currentduelplayersarray:
-        if x != 'winlossratio' and x != 'health':
-            statamount = get_database_value(bot, u, x)
+        if subcommanda.lower() != 'winlossratio' and subcommanda.lower() != 'health':
+            statamount = get_database_value(bot, u, subcommanda.lower())
         else:
-            scriptdef = str('get_' + x + '(bot,u)')
+            scriptdef = str('get_' + subcommanda.lower() + '(bot,u)')
             statamount = eval(scriptdef)
         if statamount > 0:
             playerarray.append(u)
@@ -1890,7 +1890,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         else:
             statleadername = get_trigger_arg(bot, playerarray, 'last')
             statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
-        if x == 'health':
+        if subcommanda.lower() == 'health':
             leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
             if leaderclass == 'vampire':
                 statleadernumber = int(statleadernumber)
