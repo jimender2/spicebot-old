@@ -265,6 +265,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Instigator
     instigator = trigger.nick
+    statreset(bot, instigator)
 
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
@@ -321,7 +322,6 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         return
 
     ## Current Duelable Players
-    bot.say("test")
     currentduelplayersarray = []
     canduelarray = []
     dowedisplay = 0
@@ -334,7 +334,6 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
                 #statreset(bot, player)
                 #healthcheck(bot, player)
 
-    bot.say("test")
     ## Time when Module use started
     now = time.time()
 
@@ -1622,6 +1621,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     if bot.nick not in canduelarray:
         canduelarray.append(bot.nick)
     target = get_trigger_arg(bot, canduelarray, 'random')
+    statreset(bot, target)
     duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
@@ -2943,6 +2943,9 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
         validtarget = 0
         validtargetmsg.append(target + " is either not here, or not a valid nick to target.")
 
+    if target != instigator and validtarget == 1:
+        statreset(bot, target)
+
     return validtarget, validtargetmsg
 
 # mustpassthesetoduel
@@ -3073,7 +3076,6 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         for x in validtargetmsgb:
             validtargetmsg.append(x)
 
-
     timeouteval = eval("timeout_"+commandortarget.lower())
     getlastusage = get_timesince_duels(bot, duelrecorduser, str('lastfullroom' + commandortarget)) or timeouteval
     getlastinstigator = get_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator')) or bot.nick
@@ -3086,6 +3088,9 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
         validtargetmsg.append("You may not instigate a full channel " + commandortarget + " event twice in a row.")
         validtarget = 0
 
+    if validtarget == 1:
+        for player in canduelarray:
+            statreset(bot, player)
     
     return validtarget, validtargetmsg
 
