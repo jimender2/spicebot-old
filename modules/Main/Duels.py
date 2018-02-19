@@ -1815,6 +1815,8 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
 ## Leaderboard
 def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     subcommand = get_trigger_arg(bot, triggerargsarray, 2)
+    if bot.nick in currentduelplayersarray:
+        currentduelplayersarray.remove(bot.nick)
     if not subcommand:
         leaderscript = []
         leaderboardarraystats = ['winlossratio','kills','respawns','health','streak_win_best','streak_loss_best','bounty']
