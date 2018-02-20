@@ -434,13 +434,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             if similarlevel >= .75:
                 commandortarget = com
         ## Check alt commands
-        if commandortarget != comorig:
+        if commandortarget == comorig:
             for com in altcoms:
                 similarlevel = similar(commandortarget.lower(),com)
                 if similarlevel >= .75:
                     commandortarget = com
         ## Check players, but only if we didn't alreayd match a command
-        if commandortarget != comorig:
+        if commandortarget == comorig:
             for player in botvisibleusers:
                 similarlevel = similar(commandortarget.lower(),player)
                 if similarlevel >= .75:
