@@ -57,7 +57,6 @@ def getQuote(bot, query):
     soup = BeautifulSoup(urllib2.urlopen(url).read())
     txt = soup.find('td',{'class':'body'}).text
     txt = unescape_xml_entities(stripper.transformString(txt))
-
     if len(txt) > 200:
         quote = url
     else:
