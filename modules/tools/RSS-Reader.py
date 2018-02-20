@@ -57,7 +57,7 @@ def autorss(bot):
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
-            lastBuildXML = xmldoc.getElementsByTagName(pubDate)
+            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, rssfeed + '_lastbuildcurrent') or 0
@@ -67,7 +67,7 @@ def autorss(bot):
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName(link)
+                links = xmldoc.getElementsByTagName('link')
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, rssfeed + '_lastbuildcurrent', lastbuildcurrent)
