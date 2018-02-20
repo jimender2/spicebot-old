@@ -36,8 +36,8 @@ def webbyauto(bot):
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
-        timeuntil = (webbytime - now).total_seconds()
-        bot.say(str(timeuntil))
+        #timeuntil = (webbytime - now).total_seconds()
+        timeuntil = 860
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[Spiceworks Webinar Reminder]")
