@@ -52,23 +52,11 @@ def getPacktTitle():
             title = "[No Book Today]"
     return title
 
-#def getpackttimediff(bot):
-    nowtime = datetime.datetime.now(tz)
-    tomorrow = nowtime + timedelta(days=1)
-    packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
-    timecompare = get_timeuntil(nowtime, packtnext)
-    packttimediff = str('     Next Book: ' + timecompare)
-    return packttimediff
-
 def getpackttimediff(bot):
     nowtime = datetime.datetime.now(tz)
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
-    timemath = packtnext - nowtime.replace(tzinfo=None)
-    #bot.say(str(timemath))
-    #timecompare = get_timeuntil(nowtime, packtnext)
-    #bot.say(str(timecompare))
-    timecompare = hours_minutes_seconds(timemath)
+    timecompare = get_timeuntil(nowtime, packtnext)
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
 
