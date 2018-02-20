@@ -439,6 +439,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                     commandortarget = player
         ## Did we match?
         if commandortarget != comorig:
+            bot.say("test4")
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
             return
         else:
