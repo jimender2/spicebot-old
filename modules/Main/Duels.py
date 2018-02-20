@@ -266,6 +266,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     ## Instigator
     instigator = trigger.nick
     statreset(bot, instigator)
+    healthcheck(bot, instigator)
 
     ## Check command was issued
     fullcommandusedtotal = get_trigger_arg(bot, triggerargsarray, 0)
@@ -2950,6 +2951,7 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
 
     if target != instigator and validtarget == 1:
         statreset(bot, target)
+        healthcheck(bot, target)
 
     return validtarget, validtargetmsg
 
@@ -3189,13 +3191,10 @@ def damage_resistance(bot, nick, damage, bodypart):
 
     ## Armor
     if damage > 0:
-        armortype = array_compare(bot, "health_"+bodypart, stats_healthbodyparts, stats_armor)
+        armortype = array_compare(bot, bodypart, stats_healthbodyparts, stats_armor)
         armornick = get_database_value(bot, nick, armortype) or 0
         if armornick:
-            if "_" in armortype:
-                armorname = armorname.replace("_", " ")
-            else:
-                armorname = armortype
+            armorname = armortype.replace("_", " ")
             adjust_database_value(bot, nick, armortype, -1)
             damagepercent = randint(1, armor_relief_percentage) / 100
             damagereduced = damage * damagepercent
