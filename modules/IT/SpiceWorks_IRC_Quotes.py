@@ -37,19 +37,19 @@ def getQuote(bot, query):
         url = urlsuffix + qNum
     else:
         url = urlsuffix + 'do=search&q=' + query
-        page = urllib2.urlopen(url)
-        soup = BeautifulSoup(page)
-        links = []
-        qlinks = []
-        for link in soup.findAll('a'):
-            links.append(link.get('href'))
-        if links == []:
-            txt = "Invalid quote"
-            return txt
-        for qlink in links:
-            if str(qlink).startswith("./?"):
-                link = qlink.replace(".","http://spice.dussed.com")
-                qlinks.append(link)
+    page = urllib2.urlopen(url)
+    soup = BeautifulSoup(page)
+    links = []
+    qlinks = []
+    for link in soup.findAll('a'):
+        links.append(link.get('href'))
+    if links == []:
+        txt = "Invalid quote"
+        return txt
+    for qlink in links:
+        if str(qlink).startswith("./?"):
+            link = qlink.replace(".","http://spice.dussed.com")
+            qlinks.append(link)
     url = get_trigger_arg(bot, qlinks, 'random')
     if url == '':
         txt = "Invalid quote"
