@@ -51,6 +51,8 @@ def getPacktTitle():
         title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
         title = title.replace("\\t","")
         title = title.replace("\\n","")
+        title = title.replace("['","")
+        title = title.replace("']","")
     if title ==  "[]" or title ==  '':
         title = "No Book Today"
     return title
