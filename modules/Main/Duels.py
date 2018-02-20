@@ -2433,7 +2433,6 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
     else:
         adjustmentdirection = get_trigger_arg(bot, triggerargsarray, 3).lower()
         weaponchange = get_trigger_arg(bot, triggerargsarray, '4+')
-    bot.say(weaponchange)
     weaponslist = get_database_value(bot, target, 'weaponslocker_complete') or []
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
@@ -4056,12 +4055,9 @@ def range_array(bot, inputs, rangea, rangeb):
     if int(rangea) < 1:
         rangea = 1
     if int(rangeb) > len(inputs):
-        rangeb = len(inputs)
-    bot.say(str(rangea))
-    bot.say(str(rangeb))
+        return string
     for i in range(int(rangea),int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
-        bot.say(arg)
         if string != '':
             string = str(string + " " + arg)
         else:
