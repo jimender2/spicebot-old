@@ -3038,6 +3038,7 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     howmanyduelsers = len(currentduelplayersarray)
     userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    useralastfought = get_database_value(bot, usera, 'lastfought') or ''
     if userb == useralastfought and howmanyduelusers > 2:
         useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
         if useraclass != 'knight':
