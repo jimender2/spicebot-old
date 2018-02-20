@@ -419,12 +419,11 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if not inchannel.startswith("#"):
         osd_notice(bot, instigator, "Duels must be in channel.")
         return
-    bot.say("test")
+        
     ## Check if target is valid
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
-        bot.say("test2")
         ## Mis-spellings ## TODO add alternative commands
         ## Check Commands
         for com in validcommands:
@@ -439,16 +438,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
                     commandortarget = player
         ## Did we match?
         if commandortarget != comorig:
-            bot.say("test4")
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
-            return
         else:
-            bot.say("test5")
             onscreentext(bot, [instigator], validtargetmsg)
-            return
+        return
 
     ## Run the duel
-    bot.say("test3")
     duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
 
     ## Usage Counter
@@ -503,7 +498,6 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 #####################
 
 def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels):
-    bot.say("duel_valid")
     ## Lockout Check, don't allow multiple duels simultaneously
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
@@ -2581,10 +2575,6 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             else:
                 reset_database_value(bot, duelrecorduser, 'duelusers')
             osd_notice(bot, instigator, "Duels should now be " +  subcommand + ' for ' + target +".")
-            return
-        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
-        if not validtarget:
-            osd_notice(bot, instigator, validtargetmsg)
             return
         if subcommand == 'on':
             adjust_database_array(bot, duelrecorduser, [target], 'duelusers', 'add')
