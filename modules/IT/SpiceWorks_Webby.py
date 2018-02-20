@@ -19,6 +19,13 @@ url = 'https://community.spiceworks.com/calendar'
 
 @sopel.module.commands('spicewebby')
 def execute_main(bot, trigger):
+    now = datetime.datetime.utcnow()
+    webbytime = getwebbytime()
+    timeuntil = webbytime - now
+    bot.say(str(timeuntil))
+
+
+    
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         dispmsg = []
@@ -35,6 +42,8 @@ def webbyauto(bot):
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
+        timeuntil = webbytime - now
+        bot.say(str(timeuntil))
         if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
             if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
                 webbybonus = getwebbybonus()
