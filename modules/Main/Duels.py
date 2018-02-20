@@ -2433,6 +2433,7 @@ def subcommand_weaponslocker(bot, instigator, triggerargsarray, botvisibleusers,
     else:
         adjustmentdirection = get_trigger_arg(bot, triggerargsarray, 3).lower()
         weaponchange = get_trigger_arg(bot, triggerargsarray, '4+')
+    bot.say(weaponchange)
     weaponslist = get_database_value(bot, target, 'weaponslocker_complete') or []
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
@@ -4105,6 +4106,8 @@ def incrange_plus_array(bot, inputs, number):
     if str(number).endswith("+"):
         rangea = re.sub(r"\+", '', str(number))
         rangeb = len(inputs)
+        bot.say(str(rangea))
+        bot.say(str(rangeb))
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
