@@ -13,15 +13,13 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-dussedurl = "http://spice.dussed.com"
-
 @sopel.module.commands('spicyquote')
 def execute_main(bot, trigger):
     query = trigger.group(2)
     if query:
         quote = getQuote(bot, query)
         if 'Invalid quote' not in quote:
-            if dussedurl in quote:
+            if 'http://spice.dussed.com' in quote:
                 bot.say('That is a long quote! Here is the link: ' + quote)
             else:
                 bot.say(quote)
@@ -33,7 +31,7 @@ def execute_main(bot, trigger):
 def getQuote(bot, query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
-    urlsuffix = str(dussedurl+"/?")
+    urlsuffix = 'http://spice.dussed.com/?'
     if query.isdigit():
         qNum = query
         url = urlsuffix + qNum
@@ -50,7 +48,7 @@ def getQuote(bot, query):
         return txt
     for qlink in links:
         if str(qlink).startswith("./?"):
-            link = qlink.replace(".",dussedurl)
+            link = qlink.replace(".","http://spice.dussed.com")
             qlinks.append(link)
     url = get_trigger_argnew(bot, qlinks, 'random') ## update when replacement happens
     if url == '':
