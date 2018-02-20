@@ -36,7 +36,7 @@ def getpackt(bot):
 
 def packt_osd(bot):
     dispmsg = []
-    dispmsg.append("[Packt]: " + getPacktTitle())
+    dispmsg.append("[Packt] " + getPacktTitle())
     dispmsg.append("Next Book: " + getpackttimediff(bot))
     dispmsg.append("URL: " + packturl)
     return dispmsg
