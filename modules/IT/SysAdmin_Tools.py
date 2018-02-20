@@ -8,6 +8,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+systoolsarray = ["https://sysadmin.it-landscape.info/","https://sysadmin.libhunt.com/","https://github.com/n1trux/awesome-sysadmin"]
+
 @sopel.module.commands('sysadmintools')
 def execute_main(bot, trigger):
-    bot.say('https://sysadmin.it-landscape.info/     https://sysadmin.libhunt.com/     https://github.com/n1trux/awesome-sysadmin')
+    onscreentext(bot, trigger.sender, systoolsarray)

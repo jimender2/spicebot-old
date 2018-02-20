@@ -17,7 +17,7 @@ from SpicebotShared import *
 def execute_main(bot, trigger):
     query = trigger.group(2)
     if query:
-        quote = getQuote(query)
+        quote = getQuote(bot, query)
         if 'Invalid quote' not in quote:
             if 'http://spice.dussed.com' in quote:
                 bot.say('That is a long quote! Here is the link: ' + quote)
@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
     else:
         bot.say("Please provide a quote number or search term and try again!")
 
-def getQuote(query):
+def getQuote(bot, query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
     urlsuffix = 'http://spice.dussed.com/?'
@@ -36,34 +36,27 @@ def getQuote(query):
         qNum = query
         url = urlsuffix + qNum
     else:
-        #someday we can have this check against the db and see if it is a known user.
         url = urlsuffix + 'do=search&q=' + query
-        print(url)
-        page = urllib2.urlopen(url)
-        soup = BeautifulSoup(page)
-        links = []
-        qlinks = []
-        for link in soup.findAll('a'):
-			links.append(link.get('href'))
-        for qlink in links:
-            if str(qlink).startswith("./?"):
-				link = qlink.replace(".","http://spice.dussed.com")
-				qlinks.append(link)
-	try:
-            randno = randint(1,len(qlinks))
-        except ValueError:
-            randno = int("0")
-	try:
-            url = qlinks[randno]
-        except IndexError:
-            url = ""
-    try:
-        soup = BeautifulSoup(urllib2.urlopen(url).read())
-        txt = soup.find('td',{'class':'body'}).text
-        txt = unescape_xml_entities(stripper.transformString(txt))
-    except:
+    page = urllib2.urlopen(url)
+    soup = BeautifulSoup(page)
+    links = []
+    qlinks = []
+    for link in soup.findAll('a'):
+        links.append(link.get('href'))
+    if links == []:
         txt = "Invalid quote"
-    
+        return txt
+    for qlink in links:
+        if str(qlink).startswith("./?"):
+            link = qlink.replace(".","http://spice.dussed.com")
+            qlinks.append(link)
+    url = get_trigger_argnew(bot, qlinks, 'random') ## update when replacement happens
+    if url == '':
+        txt = "Invalid quote"
+        return txt
+    soup = BeautifulSoup(urllib2.urlopen(url).read())
+    txt = soup.find('td',{'class':'body'}).text
+    txt = unescape_xml_entities(stripper.transformString(txt))
     if len(txt) > 200:
         quote = url
     else:

@@ -131,6 +131,48 @@ def increment_counter(bot, trigger, commandused):
     adjust_botdatabase_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
     adjust_botdatabase_value(bot, instigator, "spicebottotalusage", 1) ## User usage of bot overall
 
+    
+#########
+## OSD ##
+#########
+
+def onscreentext(bot, texttargetarray, textarraycomplete):
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    if not isinstance(texttargetarray, list):
+        target = texttargetarray
+        texttargetarray = []
+        texttargetarray.append(target)
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        elif len(textstring) > 200:
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+                currentstring = ''
+            combinedtextarray.append(textstring)
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= 200:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+    for combinedline in combinedtextarray:
+        for user in texttargetarray:
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)
+    
 ####################################
 ## Array/List/String Manipulation ##
 ####################################

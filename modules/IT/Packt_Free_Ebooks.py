@@ -20,40 +20,47 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+packturl = "https://www.packtpub.com/packt/offers/free-learning"
+
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
-    packttimediff = getpackttimediff()
-    title = getPacktTitle()
-    bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
-    
+    onscreentext(bot, trigger.sender, packt_osd(bot))
+
 @sopel.module.interval(60)
 def getpackt(bot):
     now = datetime.datetime.now(tz)
     if now.hour == int(packthour) and now.minute == int(packtminute):
-        title = getPacktTitle()
-        packttimediff = getpackttimediff()
+        dispmsg = packt_osd(bot)
         for channel in bot.channels:
-            bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+            onscreentext(bot, channel, dispmsg)
+
+def packt_osd(bot):
+    dispmsg = []
+    dispmsg.append("[Packt] " + getPacktTitle())
+    dispmsg.append("Next Book: " + getpackttimediff(bot))
+    dispmsg.append("URL: " + packturl)
+    return dispmsg
 
 def getPacktTitle():
     title = ''
-    url = 'https://www.packtpub.com/packt/offers/free-learning'
     ua = UserAgent()
     header = {'User-Agent':str(ua.chrome)}
-    page = requests.get(url,headers = header)
+    page = requests.get(packturl,headers = header)
     if page.status_code == 200:
         tree = html.fromstring(page.content)
         title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
         title = title.replace("\\t","")
         title = title.replace("\\n","")
-        if title ==  "[]":
-            title = "[No Book Today]"
+        title = title.replace("['","")
+        title = title.replace("']","")
+    if title ==  "[]" or title ==  '':
+        title = "No Book Today"
     return title
 
-def getpackttimediff():
+def getpackttimediff(bot):
     nowtime = datetime.datetime.now(tz)
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
     timecompare = get_timeuntil(nowtime, packtnext)
-    packttimediff = str('     Next Book: ' + timecompare)
+    packttimediff = str(timecompare)
     return packttimediff

@@ -19,16 +19,16 @@ url = 'https://community.spiceworks.com/calendar'
 
 @sopel.module.commands('spicewebby')
 def execute_main(bot, trigger):
+    #webbyauto(bot)
     page = requests.get(url,headers = None)
     if page.status_code == 200:
-        now = datetime.datetime.utcnow()
-        webbytimeuntil = getwebbytimeuntil()
-        webbybonus = getwebbybonus()
-        webbytitle = getwebbytitle()
-        webbylink = getwebbylink()
-        bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-        if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
-            bot.say('BONUS: ' + webbybonus)
+        dispmsg = []
+        dispmsg.append("[Spiceworks Webinar]")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        dispmsg.append(getwebbytitle())
+        dispmsg.append(getwebbylink())
+        dispmsg.append('BONUS: ' + getwebbybonus())
+        onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
@@ -36,15 +36,16 @@ def webbyauto(bot):
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
-        if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
-            if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
-                webbybonus = getwebbybonus()
-                webbytitle = getwebbytitle()
-                webbylink = getwebbylink()
-                for channel in bot.channels:
-                    bot.msg(channel, '[15 Minute Webby Reminder]     Title: ' + str(webbytitle) + '     Link: ' + str(webbylink))
-                    if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
-                        bot.msg(channel, str(webbybonus))
+        timeuntil = (webbytime - now).total_seconds()
+        if int(timeuntil) < 900 and int(timeuntil) > 840:
+            dispmsg = []
+            dispmsg.append("[Spiceworks Webinar Reminder]")
+            dispmsg.append("{"+getwebbytimeuntil()+"}")
+            dispmsg.append(getwebbytitle())
+            dispmsg.append(getwebbylink())
+            dispmsg.append('BONUS: ' + getwebbybonus())
+            for channel in bot.channels:
+                onscreentext(bot, channel, dispmsg)
 
 def getwebbytime():
     now = datetime.datetime.utcnow()
