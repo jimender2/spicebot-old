@@ -331,7 +331,6 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
     for player in currentduelplayersarray:
         executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, inchannel)
         if executedueling == 1:
-            bot.say(player)
             canduelarray.append(player)
             #statreset(bot, player)
             #healthcheck(bot, player)
@@ -1614,7 +1613,6 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
 ## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
-        bot.say("test")
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
         osd_notice(bot, instigator, validtargetmsg)
         return
