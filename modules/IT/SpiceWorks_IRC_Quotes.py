@@ -50,7 +50,7 @@ def getQuote(bot, query):
         if str(qlink).startswith("./?"):
             link = qlink.replace(".","http://spice.dussed.com")
             qlinks.append(link)
-    url = get_trigger_arg(bot, qlinks, 'random')
+    url = get_trigger_argnew(bot, qlinks, 'random') ## update when replacement happens
     if url == '':
         txt = "Invalid quote"
         return txt
