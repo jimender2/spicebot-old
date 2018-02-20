@@ -498,7 +498,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
 #####################
 
 def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels):
-
+    bot.say("test")
     ## Lockout Check, don't allow multiple duels simultaneously
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
