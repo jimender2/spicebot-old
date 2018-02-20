@@ -17,7 +17,7 @@ from SpicebotShared import *
 def execute_main(bot, trigger):
     query = trigger.group(2)
     if query:
-        quote = getQuote(query)
+        quote = getQuote(bot, query)
         if 'Invalid quote' not in quote:
             if 'http://spice.dussed.com' in quote:
                 bot.say('That is a long quote! Here is the link: ' + quote)
@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
     else:
         bot.say("Please provide a quote number or search term and try again!")
 
-def getQuote(query):
+def getQuote(bot, query):
     unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
     urlsuffix = 'http://spice.dussed.com/?'
