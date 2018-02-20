@@ -4061,6 +4061,7 @@ def range_array(bot, inputs, rangea, rangeb):
     bot.say(str(rangeb))
     for i in range(int(rangea) + 1,int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
+        bot.say(arg)
         if string != '':
             string = str(string + " " + arg)
         else:
