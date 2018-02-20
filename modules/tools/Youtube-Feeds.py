@@ -56,12 +56,8 @@ def autorss(bot):
         config.read(configfile)
         feedname = config.get("configuration","feedname")
         url = str(config.get("configuration","url"))
-        parentnumber = int(config.get("configuration","parentnumber"))
-        childnumber = int(config.get("configuration","childnumber"))
-        pubdatetype = str(config.get("configuration","pubdatetype"))
-        linktype = str(config.get("configuration","linktype"))
-        lastbuilddatabase = str(rssfeed + '_lastbuildcurrent')
-        messagestring = str("[" + feedname + "] ")
+        dispmsg = []
+        dispmsg.append("["+feedname+"] " + getPacktTitle())
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             xml = page.text
@@ -70,7 +66,7 @@ def autorss(bot):
             lastBuildXML = xmldoc.getElementsByTagName('published')
             lastBuildXML = lastBuildXML[2].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
-            lastbuildcurrent = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
+            lastbuildcurrent = bot.db.get_nick_value(bot.nick, rssfeed + '_lastbuildcurrent') or 0
             newcontent = True
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
@@ -80,6 +76,8 @@ def autorss(bot):
                 links = xmldoc.getElementsByTagName('link')
                 link = links[2].getAttribute('href')
                 lastbuildcurrent = lastBuildXML.strip()
-                bot.db.set_nick_value(bot.nick, lastbuilddatabase, lastbuildcurrent)
+                bot.db.set_nick_value(bot.nick, rssfeed + '_lastbuildcurrent', lastbuildcurrent)
+                dispmsg.append(title)
+                dispmsg.append(link)
                 for channel in bot.channels:
-                    bot.msg(channel, messagestring + title + ': ' + link)
+                    onscreentext(bot, channel, dispmsg)
