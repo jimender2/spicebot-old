@@ -24,7 +24,7 @@ packturl = "https://www.packtpub.com/packt/offers/free-learning"
 
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
-    packttimediff = getpackttimediff()
+    packttimediff = getpackttimediff(bot)
     title = getPacktTitle()
     bot.say("Packt Free Book Today is: " + title + str(packttimediff) + "     URL: " + packturl)
 
@@ -33,7 +33,7 @@ def getpackt(bot):
     now = datetime.datetime.now(tz)
     if now.hour == int(packthour) and now.minute == int(packtminute):
         title = getPacktTitle()
-        packttimediff = getpackttimediff()
+        packttimediff = getpackttimediff(bot)
         for channel in bot.channels:
             bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + "     URL: " + packturl)
 
@@ -52,7 +52,7 @@ def getPacktTitle():
             title = "[No Book Today]"
     return title
 
-#def getpackttimediff():
+#def getpackttimediff(bot):
     nowtime = datetime.datetime.now(tz)
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
@@ -60,7 +60,7 @@ def getPacktTitle():
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
 
-def getpackttimediff():
+def getpackttimediff(bot):
     nowtime = datetime.datetime.now(tz)
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
