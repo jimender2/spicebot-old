@@ -443,6 +443,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
             return
         else:
+            bot.say("test5")
             onscreentext(bot, [instigator], validtargetmsg)
             return
 
