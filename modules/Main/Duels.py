@@ -4057,6 +4057,8 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         rangeb = len(inputs)
+    bot.say(str(rangea))
+    bot.say(str(rangeb))
     for i in range(int(rangea) + 1,int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
@@ -4106,8 +4108,6 @@ def incrange_plus_array(bot, inputs, number):
     if str(number).endswith("+"):
         rangea = re.sub(r"\+", '', str(number))
         rangeb = len(inputs)
-        bot.say(str(rangea))
-        bot.say(str(rangeb))
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
