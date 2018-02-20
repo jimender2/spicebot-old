@@ -37,32 +37,27 @@ def getQuote(query):
         url = urlsuffix + qNum
     else:
         url = urlsuffix + 'do=search&q=' + query
-        print(url)
         page = urllib2.urlopen(url)
         soup = BeautifulSoup(page)
         links = []
         qlinks = []
         for link in soup.findAll('a'):
-		links.append(link.get('href'))
+            links.append(link.get('href'))
+        if links == []:
+            txt = "Invalid quote"
+            return txt
         for qlink in links:
             if str(qlink).startswith("./?"):
                 link = qlink.replace(".","http://spice.dussed.com")
                 qlinks.append(link)
-    try:
-        randno = randint(1,len(qlinks))
-    except ValueError:
-        randno = int("0")
-	try:
-        url = qlinks[randno]
-    except IndexError:
-        url = ""
-    try:
-        soup = BeautifulSoup(urllib2.urlopen(url).read())
-        txt = soup.find('td',{'class':'body'}).text
-        txt = unescape_xml_entities(stripper.transformString(txt))
-    except:
+    url = get_trigger_arg(bot, qlinks, 'random')
+    if url == '':
         txt = "Invalid quote"
-    
+        return txt
+    soup = BeautifulSoup(urllib2.urlopen(url).read())
+    txt = soup.find('td',{'class':'body'}).text
+    txt = unescape_xml_entities(stripper.transformString(txt))
+
     if len(txt) > 200:
         quote = url
     else:
