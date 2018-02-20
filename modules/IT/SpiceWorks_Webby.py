@@ -25,8 +25,8 @@ def execute_main(bot, trigger):
         dispmsg = []
         dispmsg.append("[Spiceworks Webinar]")
         dispmsg.append("{"+getwebbytimeuntil()+"}")
-        ispmsg.append(getwebbytitle())
-        ispmsg.append(getwebbylink())
+        dispmsg.append(getwebbytitle())
+        dispmsg.append(getwebbylink())
         dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
