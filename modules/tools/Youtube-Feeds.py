@@ -57,7 +57,7 @@ def autorss(bot):
         feedname = config.get("configuration","feedname")
         url = str(config.get("configuration","url"))
         dispmsg = []
-        dispmsg.append("["+feedname+"] " + getPacktTitle())
+        dispmsg.append("["+feedname+"]")
         page = requests.get(url, headers=header)
         if page.status_code == 200:
             xml = page.text
