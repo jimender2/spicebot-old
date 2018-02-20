@@ -20,11 +20,13 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+packturl = "https://www.packtpub.com/packt/offers/free-learning"
+
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
     packttimediff = getpackttimediff()
     title = getPacktTitle()
-    bot.say("Packt Free Book Today is: " + title + str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+    bot.say("Packt Free Book Today is: " + title + str(packttimediff) + "     URL: " + packturl)
 
 @sopel.module.interval(60)
 def getpackt(bot):
@@ -33,7 +35,7 @@ def getpackt(bot):
         title = getPacktTitle()
         packttimediff = getpackttimediff()
         for channel in bot.channels:
-            bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + '     URL: https://www.packtpub.com/packt/offers/free-learning')
+            bot.msg(channel, "Packt Free Book Today is: " + title +  str(packttimediff) + "     URL: " + packturl)
 
 def getPacktTitle():
     title = ''
@@ -62,8 +64,11 @@ def getpackttimediff():
     nowtime = datetime.datetime.now(tz)
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
+    timemath = packtnext - nowtime
+    bot.say(str(timemath))
     #timecompare = get_timeuntil(nowtime, packtnext)
-    timecompare = hours_minutes_seconds(packtnext - nowtime)
+    #timecompare = hours_minutes_seconds(packtnext - nowtime)
+    timecompare + "fart"
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
 
