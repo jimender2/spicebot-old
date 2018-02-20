@@ -424,6 +424,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
     if not validtarget:
+        bot.say("test2")
         ## Mis-spellings ## TODO add alternative commands
         ## Check Commands
         while commandortarget == comorig:
@@ -439,11 +440,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         ## Did we match?
         if commandortarget != comorig:
             commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, commandtype, devenabledchannels, validcommands, fullcommandused, commandortarget)
+            return
         else:
             onscreentext(bot, [instigator], validtargetmsg)
-        return
+            return
 
     ## Run the duel
+    bot.say("test3")
     duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
 
     ## Usage Counter
