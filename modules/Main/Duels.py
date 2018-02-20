@@ -816,7 +816,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     lootwinner = winner
                 else:
                     lootwinner = winner
-                adjust_database_value(bot, lootwinner, "loot_"+loot, 1)
+                adjust_database_value(bot, lootwinner, loot, 1)
                 if lootwinner == maindueler:
                     adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
                     adjust_database_value(bot, target, 'assault_potionslost', 1)
