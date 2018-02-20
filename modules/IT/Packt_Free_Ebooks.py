@@ -65,11 +65,10 @@ def getpackttimediff(bot):
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
     timemath = packtnext - nowtime.replace(tzinfo=None)
-    bot.say(str(timemath))
-    timecompare = get_timeuntil(nowtime, packtnext)
-    bot.say(str(timecompare))
-    #timecompare = hours_minutes_seconds(packtnext - nowtime)
-    timecompare + "fart"
+    #bot.say(str(timemath))
+    #timecompare = get_timeuntil(nowtime, packtnext)
+    #bot.say(str(timecompare))
+    timecompare = hours_minutes_seconds(timemath)
     packttimediff = str('     Next Book: ' + timecompare)
     return packttimediff
 
