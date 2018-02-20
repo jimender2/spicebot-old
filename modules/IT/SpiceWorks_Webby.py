@@ -19,22 +19,16 @@ url = 'https://community.spiceworks.com/calendar'
 
 @sopel.module.commands('spicewebby')
 def execute_main(bot, trigger):
-    now = datetime.datetime.utcnow()
-    webbytime = getwebbytime()
-    timeuntil = webbytime - now
-    bot.say(str(timeuntil))
-
-
-    
-    page = requests.get(url,headers = None)
-    if page.status_code == 200:
-        dispmsg = []
-        dispmsg.append("[Spiceworks Webinar]")
-        dispmsg.append("{"+getwebbytimeuntil()+"}")
-        dispmsg.append(getwebbytitle())
-        dispmsg.append(getwebbylink())
-        dispmsg.append('BONUS: ' + getwebbybonus())
-        onscreentext(bot, trigger.sender, dispmsg)
+    webbyauto(bot)
+    #page = requests.get(url,headers = None)
+    #if page.status_code == 200:
+        #dispmsg = []
+        #dispmsg.append("[Spiceworks Webinar]")
+        #dispmsg.append("{"+getwebbytimeuntil()+"}")
+        #dispmsg.append(getwebbytitle())
+        #dispmsg.append(getwebbylink())
+        #dispmsg.append('BONUS: ' + getwebbybonus())
+        #onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
