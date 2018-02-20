@@ -327,7 +327,7 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         rangeb = len(inputs)
-    for i in range(int(rangea) + 1,int(rangeb) + 1):
+    for i in range(int(rangea),int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
