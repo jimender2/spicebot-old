@@ -11,7 +11,7 @@ from SpicebotShared import *
 @sopel.module.commands('meraki')
 def execute_main(bot, trigger):
     dispmsg = []
-    dispmsg.append('MX     https://meraki.cisco.com/tc/freemx')
-    dispmsg.append('Switch     https://meraki.cisco.com/tc/freeswitch')
-    dispmsg.append('AP     https://meraki.cisco.com/tc/freeap')
+    dispmsg.append('MX: https://meraki.cisco.com/tc/freemx')
+    dispmsg.append('Switch: https://meraki.cisco.com/tc/freeswitch')
+    dispmsg.append('AP: https://meraki.cisco.com/tc/freeap')
     onscreentext(bot, trigger.sender, dispmsg)
