@@ -23,10 +23,10 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[Spiceworks Webinar]")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
         dispmsg.append('BONUS: ' + getwebbybonus())
-        dispmsg.append(getwebbytimeuntil())
         onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
