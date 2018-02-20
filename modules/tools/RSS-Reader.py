@@ -50,8 +50,6 @@ def autorss(bot):
         url = str(config.get("configuration","url"))
         parentnumber = int(config.get("configuration","parentnumber"))
         childnumber = int(config.get("configuration","childnumber"))
-        pubdatetype = str(config.get("configuration","pubdatetype"))
-        linktype = str(config.get("configuration","linktype"))
         dispmsg = []
         dispmsg.append("["+feedname+"]")
         page = requests.get(url, headers=header)
@@ -59,7 +57,7 @@ def autorss(bot):
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
-            lastBuildXML = xmldoc.getElementsByTagName(pubdatetype)
+            lastBuildXML = xmldoc.getElementsByTagName(pubDate)
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
             lastbuildcurrent = bot.db.get_nick_value(bot.nick, rssfeed + '_lastbuildcurrent') or 0
@@ -69,7 +67,7 @@ def autorss(bot):
             if newcontent == True:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
-                links = xmldoc.getElementsByTagName(linktype)
+                links = xmldoc.getElementsByTagName(link)
                 link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 lastbuildcurrent = lastBuildXML.strip()
                 bot.db.set_nick_value(bot.nick, rssfeed + '_lastbuildcurrent', lastbuildcurrent)
