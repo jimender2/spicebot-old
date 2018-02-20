@@ -10,12 +10,8 @@ from SpicebotShared import *
 
 @sopel.module.commands('meraki')
 def execute_main(bot, trigger):
-    types = trigger.group(3)
-    if not types:
-        bot.say('Please specify which product. Choices are MX , AP , or switch .')
-    elif types == 'mx':
-        bot.say('MX     https://meraki.cisco.com/tc/freemx')
-    elif types == 'switch':
-        bot.say('Switch     https://meraki.cisco.com/tc/freeswitch')
-    elif types == 'ap':
-        bot.say('AP     https://meraki.cisco.com/tc/freeap')
+    dispmsg = []
+    dispmsg.append('MX     https://meraki.cisco.com/tc/freemx')
+    dispmsg.append('Switch     https://meraki.cisco.com/tc/freeswitch')
+    dispmsg.append('AP     https://meraki.cisco.com/tc/freeap')
+    onscreentext(bot, trigger.sender, dispmsg)
