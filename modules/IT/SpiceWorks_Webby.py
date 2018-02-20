@@ -19,16 +19,16 @@ url = 'https://community.spiceworks.com/calendar'
 
 @sopel.module.commands('spicewebby')
 def execute_main(bot, trigger):
-    webbyauto(bot)
-    #page = requests.get(url,headers = None)
-    #if page.status_code == 200:
-        #dispmsg = []
-        #dispmsg.append("[Spiceworks Webinar]")
-        #dispmsg.append("{"+getwebbytimeuntil()+"}")
-        #ispmsg.append(getwebbytitle())
-        #ispmsg.append(getwebbylink())
-        #dispmsg.append('BONUS: ' + getwebbybonus())
-        #onscreentext(bot, trigger.sender, dispmsg)
+    #webbyauto(bot)
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        dispmsg = []
+        dispmsg.append("[Spiceworks Webinar]")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        ispmsg.append(getwebbytitle())
+        ispmsg.append(getwebbylink())
+        dispmsg.append('BONUS: ' + getwebbybonus())
+        onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
@@ -36,8 +36,7 @@ def webbyauto(bot):
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
-        #timeuntil = (webbytime - now).total_seconds()
-        timeuntil = 860
+        timeuntil = (webbytime - now).total_seconds()
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[Spiceworks Webinar Reminder]")
