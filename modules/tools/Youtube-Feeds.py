@@ -25,23 +25,15 @@ def reset(bot,trigger):
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':
         for filename in os.listdir(RSSFEEDSDIR):
-            configfile = os.path.join(RSSFEEDSDIR, filename)
-            config = ConfigParser.ConfigParser()
-            config.read(configfile)
-            feedname = config.get("configuration","feedname")
-            trimmedname = feedname.replace(" ","").lower()
-            lastbuilddatabase = str(trimmedname + '_lastbuildcurrent')
-            bot.say('Resetting LastBuildTime for ' + str(feedname))
-            bot.db.set_nick_value(bot.nick, lastbuilddatabase, None)
+            bot.say('Resetting LastBuildTime for ' + str(filename))
+            bot.db.set_nick_value(bot.nick, filename + '_lastbuildcurrent', None)
     else:
-        lastbuilddatabase = str(feedselect + '_lastbuildcurrent')
-        istherafeed = bot.db.get_nick_value(bot.nick, lastbuilddatabase) or 0
+        istherafeed = bot.db.get_nick_value(bot.nick, feedselect + '_lastbuildcurrent') or 0
         if istherafeed:
             bot.say('Resetting LastBuildTime for ' + str(feedselect))
-            bot.db.set_nick_value(bot.nick, lastbuilddatabase, None)
+            bot.db.set_nick_value(bot.nick, feedselect + '_lastbuildcurrent', None)
         else:
             bot.say("There doesn't appear to be record of that feed.")
-
 
 ## Automatic Run
 @sopel.module.interval(600)
