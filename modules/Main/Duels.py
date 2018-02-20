@@ -3028,6 +3028,7 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
     ## Devroom bypass
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
     if inchannel in devenabledchannels:
+        validtarget = 1
         return validtarget
 
     ## Don't allow usera to duel twice in a row
