@@ -36,7 +36,7 @@ def webbyauto(bot):
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()
-        timeuntil = webbytime - now
+        timeuntil = (webbytime - now).total_seconds()
         bot.say(str(timeuntil))
         if str(now.month) == str(webbytime.month) and str(now.day) == str(webbytime.day):
             if str(now.hour) == str(int(webbytime.hour) - 1) and str(now.minute) == '45':
