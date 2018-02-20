@@ -2103,7 +2103,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif lootcommand == 'use':
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
-        gethowmanylootitem = get_database_value(bot, instigator, "loot_"+lootitem) or 0
+        gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
         elif lootitem not in potion_types and lootitem != 'grenade':
@@ -2125,7 +2125,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 osd_notice(bot, instigator, "It looks like using a grenade right now won't hurt anybody.")
             else:
                 dispmsgarray = []
-                adjust_database_value(bot, instigator, "loot_"+lootitem, -1)
+                adjust_database_value(bot, instigator, lootitem, -1)
                 fulltarget, secondarytarget, thirdtarget = '','',''
                 fulltarget = get_trigger_arg(bot, canduelarray, "random")
                 dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenade_full_damage)) + " damage.")
@@ -2225,10 +2225,10 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 return
             if target.lower() != instigator.lower() and targetclass == 'fiend':
                 osd_notice(bot, instigator, "It looks like " + target + " is a fiend and can only self-use potions.")
-                adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantity))
+                adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                 return
             uselootarray = []
-            adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantity))
+            adjust_database_value(bot, instigator, lootitem, -abs(quantity))
             lootusedeaths = 0
             if lootitem == 'mysterypotion':
                 while int(quantity) > 0:
@@ -2357,11 +2357,11 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 osd_notice(bot, instigator, "You do not have enough coin for this action.")
             else:
                 adjust_database_value(bot, instigator, 'coin', -abs(coinrequired))
-                adjust_database_value(bot, instigator, "loot_"+lootitem, quantity)
+                adjust_database_value(bot, instigator, lootitem, quantity)
                 onscreentext(bot, instigator, instigator + " bought " + str(quantity) +  " "+lootitem + "s for " +str(coinrequired)+ " coins.")
     elif lootcommand == 'sell':
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
-        gethowmanylootitem = get_database_value(bot, instigator, "loot_"+lootitem) or 0
+        gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
         elif lootitem not in potion_types and lootitem != 'grenade':
@@ -2383,7 +2383,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 else:
                     reward = loot_sell * int(quantity)
                 adjust_database_value(bot, instigator, 'coin', reward)
-                adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantity))
+                adjust_database_value(bot, instigator, lootitem, -abs(quantity))
                 onscreentext(bot, inchannel, instigator + " sold " + str(quantity) + " "+ lootitem + "s for " +str(reward)+ " coins.")
     elif lootcommand == 'trade':
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
@@ -2414,8 +2414,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if gethowmanylootitem < quantitymath:
                 osd_notice(bot, instigator, "You don't have enough of this item to trade.")
             else:
-                adjust_database_value(bot, instigator, "loot_"+lootitem, -abs(quantitymath))
-                adjust_database_value(bot, instigator, "loot_"+lootitemb, quantity)
+                adjust_database_value(bot, instigator, lootitem, -abs(quantitymath))
+                adjust_database_value(bot, instigator, lootitemb, quantity)
                 quantity = int(quantity)
                 onscreentext(bot, inchannel, instigator + " traded " + str(quantitymath) + " "+ lootitem + "s for " +str(quantity) + " "+ lootitemb+ "s.")
     else:
