@@ -427,12 +427,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         bot.say("test2")
         ## Mis-spellings ## TODO add alternative commands
         ## Check Commands
-        while commandortarget == comorig:
-            for com in validcommands:
-                similarlevel = similar(commandortarget.lower(),com)
-                if similarlevel >= .75:
-                    commandortarget = com
-            ## Check players, but only if we didn't alreayd match a command
+        for com in validcommands:
+            similarlevel = similar(commandortarget.lower(),com)
+            if similarlevel >= .75:
+                commandortarget = com
+        ## Check players, but only if we didn't alreayd match a command
+        if commandortarget != comorig:
             for player in botvisibleusers:
                 similarlevel = similar(commandortarget.lower(),player)
                 if similarlevel >= .75:
