@@ -21,14 +21,13 @@ url = 'https://community.spiceworks.com/calendar'
 def execute_main(bot, trigger):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
-        now = datetime.datetime.utcnow()
-        webbytimeuntil = getwebbytimeuntil()
-        webbybonus = getwebbybonus()
-        webbytitle = getwebbytitle()
-        webbylink = getwebbylink()
-        bot.say(webbytimeuntil + '     Title: ' + webbytitle + '     Link: ' + webbylink)
-        if webbybonus != '[]' and webbybonus != '' and webbybonus != ' ':
-            bot.say('BONUS: ' + webbybonus)
+        dispmsg = []
+        dispmsg.append("[Spiceworks Webinar]")
+        dispmsg.append(getwebbytitle())
+        dispmsg.append(getwebbylink())
+        dispmsg.append('BONUS: ' + getwebbybonus())
+        dispmsg.append(getwebbytimeuntil())
+        onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
