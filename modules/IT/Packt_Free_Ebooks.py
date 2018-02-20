@@ -24,8 +24,11 @@ packturl = "https://www.packtpub.com/packt/offers/free-learning"
 
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
-    packttimediff = getpackttimediff(bot)
-    title = getPacktTitle()
+    dispmsg = []
+    dispmsg.append("Packt Free Book Today is: " + getPacktTitle())
+    dispmsg.append("Next Book: " + getpackttimediff(bot))
+    dispmsg.append("URL: " + packturl)
+    onscreentext(bot, trigger.sender, dispmsg)
     bot.say("Packt Free Book Today is: " + title + str(packttimediff) + "     URL: " + packturl)
 
 @sopel.module.interval(60)
@@ -48,8 +51,8 @@ def getPacktTitle():
         title = str(tree.xpath('//*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()'))
         title = title.replace("\\t","")
         title = title.replace("\\n","")
-        if title ==  "[]":
-            title = "[No Book Today]"
+    if title ==  "[]" or title ==  '':
+        title = "[No Book Today]"
     return title
 
 def getpackttimediff(bot):
@@ -57,7 +60,7 @@ def getpackttimediff(bot):
     tomorrow = nowtime + timedelta(days=1)
     packtnext = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(packthour), int(packtminute), 0, 0)
     timecompare = get_timeuntil(nowtime, packtnext)
-    packttimediff = str('     Next Book: ' + timecompare)
+    packttimediff = str(timecompare)
     return packttimediff
 
-#onscreentext(bot, texttargetarray, textarraycomplete)
+
