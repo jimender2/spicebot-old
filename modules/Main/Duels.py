@@ -292,7 +292,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
 
     ## Valid Commands
     validcommands = duels_valid_commands(bot)
-    
+
     ## user lists
     botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
     currentuserlistarray = []
@@ -381,9 +381,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         return
 
     ## Alternative commands
+    altcoms = []
     for subcom in validcommands:
         try:
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+            for x in commandarray_alt_eval:
+                altcoms.append(x)
             if commandortarget.lower() in commandarray_alt_eval:
                 commandortarget = subcom
                 continue
@@ -419,7 +422,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if not inchannel.startswith("#"):
         osd_notice(bot, instigator, "Duels must be in channel.")
         return
-        
+
     ## Check if target is valid
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
@@ -430,6 +433,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             similarlevel = similar(commandortarget.lower(),com)
             if similarlevel >= .75:
                 commandortarget = com
+        ## Check alt commands
+        if commandortarget != comorig:
+            for com in altcoms:
+                similarlevel = similar(commandortarget.lower(),com)
+                if similarlevel >= .75:
+                    commandortarget = com
         ## Check players, but only if we didn't alreayd match a command
         if commandortarget != comorig:
             for player in botvisibleusers:
@@ -953,7 +962,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
 
     ## array of insulting departures
     cowardarray = ['A man that flies from his fear may find that he has only taken a short cut to meet it. ― J.R.R. Tolkien','He was just a coward and that was the worst luck any many could have. - Ernest Hemingway','The coward fears the prick of Fate, not he who dares all, becoming himself the dreaded one. - Elise Pumpelly Cabot']
-    
+
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt and not inchannel in devenabledchannels:
@@ -1285,7 +1294,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         if losertier < currenttierstart:
             XPearnedloser = XPearnedloser * tierscaling
         adjust_database_value(bot, instigator, 'xp', XPearnedloser)
-        
+
         ## Dish out the pain
         damage = randint(50, 120)
         bodypart = 'head'
@@ -1475,7 +1484,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     onscreentext(bot, ['say'], reverseddisplay)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-    
+
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if bot.nick in canduelarray:
@@ -1590,7 +1599,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    
+
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
@@ -3005,7 +3014,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
     if channeltime <= CHANTIMEOUT:
         validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
         validtarget = 0
-            
+
     return validtarget, validtargetmsg
 
 def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
@@ -3086,7 +3095,7 @@ def eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplaye
     if validtarget == 1:
         for player in canduelarray:
             statreset(bot, player)
-    
+
     return validtarget, validtargetmsg
 
 ############
@@ -3582,7 +3591,7 @@ def duelrecordwipe(bot):
     for record in chanrecordsarray:
         reset_database_value(bot, duelrecorduser, record)
         reset_database_value(bot, bot.nick, record)
-    
+
 def statreset(bot, nick):
     now = time.time()
     getlastchanstatreset = get_database_value(bot, duelrecorduser, 'chanstatsreset')
@@ -3935,7 +3944,7 @@ def get_trigger_arg(bot, inputs, outputtask):
         return rangebetween_array(bot, inputs, outputtask)
     string = ''
     return string
-    
+
 ## Convert String to array
 def create_array(bot, inputs):
     if isinstance(inputs, list):
