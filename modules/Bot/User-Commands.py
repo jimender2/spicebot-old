@@ -13,8 +13,8 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
 @sopel.module.commands('spicebot')
 def main_command(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
-    subcommand = get_trigger_arg(triggerargsarray, 1)
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    subcommand = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
@@ -29,7 +29,7 @@ def main_command(bot, trigger):
         
     ## Warn against Bot abuse
     elif subcommand == 'warn' and inchannel.startswith("#"):
-        target = get_trigger_arg(triggerargsarray, 2) or ''
+        target = get_trigger_arg(bot, triggerargsarray, 2) or ''
         bot.msg(inchannel, target + "This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBot or ##SpiceBotTest, or send Spicebot a PrivateMessage.")
 
     ## Github Repo
@@ -43,12 +43,12 @@ def main_command(bot, trigger):
         
     ## Bot Owner
     elif subcommand == 'owner':
-        ownerlist = get_trigger_arg(botownerarray, 'list')
+        ownerlist = get_trigger_arg(bot, botownerarray, 'list')
         bot.notice("Bot Owners are: " + ownerlist, instigator)
     
     ## Bot Admin
     elif subcommand == 'admin':
-        adminlist = get_trigger_arg(adminsarray, 'list')
+        adminlist = get_trigger_arg(bot, adminsarray, 'list')
         bot.notice("Bot Admin are: " + adminlist, instigator)
         
     ## usage
