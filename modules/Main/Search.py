@@ -21,9 +21,9 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     if len(triggerargsarray)>=1:
-        mysite = get_trigger_arg(triggerargsarray, 1).lower()
-        searchterm = get_trigger_arg(triggerargsarray, '1+')
-        querystring = get_trigger_arg(triggerargsarray, '2+')
+        mysite = get_trigger_arg(bot, triggerargsarray, 1).lower()
+        searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
+        querystring = get_trigger_arg(bot, triggerargsarray, '2+')
         if (mysite == 'video' or mysite == 'youtube'):           
             data=querystring.replace(' ', '+')
             site = '+site%3Ayoutube.com'
