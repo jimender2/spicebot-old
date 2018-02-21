@@ -27,7 +27,9 @@ def execute_main(bot, trigger):
         dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
-        dispmsg.append('BONUS: ' + getwebbybonus())
+        bonus = getwebbybonus()
+        if bonus and bonus != '':
+            dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
@@ -43,7 +45,9 @@ def webbyauto(bot):
             dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
-            dispmsg.append('BONUS: ' + getwebbybonus())
+            bonus = getwebbybonus()
+            if bonus and bonus != '':
+                dispmsg.append('BONUS: ' + getwebbybonus())
             for channel in bot.channels:
                 onscreentext(bot, channel, dispmsg)
 
