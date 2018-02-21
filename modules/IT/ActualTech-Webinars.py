@@ -25,7 +25,7 @@ def execute_main(bot, trigger):
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
         #dispmsg.append("{"+getwebbytimeuntil()+"}")
-        #dispmsg.append(getwebbytitle())
+        dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
         #dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
@@ -47,6 +47,10 @@ def execute_main(bot, trigger):
 #            for channel in bot.channels:
 #                onscreentext(bot, channel, dispmsg)
 
+
+
+
+
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
@@ -59,7 +63,7 @@ def getwebbytime():
 
 def getwebbytitle():
     tree = gettree()
-    webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
+    webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
     for r in (("u'", ""), ("['", ""), ("[", ""), ("']", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
