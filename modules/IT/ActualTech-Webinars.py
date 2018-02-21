@@ -24,7 +24,8 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
-        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        #dispmsg.append("{"+getwebbytimeuntil()+"}")
+        dispmsg.append("{"+str(getwebbytime())+"}")
         dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
         #dispmsg.append('BONUS: ' + getwebbybonus())
@@ -55,13 +56,23 @@ def getwebbytitle():
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
 
+def getwebbytimeuntil():
+    nowtime = datetime.datetime.now(tz)
+    webbytime = getwebbytime()
+    timecompare = get_timeuntil(nowtime, webbytime)
+    return timecompare
+    
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
+    #webbyarray = get_trigger_arg(webbytime, 'create')
+    #timezone = get_trigger_arg(webbyarray, 'last').lower()
     webbytime = parser.parse(webbytime)
+    #webbytime = webbytime.replace(tzinfo=timezone.utc)
+    webbytime = webbytime.tzinfo
     return webbytime
 
 
@@ -85,11 +96,7 @@ def getwebbybonus():
         webbybonus = ''
     return webbybonus
 
-def getwebbytimeuntil():
-    nowtime = datetime.datetime.utcnow()
-    webbytime = getwebbytime()
-    timecompare = get_timeuntil(nowtime, webbytime)
-    return timecompare
+
 
 def gettree():
     page = requests.get(url,headers = None)
