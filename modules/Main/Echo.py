@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    echotext = get_trigger_arg(triggerargsarray, 0)
+    echotext = get_trigger_arg(bot, triggerargsarray, 0)
     if echotext:
         bot.say(echotext)
     else:
