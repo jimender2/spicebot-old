@@ -25,8 +25,8 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
-        #dispmsg.append("{"+getwebbytimeuntil()+"}")
-        dispmsg.append("{"+str(getwebbytime())+"}")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        #dispmsg.append("{"+str(getwebbytime())+"}")
         dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
         #dispmsg.append('BONUS: ' + getwebbybonus())
@@ -73,7 +73,7 @@ def getwebbytime():
     webbytime = parser.parse(webbytime)
     
     webbytime = webbytz.localize(webbytime)
-    webbytime = webbytime.tzinfo
+    #webbytime = webbytime.tzinfo
     return webbytime
 
 
