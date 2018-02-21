@@ -58,7 +58,7 @@ def getwebbytitle():
     return webbytitle
 
 def getwebbytimeuntil():
-    nowtime = datetime.datetime.now(tz)
+    nowtime = datetime.datetime.utcnow()
     webbytime = getwebbytime()
     timecompare = get_timeuntil(nowtime, webbytime)
     return timecompare
