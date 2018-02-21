@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-    mygame = get_trigger_arg(arg, 1) or 'nocommand'
+    mygame = get_trigger_arg(bot, arg, 1) or 'nocommand'
     if mygame == 'docs' or mygame == 'help':
         bot.say("For help with this module, see here: " + wikiurl)
     elif mygame =='slots':
@@ -79,7 +79,7 @@ def slots(bot,trigger,arg):
                 
     keyword = 'BSOD'
     #match3jackpot = jackpot or 500
-    mychoice = get_trigger_arg(arg, 2) or 'nocommand'
+    mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if mychoice == 'payout':
             bot.say("Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
     else:    
@@ -141,9 +141,9 @@ def roulette(bot,trigger,arg):
     maxplayers = 3
     player = trigger.nick
     
-    mybet = get_trigger_arg(arg, 2) or 'nobet'
-    myitem = get_trigger_arg(arg, 3) or 'noitem'
-    myitem2 = get_trigger_arg(arg, 4) or 'noitem'
+    mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
+    myitem = get_trigger_arg(bot, arg, 3) or 'noitem'
+    myitem2 = get_trigger_arg(bot, arg, 4) or 'noitem'
     
 #__payouts___
     colorpayout = 2 #% of amount bet + amount bet
@@ -237,7 +237,7 @@ def roulette(bot,trigger,arg):
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
-                testmsg = get_trigger_arg(roulettearray,"list") 
+                testmsg = get_trigger_arg(bot, roulettearray,"list") 
                 bot.notice("Your bet has been recorded", player)
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
@@ -265,18 +265,18 @@ def runroulette(bot):
         mywinnings=0
         winners = ''
         totalwon = 0        
-        displaymessage = get_trigger_arg(players , "list")
+        displaymessage = get_trigger_arg(bot, players , "list")
         
         bot.say('The dealer spins the wheel good luck to ' + displaymessage)
         bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
-                mybet =  get_trigger_arg(playerarray, 1) or 0
+                mybet =  get_trigger_arg(bot, playerarray, 1) or 0
                 mybet = int(mybet)
-                mynumber = get_trigger_arg(playerarray, 2) or 0
+                mynumber = get_trigger_arg(bot, playerarray, 2) or 0
                 mynumber = int(mynumber)
-                mycolor =  get_trigger_arg(playerarray, 3) or ''
+                mycolor =  get_trigger_arg(bot, playerarray, 3) or ''
                 
                 if not mybet == 0:
                     if mynumber == winningnumber:
@@ -329,7 +329,7 @@ def lottery(bot,trigger, arg):
     match2payout = 4
     match3payout = int(0.1 * bankbalance)#% of jackpot
     match4payout = int(0.3 * bankbalance) #% of jackpot
-    commandused = get_trigger_arg(arg, 2) or 'nocommand'
+    commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if commandused == 'payout':        
         bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(match4payout) + " and getting 3 correct = " + str(match3payout))
         success = 0    
@@ -339,7 +339,7 @@ def lottery(bot,trigger, arg):
         
         picklen=len(arg)+1        
         for i in range(0,picklen):
-            picker = get_trigger_arg(arg, i)
+            picker = get_trigger_arg(bot, arg, i)
             if picker.isdigit():
                 picks.append(int(picker))
         
@@ -401,8 +401,8 @@ def blackjack(bot,trigger,arg):
     blackjackpayout = 2
     beatdealerpayout = 2
     payouton21 = 1
-    mychoice =  get_trigger_arg(arg, 2) or 'nocommand'
-    mychoice2 = get_trigger_arg(arg, 3) or 'nocommand'
+    mychoice =  get_trigger_arg(bot, arg, 2) or 'nocommand'
+    mychoice2 = get_trigger_arg(bot, arg, 3) or 'nocommand'
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     botuseron=[]
     for u in bot.users:
@@ -478,7 +478,7 @@ def blackjack(bot,trigger,arg):
                     blackjackreset(bot,player)
                     
         elif mychoice == 'check':
-            target = get_trigger_arg(arg, 3) or 'notarget'                        
+            target = get_trigger_arg(bot, arg, 3) or 'notarget'                        
             if not target.lower() in [u.lower() for u in botuseron]:
                 bot.say("Target not found.")
             else:                    
@@ -506,9 +506,9 @@ def blackjack(bot,trigger,arg):
                     blackjackstand(bot,player,myhand,dealerhand,mybet)                    
                         
         elif mychoice == 'adminset' and trigger.admin:
-            target = get_trigger_arg(arg, 3) or 'notarget'
-            card1 = get_trigger_arg(arg, 4) or 'nocard1'
-            card2 = get_trigger_arg(arg, 5) or 'nocard2'
+            target = get_trigger_arg(bot, arg, 3) or 'notarget'
+            card1 = get_trigger_arg(bot, arg, 4) or 'nocard1'
+            card2 = get_trigger_arg(bot, arg, 5) or 'nocard2'
             myhand = []
             dealerhand = []
             mybet = 30
@@ -549,7 +549,7 @@ def deal(deck, cardcount):
     hand = []
     
     for i in range(cardcount):        
-        card = get_trigger_arg(deck,'random')    
+        card = get_trigger_arg(bot, deck,'random')    
         if card == 11:
             card = "J"
         if card == 12:
