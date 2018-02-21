@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    password = get_trigger_arg(triggerargsarray, 0)
+    password = get_trigger_arg(bot, triggerargsarray, 0)
     if not password:
         bot.say("If you type your password here, I will obscure it.")
     else:
