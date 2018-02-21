@@ -62,16 +62,16 @@ def getwebbytime():
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", ""), (" EST", ""), (",", ""), (".", "")):
         webbytime = webbytime.replace(*r)
-    #webbytime = parser.parse(webbytime)
+    webbytime = parser.parse(webbytime)
     #webbytime = strptime(webbytime, '%b %d %Y %I:%M%p')
     #
     #webbytime = time.mktime(datetime.datetime.strptime(webbytime, "%b %d %Y %I:%m%p").timetuple())
-    webbyarray = get_trigger_arg(webbytime, 'create')
+    #webbyarray = get_trigger_arg(webbytime, 'create')
 
-    month = get_trigger_arg(webbyarray, 1)
-    month = datetime.datetime.strptime(month, '%b').month
+    #month = get_trigger_arg(webbyarray, 1)
+    #month = datetime.datetime.strptime(month, '%b').month
 
-    webbytime = month
+    #webbytime = month
     #webbytime = datetime.datetime(year, month, day, hour, minute, 0, 0)
     return webbytime
 
