@@ -62,6 +62,7 @@ def getwebbytime():
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@", "")):
         webbytime = webbytime.replace(*r)
+    webbytime = str(webbytime)
     webbytime = parser.parse(webbytime)
     return webbytime
 
