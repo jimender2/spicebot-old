@@ -44,7 +44,8 @@ def webbyauto(bot):
         timeuntil = (webbytime - now).total_seconds()
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
-            dispmsg.append("[ActualTech Webinar Reminder]")
+            dispmsg.append("[ActualTech Webinar]")
+            dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
             bonus = getwebbybonus()
