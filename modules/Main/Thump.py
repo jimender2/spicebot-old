@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
     if not target:
         bot.say("Did you mean to thump somebody?")
     elif target.lower() not in [u.lower() for u in bot.users]:
