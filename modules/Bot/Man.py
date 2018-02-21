@@ -24,9 +24,9 @@ custompages=['spicebot','modules','casino','duel','github','man','pants','points
 
 @sopel.module.commands('man')
 def mainfunction(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
-    subcommand = get_trigger_arg(triggerargsarray, 1)
-    customdisplay =  get_trigger_arg(custompages, "list")
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    subcommand = get_trigger_arg(bot, triggerargsarray, 1)
+    customdisplay =  get_trigger_arg(bot, custompages, "list")
     if subcommand in custompagearray:
         if 'bot' in subcommand or 'usage' in subcommand or 'spicebot' in subcommand:
             CUSTOMPAGEURL = str(GITWIKIURL)+"/Using-the-Bot"
