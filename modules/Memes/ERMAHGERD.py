@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    ernpert = get_trigger_arg(triggerargsarray, 0)
+    ernpert = get_trigger_arg(bot, triggerargsarray, 0)
     if ernpert:
         spertitert = trernslert(ernpert)
         bot.say('ERMAHGERD,' + str(spertitert))
