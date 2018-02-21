@@ -15,8 +15,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 1)
-    reason = get_trigger_arg(triggerargsarray, '2+')
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
     # Nothing specified
     if not target:
