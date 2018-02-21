@@ -11,6 +11,7 @@ import calendar
 import arrow
 import sys
 import os
+import pytz
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -68,10 +69,10 @@ def getwebbytime():
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
-    webbyarray = get_trigger_arg(webbytime, 'create')
-    timezone = get_trigger_arg(webbyarray, 'last').lower()
+    webbytz = pytz.timezone('US/Eastern')
     webbytime = parser.parse(webbytime)
-    webbytime = webbytime.replace(tzinfo=timezone)
+    
+    webbytime = webbytz.localize(webbytime)
     webbytime = webbytime.tzinfo
     return webbytime
 
