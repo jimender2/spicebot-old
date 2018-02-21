@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 0)
+    target = get_trigger_arg(bot, triggerargsarray, 0)
     if not target:
         bot.say("What don't we need?")
     else:
