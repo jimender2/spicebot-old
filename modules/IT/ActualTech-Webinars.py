@@ -24,7 +24,7 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
-        dispmsg.append("{"+getwebbytime()+"}")
+        dispmsg.append("{"+str(getwebbytime())+"}")
         #dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
