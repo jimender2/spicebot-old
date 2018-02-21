@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
 	botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
 	channel = trigger.sender
-	commandused = get_trigger_arg(triggerargsarray, 1) or 'nocommand'
+	commandused = get_trigger_arg(bot, triggerargsarray, 1) or 'nocommand'
 	botuseron=[]
 	for u in bot.users:
 		if u in botusersarray and u != bot.nick:
@@ -45,7 +45,7 @@ def execute_main(bot, trigger, triggerargsarray):
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
 				if not checkpayday(bot,trigger.nick)==0:					
-					target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+					target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 					if (target=='notarget' or target=='everyone'):
 						target = 'Everyone'
 						bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
@@ -86,7 +86,7 @@ def execute_main(bot, trigger, triggerargsarray):
 					bot.say("You have already been paid today")
 			##Reset
 		elif commandused == 'reset' and trigger.admin: #admin only command
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 			if not target == 'notarget':
 				if not target.lower() in [u.lower() for u in botuseron]:
 					bot.say("I'm sorry, I do not know who " + target + " is.")
@@ -100,7 +100,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		##Funds
 		elif commandused == 'funds' and trigger.admin: #admin only command
 			success = 0
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 			if not target == 'notarget':
 				if target.lower() == 'spicebank':
 					target = 'SpiceBank'
@@ -112,7 +112,7 @@ def execute_main(bot, trigger, triggerargsarray):
 					success = 1
 
 			if success == 1:
-				amount =get_trigger_arg(triggerargsarray, 3) or 'noamount'
+				amount =get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
 				if not amount =='noamount':
 					if amount.isdigit():
 						amount = int(amount)
@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray):
 			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+				target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 				if not target == 'notarget':
 					if not target.lower() in [u.lower() for u in botuseron]:
 						bot.say("I'm sorry, I do not know who " + target + " is.")
@@ -142,7 +142,7 @@ def execute_main(bot, trigger, triggerargsarray):
 					paytaxes(bot, trigger.nick)
 		##Bank
 		elif commandused == 'bank':
-			target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
+			target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 			if not target == 'notarget':
 				if target == 'spicebank':
 					balance = bot.db.get_nick_value('SpiceBank', 'spicebucks_bank') or 0
@@ -160,8 +160,8 @@ def execute_main(bot, trigger, triggerargsarray):
 			if not channel.startswith("#"): 
 				bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
 			else:
-				target = get_trigger_arg(triggerargsarray, 2) or 'notarget'
-				amount =get_trigger_arg(triggerargsarray, 3) or 'noamount'
+				target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
+				amount =get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
 				if not (target=='notarget' or amount=='noamount'):
 					instigator = trigger.nick
 					if not amount.isdigit():
@@ -263,5 +263,5 @@ def randomuser(bot,nick):
 	for u in bot.users:
 		if u in botusersarray and u != bot.nick and u != nick:
 			randompersons.append(u)
-	randomperson = get_trigger_arg(randompersons,'random')		
+	randomperson = get_trigger_arg(bot, randompersons,'random')		
 	return randomperson
