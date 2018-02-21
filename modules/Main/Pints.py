@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 1) or "Everybody"
+    target = get_trigger_arg(bot, triggerargsarray, 1) or "Everybody"
     if target == 'all':
         winner = "Everybody"
     elif target == trigger.nick:
