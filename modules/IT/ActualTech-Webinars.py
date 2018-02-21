@@ -66,9 +66,9 @@ def getwebbytime():
     #webbytime = strptime(webbytime, '%b %d %Y %I:%M%p')
     #
     #webbytime = time.mktime(datetime.datetime.strptime(webbytime, "%b %d %Y %I:%m%p").timetuple())
+    webbyarray = get_trigger_arg(webbytime, 'create')
 
-
-    month = get_trigger_arg(webbytime, 1)
+    month = get_trigger_arg(webbyarray, 1)
     month = datetime.datetime.strptime(month, '%b').month
 
     webbytime = month
