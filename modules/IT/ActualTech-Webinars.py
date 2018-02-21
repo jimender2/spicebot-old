@@ -63,7 +63,7 @@ def getwebbytime():
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", ""), (" EST", "")):
         webbytime = webbytime.replace(*r)
     #webbytime = parser.parse(webbytime)
-    webbytime = datetime.strptime(webbytime, '%b %d %Y %I:%M%p')
+    webbytime = strptime(webbytime, '%b %d %Y %I:%M%p')
     return webbytime
 
 
