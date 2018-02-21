@@ -16,7 +16,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-url = 'https://events.actualtechmedia.com/'
+url = 'https://events.actualtechmedia.com'
 
 @sopel.module.commands('atwebby')
 def execute_main(bot, trigger):
@@ -78,7 +78,7 @@ def getwebbylink():
     webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    webbylink = str(webbylink.split("&", 1)[0])
+    webbylink = str(url + webbylink.split("&", 1)[0])
     return webbylink
 
 def getwebbybonus():
