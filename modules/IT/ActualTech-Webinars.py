@@ -24,6 +24,7 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
+        dispmsg.append("{"+getwebbytime()+"}")
         #dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
@@ -47,22 +48,6 @@ def execute_main(bot, trigger):
 #            for channel in bot.channels:
 #                onscreentext(bot, channel, dispmsg)
 
-
-
-
-
-
-
-def getwebbytime():
-    now = datetime.datetime.utcnow()
-    tree = gettree()
-    webbytime = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span[@title]/@datetime'))
-    for r in (("['", ""), ("']", "")):
-        webbytime = webbytime.replace(*r)
-    webbytime = str(webbytime.split("+", 1)[0])
-    webbytime = parser.parse(webbytime)
-    return webbytime
-
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
@@ -70,6 +55,18 @@ def getwebbytitle():
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
+
+def getwebbytime():
+    now = datetime.datetime.utcnow()
+    tree = gettree()
+    webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
+    for r in (("['", ""), ("']", "")):
+        webbytime = webbytime.replace(*r)
+    webbytime = str(webbytime.split("+", 1)[0])
+    webbytime = parser.parse(webbytime)
+    return webbytime
+
+# //*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()
 
 def getwebbylink():
     tree = gettree()
