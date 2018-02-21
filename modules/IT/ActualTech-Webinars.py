@@ -68,10 +68,10 @@ def getwebbytime():
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
-    #webbyarray = get_trigger_arg(webbytime, 'create')
-    #timezone = get_trigger_arg(webbyarray, 'last').lower()
+    webbyarray = get_trigger_arg(webbytime, 'create')
+    timezone = get_trigger_arg(webbyarray, 'last').lower()
     webbytime = parser.parse(webbytime)
-    #webbytime = webbytime.replace(tzinfo=timezone.utc)
+    webbytime = webbytime.replace(tzinfo=timezone)
     webbytime = webbytime.tzinfo
     return webbytime
 
