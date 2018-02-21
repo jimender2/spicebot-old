@@ -23,8 +23,8 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
-    target = get_trigger_arg(triggerargsarray, 1)
-    admintarget = get_trigger_arg(triggerargsarray, 2)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    admintarget = get_trigger_arg(bot, triggerargsarray, 2)
     masterurinator = 'IT_Sean'
     
     # Names of channel
