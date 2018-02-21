@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    pfremembers = get_trigger_arg(triggerargsarray, 0)
+    pfremembers = get_trigger_arg(bot, triggerargsarray, 0)
     if pfremembers:
         bot.say("Pepperidge Farms remembers " + str(pfremembers))
     else:
