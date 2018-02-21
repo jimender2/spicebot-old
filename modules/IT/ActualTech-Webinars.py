@@ -51,6 +51,8 @@ def execute_main(bot, trigger):
 
 
 
+
+
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
@@ -64,7 +66,7 @@ def getwebbytime():
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
-    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", "")):
+    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\n\t\t\t\t\t\t", ""), ("\t\t\t\t\t", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
