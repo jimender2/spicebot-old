@@ -21,18 +21,18 @@ url = 'https://events.actualtechmedia.com'
 
 @sopel.module.commands('atwebby')
 def execute_main(bot, trigger):
-    webbyauto(bot)
-    #page = requests.get(url,headers = None)
-    #if page.status_code == 200:
-#        dispmsg = []
-#        dispmsg.append("[ActualTech Webinar]")
-#        dispmsg.append("{"+getwebbytimeuntil()+"}")
-#        dispmsg.append(getwebbytitle())
-#        dispmsg.append(getwebbylink())
-#        bonus = getwebbybonus()
-#        if bonus and bonus != '':
-#            dispmsg.append('BONUS: ' + getwebbybonus())
-#        onscreentext(bot, trigger.sender, dispmsg)
+    #webbyauto(bot)
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        dispmsg = []
+        dispmsg.append("[ActualTech Webinar]")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        dispmsg.append(getwebbytitle())
+        dispmsg.append(getwebbylink())
+        bonus = getwebbybonus()
+        if bonus and bonus != '':
+            dispmsg.append('BONUS: ' + getwebbybonus())
+        onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
@@ -42,7 +42,6 @@ def webbyauto(bot):
         now = now.replace(tzinfo=pytz.UTC)
         webbytime = getwebbytime()
         timeuntil = (webbytime - now).total_seconds()
-        bot.say(str(timeuntil))
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[ActualTech Webinar]")
