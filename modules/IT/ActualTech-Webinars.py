@@ -39,7 +39,7 @@ def webbyauto(bot):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
-        now = utctz.replace(tzinfo=pytz.UTC)
+        now = now.replace(tzinfo=pytz.UTC)
         webbytime = getwebbytime()
         timeuntil = (webbytime - now).total_seconds()
         if int(timeuntil) < 900 and int(timeuntil) > 840:
