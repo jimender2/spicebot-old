@@ -64,6 +64,8 @@ def getwebbytime():
         webbytime = webbytime.replace(*r)
     #webbytime = parser.parse(webbytime)
     #webbytime = strptime(webbytime, '%b %d %Y %I:%M%p')
+    #webbytime = datetime.datetime(year, month, day, hour, minute, 0, 0)
+    webbytime = time.mktime(datetime.datetime.strptime(webbytime, "%b %d, %Y %I:%m%p %Z ").timetuple())
     return webbytime
 
 
