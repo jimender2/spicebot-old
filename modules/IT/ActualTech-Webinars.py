@@ -12,8 +12,7 @@ import arrow
 import sys
 import os
 import pytz
-from datetime import datetime
-from datetime import timezone
+from dateutil import tz
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -40,7 +39,7 @@ def webbyauto(bot):
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
-        now = now.replace(tzinfo=timezone.utc)
+        now = now.replace(tzinfo=tz.utc)
         webbytime = getwebbytime()
         timeuntil = (webbytime - now).total_seconds()
         if int(timeuntil) < 900 and int(timeuntil) > 840:
