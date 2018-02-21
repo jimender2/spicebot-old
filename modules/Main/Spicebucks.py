@@ -189,7 +189,8 @@ def execute_main(bot, trigger, triggerargsarray):
 				else:
 					bot.say("You must enter who you would like to transfer spicebucks to, as well as an amount.")
 
-def reset(bot, target): #admin command reset user values
+#admin command reset user values
+def reset(bot, target):
 	bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def bank(bot, nick):
