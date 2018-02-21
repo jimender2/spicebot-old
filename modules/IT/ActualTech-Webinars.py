@@ -24,8 +24,7 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
-        dispmsg.append("{"+str(getwebbytime())+"}")
-        #dispmsg.append("{"+getwebbytimeuntil()+"}")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         #dispmsg.append(getwebbylink())
         #dispmsg.append('BONUS: ' + getwebbybonus())
@@ -60,11 +59,9 @@ def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
     webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
-    #for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", ""), (" EST", ""), (",", ""), (".", "")):
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
     webbytime = parser.parse(webbytime)
-    webbytime = calendar.timegm(webbytime.utctimetuple())
     return webbytime
 
 
