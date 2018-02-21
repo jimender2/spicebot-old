@@ -17,7 +17,7 @@ from SpicebotShared import *
 
 url = 'https://events.actualtechmedia.com/'
 
-@sopel.module.commands('spicewebby')
+@sopel.module.commands('atwebby')
 def execute_main(bot, trigger):
     #webbyauto(bot)
     page = requests.get(url,headers = None)
