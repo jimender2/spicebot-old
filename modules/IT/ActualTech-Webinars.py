@@ -11,19 +11,20 @@ import calendar
 import arrow
 import sys
 import os
+import pytz
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-url = 'https://community.spiceworks.com/calendar'
+url = 'https://events.actualtechmedia.com'
 
-@sopel.module.commands('spicewebby')
+@sopel.module.commands('atwebby')
 def execute_main(bot, trigger):
     #webbyauto(bot)
     page = requests.get(url,headers = None)
     if page.status_code == 200:
         dispmsg = []
-        dispmsg.append("[Spiceworks Webinar]")
+        dispmsg.append("[ActualTech Webinar]")
         dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
@@ -41,7 +42,7 @@ def webbyauto(bot):
         timeuntil = (webbytime - now).total_seconds()
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
-            dispmsg.append("[Spiceworks Webinar Reminder]")
+            dispmsg.append("[ActualTech Webinar]")
             dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
@@ -51,36 +52,43 @@ def webbyauto(bot):
             for channel in bot.channels:
                 onscreentext(bot, channel, dispmsg)
 
-def getwebbytime():
-    now = datetime.datetime.utcnow()
-    tree = gettree()
-    webbytime = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[1]/div[2]/span[@title]/@datetime'))
-    for r in (("['", ""), ("']", "")):
-        webbytime = webbytime.replace(*r)
-    webbytime = str(webbytime.split("+", 1)[0])
-    webbytime = parser.parse(webbytime)
-    return webbytime
-
 def getwebbytitle():
     tree = gettree()
-    webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
-    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", "")):
+    webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
+    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
 
+def getwebbytimeuntil():
+    nowtime = datetime.datetime.utcnow()
+    webbytime = getwebbytime()
+    timecompare = get_timeuntil(nowtime, webbytime)
+    return timecompare
+    
+def getwebbytime():
+    now = datetime.datetime.utcnow()
+    tree = gettree()
+    webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
+    for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+        webbytime = webbytime.replace(*r)
+    webbytz = pytz.timezone('US/Eastern')
+    webbytime = parser.parse(webbytime)
+    webbytime = webbytz.localize(webbytime)
+    return webbytime
+
 def getwebbylink():
     tree = gettree()
-    webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
+    webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    webbylink = str(webbylink.split("&", 1)[0])
+    webbylink = str(url + webbylink.split("&", 1)[0])
     return webbylink
 
 def getwebbybonus():
     tree = gettree()
     try:
-        webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
+        webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/@strong/@strong'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
             webbybonus = webbybonus.replace(*r)
@@ -88,12 +96,6 @@ def getwebbybonus():
     except IndexError:
         webbybonus = ''
     return webbybonus
-
-def getwebbytimeuntil():
-    nowtime = datetime.datetime.utcnow()
-    webbytime = getwebbytime()
-    timecompare = get_timeuntil(nowtime, webbytime)
-    return timecompare
 
 def gettree():
     page = requests.get(url,headers = None)
