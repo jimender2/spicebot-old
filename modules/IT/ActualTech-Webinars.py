@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
         dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
-        #dispmsg.append('BONUS: ' + getwebbybonus())
+        dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
 #@sopel.module.interval(60)
@@ -84,7 +84,7 @@ def getwebbylink():
 def getwebbybonus():
     tree = gettree()
     try:
-        webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
+        webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/text()'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
             webbybonus = webbybonus.replace(*r)
