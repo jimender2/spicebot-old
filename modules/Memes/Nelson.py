@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
     if not target:
         bot.say("Who are we laughing at?")
     elif target == instigator:
