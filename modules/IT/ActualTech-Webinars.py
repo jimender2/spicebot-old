@@ -42,6 +42,7 @@ def webbyauto(bot):
         now = now.replace(tzinfo=pytz.UTC)
         webbytime = getwebbytime()
         timeuntil = (webbytime - now).total_seconds()
+        bot.say(str(timeuntil))
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[ActualTech Webinar]")
