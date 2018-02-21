@@ -26,9 +26,8 @@ def execute_main(bot, trigger):
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
         dispmsg.append("{"+getwebbytimeuntil()+"}")
-        #dispmsg.append("{"+str(getwebbytime())+"}")
         dispmsg.append(getwebbytitle())
-        #dispmsg.append(getwebbylink())
+        dispmsg.append(getwebbylink())
         #dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
@@ -71,15 +70,12 @@ def getwebbytime():
         webbytime = webbytime.replace(*r)
     webbytz = pytz.timezone('US/Eastern')
     webbytime = parser.parse(webbytime)
-    
     webbytime = webbytz.localize(webbytime)
-    #webbytime = webbytime.tzinfo
     return webbytime
-
 
 def getwebbylink():
     tree = gettree()
-    webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
+    webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
     webbylink = str(webbylink.split("&", 1)[0])
@@ -96,8 +92,6 @@ def getwebbybonus():
     except IndexError:
         webbybonus = ''
     return webbybonus
-
-
 
 def gettree():
     page = requests.get(url,headers = None)
