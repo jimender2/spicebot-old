@@ -88,7 +88,6 @@ def getwebbylink():
 def getwebbybonus():
     tree = gettree()
     try:
-        //*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong
         webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/@strong/@strong'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
