@@ -84,13 +84,13 @@ def getwebbylink():
 def getwebbybonus():
     tree = gettree()
     try:
-        webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong/strong/text()'))
+        webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/text()'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
             webbybonus = webbybonus.replace(*r)
         webbybonus = unicode_string_cleanup(webbybonus)
     except IndexError:
-        webbybonus = ''
+        webbybonus = 'None'
     return webbybonus
 
 def gettree():
