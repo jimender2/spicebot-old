@@ -66,7 +66,7 @@ def getwebbytime():
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
-    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\n\t\t\t\t\t\t", ""), ("\t\t\t\t\t", "")):
+    for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\n", ""), ("\t", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
