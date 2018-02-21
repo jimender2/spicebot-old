@@ -64,9 +64,15 @@ def getwebbytime():
         webbytime = webbytime.replace(*r)
     #webbytime = parser.parse(webbytime)
     #webbytime = strptime(webbytime, '%b %d %Y %I:%M%p')
+    #
+    #webbytime = time.mktime(datetime.datetime.strptime(webbytime, "%b %d %Y %I:%m%p").timetuple())
+
+
+    month = get_trigger_arg(webbytime, 1)
+    month = datetime.datetime.strptime(month, '%b').month
+
+    webbytime = month
     #webbytime = datetime.datetime(year, month, day, hour, minute, 0, 0)
-    webbytime = webbytime.upper()
-    webbytime = time.mktime(datetime.datetime.strptime(webbytime, "%b %d %Y %I:%m%p").timetuple())
     return webbytime
 
 
