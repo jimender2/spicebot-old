@@ -15,4 +15,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say("D'ooooh!")
+    goodorbad = get_trigger_arg(bot, triggerargsarray, 1) or 'bad'
+    if goodorbad == 'good':
+        message = "WooHoo!"
+    else:
+        message = "D'ooooh!"
+    bot.say(message)
