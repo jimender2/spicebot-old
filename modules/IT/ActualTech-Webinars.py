@@ -28,7 +28,9 @@ def execute_main(bot, trigger):
         dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
-        dispmsg.append('BONUS: ' + getwebbybonus())
+        bonus = getwebbybonus()
+        if bonus and bonus != '':
+            dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
 #@sopel.module.interval(60)
@@ -90,7 +92,7 @@ def getwebbybonus():
             webbybonus = webbybonus.replace(*r)
         webbybonus = unicode_string_cleanup(webbybonus)
     except IndexError:
-        webbybonus = 'None'
+        webbybonus = ''
     return webbybonus
 
 def gettree():
