@@ -15,9 +15,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    item = get_trigger_arg(triggerargsarray, 0)
-    firstitem = get_trigger_arg(triggerargsarray, 1)
-    substring = get_trigger_arg(triggerargsarray, '2+') or 'empty'
+    item = get_trigger_arg(bot, triggerargsarray, 0)
+    firstitem = get_trigger_arg(bot, triggerargsarray, 1)
+    substring = get_trigger_arg(bot, triggerargsarray, '2+') or 'empty'
     if not item:
         bot.say("What can you risk going too far?")
     else:
