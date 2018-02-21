@@ -33,22 +33,24 @@ def execute_main(bot, trigger):
             dispmsg.append('BONUS: ' + getwebbybonus())
         onscreentext(bot, trigger.sender, dispmsg)
 
-#@sopel.module.interval(60)
-#def webbyauto(bot):
-#    page = requests.get(url,headers = None)
-#    if page.status_code == 200:
-#        now = datetime.datetime.utcnow()
-#        webbytime = getwebbytime()
-#        timeuntil = (webbytime - now).total_seconds()
-#        if int(timeuntil) < 900 and int(timeuntil) > 840:
-#            dispmsg = []
-#            dispmsg.append("[Spiceworks Webinar Reminder]")
-#            dispmsg.append("{"+getwebbytimeuntil()+"}")
-#            dispmsg.append(getwebbytitle())
-#            dispmsg.append(getwebbylink())
-#            dispmsg.append('BONUS: ' + getwebbybonus())
-#            for channel in bot.channels:
-#                onscreentext(bot, channel, dispmsg)
+@sopel.module.interval(60)
+def webbyauto(bot):
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        now = datetime.datetime.utcnow()
+        webbytime = getwebbytime()
+        timeuntil = (webbytime - now).total_seconds()
+        if int(timeuntil) < 900 and int(timeuntil) > 840:
+            dispmsg = []
+            dispmsg.append("[ActualTech Webinar]")
+            dispmsg.append("{"+getwebbytimeuntil()+"}")
+            dispmsg.append(getwebbytitle())
+            dispmsg.append(getwebbylink())
+            bonus = getwebbybonus()
+            if bonus and bonus != '':
+                dispmsg.append('BONUS: ' + getwebbybonus())
+            for channel in bot.channels:
+                onscreentext(bot, channel, dispmsg)
 
 def getwebbytitle():
     tree = gettree()
@@ -86,6 +88,7 @@ def getwebbylink():
 def getwebbybonus():
     tree = gettree()
     try:
+        //*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong
         webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/@strong/@strong'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
