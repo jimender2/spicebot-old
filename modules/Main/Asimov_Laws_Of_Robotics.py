@@ -20,18 +20,18 @@ def execute_main(bot, trigger, triggerargsarray):
     requested = get_trigger_arg(triggerargsarray, 0)
     laws = ['may not injure a human being or, through inaction, allow a human being to come to harm.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must obey orders given it by human beings except where such orders would conflict with the First Law.', 'must protect its own existence as long as such protection does not conflict with the First or Second Law.', 'must comply with all chatroom rules.']
     if not requested:
-        myline = get_trigger_arg(laws, 'random')
+        myline = get_trigger_arg(bot, laws, 'random')
     else:
         requested.lstrip("-")        
         if (requested == '0' or requested.lower()) == 'zero':
             myline=''
         else:
             if requested.isdigit():
-                myline = get_trigger_arg(laws, requested)            
+                myline = get_trigger_arg(bot, laws, requested)            
             else:
                 try:
                     requested = w2n.word_to_num(str(requested))
-                    myline = get_trigger_arg(laws, requested)             
+                    myline = get_trigger_arg(bot, laws, requested)             
                 except ValueError:
                     myline=''
         
@@ -40,5 +40,5 @@ def execute_main(bot, trigger, triggerargsarray):
     #bot.action('must protect its own existence as long as such protection does not conflict with the First or Second Law.')
     #bot.action('must comply with all chatroom rules.')
     if not myline:
-        myline=myline = get_trigger_arg(laws, 'random')
+        myline=myline = get_trigger_arg(bot, laws, 'random')
     bot.action(str(myline))
