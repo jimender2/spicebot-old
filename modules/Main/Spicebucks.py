@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray):
 					if (target=='notarget' or target=='everyone'):
 						target = 'Everyone'
 						bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
-					elif  (target == 'random' or target == trigger.nick):
+					elif (target == 'random' or target == trigger.nick):
 						target = randomuser(bot,trigger.nick)
 						if target == 'None':
 							target = randomuser(bot,trigger.nick)
@@ -84,7 +84,7 @@ def execute_main(bot, trigger, triggerargsarray):
 						transfer(bot, trigger.nick, target, winnings)
 				else:
 					bot.say("You have already been paid today")
-			##Reset
+		##Reset
 		elif commandused == 'reset' and trigger.admin: #admin only command
 			target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
 			if not target == 'notarget':
