@@ -107,7 +107,11 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
-
+    
+    # Can't claim everyone at once
+    if target == 'everyone':
+        okaytoclaim = 0
+        bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
         bot.say("I'm not sure who that is.") 
