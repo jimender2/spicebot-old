@@ -112,6 +112,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if target == 'everyone':
         okaytoclaim = 0
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
+        
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
         bot.say("I'm not sure who that is.") 
