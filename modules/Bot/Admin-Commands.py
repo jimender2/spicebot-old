@@ -17,9 +17,9 @@ log_file_path = os.path.join(moduledir, log_path)
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     service = bot.nick.lower()
-    subcommand = get_trigger_arg(triggerargsarray, 1)
+    subcommand = get_trigger_arg(bot, triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     botchannel = trigger.sender
     channelarray = []
@@ -37,8 +37,8 @@ def main_command(bot, trigger):
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
-        channel = get_trigger_arg(triggerargsarray, 2)
-        dircommand = get_trigger_arg(triggerargsarray, 3)
+        channel = get_trigger_arg(bot, triggerargsarray, 2)
+        dircommand = get_trigger_arg(bot, triggerargsarray, 3)
         validcommands = ['enable','disable','list']
         cmdarray = []
         for cmds in bot.command_groups.items():
@@ -57,7 +57,7 @@ def main_command(bot, trigger):
         elif dircommand == 'list':
             channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
             validsubs = ['available','enabled','all']
-            subscom = get_trigger_arg(triggerargsarray, 4)
+            subscom = get_trigger_arg(bot, triggerargsarray, 4)
             if not subscom:
                 bot.say('What list would you like? Options are all, available, enabled')
             elif subscom not in validsubs:
@@ -73,7 +73,7 @@ def main_command(bot, trigger):
                         if x not in channelmodulesarray:
                             availarray.append(x)
                     cmdlist = availarray
-                cmdlist = get_trigger_arg(cmdlist, 'list')
+                cmdlist = get_trigger_arg(bot, cmdlist, 'list')
                 chunks = cmdlist.split()
                 per_line = 15
                 cmdline = ''
@@ -82,7 +82,7 @@ def main_command(bot, trigger):
                     bot.notice(str(cmdline), instigator)
         else:
             channelmodulesarray = get_botdatabase_value(bot, channel, 'channelmodules') or []
-            commandtoenable = get_trigger_arg(triggerargsarray, 4)
+            commandtoenable = get_trigger_arg(bot, triggerargsarray, 4)
             if not commandtoenable:
                 bot.say("What module do you want to "+str(dircommand)+" for " + channel + "?")
             elif commandtoenable == 'all':
@@ -107,8 +107,8 @@ def main_command(bot, trigger):
 
     ## do a /me action for the bot in channel
     elif subcommand == 'chanaction' or subcommand == 'chanmsg':
-        channel = get_trigger_arg(triggerargsarray, 2)
-        message = get_trigger_arg(triggerargsarray, '3+')
+        channel = get_trigger_arg(bot, triggerargsarray, 2)
+        message = get_trigger_arg(bot, triggerargsarray, '3+')
         if not channel:
             bot.say("What channel?")
         elif channel not in channelarray:
@@ -124,8 +124,8 @@ def main_command(bot, trigger):
     elif subcommand == 'block' and not botchannel.startswith("#"):
         bot.say("blocks must be done in channel")
     elif subcommand == 'block':
-        adddel = get_trigger_arg(triggerargsarray, 2)
-        target = get_trigger_arg(triggerargsarray, 3)
+        adddel = get_trigger_arg(bot, triggerargsarray, 2)
+        target = get_trigger_arg(bot, triggerargsarray, 3)
         adddelarray = ['add','del']
         if not adddel:
             bot.say("would you like to add or del a user from the block list?")
@@ -148,8 +148,8 @@ def main_command(bot, trigger):
     #elif subcommand == 'githubblock' and not botchannel.startswith("#"):
     #    bot.say("You must be in channel to block access to the github module.")
     elif subcommand == 'githubblock':
-        adddel = get_trigger_arg(triggerargsarray, 2)
-        target = get_trigger_arg(triggerargsarray, 3)
+        adddel = get_trigger_arg(bot, triggerargsarray, 2)
+        target = get_trigger_arg(bot, triggerargsarray, 3)
         adddelarray = ['add','del']
         if not adddel:
             bot.say("would you like to add or del a user from the github block list?")
@@ -173,7 +173,7 @@ def main_command(bot, trigger):
         disenablevalue = None
         if subcommand == 'on':
             disenablevalue = 1
-        target = get_trigger_arg(triggerargsarray, 2) or instigator 
+        target = get_trigger_arg(bot, triggerargsarray, 2) or instigator 
         if target.lower() not in allusersinroomarray and target != 'everyone':
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         elif target == 'everyone':
@@ -218,7 +218,7 @@ def main_command(bot, trigger):
                 
     ## install a python pip package
     elif subcommand == 'pipinstall':
-        pippackage = get_trigger_arg(triggerargsarray, '2+')
+        pippackage = get_trigger_arg(bot, triggerargsarray, '2+')
         if not pippackage:
             bot.say("You must specify a pip package")
         else:

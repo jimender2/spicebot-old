@@ -15,8 +15,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    myline = get_trigger_arg(triggerargsarray, 0)
-    triggerword = get_trigger_arg(triggerargsarray, 1)
+    myline = get_trigger_arg(bot, triggerargsarray, 0)
+    triggerword = get_trigger_arg(bot, triggerargsarray, 1)
     if not myline:
         bot.say("Who/what are for suckers??")
     elif bot.nick in myline:

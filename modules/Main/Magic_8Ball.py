@@ -20,5 +20,5 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     bot.say("Let me dig deep into the waters of life, and find your answer")
-    reply = get_trigger_arg(eightarray, 'random')
+    reply = get_trigger_arg(bot, eightarray, 'random')
     bot.say(reply)

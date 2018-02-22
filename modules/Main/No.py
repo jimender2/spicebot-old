@@ -22,8 +22,8 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
     databasekey = 'obviousno'
-    command = get_trigger_arg(triggerargsarray, 1)
-    inputstring = get_trigger_arg(triggerargsarray, '2+')
+    command = get_trigger_arg(bot, triggerargsarray, 1)
+    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
     if command in commandarray:
         if command == "add":
@@ -45,11 +45,11 @@ def execute_main(bot, trigger, triggerargsarray):
         #    if inchannel.startswith("#"):
         #        message = "List can only be run in privmsg to avoid flooding."
         #    else:
-        #        message = get_trigger_arg(existingarray, "list")
+        #        message = get_trigger_arg(bot, existingarray, "list")
         elif command == "last":
-            message = get_trigger_arg(existingarray, "last")
+            message = get_trigger_arg(bot, existingarray, "last")
     else:
-        message = get_trigger_arg(existingarray, "random") or ''
+        message = get_trigger_arg(bot, existingarray, "random") or ''
         if message == '':
             message = "No response found. Have any been added?"
     bot.say(message)

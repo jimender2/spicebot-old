@@ -15,9 +15,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 1)
-    phrase = get_trigger_arg(triggerargsarray, '1+')
-    action = get_trigger_arg(triggerargsarray, '2+')
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    phrase = get_trigger_arg(bot, triggerargsarray, '1+')
+    action = get_trigger_arg(bot, triggerargsarray, '2+')
     if target:
         if target == 'to':
             parta = phrase

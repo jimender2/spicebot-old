@@ -13,8 +13,8 @@ from SpicebotShared import *
 
 @sopel.module.commands('fuckery')
 def main_command(bot, trigger):
-    triggerargsarray = get_trigger_arg(trigger.group(2), 'create')
-    subcommand = get_trigger_arg(triggerargsarray, 1)
+    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    subcommand = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []

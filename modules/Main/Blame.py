@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    whotoblame = get_trigger_arg(triggerargsarray, 1)
+    whotoblame = get_trigger_arg(bot, triggerargsarray, 1)
     if not whotoblame:
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
         blametargetarray = []
@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
-            whotoblame = get_trigger_arg(blametargetarray, 'random')
+            whotoblame = get_trigger_arg(bot, blametargetarray, 'random')
             bot.say("It's " + whotoblame + "'s fault.")
     elif whotoblame.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")

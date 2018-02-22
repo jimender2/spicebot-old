@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    requested = get_trigger_arg(triggerargsarray, 0)
+    requested = get_trigger_arg(bot, triggerargsarray, 0)
     myline = ''
     if not bot.nick.endswith(devbot):
         filetocheck=compliments #Master branch
@@ -46,7 +46,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if complimentnumber > numberoflines:
                     myline ="Please select a compliment number between 1 and " + str(numberoflines) + ""
                 else:
-                    myline = get_trigger_arg(lines, complimentnumber)
+                    myline = get_trigger_arg(bot, lines, complimentnumber)
             else:
                 try:
                     complimentnumber = w2n.word_to_num(str(requested))

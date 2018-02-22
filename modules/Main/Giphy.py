@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(triggerargsarray, 0)
+    target = get_trigger_arg(bot, triggerargsarray, 0)
     if target:
         query = target.replace(' ', '%20')
         query = str(query)

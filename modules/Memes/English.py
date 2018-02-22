@@ -15,4 +15,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say("English MF, do you speak it?!?!")
+    bot.say("English motherfucker, do you speak it?!?!")

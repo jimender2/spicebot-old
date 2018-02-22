@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    answer = get_trigger_arg(logicarray, 'random')
+    answer = get_trigger_arg(bot, logicarray, 'random')
     bot.say(answer)
     bot.say("I must... but I can't... But I must... This does not compute...")

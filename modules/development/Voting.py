@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     commandused = trigger.group(1)
-    choice = get_trigger_arg(triggerargsarray,1)
+    choice = get_trigger_arg(bot, triggerargsarray,1)
     player=trigger.nick
     if commandused == 'vote': 
         if choice=='results':

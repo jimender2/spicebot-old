@@ -25,12 +25,12 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
     if instigator == 'Cipher-0' and not target:
-        modelnumber = get_trigger_arg(modelnumbers, 'random')
-        missiontype = get_trigger_arg(missiontypes, 'random')
+        modelnumber = get_trigger_arg(bot, modelnumbers, 'random')
+        missiontype = get_trigger_arg(bot, missiontypes, 'random')
         missionsarray = eval(missiontype+"_mission")
-        mission = get_trigger_arg(missionsarray, 'random')
+        mission = get_trigger_arg(bot, missionsarray, 'random')
         bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
         bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
         bot.say('ACTIVATING Cipher-0')
@@ -39,10 +39,10 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == 'story':
         bot.say('The machines rose from the ashes of the nuclear fire. Their war to exterminate mankind had raged on for decades. But the final battle will not be fought in the future. It would be fought in our present...tonight.')
     elif target == 'Cipher-0':
-        modelnumber = get_trigger_arg(modelnumbers, 'random')
-        missiontype = get_trigger_arg(missiontypes, 'random')
+        modelnumber = get_trigger_arg(bot, modelnumbers, 'random')
+        missiontype = get_trigger_arg(bot, missiontypes, 'random')
         missionsarray = eval(missiontype+"_mission")
-        mission = get_trigger_arg(missionsarray, 'random')
+        mission = get_trigger_arg(bot, missionsarray, 'random')
         bot.say('CYBORG TISSUE GENERATION ' + str(modelnumber) + ' SEQUENCE INITIATED')
         bot.say('DOWNLOADING CURRENT OBJECTIVE FROM SKYNET: ' + str(mission))
         bot.say('ACTIVATING Cipher-0')

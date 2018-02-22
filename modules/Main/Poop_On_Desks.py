@@ -20,7 +20,7 @@ def execute_main(bot, trigger, triggerargsarray):
     failureodds = 4
     if bot.nick.endswith('dev'):
         failureodds = 2
-    target = get_trigger_arg(triggerargsarray, 1)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
     backfires = [" drops their pants and squats on " + target + "'s desk, but all they manage to do is fart.", 
                 " overestimated their capabilities and poops themselves.",  
                 " gets halfway through pooping before realising that this is their own desk, not " + target + "'s.", 
@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target != bot.nick:        
         failchance = random.randint(1,failureodds)
         if failchance == 1:
-            poopfail = get_trigger_arg(backfires,'random')            
+            poopfail = get_trigger_arg(bot, backfires,'random')            
             bot.say(trigger.nick + poopfail)
         else:
             bot.say(trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")

@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    item = get_trigger_arg(triggerargsarray, 0)
+    item = get_trigger_arg(bot, triggerargsarray, 0)
     if not item:
         bot.say("What is Oprah going to give to everyone?")
     else:

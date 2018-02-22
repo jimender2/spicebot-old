@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    happen = get_trigger_arg(triggerargsarray, 0)
+    happen = get_trigger_arg(bot, triggerargsarray, 0)
     if not happen:
         bot.say("Stop trying to make stuff happen. It's not going to happen")
     else:

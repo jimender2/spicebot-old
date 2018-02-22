@@ -26,5 +26,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    answer = get_trigger_arg(techmessages, 'random')
+    answer = get_trigger_arg(bot, techmessages, 'random')
     bot.say(answer)

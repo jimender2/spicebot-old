@@ -32,8 +32,8 @@ def execute_main(bot, trigger, triggerargsarray):
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
         return
-    target = get_trigger_arg(triggerargsarray, 1)
-    suspect = get_trigger_arg(triggerargsarray, 2)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    suspect = get_trigger_arg(bot, triggerargsarray, 2)
     players = []
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     for u in bot.users:

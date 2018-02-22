@@ -8,7 +8,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-from Sayings.py import *
+from Sayings import *
 commandarray = ["add","remove","count","last"]
 #add reset and sort list
 

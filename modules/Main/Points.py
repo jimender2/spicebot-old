@@ -21,13 +21,13 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     pointsstring = trigger.group(1)
-    pointsreason = get_trigger_arg(triggerargsarray, '2+')
+    pointsreason = get_trigger_arg(bot, triggerargsarray, '2+')
     pointsreasonmsg = '.'
     if not channel.startswith("#"):
         bot.notice(instigator + ", " + pointsstring.title() + " must be in a channel.", instigator)
         return
     rando = randint(1, 666)
-    commortarget = get_trigger_arg(triggerargsarray, 1)
+    commortarget = get_trigger_arg(bot, triggerargsarray, 1)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     
     if not commortarget:
@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("You cannot award " + pointsstring + " to yourself!")
         
     elif commortarget == "check":
-        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
         if target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
             return
@@ -60,8 +60,8 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_value(bot, u, 'points', rando)
                 
     elif commortarget == 'take':
-        target = get_trigger_arg(triggerargsarray, 2)
-        pointsreason = get_trigger_arg(triggerargsarray, '3+')
+        target = get_trigger_arg(bot, triggerargsarray, 2)
+        pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         if pointsreason:
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'

@@ -21,9 +21,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     decide = random.randint(1,10)
     if decide > 7:
-        response = get_trigger_arg(actions, 'random')
+        response = get_trigger_arg(bot, actions, 'random')
         bot.action(response)
     else:	
-        answer = get_trigger_arg(replies, 'random')
+        answer = get_trigger_arg(bot, replies, 'random')
         bot.say(answer)
 	
