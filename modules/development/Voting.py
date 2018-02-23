@@ -55,11 +55,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',2)
             else:
-                bot.say("Please rate on a scale from 1 to 10")
+                bot.say(choice + " is not between 1 and 10")
         elif choice=='results':
-            getratings(bot)
+            getrating(bot)
         else:
-             bot.say("Please rate on a scale from 1 to 10")            
+             bot.say("Please enter a number between 1 and 10")            
             
     elif commandused == 'poll':
         bot.say("Enter choice a through d")
@@ -80,7 +80,7 @@ def countdown(bot):
     if currentsetting == 1:
         getresults(bot)
     elif currentsetting == 2:
-        getratings(bot)
+        getrating(bot)
         
 def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
