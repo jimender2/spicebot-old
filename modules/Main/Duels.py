@@ -1971,30 +1971,30 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         if instigatorclass == 'blacksmith':
             costinvolved = costinvolved * armor_cost_blacksmith_cut
         costinvolved = int(costinvolved)
-        if not typearmor or "armor_"+typearmor not in stats_armor:
+        if not typearmor or typearmor not in stats_armor:
             armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         elif instigatorcoin < costinvolved:
             onscreentext(bot, inchannel, "Insufficient Funds.")
         else:
-            getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
             if getarmor and getarmor > 0:
                 onscreentext(bot, inchannel, "It looks like you already have a " + typearmor + ".")
             else:
                 onscreentext(bot, inchannel, instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
                 adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
-                set_database_value(bot, instigator, "armor_"+typearmor, armor_durability)
+                set_database_value(bot, instigator, typearmor, armor_durability)
     elif subcommand == 'sell':
-        if not typearmor or "armor_"+typearmor not in stats_armor:
+        if not typearmor or typearmor not in stats_armor:
             armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
-            getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
             if not getarmor:
                 onscreentext(bot, inchannel, "You don't have a " + typearmor + " to sell.")
             elif getarmor < 0:
                 onscreentext(bot, inchannel, "Your armor is too damaged to sell.")
-                reset_database_value(bot, instigator, "armor_"+typearmor)
+                reset_database_value(bot, instigator, typearmor)
             else:
                 durabilityremaining = getarmor / armor_durability
                 sellingamount = durabilityremaining * armor_cost
@@ -2006,13 +2006,13 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                 else:
                     onscreentext(bot, inchannel, "Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
                     adjust_database_value(bot, instigator, 'coin', sellingamount)
-                    reset_database_value(bot, instigator, "armor_"+typearmor)
+                    reset_database_value(bot, instigator, typearmor)
     elif subcommand == 'repair':
-        if not typearmor or "armor_"+typearmor not in stats_armor:
+        if not typearmor or typearmor not in stats_armor:
             armors = get_trigger_arg(bot, stats_armor, 'list')
             onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
         else:
-            getarmor = get_database_value(bot, instigator, "armor_"+typearmor) or 0
+            getarmor = get_database_value(bot, instigator, typearmor) or 0
             durabilitycompare = armor_durability
             if instigatorclass == 'blacksmith':
                 durabilitycompare = armor_durability_blacksmith
@@ -2037,7 +2037,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
                     else:
                         onscreentext(bot, inchannel, typearmor + " repaired  for " + str(costinvolved)+" coins.")
                         adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
-                        set_database_value(bot, instigator, "armor_"+typearmor, durabilitycompare)
+                        set_database_value(bot, instigator, typearmor, durabilitycompare)
 
 ## Bounty
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
