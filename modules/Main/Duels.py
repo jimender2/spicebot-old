@@ -674,7 +674,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Vampires gain health from wins
         if classwinner == 'vampire' and winner != loser:
-            splitdamage = int(damage) / 6
+            splitdamage = int(damage) / len(stats_healthbodyparts)
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, winner, part, splitdamage)
 
@@ -1537,7 +1537,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         for j in damagetextarray:
             dispmsgarray.append(j)
         if damage > 0:
-            splitdamage = int(damage) / 6
+            splitdamage = int(damage) / len(stats_healthbodyparts)
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, x, part, -abs(splitdamage))
             xheadhealth = get_database_value(bot, x, 'head')
@@ -2164,7 +2164,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     for j in damagetextarray:
                         dispmsgarray.append(j)
                     if damage > 0:
-                        splitdamage = int(damage) / 6
+                        splitdamage = int(damage) / len(stats_healthbodyparts)
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                         loserheadhealth = get_database_value(bot, loser, 'head')
@@ -2274,15 +2274,15 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for x in uselootarray:
                 if x == 'healthpotion':
                     if targetclass == 'barbarian':
-                        splitdamage = healthpotion_worth_barbarian / 6
+                        splitdamage = healthpotion_worth_barbarian / len(stats_healthbodyparts)
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, target, part, splitdamage)
                     else:
-                        splitdamage = healthpotion_worth / 6
+                        splitdamage = healthpotion_worth / len(stats_healthbodyparts)
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, target, part, splitdamage)
                 elif x == 'poisonpotion':
-                    splitdamage = poisonpotion_worth / 6
+                    splitdamage = poisonpotion_worth / len(stats_healthbodyparts)
                     for part in stats_healthbodyparts:
                         adjust_database_value(bot, target, part, splitdamage)
                 elif x == 'manapotion':
@@ -2550,7 +2550,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
                 damagedealt = magic_curse_damage * int(quantity)
                 set_database_value(bot, target, 'curse', magic_curse_duration)
                 specialtext = str("which forces " + target + " to lose the next " + str(magic_curse_duration) + " duels.")
-                splitdamage = int(damagedealt) / 6
+                splitdamage = int(damagedealt) / len(stats_healthbodyparts)
                 for part in stats_healthbodyparts:
                     adjust_database_value(bot, target, part, -abs(splitdamage))
             elif magicusage == 'shield':
@@ -2558,7 +2558,7 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
                 actualshieldduration = int(quantity) * int(magic_shield_duration)
                 adjust_database_value(bot, target, 'shield', actualshieldduration)
                 specialtext = str("which allows " + target + " to take no damage for the duration of " + str(actualshieldduration) + " damage AND restoring " +str(abs(damagedealt)) + " health.")
-                splitdamage = int(damagedealt) / 6
+                splitdamage = int(damagedealt) / len(stats_healthbodyparts)
                 for part in stats_healthbodyparts:
                     adjust_database_value(bot, target, part, splitdamage)
             if instigator == target:
@@ -2759,7 +2759,7 @@ def halfhourtimer(bot):
                     currenthealthtier = currenthealthtier * int(maxhealthpart)
                     currenthealthtier = int(currenthealthtier)
                     currenthealthsplit = maxhealthpart / 2
-                    healthsplit = halfhour_regen_health / 6
+                    healthsplit = halfhour_regen_health / len(stats_healthbodyparts)
                     gethowmany = get_database_value(bot, u, part) or 0
                     if not gethowmany or gethowmany <= 0 or gethowmany > currenthealthtier:
                         set_database_value(bot, u, part, currenthealthtier)
@@ -3745,17 +3745,12 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
     nickarray = ['winner','loser']
     attributetext = ''
     for j in nickarray:
-        if j == 'winner':
-            scanningperson = winner
-        else:
-            scanningperson = loser
+        person = eval(j)
         for x in magicattributesarray:
-            magicname = x.replace("magic_", "")
-            workingvarnow = eval(j+magicname+"now")
-            workingvarstart = eval(j+magicname+"start")
+            workingvarnow = eval(j+x+"now")
+            workingvarstart = eval(j+x+"start")
             if workingvarnow == 0 and workingvarnow != workingvarstart:
-                message = str(scanningperson + " is no longer affected by " + x + ".")
-                attributetext.append(str(message))
+                attributetext.append(person + " is no longer affected by " + str(x) + ".")
     return attributetext
 
 ###############
