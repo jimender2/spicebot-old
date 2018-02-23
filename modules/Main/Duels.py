@@ -69,7 +69,7 @@ bodyparts_required = ['torso','head']
 ## Admin Stats Cycling
 stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other']
 ## Health Stats
-stats_healthbodyparts = ['head','torso','health_left_arm','right_arm','left_leg','right_leg','junk']
+stats_healthbodyparts = ['head','torso','left_arm','right_arm','left_leg','right_leg','junk']
 ## Armor Stats
 stats_armor = ['helmet','breastplate','left_gauntlet','right_gauntlet','left_greave','right_greave','codpiece']
 ## Loot Stats
