@@ -333,8 +333,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, inchannel)
         if executedueling == 1:
             canduelarray.append(player)
-            statreset(bot, player)
-            healthcheck(bot, player)
+            #statreset(bot, player)
+            #healthcheck(bot, player)
 
     ## Time when Module use started
     now = time.time()
@@ -707,7 +707,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     adjust_database_value(bot, loser, bodypart, -abs(damage))
                     ## Update Health Of winner, respawn, allow loser to loot
                     winnerheadhealth = get_database_value(bot, winner, 'head')
-                    winnertorsohealth = get_database_value(bot, winner, 'health_torso')
+                    winnertorsohealth = get_database_value(bot, winner, 'torso')
                     if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -739,7 +739,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 adjust_database_value(bot, loser, bodypart, -abs(damage))
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'head')
-                losertorsohealth = get_database_value(bot, loser, 'health_torso')
+                losertorsohealth = get_database_value(bot, loser, 'torso')
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
@@ -786,7 +786,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         adjust_database_value(bot, winner, bodypartb, -abs(damage))
                         ## Update Health Of winner, respawn, allow loser to loot
                         winnerheadhealth = get_database_value(bot, winner, 'head')
-                        winnertorsohealth = get_database_value(bot, winner, 'health_torso')
+                        winnertorsohealth = get_database_value(bot, winner, 'torso')
                         if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                             if winner == maindueler:
                                 adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -1541,7 +1541,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
             for part in stats_healthbodyparts:
                 adjust_database_value(bot, x, part, -abs(splitdamage))
             xheadhealth = get_database_value(bot, x, 'head')
-            xtorsohealth = get_database_value(bot, x, 'health_torso')
+            xtorsohealth = get_database_value(bot, x, 'torso')
             if xheadhealth  <= 0 or xtorsohealth <= 0:
                 winnertextarray = whokilledwhom(bot, winner, x)
                 diedinbattle.append(x)
@@ -2168,7 +2168,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, x, part, -abs(splitdamage))
                         loserheadhealth = get_database_value(bot, loser, 'head')
-                        losertorsohealth = get_database_value(bot, loser, 'health_torso')
+                        losertorsohealth = get_database_value(bot, loser, 'torso')
                         if loserheadhealth  <= 0 or losertorsohealth <= 0:
                             winnertextarray = whokilledwhom(bot, instigator, player)
                             diedinbattle.append(player)
@@ -2301,7 +2301,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         reset_database_value(bot, target, j)
                     reset_database_value(bot, bot.nick, 'timeout_timeout')
                     targetheadhealth = get_database_value(bot, target, 'head')
-                    targettorsohealth = get_database_value(bot, target, 'health_torso')
+                    targettorsohealth = get_database_value(bot, target, 'torso')
                     if targetheadhealth  <= 0 or targettorsohealth <= 0:
                         if target == instigator:
                             deathmsgb = suicidekill(bot,loser) ## TODO array
