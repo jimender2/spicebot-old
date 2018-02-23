@@ -93,7 +93,8 @@ def searchfor(data):
 
 def urbansearch(searchterm):
     try:
-        data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
+        #data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
+        data = web.get("http://api.urbandictionary.com/v0/define?term="+searchterm
         data = json.loads(data)
     except:
         return bot.say("Error connecting to urban dictionary")
