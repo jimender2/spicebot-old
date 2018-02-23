@@ -299,7 +299,7 @@ def runroulette(bot):
             onscreentext(bot, channel, dispmsg)
         else:
             dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
-             onscreentext(bot, channel, dispmsg)
+            onscreentext(bot, channel, dispmsg)
     else:
         dispmsg ="No players found"
         onscreentext(bot, channel, dispmsg)
