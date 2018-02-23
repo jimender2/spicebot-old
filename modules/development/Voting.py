@@ -49,6 +49,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if not choice:
             bot.say("Rate on scale of 1 through 10")
         elif choice.isdigit():
+            choice=int(choice)
             if choice <= 10 and choice >=1:
                 bot.notice("Your rating of " + str(choice) + " has been recorded", player)
                 adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
@@ -93,15 +94,19 @@ def getvotes(bot):
 def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
-    for n in ratings:
-        if n.isdigit():
-            n=int(n)
-            sum = sum + n
-    average = sum / len(ratings)
-    
-    dispmsg = 'The average is ' + str(average)
-    for channel in bot.channels:
-        onscreentext(bot, channel, dispmsg)
-    clearvoting(bot)
+    if ratings:
+        for n in ratings:
+            if n.isdigit():
+                n=int(n)
+                sum = sum + n
+        average = sum / len(ratings)
+        dispmsg = 'The average is ' + str(average)
+        for channel in bot.channels:
+            onscreentext(bot, channel, dispmsg)
+        clearvoting(bot)
+    else:
+        dispmsg = 'No ratings found'
+        for channel in bot.channels:
+            onscreentext(bot, channel, dispmsg)
     
 
