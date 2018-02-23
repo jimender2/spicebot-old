@@ -230,7 +230,7 @@ def roulette(bot,trigger,arg):
                 roulettearray.append(mycolor)
                 testmsg = get_trigger_arg(bot, roulettearray,"list") 
                 bot.notice("Your bet has been recorded", player)
-                 set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
+                set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
                 if numberofplayers>=maxplayers:
                     
