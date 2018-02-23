@@ -44,16 +44,10 @@ def execute_main(bot, trigger, arg):
         freebie(bot,trigger)
     elif mygame == 'bank':
         bankbalance=Spicebucks.bank(bot,trigger.nick)
-        bot.say(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')    
+        bot.notice(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.', trigger.nick)    
     elif mygame == 'jackpot':
         bankbalance=Spicebucks.bank(bot,'SpiceBank')
-        bot.say('The current jackpot is: ' +str(bankbalance)) 
-    elif mygame == 'colors':
-        currentcolors =bot.db.get_nick_value('ColorCount','colors') or 0
-        bot.say(currentcolors)
-    elif mygame == 'nocolors':
-        bot.db.set_nick_value('ColorCount','colors', 'None')
-        bot.say('Colors database emptied')
+        bot.say('The current jackpot is: ' +str(bankbalance))   
     else:
         bot.say('Please choose a game. Options include: slots, blackjack, roulette, blackjack and lottery.')
         
@@ -62,10 +56,10 @@ def freebie(bot,trigger):
     spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
     if bankbalance<1:
         if spicebankbalance >=1:
-            bot.notice('The casino gives you 1 Spicebuck for use in the casino', trigger)
+            bot.notice('The casino gives you 1 Spicebuck for use in the casino', trigger.nick)
             Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, 1)
         else:
-            bot.notice("The casino doesn't have any funds to provide",trigger)
+            bot.notice("The casino doesn't have any funds to provide",trigger.nick)
     else:
         bot.notice(('Looks like you dont need a handout because your bank balance is ' + str(bankbalance)),trigger)
     
