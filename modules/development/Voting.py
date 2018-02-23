@@ -20,10 +20,7 @@ def execute_main(bot, trigger, triggerargsarray):
     player=trigger.nick
     if commandused == 'vote': 
         if choice=='results':
-            novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
-            yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0            
-            bot.say(str(yesvotes) + " votes for yes and " + str(novotes) + " no votes")
-            clearvoting(bot)
+           getresults(bot)
         else:
             yesvotes=0
             novotes = 0
@@ -35,10 +32,12 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice("Your yes vote has been recorded", player)
                 adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+                set_botdatabase_value(bot,bot.nick,'voting',1)
             elif choice == 'no' or choice == 'na':
                 bot.notice("Your no vote has been recorded", player)
                 adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
-                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')             
+                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+                set_botdatabase_value(bot,bot.nick,'voting',1)
 
             else:
                 bot.say("Vote yes or no")
@@ -65,4 +64,18 @@ def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'novotes')
     reset_botdatabase_value(bot,bot.nick,'yesvotes')
     reset_botdatabase_value(bot,bot.nick,'voters')
+    reset_botdatabase_value(bot,bot.nick,'voting')
     
+@sopel.module.interval(30)
+def countdown(bot):
+    currentsetting = get_botdatabase_value(bot,bot.nick,'voting')
+    if currentsetting == 1:
+        getresults(bot)
+        
+def getresults(bot)
+    novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
+    yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0 
+    dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
+    for channel in bot.channels:
+         onscreentext(bot, channel, dispmsg)
+    clearvoting(bot)
