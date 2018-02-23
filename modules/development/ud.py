@@ -47,4 +47,4 @@ def execute_main(bot, trigger, triggerargsarray):
     bot.say(response)
 
 if __name__ == '__main__':
-print(__doc__.strip())
+    print(__doc__.strip())
