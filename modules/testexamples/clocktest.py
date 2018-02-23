@@ -18,10 +18,21 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    countdown(bot)   
-    
+    commandused = get_trigger_arg(bot, triggerargsarray,1)
+    if commandused == 'on':
+        set_botdatabase_value(bot,bot.nick,'testclock',1)
+    elif commandused == 'off':
+        set_botdatabase_value(bot,bot.nick,'testclock',0)
+    elif commandused=='check':
+        currentsetting = get_botdatabase_value(bot,bot.nick,'testclock')
+        bot.say(str(currentsetting))    
+  
     
 @sopel.module.interval(60)
 def countdown(bot):
-    bot.say('60 seconds have passed')
+    currentsetting = get_botdatabase_value(bot,bot.nick,'testclock')
+    if currentsetting == 1:
+        channel='##spicebottest'
+        dispmsg = '60 secs have passed'
+        onscreentext(bot, channel, dispmsg)
 
