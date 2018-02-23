@@ -20,7 +20,7 @@ def execute_main(bot, trigger, triggerargsarray):
     player=trigger.nick
     if commandused == 'vote': 
         if choice=='results':
-           getresults(bot)
+           getvotes(bot)
         else:
             yesvotes=0
             novotes = 0
@@ -45,15 +45,18 @@ def execute_main(bot, trigger, triggerargsarray):
                 #bot.say("You have already voted")
         
     elif commandused == 'rate':
+        raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
         if not choice:
             bot.say("Rate on scale of 1 through 10")
         elif choice.isdigit():
             if choice <= 10 and choice >=1:
-                ratings.append(choice)
+                adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
+                adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
+                set_botdatabase_value(bot,bot.nick,'voting',2)
             else:
                 bot.say("Please rate on a scale from 1 to 10")
         elif choice=='results':
-            bot.say("Average rating is ")
+            getratings(bot)
         else:
              bot.say("Please rate on a scale from 1 to 10")            
             
@@ -65,17 +68,39 @@ def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'yesvotes')
     reset_botdatabase_value(bot,bot.nick,'voters')
     reset_botdatabase_value(bot,bot.nick,'voting')
+    reset_botdatabase_value(bot,bot.nick,'raters')
+    reset_botdatabase_value(bot,bot.nick,'ratings')
+   
+    
     
 @sopel.module.interval(30)
 def countdown(bot):
     currentsetting = get_botdatabase_value(bot,bot.nick,'voting')
     if currentsetting == 1:
         getresults(bot)
+    elif currentsetting == 2:
+        getratings(bot)
         
-def getresults(bot):
+def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
     yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0 
     dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
     for channel in bot.channels:
          onscreentext(bot, channel, dispmsg)
     clearvoting(bot)
+    
+def getrating(bot):
+    sum=0
+    ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
+    for n in ratings
+        if n.isdigit():
+            n=int(n)
+            sum = sum + n
+    average = sum / len(ratings)
+    
+    dispmsg = 'The average is ' + str(average)
+    for channel in bot.channels:
+        onscreentext(bot, channel, dispmsg)
+    clearvoting(bot)
+    
+
