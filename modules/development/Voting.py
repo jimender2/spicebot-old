@@ -50,6 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Rate on scale of 1 through 10")
         elif choice.isdigit():
             if choice <= 10 and choice >=1:
+                bot.notice("Your rating of " + str(choice) + " has been recorded", player)
                 adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
                 adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',2)
