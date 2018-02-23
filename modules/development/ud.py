@@ -46,5 +46,5 @@ def execute_main(bot, trigger, triggerargsarray):
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     bot.say(response)
 
-if __name__ == '__main__':
-    print(__doc__.strip())
+#if __name__ == '__main__':
+    #print(__doc__.strip())
