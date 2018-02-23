@@ -33,11 +33,13 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',1)
+                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
             elif choice == 'no' or choice == 'na':
                 bot.notice("Your no vote has been recorded", player)
                 adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
                 adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',1)
+                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
 
             else:
                 bot.say("Vote yes or no")
@@ -55,6 +57,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
                 adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',2)
+                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
             else:
                 bot.say(str(choice) + " is not between 1 and 10")
         elif choice=='results':
@@ -72,6 +75,7 @@ def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'voting')
     reset_botdatabase_value(bot,bot.nick,'raters')
     reset_botdatabase_value(bot,bot.nick,'ratings')
+    reset_botdatabase_value(bot,bot.nick,'votechannel')
    
     
     
@@ -85,23 +89,23 @@ def countdown(bot):
         
 def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
-    yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0 
-    dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
-    for channel in bot.channels:
-         onscreentext(bot, channel, dispmsg)
+    yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
+    channel = get_botdatabase_value(bot,bot.nick,'votechannel')
+    dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
+    onscreentext(bot, channel, dispmsg)
     clearvoting(bot)
     
 def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
+    channel = get_botdatabase_value(bot,bot.nick,'votechannel')
     if ratings:
         for n in ratings:            
             n=int(n)
             sum = sum + n
         average = sum / len(ratings)
-        dispmsg = 'The average is ' + str(average)
-        for channel in bot.channels:
-            onscreentext(bot, channel, dispmsg)
+        dispmsg = 'The average is ' + str(average)        
+        onscreentext(bot, channel, dispmsg)
         clearvoting(bot)
     else:
         dispmsg = 'No ratings found'
