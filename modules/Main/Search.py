@@ -93,7 +93,6 @@ def searchfor(data):
 def urbansearch(searchterm):
     try:
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
-        #data = web.get("http://api.urbandictionary.com/v0/define?term="+searchterm)
         data = json.loads(data)
     except:
         return bot.say("Error connecting to urban dictionary")
@@ -103,3 +102,15 @@ def urbansearch(searchterm):
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(searchterm))
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     return response
+
+
+@commands('urban','ud')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
+    if not enablestatus:
+        search_urban(bot, trigger, triggerargsarray)
+    
+def search_urban(bot, trigger, triggerargsarray):
+    searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
+    query=urbansearch(searchterm
+    bot.say(query)
