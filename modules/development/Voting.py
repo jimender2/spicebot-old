@@ -63,7 +63,7 @@ def execute_main(bot, trigger, triggerargsarray):
              bot.say("Please enter a number between 1 and 10")            
             
     elif commandused == 'poll':
-        bot.say("Enter choice a through d")
+        bot.say("WIP")
                 
 def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'novotes')
