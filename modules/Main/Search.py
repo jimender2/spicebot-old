@@ -104,13 +104,13 @@ def urbansearch(searchterm):
     return response
 
 
-@commands('urban','ud')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
-    if not enablestatus:
-        search_urban(bot, trigger, triggerargsarray)
-    
-def search_urban(bot, trigger, triggerargsarray):
-    searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
-    query=urbansearch(searchterm)
-    bot.say(query)
+#@commands('urban','ud')
+#def mainfunction(bot, trigger):
+#    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
+#    if not enablestatus:
+#        search_urban(bot, trigger, triggerargsarray)
+#    
+#def search_urban(bot, trigger, triggerargsarray):
+#    searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
+#    query=urbansearch(searchterm)
+#    bot.say(query)
