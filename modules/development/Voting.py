@@ -72,7 +72,7 @@ def countdown(bot):
     if currentsetting == 1:
         getresults(bot)
         
-def getresults(bot)
+def getresults(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
     yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0 
     dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
