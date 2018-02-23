@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(str(currentsetting))    
   
     
-@sopel.module.interval(60)
+@sopel.module.interval(15)
 def countdown(bot):
     currentsetting = get_botdatabase_value(bot,bot.nick,'testclock')
     if currentsetting == 1:
