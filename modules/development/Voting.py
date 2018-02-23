@@ -93,7 +93,7 @@ def getvotes(bot):
 def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
-    for n in ratings
+    for n in ratings:
         if n.isdigit():
             n=int(n)
             sum = sum + n
