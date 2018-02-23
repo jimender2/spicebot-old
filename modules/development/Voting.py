@@ -79,7 +79,7 @@ def clearvoting(bot):
 def countdown(bot):
     currentsetting = get_botdatabase_value(bot,bot.nick,'voting')
     if currentsetting == 1:
-        getresults(bot)
+        getvotes(bot)
     elif currentsetting == 2:
         getrating(bot)
         
