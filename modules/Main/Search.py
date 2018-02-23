@@ -70,13 +70,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 if(str(query).startswith(url) or str(query).startswith(url2)):
                     bot.say(query)
                 else:
-                    bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
+                    bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    
         elif mysite == 'urban':
-            data=searchterm.replace(' ', '+')
+            data=querystring.replace(' ', '+')
             query=urbansearch(data)
             bot.say(query)
+            
         else:
-            data=querystring.replace(' ', '+')
+            data=searchterm.replace(' ', '+')
             query=searchfor(data)
             if not query:
                 bot.say('I cannot find anything about that')
