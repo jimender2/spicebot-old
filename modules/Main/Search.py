@@ -76,7 +76,7 @@ def execute_main(bot, trigger, triggerargsarray):
             query=urbansearch(data)
             bot.say(query)
         else:
-            data=searchterm.replace(' ', '+')
+            data=querystring.replace(' ', '+')
             query=searchfor(data)
             if not query:
                 bot.say('I cannot find anything about that')
