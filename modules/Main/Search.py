@@ -112,5 +112,5 @@ def mainfunction(bot, trigger):
     
 def search_urban(bot, trigger, triggerargsarray):
     searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
-    query=urbansearch(searchterm
+    query=urbansearch(searchterm)
     bot.say(query)
