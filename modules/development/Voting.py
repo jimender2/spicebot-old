@@ -56,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',2)
             else:
-                bot.say(choice + " is not between 1 and 10")
+                bot.say(str(choice) + " is not between 1 and 10")
         elif choice=='results':
             getrating(bot)
         else:
@@ -95,10 +95,9 @@ def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
     if ratings:
-        for n in ratings:
-            if n.isdigit():
-                n=int(n)
-                sum = sum + n
+        for n in ratings:            
+            n=int(n)
+            sum = sum + n
         average = sum / len(ratings)
         dispmsg = 'The average is ' + str(average)
         for channel in bot.channels:
