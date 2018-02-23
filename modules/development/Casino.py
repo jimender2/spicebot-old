@@ -250,7 +250,7 @@ def roulette(bot,trigger,arg):
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
-def runroulette(bot):
+def runroulette(bot):    
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
@@ -649,10 +649,10 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-@sopel.module.interval(10)
+#@sopel.module.interval(10)
 def countdown(bot):    
     currentsetting = get_botdatabase_value(bot,'casino','counter') 
-    lastcount= 
+    
     timediff = gettimediff(bot,(get_botdatabase_value(bot,'casino','countertimer')))
     if currentsetting == 'roulette':
         if timediff>=roulettetimeout:

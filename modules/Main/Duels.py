@@ -1424,7 +1424,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-        osd_notice(bot, instigator, executeduelingmsg)
+        osd_notice(bot, instigator, validtargetmsg)
         return
     if bot.nick in canduelarray:
         canduelarray.remove(bot.nick)
