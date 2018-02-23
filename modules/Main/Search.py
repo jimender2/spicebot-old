@@ -9,6 +9,8 @@ import os
 import requests
 import re
 import urllib2
+import sopel.web as web
+import json
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -69,7 +71,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')                       
-
+        elif mysite == 'urban':
+            data=searchterm.replace(' ', '+')
+            query=urbansearch(data)
+            bot.say(query)
         else:
             data=searchterm.replace(' ', '+')
             query=searchfor(data)
@@ -84,4 +89,15 @@ def searchfor(data):
     query=str(var.url)
     return query            
 
-    
+def urbansearch(searchterm):
+    try:
+        data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
+        data = json.loads(data)
+    except:
+        return bot.say("Error connecting to urban dictionary")
+    if data['result_type'] == 'no_results':
+        return "No results found for {0}".format(searchterm)
+    result = data['list'][0]
+    url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(searchterm))
+    response = "{0} - {1}".format(result['definition'].strip()[:256], url)
+    return response
