@@ -69,7 +69,7 @@ bodyparts_required = ['torso','head']
 ## Admin Stats Cycling
 stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other']
 ## Health Stats
-stats_healthbodyparts = ['head','chest','health_left_arm','right_arm','left_leg','right_leg','junk']
+stats_healthbodyparts = ['head','torso','health_left_arm','right_arm','left_leg','right_leg','junk']
 ## Armor Stats
 stats_armor = ['helmet','breastplate','left_gauntlet','right_gauntlet','left_greave','right_greave','codpiece']
 ## Loot Stats
@@ -740,8 +740,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'head')
                 losertorsohealth = get_database_value(bot, loser, 'torso')
-                bot.say(str(loserheadhealth))
-                bot.say(str(losertorsohealth))
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
@@ -3114,7 +3112,7 @@ def bodypart_select(bot, nick):
     ## selection roll
     hitchance = randint(1, 101)
     if hitchance <= 50:
-        bodypart = 'chest'
+        bodypart = 'torso'
     elif hitchance >= 90:
         bodypart = 'head'
     else:
