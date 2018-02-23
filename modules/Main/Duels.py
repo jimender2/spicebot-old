@@ -740,6 +740,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'head')
                 losertorsohealth = get_database_value(bot, loser, 'torso')
+                bot.say(str(loserheadhealth))
+                bot.say(str(losertorsohealth))
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
