@@ -73,7 +73,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
                     
         elif mysite == 'urban':
-            #data=querystring.replace(' ', '+')
             query=urbansearch(querystring)
             bot.say(query)
             
@@ -93,8 +92,8 @@ def searchfor(data):
 
 def urbansearch(searchterm):
     try:
-        #data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
-        data = web.get("http://api.urbandictionary.com/v0/define?term="+searchterm)
+        data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
+        #data = web.get("http://api.urbandictionary.com/v0/define?term="+searchterm)
         data = json.loads(data)
     except:
         return bot.say("Error connecting to urban dictionary")
