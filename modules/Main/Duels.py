@@ -333,8 +333,8 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, inchannel)
         if executedueling == 1:
             canduelarray.append(player)
-            #statreset(bot, player)
-            #healthcheck(bot, player)
+            statreset(bot, player)
+            healthcheck(bot, player)
 
     ## Time when Module use started
     now = time.time()
