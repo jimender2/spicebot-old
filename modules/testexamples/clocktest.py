@@ -33,6 +33,6 @@ def countdown(bot):
     currentsetting = get_botdatabase_value(bot,bot.nick,'testclock')
     if currentsetting == 1:
         channel='##spicebottest'
-        dispmsg = '60 secs have passed'
+        dispmsg = '15 secs have passed'
         onscreentext(bot, channel, dispmsg)
 
