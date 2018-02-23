@@ -15,7 +15,7 @@ from SpicebotShared import *
 
 #Payout lines:
 #slots, 72 - roulette, 147 - lottery, 284 - blackjack, 365
-
+xx=
 #shared variables:
 maxbet = 100
 now = time.time()
@@ -232,13 +232,14 @@ def roulette(bot,trigger,arg):
                 roulettearray = []               
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
-                adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')               
+                adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')
+                set_botdatabase_value(bot,'casino','casinochannel',trigger.sender)
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
                 testmsg = get_trigger_arg(bot, roulettearray,"list") 
                 bot.notice("Your bet has been recorded", player)
-                bot.db.set_nick_value(player, 'roulettearray', roulettearray)
+                 set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
                 if numberofplayers>=maxplayers:
                     
@@ -254,9 +255,11 @@ def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
-    players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
+    players = get_botdatabase_value(bot, 'Roulette', 'rouletteplayers') or []
+    channel = get_botdatabase_value(bot,'casino','casinochannel')
     if not players == []:
-        bot.say("The dealer collects all bets")
+        dispmsg = "The dealer collects all bets"
+        onscreentext(bot, channel, dispmsg)
         winningnumber = spin(wheel)
         if winningnumber == 0:
             winningnumber == 1
@@ -267,8 +270,10 @@ def runroulette(bot):
         totalwon = 0        
         displaymessage = get_trigger_arg(bot, players , "list")
         
-        bot.say('The dealer spins the wheel good luck to ' + displaymessage)
-        bot.say('The wheel stops on ' + str(winningnumber) + ' ' + color)
+        dispmsg = "The dealer spins the wheel good luck to " + displaymessage
+        onscreentext(bot, channel, dispmsg)
+        dispmsg = "The wheel stops on " + str(winningnumber) + " " + color
+        onscreentext(bot, channel, dispmsg)
         for player in players:
             playerarray = bot.db.get_nick_value(player, 'roulettearray') or ''
             if not playerarray == '':
@@ -299,11 +304,14 @@ def runroulette(bot):
         players = ''
         bot.db.set_nick_value('Roulette', 'rouletteplayers',players)
         if winners =='':
-            bot.say("No one wins anything")
+            dispmsg= "No one wins anything"
+            onscreentext(bot, channel, dispmsg)
         else:
-            bot.say("winners: " + winners + " and " + str(totalwon) + " was won in total")
+            dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
+             onscreentext(bot, channel, dispmsg)
     else:
-       bot.say("No players found")
+        dispmsg ="No players found"
+        onscreentext(bot, channel, dispmsg)
     
 def roulettereset(bot,player):
     mybet =''
@@ -312,8 +320,8 @@ def roulettereset(bot,player):
     players = []
     reset_botdatabase_value(bot,'casino','counter')   
     roulettearray = str(mybet) + str(mynumber)+str(mycolor)
-    bot.db.set_nick_value(player, 'roulettearray', roulettearray)
-    bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
+    reset_botdatabase_value(bot, player, 'roulettearray', roulettearray)
+    reset_botdatabase_value(bot, 'Roulette', 'rouletteplayers', players)
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
