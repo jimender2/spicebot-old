@@ -3745,17 +3745,12 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
     nickarray = ['winner','loser']
     attributetext = ''
     for j in nickarray:
-        if j == 'winner':
-            scanningperson = winner
-        else:
-            scanningperson = loser
+        person = eval(j)
         for x in magicattributesarray:
-            magicname = x.replace("magic_", "")
-            workingvarnow = eval(j+magicname+"now")
-            workingvarstart = eval(j+magicname+"start")
+            workingvarnow = eval(j+x+"now")
+            workingvarstart = eval(j+x+"start")
             if workingvarnow == 0 and workingvarnow != workingvarstart:
-                message = str(scanningperson + " is no longer affected by " + x + ".")
-                attributetext.append(str(message))
+                attributetext.append(person + " is no longer affected by " + str(x) + ".")
     return attributetext
 
 ###############
