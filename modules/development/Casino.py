@@ -18,6 +18,8 @@ from SpicebotShared import *
 
 #shared variables:
 maxbet = 100
+now = time.time()
+roulettetimeout=5
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
@@ -26,6 +28,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
+    
     mygame = get_trigger_arg(bot, arg, 1) or 'nocommand'
     if mygame == 'docs' or mygame == 'help':
         bot.say("For help with this module, see here: " + wikiurl)
@@ -152,19 +155,19 @@ def roulette(bot,trigger,arg):
     if bot.nick.endswith('dev'): 
         maxwheel=15
     
-    #set bet
+    #set bet/check for commands
     if mybet == 'nobet':
         bot.say('Please enter an amount to bet')
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='call' and trigger.admin:
-        bot.say(trigger.nick + " has asked the dealer to finish the roulette game")
-        runroulette(bot)
+        bot.say(trigger.nick + " has asked the dealer to finish the roulette game. You have " + str(roulettetimeout)+ " seconds to enter your bets")
+        set_botdatabase_value(bot,'casino','counter','roulette')
+        set_botdatabase_value(bot,'casino','countertimer',now)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
-        bot.say("Stats reset for " + trigger.nick)
-        
+        bot.say("Stats reset for " + trigger.nick)        
 
     else:
         
@@ -219,21 +222,17 @@ def roulette(bot,trigger,arg):
         
     # user input now setup game will run
     if inputcheck == 1:
-        players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or ''
+        players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
         for i in players:
             if i == player:
                 bot.notice("You already placed a bet",player)
                 inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
-                roulettearray = []
-                players = []
+                roulettearray = []               
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
-                players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
-                players.append(player)               
-                
-                bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
+                adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')               
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
@@ -242,7 +241,7 @@ def roulette(bot,trigger,arg):
                 bot.db.set_nick_value(player, 'roulettearray', roulettearray)
                 numberofplayers = len(players)
                 if numberofplayers>=maxplayers:
-                    bot.say("The dealer collects all bets")
+                    
                     runroulette(bot)
                 else:
                     bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
@@ -256,7 +255,8 @@ def runroulette(bot):
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = bot.db.get_nick_value('Roulette', 'rouletteplayers') or []
-    if not players == []:            
+    if not players == []:
+        bot.say("The dealer collects all bets")
         winningnumber = spin(wheel)
         if winningnumber == 0:
             winningnumber == 1
@@ -310,6 +310,7 @@ def roulettereset(bot,player):
     mynumber= 0
     mycolor = ''
     players = []
+    reset_botdatabase_value(bot,'casino','counter')   
     roulettearray = str(mybet) + str(mynumber)+str(mycolor)
     bot.db.set_nick_value(player, 'roulettearray', roulettearray)
     bot.db.set_nick_value('Roulette', 'rouletteplayers', players)
@@ -648,9 +649,19 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-#@sopel.module.interval(60)
-def delaytimer(bot):
+@sopel.module.interval(5)
+def countdown(bot):    
+    currentsetting = get_botdatabase_value(bot,'casino','counter')    
+    timediff = gettimediff(bot,(get_bot_database_value(bot,'casino','countertimer')))
+    if currentsetting == 'roulette':
+        if timediff>=roulettetimeout:
+            runroulette(bot)
+    
+
+def gettimediff(bot,last):
     now = time.time()
-    bot.say("Runroulette")
-    runroulette(bot)
+    return abs(now - int(last))
+
+            
+    
     
