@@ -652,7 +652,7 @@ def blackjackreset(bot,player):
 @sopel.module.interval(10)
 def countdown(bot):    
     currentsetting = get_botdatabase_value(bot,'casino','counter') 
-    lastcount= 
+    
     timediff = gettimediff(bot,(get_botdatabase_value(bot,'casino','countertimer')))
     if currentsetting == 'roulette':
         if timediff>=roulettetimeout:
