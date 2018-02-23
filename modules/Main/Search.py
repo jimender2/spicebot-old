@@ -78,8 +78,8 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(query)
             
         else:
-            data=searchterm.replace(' ', '+')
-            query=searchfor(data)
+            #data=searchterm.replace(' ', '+')
+            query=searchfor(searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
