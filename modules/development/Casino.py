@@ -250,6 +250,7 @@ def runroulette(bot):
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'Roulette', 'rouletteplayers') or []
     channel = get_botdatabase_value(bot,'casino','casinochannel')
+    
     if not players == []:
         dispmsg = "The dealer collects all bets"
         onscreentext(bot, channel, dispmsg)
@@ -644,7 +645,7 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-@sopel.module.interval(10)
+#@sopel.module.interval(10)
 def countdown(bot):    
     currentsetting = get_botdatabase_value(bot,'casino','counter')
     timediff = gettimediff(bot,(get_botdatabase_value(bot,'casino','countertimer')))
