@@ -127,6 +127,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
+    bot.say(str(trigger.sender))
     maxwheel = 25
     minbet=15 #requires at least one payday to play
     wheel = range(maxwheel + 1)        
@@ -226,7 +227,7 @@ def roulette(bot,trigger,arg):
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')
-                set_botdatabase_value(bot,'casino','casinochannel',trigger.sender)
+                set_botdatabase_value(bot,'casino','casinochannel',trigger.sender)                
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
@@ -248,10 +249,10 @@ def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
-    players = get_botdatabase_value(bot, 'Roulette', 'rouletteplayers') or []
-    channel = get_botdatabase_value(bot,'casino','casinochannel')
-    bot.say("Channel test: " + str(channel))
+    players = get_botdatabase_value(bot, 'Roulette', 'rouletteplayers') or []    
+   
     if not players == []:
+        channel = get_botdatabase_value(bot,'casino','casinochannel')
         dispmsg = "The dealer collects all bets"
         onscreentext(bot, channel, dispmsg)
         winningnumber = spin(wheel)
