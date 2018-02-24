@@ -249,8 +249,8 @@ def runroulette(bot):
     maxwheel = 25
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
-    players = get_botdatabase_value(bot, 'Roulette', 'rouletteplayers') or []    
-    bot.say(players)
+    players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
+    
     if not players == []:
         channel = get_botdatabase_value(bot,'casino','casinochannel')
         dispmsg = "The dealer collects all bets"
