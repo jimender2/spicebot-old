@@ -154,7 +154,7 @@ def roulette(bot,trigger,arg):
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='call':
-        bot.say(trigger.nick + " has asked the dealer to finish the roulette game. You have " + str(roulettetimeout)+ " seconds to enter your bets")
+        bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
         set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
         set_botdatabase_value(bot,'casino','counter','roulette')
         set_botdatabase_value(bot,'casino','countertimer',now)
@@ -204,7 +204,7 @@ def roulette(bot,trigger,arg):
                             inputcheck=0
                             mycolor=''
                     else:
-                        mycolor = ' '
+                        mycolor = ''
                         inputcheck =1
         #was a color selected first
             elif(myitem == 'red' or myitem == 'black'):
