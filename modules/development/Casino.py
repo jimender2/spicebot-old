@@ -220,14 +220,14 @@ def roulette(bot,trigger,arg):
         for i in players:
             if i == player:
                 bot.notice("You already placed a bet",player)
-                inputcheck = 0
+                inputcheck = 1
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 roulettearray = []               
                 Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                 bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                 adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')
-                set_botdatabase_value(bot,'casino','casinochannel',trigger.sender)                
+                set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))               
                 roulettearray.append(str(mybet))
                 roulettearray.append(str(mynumber))
                 roulettearray.append(mycolor)
@@ -304,12 +304,8 @@ def runroulette(bot):
         else:
             dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
             onscreentext(bot, channel, dispmsg)
-    else:
-        dispmsg ="No players found"
-        onscreentext(bot, channel, dispmsg)
     
 
-    
     
                     
 #______Game 3 Lottery________                
