@@ -127,7 +127,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
-    bot.say(str(trigger.sender))
+    
     maxwheel = 25
     minbet=15 #requires at least one payday to play
     wheel = range(maxwheel + 1)        
@@ -254,7 +254,7 @@ def runroulette(bot):
     if not players == []:
         channel = get_botdatabase_value(bot,'casino','casinochannel')
         dispmsg = "The dealer collects all bets"
-        #onscreentext(bot, channel, dispmsg)
+        onscreentext(bot, channel, dispmsg)
         winningnumber = spin(wheel)
         if winningnumber == 0:
             winningnumber == 1
@@ -300,10 +300,10 @@ def runroulette(bot):
         reset_botdatabase_value(bot,'casino','counter')  
         if winners =='':
             dispmsg= "No one wins anything"
-            #onscreentext(bot, channel, dispmsg)
+            onscreentext(bot, channel, dispmsg)
         else:
             dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
-            #onscreentext(bot, channel, dispmsg)
+            onscreentext(bot, channel, dispmsg)
     
 
     
