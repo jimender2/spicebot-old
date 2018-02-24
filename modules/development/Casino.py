@@ -153,14 +153,16 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-    elif mybet =='call' and trigger.admin:
+    elif mybet =='call':
         bot.say(trigger.nick + " has asked the dealer to finish the roulette game. You have " + str(roulettetimeout)+ " seconds to enter your bets")
+        set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
         set_botdatabase_value(bot,'casino','counter','roulette')
         set_botdatabase_value(bot,'casino','countertimer',now)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
         bot.say("Stats reset for " + trigger.nick)
     elif mybet == 'end' and trigger.admin:
+        set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))  
         runroulette(bot)
 
     else:
@@ -642,7 +644,7 @@ def blackjackreset(bot,player):
     bot.db.set_nick_value(player, 'dealerhand', dealerhand)
     bot.db.set_nick_value(player, 'mybet', mybet)
 
-#@sopel.module.interval(10)
+@sopel.module.interval(10)
 def countdown(bot):    
     currentsetting = get_botdatabase_value(bot,'casino','counter')
     timediff = gettimediff(bot,(get_botdatabase_value(bot,'casino','countertimer')))
