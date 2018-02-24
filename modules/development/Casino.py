@@ -222,7 +222,7 @@ def roulette(bot,trigger,arg):
         for i in players:
             if i == player:
                 bot.notice("You already placed a bet",player)
-                inputcheck = 1
+                inputcheck = 0
         if inputcheck == 1:
             if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                 roulettearray = []               
