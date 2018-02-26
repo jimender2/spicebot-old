@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     pi = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679'
-    digitcount = get_trigger_arg(triggerargsarray, 1) or ''
+    digitcount = get_trigger_arg(bot,triggerargsarray, 1) or ''
     if not digitcount == '':
         if not digitcount.isdigit():
             bot.say("Please enter the number of digits you want to see.")
