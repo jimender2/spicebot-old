@@ -347,7 +347,7 @@ def lottery(bot,trigger, arg):
    
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if commandused == 'payout':        
-        bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(*bankbalance*match3payout)))
+        bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
         success = 0    
     else:
         picks = []
@@ -383,7 +383,7 @@ def lottery(bot,trigger, arg):
                 else:
                     if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
                         
-                        bot.say(player + "bets on the numbers" + str(picks))
+                        bot.say(player + " bets on the numbers" + str(picks))
                         lotterydrawing(bot,player,picks)                        
                     else:
                         bot.notice('You dont have enough Spicebucks',player)
