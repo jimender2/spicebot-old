@@ -465,7 +465,7 @@ def blackjack(bot,trigger,arg):
                 playerhitlist = ''
                 #bot.say(player + ' has ' + str(myhand))
                 #bot.say('The dealer has ' + str(dealerhand))
-                playerhits=deal(deck, 1)
+                playerhits=deal(bot,deck, 1)
                 playerhits=playerhits[0]                
                 
                 myhand.append(playerhits)
@@ -504,7 +504,7 @@ def blackjack(bot,trigger,arg):
                     playerhitlist = ''
                     #bot.say(player + ' has ' + str(myhand))
                     #bot.say('The dealer has ' + str(dealerhand))
-                    playerhits=deal(deck, 1)
+                    playerhits=deal(bot,deck, 1)
                     playerhits=playerhits[0]        
                     myhand.append(playerhits)
                     bot.db.set_nick_value(player, 'myhand', myhand)
@@ -517,7 +517,7 @@ def blackjack(bot,trigger,arg):
             card2 = get_trigger_arg(bot, arg, 5) or 'nocard2'
             myhand = []
             dealerhand = []
-            mybet = 30
+            mybet = 0
             if not target.lower() in [u.lower() for u in botuseron]:
                 bot.say("Target not found.")
             else:
