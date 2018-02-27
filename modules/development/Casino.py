@@ -136,7 +136,7 @@ def roulette(bot,trigger,arg):
     colors = ['red', 'black']
     inputcheck = 0
     maxplayers = 3
-    callcheck = false 
+    callcheck = False 
     player = trigger.nick
     
     mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
@@ -162,7 +162,7 @@ def roulette(bot,trigger,arg):
                 set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
                 set_botdatabase_value(bot,'casino','counter','roulette')
                 set_botdatabase_value(bot,'casino','countertimer',now)
-                callcheck = true
+                callcheck = True
         if not callcheck:
             bot.notice("You must first place a bet",player)
         
