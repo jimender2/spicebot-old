@@ -90,10 +90,12 @@ def clearrating(bot):
     
     
 @sopel.module.interval(30)
-def countdown(bot):   
-    if  get_botdatabase_value(bot,bot.nick,'voting')=='True':
+def countdown(bot): 
+    isvote = get_botdatabase_value(bot,bot.nick,'voting') or ''
+    israte = get_botdatabase_value(bot,bot.nick,'rating') or ''
+    if isvote =='True':
         getvotes(bot)
-    if get_botdatabase_value(bot,bot.nick,'rating')=='True':
+    if israte =='True':
         getrating(bot)
         
 def getvotes(bot):
