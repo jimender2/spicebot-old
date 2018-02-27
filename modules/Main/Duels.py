@@ -420,11 +420,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         onscreentext(bot, inchannel, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
-    ## Targets must be dueled in channel
-    if not inchannel.startswith("#"):
-        osd_notice(bot, instigator, "Duels must be in channel.")
-        return
-
     ## Check if target is valid
     comorig = commandortarget
     validtarget, validtargetmsg = targetcheck(bot, commandortarget, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, validcommands)
@@ -455,6 +450,11 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         return
 
     ## Run the duel
+    ## Targets must be dueled in channel
+    if not inchannel.startswith("#"):
+        osd_notice(bot, instigator, "Duels must be in channel.")
+        return
+
     duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
 
     ## Usage Counter
