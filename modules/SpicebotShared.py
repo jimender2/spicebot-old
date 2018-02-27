@@ -588,6 +588,25 @@ def get_timeuntil(nowtime, futuretime):
 
 def hours_minutes_seconds(countdownseconds):
     time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['hour','minute','second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
+
+def hours_minutes_secondsold(countdownseconds):
+    time = float(countdownseconds)
     year = time // (365 * 24 * 3600)
     time = time % (365 * 24 * 3600)
     day = time // (24 * 3600)
