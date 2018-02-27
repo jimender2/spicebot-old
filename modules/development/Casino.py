@@ -418,7 +418,7 @@ def blackjack(bot,trigger,arg):
         bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
         
     else:
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
         myhand = []
         dealerhand = []
         player=trigger.nick
@@ -555,20 +555,13 @@ def deal(bot, deck, cardcount):
     hand = []
     
     for i in range(cardcount):        
-        card = get_trigger_arg(bot, deck,'random')    
-        if card == 11:
-            card = "J"
-        if card == 12:
-            card = "Q"
-        if card == 13:
-            card = "K"
-        if card == 14:
-            card = "A"
+        card = get_trigger_arg(bot, deck,'random')  
+      
         hand.append(card)
     return hand    
 
 def blackjackstand(bot,player,myhand,dealerhand,payout):
-    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
     if (myhand == [] or myhand ==0):
         bot.say('Use deal to start a new game')
     else:
