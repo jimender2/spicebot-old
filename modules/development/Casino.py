@@ -72,7 +72,7 @@ def freebie(bot,trigger):
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
-player=trigger.nick
+    player=trigger.nick
 #__payouts___
     match3 = 25
     match2 = 5
