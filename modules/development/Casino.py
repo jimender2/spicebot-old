@@ -21,6 +21,10 @@ maxbet = 100
 maxwheel = 36
 now = time.time()
 roulettetimeout=15
+lotterymax = 99 
+
+
+
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 
 @sopel.module.commands('gamble', 'casino')
@@ -322,12 +326,12 @@ def runroulette(bot):
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
-    maxnumber=50
+   
     player = trigger.nick
 #___payout table___
     #match5payout = jackpot
     if bot.nick.endswith('dev'): 
-        maxnumber=20
+        lotterymax=20
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500    
@@ -351,7 +355,7 @@ def lottery(bot,trigger, arg):
                 picks.append(int(picker))
         
         if len(picks)!=5:
-            bot.notice(('You must enter 5 lottery numbers from 1 to ' + str(maxnumber) + ' to play.'),player)
+            bot.notice(('You must enter 5 lottery numbers from 1 to ' + str(lotterymax) + ' to play.'),player)
             success = 0
         else:
             success = 1                    
@@ -367,40 +371,50 @@ def lottery(bot,trigger, arg):
             if success == 1:
                 valid=1
                 for pick in picks:
-                    if(pick > maxnumber or pick < 1):
+                    if(pick > lotterymax or pick < 1):
                         valid = 0
                 if valid == 0:
-                    bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(maxnumber)),player)
+                    bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                 else:
-                    if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
-                        
-                        winningnumbers = random.sample(range(1, maxnumber), 5) 
-                        bot.say('The winning numbers are ' + str(winningnumbers))
-                        correct = 0
-                        for pick in picks:
-                            if pick in winningnumbers:
-                                correct = correct + 1
-                        payout = 0
-                                        
-                        if correct == 1:
-                            payout = match1payout
-                        elif correct == 2:
-                            payout = match2payout
-                        elif correct == 3:
-                            payout =  match3payout
-                        elif correct == 4:
-                            payout = match4payout
-                        elif correct == 5:                            
-                            payout = bankbalance                                                
-                        
-                        if payout > 0:                            
-                            bot.say(trigger.nick + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
-                            Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
-                        else:
-                            bot.notice('You are not a winner',player)
-                            bot.say("No one wins anything.")
+                    if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
+                        mynumbers = get_trigger_arg(bot,picks,'list')
+                        bot.say(player + "bets on the numbers" + mynumbers)
+                        lotterydrawing(bot,player,picks)                        
                     else:
                         bot.notice('You dont have enough Spicebucks',player)
+                        
+##_______Lottery drawing
+lotterydrawing(bot,player,picks):
+    if bot.nick.endswith('dev'): 
+        lotterymax=20
+    winningnumbers = random.sample(range(1,lotterymax), 5) 
+    winningnumbers = get_trigger_arg(bot,winningnumbers,'list')
+    bot.say('The winning numbers are ' + winningnumbers)
+    correct = 0
+    for pick in picks:
+        if pick in winningnumbers:
+            correct = correct + 1
+    payout = 0
+                                        
+    if correct == 1:
+        payout = match1payout
+    elif correct == 2:
+        payout = match2payout
+    elif correct == 3:
+        payout =  match3payout
+    elif correct == 4:
+        payout = match4payout
+    elif correct == 5:                            
+        payout = bankbalance                                            
+
+    if payout > 0:                            
+        bot.say(player + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
+        bot.notice("You won " + str(payout) + " in the lottery drawing")
+        Spicebucks.transfer(bot, 'SpiceBank', player, payout)
+    else:
+        bot.notice('You are not a winner',player)
+        bot.say("No one wins anything.")
+
                             
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
