@@ -72,6 +72,7 @@ def freebie(bot,trigger):
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
+player=trigger.nick
 #__payouts___
     match3 = 25
     match2 = 5
@@ -377,8 +378,8 @@ def lottery(bot,trigger, arg):
                     bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                 else:
                     if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                        mynumbers = get_trigger_arg(bot,picks,'list')
-                        bot.say(player + "bets on the numbers" + mynumbers)
+                        
+                        bot.say(player + "bets on the numbers" + str(picks))
                         lotterydrawing(bot,player,picks)                        
                     else:
                         bot.notice('You dont have enough Spicebucks',player)
@@ -388,8 +389,8 @@ def lotterydrawing(bot,player,picks):
     if bot.nick.endswith('dev'): 
         lotterymax=20
     winningnumbers = random.sample(range(1,lotterymax), 5) 
-    winningnumbers = get_trigger_arg(bot,winningnumbers,'list')
-    bot.say('The winning numbers are ' + winningnumbers)
+   
+    bot.say('The winning numbers are ' + str(winningnumbers))
     correct = 0
     for pick in picks:
         if pick in winningnumbers:
