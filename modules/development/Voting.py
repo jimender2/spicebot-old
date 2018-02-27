@@ -27,24 +27,24 @@ def execute_main(bot, trigger, triggerargsarray):
             ratings = []
             pollchoice = []
             voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
-            #if player not in voters:
-            if choice == 'yes' or choice == 'ya':
-                bot.notice("Your yes vote has been recorded", player)
-                adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
-                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                set_botdatabase_value(bot,bot.nick,'voting',1)
-                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
-            elif choice == 'no' or choice == 'na':
-                bot.notice("Your no vote has been recorded", player)
-                adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
-                adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                set_botdatabase_value(bot,bot.nick,'voting',1)
-                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
+            if player not in voters:
+                if choice == 'yes' or choice == 'ya':
+                    bot.notice("Your yes vote has been recorded", player)
+                    adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
+                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+                    set_botdatabase_value(bot,bot.nick,'voting',1)
+                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
+                elif choice == 'no' or choice == 'na':
+                    bot.notice("Your no vote has been recorded", player)
+                    adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
+                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
+                    set_botdatabase_value(bot,bot.nick,'voting',1)
+                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
 
+                else:
+                    bot.say("Vote yes or no")
             else:
-                bot.say("Vote yes or no")
-            #else:
-                #bot.say("You have already voted")
+                bot.notice("You have already voted",player)
         
     elif commandused == 'rate':
         raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
@@ -53,19 +53,22 @@ def execute_main(bot, trigger, triggerargsarray):
         elif choice=='results':
             getrating(bot)            
         else:
-            if isfloat(choice):
-                choice=float(choice)
-                if choice >10:
-                    choice = 10
-                if choice < -10:
-                    choice = -10
-                bot.notice("Your rating of " + str(choice) + " has been recorded", player)
-                adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
-                adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
-                set_botdatabase_value(bot,bot.nick,'voting',2)
-                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)                
+            if player in raters:
+                if isfloat(choice):
+                    choice=float(choice)
+                    if choice >10:
+                        choice = 10
+                    if choice < -10:
+                        choice = -10
+                    bot.notice("Your rating of " + str(choice) + " has been recorded", player)
+                    adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
+                    adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
+                    set_botdatabase_value(bot,bot.nick,'voting',2)
+                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)                
+                else:
+                    bot.notice(str(choice) + " is not a number between 0 and 10",player)
             else:
-                bot.notice(str(choice) + " is not a number between 0 and 10",player)
+                bot.notice("You already submitted a rating this round",player)
        
              
             
