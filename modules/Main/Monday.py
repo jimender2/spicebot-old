@@ -15,4 +15,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say(trigger.nick + " has a case of Mondays.")
+    bot.say(trigger.nick + " has a case of the Mondays.")
