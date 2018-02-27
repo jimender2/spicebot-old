@@ -323,6 +323,7 @@ def runroulette(bot):
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
     maxnumber=50
+    player = trigger.nick
 #___payout table___
     #match5payout = jackpot
     if bot.nick.endswith('dev'): 
@@ -390,16 +391,16 @@ def lottery(bot,trigger, arg):
                         elif correct == 4:
                             payout = match4payout
                         elif correct == 5:                            
-                            payout = bankbalance
-                                                
+                            payout = bankbalance                                                
                         
                         if payout > 0:                            
                             bot.say(trigger.nick + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
                             Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, payout)
                         else:
-                            bot.say('You are not a winner')
+                            bot.notice('You are not a winner',player)
+                            bot.say("No one wins anything.")
                     else:
-                        bot.say('You dont have enough Spicebucks')
+                        bot.notice('You dont have enough Spicebucks',player)
                             
 #____Game 4 Blackjack___
 def blackjack(bot,trigger,arg):
