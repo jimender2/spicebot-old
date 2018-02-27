@@ -384,7 +384,7 @@ def lottery(bot,trigger, arg):
                         bot.notice('You dont have enough Spicebucks',player)
                         
 ##_______Lottery drawing
-lotterydrawing(bot,player,picks):
+def lotterydrawing(bot,player,picks):
     if bot.nick.endswith('dev'): 
         lotterymax=20
     winningnumbers = random.sample(range(1,lotterymax), 5) 
