@@ -57,6 +57,12 @@ def spicebot_prerun(bot,trigger,commandused):
             bot.notice(instigator + ", it looks like the " + str(commandused) + " command has not been enabled in " + botchannel + ".",instigator)
             return enablestatus, triggerargsarray
     
+    ## devmode bypass
+    devenabledchannels = get_botdatabase_value(bot, bot.nick, 'devenabled') or []
+    if inchannel in devenabledchannels:
+        return enablestatus, triggerargsarray
+        
+    
     ## Bot Enabled Status (now in an array)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     
