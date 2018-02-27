@@ -89,6 +89,14 @@ def spicebot_prerun(bot,trigger,commandused):
 ## Below This Line are Shared Functions
 #####################################################################################################################################
 
+## Outputs Nicks with correct capitalization
+def actualname(bot,nick):
+    actualnick = nick
+    for u in bot.users:
+        if u.lower() == nick.lower():
+            actualnick = u
+    return actualnick
+
 ###################
 ## Special Users ##
 ###################
