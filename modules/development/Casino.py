@@ -411,9 +411,9 @@ def lotterydrawing(bot,player,picks):
     elif correct == 2:
         payout = match2payout
     elif correct == 3:
-        payout =  match3payout*bankbalance
+        payout =  int(match3payout*bankbalance)
     elif correct == 4:
-        payout = match4payout*bankbalance
+        payout = int(match4payout*bankbalance)
     elif correct == 5:                            
         payout = bankbalance                                            
 
