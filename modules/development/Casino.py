@@ -19,7 +19,7 @@ from SpicebotShared import *
 #shared variables:
 maxbet = 100
 now = time.time()
-roulettetimeout=5
+roulettetimeout=15
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
@@ -154,10 +154,13 @@ def roulette(bot,trigger,arg):
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
     elif mybet =='call':
-        bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
-        set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
-        set_botdatabase_value(bot,'casino','counter','roulette')
-        set_botdatabase_value(bot,'casino','countertimer',now)
+        players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
+        for i in players:
+            if i == player:
+                bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
+                set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
+                set_botdatabase_value(bot,'casino','counter','roulette')
+                set_botdatabase_value(bot,'casino','countertimer',now)
     elif mybet == 'reset' and trigger.admin:
         roulettereset(bot,trigger.nick)
         bot.say("Stats reset for " + trigger.nick)
