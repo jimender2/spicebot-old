@@ -22,10 +22,11 @@ from os.path import exists
 
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+moduletimeout = 8
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger,commandused):
-    
+
     ## Get Name Of Current Channel
     botchannel = trigger.sender
     
@@ -43,11 +44,17 @@ def spicebot_prerun(bot,trigger,commandused):
     
     ## Enable Status default is 1 = don't run
     enablestatus = 1
-    
+
     ## User was Blocked by a bot.admin or an OP
     blockedusersarray = get_botdatabase_value(bot, botchannel, 'blockedusers') or []
     if instigator in blockedusersarray:
         bot.notice(instigator + ", it looks like you have been blocked from using commands in " + botchannel,instigator)
+        return enablestatus, triggerargsarray
+    
+    ## devmode bypass
+    devenabledchannels = get_botdatabase_value(bot, bot.nick, 'devenabled') or []
+    if botchannel in devenabledchannels:
+        enablestatus = 0
         return enablestatus, triggerargsarray
     
     ## Channel activated status
@@ -56,6 +63,12 @@ def spicebot_prerun(bot,trigger,commandused):
         if commandused not in channelmodulesarray:
             bot.notice(instigator + ", it looks like the " + str(commandused) + " command has not been enabled in " + botchannel + ".",instigator)
             return enablestatus, triggerargsarray
+    
+    ## Module Timeouts
+    channeltimeout = get_timesince(bot, botchannel, 'chan_timeout') or 0
+    if channeltimeout <= moduletimeout and botchannel.startswith("#"):
+        bot.notice(instigator + ", it looks like " + botchannel + " can't run modules for "+str(hours_minutes_seconds((moduletimeout - channeltimeout)))+".",instigator)
+        return enablestatus, triggerargsarray
     
     ## Bot Enabled Status (now in an array)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
@@ -75,6 +88,7 @@ def spicebot_prerun(bot,trigger,commandused):
         increment_counter(bot, trigger,commandused)
 
     ## Send Status Forward
+    set_botdatabase_value(bot, botchannel, 'chan_timeout', now)
     return enablestatus, triggerargsarray
 
 
@@ -82,6 +96,14 @@ def spicebot_prerun(bot,trigger,commandused):
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
+
+## Outputs Nicks with correct capitalization
+def actualname(bot,nick):
+    actualnick = nick
+    for u in bot.users:
+        if u.lower() == nick.lower():
+            actualnick = u
+    return actualnick
 
 ###################
 ## Special Users ##
@@ -135,6 +157,18 @@ def increment_counter(bot, trigger, commandused):
 #########
 ## OSD ##
 #########
+
+def osd_notice(bot, target, textarraycomplete):
+    target = actualname(bot,target)
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    passthrough = []
+    passthrough.append(target + ", ")
+    for x in textarraycomplete:
+        passthrough.append(x)
+    onscreentext(bot, [target], passthrough)
 
 def onscreentext(bot, texttargetarray, textarraycomplete):
     if not isinstance(textarraycomplete, list):
@@ -553,6 +587,25 @@ def get_timeuntil(nowtime, futuretime):
     return timecompare
 
 def hours_minutes_seconds(countdownseconds):
+    time = float(countdownseconds)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['hour','minute','second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
+
+def hours_minutes_secondsold(countdownseconds):
     time = float(countdownseconds)
     year = time // (365 * 24 * 3600)
     time = time % (365 * 24 * 3600)

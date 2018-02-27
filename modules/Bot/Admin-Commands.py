@@ -17,6 +17,7 @@ log_file_path = os.path.join(moduledir, log_path)
 @sopel.module.commands('spicebotadmin')
 def main_command(bot, trigger):
     instigator = trigger.nick
+    inchannel = trigger.sender
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     service = bot.nick.lower()
     subcommand = get_trigger_arg(bot, triggerargsarray, 1)
@@ -34,6 +35,19 @@ def main_command(bot, trigger):
 ###### admin only block and OP
     if not trigger.admin and trigger.nick not in operatorarray:
         bot.notice(instigator + ", This is an admin/OP only function.", instigator)
+    
+    ## devmode
+    elif subcommand == 'devmode':
+        command = get_trigger_arg(bot, triggerargsarray, 2)
+        if not command:
+            osd_notice(bot, instigator, "Options are On or Off.")
+            return
+        if command == 'on':
+            adjust_botdatabase_array(bot, bot.nick, [inchannel], 'devenabled', 'add')
+            osd_notice(bot, instigator, "Devmode is on in " + inchannel + ".")
+        else:
+            adjust_botdatabase_array(bot, bot.nick, [inchannel], 'devenabled', 'del')
+            osd_notice(bot, instigator, "Devmode is off in " + inchannel + ".")
     
     ## activate a module for a channel
     elif subcommand == 'chanmodules':
