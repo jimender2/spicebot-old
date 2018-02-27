@@ -50,7 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
         raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
         if not choice:
             bot.say("Rate on scale of 0 through 10")
-         elif choice=='results':
+        elif choice=='results':
             getrating(bot)            
         else:
             if isfloat(choice):
