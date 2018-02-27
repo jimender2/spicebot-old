@@ -22,7 +22,7 @@ from os.path import exists
 
 devbot = 'dev' ## If using a development bot and want to bypass commands, this is what the bots name ends in
 botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
-moduletimeout = 5
+moduletimeout = 3
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger,commandused):
