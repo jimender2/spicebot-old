@@ -50,21 +50,22 @@ def execute_main(bot, trigger, triggerargsarray):
         raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
         if not choice:
             bot.say("Rate on scale of 0 through 10")
-        elif choice.isdigit():
-            choice=int(choice)
-            if choice >10:
-                choice = 10
-            bot.notice("Your rating of " + str(choice) + " has been recorded", player)
-            adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
-            adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
-            set_botdatabase_value(bot,bot.nick,'voting',2)
-            set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
-            else:
-                bot.say(str(choice) + " is not between 0 and 10")
-        elif choice=='results':
-            getrating(bot)
+         elif choice=='results':
+            getrating(bot)            
         else:
-             bot.say("Please enter a number between 0 and 10")            
+            if isfloat(choice):
+                choice=float(choice)
+                if choice >10:
+                    choice = 10
+                bot.notice("Your rating of " + str(choice) + " has been recorded", player)
+                adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
+                adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
+                set_botdatabase_value(bot,bot.nick,'voting',2)
+                set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)                
+            else:
+                bot.say(str(choice) + "is not a number between 0 and 10")
+       
+             
             
     elif commandused == 'poll':
         bot.say("WIP")
@@ -112,5 +113,12 @@ def getrating(bot):
         dispmsg = 'No ratings found'
         for channel in bot.channels:
             onscreentext(bot, channel, dispmsg)
+            
+def isfloat(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
     
 
