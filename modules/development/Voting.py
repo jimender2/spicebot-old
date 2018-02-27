@@ -99,27 +99,29 @@ def countdown(bot):
 def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
     yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
-    channel = get_botdatabase_value(bot,bot.nick,'votechannel')
-    dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
-    onscreentext(bot, channel, dispmsg)
-    clearvoting(bot)
+    channel = get_botdatabase_value(bot,bot.nick,'votechannel') or ''
+    if not channel == ''
+        dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
+        onscreentext(bot, channel, dispmsg)
+        clearvoting(bot)
     
 def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
-    channel = get_botdatabase_value(bot,bot.nick,'ratechannel')
-    if ratings:
-        for n in ratings:            
-            n=int(n)
-            sum = sum + n
-        average = sum / len(ratings)
-        dispmsg = 'The average is ' + str(average)        
-        onscreentext(bot, channel, dispmsg)
-        clearrating(bot)
-    else:
-        dispmsg = 'No ratings found'
-        clearrating(bot)      
-        onscreentext(bot, channel, dispmsg)
+    channel = get_botdatabase_value(bot,bot.nick,'ratechannel') or ''
+    if not channel == ''
+        if ratings:
+            for n in ratings:            
+                n=int(n)
+                sum = sum + n
+            average = sum / len(ratings)
+            dispmsg = 'The average is ' + str(average)        
+            onscreentext(bot, channel, dispmsg)
+            clearrating(bot)
+        else:
+            dispmsg = 'No ratings found'
+            clearrating(bot)      
+            onscreentext(bot, channel, dispmsg)
             
 def isfloat(value):
     try:
