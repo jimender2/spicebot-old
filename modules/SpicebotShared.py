@@ -67,7 +67,7 @@ def spicebot_prerun(bot,trigger,commandused):
     ## Module Timeouts
     channeltimeout = get_timesince(bot, botchannel, 'chan_timeout') or 0
     if channeltimeout <= moduletimeout and botchannel.startswith("#"):
-        bot.say(botchannel + " can't run modules for "+str(hours_minutes_seconds((moduletimeout - channeltimeout)))+".")
+        bot.notice(instigator + ", it looks like " + botchannel + " can't run modules for "+str(hours_minutes_seconds((moduletimeout - channeltimeout)))+".",instigator)
         return enablestatus, triggerargsarray
     
     ## Bot Enabled Status (now in an array)
