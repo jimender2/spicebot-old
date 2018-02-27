@@ -57,13 +57,15 @@ def execute_main(bot, trigger, triggerargsarray):
                 choice=float(choice)
                 if choice >10:
                     choice = 10
+                if choice < -10:
+                    choice = -10
                 bot.notice("Your rating of " + str(choice) + " has been recorded", player)
                 adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
                 adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                 set_botdatabase_value(bot,bot.nick,'voting',2)
                 set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)                
             else:
-                bot.say(str(choice) + "is not a number between 0 and 10")
+                bot.notice(str(choice) + " is not a number between 0 and 10",player)
        
              
             
