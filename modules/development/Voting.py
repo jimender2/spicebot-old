@@ -15,12 +15,21 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
+    now = time.time()
     commandused = trigger.group(1)
     choice = get_trigger_arg(bot, triggerargsarray,1)
     player=trigger.nick
     if commandused == 'vote': 
         if choice=='results':
            getvotes(bot)
+        elif choice=='settime' and trigger.admin:
+            timing = get_trigger_arg(bot, triggerargsarray,2)
+            if timing.isdigit():
+                timing=int(timing)
+                set_botdatabase_value(bot,bot.nick,'votetimer',timing)
+                bot.notice("Voting delay set to " + str(timing),player)
+            else:
+                bot.notice("Please enter a valid number",player)
         else:
             yesvotes=0
             novotes = 0
@@ -34,12 +43,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
                     set_botdatabase_value(bot,bot.nick,'voting',1)
                     set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
+                    set_botdatabase_value(bot,bot.nick,'votingstart',now)
                 elif choice == 'no' or choice == 'na':
                     bot.notice("Your no vote has been recorded", player)
                     adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
                     adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
                     set_botdatabase_value(bot,bot.nick,'voting','True')
                     set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
+                    set_botdatabase_value(bot,bot.nick,'votingstart',now)
 
                 else:
                     bot.say("Vote yes or no")
@@ -93,8 +104,10 @@ def clearrating(bot):
 def countdown(bot): 
     isvote = get_botdatabase_value(bot,bot.nick,'voting') or ''
     israte = get_botdatabase_value(bot,bot.nick,'rating') or ''
+    votetimeout =get_botdatabase_value(bot,bot.nick,'votetimer')
     if isvote =='True':
-        getvotes(bot)
+        if get_timesince(bot,bot.nick,'votestart')>votetimeout:
+            getvotes(bot)
     if israte =='True':
         getrating(bot)
         
