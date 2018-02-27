@@ -21,14 +21,14 @@ maxbet = 100
 now = time.time()
 #rouletteshared
 roulettetimeout=15
-maxwheel = 36
+#maxwheel = get_database_value(bot,'casino','maxwheel')
 
 #Lotteryshared
 match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-lotterymax = 99 
+#lotterymax = get_database_value(bot,'casino','lotterymax')
 
 
 
@@ -150,6 +150,7 @@ def roulette(bot,trigger,arg):
     maxplayers = 3
     callcheck = False 
     player = trigger.nick
+    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
     
     mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
     myitem = get_trigger_arg(bot, arg, 3) or 'noitem'
@@ -166,6 +167,14 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+    elif mybet=='setwheelmax' and trigger.admin:
+        if myitem.isdigit():
+            wheelmax=int(myitem)
+            set_database_value(bot,'casino','maxwheel',wheelmax)
+            bot.notice("Roulette wheel max set to " + str(wheelmax),player)
+        else:
+            bot.notice("Please enter a valid number",player)
+        
     elif mybet =='call':
         players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
         for i in players:
@@ -271,7 +280,7 @@ def runroulette(bot):
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
-    
+    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
     if not players == []:
         channel = get_botdatabase_value(bot,'casino','casinochannel')
         dispmsg = "The dealer collects all bets"
@@ -334,12 +343,8 @@ def runroulette(bot):
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
-   
-    player = trigger.nick
-#___payout table___
-    #match5payout = jackpot
-    if bot.nick.endswith('dev'): 
-        lotterymax=20
+    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
+    player = trigger.nick   
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500    
@@ -348,7 +353,17 @@ def lottery(bot,trigger, arg):
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if commandused == 'payout':        
         bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
-        success = 0    
+        success = 0
+    elif commandused == 'setlotterymax' and trigger.admin:
+        max = get_trigger_arg(bot,arg,1)
+        if max.isdigit():
+            max=int(max)
+            set_database_value(bot,'casino','lotterymax',max)
+            bot.notice("Lottery max set to " + str(max)
+        else:
+            bot.notice("Please enter a valid number",player)
+                       
+        
     else:
         picks = []
         success = 0    
@@ -390,13 +405,12 @@ def lottery(bot,trigger, arg):
                         
 ##_______Lottery drawing
 def lotterydrawing(bot,player,picks):
+    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500    
-        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
-        
-    if bot.nick.endswith('dev'): 
-        lotterymax=20
+        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)        
+  
     winningnumbers = random.sample(range(1,lotterymax), 5) 
    
     bot.say('The winning numbers are ' + str(winningnumbers))
