@@ -15,4 +15,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say(the snuggle is real")
+    bot.say("the snuggle is real")
