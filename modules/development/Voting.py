@@ -109,7 +109,7 @@ def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
     channel = get_botdatabase_value(bot,bot.nick,'ratechannel') or ''
-    if not channel == ''
+    if not channel == '':
         if ratings:
             for n in ratings:            
                 n=int(n)
