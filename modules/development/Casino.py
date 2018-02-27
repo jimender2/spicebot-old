@@ -585,7 +585,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 
             dealerhitlist = ''                        
             while dealerscore < 18:
-                dealerhits=deal(deck, 1)
+                dealerhits=deal(bot,deck, 1)
                 dealerhits=dealerhits[0]
                 dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
                 dealerhand.append(dealerhits)                
