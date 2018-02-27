@@ -38,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice("Your no vote has been recorded", player)
                     adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
                     adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                    set_botdatabase_value(bot,bot.nick,'voting',1)
+                    set_botdatabase_value(bot,bot.nick,'voting','True')
                     set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
 
                 else:
@@ -63,8 +63,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.notice("Your rating of " + str(choice) + " has been recorded", player)
                     adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
                     adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
-                    set_botdatabase_value(bot,bot.nick,'voting',2)
-                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)                
+                    set_botdatabase_value(bot,bot.nick,'rating','True')
+                    set_botdatabase_value(bot,bot.nick,'ratechannel',trigger.sender)                
                 else:
                     bot.notice(str(choice) + " is not a number between 0 and 10",player)
             else:
@@ -80,18 +80,20 @@ def clearvoting(bot):
     reset_botdatabase_value(bot,bot.nick,'yesvotes')
     reset_botdatabase_value(bot,bot.nick,'voters')
     reset_botdatabase_value(bot,bot.nick,'voting')
+    reset_botdatabase_value(bot,bot.nick,'votechannel')
+    
+def clearrating(bot):    
     reset_botdatabase_value(bot,bot.nick,'raters')
     reset_botdatabase_value(bot,bot.nick,'ratings')
-    reset_botdatabase_value(bot,bot.nick,'votechannel')
+    reset_botdatabase_value(bot,bot.nick,'ratechannel')
    
     
     
 @sopel.module.interval(30)
-def countdown(bot):
-    currentsetting = get_botdatabase_value(bot,bot.nick,'voting')
-    if currentsetting == 1:
+def countdown(bot):   
+    if  get_botdatabase_value(bot,bot.nick,'voting')=='True':
         getvotes(bot)
-    elif currentsetting == 2:
+    if get_botdatabase_value(bot,bot.nick,'rating')=='True':
         getrating(bot)
         
 def getvotes(bot):
@@ -105,7 +107,7 @@ def getvotes(bot):
 def getrating(bot):
     sum=0
     ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
-    channel = get_botdatabase_value(bot,bot.nick,'votechannel')
+    channel = get_botdatabase_value(bot,bot.nick,'ratechannel')
     if ratings:
         for n in ratings:            
             n=int(n)
@@ -113,7 +115,7 @@ def getrating(bot):
         average = sum / len(ratings)
         dispmsg = 'The average is ' + str(average)        
         onscreentext(bot, channel, dispmsg)
-        clearvoting(bot)
+        clearrating(bot)
     else:
         dispmsg = 'No ratings found'
         for channel in bot.channels:
