@@ -2835,7 +2835,10 @@ def halfhourtimer(bot):
     if logoutarray != []:
         dispmsgarray = []
         logoutusers = get_trigger_arg(bot, logoutarray, 'list')
-        dispmsgarray.append(logoutusers + " has/have been logged out of duels for inactivity!")
+        if len(logoutarray) > 1:
+            dispmsgarray.append(logoutusers + " have been logged out of duels for inactivity!")
+        else:
+            dispmsgarray.append(logoutusers + " hasbeen logged out of duels for inactivity!")
         onscreentext(bot, gameenabledchannels, dispmsgarray)
         adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
 
