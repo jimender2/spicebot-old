@@ -18,9 +18,11 @@ from SpicebotShared import *
 
 #shared variables:
 maxbet = 100
+maxwheel = 36
 now = time.time()
 roulettetimeout=15
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
+
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'gamble')
@@ -128,7 +130,7 @@ def slots(bot,trigger,arg):
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
     
-    maxwheel = 25
+    
     minbet=15 #requires at least one payday to play
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
@@ -142,10 +144,8 @@ def roulette(bot,trigger,arg):
     
 #__payouts___
     colorpayout = 2 #% of amount bet + amount bet
-    #numberpayout = amount bet * numbers of maxwheel
-    
-    if bot.nick.endswith('dev'): 
-        maxwheel=15
+    #numberpayout = amount bet * numbers of maxwheel    
+  
     
     #set bet/check for commands
     if mybet == 'nobet':
@@ -250,8 +250,7 @@ def roulette(bot,trigger,arg):
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
-def runroulette(bot):    
-    maxwheel = 25
+def runroulette(bot):       
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
