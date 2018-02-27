@@ -136,6 +136,18 @@ def increment_counter(bot, trigger, commandused):
 ## OSD ##
 #########
 
+def osd_notice(bot, target, textarraycomplete):
+    target = actualname(bot,target)
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    passthrough = []
+    passthrough.append(target + ", ")
+    for x in textarraycomplete:
+        passthrough.append(x)
+    onscreentext(bot, [target], passthrough)
+
 def onscreentext(bot, texttargetarray, textarraycomplete):
     if not isinstance(textarraycomplete, list):
         texttoadd = str(textarraycomplete)
