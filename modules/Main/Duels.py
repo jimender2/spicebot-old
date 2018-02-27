@@ -1024,10 +1024,10 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
         return
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'add')
-        osd_notice(bot, instigator, "Devmode is on in " + inchannel + ".")
+        osd_notice(bot, instigator, "Duels devmode is on in " + inchannel + ".")
     else:
         adjust_database_array(bot, duelrecorduser, [inchannel], 'devenabled', 'del')
-        osd_notice(bot, instigator, "Devmode is off in " + inchannel + ".")
+        osd_notice(bot, instigator, "Duels devmode is off in " + inchannel + ".")
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1448,8 +1448,9 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
                 astatstr = str(str(astat) + " = " + str(astateval))
                 assaultstatsarray.append(astatstr)
                 reset_database_value(bot, user, "assault_" + astat)
-        onscreentext(bot, [inchannel], assaultstatsarray)
-        time.sleep(1)
+        if len(assaultstatsarray) > 1:
+            onscreentext(bot, [inchannel], assaultstatsarray)
+            time.sleep(1)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
 
