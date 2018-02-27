@@ -1393,7 +1393,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             dispmsgarray.append("Biggest Payout: "+ biggestpayoutwinner + " with " + str(biggestpayout) + " coins.")
         roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
         if roulettecount > 1:
-            roulettecount = roulettecount + 1
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
         time.sleep(randint(1, 2)) # added to build suspense
         onscreentext(bot, [inchannel], dispmsgarray)
