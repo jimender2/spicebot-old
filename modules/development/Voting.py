@@ -53,7 +53,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif choice=='results':
             getrating(bot)            
         else:
-            if player in raters:
+            if not player in raters:
                 if isfloat(choice):
                     choice=float(choice)
                     if choice >10:
@@ -118,8 +118,8 @@ def getrating(bot):
         clearrating(bot)
     else:
         dispmsg = 'No ratings found'
-        for channel in bot.channels:
-            onscreentext(bot, channel, dispmsg)
+        clearrating(bot)      
+        onscreentext(bot, channel, dispmsg)
             
 def isfloat(value):
     try:
