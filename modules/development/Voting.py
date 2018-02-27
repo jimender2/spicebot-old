@@ -27,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if timing.isdigit():
                 timing=int(timing)
                 set_botdatabase_value(bot,bot.nick,'votetimer',timing)
-                bot.notice("Voting delay set to " + str(timing),player)
+                bot.notice("Voting delay set to 10 plus" + str(timing),player)
             else:
                 bot.notice("Please enter a valid number",player)
         else:
@@ -63,7 +63,13 @@ def execute_main(bot, trigger, triggerargsarray):
         if not choice:
             bot.say("Rate on scale of 0 through 10")
         elif choice=='results':
-            getrating(bot)            
+            getrating(bot)
+        elif choice=='settime' and trigger.admin:
+            timing = get_trigger_arg(bot, triggerargsarray,2)
+            if timing.isdigit():
+                timing=int(timing)
+                set_botdatabase_value(bot,bot.nick,'ratetimer',timing)
+                bot.notice("Rating delay set to 10 plus" + str(timing),player)
         else:
             if not player in raters:
                 if isfloat(choice):
@@ -76,7 +82,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
                     adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
                     set_botdatabase_value(bot,bot.nick,'rating','True')
-                    set_botdatabase_value(bot,bot.nick,'ratechannel',trigger.sender)                
+                    set_botdatabase_value(bot,bot.nick,'ratechannel',trigger.sender)   
+                    set_botdatabase_value(bot,bot.nick,'ratestart',now)
                 else:
                     bot.notice(str(choice) + " is not a number between 0 and 10",player)
             else:
@@ -101,16 +108,18 @@ def clearrating(bot):
    
     
     
-@sopel.module.interval(30)
+@sopel.module.interval(10)
 def countdown(bot): 
     isvote = get_botdatabase_value(bot,bot.nick,'voting') or ''
     israte = get_botdatabase_value(bot,bot.nick,'rating') or ''
     votetimeout =get_botdatabase_value(bot,bot.nick,'votetimer')
+    ratetimeout = get_botdatabase_value(bot,bot.nick,'ratetimer')
     if isvote =='True':
         if get_timesince(bot,bot.nick,'votestart')>votetimeout:
             getvotes(bot)
     if israte =='True':
-        getrating(bot)
+        if get_timesince(bot,bot.nick,'ratestart')>ratetimeout:
+            getrating(bot)
         
 def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
