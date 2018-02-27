@@ -18,9 +18,16 @@ from SpicebotShared import *
 
 #shared variables:
 maxbet = 100
-maxwheel = 36
 now = time.time()
+#rouletteshared
 roulettetimeout=15
+maxwheel = 36
+
+#Lotteryshared
+match1payout = 2
+match2payout = 4
+match3payout = 0.1#% of jackpot
+match4payout = 0.3 #% of jackpot
 lotterymax = 99 
 
 
@@ -337,13 +344,10 @@ def lottery(bot,trigger, arg):
     if bankbalance <=500:
         bankbalance=500    
         Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
-    match1payout = 2
-    match2payout = 4
-    match3payout = int(0.1 * bankbalance)#% of jackpot
-    match4payout = int(0.3 * bankbalance) #% of jackpot
+   
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if commandused == 'payout':        
-        bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(match4payout) + " and getting 3 correct = " + str(match3payout))
+        bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(*bankbalance*match3payout)))
         success = 0    
     else:
         picks = []
@@ -386,6 +390,11 @@ def lottery(bot,trigger, arg):
                         
 ##_______Lottery drawing
 def lotterydrawing(bot,player,picks):
+    bankbalance=Spicebucks.bank(bot,'SpiceBank')
+    if bankbalance <=500:
+        bankbalance=500    
+        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
+        
     if bot.nick.endswith('dev'): 
         lotterymax=20
     winningnumbers = random.sample(range(1,lotterymax), 5) 
@@ -402,18 +411,18 @@ def lotterydrawing(bot,player,picks):
     elif correct == 2:
         payout = match2payout
     elif correct == 3:
-        payout =  match3payout
+        payout =  match3payout*bankbalance
     elif correct == 4:
-        payout = match4payout
+        payout = match4payout*bankbalance
     elif correct == 5:                            
         payout = bankbalance                                            
 
     if payout > 0:                            
         bot.say(player + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
-        bot.notice("You won " + str(payout) + " in the lottery drawing")
+        bot.notice("You won " + str(payout) + " in the lottery drawing",player)
         Spicebucks.transfer(bot, 'SpiceBank', player, payout)
     else:
-        bot.notice('You are not a winner',player)
+        bot.notice('You are not a lottery winner',player)
         bot.say("No one wins anything.")
 
                             
