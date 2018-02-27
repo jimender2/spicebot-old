@@ -100,7 +100,7 @@ def getvotes(bot):
     novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
     yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
     channel = get_botdatabase_value(bot,bot.nick,'votechannel') or ''
-    if not channel == ''
+    if not channel == '':
         dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
         onscreentext(bot, channel, dispmsg)
         clearvoting(bot)
