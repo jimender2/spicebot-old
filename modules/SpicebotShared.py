@@ -41,6 +41,9 @@ def spicebot_prerun(bot,trigger,commandused):
     ## time
     now = time.time()
     
+    ## channel name
+    inchannel = trigger.sender
+    
     ## Enable Status default is 1 = don't run
     enablestatus = 1
     
