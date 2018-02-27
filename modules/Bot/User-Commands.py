@@ -38,8 +38,13 @@ def main_command(bot, trigger):
     
     ## Modules
     elif subcommand == 'modulecount':
-        modulecount = str(len(fnmatch.filter(os.listdir(moduledir), '*.py')))
-        bot.say('There are currently ' + modulecount +' custom modules installed.')
+        cmdarray = []
+        for cmds in bot.command_groups.items():
+            for cmd in cmds:
+                if str(cmd).endswith("]"):
+                    for x in cmd:
+                        cmdarray.append(x)
+        bot.say('There are currently ' + str(len(cmdarray)) +' custom modules installed.')
         
     ## Bot Owner
     elif subcommand == 'owner':
