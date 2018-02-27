@@ -42,6 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
                     adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
                     set_botdatabase_value(bot,bot.nick,'voting',1)
+                    set_botdatabase_value(bot,bot.nick,'voting','True')
                     set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
                     set_botdatabase_value(bot,bot.nick,'votingstart',now)
                 elif choice == 'no' or choice == 'na':
