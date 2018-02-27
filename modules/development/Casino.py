@@ -279,6 +279,9 @@ def runroulette(bot):
         dispmsg = "The wheel stops on " + str(winningnumber) + " " + color
         onscreentext(bot, channel, dispmsg)
         for player in players:
+            mywinnings= 0
+            mynumber = 0
+            mycolor = ''
             playerarray =  get_botdatabase_value(bot, player, 'roulettearray') or ''
             if not playerarray == '':
                 mybet =  get_trigger_arg(bot, playerarray, 1) or 0
