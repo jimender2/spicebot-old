@@ -437,8 +437,8 @@ def blackjack(bot,trigger,arg):
                         if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
                             #reset write blank hand
                             blackjackreset(bot,player)
-                            myhand = deal(deck, 2)
-                            dealerhand = deal(deck, 2)            
+                            myhand = deal(bot,deck, 2)
+                            dealerhand = deal(bot,deck, 2)            
                             bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
                             myscore = blackjackscore(myhand)
                             dealerscore = blackjackscore(dealerhand)
@@ -550,7 +550,7 @@ def spin(wheel):
     reel=wheel[selected]
     return reel
 
-def deal(deck, cardcount):
+def deal(bot, deck, cardcount):
     #choose a random card from a deck and remove it from deck
     hand = []
     
