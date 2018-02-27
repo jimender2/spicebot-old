@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
             message = trigger.nick + " spanks " + target + " with a " + weapon + "."
         else:
             if reason.startswith('for'):
-                message = trigger.nick + " spanks " + target + " with a " + weapon + reason + "."
+                message = trigger.nick + " spanks " + target + " with a " + weapon + " "+ reason + "."
             else:
-                message = trigger.nick + " spanks " + target + " with a " + weapon + reason + "."
+                message = trigger.nick + " spanks " + target + " with a " + weapon + " "+ reason + "."
         bot.say(message)
