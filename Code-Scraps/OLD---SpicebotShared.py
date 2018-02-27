@@ -40,7 +40,7 @@ def spicebot_prerun(bot,trigger):
     
     ## used to circumvent
     commandused = trigger.group(1)
-    #allowedcommandsarray = ['duel','challenge']
+    allowedcommandsarray = ['duel','challenge']
     
     ## Get Name Of Channel
     botchannel = trigger.sender
@@ -49,56 +49,55 @@ def spicebot_prerun(bot,trigger):
     instigator = trigger.nick
     
     ## User's Bot Status
-    #instigatorbotstatus = get_botdatabase_value(bot, instigator, 'disenable')
+    instigatorbotstatus = get_botdatabase_value(bot, instigator, 'disenable')
     
     ## Enable Status default is 1 = don't run
-    #enablestatus = 1
-    enablestatus = 0
+    enablestatus = 1
     
     ## Get User's current total uses
-    #usertotal = get_botdatabase_value(bot, instigator, 'usertotal')
+    usertotal = get_botdatabase_value(bot, instigator, 'usertotal')
     
     ## When Did the user Join The room
-    #jointime = get_timesince(bot, instigator, 'jointime')
+    jointime = get_timesince(bot, instigator, 'jointime')
     
     ## When Did the User Last Use the bot
-    #lasttime = get_timesince(bot, instigator, 'lastusagetime')
+    lasttime = get_timesince(bot, instigator, 'lastusagetime')
     
     ## Has The user already been warned?
-    #warned = get_botdatabase_value(bot, instigator, 'hourwarned')
+    warned = get_botdatabase_value(bot, instigator, 'hourwarned')
     
     ## Check user has spicebotenabled
-    #if not instigatorbotstatus and not warned:
-    #    message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
-    #elif not instigatorbotstatus and warned:
-    #    message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.")
+    if not instigatorbotstatus and not warned:
+        message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+    elif not instigatorbotstatus and warned:
+        message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.")
     
     ## Make sure the user hasn't overdone the bot in the past hour
-    #elif instigatorbotstatus and usertotal > TOOMANYTIMES and botchannel.startswith("#") and not bot.nick.endswith('dev'):
-    #    message = str(instigator + ", you must have used Spicebot more than " + str(TOOMANYTIMES) + " times this past hour.")
+    elif instigatorbotstatus and usertotal > TOOMANYTIMES and botchannel.startswith("#") and not bot.nick.endswith('dev'):
+        message = str(instigator + ", you must have used Spicebot more than " + str(TOOMANYTIMES) + " times this past hour.")
     
     ## Make sure the user hasn't just entered the room
-    #elif instigatorbotstatus and jointime <= JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
-    #    jointimemath = int(JOINTIMEOUT - jointime)
-    #    message = str(instigator + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
+    elif instigatorbotstatus and jointime <= JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
+        jointimemath = int(JOINTIMEOUT - jointime)
+        message = str(instigator + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
     
     ## Make users wait between uses
-    #elif instigatorbotstatus and lasttime <= LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
-    #    lasttimemath = int(LASTTIMEOUT - lasttime)
-    #    message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
+    elif instigatorbotstatus and lasttime <= LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
+        lasttimemath = int(LASTTIMEOUT - lasttime)
+        message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
     
     ## if user passes ALL above checks, we'll run the module
-    #else:
-    #    enablestatus = 0
-    #    message = ''
+    else:
+        enablestatus = 0
+        message = ''
     
         ## Update user total
-     #   if botchannel.startswith("#") and not trigger.admin:
-     #       adjust_botdatabase_value(bot, instigator, 'usertotal', '1')
+        if botchannel.startswith("#") and not trigger.admin:
+            adjust_botdatabase_value(bot, instigator, 'usertotal', '1')
     
     ## Update user's last use timestamp
-    #if botchannel.startswith("#") and not bot.nick.endswith('dev'):
-    #    set_botdatabase_value(bot, instigator, 'lastusagetime', now)
+    if botchannel.startswith("#") and not bot.nick.endswith('dev'):
+        set_botdatabase_value(bot, instigator, 'lastusagetime', now)
     
     ## Add usage counter for counts
     adjust_botdatabase_value(bot, botchannel, str(commandused + "usage"), 1) ## Channel usage of specific module
@@ -107,7 +106,7 @@ def spicebot_prerun(bot,trigger):
     adjust_botdatabase_value(bot, trigger.nick, "spicebottotalusage", 1) ## User usage of bot overall
     
     ## message, if any
-    #bot.notice(message, instigator)
+    bot.notice(message, instigator)
     
     ## Send Status Forward
     return enablestatus, triggerargsarray
@@ -117,60 +116,60 @@ def spicebot_prerun(bot,trigger):
 #####################################################################################################################################
 
 ## User data collection
-#@sopel.module.interval(1800)
-#def halfhour(bot):
-#    for channel in bot.channels:
-#        for u in bot.privileges[channel.lower()]:
-#            set_botdatabase_value(bot, u, 'usertotal', None)
-#            set_botdatabase_value(bot, u, 'hourwarned', None)
+@sopel.module.interval(1800)
+def halfhour(bot):
+    for channel in bot.channels:
+        for u in bot.privileges[channel.lower()]:
+            set_botdatabase_value(bot, u, 'usertotal', None)
+            set_botdatabase_value(bot, u, 'hourwarned', None)
         
 ## Don't let users use the bot the first minute after they join the room
-#@event('JOIN')
-#@rule('.*')
-#def waitaminute(bot, trigger):
-#    now = time.time()
-#    target = trigger.nick
-#    set_botdatabase_value(bot, target, 'jointime', now)
-#    lasttime = get_timesince(bot, target, 'lastusagetime')
-#    if not lasttime or lasttime < LASTTIMEOUTHOUR:
-#        bot.db.set_nick_value(target, 'spicebot_usertotal', None)
-#        bot.db.set_nick_value(target, 'spicebothour_warn', None)
+@event('JOIN')
+@rule('.*')
+def waitaminute(bot, trigger):
+    now = time.time()
+    target = trigger.nick
+    set_botdatabase_value(bot, target, 'jointime', now)
+    lasttime = get_timesince(bot, target, 'lastusagetime')
+    if not lasttime or lasttime < LASTTIMEOUTHOUR:
+        bot.db.set_nick_value(target, 'spicebot_usertotal', None)
+        bot.db.set_nick_value(target, 'spicebothour_warn', None)
 
 ## Log out bot.admin
-#@event('QUIT') ###need to verify if this is the same if a person looses connection or quits
-#@rule('.spicebotadmin*')
-#def logoutadmin(bot, trigger):
-#    botadmins = ['deathbybandaid']
-#    if trigger.nick in botadmins
-#    bot.db.set_nick_value(target, 'spicebot_admin', 'out')
+@event('QUIT') ###need to verify if this is the same if a person looses connection or quits
+@rule('.spicebotadmin*')
+def logoutadmin(bot, trigger):
+    botadmins = ['deathbybandaid']
+    if trigger.nick in botadmins
+    bot.db.set_nick_value(target, 'spicebot_admin', 'out')
 
 ## Verify nick is bot.admin and logged in
-#@event('JOIN') ###need to verify if this is the same if a person looses connection or quits
-#@rule('.spicebotadmin*')
-#def logoutadmin(bot, trigger):
-#    botadmins = ['deathbybandaid']
-#    loggedin = bot.db.get_nick_value(target, 'spicebot_admin')
-#    if trigger.nick not in botadmins or loggedin == 'out':
-#        bot.notify("Please log in before issuing spicebotadmin commands.")
+@event('JOIN') ###need to verify if this is the same if a person looses connection or quits
+@rule('.spicebotadmin*')
+def logoutadmin(bot, trigger):
+    botadmins = ['deathbybandaid']
+    loggedin = bot.db.get_nick_value(target, 'spicebot_admin')
+    if trigger.nick not in botadmins or loggedin == 'out':
+        bot.notify("Please log in before issuing spicebotadmin commands.")
 
 ### will need to add coding for adding a pin/password for the bot.admin
 ### will need to add verification in the .spicebotadmin command
 
 
 ## Autoblock users that 
-#@sopel.module.interval(60)
-#def autoblock(bot):
-#    now = time.time()
-#    for channel in bot.channels:
-#        for u in bot.privileges[channel.lower()]:
-#            usertotal = get_botdatabase_value(bot, u, 'usertotal')
-#            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-#                set_botdatabase_value(bot, u, 'lastopttime', now)
-#                set_botdatabase_value(bot, u, 'disenable', None)
-#                warned = get_botdatabase_value(bot, u, 'hourwarned')
-#                if not warned:
-#                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
-#                    set_botdatabase_value(bot, u, 'hourwarned', 'true')
+@sopel.module.interval(60)
+def autoblock(bot):
+    now = time.time()
+    for channel in bot.channels:
+        for u in bot.privileges[channel.lower()]:
+            usertotal = get_botdatabase_value(bot, u, 'usertotal')
+            if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
+                set_botdatabase_value(bot, u, 'lastopttime', now)
+                set_botdatabase_value(bot, u, 'disenable', None)
+                warned = get_botdatabase_value(bot, u, 'hourwarned')
+                if not warned:
+                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
+                    set_botdatabase_value(bot, u, 'hourwarned', 'true')
         
 #####################################################################################################################################
 ## Below This Line are Shared Functions
