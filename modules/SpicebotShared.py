@@ -56,6 +56,7 @@ def spicebot_prerun(bot,trigger,commandused):
     ## devmode bypass
     devenabledchannels = get_botdatabase_value(bot, bot.nick, 'devenabled') or []
     if inchannel in devenabledchannels:
+        enablestatus = 0
         return enablestatus, triggerargsarray
     
     ## Channel activated status
