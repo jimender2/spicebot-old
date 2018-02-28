@@ -455,7 +455,7 @@ def lotterydrawing(bot):
                     bot.notice("You won " + str(payout) + " in the lottery drawing",player)
                     Spicebucks.transfer(bot, 'SpiceBank', player, payout)
                     if payout>5:
-                        msg=player +" won " + payout + "in this drawing"
+                        msg=player +" won " + str(payout) + "in this drawing"
                         onscreentext(bot,channel,msg)     
                     lotterywinners.append(player)
                     totalwon = totalwon + payout
