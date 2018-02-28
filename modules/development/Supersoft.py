@@ -28,5 +28,5 @@ def execute_main(bot, trigger, triggerargsarray):
     elif validtarget == 2:
         bot.say("I'm all metal, baby")
     else:
-        message = target + " is going to have a super soft birthday party this year."
+        msg = target + " is going to have a super soft birthday party this year."
         onscreentext(bot,msg,channel)
