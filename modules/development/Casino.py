@@ -416,7 +416,7 @@ def lotterydrawing(bot):
     lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     channel =  get_botdatabase_value(bot,'casino','lotterychanel')
-    lotteryplayers = get_botdatabase_array(bot, 'casino','lottoplayers')
+    lotteryplayers = get_botdatabase_value(bot, 'casino','lottoplayers')
     lotterywinners =[]
     totalwon = 0
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
