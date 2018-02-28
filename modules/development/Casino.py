@@ -360,7 +360,7 @@ def lottery(bot,trigger, arg):
         if max.isdigit():
             max=int(max)
             set_botdatabase_value(bot,'casino','lotterymax',max)
-            bot.notice("Lottery max set to " + str(max))
+            bot.notice("Lottery max set to " + str(max),player)
         else:
             bot.notice("Please enter a valid number",player)
                        
