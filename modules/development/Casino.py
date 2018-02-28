@@ -28,7 +28,7 @@ match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-lotterytimeout=1800 
+lotterytimeout=1790 
 #lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
 
 
@@ -364,7 +364,8 @@ def lottery(bot,trigger, arg):
             bot.notice("Lottery max set to " + str(max),player)
         else:
             bot.notice("Please enter a valid number",player)
-                       
+    elif commandused= 'drawing' and trigger.admin:
+        lotterydrawing(bot)                       
         
     else:
         picks = []
@@ -398,48 +399,77 @@ def lottery(bot,trigger, arg):
                 if valid == 0:
                     bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                 else:
-                    if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                        
-                        bot.say(player + " bets on the numbers" + str(picks))
-                        lotterydrawing(bot,player,picks)                        
+                    lottplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
+                    if player in lottoplayers:
+                        bot.notice("You have enter your picks already",player)
                     else:
-                        bot.notice('You dont have enough Spicebucks',player)
+                        if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
+                            bot.say(player + " bets on the numbers" + str(picks))
+                            set_botdatabase_value(bot,player,picks) 
+                            adjust_botdatabase_array(bot,'casino',player 'lottoplayers','add')
+                            set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
+                        else:
+                            bot.notice('You dont have enough Spicebucks',player)
                         
 ##_______Lottery drawing
-def lotterydrawing(bot,player,picks):
+def lotterydrawing(bot):
     lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
-    if bankbalance <=500:
-        bankbalance=500    
-        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)        
-  
-    winningnumbers = random.sample(range(1,lotterymax), 5) 
-   
-    bot.say('The winning numbers are ' + str(winningnumbers))
-    correct = 0
-    for pick in picks:
-        if pick in winningnumbers:
-            correct = correct + 1
-    payout = 0
-                                        
-    if correct == 1:
-        payout = match1payout
-    elif correct == 2:
-        payout = match2payout
-    elif correct == 3:
-        payout =  int(match3payout*bankbalance)
-    elif correct == 4:
-        payout = int(match4payout*bankbalance)
-    elif correct == 5:                            
-        payout = bankbalance                                            
-
-    if payout > 0:                            
-        bot.say(player + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
-        bot.notice("You won " + str(payout) + " in the lottery drawing",player)
-        Spicebucks.transfer(bot, 'SpiceBank', player, payout)
+    channel =  get_botdatabase_value(bot,'casino','lotterychanel')
+    lotteryplayers = get_botdatabase_array(bot, 'casino','lottoplayers')
+    lotterywinners =[]
+    totalwon = 0
+    if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
+        msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
+        onscreentext(bot,channel,msg)
     else:
-        bot.notice('You are not a lottery winner',player)
-        bot.say("No one wins anything.")
+        if bankbalance <=500:
+            bankbalance=500    
+            Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)        
+
+        winningnumbers = random.sample(range(1,lotterymax), 5) 
+
+        msg ='The winning numbers are ' + str(winningnumbers)
+        onscreentext(bot,channel,msg)
+        for player in lotteryplayers:
+            correct = 0
+            picks = get_botdatabase_value(bot,player,'picks') or []
+            for pick in picks:
+                if pick in winningnumbers:
+                    correct = correct + 1
+                payout = 0
+                if correct == 1:
+                    payout = match1payout
+                elif correct == 2:
+                    payout = match2payout
+                elif correct == 3:
+                    payout =  int(match3payout*bankbalance)
+                elif correct == 4:
+                    payout = int(match4payout*bankbalance)
+                elif correct == 5:                            
+                    payout = bankbalance                                            
+                reset_botdatabase_value(bot,player,'picks')
+                if payout>bankbalance:
+                    Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
+                if payout > 0:                            
+                    bot.notice("You won " + str(payout) + " in the lottery drawing",player)
+                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)
+                    if payout>5:
+                        msg=player +" won " + payout + "in this drawing"
+                        onscreentext(bot,channel,msg)     
+                    lotterywinners.append(player)
+                    totalwon = totalwon + payout
+                    bankbalance=Spicebucks.bank(bot,'SpiceBank')
+                else:
+                    bot.notice('You are not a lottery winner',player)                
+                
+        if totalwon >0:
+            msg =lotterywinners + " guessed correctly, and won " + str(totalwon) + " in this drawing"
+            onscreentext(bot,channel,msg) 
+        else:
+            msg="No one won this drawing."
+            onscreentext(bot,channel,msg)
+    reset_botdatabase_array_total(bot, 'casino','lottoplayers')
 
                             
 #____Game 4 Blackjack___
