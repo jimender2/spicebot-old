@@ -21,14 +21,15 @@ maxbet = 100
 now = time.time()
 #rouletteshared
 roulettetimeout=15
-maxwheel = 36
+#maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
 
 #Lotteryshared
 match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-lotterymax = 99 
+lotterytimeout=1790 
+#lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
 
 
 
@@ -141,7 +142,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
-    
+    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
     minbet=15 #requires at least one payday to play
     wheel = range(maxwheel + 1)        
@@ -150,6 +151,7 @@ def roulette(bot,trigger,arg):
     maxplayers = 3
     callcheck = False 
     player = trigger.nick
+    
     
     mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
     myitem = get_trigger_arg(bot, arg, 3) or 'noitem'
@@ -166,6 +168,14 @@ def roulette(bot,trigger,arg):
         inputcheck = 0
     elif mybet=='payout':
         bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+    elif mybet=='setwheelmax' and trigger.admin:
+        if myitem.isdigit():
+            wheelmax=int(myitem)
+            set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
+            bot.notice("Roulette wheel max set to " + str(wheelmax),player)
+        else:
+            bot.notice("Please enter a valid number",player)
+        
     elif mybet =='call':
         players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
         for i in players:
@@ -267,7 +277,8 @@ def roulette(bot,trigger,arg):
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
-def runroulette(bot):       
+def runroulette(bot):  
+    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
@@ -334,12 +345,8 @@ def runroulette(bot):
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
-   
-    player = trigger.nick
-#___payout table___
-    #match5payout = jackpot
-    if bot.nick.endswith('dev'): 
-        lotterymax=20
+    lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
+    player = trigger.nick   
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500    
@@ -348,7 +355,18 @@ def lottery(bot,trigger, arg):
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if commandused == 'payout':        
         bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
-        success = 0    
+        success = 0
+    elif commandused == 'setlotterymax' and trigger.admin:
+        max = get_trigger_arg(bot,arg,3)
+        if max.isdigit():
+            max=int(max)
+            set_botdatabase_value(bot,'casino','lotterymax',max)
+            bot.notice("Lottery max set to " + str(max),player)
+        else:
+            bot.notice("Please enter a valid number",player)
+    elif commandused == 'drawing' and trigger.admin:
+        lotterydrawing(bot)                       
+        
     else:
         picks = []
         success = 0    
@@ -381,49 +399,77 @@ def lottery(bot,trigger, arg):
                 if valid == 0:
                     bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                 else:
-                    if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                        
-                        bot.say(player + " bets on the numbers" + str(picks))
-                        lotterydrawing(bot,player,picks)                        
+                    lottoplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
+                    if player in lottoplayers:
+                        bot.notice("You have enter your picks already",player)
                     else:
-                        bot.notice('You dont have enough Spicebucks',player)
+                        if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
+                            bot.say(player + " bets on the numbers" + str(picks))
+                            set_botdatabase_value(bot,player,'picks', picks) 
+                            adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
+                            set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
+                        else:
+                            bot.notice('You dont have enough Spicebucks',player)
                         
 ##_______Lottery drawing
-def lotterydrawing(bot,player,picks):
+def lotterydrawing(bot):
+    lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
-    if bankbalance <=500:
-        bankbalance=500    
-        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
-        
-    if bot.nick.endswith('dev'): 
-        lotterymax=20
-    winningnumbers = random.sample(range(1,lotterymax), 5) 
-   
-    bot.say('The winning numbers are ' + str(winningnumbers))
-    correct = 0
-    for pick in picks:
-        if pick in winningnumbers:
-            correct = correct + 1
-    payout = 0
-                                        
-    if correct == 1:
-        payout = match1payout
-    elif correct == 2:
-        payout = match2payout
-    elif correct == 3:
-        payout =  int(match3payout*bankbalance)
-    elif correct == 4:
-        payout = int(match4payout*bankbalance)
-    elif correct == 5:                            
-        payout = bankbalance                                            
-
-    if payout > 0:                            
-        bot.say(player + " guessed " + str(correct) + " numbers correctly, and won " + str(payout) + " spicebucks.")
-        bot.notice("You won " + str(payout) + " in the lottery drawing",player)
-        Spicebucks.transfer(bot, 'SpiceBank', player, payout)
+    channel =  get_botdatabase_value(bot,'casino','lotterychanel')
+    lotteryplayers = get_botdatabase_value(bot, 'casino','lottoplayers')
+    lotterywinners =[]
+    totalwon = 0
+    if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
+        msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
+        onscreentext(bot,channel,msg)
     else:
-        bot.notice('You are not a lottery winner',player)
-        bot.say("No one wins anything.")
+        if bankbalance <=500:
+            bankbalance=500    
+            Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)        
+
+        winningnumbers = random.sample(range(1,lotterymax), 5) 
+
+        msg ='The winning numbers are ' + str(winningnumbers)
+        onscreentext(bot,channel,msg)
+        for player in lotteryplayers:
+            correct = 0
+            picks = get_botdatabase_value(bot,player,'picks') or []
+            for pick in picks:
+                if pick in winningnumbers:
+                    correct = correct + 1
+                payout = 0
+                if correct == 1:
+                    payout = match1payout
+                elif correct == 2:
+                    payout = match2payout
+                elif correct == 3:
+                    payout =  int(match3payout*bankbalance)
+                elif correct == 4:
+                    payout = int(match4payout*bankbalance)
+                elif correct == 5:                            
+                    payout = bankbalance                                            
+                reset_botdatabase_value(bot,player,'picks')
+                if payout>bankbalance:
+                    Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
+                if payout > 0:                            
+                    bot.notice("You won " + str(payout) + " in the lottery drawing",player)
+                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)
+                    if payout>5:
+                        msg=player +" won " + str(payout) + "in this drawing"
+                        onscreentext(bot,channel,msg)     
+                    lotterywinners.append(player)
+                    totalwon = totalwon + payout
+                    bankbalance=Spicebucks.bank(bot,'SpiceBank')
+                else:
+                    bot.notice('You are not a lottery winner',player)                
+                
+        if totalwon >0:
+            msg =lotterywinners + " guessed correctly, and won " + str(totalwon) + " in this drawing"
+            onscreentext(bot,channel,msg) 
+        else:
+            msg="No one won this drawing."
+            onscreentext(bot,channel,msg)
+    reset_botdatabase_array_total(bot, 'casino','lottoplayers')
 
                             
 #____Game 4 Blackjack___
@@ -433,12 +479,7 @@ def blackjack(bot,trigger,arg):
     beatdealerpayout = 2
     payouton21 = 1
     mychoice =  get_trigger_arg(bot, arg, 2) or 'nocommand'
-    mychoice2 = get_trigger_arg(bot, arg, 3) or 'nocommand'
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-    botuseron=[]
-    for u in bot.users:
-        if u in botusersarray and u != bot.nick:
-            botuseron.append(u)
+    mychoice2 = get_trigger_arg(bot, arg, 3) or 'nocommand'    
     if mychoice == 'nocommand':
         bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
         
@@ -458,32 +499,34 @@ def blackjack(bot,trigger,arg):
                     mybet=int(mychoice2)
                     if (mybet<minbet or mybet>maxbet):
                         bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
-                    else:            
-                        if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
-                            #reset write blank hand
-                            blackjackreset(bot,player)
-                            myhand = deal(bot,deck, 2)
-                            dealerhand = deal(bot,deck, 2)            
-                            bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
-                            myscore = blackjackscore(myhand)
-                            dealerscore = blackjackscore(dealerhand)
-                            payout = mybet
-                            if myscore == 21:
-                                payout=payout + (mybet*blackjackpayout) 
-                                bot.say(player + ' got blackjack and wins ' + str(payout))
-                                Spicebucks.spicebucks(bot, player, 'plus', payout)
-                            else:                            
-                                
-                                #update hand in the database
-                                bot.db.set_nick_value(player, 'myhand', myhand)
-                                bot.db.set_nick_value(player, 'dealerhand', dealerhand)
-                                bot.db.set_nick_value(player, 'mybet', mybet)
-                                bot.notice(" You can say'.gamble blackjack 2' to take a card or '.gamble blackjack 3' to finish the game",player)
+                    else:
+                        if not get_botdatabase_value(bot, player, 'mybet')>0:
+                            bot.notice("You already have a game start. Use hit or stand to finish the current game.",player)
                         else:
-                            bot.notice('You do not have enough spicebucks.',player)
+                            if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
+                                #reset write blank hand
+                                blackjackreset(bot,player)
+                                myhand = deal(bot,deck, 2)
+                                dealerhand = deal(bot,deck, 2)            
+                                bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
+                                myscore = blackjackscore(myhand)
+                                dealerscore = blackjackscore(dealerhand)
+                                payout = mybet
+                                if myscore == 21:
+                                    payout=payout + (mybet*blackjackpayout) 
+                                    bot.say(player + ' got blackjack and wins ' + str(payout))
+                                    Spicebucks.spicebucks(bot, player, 'plus', payout)
+                                else:                            
+
+                                    #update hand in the database
+                                    set_botdatabase_value(bot, player, 'myhand', myhand)
+                                    set_botdatabase_value(bot, player, 'dealerhand', dealerhand)
+                                    set_botdatabase_value(bot, player, 'mybet', mybet)                                    
+                                    bot.notice(" You can say'.gamble blackjack 2' to take a card or '.gamble blackjack 3' to finish the game",player)
+                            else:
+                                bot.notice('You do not have enough spicebucks.',player)
         elif mychoice == 'hit' or mychoice == '2':
-            myhand =  bot.db.get_nick_value(player, 'myhand') or 0
-            #dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
+            myhand =  get_botdatabase_value(bot,player, 'myhand') or 0            
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
             else:
@@ -502,37 +545,37 @@ def blackjack(bot,trigger,arg):
                         myhand[1] = 1
                     myscore= blackjackscore(myhand)            
                 if myscore < 21:                
-                    bot.db.set_nick_value(player, 'myhand', myhand)
+                    set_botdatabase_value(bot, player, 'myhand', myhand)
                     bot.say(player + " takes a hit and a gets a " +  str(playerhits) + " " + player + "'s score is now " + str(myscore))
                 else:
                     bot.say(player + ' got ' + str(playerhits) + ' busted and gets nothing')
                     blackjackreset(bot,player)
                     
         elif mychoice == 'check':
-            target = get_trigger_arg(bot, arg, 3) or 'notarget'                        
-            if not target.lower() in [u.lower() for u in botuseron]:
+            target = get_trigger_arg(3)
+            if not targetcheck(bot, target,player)==1:                 
                 bot.say("Target not found.")
             else:                    
-                myhand =  bot.db.get_nick_value(target, 'myhand') or 0
-                dealerhand = bot.db.get_nick_value(target, 'dealerhand') or 0
+                myhand =  get_botdatabase_value(bot,target, 'myhand') or 0
+                dealerhand = get_botdatabase_value(bot,target, 'dealerhand') or 0
                 bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
-            myhand =  bot.db.get_nick_value(player, 'myhand') or 0
-            payout = bot.db.get_nick_value(player, 'mybet') or 0
+            myhand =  get_botdatabase_value(pbot,layer, 'myhand') or 0
+            payout = get_botdatabase_value(bot,player, 'mybet') or 0
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
             else:
                 if len(myhand) == 2:
                     mybet=payout+payout
-                    bot.db.set_nick_value(player, 'mybet', mybet)
+                    set_botdatabase_value(bot,player, 'mybet', mybet)
                     playerhitlist = ''
                     #bot.say(player + ' has ' + str(myhand))
                     #bot.say('The dealer has ' + str(dealerhand))
                     playerhits=deal(bot,deck, 1)
                     playerhits=playerhits[0]        
                     myhand.append(playerhits)
-                    bot.db.set_nick_value(player, 'myhand', myhand)
+                    set_botdatabase_value(bot,player, 'myhand', myhand)
                     bot.say(player + " doubles down and gets " + str(playerhits))
                     blackjackstand(bot,player,myhand,dealerhand,mybet)                    
                         
@@ -543,7 +586,8 @@ def blackjack(bot,trigger,arg):
             myhand = []
             dealerhand = []
             mybet = 0
-            if not target.lower() in [u.lower() for u in botuseron]:
+            target = get_trigger_arg(3)
+            if not targetcheck(bot, target,player)==1:                 
                 bot.say("Target not found.")
             else:
                 if not (card1 == 'nocard1'and card2 == 'nocard2'):
@@ -552,14 +596,14 @@ def blackjack(bot,trigger,arg):
                     dealerhand.append(card1)
                     dealerhand.append(card2)
                     bot.say(str(myhand))                    
-                    bot.db.set_nick_value(player, 'myhand', myhand)
-                    bot.db.set_nick_value(player, 'dealerhand', dealerhand)
-                    bot.db.set_nick_value(player, 'mybet', mybet)                
+                    set_botdatabase_value(bot,player, 'myhand', myhand)
+                    set_botdatabase_value(bot,player, 'dealerhand', dealerhand)
+                    set_botdatabase_value(bot,player, 'mybet', mybet)                
             
         elif mychoice == 'stand' or mychoice == '3':
-            myhand =  bot.db.get_nick_value(player, 'myhand') or 0
-            dealerhand = bot.db.get_nick_value(player, 'dealerhand') or 0
-            payout = bot.db.get_nick_value(player, 'mybet') or 0
+            myhand =  get_botdatabase_value(bot,player, 'myhand') or 0
+            dealerhand = get_botdatabase_value(bot,player, 'dealerhand') or 0
+            payout = get_botdatabase_value(bot,player, 'mybet') or 0
             blackjackstand(bot,player,myhand,dealerhand,payout)
             
         elif mychoice == 'payout':
@@ -664,26 +708,21 @@ def blackjackscore(hand):
                 myscore=myscore
     return myscore
 
-def blackjackreset(bot,player):
-    myhand = []
-    dealerhand = []
-    mybet = 0
-    bot.db.set_nick_value(player, 'myhand', myhand)
-    bot.db.set_nick_value(player, 'dealerhand', dealerhand)
-    bot.db.set_nick_value(player, 'mybet', mybet)
+def blackjackreset(bot,player):   
+    reset_botdatabase_value(bot,player, 'myhand')
+    reset_botdatabase_value(bot,player, 'dealerhand')
+    reset_botdatabase_value(bot,player, 'mybet')
 
 @sopel.module.interval(10)
 def countdown(bot):    
     currentsetting = get_botdatabase_value(bot,'casino','counter')
-    timediff = gettimediff(bot,(get_botdatabase_value(bot,'casino','countertimer')))
+    timediff = get_timesince(bot,'casino','countertimer')
     if currentsetting == 'roulette':
         if timediff>=roulettetimeout:
             runroulette(bot)
     
 
-def gettimediff(bot,last):
-    now = time.time()
-    return abs(now - int(last))
+
 
             
     

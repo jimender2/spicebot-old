@@ -53,7 +53,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Claims must be done in channel")
         
     # Handle if no target is specified
-    if not target:
+    elif not target:
         okaytoclaim = 0
         bot.say("Who do you want to claim?")
         

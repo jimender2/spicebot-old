@@ -61,7 +61,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif commandused == 'rate':
         raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
         if not choice:
-            bot.say("Rate on scale of 0 through 10")
+            bot.say("Rate on scale of -10 through 10")
         elif choice=='results':
             getrating(bot)
         elif choice=='settime' and trigger.admin:
@@ -85,7 +85,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     set_botdatabase_value(bot,bot.nick,'ratechannel',trigger.sender)   
                     set_botdatabase_value(bot,bot.nick,'ratestart',now)
                 else:
-                    bot.notice(str(choice) + " is not a number between 0 and 10",player)
+                    bot.notice(str(choice) + " is not a number between -10 and 10",player)
             else:
                 bot.notice("You already submitted a rating this round",player)
        
