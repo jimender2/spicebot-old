@@ -28,21 +28,16 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     admintarget = get_trigger_arg(bot, triggerargsarray, 2)
     masterurinator = 'IT_Sean'
-    
     # Names of channel
     inchannel = trigger.sender
     channel = trigger.sender
-    
     # Dates for usage
     todaydate = datetime.date.today()
     storedate = str(todaydate)
-    
     # Good to claim?
     okaytoclaim = 1
-    
     # Days before reclaim available
     maxtime = 7
-    
     # Spicebuck reward values
     firstclaim = 5
     renewclaim = 2
@@ -120,7 +115,6 @@ def execute_main(bot, trigger, triggerargsarray):
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
         okaytoclaim = 0
-    #elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
         bot.say("I'm not sure who that is.") 
     
     # Input checks out. Verify dates and go ahead.
@@ -176,5 +170,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
                 bot.say(target + " has already been claimed by " + str(claimedby) + ", so back off!")
+    elif not okaytoclaim:
+        return
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
