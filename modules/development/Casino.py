@@ -470,7 +470,7 @@ def blackjack(bot,trigger,arg):
                     if (mybet<minbet or mybet>maxbet):
                         bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
                     else:
-                        if not get_botdatabase_value(bot, player, 'mybet', mybet)>0:
+                        if not get_botdatabase_value(bot, player, 'mybet')>0:
                             bot.notice("You already have a game start. Use hit or stand to finish the current game.",player)
                         else:
                             if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
