@@ -50,7 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
     masterclaim = 5 #take, not give
     
     # Make sure claims happen in channel, not privmsg
-    if not inchannel.startswith("#") or target not in privcmdlist:
+    if not inchannel.startswith("#") and target not in privcmdlist:
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
         
