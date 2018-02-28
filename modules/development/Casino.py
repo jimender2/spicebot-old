@@ -406,7 +406,7 @@ def lottery(bot,trigger, arg):
                         if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
                             bot.say(player + " bets on the numbers" + str(picks))
                             set_botdatabase_value(bot,player,picks) 
-                            adjust_botdatabase_array(bot,'casino',player 'lottoplayers','add')
+                            adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
                             set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
                         else:
                             bot.notice('You dont have enough Spicebucks',player)
