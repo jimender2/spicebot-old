@@ -355,7 +355,7 @@ def lottery(bot,trigger, arg):
         bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
         success = 0
     elif commandused == 'setlotterymax' and trigger.admin:
-        max = get_trigger_arg(bot,arg,1)
+        max = get_trigger_arg(bot,arg,3)
         if max.isdigit():
             max=int(max)
             set_botdatabase_value(bot,'casino','lotterymax',max)
