@@ -28,7 +28,7 @@ match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-#lotterymax = get_database_value(bot,'casino','lotterymax')
+#lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
 
 
 
@@ -277,7 +277,7 @@ def roulette(bot,trigger,arg):
             
 #-----Run roulette game            
 def runroulette(bot):  
-    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
+    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
