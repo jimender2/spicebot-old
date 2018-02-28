@@ -364,7 +364,7 @@ def lottery(bot,trigger, arg):
             bot.notice("Lottery max set to " + str(max),player)
         else:
             bot.notice("Please enter a valid number",player)
-    elif commandused= 'drawing' and trigger.admin:
+    elif commandused == 'drawing' and trigger.admin:
         lotterydrawing(bot)                       
         
     else:
