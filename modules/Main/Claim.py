@@ -12,6 +12,8 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
+privcmdlist = ['check','reset']
+
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -48,7 +50,7 @@ def execute_main(bot, trigger, triggerargsarray):
     masterclaim = 5 #take, not give
     
     # Make sure claims happen in channel, not privmsg
-    if not inchannel.startswith("#"):
+    if not inchannel.startswith("#") or target not in privcmdlist:
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
         
@@ -64,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
             admintarget = instigator
         claimdate = bot.db.get_nick_value(admintarget, 'claimdate')
         claimedby = bot.db.get_nick_value(admintarget,'claimed')
-        if not claimedby:
+        elif not claimedby:
             if admintarget == instigator:
                 bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
             else:
@@ -81,8 +83,10 @@ def execute_main(bot, trigger, triggerargsarray):
         if trigger.admin:
             if not admintarget:
                 bot.say("Please specify someone to reset claim on.")
-            elif admintarget.lower() not in bot.privileges[channel.lower()]:
+            elif admintarget.lower() not in [u.lower() for u in bot.users]:
                 bot.say("I'm not sure who that is.")
+            #elif admintarget.lower() not in bot.privileges[channel.lower()]:
+            #    bot.say("I'm not sure who that is.")
             else:
                 bot.db.set_nick_value(admintarget,'claimed','')
                 bot.db.set_nick_value(admintarget,'claimdate','')
@@ -114,7 +118,9 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
         
     # If the target is not online OR a subcommand, handle it
-    elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
+    elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
+        okaytoclaim = 0
+    #elif target.lower() not in bot.privileges[channel.lower()] and target != 'reset': 
         bot.say("I'm not sure who that is.") 
     
     # Input checks out. Verify dates and go ahead.
@@ -122,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
         # First time claimed
         if claimedby == '':
-            if instigator == masterurinator:
+            if instigator == str(masterurinator):
                 message = instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!"
             else:
                 message = instigator + " urinates on " + target + "! Claimed!"
@@ -140,7 +146,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > int(maxtime):
-                if instigator == masterurinator:
+                if instigator == str(masterurinator):
                     message = instigator + " releases the contents of his bladder on " + target + " again! All should recognize this almighty renewal of ownership over " + target + "!"
                 else:
                     message = instigator + " urinates on " + target + " again! The claim has been renewed!"
@@ -159,7 +165,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days > int(maxtime):
-                if instigator == masterurinator:
+                if instigator == str(masterurinator):
                     message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!"
                 else:
                     message = instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!"
