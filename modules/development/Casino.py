@@ -399,7 +399,7 @@ def lottery(bot,trigger, arg):
                 if valid == 0:
                     bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                 else:
-                    lottplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
+                    lottoplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
                     if player in lottoplayers:
                         bot.notice("You have enter your picks already",player)
                     else:
