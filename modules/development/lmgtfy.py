@@ -5,14 +5,23 @@ Copyright 2013, Dimitri Molenaars http://tyrope.nl/
 Licensed under the Eiffel Forum License 2.
 http://sopel.chat/
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
-from sopel.module import commands
+import sopel.module
+import sys
+import os
+shareddir = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(shareddir)
+from SpicebotShared import *
 
+@sopel.module.commands('lmgtfy', 'lmgify', 'gify', 'gtfy')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'lmgtfy)
+    if not enablestatus:
+        execute_main(bot, trigger, triggerargsarray)
 
-@commands('lmgtfy', 'lmgify', 'gify', 'gtfy')
-def googleit(bot, trigger):
+def lmgtfyt(bot, trigger,triggerargsarray):
     """Let me just... google that for you."""
     #No input
-    if not trigger.group(2):
+    target = get_trigger_arg(bot,triggerargsarray,1)                                                     
+    if not target:
         return bot.say('http://google.com/')
-    bot.say('http://lmgtfy.com/?q=' + trigger.group(2).replace(' ', '+'))
+    bot.say('http://lmgtfy.com/?q=' + target.replace(' ', '+'))
