@@ -17,14 +17,15 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
+    validtarget= targetcheck(bot,target,trigger.nick)
     channel = trigger.sender
     if not target:
         bot.say("Who is supersoft?")
     elif target == instigator:
         bot.say('Is your self esteem really that low?')
-    elif targetcheck(bot,target,trigger.nick)==0:
+    elif validtarget==0:
         bot.say("I'm not sure who that is.")
-    elif targetcheck(bot,target,trigger.nick) == 2:
+    elif validtarget == 2:
         bot.say("I'm all metal, baby")
     else:
         message = target + " is going to have a super soft birthday party this year."
