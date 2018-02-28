@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
-def lmgtfyt(bot, trigger,triggerargsarray):
+def execute_main(bot, trigger,triggerargsarray):
     """Let me just... google that for you."""
     #No input
     target = get_trigger_arg(bot,triggerargsarray,1)                                                     
