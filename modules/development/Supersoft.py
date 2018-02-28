@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say('Is your self esteem really that low?')
     elif not targetcheck(bot,target,trigger.nick)==1:
         bot.say("I'm not sure who that is.")
-    elif target == 2
+    elif target == 2:
         bot.say("I'm all metal, baby")
     else:
         message = target + " is going to have a super soft birthday party this year."
