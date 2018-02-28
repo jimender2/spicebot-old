@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger,triggerargsarray):
     """Let me just... google that for you."""
     #No input
-    target = get_trigger_arg(bot,triggerargsarray,1+)                                                     
+    target = get_trigger_arg(bot,triggerargsarray,0)                                                     
     if not target:
         return bot.say('http://google.com/')
     bot.say('http://lmgtfy.com/?q=' + target.replace(' ', '+'))
