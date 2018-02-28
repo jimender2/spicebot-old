@@ -21,7 +21,7 @@ maxbet = 100
 now = time.time()
 #rouletteshared
 roulettetimeout=15
-#maxwheel = get_database_value(bot,'casino','maxwheel')
+#maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
 
 #Lotteryshared
 match1payout = 2
@@ -150,7 +150,7 @@ def roulette(bot,trigger,arg):
     maxplayers = 3
     callcheck = False 
     player = trigger.nick
-    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
+    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
     mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
     myitem = get_trigger_arg(bot, arg, 3) or 'noitem'
@@ -170,7 +170,7 @@ def roulette(bot,trigger,arg):
     elif mybet=='setwheelmax' and trigger.admin:
         if myitem.isdigit():
             wheelmax=int(myitem)
-            set_database_value(bot,'casino','maxwheel',wheelmax)
+            set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
             bot.notice("Roulette wheel max set to " + str(wheelmax),player)
         else:
             bot.notice("Please enter a valid number",player)
@@ -343,7 +343,7 @@ def runroulette(bot):
                     
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
-    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
+    lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     player = trigger.nick   
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
@@ -358,7 +358,7 @@ def lottery(bot,trigger, arg):
         max = get_trigger_arg(bot,arg,1)
         if max.isdigit():
             max=int(max)
-            set_database_value(bot,'casino','lotterymax',max)
+            set_botdatabase_value(bot,'casino','lotterymax',max)
             bot.notice("Lottery max set to " + str(max))
         else:
             bot.notice("Please enter a valid number",player)
@@ -405,7 +405,7 @@ def lottery(bot,trigger, arg):
                         
 ##_______Lottery drawing
 def lotterydrawing(bot,player,picks):
-    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
+    lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500    
