@@ -141,7 +141,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
-    
+    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
     minbet=15 #requires at least one payday to play
     wheel = range(maxwheel + 1)        
@@ -150,7 +150,7 @@ def roulette(bot,trigger,arg):
     maxplayers = 3
     callcheck = False 
     player = trigger.nick
-    maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
+    
     
     mybet = get_trigger_arg(bot, arg, 2) or 'nobet'
     myitem = get_trigger_arg(bot, arg, 3) or 'noitem'
@@ -276,11 +276,12 @@ def roulette(bot,trigger,arg):
                 bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
-def runroulette(bot):       
+def runroulette(bot):  
+    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
     wheel = range(maxwheel + 1)        
     colors = ['red', 'black']
     players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []    
-    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
+    
     if not players == []:
         channel = get_botdatabase_value(bot,'casino','casinochannel')
         dispmsg = "The dealer collects all bets"
