@@ -732,7 +732,7 @@ def countdown(bot):
     if currentsetting == 'roulette':
         if roulettetimediff>=roulettetimeout:
             runroulette(bot)
-    if lotterytimediff>lottorytimeout:
+    if lotterytimediff>lotterytimeout:
         lotterydrawing(bot)
         set_botdatabase_vaule(bot,'casino','lastlottery',now)
     
