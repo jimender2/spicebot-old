@@ -410,7 +410,7 @@ def lottery(bot,trigger, arg):
                             adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
                             set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
                             nextlottery = get_timesince(bot,'casino','lastlottory')
-                            bot.notice("Next lottery drawing in " + str(hours_minutes_seconds(nextlottery-lotterytimeout)),player)
+                            bot.notice("Next lottery drawing in " + str(hours_minutes_seconds((nextlottery-lotterytimeout))),player)
                         else:
                             bot.notice('You dont have enough Spicebucks',player)
                         
