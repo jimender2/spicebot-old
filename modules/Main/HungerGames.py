@@ -73,6 +73,6 @@ def execute_main(bot, trigger, triggerargsarray):
                             tributes.pop(0)
                     totaltributes = len(tributes)
                 payout =randint(5,35)
-                bot.say("The victor is " + tributes[0][0] " and is awarded " + payout + " spicebucks.")
+                bot.say("The victor is " + tributes[0][0] + " and is awarded " + str(payout) + " spicebucks.")
                 Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
                                    
