@@ -469,7 +469,7 @@ def lotterydrawing(bot):
         else:
             msg="No one won this drawing."
             onscreentext(bot,channel,msg)
-    reset_botdatabase_array_total(bot, 'casino','lottoplayers')
+    reset_botdatabase_value(bot, 'casino','lottoplayers')
 
                             
 #____Game 4 Blackjack___
