@@ -421,6 +421,8 @@ def lotterydrawing(bot):
     totalwon = 0
     bigwinner = ''
     bigwinpayout=0
+    msg = get_trigger_arg(bot, lotteryplayers, "list")    
+    onscreentext(bot,channel,msg)
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
         msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
         onscreentext(bot,channel,msg)
