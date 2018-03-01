@@ -721,12 +721,17 @@ def blackjackreset(bot,player):
     reset_botdatabase_value(bot,player, 'mybet')
 
 @sopel.module.interval(10)
-def countdown(bot):    
+def countdown(bot):
+    now = time.time()
     currentsetting = get_botdatabase_value(bot,'casino','counter')
-    timediff = get_timesince(bot,'casino','countertimer')
+    roulettetimediff = get_timesince(bot,'casino','countertimer')    
+    lotterytimediff= get_timesince(bot,'casino','lastlottory')
     if currentsetting == 'roulette':
-        if timediff>=roulettetimeout:
+        if roulettetimediff>=roulettetimeout:
             runroulette(bot)
+    if lotterytimediff>lottorytimeout:
+        lotterydrawing(bot)
+        set_botdatabase_vaule(bot,'casino','lastlottery',now)
     
 
 
