@@ -334,7 +334,7 @@ def runroulette(bot):
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
         winnerarray = get_trigger_arg(bot,winners,'list')
-        if len(winners)<1
+        if len(winners)<1:
             dispmsg= "No winners this spin"            
         elif len(winners)==1:
             dispmsg=  winnerarray + " won " + str(totalwon)           
