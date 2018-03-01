@@ -27,7 +27,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    pointsworth = randint(1, 666)
+    pointsworth = randint(1, 65)
     pointsvalue = str(pointsworth)
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
