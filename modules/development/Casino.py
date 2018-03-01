@@ -421,8 +421,7 @@ def lotterydrawing(bot):
     totalwon = 0
     bigwinner = ''
     bigwinpayout=0
-    msg = get_trigger_arg(bot, lotteryplayers, "list")    
-    onscreentext(bot,channel,msg)
+  
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
         msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
         onscreentext(bot,channel,msg)
@@ -441,31 +440,31 @@ def lotterydrawing(bot):
             for pick in picks:
                 if pick in winningnumbers:
                     correct = correct + 1
-                payout = 0
-                if correct == 1:
-                    payout = match1payout
-                elif correct == 2:
-                    payout = match2payout
-                elif correct == 3:
-                    payout =  int(match3payout*bankbalance)
-                elif correct == 4:
-                    payout = int(match4payout*bankbalance)
-                elif correct == 5:                            
-                    payout = bankbalance                                            
-                
-                if payout>bankbalance:
-                    Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
-                if payout > 0:                            
-                    bot.notice("You won " + str(payout) + " in the lottery drawing",player)
-                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)                   
-                    lotterywinners.append(player)
-                    totalwon = totalwon + payout
-                    if payout > bigwinpayout:
-                        bigwinpayout = payout
-                        bigwinner = player
-                    bankbalance=Spicebucks.bank(bot,'SpiceBank')
-                else:
-                    bot.notice('You are not a lottery winner',player)                
+            payout = 0
+            if correct == 1:
+                payout = match1payout
+            elif correct == 2:
+                payout = match2payout
+            elif correct == 3:
+                payout =  int(match3payout*bankbalance)
+            elif correct == 4:
+                payout = int(match4payout*bankbalance)
+            elif correct == 5:                            
+                payout = bankbalance                                            
+
+            if payout>bankbalance:
+                Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
+            if payout > 0:                            
+                bot.notice("You won " + str(payout) + " in the lottery drawing",player)
+                Spicebucks.transfer(bot, 'SpiceBank', player, payout)                   
+                lotterywinners.append(player)
+                totalwon = totalwon + payout
+                if payout > bigwinpayout:
+                    bigwinpayout = payout
+                    bigwinner = player
+                bankbalance=Spicebucks.bank(bot,'SpiceBank')
+            else:
+                bot.notice('You are not a lottery winner',player)                
                 
         if totalwon >0:
             lottowinners = get_trigger_arg(bot, lotterywinners, "list")
