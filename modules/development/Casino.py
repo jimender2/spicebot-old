@@ -469,7 +469,7 @@ def lotterydrawing(bot):
         if totalwon >0:
             lottowinners = get_trigger_arg(bot, lotterywinners, "list")
             if len(lotterywinners) >1:            
-                msg =lottowinners + " won, and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
+                msg ="Lottery winners: " + lottowinners + ", and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
             else:
                 msg = lottowinners + " won " + str(bigwinpayout) + " in this drawing"
             onscreentext(bot,channel,msg) 
