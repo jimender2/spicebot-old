@@ -22,5 +22,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    answer = get_trigger_arg(replies, 'random')
+    answer = get_trigger_arg(bot, replies, 'random')
     bot.say(answer)
