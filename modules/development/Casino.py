@@ -458,7 +458,7 @@ def lotterydrawing(bot):
                     Spicebucks.transfer(bot, 'SpiceBank', player, payout)                   
                     lotterywinners.append(player)
                     totalwon = totalwon + payout
-                    if payout > bigwinpayout
+                    if payout > bigwinpayout:
                         bigwinpayout = payout
                         bigwinner = player
                     bankbalance=Spicebucks.bank(bot,'SpiceBank')
@@ -467,7 +467,7 @@ def lotterydrawing(bot):
                 
         if totalwon >0:
             lottowinners = get_trigger_arg(bot, lotterywinners, "list")
-            if len(lotterywinners) >1            
+            if len(lotterywinners) >1:            
                 msg =lottowinners + " won, and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
             else:
                 msg = lottowinners + " won " + bigwinpayout + " in this drawing"
