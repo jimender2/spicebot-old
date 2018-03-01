@@ -80,8 +80,6 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Please specify someone to reset claim on.")
             elif admintarget.lower() not in [u.lower() for u in bot.users]:
                 bot.say("I'm not sure who that is.")
-            #elif admintarget.lower() not in bot.privileges[channel.lower()]:
-            #    bot.say("I'm not sure who that is.")
             else:
                 bot.db.set_nick_value(admintarget,'claimed','')
                 bot.db.set_nick_value(admintarget,'claimdate','')
@@ -139,7 +137,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > int(maxtime):
+            if timepassed.days >= int(maxtime):
                 if instigator == str(masterurinator):
                     message = instigator + " releases the contents of his bladder on " + target + " again! All should recognize this almighty renewal of ownership over " + target + "!"
                 else:
@@ -158,7 +156,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dateb = arrow.get(claimdate)
             timepassed = datea - dateb
             dayspassed = timepassed.days
-            if timepassed.days > int(maxtime):
+            if timepassed.days >= int(maxtime):
                 if instigator == str(masterurinator):
                     message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!"
                 else:
