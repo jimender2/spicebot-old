@@ -471,7 +471,7 @@ def lotterydrawing(bot):
             if len(lotterywinners) >1:            
                 msg =lottowinners + " won, and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
             else:
-                msg = lottowinners + " won " + bigwinpayout + " in this drawing"
+                msg = lottowinners + " won " + str(bigwinpayout) + " in this drawing"
             onscreentext(bot,channel,msg) 
         else:
             msg="No one won this drawing."
