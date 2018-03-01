@@ -30,7 +30,7 @@ match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
 lotterytimeout=1790
 #lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
-x=
+
 
 
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
@@ -418,6 +418,7 @@ def lottery(bot,trigger, arg):
 def lotterydrawing(bot):
     lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
+    set_botdatase_value(bot,'casino', 'lotterytimeout',1790)
     channel =  get_botdatabase_value(bot,'casino','lotterychanel')
     lotteryplayers = get_botdatabase_value(bot, 'casino','lottoplayers')
     lotterywinners =[]
@@ -729,6 +730,7 @@ def countdown(bot):
     currentsetting = get_botdatabase_value(bot,'casino','counter')
     roulettetimediff = get_timesince(bot,'casino','countertimer')    
     lotterytimediff= get_timesince(bot,'casino','lastlottory')
+    lotterytimeout =get_botdatase_value(bot,'casino', 'lotterytimeout')
     if currentsetting == 'roulette':
         if roulettetimediff>=roulettetimeout:
             runroulette(bot)
