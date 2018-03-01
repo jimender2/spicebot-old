@@ -10,6 +10,7 @@ import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
+import Spicebucks
 
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
@@ -71,4 +72,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         if len(tributes) > 1:
                             tributes.pop(0)
                     totaltributes = len(tributes)
-                bot.say("The victor is " + tributes[0][0])
+                payout =randint(5,35)
+                bot.say("The victor is " + tributes[0][0] + " and is awarded " + str(payout) + " spicebucks.")
+                Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
+                                   

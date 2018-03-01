@@ -11,7 +11,7 @@ sys.path.append(moduledir)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-import Points
+import Spicebucks
 
 
 
@@ -27,7 +27,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    pointsworth = randint(1, 666)
+    pointsworth = randint(1, 65)
     pointsvalue = str(pointsworth)
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
@@ -50,18 +50,20 @@ def execute_main(bot, trigger, triggerargsarray):
         if suspect:
             if suspect == 'killer' and target == players[0]:
                 bot.say('You guessed the killer correctly!')
-                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
+                bot.say(bot.nick + ' gives ' + pointsvalue + ' Spicebucks to ' + instigator)
                 Points.addpoints(bot, instigator, pointsworth)
             elif suspect == 'killed' and target == players[1]:
                 bot.say('You guessed the person murdered!')
-                bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
-                Points.addpoints(bot,instigator,pointsworth)
+                bot.say(bot.nick + ' gives ' + pointsvalue + 'Spicebucks to ' + instigator)
+                Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
     elif target and target == players[0]:
         bot.say('You guessed the killer correctly!')
-        bot.say(bot.nick + ' gives ' + pointsvalue + ' points to ' + instigator)
-        Points.addpoints(bot,instigator,pointsworth)
+        bot.say(bot.nick + ' gives ' + pointsvalue + ' Spicebucks to' + instigator)
+        Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
     if players[0] == trigger.nick:
-        bot.say('You were the killer.')
-        bot.say(bot.nick + ' takes ' + pointsvalue + ' points from ' + instigator)
-        Points.takepoints(bot,instigator,pointsworth)
+        bot.say('You were the killer.')        
+        bankbalance=Spicebucks.bank(bot,instigator)
+        if pointsworth<bankbalance:
+            Spicebucks.spicebucks(bot,instigator,'minus',pointsworth)
+            bot.say(bot.nick + ' takes ' + pointsvalue + ' Spicebucks from ' + instigator)
         

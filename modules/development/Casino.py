@@ -28,9 +28,9 @@ match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-lotterytimeout=1790 
+lotterytimeout=1790
 #lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
-
+x=
 
 
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
@@ -133,7 +133,7 @@ def slots(bot,trigger,arg):
                     bot.say(trigger.nick + ' wins ' + str(mywinnings))
                 else:                    
                     if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-                        bot.say(trigger.nick + ' wins ' + str(mywinnings))
+                        bot.say(trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
                     else:
                         bot.say('Error in banking system')
         else:
@@ -293,7 +293,7 @@ def runroulette(bot):
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
         mywinnings=0
-        winners = ''
+        winners = []
         totalwon = 0        
         displaymessage = get_trigger_arg(bot, players , "list")
         
@@ -326,20 +326,21 @@ def runroulette(bot):
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
-                            winners=winners + " " + player
+                            winners.append(player)
                             totalwon = totalwon + mywinnings
                         reset_botdatabase_value(bot, player, 'roulettearray')
                         
                      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
-        if winners =='':
-            dispmsg= "No one wins anything"
-            onscreentext(bot, channel, dispmsg)
-        else:
-            dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
-            onscreentext(bot, channel, dispmsg)
-    
+        winnerarray = get_trigger_arg(bot,winners,'list')
+        if len(winners)<1:
+            dispmsg= "No winners this spin"            
+        elif len(winners)==1:
+            dispmsg=  winnerarray + " won " + str(totalwon)           
+        else:            
+            dispmsg = "Winners: " + winnerarray + ". and total winnings were " + str(totalwon) 
+        onscreentext(bot, channel, dispmsg)
 
     
                     
@@ -404,10 +405,12 @@ def lottery(bot,trigger, arg):
                         bot.notice("You have enter your picks already",player)
                     else:
                         if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                            bot.say(player + " bets on the numbers" + str(picks))
+                            bot.say(player + " bets on the numbers " + str(picks))
                             set_botdatabase_value(bot,player,'picks', picks) 
                             adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
                             set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
+                            nextlottery = get_timesince(bot,'casino','lastlottory')
+                            bot.notice("Next lottery drawing in " + str(hours_minutes_seconds((nextlottery-lotterytimeout))),player)
                         else:
                             bot.notice('You dont have enough Spicebucks',player)
                         
@@ -419,6 +422,9 @@ def lotterydrawing(bot):
     lotteryplayers = get_botdatabase_value(bot, 'casino','lottoplayers')
     lotterywinners =[]
     totalwon = 0
+    bigwinner = ''
+    bigwinpayout=0
+  
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
         msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
         onscreentext(bot,channel,msg)
@@ -437,39 +443,43 @@ def lotterydrawing(bot):
             for pick in picks:
                 if pick in winningnumbers:
                     correct = correct + 1
-                payout = 0
-                if correct == 1:
-                    payout = match1payout
-                elif correct == 2:
-                    payout = match2payout
-                elif correct == 3:
-                    payout =  int(match3payout*bankbalance)
-                elif correct == 4:
-                    payout = int(match4payout*bankbalance)
-                elif correct == 5:                            
-                    payout = bankbalance                                            
-                reset_botdatabase_value(bot,player,'picks')
-                if payout>bankbalance:
-                    Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
-                if payout > 0:                            
-                    bot.notice("You won " + str(payout) + " in the lottery drawing",player)
-                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)
-                    if payout>5:
-                        msg=player +" won " + str(payout) + "in this drawing"
-                        onscreentext(bot,channel,msg)     
-                    lotterywinners.append(player)
-                    totalwon = totalwon + payout
-                    bankbalance=Spicebucks.bank(bot,'SpiceBank')
-                else:
-                    bot.notice('You are not a lottery winner',player)                
+            payout = 0
+            if correct == 1:
+                payout = match1payout
+            elif correct == 2:
+                payout = match2payout
+            elif correct == 3:
+                payout =  int(match3payout*bankbalance)
+            elif correct == 4:
+                payout = int(match4payout*bankbalance)
+            elif correct == 5:                            
+                payout = bankbalance                                            
+
+            if payout>bankbalance:
+                Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
+            if payout > 0:                            
+                bot.notice("You won " + str(payout) + " in the lottery drawing",player)
+                Spicebucks.transfer(bot, 'SpiceBank', player, payout)                   
+                lotterywinners.append(player)
+                totalwon = totalwon + payout
+                if payout > bigwinpayout:
+                    bigwinpayout = payout
+                    bigwinner = player
+                bankbalance=Spicebucks.bank(bot,'SpiceBank')
+            else:
+                bot.notice('You are not a lottery winner',player)                
                 
         if totalwon >0:
-            msg =lotterywinners + " guessed correctly, and won " + str(totalwon) + " in this drawing"
+            lottowinners = get_trigger_arg(bot, lotterywinners, "list")
+            if len(lotterywinners) >1:            
+                msg ="Lottery winners: " + lottowinners + ", and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
+            else:
+                msg = lottowinners + " won " + str(bigwinpayout) + " in this drawing"
             onscreentext(bot,channel,msg) 
         else:
             msg="No one won this drawing."
             onscreentext(bot,channel,msg)
-    reset_botdatabase_array_total(bot, 'casino','lottoplayers')
+    reset_botdatabase_value(bot, 'casino','lottoplayers')
 
                             
 #____Game 4 Blackjack___
@@ -552,7 +562,7 @@ def blackjack(bot,trigger,arg):
                     blackjackreset(bot,player)
                     
         elif mychoice == 'check':
-            target = get_trigger_arg(3)
+            target = mychoice2
             if not targetcheck(bot, target,player)==1:                 
                 bot.say("Target not found.")
             else:                    
@@ -714,12 +724,17 @@ def blackjackreset(bot,player):
     reset_botdatabase_value(bot,player, 'mybet')
 
 @sopel.module.interval(10)
-def countdown(bot):    
+def countdown(bot):
+    now = time.time()
     currentsetting = get_botdatabase_value(bot,'casino','counter')
-    timediff = get_timesince(bot,'casino','countertimer')
+    roulettetimediff = get_timesince(bot,'casino','countertimer')    
+    lotterytimediff= get_timesince(bot,'casino','lastlottory')
     if currentsetting == 'roulette':
-        if timediff>=roulettetimeout:
+        if roulettetimediff>=roulettetimeout:
             runroulette(bot)
+    if lotterytimediff>lotterytimeout:
+        lotterydrawing(bot)
+        set_botdatabase_vaule(bot,'casino','lastlottery',now)
     
 
 
