@@ -419,6 +419,8 @@ def lotterydrawing(bot):
     lotteryplayers = get_botdatabase_value(bot, 'casino','lottoplayers')
     lotterywinners =[]
     totalwon = 0
+    bigwinner = ''
+    bigwinpayout=0
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
         msg= "No one entered this lottery. Next lottery drawing will be in 30 minutes."
         onscreentext(bot,channel,msg)
@@ -448,23 +450,27 @@ def lotterydrawing(bot):
                     payout = int(match4payout*bankbalance)
                 elif correct == 5:                            
                     payout = bankbalance                                            
-                reset_botdatabase_value(bot,player,'picks')
+                
                 if payout>bankbalance:
                     Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
                 if payout > 0:                            
                     bot.notice("You won " + str(payout) + " in the lottery drawing",player)
-                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)
-                    if payout>5:
-                        msg=player +" won " + str(payout) + "in this drawing"
-                        onscreentext(bot,channel,msg)     
+                    Spicebucks.transfer(bot, 'SpiceBank', player, payout)                   
                     lotterywinners.append(player)
                     totalwon = totalwon + payout
+                    if payout > bigwinpayout
+                        bigwinpayout = payout
+                        bigwinner = player
                     bankbalance=Spicebucks.bank(bot,'SpiceBank')
                 else:
                     bot.notice('You are not a lottery winner',player)                
                 
         if totalwon >0:
-            msg =lotterywinners + " guessed correctly, and won " + str(totalwon) + " in this drawing"
+            lottowinners = get_trigger_arg(bot, lotterywinners, "list")
+            if len(lotterywinners) >1            
+                msg =lottowinners + " won, and the big winner was " +bigwinner + "  winning " + str(bigwinpayout) + " in this drawing"
+            else:
+                msg = lottowinners + " won " + bigwinpayout + " in this drawing"
             onscreentext(bot,channel,msg) 
         else:
             msg="No one won this drawing."
