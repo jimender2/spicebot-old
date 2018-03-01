@@ -27,7 +27,6 @@ def execute_main(bot, trigger, triggerargsarray):
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
     admintarget = get_trigger_arg(bot, triggerargsarray, 2)
-    masterurinator = 'IT_Sean'
     # Names of channel
     inchannel = trigger.sender
     channel = trigger.sender
@@ -120,11 +119,7 @@ def execute_main(bot, trigger, triggerargsarray):
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
         # First time claimed
         if claimedby == '':
-            if instigator == str(masterurinator):
-                message = instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!"
-            else:
-                message = instigator + " urinates on " + target + "! Claimed!"
-            bot.say(message)
+            bot.say(instigator + " urinates on " + target + "! Claimed!")
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
             # Pay instigator Spicebucks (firstclaim)
@@ -138,11 +133,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                if instigator == str(masterurinator):
-                    message = instigator + " releases the contents of his bladder on " + target + " again! All should recognize this almighty renewal of ownership over " + target + "!"
-                else:
-                    message = instigator + " urinates on " + target + " again! The claim has been renewed!"
-                bot.say(message)
+                bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (renewclaim)
@@ -157,11 +148,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                if instigator == str(masterurinator):
-                    message = instigator + " empties their bladder all over " + target + "! The claim of " + str(claimedby) + " has been overpowered by " + instigator + "!"
-                else:
-                    message = instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!"
-                bot.say(message)
+                bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (stolenclaim)
