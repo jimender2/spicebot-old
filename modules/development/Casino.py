@@ -28,7 +28,7 @@ match1payout = 2
 match2payout = 4
 match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
-lotterytimeout=1790 
+lotterytimeout=5
 #lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
 
 
