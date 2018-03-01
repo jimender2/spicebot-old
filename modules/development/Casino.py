@@ -293,7 +293,7 @@ def runroulette(bot):
         color = spin(colors)        
         spicebankbalance=Spicebucks.bank(bot, 'SpiceBank') or 0
         mywinnings=0
-        winners = ''
+        winners = []
         totalwon = 0        
         displaymessage = get_trigger_arg(bot, players , "list")
         
@@ -326,20 +326,21 @@ def runroulette(bot):
                             Spicebucks.spicebucks(bot, player, 'plus', mywinnings)                                  
                         else:
                             Spicebucks.transfer(bot, 'SpiceBank', player, mywinnings)
-                            winners=winners + " " + player
+                            winners.append(player)
                             totalwon = totalwon + mywinnings
                         reset_botdatabase_value(bot, player, 'roulettearray')
                         
                      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
-        if winners =='':
-            dispmsg= "No one wins anything"
-            onscreentext(bot, channel, dispmsg)
-        else:
-            dispmsg= "winners: " + winners + " and " + str(totalwon) + " was won in total"
-            onscreentext(bot, channel, dispmsg)
-    
+        winnerarray = get_trigger_arg(bot,winners,'list')
+        if len(winners)<1
+            dispmsg= "No winners this spin"            
+        elif len(winners)==1:
+            dispmsg=  winnerarray + " won " + str(totalwon)           
+        else:            
+            dispmsg = "Winners: " + winnerarray + ". and total winnings were " + str(totalwon) 
+        onscreentext(bot, channel, dispmsg)
 
     
                     
@@ -404,10 +405,12 @@ def lottery(bot,trigger, arg):
                         bot.notice("You have enter your picks already",player)
                     else:
                         if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                            bot.say(player + " bets on the numbers" + str(picks))
+                            bot.say(player + " bets on the numbers " + str(picks))
                             set_botdatabase_value(bot,player,'picks', picks) 
                             adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
                             set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
+                            nextlottery = get_timesince(bot,'casino','lastlottory')
+                            bot.notice("Next lottery drawing in " + str(nextlottery),player)
                         else:
                             bot.notice('You dont have enough Spicebucks',player)
                         
