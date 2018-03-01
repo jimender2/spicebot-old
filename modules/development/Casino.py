@@ -30,7 +30,7 @@ match3payout = 0.1#% of jackpot
 match4payout = 0.3 #% of jackpot
 lotterytimeout=1790
 #lotterymax = get_botdatabase_value(bot,'casino','lotterymax')
-
+x=
 
 
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
