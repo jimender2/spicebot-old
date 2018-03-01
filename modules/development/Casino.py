@@ -133,7 +133,7 @@ def slots(bot,trigger,arg):
                     bot.say(trigger.nick + ' wins ' + str(mywinnings))
                 else:                    
                     if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-                        bot.say(trigger.nick + ' wins ' + str(mywinnings))
+                        bot.say(trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
                     else:
                         bot.say('Error in banking system')
         else:
@@ -559,7 +559,7 @@ def blackjack(bot,trigger,arg):
                     blackjackreset(bot,player)
                     
         elif mychoice == 'check':
-            target = get_trigger_arg(3)
+            target = mychoice2
             if not targetcheck(bot, target,player)==1:                 
                 bot.say("Target not found.")
             else:                    
