@@ -62,7 +62,7 @@ def execute_main(bot, trigger, triggerargsarray):
         Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
     if players[0] == trigger.nick:
         bot.say('You were the killer.')        
-        bankbalance=Spicebucks.bank(bot,player)
+        bankbalance=Spicebucks.bank(bot,instigator)
         if pointsworth<bankbalance:
             Spicebucks.spicebucks(bot,instigator,'minus',pointsworth)
             bot.say(bot.nick + ' takes ' + pointsvalue + ' Spicebucks from ' + instigator)
