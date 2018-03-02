@@ -714,7 +714,7 @@ def admincommands(bot,trigger,arg):
     subcommand=get_trigger_arg(bot, arg, 2) or 'nocommand'
     commandvalue = get_trigger_arg(bot, arg, 3) or 'nocommand'
     if subcommand=='slotadd':         
-        adjust_botdatabase_array(bot,'casino','commandvalue','slotwheel','add')
+        adjust_botdatabase_array(bot,'casino',commandvalue,'slotwheel','add')
         bot.notice(commandvalue + " add to slot wheel.",trigger.nick)
     elif subcommand=='slotdefault':
         wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
@@ -724,7 +724,7 @@ def admincommands(bot,trigger,arg):
     elif subcommand=='slotremove':
         existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
         if commandvalue in existingwheel:
-            adjust_botdatabase_array(bot,'casino','commandvalue','slotwheel','del')
+            adjust_botdatabase_array(bot,'casino',commandvalue,'slotwheel','del')
             bot.notice(commandvalue +  " add to slot wheel.",trigger.nick)
     elif subcommand =='slotkeyword':
         existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
