@@ -750,7 +750,7 @@ def admincommands(bot,trigger,arg):
         max = commandvalue
         if max.isdigit():
             max=int(max)
-            if max>=5
+            if max>=5:
                 set_botdatabase_value(bot,'casino','lotterymax',max)
                 bot.notice("Lottery max set to " + str(max),player)
             else:
@@ -762,7 +762,7 @@ def admincommands(bot,trigger,arg):
     elif commandused == 'lotterytime':
         if commandvalue.isdigit():
             lotterytime = int(commandvalue)
-            if lotterytime >=10
+            if lotterytime >=10:
                 set_botdatabase_value(bot,'casino', 'lotterytimeout',lotterytime)
                  bot.notice("Lottery time out is set " + str(lotterytime) + " seconds",trigger.nick)
             else:
