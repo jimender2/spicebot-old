@@ -203,7 +203,7 @@ def execute_main(bot, trigger, triggerargsarray):
 #admin command reset user values
 def reset(bot, target):
     reset_botdatabase_value(bot,target, 'spicebucks_payday')
-    reset_botdabase_value(bot,target,'spicebucks_taxday')
+    reset_botdatabase_value(bot,target,'spicebucks_taxday')
 
 def bank(bot, nick):
     balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
@@ -215,7 +215,7 @@ def spicebucks(bot, target, plusminus, amount):
     if type(amount) == int:
         inbank = bank(bot,target)
     if plusminus == 'plus':
-       adjust_botdabase_value(bot,target, 'spicebucks_bank', amount)
+       adjust_botdatabase_value(bot,target, 'spicebucks_bank', amount)
        success = 'true'
     elif plusminus == 'minus':
         if inbank - amount < 0:
@@ -233,10 +233,10 @@ def checkpayday(bot, target):
     paydayamount=0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    lastpayday = get_botdabase_value(bot,target, 'spicebucks_payday') or 0
+    lastpayday = get_botdatabase_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = 15
-        set_botdabase_value(bot,target, 'spicebucks_payday', datetoday)
+        set_botdatabase_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydayamount=0
     return paydayamount
@@ -254,7 +254,7 @@ def paytaxes(bot, target):
         if taxtotal>0:
             spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
             spicebucks(bot, target, 'minus', taxtotal)
-            set_botdabase_value(bot,target, 'spicebucks_taxday', datetoday)
+            set_botdatabase_value(bot,target, 'spicebucks_taxday', datetoday)
             bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
         else:
             bot.say(target + ' is broke and cannot pay taxes today')
