@@ -738,7 +738,7 @@ def admincommands(bot,trigger,arg):
     elif subcommand == 'endroulette': 
         set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))  
         runroulette(bot)
-   elif mybet=='setroulettewheel':
+    elif mybet=='setroulettewheel':
         if commandvalue.isdigit():
             wheelmax=int(commandvalue)
             set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
