@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import random
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -28,5 +29,10 @@ def execute_main(bot, trigger, triggerargsarray):
     elif validtarget == 2:
         bot.say("I'm all metal, baby")
     else:
-        bot.say(target + " is going to have a super soft birthday party this year.")
+        pick=random.randint(0,5)
+        if pick ==1:
+            bot.say(target + " is supersoft. 10-ply. Now give your balls a tug, tit-fucker and figger it out. Ferda!")
+        else:             
+            bot.say(target + " is going to have a super soft birthday party this year.")
+            
        
