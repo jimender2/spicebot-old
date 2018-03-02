@@ -776,9 +776,9 @@ def admincommands(bot,trigger,arg):
         if not targetcheck(bot, target,player)==1:                 
             bot.say("Target not found.")
         else:                           
-            set_botdatabase_value(bot,target, 'myhand', myhand)
-            set_botdatabase_value(bot,target, 'dealerhand', dealerhand)
-            set_botdatabase_value(bot,target, 'mybet', mybet)                
+            reset_botdatabase_value(bot,target, 'myhand')
+            reset_botdatabase_value(bot,target, 'dealerhand')
+            reset_botdatabase_value(bot,target, 'mybet')                
       
                           
     
