@@ -94,7 +94,7 @@ def slots(bot,trigger,arg):
         bankbalance=500
         Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
                 
-    keyword = 'BSOD'
+    keyword = get_botdatabase_value(bot, 'casino','slotkeyword') or 'BSOD'
     #match3jackpot = jackpot or 500
     mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if mychoice == 'payout':
@@ -106,8 +106,8 @@ def slots(bot,trigger,arg):
             mywinnings = 0           
             
             wheel = get_botdatabase_value(bot, 'casino','slotwheel') or []
-            if wheel ==[]
-                wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
+            if wheel ==[]:
+                wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
             wheel1 = spin(wheel)
             wheel2 = spin(wheel)
             wheel3 = spin(wheel)
@@ -717,14 +717,20 @@ def admincommands(bot,trigger,arg):
         adjust_botdatabase_array(bot,'casino','commandvalue','slotwheel','add')
         bot.notice(commandvalue + " add to slot wheel.",trigger.nick)
     elif subcommand=='slotdefault':
-        wheel = ['Modem', keyword, 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
+        wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
         set_botdatabase_value(bot,'casino','slotwheel',wheel)
+        set_botdatabase_value(bot, 'casino','slotkeyword','BSOD')
         bot.notice("Slot wheel set to defaults.",trigger.nick)
     elif subcommand=='slotremove':
         existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
         if commandvalue in existingwheel:
             adjust_botdatabase_array(bot,'casino','commandvalue','slotwheel','del')
             bot.notice(commandvalue +  " add to slot wheel.",trigger.nick)
+    elif subcommand =='slotkeyword':
+        existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
+        if commandvalue in existingwheel:
+            set_botdatabase_value(bot, 'casino','slotkeyword',commandvalue)
+            bot.notice( "Slot keyword set to " + commandvalue +  " add to slot wheel.",trigger.nick)
     elif subcommand == 'resetroulette':      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
