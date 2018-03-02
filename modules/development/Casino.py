@@ -417,7 +417,7 @@ def lotterydrawing(bot):
     bigwinpayout=0
   
     if get_botdatabase_array_total(bot, 'casino','lottoplayers') <1:
-        msg= "No one entered this lottery. Next lottery drawing will be in " +  str(hours_minutes_seconds((nextlottery-lotterytimeout)))
+        msg= "No one entered this lottery. Next lottery drawing will be in " +  str(hours_minutes_seconds(lotterytimeout-nextlottery)))
         onscreentext(bot,channel,msg)
     else:
         if bankbalance <=500:
