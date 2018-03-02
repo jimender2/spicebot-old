@@ -30,6 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("There is currently no one available to play the hunger games.")
     else:
         if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', hungergamesfee) == 1:
+            bot.notice("You paid" + str(hungergamesfee) " spicebucks to start hungergames.", trigger.nick)
             random.shuffle(randomtargetarray)
             totaltributes = len(randomtargetarray)
             if totaltributes == 1:
@@ -79,6 +80,6 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("The victor is " + tributes[0][0] + " and is awarded " + str(payout) + " spicebucks.")
                     Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
         else:
-            bot.notice("It costs " + hungergamesfee + " to play HungerGames.",trigger.nick)
+            bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)
 
                                    
