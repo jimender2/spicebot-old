@@ -148,7 +148,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 spicebucks(bot,trigger.nick,'minus',auditamount)
                                 adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                             else:
-                                bot.action("carries out an audit on " + trigger.nick+ " but finds no mistakes.")
+                                bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                 else:
                     paytaxes(bot, trigger.nick)
         ##Bank
