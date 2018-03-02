@@ -764,22 +764,22 @@ def admincommands(bot,trigger,arg):
             lotterytime = int(commandvalue)
             if lotterytime >=10:
                 set_botdatabase_value(bot,'casino', 'lotterytimeout',lotterytime)
-                 bot.notice("Lottery time out is set " + str(lotterytime) + " seconds",trigger.nick)
+                bot.notice("Lottery time out is set " + str(lotterytime) + " seconds",trigger.nick)
             else:
                 bot.notice("Please enter a number larger then 10",player)
          else:
             bot.notice("Please enter a valid number",trigger.nick)
                           
     elif mychoice == 'blackjackset':
-            target = get_trigger_arg(bot, arg, 3) or 'notarget'
-            card1 = get_trigger_arg(bot, arg, 4) or 'nocard1'
-            card2 = get_trigger_arg(bot, arg, 5) or 'nocard2'          
-            if not targetcheck(bot, target,player)==1:                 
-                bot.say("Target not found.")
-            else:                           
-                set_botdatabase_value(bot,target, 'myhand', myhand)
-                set_botdatabase_value(bot,target, 'dealerhand', dealerhand)
-                set_botdatabase_value(bot,target, 'mybet', mybet)                
+        target = get_trigger_arg(bot, arg, 3) or 'notarget'
+        card1 = get_trigger_arg(bot, arg, 4) or 'nocard1'
+        card2 = get_trigger_arg(bot, arg, 5) or 'nocard2'          
+        if not targetcheck(bot, target,player)==1:                 
+            bot.say("Target not found.")
+        else:                           
+            set_botdatabase_value(bot,target, 'myhand', myhand)
+            set_botdatabase_value(bot,target, 'dealerhand', dealerhand)
+            set_botdatabase_value(bot,target, 'mybet', mybet)                
       
                           
     
