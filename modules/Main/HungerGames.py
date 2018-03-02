@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
-hungergamesfee:5
+hungergamesfee=5
     
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
