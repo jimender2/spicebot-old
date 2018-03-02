@@ -222,7 +222,7 @@ def spicebucks(bot, target, plusminus, amount):
             #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
             success = 'false'
         else:
-            adjust_botdabase_value(bot,target, 'spicebucks_bank', -amount)
+            adjust_botdatabase_value(bot,target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
         #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
@@ -244,7 +244,7 @@ def checkpayday(bot, target):
 def paytaxes(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    lasttaxday = get_botdabase_value(bot,target, 'spicebucks_taxday') or 0
+    lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
     inbank = bank(bot,target) or 0
     if lasttaxday == 0 or lasttaxday < datetoday:
         adjust_botdatabase_value(bot,target,'usedtaxes',-1)
