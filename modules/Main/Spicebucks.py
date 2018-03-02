@@ -216,7 +216,7 @@ def spicebucks(bot, target, plusminus, amount):
         inbank = bank(bot,target)
     if plusminus == 'plus':
        adjust_botdabase_value(bot,target, 'spicebucks_bank', amount)
-        success = 'true'
+       success = 'true'
     elif plusminus == 'minus':
         if inbank - amount < 0:
             #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
