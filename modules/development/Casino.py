@@ -769,7 +769,7 @@ def admincommands(bot,trigger,arg):
         else:
             bot.notice("Please enter a valid number",trigger.nick)
                           
-    elif mychoice == 'blackjackset':           
+    elif subcommand == 'blackjackset':           
         if not targetcheck(bot, target,player)==1:                 
             bot.say("Target not found.")
         else:                           
