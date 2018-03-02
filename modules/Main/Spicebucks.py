@@ -131,13 +131,22 @@ def execute_main(bot, trigger, triggerargsarray):
         elif (commandused == 'taxes' or commandused == 'tax'):
             if not channel.startswith("#"):
                 bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
-            else:
+            else:                
                 target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                 if not target == 'notarget':
-                    if not target.lower() in [u.lower() for u in botuseron]:
+                    if not targetcheck(bot,target,trigger.nick)==1:
                         bot.say("I'm sorry, I do not know who " + target + " is.")
                     else:
-                        paytaxes(bot, target)
+                        if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<=2:
+                            paytaxes(bot, target)
+                            adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                        else:
+                            inbank = get_botdatabase_value(bot,target,'spicebucks_bank') or 0
+                            auditamount = int(inbank *.20)
+                            if auditamount>=1:                            
+                                bot.say(trigger.nick + " is audit and has to pay: " + auditamount)
+                                spicebucks(trigger.nick,'minus',auditamount)
+                                adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)                            
                 else:
                     paytaxes(bot, trigger.nick)
         ##Bank
@@ -194,7 +203,7 @@ def reset(bot, target):
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def bank(bot, nick):
-    balance = bot.db.get_nick_value(nick, 'spicebucks_bank') or 0
+    balance = get_botdatabase_value(bot,nick, 'spicebucks_bank') or 0
     return balance
 
 def spicebucks(bot, target, plusminus, amount):
@@ -235,6 +244,7 @@ def paytaxes(bot, target):
     lasttaxday = bot.db.get_nick_value(target, 'spicebucks_taxday') or 0
     inbank = bot.db.get_nick_value(target, 'spicebucks_bank') or 0
     if lasttaxday == 0 or lasttaxday < datetoday:
+        adjust_botdatabase_value(bot,target,'usedtaxes',-1)
         taxtotal = int(inbank * .1)
         if inbank == 1:
             taxtotal = 1
