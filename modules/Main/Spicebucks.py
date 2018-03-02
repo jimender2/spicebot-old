@@ -92,8 +92,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     reset(bot,target)
                     bot.say('Payday reset for ' + target)
                 else:
-                    bot.say("I'm sorry, I do not know who " + target + " is.")
-                
+                    bot.say("I'm sorry, I do not know who " + target + " is.")                
             else:
                 reset(bot,trigger.nick)
                 bot.say('Payday reset for ' + trigger.nick)
