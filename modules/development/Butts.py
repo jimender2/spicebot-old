@@ -21,7 +21,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         action = "rains butts down on everyone."
     elif target == instigator:
-        action = "kicks " + instigator + "in the butt."
+        action = "kicks " + instigator + " in the butt."
     else:
         action = "rains butts down on " + target
     bot.action(action)
