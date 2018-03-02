@@ -134,7 +134,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:                
                 target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                 if not target == 'notarget':
-                    if not targetcheck(bot,target,trigger.nick)==1:
+                    if targetcheck(bot,target,trigger.nick)==0:
                         bot.say("I'm sorry, I do not know who " + target + " is.")
                     else:
                         if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<=2:
