@@ -738,14 +738,13 @@ def admincommands(bot,trigger,arg):
     elif subcommand == 'endroulette': 
         set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))  
         runroulette(bot)
-    elif mybet=='setroulettewheel':
+    elif commandused=='setroulettewheel':
         if commandvalue.isdigit():
             wheelmax=int(commandvalue)
             set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
             bot.notice("Roulette wheel max set to " + str(wheelmax),trigger.nick)
         else:
-            bot.notice("Please enter a valid number",trigger.nick)
-                          
+            bot.notice("Please enter a valid number",trigger.nick)                          
     elif commandused == 'setlotterymax':
         max = commandvalue
         if max.isdigit():
