@@ -770,12 +770,12 @@ def admincommands(bot,trigger,arg):
             bot.notice("Please enter a valid number",trigger.nick)
                           
     elif subcommand == 'blackjackset':           
-        if not targetcheck(bot, target,player)==1:                 
+        if not targetcheck(bot, commandvalue,player)==1:                 
             bot.say("Target not found.")
         else:                           
-            reset_botdatabase_value(bot,target, 'myhand')
-            reset_botdatabase_value(bot,target, 'dealerhand')
-            reset_botdatabase_value(bot,target, 'mybet')                
+            reset_botdatabase_value(bot,commandvalue, 'myhand')
+            reset_botdatabase_value(bot,commandvalue, 'dealerhand')
+            reset_botdatabase_value(bot,commandvalue, 'mybet')                
       
                           
     
