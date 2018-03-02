@@ -725,7 +725,7 @@ def admincommands(bot,trigger,arg):
         existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
         if commandvalue in existingwheel:
             adjust_botdatabase_array(bot,'casino',commandvalue,'slotwheel','del')
-            bot.notice(commandvalue +  " add to slot wheel.",trigger.nick)
+            bot.notice(commandvalue +  " remvoed to slot wheel.",trigger.nick)
     elif subcommand =='slotkeyword':
         existingwheel = get_botdatabase_value(bot,'casino','slotwheel')
         if commandvalue in existingwheel:
@@ -738,14 +738,14 @@ def admincommands(bot,trigger,arg):
     elif subcommand == 'endroulette': 
         set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))  
         runroulette(bot)
-    elif commandused=='setroulettewheel':
+    elif subcommand=='setroulettewheel':
         if commandvalue.isdigit():
             wheelmax=int(commandvalue)
             set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
             bot.notice("Roulette wheel max set to " + str(wheelmax),trigger.nick)
         else:
             bot.notice("Please enter a valid number",trigger.nick)                          
-    elif commandused == 'setlotterymax':
+    elif subcommand == 'setlotterymax':
         max = commandvalue
         if max.isdigit():
             max=int(max)
@@ -756,9 +756,9 @@ def admincommands(bot,trigger,arg):
                 bot.notice("Please enter a number large then 5",player)          
         else:
             bot.notice("Please enter a valid number",player)
-    elif commandused == 'lotterydrawing':
+    elif subcommand == 'lotterydrawing':
         lotterydrawing(bot)
-    elif commandused == 'lotterytime':
+    elif subcommand == 'lotterytime':
         if commandvalue.isdigit():
             lotterytime = int(commandvalue)
             if lotterytime >=10:
@@ -769,10 +769,7 @@ def admincommands(bot,trigger,arg):
         else:
             bot.notice("Please enter a valid number",trigger.nick)
                           
-    elif mychoice == 'blackjackset':
-        target = get_trigger_arg(bot, arg, 3) or 'notarget'
-        card1 = get_trigger_arg(bot, arg, 4) or 'nocard1'
-        card2 = get_trigger_arg(bot, arg, 5) or 'nocard2'          
+    elif mychoice == 'blackjackset':           
         if not targetcheck(bot, target,player)==1:                 
             bot.say("Target not found.")
         else:                           
