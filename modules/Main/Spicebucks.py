@@ -117,7 +117,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if amount.isdigit():
                         amount = int(amount)
                         if amount>=0 and amount <10000001:
-                           set_botdatabase_value(bot,target, 'spicebucks_bank', amount)
+                            set_botdatabase_value(bot,target, 'spicebucks_bank', amount)
                             targetbalance = bank(bot,target)
                             bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')
                         else:
