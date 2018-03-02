@@ -37,6 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
     suspect = get_trigger_arg(bot, triggerargsarray, 2)
     players = []
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', cluefee) == 1:
+        bot.notice("You paid " + str(cluefee) +" spicebucks to start clue.", trigger.nick)
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
         for u in bot.users:
             if u in botusersarray and u != bot.nick:
