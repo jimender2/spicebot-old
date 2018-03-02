@@ -141,7 +141,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             paytaxes(bot, target)
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                         else:
-                            inbank = get_botdatabase_value(bot,target,'spicebucks_bank') or 0
+                            inbank = get_botdatabase_value(bot,target,'spicebucks_bank') 
                             auditamount = int(inbank *.20)
                             if auditamount>=1:                            
                                 bot.action("carries out an audit on " + trigger.nick+ " and takes " + auditamount+ " spicebucks for the pleasure.)
@@ -205,7 +205,7 @@ def reset(bot, target):
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def bank(bot, nick):
-    balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
+    balance = get_botdatabase_value(bot,nick,'spicebucks_bank') 
     return balance
 
 def spicebucks(bot, target, plusminus, amount):
