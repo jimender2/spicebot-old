@@ -236,7 +236,7 @@ def checkpayday(bot, target):
     lastpayday = get_botdabase_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = 15
-       set_botdabase_value(bot,target, 'spicebucks_payday', datetoday)
+        set_botdabase_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydayamount=0
     return paydayamount
