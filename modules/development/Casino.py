@@ -731,12 +731,12 @@ def countdown(bot):
     now = time.time()
     currentsetting = get_botdatabase_value(bot,'casino','counter')
     roulettetimediff = get_timesince(bot,'casino','countertimer')    
-    lotterytimediff= get_timesince(bot,'casino','lastlottory')
+    lotterytimediff= get_timesince(bot,'casino','lastlottery')
     lotterytimeout = get_botdatabase_value(bot,'casino', 'lotterytimeout')
     if currentsetting == 'roulette':
         if roulettetimediff>=roulettetimeout:
             runroulette(bot)
-    if lotterytimediff>lotterytimeout and lotterytimeout>=10:
+    if lotterytimediff>=lotterytimeout and lotterytimeout>=10:
         set_botdatabase_value(bot,'casino','lastlottery',now)
         lotterydrawing(bot)
         
