@@ -347,7 +347,7 @@ def runroulette(bot):
 #______Game 3 Lottery________                
 def lottery(bot,trigger, arg):
     lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
-    set_botdatase_value(bot,'casino', 'lotterytimeout',1790) #time between lottery drawings
+    set_botdatabase_value(bot,'casino', 'lotterytimeout',1790) #time between lottery drawings
     
     player = trigger.nick   
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
@@ -732,7 +732,7 @@ def countdown(bot):
     currentsetting = get_botdatabase_value(bot,'casino','counter')
     roulettetimediff = get_timesince(bot,'casino','countertimer')    
     lotterytimediff= get_timesince(bot,'casino','lastlottory')
-    lotterytimeout = get_botdatase_value(bot,'casino', 'lotterytimeout')
+    lotterytimeout = get_botdatabase_value(bot,'casino', 'lotterytimeout')
     if currentsetting == 'roulette':
         if roulettetimediff>=roulettetimeout:
             runroulette(bot)
