@@ -141,9 +141,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             paytaxes(bot, target)
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                         else:
-                            inbank = get_botdatabase_value(bot,target,'spicebucks_bank') or 0
+                            inbank = bank(bot,trigger.nick)
                             auditamount = int(inbank *.20)
-                            if auditamount>=1:                            
+                            if auditamount>0:                            
                                 bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
                                 spicebucks(trigger.nick,'minus',auditamount)
                                 adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
