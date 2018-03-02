@@ -117,7 +117,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if amount.isdigit():
                         amount = int(amount)
                         if amount>=0 and amount <10000001:
-                            bot.db.set_nick_value(target, 'spicebucks_bank', amount)
+                           set_botdatabase_value(bot,target, 'spicebucks_bank', amount)
                             targetbalance = bank(bot,target)
                             bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')
                         else:
@@ -144,9 +144,11 @@ def execute_main(bot, trigger, triggerargsarray):
                             inbank = get_botdatabase_value(bot,target,'spicebucks_bank') or 0
                             auditamount = int(inbank *.20)
                             if auditamount>=1:                            
-                                bot.say(trigger.nick + " is audit and has to pay: " + auditamount)
+                                bot.action("carries out an audit on " + trigger.nick+ " and takes " + auditamount+ " spicebucks for the pleasure.)
                                 spicebucks(trigger.nick,'minus',auditamount)
-                                adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)                            
+                                adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                            else:
+                                bot.action("carries out an audit on " + trigger.nick+ " but finds no mistakes.")
                 else:
                     paytaxes(bot, trigger.nick)
         ##Bank
@@ -203,7 +205,7 @@ def reset(bot, target):
     bot.db.set_nick_value(target, 'spicebucks_payday', 0)
 
 def bank(bot, nick):
-    balance = get_botdatabase_value(bot,nick, 'spicebucks_bank') or 0
+    balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
     return balance
 
 def spicebucks(bot, target, plusminus, amount):
