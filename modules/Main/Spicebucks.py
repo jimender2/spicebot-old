@@ -145,7 +145,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             auditamount = int(inbank *.20)
                             if auditamount>0:                            
                                 bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
-                                spicebucks(trigger.nick,'minus',auditamount)
+                                spicebucks(bot,trigger.nick,'minus',auditamount)
                                 adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                             else:
                                 bot.action("carries out an audit on " + trigger.nick+ " but finds no mistakes.")
