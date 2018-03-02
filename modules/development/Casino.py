@@ -767,7 +767,7 @@ def admincommands(bot,trigger,arg):
                 bot.notice("Lottery time out is set " + str(lotterytime) + " seconds",trigger.nick)
             else:
                 bot.notice("Please enter a number larger then 10",player)
-         else:
+        else:
             bot.notice("Please enter a valid number",trigger.nick)
                           
     elif mychoice == 'blackjackset':
