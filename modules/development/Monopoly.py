@@ -13,7 +13,11 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
-chancedeck = ['Advance to Go and Collect 200','Bank error in your favor collect 10 spicebucks','Pay poor tax of 15','Your crypto miner pays off—Collect 150','Hit with ransomware, pay 5 spicebucks']
+monopolyfee = 5
+
+chancedeck = ['Advance to Go and Collect 20','Bank error in your favor collect 10 spicebucks','Your crypto miner pays off—Collect 20',
+              'Pay poor tax of 15','Hit with ransomware, pay 20 spicebucks','Get out of Jail Free','Go to Jail–Go directly to Jail–Do not pass Go, do not collect $200']
+
 @sopel.module.commands('monopoly','change')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, 'monopoly')
@@ -23,4 +27,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    
+    chancecard=get_trigger_arg(bot,chancedeck,random)
+    bot.say(instigator + " risks " + str(monopolyfee) +" draws a card from the chance deck and gets " + chancecard)
