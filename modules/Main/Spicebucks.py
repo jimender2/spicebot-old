@@ -65,10 +65,9 @@ def execute_main(bot, trigger, triggerargsarray):
                             else:
                                 mypayday = abs(mypayday)
                                 bot.say(trigger.nick + " loses " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-                        elif not target.lower() in [u.lower() for u in botuseron]:
+                        elif not targetcheck(bot,target,trigger.nick)==0:
                             bot.say("I'm sorry, I do not know who " + target + " is.")
                         else:
-
                             spicebucks(bot, trigger.nick, 'plus', 50)
                             bankbalance = bank(bot,trigger.nick)
                             maxpayout = bankbalance
@@ -87,9 +86,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Reset
         elif commandused == 'reset' and trigger.admin: #admin only command
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            bot.say(target)
+            
             validtarget=targetcheck(bot,target,trigger.nick)
-            bot.say(str(validtarget))
+            
             if validtarget==1 or validtarget==2:
                 reset(bot,target)
                 bot.say('Payday reset for ' + target)
@@ -105,12 +104,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 if target.lower() == 'spicebank':
                     target = 'SpiceBank'
                     success = 1
-                elif not targetcheck(bot,target,trigger.nick) == 1:
+                elif targetcheck(bot,target,trigger.nick) == 0:
                     bot.say("I'm sorry, I do not know who " + target + " is.")
                     success = 0
                 else:
                     success = 1
-
             if success == 1:
                 amount =get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
                 if not amount =='noamount':
@@ -159,7 +157,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if target == 'spicebank':
                     balance = bank(bot,'spicebucks') or 0
                     bot.say('The current casino jackpot is ' + str(balance))
-                elif not target.lower() in [u.lower() for u in botuseron]:
+                elif targetcheck(bot,target,trigger.nick)==0:
                     bot.say("I'm sorry, I do not know who " + target + " is.")
                 else:
                     balance=bank(bot, target)
@@ -180,7 +178,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say('Please enter the person you wish to transfer to followed by an amount you wish to transfer')
                     else:
                         amount=int(amount)
-                        if not target.lower() in [u.lower() for u in botuseron]:
+                        if targetcheck(bot,target,trigger.nick)==0:
                             bot.say("I'm sorry, I do not know who you want to transfer money to.")
                         else:
                             if target == instigator:
