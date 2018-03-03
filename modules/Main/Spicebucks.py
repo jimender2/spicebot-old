@@ -147,7 +147,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                             reset_botdatabase_value(bot,target,'usedtaxes')
                     else:
-                        if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<=2:
+                        if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<2:
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                             paytaxes(bot, target)
                             
