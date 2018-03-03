@@ -141,26 +141,29 @@ def execute_main(bot, trigger, triggerargsarray):
                         if auditamount>0:                            
                             bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
                             spicebucks(bot,trigger.nick,'minus',auditamount)
-                            reset_botdatabase_value(bot,target,'usedtaxes')
+                            
                         else:
                             bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                             reset_botdatabase_value(bot,target,'usedtaxes')
                     else:
                         if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<=2:
-                            paytaxes(bot, target)
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                            paytaxes(bot, target)
+                            
                         else:
                             inbank = bank(bot,trigger.nick)
                             auditamount = int(inbank *.20)
                             if auditamount>0:                            
                                 bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
                                 spicebucks(bot,trigger.nick,'minus',auditamount)
-                                reset_botdatabase_value(bot,target,'usedtaxes')
+                                
                             else:
                                 bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                                 reset_botdatabase_value(bot,target,'usedtaxes')
                 else:
+                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     paytaxes(bot, trigger.nick)
+                    
         ##Bank
         elif commandused == 'bank':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
@@ -258,7 +261,7 @@ def paytaxes(bot, target):
     lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
     inbank = bank(bot,target) or 0
     if lasttaxday == 0 or lasttaxday < datetoday:
-        
+        reset_botdatabase_value(bot,target,'usedtaxes')
         taxtotal = int(inbank * .1)
         if inbank == 1:
             taxtotal = 1
