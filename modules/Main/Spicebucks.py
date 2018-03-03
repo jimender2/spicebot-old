@@ -85,11 +85,12 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(trigger.nick + ", you have already been paid today")
         ##Reset
         elif commandused == 'reset' and trigger.admin: #admin only command
-            target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            
+            target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'            
             validtarget=targetcheck(bot,target,trigger.nick)
-            
-            if validtarget==1 or validtarget==2:
+            if target == 'notarget'or target==trigger.nick:
+                reset(bot,target)
+                bot.say('Payday reset for ' + trigger.nick)
+            elif validtarget==1:
                 reset(bot,target)
                 bot.say('Payday reset for ' + target)
             else:
@@ -134,6 +135,16 @@ def execute_main(bot, trigger, triggerargsarray):
                 if not target == 'notarget':
                     if targetcheck(bot,target,trigger.nick)==0:
                         bot.say("I'm sorry, I do not know who " + target + " is.")
+                    elif targetcheck(bot,target,trigger.nick)==2:
+                        inbank = bank(bot,trigger.nick)
+                        auditamount = int(inbank *.20)
+                        if auditamount>0:                            
+                            bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
+                            spicebucks(bot,trigger.nick,'minus',auditamount)
+                            reset_botdatabase_value(bot,target,'usedtaxes')
+                        else:
+                            bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
+                            reset_botdatabase_value(bot,target,'usedtaxes')
                     else:
                         if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<=2:
                             paytaxes(bot, target)
