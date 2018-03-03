@@ -48,41 +48,42 @@ def execute_main(bot, trigger, triggerargsarray):
                     if (target=='notarget' or target=='everyone'):
                         target = 'Everyone'
                         bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
-                    elif (target == 'random' or target == trigger.nick):
-                        if not checkpayday(bot,trigger.nick)==0:
-                            target = randomuser(bot,trigger.nick)
-                            if target == 'None':
-                                target = randomuser(bot,trigger.nick)
-                            spicebucks(bot, trigger.nick, 'plus', 50)
-                            bankbalance = bank(bot,trigger.nick)
-                            maxpayout = bankbalance
-                            bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
-                            winnings=random.randint(1,maxpayout)
-                            transfer(bot, trigger.nick, target, winnings)
-                            mypayday = 50-winnings
-                            if mypayday >= 0:
-                                bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-                            else:
-                                mypayday = abs(mypayday)
-                                bot.say(trigger.nick + " loses " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-                        elif not targetcheck(bot,target,trigger.nick)==0:
-                            bot.say("I'm sorry, I do not know who " + target + " is.")
-                        else:
-                            spicebucks(bot, trigger.nick, 'plus', 50)
-                            bankbalance = bank(bot,trigger.nick)
-                            maxpayout = bankbalance
-                            bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
-                            winnings=random.randint(1,maxpayout)
-                            mypayday = 30-winnings
-                            if mypayday >= 0:
-                                bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-                            else:
-                                mypayday = abs(mypayday)
-                                bot.say(trigger.nick + " loses " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
-
-                            transfer(bot, trigger.nick, target, winnings)
                     else:
-                        bot.say(trigger.nick + ", you have already been paid today")
+                        if not checkpayday(bot,trigger.nick)==0:
+                            if (target == 'random' or target == trigger.nick or target==bot.nick):                       
+                                target = randomuser(bot,trigger.nick)
+                                if target == 'None':
+                                    target = randomuser(bot,trigger.nick)
+                                spicebucks(bot, trigger.nick, 'plus', 50)
+                                bankbalance = bank(bot,trigger.nick)
+                                maxpayout = bankbalance
+                                bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
+                                winnings=random.randint(1,maxpayout)
+                                transfer(bot, trigger.nick, target, winnings)
+                                mypayday = 50-winnings
+                                if mypayday >= 0:
+                                    bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
+                                else:
+                                    mypayday = abs(mypayday)
+                                    bot.say(trigger.nick + " loses " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
+                            elif targetcheck(bot,target,trigger.nick)==0:
+                                bot.say("I'm sorry, I do not know who " + target + " is.")
+                            else:
+                                spicebucks(bot, trigger.nick, 'plus', 50)
+                                bankbalance = bank(bot,trigger.nick)
+                                maxpayout = bankbalance
+                                bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
+                                winnings=random.randint(1,maxpayout)
+                                mypayday = 30-winnings
+                                if mypayday >= 0:
+                                    bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
+                                else:
+                                    mypayday = abs(mypayday)
+                                    bot.say(trigger.nick + " loses " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
+
+                                transfer(bot, trigger.nick, target, winnings)
+                        else:
+                            bot.say(trigger.nick + ", you have already been paid today")
         ##Reset
         elif commandused == 'reset' and trigger.admin: #admin only command
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'            
