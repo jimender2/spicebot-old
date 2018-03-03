@@ -87,7 +87,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Reset
         elif commandused == 'reset' and trigger.admin: #admin only command
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            validtarget=targetcheck(bot,target,trigger.nick)          
+            bot.say(target)
+            validtarget=targetcheck(bot,target,trigger.nick)
+            bot.say(str(validtarget))
             if validtarget==1 or validtarget==2:
                 reset(bot,target)
                 bot.say('Payday reset for ' + target)
