@@ -87,15 +87,13 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Reset
         elif commandused == 'reset' and trigger.admin: #admin only command
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            if not target == 'notarget':
-                if targetcheck(bot,target,trigger.nick)==1:
-                    reset(bot,target)
-                    bot.say('Payday reset for ' + target)
-                else:
-                    bot.say("I'm sorry, I do not know who " + target + " is.")                
+            validtarget=targetcheck(bot,target,trigger.nick)          
+            if validtarget==1 or validtarget==2:
+                reset(bot,target)
+                bot.say('Payday reset for ' + target)
             else:
-                reset(bot,trigger.nick)
-                bot.say('Payday reset for ' + trigger.nick)
+                bot.say("I'm sorry, I do not know who " + target + " is.")               
+           
 
         ##Funds
         elif commandused == 'funds' and trigger.admin: #admin only command
