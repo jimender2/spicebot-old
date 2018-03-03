@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    validtarget,validmsg=targetcheck(bot,get_trigger_arg(bot, triggerargsarray, 1),trigger.nick)
+    validtarget=targetcheck(bot,get_trigger_arg(bot, triggerargsarray, 1),trigger.nick)
     if validtarget == 1:
         bot.say(trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
     elif validtarget==2 or validtarget==3:
