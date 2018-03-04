@@ -15,8 +15,9 @@ import Spicebucks
 
 monopolyfee = 5
 
-chancedeck = ['Advance to Go and Collect 20','Bank error in your favor collect 10 spicebucks','Your crypto miner pays off—Collect 20',
-              'Pay poor tax of 15','Hit with ransomware, pay 20 spicebucks','Get out of Jail Free','Go to Jail–Go directly to Jail–Do not pass Go, do not collect $200']
+gooddeck = ['Advance to Go and Collect ','Bank error in your favor collect ','Your crypto miner pays off, collect ']             
+baddeck = ['Pay poor tax of ','Hit with ransomware, pay ','Licenese audit fails, pay ']
+neturaldeck =['Get out of Jail Free','Go to Jail–Go directly to Jail–Do not pass Go, do not collect $200','Go Back 3 Spaces']
 
 @sopel.module.commands('monopoly','change')
 def mainfunction(bot, trigger):
@@ -27,5 +28,21 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    chancecard=get_trigger_arg(bot,chancedeck,random)
-    bot.say(instigator + " risks " + str(monopolyfee) +" draws a card from the chance deck and gets " + chancecard)
+    deckchoice = randint(1,3)
+    payout = randint(10,50)
+    if deckchoice == 1:
+      chancecard=get_trigger_arg(bot,gooddeck,random)
+      msg = chancecard + " and wins " + str(payout) +  " spicebucks"
+    elif deckchoice==2:
+      chancecard=get_trigger_arg(bot,baddeck,random)      
+      msg = chancecard + " and loses " + str(payout) +  " spicebucks"
+      payout=-payout    
+    elif deckchoice==3:
+      msg=get_trigger_arg(bot,neturaldeck,random)
+      payout = 0
+    bot.say(instigator + " risks " + str(monopolyfee) +" draws a card from the chance deck and gets " + msg)
+    balance=bank(bot,instigator)
+    if (balance + payout)<0:
+      payout = balance
+    adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
+    
