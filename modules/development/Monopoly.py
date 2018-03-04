@@ -21,7 +21,7 @@ neturaldeck =['Get out of Jail Free','Go to Jail–Go directly to Jail–Do not 
 
 @sopel.module.commands('monopoly','chance')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot,trigget, 'monopoly')
+    enablestatus, triggerargsarray = spicebot_prerun(bot,trigger, 'monopoly')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
