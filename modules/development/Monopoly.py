@@ -19,7 +19,7 @@ gooddeck = ['Advance to Go and Collect ','Bank error in your favor collect ','Yo
 baddeck = ['Pay poor tax of ','Hit with ransomware, pay ','Licenese audit fails, pay ']
 neturaldeck =['Get out of Jail Free','Go to Jail–Go directly to Jail–Do not pass Go, do not collect $200','Go Back 3 Spaces']
 
-@sopel.module.commands('monopoly','change')
+@sopel.module.commands('monopoly','chance')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, 'monopoly')
     if not enablestatus:
