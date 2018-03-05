@@ -28,9 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
             randomtargetarray.append(u) 
     if randomtargetarray == []:
         bot.say("There is currently no one available to play the hunger games.")
-    else:
-        #if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', hungergamesfee) == 1:
-        bot.notice("You paid " + str(hungergamesfee) +" spicebucks to start hungergames.", trigger.nick)
+    else:        
         random.shuffle(randomtargetarray)
         totaltributes = len(randomtargetarray)
         if totaltributes == 1:
