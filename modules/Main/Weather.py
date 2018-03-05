@@ -65,7 +65,7 @@ def get_chill(parsed):
     except (KeyError, ValueError):
         return 'unknown'
     if f <= 32:
-        chill = round(5/9 (f-32),2)
+        chill = round(((f-32)*5/9),2)
         return "Windchill: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
     else:
         return 'no windchill'
