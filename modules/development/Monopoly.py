@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray):
       msg=get_trigger_arg(bot,neturaldeck,'random')
       payout = 0
     bot.say(instigator + " risks " + str(monopolyfee) +" draws a card from the chance deck and gets " + msg)
-    balance=bank(bot,instigator)
+    balance=Spicebucks.bank(bot,instigator)
     if (balance + payout)<0:
       payout = balance
     adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
