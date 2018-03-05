@@ -67,8 +67,7 @@ def get_chill(parsed):
     
     chill = round(((f-32)*5/9),2)
     return "Feels like: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
-    else:
-        return 'no windchill'
+
 
 def get_wind(parsed):
     try:
