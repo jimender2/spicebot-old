@@ -17,7 +17,7 @@ monopolyfee = 5
 
 gooddeck = ['an Advance to Go card','a Bank error in your favor card','a Your crypto miner pays off card']             
 baddeck = ['a Pay poor tax card','a Hit with ransomware card','a Licenese audit fails card']
-neturaldeck =['a Get out of Jail Free card','a Go to Jail–Go directly to Jail–Do not pass Go, do not collect 200 dollars card','a Go Back 3 Spaces card']
+neturaldeck =['a Get out of Jail Free card','a Go to Jail–Go directly to Jail–Do not pass Go do not collect 200 dollars card','a Go Back 3 Spaces card']
 
 @sopel.module.commands('monopoly','chance')
 def mainfunction(bot, trigger):
