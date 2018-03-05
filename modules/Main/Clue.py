@@ -37,6 +37,8 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         cluefee=0
         pointsworth=1
+    else:
+        cluefee=cluefee
     players = []
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', cluefee) == 1:
         bankbalance=Spicebucks.bank(bot,instigator)
