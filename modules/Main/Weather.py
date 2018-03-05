@@ -61,7 +61,7 @@ def get_humidity(parsed):
 def get_chill(parsed):
     try:
         wind_data = parsed['channel']['yweather:wind']
-       f = int(wind_data['@chill'])
+        f = int(wind_data['@chill'])
     except (KeyError, ValueError):
         return 'unknown'
     if f <= 32:
