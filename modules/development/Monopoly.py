@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     deckchoice = randint(1,3)
-    payment = random.uniform(0.001,0.003)    
+    payment = random.uniform(0.1,0.3)    
     balance=Spicebucks.bank(bot,instigator)
     payout = int(payment*balance)
     bot.say(str(payment) + " " + str(payout))
