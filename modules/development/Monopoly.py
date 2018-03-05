@@ -32,6 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
     payment = random.uniform(0.001,0.003)    
     balance=Spicebucks.bank(bot,instigator)
     payout = int(payment*balance)
+    bot.say(str(payment) + " " + str(payout))
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', monopolyfee) == 1:
         if deckchoice == 1:
           chancecard=get_trigger_arg(bot,gooddeck,'random')
