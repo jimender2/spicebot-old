@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     deckchoice = randint(1,3)
-    payment = random.random(0.001,0.003)    
+    payment = random.uniform(0.001,0.003)    
     balance=Spicebucks.bank(bot,instigator)
     payout = int(payment*balance)
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', monopolyfee) == 1:
