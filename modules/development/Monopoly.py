@@ -48,5 +48,5 @@ def execute_main(bot, trigger, triggerargsarray):
           payout = balance
         adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
     else:
-        bot.notice("You need " + str(cluefee) + " spicebucks to use this command.",instigator) 
+        bot.notice("You need " + str(monopolyfee) + " spicebucks to use this command.",instigator) 
     
