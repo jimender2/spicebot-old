@@ -149,6 +149,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
+    channel = trigger.sender
     maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
     minbet=15 #requires at least one payday to play
@@ -168,109 +169,110 @@ def roulette(bot,trigger,arg):
     colorpayout = 2 #% of amount bet + amount bet
     #numberpayout = amount bet * numbers of maxwheel    
   
-    
-    #set bet/check for commands
-    if mybet == 'nobet':
-        bot.say('Please enter an amount to bet')
-        inputcheck = 0
-    elif mybet=='payout':
-        bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
-   
-        
-    elif mybet =='call':
-        players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
-        for i in players:
-            if i == player:
-                bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
-                set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
-                set_botdatabase_value(bot,'casino','counter','roulette')
-                set_botdatabase_value(bot,'casino','countertimer',now)
-                callcheck = True
-        if not callcheck:
-            bot.notice("You must first place a bet",player)
-        
-    
-
+    if not channel.startswith("#"):
+        bot.notice(trigger.nick + ", roulette can only be used in a channel.", player)
     else:
-        
-        if mybet == 'allin':
-            balance = Spicebucks.bank(bot, trigger.nick)
-            if balance > 0:
-                mybet=balance
-                inputcheck = 1
-            else:
-                bot.notice('You do not have any spicebucks',player)
-                inputcheck = 0
-        elif not mybet.isdigit():
-            bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
+        #set bet/check for commands
+        if mybet == 'nobet':
+            bot.say('Please enter an amount to bet')
             inputcheck = 0
-        else:            
-            inputcheck = 1
-            mybet = int(mybet)            
-            if (mybet<minbet or mybet>maxbet):
-                bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)), player)            
-                inputcheck = 0
-    #setup what was bet on
-        if inputcheck == 1:    
-            #check to see if a number was entered
-            mynumber=''
-            mycolor = ''
-            if myitem.isdigit(): 
-                mynumber = int(myitem) 
-                if(mynumber < 1 or mynumber > maxwheel):
-                    bot.notice(('Please pick a number between 1 and ' + str(maxwheel)),player)
-                    inputcheck=0
-                    #check to see if a color was selected
-                else: 
-                    if not myitem2 == 'noitem':
-                        if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
-                            mycolor = myitem2
-                        else:
-                            bot.notice(('Choose either red or black'), player)
-                            inputcheck=0
-                            mycolor=''
-                    else:
-                        mycolor = ''
-                        inputcheck =1
-        #was a color selected first
-            elif(myitem == 'red' or myitem == 'black'):
-                mycolor = myitem
-                mynumber=''
-                inputcheck =1
-            else:
-                #no valid choices
-                bot.notice(('Please pick either a color or number to bet on'),player)                    
-                inputcheck = 0     
-        
-    # user input now setup game will run
-    if inputcheck == 1:
-        players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
-        for i in players:
-            if i == player:
-                bot.notice("You already placed a bet",player)
-                inputcheck = 0
-        if inputcheck == 1:
-            if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
-                roulettearray = []               
-                Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
-                bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
-                adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')
-                set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))               
-                roulettearray.append(str(mybet))
-                roulettearray.append(str(mynumber))
-                roulettearray.append(mycolor)
-                testmsg = get_trigger_arg(bot, roulettearray,"list") 
-                bot.notice("Your bet has been recorded", player)
-                set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
-                numberofplayers = len(players)
-                if numberofplayers>=maxplayers:
-                    
-                    runroulette(bot)
+        elif mybet=='payout':
+            bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+
+
+        elif mybet =='call':
+            players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
+            for i in players:
+                if i == player:
+                    bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
+                    set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
+                    set_botdatabase_value(bot,'casino','counter','roulette')
+                    set_botdatabase_value(bot,'casino','countertimer',now)
+                    callcheck = True
+            if not callcheck:
+                bot.notice("You must first place a bet",player)       
+
+
+        else:
+
+            if mybet == 'allin':
+                balance = Spicebucks.bank(bot, trigger.nick)
+                if balance > 0:
+                    mybet=balance
+                    inputcheck = 1
                 else:
-                    bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
-                    
-            else:
-                bot.notice("You don't have enough Spicebucks to place that bet",player)
+                    bot.notice('You do not have any spicebucks',player)
+                    inputcheck = 0
+            elif not mybet.isdigit():
+                bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)),player)
+                inputcheck = 0
+            else:            
+                inputcheck = 1
+                mybet = int(mybet)            
+                if (mybet<minbet or mybet>maxbet):
+                    bot.notice(('Please bet an amount between ' + str(minbet) + ' and ' + str(maxbet)), player)            
+                    inputcheck = 0
+        #setup what was bet on
+            if inputcheck == 1:    
+                #check to see if a number was entered
+                mynumber=''
+                mycolor = ''
+                if myitem.isdigit(): 
+                    mynumber = int(myitem) 
+                    if(mynumber < 1 or mynumber > maxwheel):
+                        bot.notice(('Please pick a number between 1 and ' + str(maxwheel)),player)
+                        inputcheck=0
+                        #check to see if a color was selected
+                    else: 
+                        if not myitem2 == 'noitem':
+                            if (str(myitem2) == 'red' or str(myitem2) == 'black'):          
+                                mycolor = myitem2
+                            else:
+                                bot.notice(('Choose either red or black'), player)
+                                inputcheck=0
+                                mycolor=''
+                        else:
+                            mycolor = ''
+                            inputcheck =1
+            #was a color selected first
+                elif(myitem == 'red' or myitem == 'black'):
+                    mycolor = myitem
+                    mynumber=''
+                    inputcheck =1
+                else:
+                    #no valid choices
+                    bot.notice(('Please pick either a color or number to bet on'),player)                    
+                    inputcheck = 0     
+
+        # user input now setup game will run
+        if inputcheck == 1:
+            players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
+            for i in players:
+                if i == player:
+                    bot.notice("You already placed a bet",player)
+                    inputcheck = 0
+            if inputcheck == 1:
+                if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
+                    roulettearray = []               
+                    Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
+                    bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
+                    adjust_botdatabase_array(bot, 'casino', player, 'rouletteplayers', 'add')
+                    set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))               
+                    roulettearray.append(str(mybet))
+                    roulettearray.append(str(mynumber))
+                    roulettearray.append(mycolor)
+                    testmsg = get_trigger_arg(bot, roulettearray,"list") 
+                    bot.notice("Your bet has been recorded", player)
+                    set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
+                    numberofplayers = len(players)
+                    if numberofplayers>=maxplayers:
+
+                        runroulette(bot)
+                    else:
+                        bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
+
+                else:
+                    bot.notice("You don't have enough Spicebucks to place that bet",player)
             
 #-----Run roulette game            
 def runroulette(bot):  
@@ -344,7 +346,7 @@ def runroulette(bot):
 def lottery(bot,trigger, arg):
     lotterymax = int(get_botdatabase_value(bot,'casino','lotterymax')) or 25
     lotterytimeout = get_botdatabase_value(bot,'casino', 'lotterytimeout') #time between lottery drawings
-    
+    channel = trigger.sender
     player = trigger.nick   
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
@@ -352,55 +354,59 @@ def lottery(bot,trigger, arg):
         Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
    
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
-    if commandused == 'payout':        
-        bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
-        success = 0          
-        
+    if not channel.startswith("#"):
+        bot.notice(trigger.nick + ", lottery can only be used in a channel.", trigger.nick)
     else:
-        picks = []
-        success = 0    
-        
-        picklen=len(arg)+1        
-        for i in range(0,picklen):
-            picker = get_trigger_arg(bot, arg, i)
-            if picker.isdigit():
-                picks.append(int(picker))
-        
-        if len(picks)!=5:
-            bot.notice(('You must enter 5 lottery numbers from 1 to ' + str(lotterymax) + ' to play.'),player)
-            success = 0
+      
+        if commandused == 'payout':        
+            bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
+            success = 0          
+
         else:
-            success = 1                    
-        if success == 1:
-            pickstemp = picks
             picks = []
-            for pick in pickstemp:
-                if pick not in picks:
-                    picks.append(pick)
-            if len(picks) < 5:
-                bot.notice('You must choose 5 different numbers.',player)
-                success = 0                    
+            success = 0    
+
+            picklen=len(arg)+1        
+            for i in range(0,picklen):
+                picker = get_trigger_arg(bot, arg, i)
+                if picker.isdigit():
+                    picks.append(int(picker))
+
+            if len(picks)!=5:
+                bot.notice(('You must enter 5 lottery numbers from 1 to ' + str(lotterymax) + ' to play.'),player)
+                success = 0
+            else:
+                success = 1                    
             if success == 1:
-                valid=1
-                for pick in picks:
-                    if(pick > lotterymax or pick < 1):
-                        valid = 0
-                if valid == 0:
-                    bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
-                else:
-                    lottoplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
-                    if player in lottoplayers:
-                        bot.notice("You have enter your picks already",player)
+                pickstemp = picks
+                picks = []
+                for pick in pickstemp:
+                    if pick not in picks:
+                        picks.append(pick)
+                if len(picks) < 5:
+                    bot.notice('You must choose 5 different numbers.',player)
+                    success = 0                    
+                if success == 1:
+                    valid=1
+                    for pick in picks:
+                        if(pick > lotterymax or pick < 1):
+                            valid = 0
+                    if valid == 0:
+                        bot.notice(('One of the numbers you entered is not within the valid range of  1 to ' + str(lotterymax)),player)
                     else:
-                        if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                            bot.say(player + " bets on the numbers " + str(picks))
-                            set_botdatabase_value(bot,player,'picks', picks) 
-                            adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
-                            set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
-                            nextlottery = get_timesince(bot,'casino','lastlottery')
-                            bot.notice("Next lottery drawing in " + str(hours_minutes_seconds((lotterytimeout-nextlottery))),player)
+                        lottoplayers= get_botdatabase_value(bot,'casino','lottoplayers') or []
+                        if player in lottoplayers:
+                            bot.notice("You have enter your picks already",player)
                         else:
-                            bot.notice('You dont have enough Spicebucks',player)
+                            if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
+                                bot.say(player + " bets on the numbers " + str(picks))
+                                set_botdatabase_value(bot,player,'picks', picks) 
+                                adjust_botdatabase_array(bot,'casino',player, 'lottoplayers','add')
+                                set_botdatabase_value(bot,'casino','lotterychanel',trigger.sender) 
+                                nextlottery = get_timesince(bot,'casino','lastlottery')
+                                bot.notice("Next lottery drawing in " + str(hours_minutes_seconds((lotterytimeout-nextlottery))),player)
+                            else:
+                                bot.notice('You dont have enough Spicebucks',player)
                         
 ##_______Lottery drawing
 def lotterydrawing(bot):
