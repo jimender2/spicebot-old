@@ -757,12 +757,12 @@ def admincommands(bot,trigger,arg):
         else:
             bot.notice("Please enter a valid number",trigger.nick)                          
     elif subcommand == 'setlotterymax':
-        max = commandvalue
-        if max.isdigit():
-            max=int(max)
+        maxvalue = commandvalue
+        if maxvalue.isdigit():
+            maxvalue=int(maxvalue)
             if max>=5:
-                set_botdatabase_value(bot,'casino','lotterymax',max)
-                bot.notice("Lottery max set to " + str(max),player)
+                set_botdatabase_value(bot,'casino','lotterymax'maxvalue)
+                bot.notice("Lottery max set to " + str(valuemax),player)
             else:
                 bot.notice("Please enter a number large then 5",player)          
         else:
