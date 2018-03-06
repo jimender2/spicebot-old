@@ -724,7 +724,7 @@ def admincommands(bot,trigger,arg):
         adjust_botdatabase_array(bot,'casino',commandvalue,'slotwheel','add')
         bot.notice(commandvalue + " add to slot wheel.",trigger.nick)
     elif subcommand=='slotdefault':
-        wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
+        wheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI','DARKWEB','BLOCKCHAIN','PASSWORD'] 
         set_botdatabase_value(bot,'casino','slotwheel',wheel)
         set_botdatabase_value(bot, 'casino','slotkeyword','BSOD')
         bot.notice("Slot wheel set to defaults.",trigger.nick)
