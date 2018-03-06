@@ -429,7 +429,7 @@ def lotterydrawing(bot):
     else:
         if bankbalance <=500:
             bankbalance=500    
-            Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)        
+            set_botdatabase_value(bot,'SpiceBank', 'spicebucks_bank',  bankbalance)        
 
         winningnumbers = random.sample(range(1,lotterymax), 5) 
 
