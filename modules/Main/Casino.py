@@ -560,7 +560,7 @@ def blackjack(bot,trigger,arg):
                     
         elif mychoice == 'check':
             target = mychoice2
-            if not targetcheck(bot, target,player)==1:                 
+            if targetcheck(bot, target,player)==0:                 
                 bot.say("Target not found.")
             else:                    
                 myhand =  get_botdatabase_value(bot,target, 'myhand') or 0
