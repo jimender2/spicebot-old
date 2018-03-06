@@ -80,7 +80,7 @@ def freebie(bot,trigger):
         else:
             bot.notice("The casino doesn't have any funds to provide",trigger.nick)
     else:
-        bot.notice(('Looks like you dont need a handout because your bank balance is ' + str(bankbalance)),trigger)
+        bot.notice(('Looks like you dont need a handout because your bank balance is ' + str(bankbalance)),trigger.nick)
     
 def slots(bot,trigger,arg):
 #_____________Game 1 slots___________
