@@ -731,6 +731,11 @@ def admincommands(bot,trigger,arg):
         if commandvalue in existingwheel:
             set_botdatabase_value(bot, 'casino','slotkeyword',commandvalue)
             bot.notice( "Slot keyword set to " + commandvalue +  " add to slot wheel.",trigger.nick)
+    elif subcommand == 'slotlist':
+        slotlist=get_botdatabase_value(bot,'casino','slotwheel)
+        listslots==get_trigger_arg(bot,slotlist,'list')
+        bot.notice("Slot wheel: " + listslots)
+           
     elif subcommand == 'resetroulette':      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
@@ -770,7 +775,7 @@ def admincommands(bot,trigger,arg):
             bot.notice("Please enter a valid number",trigger.nick)
                           
     elif subcommand == 'blackjackset':           
-        if not targetcheck(bot, commandvalue,player)==1:                 
+        if targetcheck(bot, commandvalue,player)==0:                 
             bot.say("Target not found.")
         else:                           
             reset_botdatabase_value(bot,commandvalue, 'myhand')
