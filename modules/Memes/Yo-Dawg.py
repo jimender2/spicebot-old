@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(bot, triggerargsarray, 1)
+    target = get_trigger_arg(bot, triggerargsarray, '1+')
     if target:
         statement = str("Yo Dawg! I heard you liked " + target + ", So I put a " + target + " in/on your " + target + "!!!")
         bot.say(statement)
