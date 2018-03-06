@@ -743,14 +743,14 @@ def admincommands(bot,trigger,arg):
         listslots=get_trigger_arg(bot,slotlist,'list')
         bot.notice("Slot wheel: " + listslots)
            
-    elif subcommand == 'resetroulette':      
+    elif subcommand == 'roulettereset':      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
         reset_botdatabase_value(bot,'casino','counter')  
         bot.notice("Stats reset for roulette",trigger.nick)
-    elif subcommand == 'endroulette': 
+    elif subcommand == 'rouletteend': 
         set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))  
         runroulette(bot)
-    elif subcommand=='setroulettewheel':
+    elif subcommand=='roulettemax':
         if commandvalue.isdigit():
             wheelmax=int(commandvalue)
             if wheelmax >=10:
@@ -760,7 +760,7 @@ def admincommands(bot,trigger,arg):
                 bot.notice("Enter a number larger then 10",trigger.nick)
         else:
             bot.notice("Please enter a valid number",trigger.nick)                          
-    elif subcommand == 'setlotterymax':
+    elif subcommand == 'lotterymax':
         maxvalue = commandvalue
         if maxvalue.isdigit():
             maxvalue=int(maxvalue)
@@ -771,7 +771,7 @@ def admincommands(bot,trigger,arg):
                 bot.notice("Please enter a number large then 10",player)          
         else:
             bot.notice("Please enter a valid number",player)
-    elif subcommand == 'lotterydrawing':
+    elif subcommand == 'lotteryend':
         lotterydrawing(bot)
     elif subcommand == 'lotterytime':
         if commandvalue.isdigit():
