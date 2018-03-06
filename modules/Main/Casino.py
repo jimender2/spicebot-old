@@ -762,7 +762,7 @@ def admincommands(bot,trigger,arg):
             maxvalue=int(maxvalue)
             if maxvalue>=5:
                 set_botdatabase_value(bot,'casino','lotterymax',maxvalue)
-                bot.notice("Lottery max set to " + str(valuemax),player)
+                bot.notice("Lottery max set to " + str( maxvalue),player)
             else:
                 bot.notice("Please enter a number large then 5",player)          
         else:
