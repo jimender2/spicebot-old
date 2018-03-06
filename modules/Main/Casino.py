@@ -780,7 +780,8 @@ def admincommands(bot,trigger,arg):
         else:                           
             reset_botdatabase_value(bot,commandvalue, 'myhand')
             reset_botdatabase_value(bot,commandvalue, 'dealerhand')
-            reset_botdatabase_value(bot,commandvalue, 'mybet')                
+            reset_botdatabase_value(bot,commandvalue, 'mybet')
+            bot.notice("Blackjack reset for: " + commandvalue,trigger.nick)
       
                           
     
