@@ -767,7 +767,7 @@ def admincommands(bot,trigger,arg):
                 set_botdatabase_value(bot,'casino','lotterymax',maxvalue)
                 bot.notice("Lottery max set to " + str( maxvalue),player)
             else:
-                bot.notice("Please enter a number large then 5",player)          
+                bot.notice("Please enter a number large then 10",player)          
         else:
             bot.notice("Please enter a valid number",player)
     elif subcommand == 'lotterydrawing':
