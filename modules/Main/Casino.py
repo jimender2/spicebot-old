@@ -752,15 +752,18 @@ def admincommands(bot,trigger,arg):
     elif subcommand=='setroulettewheel':
         if commandvalue.isdigit():
             wheelmax=int(commandvalue)
-            set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
-            bot.notice("Roulette wheel max set to " + str(wheelmax),trigger.nick)
+            if wheelmax >=10:
+                set_botdatabase_value(bot,'casino','maxwheel',wheelmax)
+                bot.notice("Roulette wheel max set to " + str(wheelmax),trigger.nick)
+            else:
+                bot.notice("Enter a number larger then 10",trigger.nick)
         else:
             bot.notice("Please enter a valid number",trigger.nick)                          
     elif subcommand == 'setlotterymax':
         maxvalue = commandvalue
         if maxvalue.isdigit():
             maxvalue=int(maxvalue)
-            if maxvalue>=5:
+            if maxvalue>=10:
                 set_botdatabase_value(bot,'casino','lotterymax',maxvalue)
                 bot.notice("Lottery max set to " + str( maxvalue),player)
             else:
