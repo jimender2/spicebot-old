@@ -92,7 +92,8 @@ def slots(bot,trigger,arg):
     bankbalance=Spicebucks.bank(bot,'SpiceBank')
     if bankbalance <=500:
         bankbalance=500
-        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
+        set_botdatabase_value(bot,'SpiceBank', 'spicebucks_bank',  bankbalance)
+        
                 
     keyword = get_botdatabase_value(bot, 'casino','slotkeyword') or 'BSOD'
     #match3jackpot = jackpot or 500
