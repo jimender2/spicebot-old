@@ -738,7 +738,7 @@ def admincommands(bot,trigger,arg):
             set_botdatabase_value(bot, 'casino','slotkeyword',commandvalue)
             bot.notice( "Slot keyword set to " + commandvalue +  " add to slot wheel.",trigger.nick)
     elif subcommand == 'slotlist':
-        slotlist=get_botdatabase_value(bot,'casino','slotwheel)
+        slotlist=get_botdatabase_value(bot,'casino','slotwheel')
         listslots==get_trigger_arg(bot,slotlist,'list')
         bot.notice("Slot wheel: " + listslots)
            
