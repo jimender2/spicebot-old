@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', monopolyfee) == 1:
         if deckchoice == 1:
           chancecard=get_trigger_arg(bot,gooddeck,'random')
-          msg = chancecard + " and wins " + str(payout) +  " spicebucks"
+          msg = chancecard + " and wins " + str(payout) +  " Spicebucks"
         elif deckchoice==2:
           chancecard=get_trigger_arg(bot,baddeck,'random')
           msg = chancecard + " and loses " + str(payout) +  " spicebucks"
@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif deckchoice==3:
           msg=get_trigger_arg(bot,neutraldeck,'random')
           payout = 0
-        bot.say(instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg)
+        bot.say(instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg + ".")
         if (balance + payout)<0:
           payout = balance
         adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
