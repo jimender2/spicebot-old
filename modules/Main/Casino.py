@@ -530,7 +530,7 @@ def blackjack(bot,trigger,arg):
                                     set_botdatabase_value(bot, player, 'myhand', myhand)
                                     set_botdatabase_value(bot, player, 'dealerhand', dealerhand)
                                     set_botdatabase_value(bot, player, 'mybet', mybet)                                    
-                                    bot.notice(" You can say'.gamble blackjack 2' to take a card or '.gamble blackjack 3' to finish the game",player)
+                                    bot.notice(" You can say'.gamble blackjack hit' to take a card or '.gamble blackjack stand' to finish the game",player)
                             else:
                                 bot.notice('You do not have enough spicebucks.',player)
         elif mychoice == 'hit' or mychoice == '2':
