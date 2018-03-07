@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray):
           msg = chancecard + " and wins " + str(payout) +  " Spicebucks"
         elif deckchoice==2:
           chancecard=get_trigger_arg(bot,baddeck,'random')
-          msg = chancecard + " and loses " + str(payout) +  " spicebucks"
+          msg = chancecard + " and loses " + str(payout) +  " Spicebucks"
           payout=-payout
         elif deckchoice==3:
           msg=get_trigger_arg(bot,neutraldeck,'random')
