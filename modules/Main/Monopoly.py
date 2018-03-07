@@ -15,9 +15,9 @@ import Spicebucks
 
 monopolyfee = 5
 
-gooddeck = ['an Advance to Go card','a Bank error in your favor card','a Your crypto miner pays off card']             
-baddeck = ['a Pay poor tax card','a Hit with ransomware card','a Licenese audit fails card']
-neturaldeck =['a Get out of Jail Free card','a Go to Jail Do not pass Go do not collect 200 dollars card','a Go Back 3 Spaces card']
+gooddeck = ["an 'Advance to Go' card","a 'Bank error in your favor' card","a 'Your crypto miner pays off' card"]
+baddeck = ["a 'Pay poor tax' card","a 'Hit with ransomware' card","a 'License audit fails' card"]
+neutraldeck =["a 'Get out of Jail Free' card","a 'Go directly to Jail, Do not pass Go, Do not collect 200 dollars' card","a 'Go Back 3 Spaces' card"]
 
 @sopel.module.commands('monopoly','chance')
 def mainfunction(bot, trigger):
@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
     deckchoice = randint(1,3)
-    payment = random.uniform(0.1,0.3)    
+    payment = random.uniform(0.1,0.3)
     balance=Spicebucks.bank(bot,instigator)
     payout = int(payment*balance)
    
@@ -38,16 +38,16 @@ def execute_main(bot, trigger, triggerargsarray):
           chancecard=get_trigger_arg(bot,gooddeck,'random')
           msg = chancecard + " and wins " + str(payout) +  " spicebucks"
         elif deckchoice==2:
-          chancecard=get_trigger_arg(bot,baddeck,'random')      
+          chancecard=get_trigger_arg(bot,baddeck,'random')
           msg = chancecard + " and loses " + str(payout) +  " spicebucks"
-          payout=-payout    
+          payout=-payout
         elif deckchoice==3:
-          msg=get_trigger_arg(bot,neturaldeck,'random')
+          msg=get_trigger_arg(bot,neutraldeck,'random')
           payout = 0
-        bot.say(instigator + " risks " + str(monopolyfee) +" and draws a card from the chance deck and gets " + msg)        
+        bot.say(instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg)
         if (balance + payout)<0:
           payout = balance
         adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
     else:
-        bot.notice("You need " + str(monopolyfee) + " spicebucks to use this command.",instigator) 
+        bot.notice("You need " + str(monopolyfee) + " Spicebucks to use this command.",instigator)
     
