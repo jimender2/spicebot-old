@@ -28,16 +28,22 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    pointsworth = randint(cluefee, 250)
-    pointsvalue = str(pointsworth)
+    pointsworth = random.uniform(.3,.8)   
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
         return
     target = get_trigger_arg(bot, triggerargsarray, 1)
     suspect = get_trigger_arg(bot, triggerargsarray, 2)
+    cluefee=5
+    if not target:
+        cluefee=0
+        pointsworth=0 
     players = []
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', cluefee) == 1:
-        bot.notice("You paid " + str(cluefee) +" spicebucks to start clue.", trigger.nick)
+        bankbalance=Spicebucks.bank(bot,instigator)
+        pointsworth = int(pointsworth*bankbalance)
+        pointsvalue = str(pointsworth)
+        bot.say(trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
         for u in bot.users:
             if u in botusersarray and u != bot.nick:
@@ -64,8 +70,8 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(bot.nick + ' gives ' + pointsvalue + ' Spicebucks to' + instigator)
             Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
         if players[0] == trigger.nick:
-            bot.say('You were the killer.')        
-            bankbalance=Spicebucks.bank(bot,instigator)
+            bot.say('You were the killer.')      
+            
             if pointsworth>bankbalance:
                 pointsworth=bankbalance
             Spicebucks.spicebucks(bot,instigator,'minus',pointsworth)
