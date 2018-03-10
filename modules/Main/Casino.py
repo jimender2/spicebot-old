@@ -580,7 +580,7 @@ def blackjack(bot,trigger,arg):
                 bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
-            myhand = get_botdatabase_value(bot,layer, 'myhand') or 0
+            myhand = get_botdatabase_value(bot,player, 'myhand') or 0
             payout = get_botdatabase_value(bot,player, 'mybet') or 0
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
