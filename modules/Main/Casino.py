@@ -211,7 +211,7 @@ def roulette(bot,trigger,arg):
                 if balance > 0:
                     mybet=balance
                     if myitem.isdigit():
-                         myitem2 = 'noitem'
+                        myitem2 = 'noitem'
                         inputcheck = 1                        
                     else:
                         bot.notice("You can only bet on a number going all in.")
