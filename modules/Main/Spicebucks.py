@@ -208,7 +208,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                       #  if success == 1:
                                        #     bot.say(instigator + " successfully transfered " + str(amount) + " spicebucks to " + target + ".")
                                       #  else:
-                                            bot.say('The transfer was unsuccesful. Please check the amount and try again.')
+                                           # bot.say('The transfer was unsuccesful. Please check the amount and try again.')
                                    # else:
                                       #  bot.say('Insufficient funds to transfer')
                # else:
