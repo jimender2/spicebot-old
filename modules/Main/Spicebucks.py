@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
             botuseron.append(u)
 
     if commandused == 'nocommand':
-        bot.say("Welcome to the #Spiceworks Bank.  Your options are payday, transfer and bank.")
+        bot.say("Welcome to the SpiceBank.  Your options are payday, tax, makeitrain, and bank.")
     else:
         ##PayDay
         if commandused == 'payday':
