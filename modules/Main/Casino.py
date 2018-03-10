@@ -13,12 +13,12 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-#Payout lines:
-#slots, 72 - roulette, 147 - lottery, 284 - blackjack, 365
+
 
 #shared variables:
 maxbet = 100
 now = time.time()
+slottimeout = 60
 #rouletteshared
 roulettetimeout=15
 #maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
@@ -102,50 +102,56 @@ def slots(bot,trigger,arg):
             bot.say("Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
     else:    
 #start slots
-        if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
-            #add bet to spicebank
-            mywinnings = 0           
-            
-            wheel = get_botdatabase_value(bot, 'casino','slotwheel') or []
-            if wheel ==[]:
-                wheel = ['Modem', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'Patches', 'Modem', 'WIFI', 'CPU', 'ClOUD', 'VLANS', 'Patches'] 
-            wheel1 = spin(wheel)
-            wheel2 = spin(wheel)
-            wheel3 = spin(wheel)
-            reel = [wheel1, wheel2, wheel3]
-            bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')    
-            for i in reel:
-                if i==keyword:                
-                    mywinnings = mywinnings + 1
-            if mywinnings>=1:
-                bot.notice(('You got a bonus word, ' + keyword + ', worth 1 spicebuck'), player)
+        lastslot = get_botdatabase_value(bot,'casino','slotimer')
+        nextslot = get_timesince(bot,'casino','slotimer')
+        if nextslot>=slottimeout:
+            if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
+                set_botdatabase_value(bot,'casino','slotimer',now)
+                #add bet to spicebank
+                mywinnings = 0           
 
-            if(wheel1 == wheel2 and wheel2 == wheel3):               
-                if wheel1 == keyword:                            
-                    bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
-                    mywinnings=bankbalance                        
-                elif wheel1 == 'Patches':                   
-                    mywinnings= mywinnings + match3        
-                else:
-                    mywinnings= mywinnings + match3                    
-            elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
-                mywinnings =  mywinnings + match2 
-                #bot.say(trigger.nick + ' a match')    
+                wheel = get_botdatabase_value(bot, 'casino','slotwheel') or []
+                if wheel ==[]:
+                    wheel = ['BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'WIFI', 'ClOUD'] 
+                wheel1 = spin(wheel)
+                wheel2 = spin(wheel)
+                wheel3 = spin(wheel)
+                reel = [wheel1, wheel2, wheel3]
+                bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')    
+                for i in reel:
+                    if i==keyword:                
+                        mywinnings = mywinnings + 1
+                if mywinnings>=1:
+                    bot.notice(('You got a bonus word, ' + keyword + ', worth 1 spicebuck'), player)
 
-            if mywinnings <=0:
-                bot.say(trigger.nick + ' gets nothing')
-            else:
-                bankbalance=Spicebucks.bank(bot,'SpiceBank')
-                if mywinnings > bankbalance:
-                    Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-                    bot.say(trigger.nick + ' wins ' + str(mywinnings))
-                else:                    
-                    if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-                        bot.say(trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
+                if(wheel1 == wheel2 and wheel2 == wheel3):               
+                    if wheel1 == keyword:                            
+                        bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
+                        mywinnings=bankbalance                        
+                    elif wheel1 == 'Patches':                   
+                        mywinnings= mywinnings + match3        
                     else:
-                        bot.say('Error in banking system')
+                        mywinnings= mywinnings + match3                    
+                elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
+                    mywinnings =  mywinnings + match2 
+                    #bot.say(trigger.nick + ' a match')    
+
+                if mywinnings <=0:
+                    bot.say(trigger.nick + ' gets nothing')
+                else:
+                    bankbalance=Spicebucks.bank(bot,'SpiceBank')
+                    if mywinnings > bankbalance:
+                        Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
+                        bot.say(trigger.nick + ' wins ' + str(mywinnings))
+                    else:                    
+                        if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
+                            bot.say(trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
+                        else:
+                            bot.say('Error in banking system')
+            else:
+                bot.notice("You don't have enough Spicebucks",player )
         else:
-            bot.notice("You don't have enough Spicebucks",player )
+            bot.notice("You can not use the slot machine for " + str(hours_minutes_seconds((slottimeout-nextslot))),player)
 
 #------Start Roulette
 #----------------Roulette-------
@@ -200,7 +206,11 @@ def roulette(bot,trigger,arg):
                 balance = Spicebucks.bank(bot, trigger.nick)
                 if balance > 0:
                     mybet=balance
-                    inputcheck = 1
+                    if myitem.isdigit():
+                         myitem2 = 'noitem'
+                        inputcheck = 1                        
+                    else:
+                        bot.notice("You can only bet on a number going all in.")
                 else:
                     bot.notice('You do not have any spicebucks',player)
                     inputcheck = 0
@@ -267,7 +277,6 @@ def roulette(bot,trigger,arg):
                     set_botdatabase_value(bot, player, 'roulettearray', roulettearray)
                     numberofplayers = len(players)
                     if numberofplayers>=maxplayers:
-
                         runroulette(bot)
                     else:
                         bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
@@ -569,7 +578,7 @@ def blackjack(bot,trigger,arg):
                 bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
-            myhand =  get_botdatabase_value(pbot,layer, 'myhand') or 0
+            myhand = get_botdatabase_value(bot,layer, 'myhand') or 0
             payout = get_botdatabase_value(bot,player, 'mybet') or 0
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
@@ -794,6 +803,8 @@ def admincommands(bot,trigger,arg):
             bot.notice("Blackjack reset for: " + commandvalue,trigger.nick)
       
                           
+def canIgamble(bot,nick):
+    now=time.time()
     
     
 
