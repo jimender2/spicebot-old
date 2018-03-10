@@ -524,9 +524,7 @@ def blackjack(bot,trigger,arg):
                         if not get_botdatabase_value(bot, player, 'mybet')==0:
                             bot.notice("You already have a game start. Use hit or stand to finish the current game.",player)
                         else:
-                            if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
-                                #reset write blank hand
-                                blackjackreset(bot,player)
+                            if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:                               
                                 myhand = deal(bot,deck, 2)
                                 dealerhand = deal(bot,deck, 2)            
                                 bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
