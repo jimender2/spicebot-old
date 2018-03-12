@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray):
     players = []
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', cluefee) == 1:
         bankbalance=Spicebucks.bank(bot,instigator)
-        pointsworth = int(pointsworth*bankbalance)
+        pointsworth = (int(pointsworth*bankbalance)) + 5
         pointsvalue = str(pointsworth)
         bot.say(trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
