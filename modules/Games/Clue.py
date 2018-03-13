@@ -13,8 +13,6 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
-
-
 cluefee=5 #amount charged to use the command
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
