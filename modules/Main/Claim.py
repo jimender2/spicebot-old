@@ -113,7 +113,7 @@ def execute_main(bot, trigger, triggerargsarray):
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
     
     # Can't claim everyone at once
-    if target == 'everyone':
+    elif target == 'everyone':
         okaytoclaim = 0
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
         
