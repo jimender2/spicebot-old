@@ -13,8 +13,6 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
-
-
 cluefee=5 #amount charged to use the command
 rooms = ['Ballroom', 'Billiard Room', 'Cellar', 'Conservatory', 'Dining Room', 'Kitchen', 'Hall', 'Library', 'Lounge', 'Study', 'secret passage', 'Spa', 'Theater', 'Nearby Guest House']
 weapons = ['Candlestick', 'Knife', 'Lead Pipe', 'Revolver', 'Rope', 'Wrench', 'Dumbbell', 'Trophy', 'Poison']
@@ -28,7 +26,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
-    pointsworth = random.uniform(.3,.8)   
+    pointsworth = random.uniform(.03,.08)   
     if not channel.startswith("#"):
         bot.notice(instigator + " Clue must be in a channel.", instigator)
         return
@@ -41,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray):
     players = []
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', cluefee) == 1:
         bankbalance=Spicebucks.bank(bot,instigator)
-        pointsworth = int(pointsworth*bankbalance)
+        pointsworth = (int(pointsworth*bankbalance)) + 5
         pointsvalue = str(pointsworth)
         bot.say(trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
