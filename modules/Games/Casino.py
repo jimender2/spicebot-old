@@ -63,7 +63,7 @@ def execute_main(bot, trigger, arg):
         else:
              bot.notice('You must be an admin to use this command', trigger.nick)
     else:
-        bot.say('Please choose a game. Options include: slots, blackjack, roulette, blackjack and lottery.')
+        bot.say('Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
         
 def freebie(bot,trigger):
     bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
