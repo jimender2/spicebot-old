@@ -23,6 +23,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
+    creator = "IT_Sean"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -96,6 +97,13 @@ def execute_main(bot, trigger, triggerargsarray):
         okaytoclaim = 0
         bot.say("I have already been claimed by " + owner +"!")
     
+    # Can't claim the creator
+    elif target == creator:
+        okaytoclaim = 0
+        bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator "!")
+        bot.db.set_nick_value(instigator,'claimed',target)
+        bot.db.set_nick_value(instigator,'claimdate',storedate)
+            
     # Can't claim your claimant
     elif target == mastername:
         okaytoclaim = 0
