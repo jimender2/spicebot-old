@@ -31,6 +31,6 @@ def execute_main(bot, trigger, triggerargsarray):
             whotoblame = get_trigger_arg(bot, blametargetarray, 'random')
             bot.say("It's " + whotoblame + "'s fault.")
     elif whotoblame.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
+        bot.say("I blame " + whotoblame + " for that.")
     else:
         bot.say("It's " + whotoblame + "'s fault.")
