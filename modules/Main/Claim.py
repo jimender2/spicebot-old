@@ -100,7 +100,7 @@ def execute_main(bot, trigger, triggerargsarray):
     # Can't claim the creator
     elif target == creator:
         okaytoclaim = 0
-        bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator "!")
+        bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator + "!")
         bot.db.set_nick_value(instigator,'claimed',target)
         bot.db.set_nick_value(instigator,'claimdate',storedate)
             
