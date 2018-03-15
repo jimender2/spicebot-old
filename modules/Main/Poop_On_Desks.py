@@ -10,9 +10,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('poop','poops')
+@sopel.module.commands('poop','poops','shit','shits')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'poop')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
