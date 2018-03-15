@@ -11,7 +11,7 @@ from SpicebotShared import *
 
 @sopel.module.commands('butt', 'butts')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'butts')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'butt')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
