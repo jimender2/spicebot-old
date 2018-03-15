@@ -166,7 +166,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
                 if instigator == creator:
-                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + claimed +' should be grateful for their new lord and master!')
+                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
                     bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
