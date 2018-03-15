@@ -128,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
         # First time claimed
         if claimedby == '':
             if instigator == creator:
-                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + claimed +"!")
+                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!")
             else:
                 bot.say(instigator + " urinates on " + target + "! Claimed!")
             bot.db.set_nick_value(target,'claimed',instigator)
