@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
-    creator = "dysonparkes"
+    creator = "IT_Sean"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
