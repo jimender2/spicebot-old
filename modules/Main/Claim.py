@@ -96,7 +96,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == bot.nick:
         okaytoclaim = 0
         if instigator == creator:
-            bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + "."
+            bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
         else:
             bot.say("I have already been claimed by " + owner +"!")
     
