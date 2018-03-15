@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
-    creator = "IT_Sean"
+    creator = "dysonparkes"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -127,7 +127,10 @@ def execute_main(bot, trigger, triggerargsarray):
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
         # First time claimed
         if claimedby == '':
-            bot.say(instigator + " urinates on " + target + "! Claimed!")
+            if instigator == creator:
+                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + claimed +"!")
+            else:
+                bot.say(instigator + " urinates on " + target + "! Claimed!")
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
             # Pay instigator Spicebucks (firstclaim)
@@ -141,7 +144,10 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
+                if instigator == creator:
+                    bot.say(instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
+                else:
+                    bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (renewclaim)
@@ -156,7 +162,10 @@ def execute_main(bot, trigger, triggerargsarray):
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
+                if instigator == creator:
+                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + claimed +' should be grateful for their new lord and master!')
+                else:
+                    bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (stolenclaim)
