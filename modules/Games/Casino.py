@@ -82,6 +82,7 @@ def slots(bot,trigger,arg):
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
     player=trigger.nick
     channel=trigger.sender
+    now = time.time()
 #__payouts___
     match3 = 25
     match2 = 5
