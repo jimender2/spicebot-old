@@ -156,6 +156,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
+    now = time.time()
     channel = trigger.sender
     maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
@@ -789,9 +790,7 @@ def admincommands(bot,trigger,arg):
             reset_botdatabase_value(bot,commandvalue, 'mybet')
             bot.notice("Blackjack reset for: " + commandvalue,trigger.nick)
       
-                          
-def canIgamble(bot,nick):
-    now=time.time()
+
     
     
 
