@@ -16,7 +16,7 @@ from SpicebotShared import *
 #shared variables:
 maxbet = 100
 now = time.time()
-slottimeout = 60
+slottimeout = 30
 #rouletteshared
 roulettetimeout=25
 #maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
@@ -103,7 +103,7 @@ def slots(bot,trigger,arg):
         else:
             lastslot = get_botdatabase_value(bot,'casino','slotimer')
             nextslot = get_timesince(bot,'casino','slotimer')
-            bot.say("Next Slot: " + str(nextslot) + " Slottimeout: " + str(slottimeout) + " Lastslot " + str(now))
+            
             if nextslot>=slottimeout:
                 if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
                     set_botdatabase_value(bot,'casino','slotimer',now)
