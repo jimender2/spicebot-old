@@ -102,6 +102,7 @@ def slots(bot,trigger,arg):
         else:
             lastslot = get_botdatabase_value(bot,'casino','slotimer')
             nextslot = get_timesince(bot,'casino','slotimer')
+            bot.say("Next Slot: " + str(nextslot) + " Slottimeout: " + str(slottimeout))
             if nextslot>=slottimeout:
                 if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
                     set_botdatabase_value(bot,'casino','slotimer',now)
