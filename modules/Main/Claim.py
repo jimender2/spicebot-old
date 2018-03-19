@@ -71,6 +71,8 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             if admintarget == instigator:
                 bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+            elif claimedby == instigator:
+                bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
             else:
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
     
