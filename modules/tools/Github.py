@@ -74,9 +74,6 @@ def execute_main(bot, trigger):
             title = "CASINO: " + title
             assignee = "josh-cunning"
             body = inputtext
-            templabels = labels.append('Casino')
-            labels = templabels
-            bot.say(str(labels))
             body = str(instigator + action + ": " + body)
             make_github_issue(bot, body, labels, title, assignee, instigator)
         else:
