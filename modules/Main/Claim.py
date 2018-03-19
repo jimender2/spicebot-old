@@ -65,7 +65,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if admintarget == instigator:
                 bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
             elif admintarget == creator: 
-                bot.say("No mere mortal can claim the almighty " + str(instigator) +"!")
+                bot.say("No mere mortal can claim the almighty " + str(creator) +"!")
             else:
                 bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
         else:
