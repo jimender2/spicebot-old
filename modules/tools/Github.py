@@ -70,11 +70,12 @@ def execute_main(bot, trigger):
             body = inputtext
             body = str(instigator + action + ": " + body)
             make_github_issue(bot, body, labels, title, assignee, instigator)
-        if inputtext.startswith('gamble') or inputtext.startswith('casino'):
+        elif inputtext.startswith('gamble') or inputtext.startswith('casino'):
             title = "CASINO: " + title
             assignee = "josh-cunning"
             body = inputtext
-            labels = labels.extend('Casino')
+            templabels = labels.append('Casino')
+            labels = templabels
             bot.say(str(labels))
             body = str(instigator + action + ": " + body)
             make_github_issue(bot, body, labels, title, assignee, instigator)
