@@ -40,7 +40,7 @@ commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version']
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -61,7 +61,7 @@ commandarray_tier_unlocks_15 = []
 commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000] ## XP
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5] ## Tier Ratios
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
-commandarray_tier_display_exclude = ['admin','game','devmode','version','author'] ## Do NOT display
+commandarray_tier_display_exclude = ['admin','game','devmode','version','author','deathblow'] ## Do NOT display
 
 ## more stuff
 bodyparts_required = ['torso','head']
@@ -352,6 +352,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         for comsplit in fullcomsplit:
             fullcommandarray.append(comsplit)
     for minicom in fullcommandarray:
+        deathblowcheck(bot, instigator)
         daisychaincount = daisychaincount + 1
         if daisychaincount <= 5:
             time.sleep(randint(1, 3))
@@ -559,6 +560,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Cleanup from Previous runs
         combattextarraycomplete = []
         texttargetarray = []
+        deathblowarray = []
 
         ## Update last fought
         if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
@@ -713,6 +715,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     ## Update Health Of winner, respawn, allow loser to loot
                     winnerheadhealth = get_database_value(bot, winner, 'head')
                     winnertorsohealth = get_database_value(bot, winner, 'torso')
+                    totalhealthwinner = get_health(bot,winner)
                     if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -723,6 +726,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                         for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
+                    elif totalhealthwinner < 100 and typeofduel == 'target':
+                        set_database_value(bot, loser, 'deathblowtarget', winner)
+                        set_database_value(bot, loser, 'deathblowtargettime', now)
+                        deathblowarray.append(loser + " has a chance of striking a deathblow on " + winner)
                     else:
                         winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
                         if winnercurrenthealthbody  <= 0:
@@ -745,6 +752,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'head')
                 losertorsohealth = get_database_value(bot, loser, 'torso')
+                totalhealthloser = get_health(bot,loser)
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
@@ -755,6 +763,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
                     for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
+                elif totalhealthloser < 100 and typeofduel == 'target':
+                    set_database_value(bot, winner, 'deathblowtarget', loser)
+                    set_database_value(bot, winner, 'deathblowtargettime', now)
+                    deathblowarray.append(winner + " has a chance of striking a deathblow on " + loser)
                 else:
                     losercurrenthealthbody  = get_database_value(bot, loser, bodypart)
                     if losercurrenthealthbody  <= 0:
@@ -792,6 +804,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         ## Update Health Of winner, respawn, allow loser to loot
                         winnerheadhealth = get_database_value(bot, winner, 'head')
                         winnertorsohealth = get_database_value(bot, winner, 'torso')
+                        totalhealthwinner = get_health(bot,winner)
                         if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                             if winner == maindueler:
                                 adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -802,6 +815,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                             for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
+                        elif totalhealthwinner < 100 and typeofduel == 'target':
+                            set_database_value(bot, loser, 'deathblowtarget', winner)
+                            set_database_value(bot, loser, 'deathblowtargettime', now)
+                            deathblowarray.append(loser + " has a chance of striking a deathblow on " + winner)
                         else:
                             winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
                             if winnercurrenthealthbody  <= 0:
@@ -906,6 +923,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         else:
             onscreentext(bot, [winner,loser], combattextarraycomplete)
 
+        ## deathblow text
+        if typeofduel == 'target' and deathblowarray != []:
+            onscreentext(bot, [inchannel], deathblowarray)
+
         ## Pause Between duels
         if typeofduel == 'assault':
             bot.notice("  ", maindueler)
@@ -973,7 +994,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
 
     ## array of insulting departures
-    cowardarray = ['A man that flies from his fear may find that he has only taken a short cut to meet it. ― J.R.R. Tolkien','He was just a coward and that was the worst luck any many could have. - Ernest Hemingway','The coward fears the prick of Fate, not he who dares all, becoming himself the dreaded one. - Elise Pumpelly Cabot']
+    cowardarray = ["What a coward!"]
 
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
@@ -2117,6 +2138,17 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
        onscreentext(bot, inchannel, instigator + " adds " + str(amount) + " to the bounty on " + target + ".")
     adjust_database_value(bot, target, 'bounty', amount)
 
+## Deathblow
+def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
+    if not deathblowtarget:
+        osd_notice(bot, instigator, "You don't have a deathblow target available.")
+    else:
+        deathblowtarget = actualname(bot,deathblowtarget)
+        onscreentext(bot, inchannel, instigator + " strikes a deathblow upon " + deathblowtarget + ".")
+        deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
+        onscreentext(bot, inchannel, deathblowkilltext)
+    
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     instigatorclass = get_database_value(bot, instigator, 'class_setting')
@@ -2757,6 +2789,10 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             halfhourtimer(bot)
         else:
             osd_notice(bot, instigator, "Must be an invalid command.")
+    elif subcommand == 'deathblow':
+        newsetting = get_trigger_arg(bot, triggerargsarray, 3).lower()
+        set_database_value(bot, instigator, 'deathblowtarget', newsetting)
+        set_database_value(bot, instigator, 'deathblowtargettime', now)
     else:
         osd_notice(bot, instigator, "An admin command has not been written for the " + subcommand + " command.")
 
@@ -2839,7 +2875,7 @@ def halfhourtimer(bot):
         if len(logoutarray) > 1:
             dispmsgarray.append(logoutusers + " have been logged out of duels for inactivity!")
         else:
-            dispmsgarray.append(logoutusers + " hasbeen logged out of duels for inactivity!")
+            dispmsgarray.append(logoutusers + " has been logged out of duels for inactivity!")
         onscreentext(bot, gameenabledchannels, dispmsgarray)
         adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
 
@@ -3221,6 +3257,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
     ## Damage Tiers
     if damage > 0:
         damage = damagescale * damage
+        damage = int(damage)
 
     return damage
 
@@ -3386,6 +3423,19 @@ def bodypartarray(bot, nick):
         if gethowmany:
             currentbodypartsarray.append(x)
     return currentbodypartsarray
+
+def deathblowcheck(bot, instigator):
+    deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
+    if deathblowtarget:
+        deathblowtargettime = get_timesince_duels(bot, instigator, 'deathblowtargettime') or 0
+        if deathblowtargettime > 30:
+            reset_database_value(bot, instigator, 'deathblowtarget')
+            reset_database_value(bot, instigator, 'deathblowtargettime')
+        else:
+            nickhealth = get_health(bot,deathblowtarget)
+            if nickhealth > 100:
+                 reset_database_value(bot, instigator, 'deathblowtarget')
+                 reset_database_value(bot, instigator, 'deathblowtargettime')
 
 ################
 ## User Nicks ##
@@ -3811,7 +3861,7 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
     losershieldnow, losercursenow = get_current_magic_attributes(bot, loser)
     magicattributesarray = ['shield','curse']
     nickarray = ['winner','loser']
-    attributetext = ''
+    attributetext = []
     for j in nickarray:
         person = eval(j)
         for x in magicattributesarray:

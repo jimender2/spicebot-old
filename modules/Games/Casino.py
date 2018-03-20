@@ -16,7 +16,7 @@ from SpicebotShared import *
 #shared variables:
 maxbet = 100
 now = time.time()
-slottimeout = 60
+slottimeout = 30
 #rouletteshared
 roulettetimeout=25
 #maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
@@ -82,6 +82,7 @@ def slots(bot,trigger,arg):
 #slot machine that uses computer terms with a jackpot tied to how much money has been gambled
     player=trigger.nick
     channel=trigger.sender
+    now = time.time()
 #__payouts___
     match3 = 25
     match2 = 5
@@ -102,6 +103,7 @@ def slots(bot,trigger,arg):
         else:
             lastslot = get_botdatabase_value(bot,'casino','slotimer')
             nextslot = get_timesince(bot,'casino','slotimer')
+            
             if nextslot>=slottimeout:
                 if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
                     set_botdatabase_value(bot,'casino','slotimer',now)
@@ -154,6 +156,7 @@ def slots(bot,trigger,arg):
 #------Start Roulette
 #----------------Roulette-------
 def roulette(bot,trigger,arg):
+    now = time.time()
     channel = trigger.sender
     maxwheel = int(get_botdatabase_value(bot,'casino','maxwheel')) or 24
     
@@ -787,9 +790,7 @@ def admincommands(bot,trigger,arg):
             reset_botdatabase_value(bot,commandvalue, 'mybet')
             bot.notice("Blackjack reset for: " + commandvalue,trigger.nick)
       
-                          
-def canIgamble(bot,nick):
-    now=time.time()
+
     
     
 

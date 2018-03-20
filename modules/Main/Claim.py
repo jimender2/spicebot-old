@@ -64,11 +64,15 @@ def execute_main(bot, trigger, triggerargsarray):
         if not claimedby:
             if admintarget == instigator:
                 bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
+            elif admintarget == creator: 
+                bot.say("No mere mortal can claim the almighty " + str(creator) +"!")
             else:
                 bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
         else:
             if admintarget == instigator:
                 bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+            elif claimedby == instigator:
+                bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
             else:
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
     
@@ -166,7 +170,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
                 if instigator == creator:
-                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + claimed +' should be grateful for their new lord and master!')
+                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
                     bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
