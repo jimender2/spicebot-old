@@ -543,7 +543,7 @@ def blackjack(bot,trigger,arg):
                 
                 myhand.append(playerhits)
                 myscore = blackjackscore(myhand)
-                if myscore >21 and len(myhand) > 2:
+                if myscore >=21 and len(myhand) > 2:
                     if myhand[0] == 'A':             
                         myhand[0]=1
                     if myhand[1] == 'A':
