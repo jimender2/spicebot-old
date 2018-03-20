@@ -352,6 +352,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
         for comsplit in fullcomsplit:
             fullcommandarray.append(comsplit)
     for minicom in fullcommandarray:
+        deathblowcheck(bot, instigator)
         daisychaincount = daisychaincount + 1
         if daisychaincount <= 5:
             time.sleep(randint(1, 3))
@@ -2117,6 +2118,15 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
        onscreentext(bot, inchannel, instigator + " adds " + str(amount) + " to the bounty on " + target + ".")
     adjust_database_value(bot, target, 'bounty', amount)
 
+## Deathblow
+def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
+    if not deathblowtarget:
+        bot.say("You missed your chance for the deathblow.")
+    else:
+        bot.say("This is where " + deathblowtarget + " would die at your hands.")
+        
+    
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     instigatorclass = get_database_value(bot, instigator, 'class_setting')
@@ -2757,6 +2767,10 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
             halfhourtimer(bot)
         else:
             osd_notice(bot, instigator, "Must be an invalid command.")
+    elif subcommand == 'deathblow':
+        newsetting = get_trigger_arg(bot, triggerargsarray, 3).lower()
+        set_database_value(bot, instigator, 'deathblowtarget', newsetting)
+        set_database_value(bot, instigator, 'deathblowtargettime', now)
     else:
         osd_notice(bot, instigator, "An admin command has not been written for the " + subcommand + " command.")
 
@@ -2839,7 +2853,7 @@ def halfhourtimer(bot):
         if len(logoutarray) > 1:
             dispmsgarray.append(logoutusers + " have been logged out of duels for inactivity!")
         else:
-            dispmsgarray.append(logoutusers + " hasbeen logged out of duels for inactivity!")
+            dispmsgarray.append(logoutusers + " has been logged out of duels for inactivity!")
         onscreentext(bot, gameenabledchannels, dispmsgarray)
         adjust_database_array(bot, duelrecorduser, logoutarray, 'duelusers', 'del')
 
@@ -3221,6 +3235,7 @@ def duels_damage(bot, damagescale, classwinner, classloser, winner, loser):
     ## Damage Tiers
     if damage > 0:
         damage = damagescale * damage
+        damage = int(damage)
 
     return damage
 
@@ -3386,6 +3401,20 @@ def bodypartarray(bot, nick):
         if gethowmany:
             currentbodypartsarray.append(x)
     return currentbodypartsarray
+
+def deathblowcheck(bot, instigator):
+    deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
+    if deathblowtarget:
+        deathblowtargettime = get_timesince_duels(bot, usera, 'deathblowtargettime') or 0
+        if deathblowtargettime > 30:
+            reset_database_value(bot, instigator, 'deathblowtarget')
+            reset_database_value(bot, instigator, 'deathblowtargettime')
+        else:
+            nickhealth = get_health(bot,deathblowtarget)
+            if nickhealth > 100:
+                 reset_database_value(bot, instigator, 'deathblowtarget')
+                 reset_database_value(bot, instigator, 'deathblowtargettime')
+            
 
 ################
 ## User Nicks ##
