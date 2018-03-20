@@ -2122,10 +2122,9 @@ def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
     if not deathblowtarget:
-        bot.say("You missed your chance for the deathblow.")
+        osd_notice(bot, instigator, "You don't have a deathblow target available.")
     else:
-        bot.say("This is where " + deathblowtarget + " would die at your hands.")
-        
+        onscreentext(bot, inchannel, "This is where " + deathblowtarget + " would die at your hands.")
     
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
