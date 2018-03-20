@@ -87,10 +87,12 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("I'm not sure who that is.")
     else:
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
-                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+                pointsreasonmsg = ' ' + str(pointsreason)
             else:
-                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+                pointsreasonmsg = ' for ' + str(pointsreason)
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
