@@ -560,6 +560,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Cleanup from Previous runs
         combattextarraycomplete = []
         texttargetarray = []
+        deathblowarray = []
 
         ## Update last fought
         if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
@@ -714,6 +715,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     ## Update Health Of winner, respawn, allow loser to loot
                     winnerheadhealth = get_database_value(bot, winner, 'head')
                     winnertorsohealth = get_database_value(bot, winner, 'torso')
+                    totalhealthwinner = get_health(bot,winner)
                     if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                         if winner == maindueler:
                             adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -724,6 +726,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                         for x in loserkilledwinner:
                             combattextarraycomplete.append(x)
+                    elif totalhealthwinner < 100 and typeofduel == 'target':
+                        set_database_value(bot, loser, 'deathblowtarget', winner)
+                        set_database_value(bot, loser, 'deathblowtargettime', now)
+                        deathblowarray.append(loser + " has a chance of striking a deathblow on " + winner)
                     else:
                         winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
                         if winnercurrenthealthbody  <= 0:
@@ -746,6 +752,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Update Health Of loser, respawn, allow winner to loot
                 loserheadhealth = get_database_value(bot, loser, 'head')
                 losertorsohealth = get_database_value(bot, loser, 'torso')
+                totalhealthloser = get_health(bot,loser)
                 if loserheadhealth  <= 0 or losertorsohealth <= 0:
                     if winner == maindueler:
                         adjust_database_value(bot, maindueler, 'assault_kills', 1)
@@ -756,6 +763,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                     winnerkilledloser = whokilledwhom(bot, winner, loser) or ''
                     for x in winnerkilledloser:
                         combattextarraycomplete.append(x)
+                elif totalhealthloser < 100 and typeofduel == 'target':
+                    set_database_value(bot, winner, 'deathblowtarget', loser)
+                    set_database_value(bot, winner, 'deathblowtargettime', now)
+                    deathblowarray.append(winner + " has a chance of striking a deathblow on " + loser)
                 else:
                     losercurrenthealthbody  = get_database_value(bot, loser, bodypart)
                     if losercurrenthealthbody  <= 0:
@@ -793,6 +804,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         ## Update Health Of winner, respawn, allow loser to loot
                         winnerheadhealth = get_database_value(bot, winner, 'head')
                         winnertorsohealth = get_database_value(bot, winner, 'torso')
+                        totalhealthwinner = get_health(bot,winner)
                         if winnerheadhealth  <= 0 or winnertorsohealth <= 0:
                             if winner == maindueler:
                                 adjust_database_value(bot, maindueler, 'assault_deaths', 1)
@@ -803,6 +815,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                             loserkilledwinner = whokilledwhom(bot, loser, winner) or ''
                             for x in loserkilledwinner:
                                 combattextarraycomplete.append(x)
+                        elif totalhealthwinner < 100 and typeofduel == 'target':
+                            set_database_value(bot, loser, 'deathblowtarget', winner)
+                            set_database_value(bot, loser, 'deathblowtargettime', now)
+                            deathblowarray.append(loser + " has a chance of striking a deathblow on " + winner)
                         else:
                             winnercurrenthealthbody  = get_database_value(bot, winner, bodypart)
                             if winnercurrenthealthbody  <= 0:
@@ -906,6 +922,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [inchannel], combattextarraycomplete)
         else:
             onscreentext(bot, [winner,loser], combattextarraycomplete)
+
+        ## deathblow text
+        if typeofduel == 'target' and deathblowarray != []:
+            onscreentext(bot, [inchannel], deathblowarray)
 
         ## Pause Between duels
         if typeofduel == 'assault':
