@@ -5,6 +5,7 @@ import sopel.module
 from random import random
 from random import randint
 from sopel import module, tools
+import string
 import sys
 import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
