@@ -2125,7 +2125,7 @@ def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, cur
         osd_notice(bot, instigator, "You don't have a deathblow target available.")
     else:
         deathblowtarget = actualname(bot,deathblowtarget)
-        #onscreentext(bot, inchannel, "This is where " + deathblowtarget + " would die at your hands.")
+        onscreentext(bot, inchannel, instigator + " strikes a deathblow upon " + deathblowtarget + ".")
         deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
         onscreentext(bot, inchannel, deathblowkilltext)
     
