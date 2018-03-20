@@ -50,6 +50,8 @@ def execute_main(bot, trigger, triggerargsarray):
             
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
@@ -64,6 +66,8 @@ def execute_main(bot, trigger, triggerargsarray):
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
