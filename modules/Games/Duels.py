@@ -40,7 +40,7 @@ commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version']
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -61,7 +61,7 @@ commandarray_tier_unlocks_15 = []
 commandarray_xp_levels = [0,1,100,250,500,1000,2500,5000,7500,10000,15000,25000,45000,70000,100000,250000] ## XP
 commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4,2.5] ## Tier Ratios
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
-commandarray_tier_display_exclude = ['admin','game','devmode','version','author'] ## Do NOT display
+commandarray_tier_display_exclude = ['admin','game','devmode','version','author','deathblow'] ## Do NOT display
 
 ## more stuff
 bodyparts_required = ['torso','head']
