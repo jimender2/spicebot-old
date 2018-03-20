@@ -2125,7 +2125,9 @@ def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, cur
         osd_notice(bot, instigator, "You don't have a deathblow target available.")
     else:
         deathblowtarget = actualname(bot,deathblowtarget)
-        onscreentext(bot, inchannel, "This is where " + deathblowtarget + " would die at your hands.")
+        #onscreentext(bot, inchannel, "This is where " + deathblowtarget + " would die at your hands.")
+        deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
+        onscreentext(bot, inchannel, deathblowkilltext)
     
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -3414,7 +3416,6 @@ def deathblowcheck(bot, instigator):
             if nickhealth > 100:
                  reset_database_value(bot, instigator, 'deathblowtarget')
                  reset_database_value(bot, instigator, 'deathblowtargettime')
-            
 
 ################
 ## User Nicks ##
