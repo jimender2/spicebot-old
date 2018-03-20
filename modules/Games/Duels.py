@@ -3405,7 +3405,7 @@ def bodypartarray(bot, nick):
 def deathblowcheck(bot, instigator):
     deathblowtarget = get_database_value(bot, instigator, 'deathblowtarget')
     if deathblowtarget:
-        deathblowtargettime = get_timesince_duels(bot, usera, 'deathblowtargettime') or 0
+        deathblowtargettime = get_timesince_duels(bot, instigator, 'deathblowtargettime') or 0
         if deathblowtargettime > 30:
             reset_database_value(bot, instigator, 'deathblowtarget')
             reset_database_value(bot, instigator, 'deathblowtargettime')
