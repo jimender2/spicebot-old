@@ -994,7 +994,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
 
     ## array of insulting departures
-    cowardarray = ['A man that flies from his fear may find that he has only taken a short cut to meet it. ― J.R.R. Tolkien','He was just a coward and that was the worst luck any many could have. - Ernest Hemingway','The coward fears the prick of Fate, not he who dares all, becoming himself the dreaded one. - Elise Pumpelly Cabot']
+    cowardarray = ["What a coward!"]
 
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
@@ -3861,7 +3861,7 @@ def get_magic_attributes_text(bot, winner, loser, winnershieldstart, losershield
     losershieldnow, losercursenow = get_current_magic_attributes(bot, loser)
     magicattributesarray = ['shield','curse']
     nickarray = ['winner','loser']
-    attributetext = ''
+    attributetext = []
     for j in nickarray:
         person = eval(j)
         for x in magicattributesarray:
