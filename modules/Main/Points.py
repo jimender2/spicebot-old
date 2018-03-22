@@ -5,6 +5,7 @@ import sopel.module
 from random import random
 from random import randint
 from sopel import module, tools
+import string
 import sys
 import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
@@ -49,6 +50,8 @@ def execute_main(bot, trigger, triggerargsarray):
             
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
@@ -63,6 +66,8 @@ def execute_main(bot, trigger, triggerargsarray):
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
@@ -87,10 +92,12 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("I'm not sure who that is.")
     else:
         if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
-                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+                pointsreasonmsg = ' ' + str(pointsreason)
             else:
-                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+                pointsreasonmsg = ' for ' + str(pointsreason)
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
