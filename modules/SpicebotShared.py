@@ -454,14 +454,15 @@ def excrange_minus_array(bot, inputs, number):
 
 ####################################
 ##########Check for target##########
-###If target  validtarget =1       #
-###if bot is target validtarget=2  #
+###If target valid, validtarget=1  #
+###If bot is target validtarget=2  #
 ###if target is instigator         #
 ###validtarget =3                  #
+###If no target,     validtarget=0 #
 ####################################
 
 def targetcheck(bot, target,instigator):
-    validtarget = 0
+    validtarget = '0'
     validtargetmsg = ''
     botusersarray=[]
     botuseron=[]
@@ -472,21 +473,21 @@ def targetcheck(bot, target,instigator):
             botuseron.append(u)   
     if not target:
         validtargetmsg = str(instigator + ", you must specify a target.")
-        validtarget = 0
+        validtarget = '0'
     else:
         if target.lower() == bot.nick.lower():
-            validtargetmsg = str(instigator + ", can't targetbot.")
-            validtarget=2  
+            validtargetmsg = str(instigator + ", can't target bot.")
+            validtarget='2'  
         elif target == instigator:       
             validtargetmsg = str(instigator + ", is the target")
-            validtarget=3         
+            validtarget='3'         
             
         elif not target.lower() in [u.lower() for u in botuseron]:
             validtargetmsg = str(instigator + " " + target +  " isn't a valid target")            
         else:
-            validtarget = 1
+            validtarget = '1'
     
-    return validtarget
+    return validtarget,validtargetmsg
 
 
 ##############

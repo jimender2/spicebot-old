@@ -16,9 +16,14 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     target=get_trigger_arg(bot,triggerargsarray,1)
-    validtarget,validmsg = targetcheck(bot,target,trigger.nick)    
-    if validtarget==1:
+    validtarget='0'
+    validtargetmsg=''
+    if target:
+        validtarget,validtargetmsg = targetcheck(bot,target,trigger.nick)
+    if validtarget=='1':
         bot.say('I do not tell you how to do your job, ' + target + '!!')
+    elif validtargetmsg != '' and validtarget != '0':
+        bot.say(validtargetmsg)
     else:       
         bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
    
