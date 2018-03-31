@@ -8,6 +8,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+fishtypes = ["Pike","Carp","Marlin","Trout","Cod","Anchovy","Venezuelan Beaverfish","fish","jellyfish"]
+
 @sopel.module.commands('fish')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -18,7 +20,9 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
-    # Nothing specified
+    fishtype = get_trigger_arg(bot,fishtypes,'random')
+    
+    # No target specified
     if not target:
         bot.say("Who/what would you like to slap with a fish?")
     
@@ -29,11 +33,11 @@ def execute_main(bot, trigger, triggerargsarray):
     # Target is fine
     else:
         if not reason:
-            message = trigger.nick + " slaps " + target + " with a fish."
+            message = trigger.nick + " slaps " + target + " with a " + fishtype + "."
         else:
             if reason.startswith('for '):
-                message = trigger.nick + " slaps " + target + " with a fish " + reason + "."
+                message = trigger.nick + " slaps " + target + " with a " + fishtype + reason + "."
             else:
-                message = trigger.nick + " slaps " + target + " with a fish for " + reason + "."
+                message = trigger.nick + " slaps " + target + " with a " + fishtype + " for " + reason + "."
         bot.say(message)
         
