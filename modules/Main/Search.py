@@ -115,7 +115,7 @@ def moviesearch(bot,searchterm):
     """
     Returns some information about a movie, like Title, Year, Rating, Genre and IMDB Link.
     """
-    uri = "http://www.omdbapi.com/"
+    uri = "http://www.omdbapi.com/?apikey=fd34e58c&"
     data = requests.get(uri, params={'t': searchterm}, timeout=30,
                         verify=bot.config.core.verify_ssl).json()
     if data['Response'] == 'False':
