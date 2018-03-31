@@ -454,10 +454,11 @@ def excrange_minus_array(bot, inputs, number):
 
 ####################################
 ##########Check for target##########
-###If target  validtarget =1       #
-###if bot is target validtarget=2  #
+###If target valid, validtarget=1  #
+###If bot is target validtarget=2  #
 ###if target is instigator         #
 ###validtarget =3                  #
+###If no target,     validtarget=0 #
 ####################################
 
 def targetcheck(bot, target,instigator):
