@@ -13,7 +13,11 @@ import sopel.web as web
 import json
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
+from sopel.logger import get_logger
+
 from SpicebotShared import *
+
+LOGGER = get_logger(__name__)
 
 @commands('google', 'search', 'lookup')
 def mainfunction(bot, trigger):
@@ -73,24 +77,28 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
                     
         elif mysite == 'urban':
-            query=urbansearch(querystring)
+            query=urbansearch(bot,querystring)
             bot.say(query)
-            
+        
+        elif mysite == 'imdb' or mysite =='movie':
+            query=moviesearch(bot,querystring)
+            bot.say(query)
+        
         else:
             data=searchterm.replace(' ', '+')
-            query=searchfor(data)
+            query=searchfor(bot,data)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
                 bot.say(query)   
 
-def searchfor(data):
+def searchfor(bot,data):
     lookfor = data.replace(':', '%3A')
     var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
     query=str(var.url)
     return query            
 
-def urbansearch(searchterm):
+def urbansearch(bot,searchterm):
     try:
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
         data = json.loads(data)
@@ -102,3 +110,26 @@ def urbansearch(searchterm):
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(searchterm))
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     return response
+
+def moviesearch(bot,searchterm):
+    """
+    Returns some information about a movie, like Title, Year, Rating, Genre and IMDB Link.
+    """
+    uri = "http://www.omdbapi.com/?apikey=fd34e58c&"
+    data = requests.get(uri, params={'t': searchterm}, timeout=30,
+                        verify=bot.config.core.verify_ssl).json()
+    if data['Response'] == 'False':
+        if 'Error' in data:
+            message = '[MOVIE] %s' % data['Error']
+        else:
+            LOGGER.warning(
+                'Got an error from the OMDb api, search phrase was %s; data was %s',
+                word, str(data))
+            message = '[MOVIE] Got an error from OMDbapi'
+    else:
+        message = '[MOVIE] Title: ' + data['Title'] + \
+                  ' | Year: ' + data['Year'] + \
+                  ' | Rating: ' + data['imdbRating'] + \
+                  ' | Genre: ' + data['Genre'] + \
+                  ' | IMDB Link: http://imdb.com/title/' + data['imdbID']
+    return message
