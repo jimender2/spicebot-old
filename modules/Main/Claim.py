@@ -13,7 +13,10 @@ from SpicebotShared import *
 import Spicebucks
 
 # Commands that work in privmsg
-privcmdlist = ['check','reset','bladder','drink','fridge']
+privcmdlist = ['check','admin','bladder','drink','fridge']
+
+# Admin Commands
+admincommands = ['reset']
 
 # Names of drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
@@ -82,25 +85,32 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
 
-    # Bot admins can reset claims
-    elif target == 'reset':
+    # Admin functions
+elif target == 'admin':
         okaytoclaim = 0
+        function = get_trigger_arg(bot,triggerargsarray, 2)
+        admintarget = get_trigger_arg(bot, triggerargsarray, 3)
         if trigger.admin:
-            if not admintarget:
-                bot.say("Please specify someone to reset claim on.")
-            elif admintarget.lower() not in [u.lower() for u in bot.users]:
-                bot.say("I'm not sure who that is.")
+            if function not in admincommands:
+                bot.say("Please specify what you would like to do. Valid options are: " + str(admincommands))
             else:
-                bot.db.set_nick_value(admintarget,'claimed','')
-                bot.db.set_nick_value(admintarget,'claimdate','')
-                bot.say("Claim info for " + admintarget + " reset on " + str(todaydate))
+                if function == 'reset':
+                    if not admintarget:
+                        bot.say("Please specify someone to reset claim on.")
+                    elif admintarget.lower() not in [u.lower() for u in bot.users]:
+                        bot.say("I'm not sure who that is.")
+                    else:
+                        bot.db.set_nick_value(admintarget,'claimed','')
+                        bot.db.set_nick_value(admintarget,'claimdate','')
+                        bot.say("Claim info for " + admintarget + " has been reset!"")
         else:
-            bot.say("This function is only available for bot admins.")
+            bot.say("Ha. You're not an admin, get lost.")
 
     # Can't claim yourself
     elif target == instigator:
         okaytoclaim = 0
         bot.say("You can't claim yourself!")
+        bot.action('mutters "moron".')
 
     # Can't claim the bot
     elif target == bot.nick:
