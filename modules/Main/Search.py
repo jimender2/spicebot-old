@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
             searchterm = data+site
-            query=searchfor(searchterm)
+            query=searchfor(bot,searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
@@ -52,7 +52,7 @@ def execute_main(bot, trigger, triggerargsarray):
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
             searchterm = data+site
-            query=searchfor(searchterm)
+            query=searchfor(bot,searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
@@ -67,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
             url = 'http://www.peopleofwalmart.com'
             url2 = 'https://www.peopleofwalmart.com'
             searchterm = data+site
-            query=searchfor(searchterm)
+            query=searchfor(bot,searchterm)
             if not query:
                 bot.say('https://goo.gl/SsAhv')
             else:
