@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray):
             message = trigger.nick + " slaps " + target + " with " + fishmsg + "."
         else:
             if reason.startswith('for ') or reason.startswith('because ') or reason.startswith('cause '):
-                message = trigger.nick + " slaps " + target + " with " + fishmsg + reason + "."
+                message = trigger.nick + " slaps " + target + " with " + fishmsg + " " + reason + "."
             else:
                 message = trigger.nick + " slaps " + target + " with " + fishmsg + " for " + reason + "."
         bot.say(message)
