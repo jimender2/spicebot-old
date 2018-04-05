@@ -12,14 +12,27 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 import Spicebucks
 
-privcmdlist = ['check','reset']
+# Commands that work in privmsg
+privcmdlist = ['check','reset','bladder','drink','fridge']
+
+# Names of drinks
+drinkslist = ['Gatorade','Water','Soda','Beer']
+
+# Days before reclaim available
+maxtime = 7
+# Spicebuck reward values
+firstclaim = 5
+renewclaim = 2
+stolenclaim = 10
+masterclaim = 5 #take, not give
+
 
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
@@ -36,24 +49,17 @@ def execute_main(bot, trigger, triggerargsarray):
     storedate = str(todaydate)
     # Good to claim?
     okaytoclaim = 1
-    # Days before reclaim available
-    maxtime = 7
-    # Spicebuck reward values
-    firstclaim = 5
-    renewclaim = 2
-    stolenclaim = 10
-    masterclaim = 5 #take, not give
-    
+
     # Make sure claims happen in channel, not privmsg
     if not inchannel.startswith("#") and target not in privcmdlist:
         okaytoclaim = 0
         bot.say("Claims must be done in channel")
-        
+
     # Handle if no target is specified
     elif not target:
         okaytoclaim = 0
         bot.say("Who do you want to claim?")
-        
+
     # Check if somebody is claimed, return if/when
     elif target == 'check':
         okaytoclaim = 0
@@ -64,7 +70,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if not claimedby:
             if admintarget == instigator:
                 bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
-            elif admintarget == creator: 
+            elif admintarget == creator:
                 bot.say("No mere mortal can claim the almighty " + str(creator) +"!")
             else:
                 bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
@@ -75,7 +81,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
             else:
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
-    
+
     # Bot admins can reset claims
     elif target == 'reset':
         okaytoclaim = 0
@@ -95,7 +101,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == instigator:
         okaytoclaim = 0
         bot.say("You can't claim yourself!")
-        
+
     # Can't claim the bot
     elif target == bot.nick:
         okaytoclaim = 0
@@ -103,14 +109,14 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
         else:
             bot.say("I have already been claimed by " + owner +"!")
-    
+
     # Can't claim the creator
     elif target == creator:
         okaytoclaim = 0
         bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator + "!")
         bot.db.set_nick_value(instigator,'claimed',target)
         bot.db.set_nick_value(instigator,'claimdate',storedate)
-            
+
     # Can't claim your claimant
     elif target == mastername:
         okaytoclaim = 0
@@ -118,17 +124,17 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
-    
+
     # Can't claim everyone at once
     elif target == 'everyone':
         okaytoclaim = 0
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
-        
+
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
         okaytoclaim = 0
-        bot.say("I'm not sure who that is.") 
-    
+        bot.say("I'm not sure who that is.")
+
     # Input checks out. Verify dates and go ahead.
     elif okaytoclaim:
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
@@ -142,7 +148,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.db.set_nick_value(target,'claimdate',storedate)
             # Pay instigator Spicebucks (firstclaim)
             Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
-            
+
         # Renewed claim
         elif claimedby == instigator:
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
