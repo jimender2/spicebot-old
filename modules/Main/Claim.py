@@ -86,7 +86,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
 
     # Admin functions
-elif target == 'admin':
+    elif target == 'admin':
         okaytoclaim = 0
         function = get_trigger_arg(bot,triggerargsarray, 2)
         admintarget = get_trigger_arg(bot, triggerargsarray, 3)
