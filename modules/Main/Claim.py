@@ -102,7 +102,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         bot.db.set_nick_value(admintarget,'claimed','')
                         bot.db.set_nick_value(admintarget,'claimdate','')
-                        bot.say("Claim info for " + admintarget + " has been reset!"")
+                        bot.say("Claim info for " + admintarget + " has been reset!")
         else:
             bot.say("Ha. You're not an admin, get lost.")
 
