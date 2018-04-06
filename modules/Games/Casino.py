@@ -682,7 +682,7 @@ def blackjackscore(hand):
             except ValueError:
                 myscore=myscore
     if myscore >21:
-        myhand=[myhand.replace('A'),1]
+        myhand=[hand.replace('A'),1]
         blackjackscore(myhand)     
     return myscore
 
