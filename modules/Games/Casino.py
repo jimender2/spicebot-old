@@ -542,13 +542,8 @@ def blackjack(bot,trigger,arg):
                 playerhits=playerhits[0]                
                 
                 myhand.append(playerhits)
-                myscore = blackjackscore(myhand)
-                if myscore >=21 and len(myhand) > 2:
-                    if myhand[0] == 'A':             
-                        myhand[0]=1
-                    if myhand[1] == 'A':
-                        myhand[1] = 1
-                    myscore= blackjackscore(myhand)            
+                myscore = blackjackscore(myhand)               
+                               
                 if myscore < 21:                
                     set_botdatabase_value(bot, player, 'myhand', myhand)
                     bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
@@ -620,13 +615,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
     if (myhand == [] or myhand ==0):
         bot.say('Use deal to start a new game')
     else:
-        myscore = blackjackscore(myhand)
-        if myscore >21 and len(myhand) > 2:
-            if myhand[0] == 'A':             
-                myhand[0]=1
-            if myhand[1] == 'A':
-                myhand[1] = 1
-            myscore= blackjackscore(myhand)                
+        myscore = blackjackscore(myhand)           
 
         dealerscore = blackjackscore(dealerhand)                
         dealerwins=''
@@ -637,7 +626,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
         elif myscore > 21:
             bot.say(player + ' busted and gets nothing')
         elif myscore < 21:
-
+            bot.say("Dealer cards " + get_trigger_arg(dealerhand,'list')
             dealerhitlist = ''                        
             while dealerscore < 18:
                 dealerhits=deal(bot,deck, 1)
@@ -653,6 +642,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 else: 
                     bot.say('The dealer takes a hit and gets a' + dealerhitlist)
             showdealerhand = ''
+            bot.say("Dealer cards " + get_trigger_arg(dealerhand,'list')
             for i in dealerhand:                        
                 showdealerhand = showdealerhand + " " + str(i)
         
@@ -692,6 +682,9 @@ def blackjackscore(hand):
                 myscore = myscore + int(card)
             except ValueError:
                 myscore=myscore
+    if myscore >21:
+        myhand=[myhand.replace('A'),1]
+        blackjackscore(myhand)     
     return myscore
 
 def blackjackreset(bot,player):   
