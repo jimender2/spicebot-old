@@ -731,7 +731,7 @@ def admincommands(bot,trigger,arg):
     elif subcommand == 'slotlist':
         slotlist=get_botdatabase_value(bot,'casino','slotwheel')
         listslots=get_trigger_arg(bot,slotlist,'list')
-        bot.notice("Slot wheel: " + listslots)
+        bot.notice("Slot wheel: " + listslots,player)
            
     elif subcommand == 'roulettereset':      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
@@ -756,7 +756,7 @@ def admincommands(bot,trigger,arg):
             maxvalue=int(maxvalue)
             if maxvalue>=10:
                 set_botdatabase_value(bot,'casino','lotterymax',maxvalue)
-                bot.notice("Lottery max set to " + str( maxvalue),player)
+                bot.notice("Lottery max set to " + str(maxvalue),player)
             else:
                 bot.notice("Please enter a number large then 10",player)          
         else:
