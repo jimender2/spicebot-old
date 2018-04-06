@@ -625,8 +625,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             Spicebucks.spicebucks(bot, player, 'plus', payout)
         elif myscore > 21:
             bot.say(player + ' busted and gets nothing')
-        elif myscore < 21:
-            bot.say("Dealer cards " + get_trigger_arg(dealerhand,'list')
+        elif myscore < 21:            
             dealerhitlist = ''                        
             while dealerscore < 18:
                 dealerhits=deal(bot,deck, 1)
@@ -634,7 +633,6 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
                 dealerhand.append(dealerhits)                
                 dealerscore=blackjackscore(dealerhand)
-
             if not dealerhitlist == '':
                 hitlist=len(dealerhitlist)-2 #minus two for spaces
                 if hitlist>1:                        
@@ -642,7 +640,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 else: 
                     bot.say('The dealer takes a hit and gets a' + dealerhitlist)
             showdealerhand = ''
-            bot.say("Dealer cards " + get_trigger_arg(dealerhand,'list')
+           
             for i in dealerhand:                        
                 showdealerhand = showdealerhand + " " + str(i)
         
