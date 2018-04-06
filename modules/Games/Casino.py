@@ -16,7 +16,7 @@ from SpicebotShared import *
 #shared variables:
 maxbet = 100
 now = time.time()
-slottimeout = 30
+slottimeout = 5
 #rouletteshared
 roulettetimeout=25
 #maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
