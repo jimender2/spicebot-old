@@ -15,5 +15,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    toomuchstuff = trigger.group(3) or trigger.nick
+    toomuchstuff = trigger.group(2) or trigger.nick
     bot.say("Too much " + toomuchstuff + " is bad for your health.")

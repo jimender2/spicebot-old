@@ -15,7 +15,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    druglocation = trigger.group(3)
+    druglocation = trigger.group(2)
     if not druglocation:
         druglocation = "somewhere tropical"
     else:
