@@ -15,4 +15,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say(trigger.nick + " contemplates selling everything and moving somewhere tropical to sell drugs on a beach.")
+    druglocation = trigger.group(3)
+    if not druglocation:
+        druglocation = "somewhere tropical"
+    else:
+        druglocation = str("to " + druglocation)
+    bot.say(trigger.nick + " contemplates selling everything and moving " + druglocation + " to sell drugs on a beach.")
