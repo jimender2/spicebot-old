@@ -92,7 +92,7 @@ def execute_main(bot, trigger, triggerargsarray):
         admintarget = get_trigger_arg(bot, triggerargsarray, 3)
         if trigger.admin:
             if function not in admincommands:
-                bot.say("Please specify what you would like to do. Valid options are: " + str(''.join(admincommands)))
+                bot.say("Please specify what you would like to do. Valid options are: " + str(', '.join(admincommands)))
             else:
                 if function == 'reset':
                     if not admintarget:

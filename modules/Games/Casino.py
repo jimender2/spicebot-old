@@ -16,7 +16,7 @@ from SpicebotShared import *
 #shared variables:
 maxbet = 100
 now = time.time()
-slottimeout = 30
+slottimeout = 5
 #rouletteshared
 roulettetimeout=25
 #maxwheel = get_botdatabase_value(bot,'casino','maxwheel')
@@ -542,13 +542,8 @@ def blackjack(bot,trigger,arg):
                 playerhits=playerhits[0]                
                 
                 myhand.append(playerhits)
-                myscore = blackjackscore(myhand)
-                if myscore >=21 and len(myhand) > 2:
-                    if myhand[0] == 'A':             
-                        myhand[0]=1
-                    if myhand[1] == 'A':
-                        myhand[1] = 1
-                    myscore= blackjackscore(myhand)            
+                myscore = blackjackscore(myhand)               
+                               
                 if myscore < 21:                
                     set_botdatabase_value(bot, player, 'myhand', myhand)
                     bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
@@ -568,6 +563,7 @@ def blackjack(bot,trigger,arg):
         elif mychoice == 'double' or mychoice == '4':
             myhand = get_botdatabase_value(bot,player, 'myhand') or 0
             payout = get_botdatabase_value(bot,player, 'mybet') or 0
+            dealerhand = get_botdatabase_value(bot,player, 'dealerhand') or 0
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
             else:
@@ -620,13 +616,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
     if (myhand == [] or myhand ==0):
         bot.say('Use deal to start a new game')
     else:
-        myscore = blackjackscore(myhand)
-        if myscore >21 and len(myhand) > 2:
-            if myhand[0] == 'A':             
-                myhand[0]=1
-            if myhand[1] == 'A':
-                myhand[1] = 1
-            myscore= blackjackscore(myhand)                
+        myscore = blackjackscore(myhand)           
 
         dealerscore = blackjackscore(dealerhand)                
         dealerwins=''
@@ -636,8 +626,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             Spicebucks.spicebucks(bot, player, 'plus', payout)
         elif myscore > 21:
             bot.say(player + ' busted and gets nothing')
-        elif myscore < 21:
-
+        elif myscore < 21:            
             dealerhitlist = ''                        
             while dealerscore < 18:
                 dealerhits=deal(bot,deck, 1)
@@ -645,7 +634,6 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
                 dealerhand.append(dealerhits)                
                 dealerscore=blackjackscore(dealerhand)
-
             if not dealerhitlist == '':
                 hitlist=len(dealerhitlist)-2 #minus two for spaces
                 if hitlist>1:                        
@@ -653,6 +641,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 else: 
                     bot.say('The dealer takes a hit and gets a' + dealerhitlist)
             showdealerhand = ''
+           
             for i in dealerhand:                        
                 showdealerhand = showdealerhand + " " + str(i)
         
@@ -692,6 +681,9 @@ def blackjackscore(hand):
                 myscore = myscore + int(card)
             except ValueError:
                 myscore=myscore
+    if myscore >21:
+        myhand=[hand.replace('A'),1]
+        blackjackscore(myhand)     
     return myscore
 
 def blackjackreset(bot,player):   
@@ -738,7 +730,7 @@ def admincommands(bot,trigger,arg):
     elif subcommand == 'slotlist':
         slotlist=get_botdatabase_value(bot,'casino','slotwheel')
         listslots=get_trigger_arg(bot,slotlist,'list')
-        bot.notice("Slot wheel: " + listslots)
+        bot.notice("Slot wheel: " + listslots,player)
            
     elif subcommand == 'roulettereset':      
         reset_botdatabase_value(bot, 'casino', 'rouletteplayers')
@@ -763,7 +755,7 @@ def admincommands(bot,trigger,arg):
             maxvalue=int(maxvalue)
             if maxvalue>=10:
                 set_botdatabase_value(bot,'casino','lotterymax',maxvalue)
-                bot.notice("Lottery max set to " + str( maxvalue),player)
+                bot.notice("Lottery max set to " + str(maxvalue),player)
             else:
                 bot.notice("Please enter a number large then 10",player)          
         else:
