@@ -8,16 +8,11 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('drugs')
+@sopel.module.commands('disclaimer')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    druglocation = trigger.group(3)
-    if not druglocation:
-        druglocation = "somewhere tropical"
-    else:
-        druglocation = str("to " + druglocation)
-    bot.say(trigger.nick + " contemplates selling everything and moving " + druglocation + " to sell drugs on a beach.")
+    bot.say(trigger.nick + " is not your doctor. The views/opinions/information expressed by " + trigger.nick + " is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment.")
