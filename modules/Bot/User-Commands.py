@@ -19,14 +19,14 @@ def main_command(bot, trigger):
     botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = special_users(bot)
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     inchannel = trigger.sender
-    
+
     if not subcommand:
         bot.say("That's my name. Don't wear it out!")
-        
+
     ## Docs
     elif subcommand == 'help' or subcommand == 'docs':
         bot.notice(instigator + ", Online Docs: " + GITWIKIURL, instigator)
-        
+
     ## Warn against Bot abuse
     elif subcommand == 'warn' and inchannel.startswith("#"):
         target = get_trigger_arg(bot, triggerargsarray, 2) or ''
@@ -35,7 +35,7 @@ def main_command(bot, trigger):
     ## Github Repo
     elif subcommand == 'github':
         bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
-    
+
     ## Modules
     elif subcommand == 'modulecount':
         cmdarray = []
@@ -45,25 +45,32 @@ def main_command(bot, trigger):
                     for x in cmd:
                         cmdarray.append(x)
         bot.say('There are currently ' + str(len(cmdarray)) +' custom modules installed.')
-        
+
     ## Bot Owner
     elif subcommand == 'owner':
         ownerlist = get_trigger_arg(bot, botownerarray, 'list')
         bot.notice("Bot Owners are: " + ownerlist, instigator)
-    
+
     ## Bot Admin
     elif subcommand == 'admin':
         adminlist = get_trigger_arg(bot, adminsarray, 'list')
         bot.notice("Bot Admin are: " + adminlist, instigator)
-        
+
     ## usage
     elif subcommand == 'usage':
         bot.say("Work In Progress")
-    
+
     ## can you see me
     elif subcommand == 'canyouseeme':
         bot.notice(instigator + ", I can see you.")
-        
+
+    ## Is the bot on?
+    elif subcommand == 'status':
+        if instigator in botusersarray:
+            bot.notice(instigator + ", the bot is on for you.")
+        else:
+            bot.notice(instigator + ", the bot is off for you.")
+
     ## On/off
     elif subcommand == 'on' or subcommand == 'off':
         if subcommand == 'on' and instigator in botusersarray:
