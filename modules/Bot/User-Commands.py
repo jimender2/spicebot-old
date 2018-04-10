@@ -66,10 +66,15 @@ def main_command(bot, trigger):
 
     ## Is the bot on?
     elif subcommand == 'status':
-        if instigator in botusersarray:
-            bot.notice(instigator + ", the bot is on for you.")
+        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        if target.lower() not in allusersinroomarray:
+            bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         else:
-            bot.notice(instigator + ", the bot is off for you.")
+            if target in botusersarray:
+                message = str(target + " has SpiceBot enabled")
+            else:
+                message = str(target + " does not have SpiceBot enabled")
+            bot.say(message)
 
     ## On/off
     elif subcommand == 'on' or subcommand == 'off':
