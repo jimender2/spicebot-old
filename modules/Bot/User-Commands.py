@@ -66,7 +66,7 @@ def main_command(bot, trigger):
 
     ## Is the bot on?
     elif subcommand == 'status':
-        target = get_trigger_arg(triggerargsarray, 2) or instigator
+        target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
         if target.lower() not in allusersinroomarray:
             bot.notice(instigator + ", It looks like " + target + " is either not here, or not a valid person.", instigator)
         else:
