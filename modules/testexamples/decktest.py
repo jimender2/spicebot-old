@@ -23,8 +23,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
     card1 = get_trigger_arg(bot, arg, 1) or 'A'
     card2 = get_trigger_arg(bot,arg,2) or 'J'
-    card3 = get_trigger_arg(bot,arg,3) or '2'
-    card4 = get_trigger_arg(bot,arg,2) or 'A'
+    card3 = get_trigger_arg(bot,arg,3) or ''
+    card4 = get_trigger_arg(bot,arg,4) or ''
+    card5=get_trigger_arg(bot,arg,5) or ''
     myhand = card1+' '+card2+' '+card3+' '+ card4
     myscore= blackjackscore(bot,myhand)
     bot.say(str(myscore))
