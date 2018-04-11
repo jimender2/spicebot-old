@@ -514,8 +514,8 @@ def blackjack(bot,trigger,arg):
                                 myhand = deal(bot,deck, 2)
                                 dealerhand = deal(bot,deck, 2)            
                                 bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
-                                myscore = blackjackscore(myhand)
-                                dealerscore = blackjackscore(dealerhand)
+                                myscore = blackjackscore(bot,myhand)
+                                dealerscore = blackjackscore(bot,dealerhand)
                                 payout = mybet
                                 if myscore == 21:
                                     payout=payout + (mybet*blackjackpayout) 
@@ -542,7 +542,7 @@ def blackjack(bot,trigger,arg):
                 playerhits=playerhits[0]                
                 
                 myhand.append(playerhits)
-                myscore = blackjackscore(myhand)               
+                myscore = blackjackscore(bot,myhand)               
                                
                 if myscore < 21:                
                     set_botdatabase_value(bot, player, 'myhand', myhand)
@@ -616,9 +616,9 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
     if (myhand == [] or myhand ==0):
         bot.say('Use deal to start a new game')
     else:
-        myscore = blackjackscore(myhand)           
+        myscore = blackjackscore(bot,myhand)           
 
-        dealerscore = blackjackscore(dealerhand)                
+        dealerscore = blackjackscore(bot,dealerhand)                
         dealerwins=''
         if myscore == 21:
             payout=payout + payout
@@ -633,7 +633,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 dealerhits=dealerhits[0]
                 dealerhitlist=dealerhitlist + ' ' + str(dealerhits)
                 dealerhand.append(dealerhits)                
-                dealerscore=blackjackscore(dealerhand)
+                dealerscore=blackjackscore(bot,dealerhand)
             if not dealerhitlist == '':
                 hitlist=len(dealerhitlist)-2 #minus two for spaces
                 if hitlist>1:                        
@@ -665,7 +665,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 bot.say('No games found say .gamble blackjack deal to start a new game')
         blackjackreset(bot,player)
 
-def blackjackscore(hand):
+def blackjackscore(bot,hand):
     myscore = 0
     for card in hand:
         if(card == 'J' or card == 'Q' or card == 'K'):
