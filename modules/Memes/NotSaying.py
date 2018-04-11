@@ -16,6 +16,5 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     itwas = get_trigger_arg(bot,triggerargsarray, 0) or "it was aliens"
-    instigator = trigger.nick
     itwas2 = itwas.upper()
     bot.say("I'm not saying " + str(itwas) + ", but " + str(itwas2) + ".")
