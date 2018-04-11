@@ -13,11 +13,9 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
-    string = get_trigger_arg(bot,triggerargsarray, 0)
+    itwas = get_trigger_arg(bot,triggerargsarray, 0) or "it was aliens"
     instigator = trigger.nick
-    if string:
-        bot.say("I'm not saying " + str(string) + ", but " + str(string) + ".")
-    else:
-        bot.say("What the hell are you implying, " + instigator + "?!")
+    itwas2 = itwas.upper()
+    bot.say("I'm not saying " + str(itwas) + ", but " + str(itwas2) + ".")
