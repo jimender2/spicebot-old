@@ -8,13 +8,11 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('notsaying')
+@sopel.module.commands('ram','RAM')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    itwas = get_trigger_arg(bot,triggerargsarray, 0) or "it was aliens"
-    itwas2 = itwas.upper()
-    bot.say("I'm not saying " + str(itwas) + ", but " + str(itwas2) + ".")
+    bot.say("You need moar RAM! Get it here: https://downloadmoreram.com/")

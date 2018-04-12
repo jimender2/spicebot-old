@@ -15,16 +15,17 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     whotoblame = get_trigger_arg(bot, triggerargsarray, 1)
+    forwhat = get_trigger_arg(bot, triggerargsarray, '2+') or ''
     if not whotoblame:
         botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
         blametargetarray = []
         for u in bot.users:
             if u in botusersarray and u != instigator and u != bot.nick:
-                blametargetarray.append(u) 
+                blametargetarray.append(u)
         if blametargetarray == []:
             whotoblame = str(instigator + "'s mom")
         else:
@@ -33,4 +34,9 @@ def execute_main(bot, trigger, triggerargsarray):
     elif whotoblame.lower() not in [u.lower() for u in bot.users]:
         bot.say("I blame " + whotoblame + " for that.")
     else:
-        bot.say("It's " + whotoblame + "'s fault.")
+        if not forwhat:
+            bot.say("It's " + whotoblame + "'s fault.")
+        elif forwhat.startswith('for'):
+            bot.say("I blame " + whotoblame + " " + str(forwhat) + ".")
+        else:
+            bot.say("I blame " + whotoblame + " for " + str(forwhat) + ".")
