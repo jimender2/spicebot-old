@@ -46,7 +46,7 @@ def blackjackscore(bot,hand):
     if myscore >21:
         for x to (len(hand)-1):
             if x == 'A':
-                hand[x]=1       
+                hand[x]='1'       
         blackjackscore(bot,hand)                         
     return myscore
 
