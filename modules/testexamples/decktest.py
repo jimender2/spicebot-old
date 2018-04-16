@@ -21,6 +21,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
+    myscore=0
     card1 = get_trigger_arg(bot, arg, 1) or 'A'
     card2 = get_trigger_arg(bot,arg,2) or 'J'
     card3 = get_trigger_arg(bot,arg,3) or ''
