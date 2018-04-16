@@ -46,7 +46,7 @@ def blackjackscore(bot,hand):
     if myscore >21:
         hand =get_trigger_arg(bot,hand,'list')       
         for x in hand:
-            hand=hand.replace('A','1')
+            hand=hand.replace('A','1',5)
             blackjackscore(bot,hand)                         
     return myscore
 
