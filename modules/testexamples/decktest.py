@@ -44,8 +44,9 @@ def blackjackscore(bot,hand):
             except ValueError:
                 myscore=myscore
     if myscore >21:
-        hand =get_trigger_arg(bot,hand,'list')     
-        hand=hand.replace('A','1',5)
+        for x to (len(hand)-1):
+            if x == 'A':
+                hand[x]=1       
         blackjackscore(bot,hand)                         
     return myscore
 
