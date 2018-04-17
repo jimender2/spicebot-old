@@ -45,12 +45,10 @@ def blackjackscore(bot,hand):
                 myscore = myscore + int(card)
             except ValueError:
                 myscore=myscore
-    if myscore >21 and 'A' in myhand:
-        for x in range(0,(len(hand)-1)):
-            if x == 'A':
-                hand[x]='1'       
-        blackjackscore(bot,hand) 
-    bot.say("Scoring hand: " + hand)
+    if myscore >21 and 'A' in hand:
+        hand =get_trigger_arg(bot,hand,'list')
+        hand=hand.replace('A','1',5)
+        blackjackscore(bot,hand)     
     return myscore
 
 def blackjackreset(bot,player):   
