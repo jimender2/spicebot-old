@@ -44,8 +44,9 @@ def blackjackscore(bot,hand):
     if myscore >21 and 'A' in hand:        
         hand=hand.replace('A','1',5)
         myscore = 0
-        blackjackscore(bot,hand)     
-    return myscore
+        blackjackscore(bot,hand)
+    else:
+        return myscore
 
 def blackjackreset(bot,player):   
     reset_botdatabase_value(bot,player, 'myhand')
