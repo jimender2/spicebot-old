@@ -45,7 +45,7 @@ def blackjackscore(bot,hand):
                 myscore = myscore + int(card)
             except ValueError:
                 myscore=myscore
-    if myscore >21:
+    if myscore >21 and 'A' in myhand:
         for x in range(0,(len(hand)-1)):
             if x == 'A':
                 hand[x]='1'       
