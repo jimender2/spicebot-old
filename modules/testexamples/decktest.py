@@ -49,7 +49,8 @@ def blackjackscore(bot,hand):
         for x in range(0,(len(hand)-1)):
             if x == 'A':
                 hand[x]='1'       
-        blackjackscore(bot,hand)                         
+        blackjackscore(bot,hand) 
+    bot.say("Scoring hand: " + hand)
     return myscore
 
 def blackjackreset(bot,player):   
