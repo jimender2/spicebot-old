@@ -35,7 +35,7 @@ def blackjackscore(bot,hand):
     myhand= []
     for i in range(0,(len(hand)+1)):
         card = hand[i]
-        bot.say("Count: "+ str(i) + "Card: " + str(card))
+        bot.say("Count: "+ str(i) + " Card: " + str(card))
         if card.isdigit():  
                                                      
             myscore=myscore+int(card)            
