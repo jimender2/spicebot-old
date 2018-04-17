@@ -22,7 +22,8 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
     myscore=0
-    myhand = get_trigger_arg(bot, arg, '1+') or 'A'    
+    myhand = get_trigger_arg(bot, arg, '1+') or 'A'  
+    myhand =get_trigger_arg(bot,myhand,'list')
     bot.say("Input: "+ myhand)
     myscore= blackjackscore(bot,myhand)
     
@@ -31,7 +32,7 @@ def execute_main(bot, trigger, arg):
 
 def blackjackscore(bot,hand):
     myscore = 0
-    hand =get_trigger_arg(bot,hand,'list')
+    
     for card in hand:
         if(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
