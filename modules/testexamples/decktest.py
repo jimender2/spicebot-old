@@ -34,6 +34,7 @@ def blackjackscore(bot,hand):
     myscore = 0
     
     for card in hand:
+        bot.say("Card " +str(card))
         if(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
