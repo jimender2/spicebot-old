@@ -33,8 +33,8 @@ def execute_main(bot, trigger, arg):
 def blackjackscore(bot,hand):
     myscore = 0
     
-    for x in range(0,(len(hand)-1)):
-        card = hand[x]
+    for card in hand:
+        
         bot.say("Card " +str(card))
         if(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
