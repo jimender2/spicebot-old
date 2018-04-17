@@ -42,9 +42,7 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11              
     if myscore >21 and 'A' in hand:
-        for x in range(0,(len(hand)+1)):
-            if hand[x] == 'A':
-               hand[x]='1' 
+        hand.replace('A','1',5)        
         blackjackscore(bot,hand)
    
     return myscore
