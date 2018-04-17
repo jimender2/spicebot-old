@@ -32,25 +32,16 @@ def execute_main(bot, trigger, arg):
 
 def blackjackscore(bot,hand):
     myscore = 0
-    
-    for card in hand:
-        
-        bot.say("Card " +str(card))
-        if(card == 'J' or card == 'Q' or card == 'K'):
+    myhand= []
+    for i in range(0,(len(hand)+1)):
+        card = get_trigger_arg(bot, arg, i)
+        if card.isdigit:
+            myscore=myscore+int(card)            
+        elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
-            testscore = myscore + 11
-            if testscore>21:
-                myscore = myscore + 1
-            else:
-                myscore = myscore + 11
-        else:
-            try:
-                myscore = myscore + int(card)
-            except ValueError:
-                myscore=myscore
-    if myscore >21 and 'A' in hand:
-        
+            testscore = myscore + 11              
+    if myscore >21 and 'A' in hand:        
         hand=hand.replace('A','1',5)
         blackjackscore(bot,hand)     
     return myscore
