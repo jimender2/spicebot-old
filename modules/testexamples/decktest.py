@@ -23,7 +23,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
     myscore=0
     myhand = get_trigger_arg(bot, arg, 0) or 'A'    
+    bot.say("Input: "+ myhand)
     myscore= blackjackscore(bot,myhand)
+    
     bot.say(str(myscore))
     
 
