@@ -35,7 +35,9 @@ def blackjackscore(bot,hand):
     myhand= []
     for i in range(0,(len(hand)+1)):
         card = get_trigger_arg(bot, hand, i)
-        if card.isdigit():
+        bot.say("Count: "+ str(i) + "Card: " + str(card))
+        if card.isdigit():  
+                                                     
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
