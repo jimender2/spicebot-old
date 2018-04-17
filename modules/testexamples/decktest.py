@@ -31,6 +31,7 @@ def execute_main(bot, trigger, arg):
 
 def blackjackscore(bot,hand):
     myscore = 0
+    hand =get_trigger_arg(bot,hand,'list')
     for card in hand:
         if(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
@@ -46,7 +47,7 @@ def blackjackscore(bot,hand):
             except ValueError:
                 myscore=myscore
     if myscore >21 and 'A' in hand:
-        hand =get_trigger_arg(bot,hand,'list')
+        
         hand=hand.replace('A','1',5)
         blackjackscore(bot,hand)     
     return myscore
