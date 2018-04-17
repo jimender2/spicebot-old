@@ -43,6 +43,7 @@ def blackjackscore(bot,hand):
             myscore = myscore + 11              
     if myscore >21 and 'A' in hand:        
         hand=hand.replace('A','1',5)
+        myscore = 0
         blackjackscore(bot,hand)     
     return myscore
 
