@@ -21,36 +21,34 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
         
 def execute_main(bot, trigger, arg):
-    card1 = get_trigger_arg(bot, arg, 1) or 'A'
-    card2 = get_trigger_arg(bot,arg,2) or 'J'
-    card3 = get_trigger_arg(bot,arg,3) or ''
-    card4 = get_trigger_arg(bot,arg,4) or ''
-    card5=get_trigger_arg(bot,arg,5) or ''
-    myhand = card1+' '+card2+' '+card3+' '+ card4
+    myscore=0
+    myhand = get_trigger_arg(bot, arg, '1+') or 'A'  
+    #myhand =get_trigger_arg(bot,myhand,'list')
+    bot.say("Input: "+ str(myhand))
     myscore= blackjackscore(bot,myhand)
+    
     bot.say(str(myscore))
     
 
 def blackjackscore(bot,hand):
     myscore = 0
-    for card in hand:
-        if(card == 'J' or card == 'Q' or card == 'K'):
+    myhand= []
+    for i in range(0,(len(hand))):
+        card = hand[i]
+        bot.say("Count: "+ str(i) + " Card: " + str(card))
+        if card.isdigit():  
+                                                     
+            myscore=myscore+int(card)            
+        elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
-            testscore = myscore + 11
-            if testscore>21:
-                myscore = myscore + 1
-            else:
-                myscore = myscore + 11
-        else:
-            try:
-                myscore = myscore + int(card)
-            except ValueError:
-                myscore=myscore
-    if myscore >21:
-        hand =get_trigger_arg(bot,hand,'list')
-        hand=hand.replace('A','1')
-        blackjackscore(bot,hand)     
+            myscore = myscore + 11              
+    if myscore > 21:
+        if 'A' in hand:
+            hand.replace('A','1')
+            myscore = 0
+            #blackjackscore(bot,hand)
+   
     return myscore
 
 def blackjackreset(bot,player):   

@@ -39,6 +39,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
+    #creator = "Spciebot" #IT_Sean creator, removing immunity
     creator = "IT_Sean"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
