@@ -55,7 +55,7 @@ def roulette():
         url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&tag=nsfw&rating=r'
     else:
         url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&tag=wholesome&rating=g'
-    data = jason.loads(urllib2.urlopen(url).read())
+    data = json.loads(urllib2.urlopen(url).read())
     try:
         id = data['data'][0]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
