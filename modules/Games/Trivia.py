@@ -29,10 +29,14 @@ def getQuestion():
     data = json.loads(urllib2.urlopen(url).read())
     results = str(data['results'])
     a = results.split(',')
-    category = a[0]
-    type = a[1]
-    question  = a[2]
-    answer = a[4]
+    category = splitEntry(a[0])
+    type = splitEntry(a[1])
+    question  = splitEntry(a[2])
+    answer = splitEntry(a[4])
     return category,type,question,answer
 
-
+def splitEntry(entry):
+    splitChar = ':'
+    a = entry.split(splitChar)
+    result = a[1]
+    return result
