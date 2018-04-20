@@ -46,10 +46,10 @@ def getQuestion():
     question  = splitEntry(a[2])
     answer = splitEntry(a[4])
     
-   ' choiceOne = sanitizeString(choiceOne)
-   ' choiceTwo = sanitizeString(choiceTwo)
-   ' choiceThree = sanitizeString(choiceThree)
-   ' answer = sanitizeString(answer)
+    choiceOne = sanitizeString(choiceOne)
+    choiceTwo = sanitizeString(choiceTwo)
+    choiceThree = sanitizeString(choiceThree)
+    answer = sanitizeString(answer)
     arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
     random.shuffle(arrAnswers)
     
@@ -63,7 +63,7 @@ def splitEntry(entry):
     result = sanitizeString(result)
     return result
 
-def sanitizeString(entry)
+def sanitizeString(entry):
     result = entry.replace('[','')
     result = result.replace(']','')
     result = result.replace("&quot;",'"')
