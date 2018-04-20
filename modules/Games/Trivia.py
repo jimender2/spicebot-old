@@ -72,7 +72,8 @@ def sanitizeString(entry):
     result = entry.replace('[','')
     result = result.replace(']','')
     result = result.replace("&quot;",'"')
-    result = result.replace("&#039","'")
+    result = result.replace("&#039;","'")
+    result = result.replace("'","",len(result))
     return result
     
     
