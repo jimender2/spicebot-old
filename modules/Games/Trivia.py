@@ -41,5 +41,5 @@ def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
     result = a[1]
-    result = result.replace("u'","",1)
+    result = result.replace("u'","",1).strip()
     return result
