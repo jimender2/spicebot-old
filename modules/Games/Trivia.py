@@ -46,7 +46,7 @@ def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
     bot.say("Still waiting for someone to answer this one: " + question)
-    bot.say("Choices:" arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+    bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
     
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
