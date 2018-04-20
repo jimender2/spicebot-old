@@ -22,6 +22,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     type,question,arrAnswers,answer = getQuestion()
+    set_database_value(bot,'triviauser','triviaq',question)
+    questionfromdb = get_database_value(bot,'triviauser','triviaq')
     if type == "boolean":
         question = "True or False: " + question
         bot.say("Question: " + question)
@@ -29,6 +31,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Question: " + question)
         bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
     bot.say("Answer: " + answer)
+    bot.say("I stored in in the db. Here it is: " + str(questionfromdb))
     
 
 def getQuestion():
