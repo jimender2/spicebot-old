@@ -21,19 +21,18 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     category,type,question,answer = getQuestion()
-    bot.say("Category: " + category + " Type: " + type + " Question: " + question)
+    bot.say("Question: " + question)
+    bot.say("Answer: " + answer)
     
 
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
     data = json.loads(urllib2.urlopen(url).read())
     results = str(data['results'])
-    a = results.split(',')
-    category = splitEntry(a[0])
-    type = splitEntry(a[1])
+    a = results.split("',")    
     question  = splitEntry(a[2])
     answer = splitEntry(a[4])
-    return category,type,question,answer
+    return question,answer
 
 def splitEntry(entry):
     splitChar = ':'
