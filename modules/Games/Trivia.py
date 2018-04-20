@@ -40,7 +40,7 @@ def askQuestion(bot):
         bot.say("Question: " + question)
     else:
         bot.say("Question: " + question)
-        bot.say("Choices:" arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
         
 def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
