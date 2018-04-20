@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if type == "boolean":
         question = "True or False: " + question
     bot.say("Question: " + question)
-    bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[4]
+    bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
     bot.say("Answer: " + answer)
     
 
@@ -38,7 +38,7 @@ def getQuestion():
     arrWrong = str(wrongAnswers).split("',")
     choiceOne = arrWrong[0].replace("u'","",1).strip()
     choiceTwo = arrWrong[1].replace("u'","",1).strip()
-    choiceThree = arrWrong[1].replace("u'","",1).strip()
+    choiceThree = arrWrong[2].replace("u'","",1).strip()
     
     results = str(data['results'])
     a = results.split("',") 
