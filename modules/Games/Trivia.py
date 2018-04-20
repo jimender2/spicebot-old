@@ -27,10 +27,11 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         askQuestion(bot)
         
+
     
 def askQuestion(bot):
     type,question,arrAnswers,answer = getQuestion()
-    set_database_value(bot,'triviauser','triviaq',question)
+    set_database_value(bot,'triviauser','triviaq',question)    
     set_database_value(bot,'triviauser','triviaa',answer)
     set_database_value(bot,'triviauser','triviachoices',arrAnswers)
     set_database_value(bot,'triviauser','triviaanswered','f')
@@ -46,7 +47,10 @@ def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
     bot.say("Still waiting for someone to answer this one: " + question)
-    bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+    if len(arrAnswers > 2):
+        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+    else:
+        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
     
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
