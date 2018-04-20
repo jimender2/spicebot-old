@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
         question = "True or False: " + question
         bot.say("Question: " + question)
     else:
-        bot.say(Question: " + question)
+        bot.say("Question: " + question)
         bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
     bot.say("Answer: " + answer)
     
@@ -56,11 +56,8 @@ def getQuestion():
     else:
         question  = splitEntry(a[2])
         answer = splitEntry(a[4])
-        arrAnswers=["True","False"]
-        
-    
-    
-    
+        arrAnswers=['True','False']
+                
     return type,question,arrAnswers,answer
 
 def splitEntry(entry):
