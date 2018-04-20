@@ -78,5 +78,23 @@ def sanitizeString(entry):
     result = result.replace("&#039;","'")
     result = result.replace("'","",len(result))
     return result
+
+# Get a value
+def get_database_value(bot, nick, databasekey):
+    databasecolumn = str('trivia_' + databasekey)
+    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+    return database_value
+
+# Set a value
+def set_database_value(bot, nick, databasekey, value):
+    databasecolumn = str('trivia_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, value)
+    
+# get current value and update it adding newvalue
+def adjust_database_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey)
+    databasecolumn = str('trivia_' + databasekey)
+    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+
     
     
