@@ -46,7 +46,7 @@ def getQuestion():
     question  = splitEntry(a[2])
     answer = splitEntry(a[4])
     
-    arrAnswers = [choiceOne,ChoiceTwo,ChoiceThree,answer]
+    arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
     random.shuffle(arrAnswers)
     
     return type,question,arrAnswers,answer
