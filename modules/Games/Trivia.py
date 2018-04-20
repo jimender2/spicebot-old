@@ -21,19 +21,33 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
+    lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
+    if lastquestionanswered == 'f':
+        getQuestionFromDb(bot)
+    else:
+        askQuestion(bot)
+        
+    
+def askQuestion(bot):
     type,question,arrAnswers,answer = getQuestion()
     set_database_value(bot,'triviauser','triviaq',question)
-    questionfromdb = get_database_value(bot,'triviauser','triviaq')
+    set_database_value(bot,'triviauser','triviaa',answer)
+    set_database_value(bot,'triviauser','triviachoices',arrAnswers)
+    set_database_value(bot,'triviauser','triviaanswered','f')
+    
     if type == "boolean":
         question = "True or False: " + question
         bot.say("Question: " + question)
     else:
         bot.say("Question: " + question)
-        bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
-    bot.say("Answer: " + answer)
-    bot.say("I stored in in the db. Here it is: " + str(questionfromdb))
+        bot.say("Choices:" arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+        
+def getQuestionFromDb(bot):
+    question = get_database_value(bot,'triviauser','triviaq')
+    arrAnswers = get_database_value(bot,'triviauser','triviachoices')
+    bot.say("Still waiting for someone to answer this one: " + question)
+    bot.say("Choices:" arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
     
-
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
     data = json.loads(urllib2.urlopen(url).read())
@@ -55,6 +69,10 @@ def getQuestion():
         answer = sanitizeString(answer)
         arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
         random.shuffle(arrAnswers)
+        arrAnswers[0] = "A) "+arrAnswers[0]
+        arrAnswers[1] = "B) "+arrAnswers[1]
+        arrAnswers[2] = "C) "+arrAnswers[2]
+        arrAnswers[3] = "D) "+arrAnswers[3]
         question  = splitEntry(a[2])        
     else:
         question  = splitEntry(a[2])
