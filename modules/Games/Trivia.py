@@ -20,7 +20,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    question,answer = getQuestion()
+    type,question,answer = getQuestion()
+    if type == "boolean":
+        question = "True or False: " + question
     bot.say("Question: " + question)
     bot.say("Answer: " + answer)
     
@@ -29,14 +31,15 @@ def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
     data = json.loads(urllib2.urlopen(url).read())
     results = str(data['results'])
-    a = results.split("',")    
+    a = results.split("',") 
+    type = splitEntry(a[1])
     question  = splitEntry(a[2])
     answer = splitEntry(a[4])
-    return question,answer
+    return type,question,answer
 
 def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
     result = a[1]
-    result = result.replace("u'","'",1)
+    result = result.replace("u'","",1)
     return result
