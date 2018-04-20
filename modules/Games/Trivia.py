@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    category,type,question,answer = getQuestion()
+    question,answer = getQuestion()
     bot.say("Question: " + question)
     bot.say("Answer: " + answer)
     
