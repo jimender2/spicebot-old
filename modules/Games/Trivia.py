@@ -24,34 +24,42 @@ def execute_main(bot, trigger, triggerargsarray):
     type,question,arrAnswers,answer = getQuestion()
     if type == "boolean":
         question = "True or False: " + question
-    bot.say("Question: " + question)
-    bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
+        bot.say("Question: " + question)
+    else:
+        bot.say(Question: " + question)
+        bot.say("Choices: A)" + arrAnswers[0] + " B)" + arrAnswers[1] + " C)" + arrAnswers[2] + " D)" + arrAnswers[3])
     bot.say("Answer: " + answer)
     
 
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
     data = json.loads(urllib2.urlopen(url).read())
-    
-    wrongAnswers = data['results'][0]
-    wrongAnswers = wrongAnswers['incorrect_answers']
-    arrWrong = str(wrongAnswers).split("',")
-    choiceOne = arrWrong[0].replace("u'","",1).strip()
-    choiceTwo = arrWrong[1].replace("u'","",1).strip()
-    choiceThree = arrWrong[2].replace("u'","",1).strip()
-    
+           
     results = str(data['results'])
     a = results.split("',") 
     type = splitEntry(a[1])
-    question  = splitEntry(a[2])
-    answer = splitEntry(a[4])
+    if type != "boolean":
+        wrongAnswers = data['results'][0]
+        wrongAnswers = wrongAnswers['incorrect_answers']
+        arrWrong = str(wrongAnswers).split("',")
+        choiceOne = arrWrong[0].replace("u'","",1).strip()
+        choiceTwo = arrWrong[1].replace("u'","",1).strip()
+        choiceThree = arrWrong[2].replace("u'","",1).strip()
+        choiceOne = sanitizeString(choiceOne)
+        choiceTwo = sanitizeString(choiceTwo)
+        choiceThree = sanitizeString(choiceThree)
+        answer = sanitizeString(answer)
+        arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
+        random.shuffle(arrAnswers)
+        question  = splitEntry(a[2])
+        answer = splitEntry(a[4])
+    else:
+        question  = splitEntry(a[2])
+        answer = splitEntry(a[4])
+        arrAnswers=["True","False"]
+        
     
-    choiceOne = sanitizeString(choiceOne)
-    choiceTwo = sanitizeString(choiceTwo)
-    choiceThree = sanitizeString(choiceThree)
-    answer = sanitizeString(answer)
-    arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
-    random.shuffle(arrAnswers)
+    
     
     return type,question,arrAnswers,answer
 
