@@ -485,4 +485,4 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
-	bot.day(answer)
+    bot.say(answer)
