@@ -263,7 +263,7 @@ replies = ["clock speed",
 			"Processes running slowly due to weak power supply",
 			"Our ISP is having {switching,routing,SMDS,frame relay} problems",
 			"We've run out of licenses",
-			"Interference from lunar radiatio",n
+			"Interference from lunar radiation",
 			"Standing room only on the bus.",
 			"You need to install an RTFM interface.",
 			"That would be because the software doesn't work.",
