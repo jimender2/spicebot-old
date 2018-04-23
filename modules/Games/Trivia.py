@@ -21,11 +21,14 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
-    if lastquestionanswered == 'f':
-        getQuestionFromDb(bot)
+    if triggerargsarray[0] == 'answer':
+        answer(bot,trigger,triggerarsarray)
     else:
-        askQuestion(bot)
+        lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
+        if lastquestionanswered == 'f':
+            getQuestionFromDb(bot)
+        else:
+            askQuestion(bot)
         
 
     
