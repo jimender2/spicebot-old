@@ -51,7 +51,7 @@ def getQuestionFromDb(bot):
     try:
         bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
     except IndexError:
-        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
+        bot.say("Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
     #else:
     #bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
     
@@ -88,6 +88,21 @@ def getQuestion():
                 
     return type,question,arrAnswers,answer
 
+def answer(bot,trigger,triggerargsarray):
+    if triggerargsarray[0] == "answer":
+        guesser = trigger.nick
+        useranswer == triggerargsarray[1]
+        correctanswer = get_database_value(bot,'triviauser','triviaa')
+        useranswer = useranswer.lower()
+        correctanswer = correctanswer.lower()
+        if useranswer == correctanswer:
+            adjust_database_value(bot,'triviauser','triviaanswered,'t')
+            bot.say(guesser + " has answered correctly!")
+        else:
+            bot.say("Sorry, " + guesser + ", that is incorrect."                      
+                                  
+                                 
+        
 def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
