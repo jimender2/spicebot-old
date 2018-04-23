@@ -59,8 +59,8 @@ def getQuestionFromDb(bot):
     #if len(str(arrAnswers) > 2):
     try:
         bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
-        correctanswer = get_database_value(bot,'triviauser','triviaa')
-        bot.say("The answer is : " + correctanswer)
+        #correctanswer = get_database_value(bot,'triviauser','triviaa')
+        #bot.say("The answer is : " + correctanswer)
     except IndexError:
         bot.say("Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
     #else:
