@@ -24,6 +24,11 @@ def execute_main(bot, trigger, triggerargsarray):
     if len(triggerargsarray) > 0:
         if triggerargsarray[0] == 'answer':
             answer(bot,trigger,triggerargsarray)
+        elif triggerargsarray[0] == 'clearq':
+            set_database_value(bot,'triviauser','triviaq','')   
+            set_database_value(bot,'triviauser','triviaa','')
+            set_database_value(bot,'triviauser','triviachoices','')
+            set_database_value(bot,'triviauser','triviaanswered','t')
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
@@ -78,17 +83,17 @@ def getQuestion():
         choiceThree = sanitizeString(choiceThree)
         answer = splitEntry(a[4])
         answer = sanitizeString(answer)
-        arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
+        arrAnswers = ["A)"+choiceOne,"B)"+choiceTwo,"C)"+choiceThree,"D)"+answer]
         random.shuffle(arrAnswers)
-        arrAnswers[0] = "A) "+arrAnswers[0]
-        arrAnswers[1] = "B) "+arrAnswers[1]
-        arrAnswers[2] = "C) "+arrAnswers[2]
-        arrAnswers[3] = "D) "+arrAnswers[3]
+        #arrAnswers[0] = "A) "+arrAnswers[0]
+        #arrAnswers[1] = "B) "+arrAnswers[1]
+        #arrAnswers[2] = "C) "+arrAnswers[2]
+        #arrAnswers[3] = "D) "+arrAnswers[3]
         question  = splitEntry(a[2])        
     else:
         question  = splitEntry(a[2])
         answer = splitEntry(a[4])
-        arrAnswers=['True','False']
+        arrAnswers=['A)True','B)False']
                 
     return type,question,arrAnswers,answer
 
@@ -97,6 +102,7 @@ def answer(bot,trigger,triggerargsarray):
         guesser = trigger.nick
         useranswer = triggerargsarray[1]
         correctanswer = get_database_value(bot,'triviauser','triviaa')
+        correctanswer = correctanswer[0]
         useranswer = useranswer.lower()
         correctanswer = correctanswer.lower()
         if useranswer == correctanswer:
@@ -105,8 +111,7 @@ def answer(bot,trigger,triggerargsarray):
         else:
             bot.say("Sorry, " + guesser + ", that is incorrect.")                    
                                   
-                                 
-        
+                                        
 def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
