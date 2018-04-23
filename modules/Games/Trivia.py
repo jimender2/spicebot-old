@@ -8,10 +8,11 @@ import os
 import urllib2
 import json
 import random
-import Spicebucks
-
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
+import Spicebucks
+
+
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 
