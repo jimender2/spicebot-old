@@ -46,7 +46,7 @@ def askQuestion(bot):
     set_database_value(bot,'triviauser','triviaanswered','f')
     
     if type == "boolean":
-        question = "True or False: " + question
+        question = "(T)rue or (F)alse: " + question
         bot.say("Question: " + question)
     else:
         bot.say("Question: " + question)
@@ -55,7 +55,7 @@ def askQuestion(bot):
 def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
-    bot.say("Still waiting for someone to answer this one: " + question)
+    bot.say("Still waiting for someone to answer this one: " + question)    
     #if len(str(arrAnswers) > 2):
     try:
         bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
