@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     if triggerargsarray[0] == 'answer':
-        answer(bot,trigger,triggerarsarray)
+        answer(bot,trigger,triggerargsarray)
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
