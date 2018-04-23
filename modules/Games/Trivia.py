@@ -94,7 +94,7 @@ def getQuestion():
 def answer(bot,trigger,triggerargsarray):
     if triggerargsarray[0] == "answer":
         guesser = trigger.nick
-        useranswer == triggerargsarray[1]
+        useranswer = triggerargsarray[1]
         correctanswer = get_database_value(bot,'triviauser','triviaa')
         useranswer = useranswer.lower()
         correctanswer = correctanswer.lower()
