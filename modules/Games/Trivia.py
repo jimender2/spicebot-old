@@ -48,7 +48,10 @@ def getQuestionFromDb(bot):
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
     bot.say("Still waiting for someone to answer this one: " + question)
     #if len(str(arrAnswers) > 2):
-    bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+    try:
+        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+    except IndexError:
+        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
     #else:
     #bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
     
