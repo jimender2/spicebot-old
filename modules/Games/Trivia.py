@@ -96,7 +96,7 @@ def answer(bot,trigger,triggerargsarray):
         useranswer = useranswer.lower()
         correctanswer = correctanswer.lower()
         if useranswer == correctanswer:
-            set_database_value(bot,'triviauser','triviaanswered,'t')
+            set_database_value(bot,'triviauser','triviaanswered','t')
             bot.say(guesser + " has answered correctly!")
         else:
             bot.say("Sorry, " + guesser + ", that is incorrect."                      
