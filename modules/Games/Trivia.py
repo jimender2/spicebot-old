@@ -100,21 +100,23 @@ def getQuestion():
     return type,question,arrAnswers,answer
 
 def answer(bot,trigger,triggerargsarray):
-    if triggerargsarray[0] == "answer":
-        guesser = trigger.nick
-        useranswer = triggerargsarray[1]
-        correctanswer = get_database_value(bot,'triviauser','triviaa')
-        possibleanswers = get_database_value(bot,'triviauser','triviachoices')
-        for answer in possibleanswers:
-            if correctanswer in answer:
-                correctanswer = answer[0]
-        useranswer = useranswer.lower()
-        correctanswer = correctanswer.lower()
-        if useranswer == correctanswer:
-            set_database_value(bot,'triviauser','triviaanswered','t')
-            bot.say(guesser + " has answered correctly!")
-        else:
-            bot.say("Sorry, " + guesser + ", that is incorrect.")                    
+    answered = get_database_value(bot,'triviauser','triviaanswered')
+    if answered != 't':
+        if triggerargsarray[0] == "answer":
+            guesser = trigger.nick
+            useranswer = triggerargsarray[1]
+            correctanswer = get_database_value(bot,'triviauser','triviaa')
+            possibleanswers = get_database_value(bot,'triviauser','triviachoices')
+            for answer in possibleanswers:
+                if correctanswer in answer:
+                    correctanswer = answer[0]
+                    useranswer = useranswer.lower()
+                    correctanswer = correctanswer.lower()
+                    if useranswer == correctanswer:
+                        set_database_value(bot,'triviauser','triviaanswered','t')
+                        bot.say(guesser + " has answered correctly!")
+                    else:
+                        bot.say("Sorry, " + guesser + ", that is incorrect.")                    
                                   
                                         
 def splitEntry(entry):
