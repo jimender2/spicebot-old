@@ -21,8 +21,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    if triggerargsarray[0] == 'answer':
-        answer(bot,trigger,triggerargsarray)
+    if len(triggerargsarray) > 0:
+        if (triggerargsarray[0] == 'answer':
+            answer(bot,trigger,triggerargsarray)
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
