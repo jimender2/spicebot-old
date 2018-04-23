@@ -104,7 +104,10 @@ def answer(bot,trigger,triggerargsarray):
         guesser = trigger.nick
         useranswer = triggerargsarray[1]
         correctanswer = get_database_value(bot,'triviauser','triviaa')
-        correctanswer = correctanswer[0]
+        possibleanswers = get_database_value(bot,'triviauser','triviachoices')
+        for answer in possibleanswers:
+            if correctanswer in answer:
+                correctanswer = answer[0]
         useranswer = useranswer.lower()
         correctanswer = correctanswer.lower()
         if useranswer == correctanswer:
