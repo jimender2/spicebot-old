@@ -8,6 +8,7 @@ import os
 import urllib2
 import json
 import random
+import Spicebucks
 
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
@@ -114,7 +115,8 @@ def answer(bot,trigger,triggerargsarray):
                     correctanswer = correctanswer.lower()
                     if useranswer == correctanswer:
                         set_database_value(bot,'triviauser','triviaanswered','t')
-                        bot.say(guesser + " has answered correctly!")
+                        Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
+                        bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                     else:
                         bot.say("Sorry, " + guesser + ", that is incorrect.")
     else:
