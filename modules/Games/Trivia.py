@@ -8,9 +8,11 @@ import os
 import urllib2
 import json
 import random
-
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
+import Spicebucks
+
+
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 
@@ -114,9 +116,12 @@ def answer(bot,trigger,triggerargsarray):
                     correctanswer = correctanswer.lower()
                     if useranswer == correctanswer:
                         set_database_value(bot,'triviauser','triviaanswered','t')
-                        bot.say(guesser + " has answered correctly!")
+                        Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
+                        bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                     else:
-                        bot.say("Sorry, " + guesser + ", that is incorrect.")                    
+                        bot.say("Sorry, " + guesser + ", that is incorrect.")
+    else:
+        bot.say("The last question has been answered! Type .trivia for a new question!")
                                   
                                         
 def splitEntry(entry):
