@@ -83,17 +83,17 @@ def getQuestion():
         choiceThree = sanitizeString(choiceThree)
         answer = splitEntry(a[4])
         answer = sanitizeString(answer)
-        arrAnswers = ["A)"+choiceOne,"B)"+choiceTwo,"C)"+choiceThree,"D)"+answer]
+        arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
         random.shuffle(arrAnswers)
-        #arrAnswers[0] = "A) "+arrAnswers[0]
-        #arrAnswers[1] = "B) "+arrAnswers[1]
-        #arrAnswers[2] = "C) "+arrAnswers[2]
-        #arrAnswers[3] = "D) "+arrAnswers[3]
+        arrAnswers[0] = "A) "+arrAnswers[0]
+        arrAnswers[1] = "B) "+arrAnswers[1]
+        arrAnswers[2] = "C) "+arrAnswers[2]
+        arrAnswers[3] = "D) "+arrAnswers[3]
         question  = splitEntry(a[2])        
     else:
         question  = splitEntry(a[2])
         answer = splitEntry(a[4])
-        arrAnswers=['A)True','B)False']
+        arrAnswers=['True','False']
                 
     return type,question,arrAnswers,answer
 
