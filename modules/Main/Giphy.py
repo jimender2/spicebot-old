@@ -52,7 +52,7 @@ def roulette():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     #randno = randint(0,9)
     #if randno == 4:
-    url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + 'rating=nsfw'
+    url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&rating=nsfw'
     #else:
      #   url = 'http://api.giphy.com/v1/gifs/random?api_key=' + str(api) + '&rating=g'
     data = json.loads(urllib2.urlopen(url).read())
