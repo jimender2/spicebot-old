@@ -119,13 +119,13 @@ def answer(bot,trigger,triggerargsarray):
                         correctanswer = answer[0]
                         useranswer = useranswer.lower()
                         correctanswer = correctanswer.lower()
-                        if useranswer == correctanswer:
-                            resetDbValues(bot)
-                            Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
-                            bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
-                            break
-                        else:
-                            bot.say("Sorry, " + guesser + ", that is incorrect.")
+                        break
+                if useranswer == correctanswer:
+                   resetDbValues(bot)
+                   Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
+                   bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")                          
+                else:
+                    bot.say("Sorry, " + guesser + ", that is incorrect.")
             else:
                 timeDiff = 10 - lastAttemptTime
                 bot.say(guesser + ", you must wait " + str(timeDiff) + " seconds before attempting to guess again!")
