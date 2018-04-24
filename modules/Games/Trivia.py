@@ -123,6 +123,7 @@ def answer(bot,trigger,triggerargsarray):
                             resetDbValues(bot)
                             Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
                             bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
+                            break
                         else:
                             bot.say("Sorry, " + guesser + ", that is incorrect.")
             else:
