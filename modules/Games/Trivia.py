@@ -27,10 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if triggerargsarray[0] == 'answer':
             answer(bot,trigger,triggerargsarray)
         elif triggerargsarray[0] == 'clearq':
-            set_database_value(bot,'triviauser','triviaq','')   
-            set_database_value(bot,'triviauser','triviaa','')
-            set_database_value(bot,'triviauser','triviachoices','')
-            set_database_value(bot,'triviauser','triviaanswered','t')
+            resetDbValues(bot)
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
@@ -39,6 +36,11 @@ def execute_main(bot, trigger, triggerargsarray):
             askQuestion(bot)
         
 
+def resetDbValues(bot):
+    set_database_value(bot,'triviauser','triviaq','')   
+    set_database_value(bot,'triviauser','triviaa','')
+    set_database_value(bot,'triviauser','triviachoices','')
+    set_database_value(bot,'triviauser','triviaanswered','t')
     
 def askQuestion(bot):
     type,question,arrAnswers,answer = getQuestion()
@@ -102,10 +104,13 @@ def getQuestion():
     return type,question,arrAnswers,answer
 
 def answer(bot,trigger,triggerargsarray):
-    answered = get_database_value(bot,'triviauser','triviaanswered')
+    answered = get_database_value(bot,'triviauser','triviaanswered')    
     if answered != 't':
         if triggerargsarray[0] == "answer":
             guesser = trigger.nick
+            lastAttemptTime = getTimeSinceLastAttempt(bot,guesser,'trivia_lastattempt')
+            bot.say(guesser + ", your last attempt to answer was at " + lastAttemptTime)
+            set_database_value(bot,guesser,'trivia_lastattempt',time.time())                    
             useranswer = triggerargsarray[1]
             correctanswer = get_database_value(bot,'triviauser','triviaa')
             possibleanswers = get_database_value(bot,'triviauser','triviachoices')
@@ -115,7 +120,8 @@ def answer(bot,trigger,triggerargsarray):
                     useranswer = useranswer.lower()
                     correctanswer = correctanswer.lower()
                     if useranswer == correctanswer:
-                        set_database_value(bot,'triviauser','triviaanswered','t')
+                        #set_database_value(bot,'triviauser','triviaanswered','t')
+                        resetDbValues(bot)
                         Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
                         bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                     else:
@@ -157,5 +163,9 @@ def adjust_database_value(bot, nick, databasekey, value):
     databasecolumn = str('trivia_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
+def getTimeSinceLastAttempt(bot,nick,databasekey):
+    now = time.time()
+    last = get_database_value(bot, nick, databasekey)
+    return abs(now - int(last))
     
     
