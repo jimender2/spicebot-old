@@ -109,7 +109,7 @@ def answer(bot,trigger,triggerargsarray):
         if triggerargsarray[0] == "answer":
             guesser = trigger.nick
             lastAttemptTime = getTimeSinceLastAttempt(bot,guesser,'trivia_lastattempt')
-            bot.say(guesser + ", your last attempt to answer was at " + lastAttemptTime)
+            bot.say(guesser + ", your last attempt to answer was at " + str(lastAttemptTime))
             set_database_value(bot,guesser,'trivia_lastattempt',time.time())                    
             useranswer = triggerargsarray[1]
             correctanswer = get_database_value(bot,'triviauser','triviaa')
