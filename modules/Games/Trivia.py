@@ -127,7 +127,7 @@ def answer(bot,trigger,triggerargsarray):
                             bot.say("Sorry, " + guesser + ", that is incorrect.")
             else:
                 timeDiff = 10 - lastAttemptTime
-                bot.say(guesser + ", you must wait " + str(timeDiff) " + seconds for attempting to guess again!")
+                bot.say(guesser + ", you must wait " + str(timeDiff) + " seconds for attempting to guess again!")
         else:
             bot.say("The last question has been answered! Type .trivia for a new question!")
                                   
