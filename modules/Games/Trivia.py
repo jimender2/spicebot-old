@@ -134,7 +134,7 @@ def answer(bot,trigger,triggerargsarray):
                                   
                                         
 def splitEntry(entry):
-    splitChar = ':"'
+    splitChar = ':'
     a = entry.split(splitChar)
     result = a[1]
     result = result.replace("u'","",1).strip()
