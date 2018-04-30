@@ -13,10 +13,12 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     string = get_trigger_arg(bot, triggerargsarray, 0)
-    if string:
-            bot.say("Dammit Jim, I'm a doctor, not a " + str(string) + "!!!")
+    if string == 'doctor':
+        bot.say("I don't need a doctor, damn it, I am a doctor!")
+    elif string:
+        bot.say("Dammit Jim, I'm a doctor, not a " + str(string) + "!!!")
     else:
         bot.say("He's dead, Jim.")
