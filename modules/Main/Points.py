@@ -163,4 +163,4 @@ def addpoints(bot, target, amount):
     adjust_botdatabase_value(bot, target, 'points', abs(amount))
 
 def takepoints(bot, target, amount):
-adjust_botdatabase_value(bot, target, 'points', -abs(amount))
+    adjust_botdatabase_value(bot, target, 'points', -abs(amount))
