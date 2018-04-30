@@ -15,10 +15,11 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    string = get_trigger_arg(bot, triggerargsarray, 0)
-    if string == 'doctor':
-        bot.say("I don't need a doctor, damn it, I am a doctor!")
-    elif string:
-        bot.say("Dammit Jim, I'm a doctor, not a " + str(string) + "!!!")
+    string = get_trigger_arg(bot, triggerargsarray, '1+')
+    if string:
+        if string == 'doctor':
+            bot.say("I don't need a doctor, damn it, I am a doctor!")
+        else:
+            bot.say("Dammit Jim, I'm a doctor, not a " + str(string) + "!!!")
     else:
         bot.say("He's dead, Jim.")
