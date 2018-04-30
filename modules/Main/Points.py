@@ -102,7 +102,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(randopoints)
         adjust_botdatabase_value(bot, commortarget, 'points', rando)
 
-    elif commortarget == 'low':
+    elif commortarget == 'small':
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         rando = randint(1, 333)
