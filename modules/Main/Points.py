@@ -88,7 +88,7 @@ def execute_main(bot, trigger, triggerargsarray):
             randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + str(pointsreasonmsg))
             bot.say(randopoints)
             adjust_botdatabase_value(bot, target, 'points', -abs(rando))
-            
+
     elif commortarget == 'low':
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
@@ -96,10 +96,10 @@ def execute_main(bot, trigger, triggerargsarray):
         if pointsreason:
             if pointsreason[-1] not in string.punctuation:
                     pointsreason = pointsreason + "."
-                if pointsreason.startswith('for'):
-                    pointsreasonmsg = ' ' + str(pointsreason) + '.'
-                else:
-                    pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+            if pointsreason.startswith('for'):
+                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+            else:
+                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
             if not target:
                 target = 'everyone'
         if target == instigator:
@@ -116,7 +116,7 @@ def execute_main(bot, trigger, triggerargsarray):
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " from " + to + str(pointsreasonmsg))
             bot.say(randopoints)
             adjust_botdatabase_value(bot, target, 'points', abs(rando))
-            
+
     elif commortarget == 'high':
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
