@@ -10,7 +10,7 @@ from SpicebotShared import *
 
 insultnames = ['motherfucker','prick','wanker']
 
-@sopel.module.commands('dd','doubled','DoubleD')
+@sopel.module.commands('dd','doubled')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'dd')
     if not enablestatus:
