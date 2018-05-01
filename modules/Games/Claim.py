@@ -127,8 +127,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
     elif target == 'fridge':
-
-
+        bot.say("WIP")
 
     # Admin functions
     elif target == 'admin':
@@ -243,7 +242,6 @@ def execute_main(bot, trigger, triggerargsarray):
         return
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
-
 
 # Date checker
 def checktime(startdate,enddate,timeframe):
