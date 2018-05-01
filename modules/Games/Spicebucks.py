@@ -149,7 +149,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<2:
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
-                            paytaxes(bot, target)
+                            taxtotal= paytaxes(bot, target)
+                            if taxtotal >1:
+                                kickback=int(taxtotal*.001)
+                                adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
                             
                         else:
                             inbank = bank(bot,trigger.nick)
@@ -163,7 +166,10 @@ def execute_main(bot, trigger, triggerargsarray):
                                 reset_botdatabase_value(bot,target,'usedtaxes')
                 else:
                     adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
-                    paytaxes(bot, trigger.nick)
+                    taxtotal =paytaxes(bot, trigger.nick)
+                    if taxtotal >1:
+                        kickback=int(taxtotal*.001)
+                        adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
                     
         ##Bank
         elif commandused == 'bank':
@@ -276,6 +282,7 @@ def paytaxes(bot, target):
             bot.say(target + ' is broke and cannot pay taxes today')
     else:
         bot.say("Taxes already paid today.")
+    return taxtotal
 
 def transfer(bot, instigator, target, amount):
     validamount = 0
