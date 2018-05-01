@@ -60,7 +60,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
                                 winnings=random.randint(1,maxpayout)
                                 transfer(bot, trigger.nick, target, winnings)
-                                mypayday = 50-winnings
+                                mypayday = 0-winnings
                                 if mypayday >= 0:
                                     bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
                                 else:
@@ -74,7 +74,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                 maxpayout = bankbalance-(int(bankbalance*.50))
                                 bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
                                 winnings=random.randint(1,maxpayout)
-                                mypayday = 30-winnings
+                                mypayday = 0-winnings
                                 if mypayday >= 0:
                                     bot.say(trigger.nick + " gets " + str(mypayday) + " spicebucks and " + target + " manages to keep " + str(winnings) + " of " + trigger.nick + "'s spicebucks.")
                                 else:
