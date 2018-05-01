@@ -207,7 +207,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 if target == 'spicebank':
                     balance = bank(bot,'spicebucks') or 0
                     bot.say('The current casino jackpot is ' + str(balance))
-                elif targetcheck(bot,target,trigger.nick)==0:
+                elif checkedtarget==0:
                     bot.say("I'm sorry, I do not know who " + target + " is.")
                 else:
                     balance=bank(bot, target)
