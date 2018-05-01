@@ -145,6 +145,30 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(randopoints)
             adjust_botdatabase_value(bot, target, 'points', abs(rando))
 
+    elif commortarget == 'except':
+        target = get_trigger_arg(bot, triggerargsarray, 2)
+        pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
+        if pointsreason:
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
+            if pointsreason.startswith('for'):
+                pointsreasonmsg = ' ' + str(pointsreason) + '.'
+            else:
+                pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+        if not target:
+            randopoints = "Oh sure. Who are you leaving out now?"
+        elif target == 'all' or target == 'everybody' or target == 'everyone':
+            randopoints = "That doesn't work, moron."
+            bot.say(randopoints)
+        elif target.lower() not in [u.lower() for u in bot.users]:
+            bot.say("I'm not sure who that is.")
+        else:
+            randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to everyone except " + target + str(pointsreasonmsg))
+            bot.say(randopoints)
+            for u in bot.users:
+                if u in botusersarray and u != bot.nick and u != instigator and u != target:
+                    adjust_botdatabase_value(bot, u, 'points', abs(rando))
+
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     else:
