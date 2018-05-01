@@ -9,12 +9,14 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+deities = ['God','Cthulhu','Landru','Odin','Satan','Developer','Frigg','Hades','Zeus','Lord deathbybandaid','Ra']
+
 @sopel.module.commands('today', 'whatdayisit')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'today')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     whatistoday, whatdayofweek = whatdayofweeknow()
     daystilfriday = howlonguntilfriday(whatistoday)
@@ -34,11 +36,12 @@ def execute_main(bot, trigger, triggerargsarray):
         specialmsg = ""
     botmotd = str("Today is " + str(whatdayofweek) + ". " + str(daystilfriday) + " " + str(specialmsg))
     bot.say(botmotd)
-    
+
 def howlonguntilfriday(whatistoday):
     fridaynumber = '4'
     if whatistoday == fridaynumber:
-        daystilfriday = "TGIF! It's finally here!!!"
+        deityofchoice = get_trigger_arg(bot,deities,'random')
+        daystilfriday = "Thank " + str(deityofchoice) + " It's Friday! It's finally here!!!"
     elif whatistoday == '5' or whatistoday == '6':
         daystilfriday = "It's the Weekend!"
     else:
@@ -48,7 +51,7 @@ def howlonguntilfriday(whatistoday):
         else:
             daystilfriday = "Unfortunately Friday is " + str(daysmath) + " days away. I'm sure we'll make it there!"
     return daystilfriday
-    
+
 def whatdayofweeknow():
     whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':

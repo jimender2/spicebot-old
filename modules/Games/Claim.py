@@ -13,22 +13,31 @@ from SpicebotShared import *
 import Spicebucks
 
 # Commands that work in privmsg
-privcmdlist = ['check','admin','bladder','drink','fridge']
+privcmdlist = ['check','admin','bladder','fridge']
 
 # Admin Commands
 admincommands = ['reset']
 
-# Names of drinks
+# Protected users
+protectednicks = ['rycuda','Tech_Angel']
+
+# Drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
+drinkscost = 5
 
 # Days before reclaim available
 maxtime = 7
-# Spicebuck reward values
-firstclaim = 5
-renewclaim = 2
-stolenclaim = 10
-masterclaim = 5 #take, not give
 
+# Spicebuck reward values
+firstclaim = 10
+renewclaim = 5
+stolenclaim = 20
+masterclaim = 10 #take, not give
+
+# Bladder capacity
+bladdersize = 10
+claimcost = 2
+SeanCost = 1
 
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
@@ -39,7 +48,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
-    #creator = "Spciebot" #IT_Sean creator, removing immunity
     creator = "IT_Sean"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
@@ -85,6 +93,45 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
             else:
                 bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
+
+    # Check how full your bladder is
+    elif target == 'bladder':
+        okaytoclaim = 0
+        if not admintarget:
+            admintarget = instigator
+        bladdercontents = bot.db.get_nick_value(admintarget,'bladdercapacity')
+        if not bladdercontents:
+            if admintarget.lower() not in [u.lower() for u in bot.users]:
+                bot.say("Please specify someone to check")
+            elif admintarget == instigator:
+                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bladdercontents = bladdersize
+                bot.say("You have " + str(round(int(bladdercontents)/int(claimcost)),0) + " claims left in your bladder at present.")
+            elif admintarget == creator:
+                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bladdercontents = bladdersize
+                bot.say(admintarget + "has " + str(round(int(bladdercontents)/int(SeanCost)),0) + " claims left in his almighty bladder.")
+            else:
+                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bladdercontents = bladdersize
+                bot.say(admintarget + " has " + str(round(int(bladdercontents)/int(claimcost)),0) + " claims left in their bladder at present.")
+        else:
+            if admintarget.lower() not in [u.lower() for u in bot.users]:
+                bot.say("Please specify someone to check")
+            elif admintarget == instigator:
+                bot.say("You have " + str(round(int(bladdercontents)/int(claimcost)),0) + " claims left in your bladder at present.")
+            elif admintarget == creator:
+                bot.say(admintarget + "has " + str(round(int(bladdercontents)/int(SeanCost)),0) + " claims left in his almighty bladder.")
+            else:
+                bot.say(admintarget + " has " + str(round(int(bladdercontents)/int(claimcost)),0) + " claims left in their bladder at present.")
+
+    # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
+    elif target == 'fridge':
+        okaytoclaim = 0
+        if not admintarget:
+            admintarget = instigator
+        fridgecontents = bot.db.get_nick_value(admintarget,'fridgecontents')
+        bot.say("The fridge is a Work in Progress")
 
     # Admin functions
     elif target == 'admin':
@@ -141,6 +188,12 @@ def execute_main(bot, trigger, triggerargsarray):
         okaytoclaim = 0
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
 
+    # Can't claim protected individuals
+    elif target in protectednicks:
+        okaytoclaim = 0
+        bot.say(target + " is under my protection, " + instigator)
+        bot.action("pisses all over " + instigator + " to teach them a lesson")
+
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
         okaytoclaim = 0
@@ -149,6 +202,7 @@ def execute_main(bot, trigger, triggerargsarray):
     # Input checks out. Verify dates and go ahead.
     elif okaytoclaim:
         claimedby = bot.db.get_nick_value(target,'claimed') or ''
+        bladdercontents = bot.db.get_nick_value(instigator,'bladdercapacity') or bladdersize
         # First time claimed
         if claimedby == '':
             if instigator == creator:
@@ -163,11 +217,7 @@ def execute_main(bot, trigger, triggerargsarray):
         # Renewed claim
         elif claimedby == instigator:
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
-            datea = arrow.get(todaydate)
-            dateb = arrow.get(claimdate)
-            timepassed = datea - dateb
-            dayspassed = timepassed.days
-            if timepassed.days >= int(maxtime):
+            if longenough(claimdate,todaydate,maxtime):
                 if instigator == creator:
                     bot.say(instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
                 else:
@@ -181,11 +231,7 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             # Stolen claim
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
-            datea = arrow.get(todaydate)
-            dateb = arrow.get(claimdate)
-            timepassed = datea - dateb
-            dayspassed = timepassed.days
-            if timepassed.days >= int(maxtime):
+            if longenough(claimdate,todaydate,maxtime):
                 if instigator == creator:
                     bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
@@ -200,3 +246,29 @@ def execute_main(bot, trigger, triggerargsarray):
         return
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
+
+# Date checker
+def longenough(startdate,enddate,timeframe):
+    datea = arrow.get(startdate)
+    dateb = arrow.get(enddate)
+    timepassed = startdate - enddate
+    dayspassed = timepassed.days
+    if timepassed.days >= int(timeframe):
+        return True
+    else:
+        return False
+
+##########################
+## 30 minute automation ##
+##########################
+@sopel.module.interval(1800)
+def halfhourtimer(bot):
+    now = time.time()
+    for u in bot.users:
+        bladdercontents = bot.db.get_nick_value(u,'bladdercapacity') or 'unused'
+        if bladdercontents == 'unused':
+            bladdercontents = 10
+            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
+        elif bladdercontents < bladdersize:
+            bladdercontents = bladdercontents + 1
+            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
