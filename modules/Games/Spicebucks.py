@@ -12,9 +12,9 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 
-@sopel.module.commands('spicebucks')
+@sopel.module.commands('spicebucks','bank')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger,'spicebucks')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -248,9 +248,10 @@ def checkpayday(bot, target):
     paydayamount=0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
+    spicebank = bank(bot,'SpiceBank')
     lastpayday = get_botdatabase_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
-        paydayamount = 15
+        paydayamount = int(spicebank * 0.03)
         set_botdatabase_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydayamount=0
