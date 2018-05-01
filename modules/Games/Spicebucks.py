@@ -153,7 +153,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             if taxtotal >1:
                                 kickback=int(taxtotal*.001)                                
                                 adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
-                                bot.action("give " + trigger.nick + " a kickback of + " str(kickback) + " for bring this delinquent to our attention")
+                                bot.action("gives " + trigger.nick + " a kickback of " +  str(kickback) + " for bringing this delinquent to our attention")
 
                             
                         else:
@@ -184,13 +184,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     randomcheck = random.randint(0,4)
                     if randomcheck==0:
                         triggerbalance=bank(bot, trigger.nick)
-                        fine = int(triggerbank*.20)
+                        fine = int(triggerbalance*.20)
                         bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
                         spicebucks(bot,trigger.nick,'minus',fine)
                     else:
                         payout = int(bank *.01)
                         bot.say(trigger.nick + " pickpockets " + str(payout) + " from " + target)
                         adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                        transfer(bot,target,trigger.nick,payout)
                     
                 
                 
