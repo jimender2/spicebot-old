@@ -14,7 +14,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -31,8 +31,6 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         pick=random.randint(1,3)
         if pick ==1:
-            bot.say(target + " is supersoft. 10-ply. Now give your balls a tug, tit-fucker and figger it out. Ferda!")
-        else:             
             bot.say(target + " is going to have a super soft birthday party this year.")
-            
-       
+        else:
+            bot.say(target + " is supersoft. 10-ply. Now give your balls a tug, tit-fucker and figger it out. Ferda!")
