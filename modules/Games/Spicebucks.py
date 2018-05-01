@@ -177,7 +177,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("I'm sorry, I do not know who " + target + " is.")
             if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<3 or balance<15:
                 triggerbalance=bank(bot, trigger.nick)
-                fine = int(triggerbank*.20)
+                fine = int(triggerbalance*.20)
                 bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
                 spicebucks(bot,trigger.nick,'minus',fine)                    
             else:                    
@@ -292,7 +292,7 @@ def paytaxes(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
-    inbank = bank(bot,target) or 0
+    inbank = bank(bot,target) or 0    
     if lasttaxday == 0 or lasttaxday < datetoday:
         reset_botdatabase_value(bot,target,'usedtaxes')
         taxtotal = int(inbank * .1)
@@ -306,9 +306,11 @@ def paytaxes(bot, target):
             return taxtotal            
         else:
             bot.say(target + ' is broke and cannot pay taxes today')
+            return taxtotal
     else:
         bot.say("Taxes already paid today.")
-    return taxtotal
+        return taxtotal
+    
 
 def transfer(bot, instigator, target, amount):
     validamount = 0
