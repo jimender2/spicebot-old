@@ -200,7 +200,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Bank
         elif commandused == 'bank':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            checkedtarget =targetcheck(bot,target,trigger.nick)
+            checkedtarget =targetcheck(bot,target,trigger.nick) or 0
             bot.say(str(checkedtarget))
            
             if not target == 'notarget':
