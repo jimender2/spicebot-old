@@ -175,23 +175,24 @@ def execute_main(bot, trigger, triggerargsarray):
             balance=bank(bot, target)
             if targetcheck(bot,target,trigger.nick)==0:
                 bot.say("I'm sorry, I do not know who " + target + " is.")
-            if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<3 or balance<15:
-                triggerbalance=bank(bot, trigger.nick)
-                fine = int(triggerbalance*.20)
-                bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
-                spicebucks(bot,trigger.nick,'minus',fine)                    
-            else:                    
-                randomcheck = random.randint(0,4)
-                if randomcheck==0:
+            else:
+                if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<3:
                     triggerbalance=bank(bot, trigger.nick)
                     fine = int(triggerbalance*.20)
-                    bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
-                    spicebucks(bot,trigger.nick,'minus',fine)
-                else:
-                    payout = int(bank *.01)
-                    bot.say(trigger.nick + " pickpockets " + str(payout) + " from " + target)
-                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
-                    transfer(bot,target,trigger.nick,payout)                  
+                    bot.say(trigger.nick + " get's caught pickpocketing and is fined " + str(fine))
+                    spicebucks(bot,trigger.nick,'minus',fine)                    
+                else:                    
+                    randomcheck = random.randint(0,5)
+                    if randomcheck==3:
+                        triggerbalance=bank(bot, trigger.nick)
+                        fine = int(triggerbalance*.20)
+                        bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
+                        spicebucks(bot,trigger.nick,'minus',fine)
+                    else:
+                        payout = int(bank *.01)
+                        bot.say(trigger.nick + " pickpockets " + str(payout) + " from " + target)
+                        adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                        transfer(bot,target,trigger.nick,payout)                  
                 
                 
                     
