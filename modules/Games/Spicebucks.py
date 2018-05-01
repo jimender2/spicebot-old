@@ -200,6 +200,9 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Bank
         elif commandused == 'bank':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
+            checkedtarget =targetcheck(bot,target,trigger.nick)
+            bot.say(str(checkedtarget))
+           
             if not target == 'notarget':
                 if target == 'spicebank':
                     balance = bank(bot,'spicebucks') or 0
