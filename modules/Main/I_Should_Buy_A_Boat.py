@@ -13,6 +13,11 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say(trigger.nick + " should buy a boat.")
+    instigator = trigger.nick
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    if target.lower() in [u.lower() for u in bot.users]:
+        bot.say(target " should buy a boat")
+    else:
+        bot.say(instigator + " should buy a boat.")
