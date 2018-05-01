@@ -128,7 +128,10 @@ def execute_main(bot, trigger, triggerargsarray):
     # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
     elif target == 'fridge':
         okaytoclaim = 0
-        bot.say("WIP")
+        if not admintarget:
+            admintarget = instigator
+        fridgecontents[] = bot.db.get_nick_value(admintarget,'fridgecontents')
+        bot.say("The fridge is a Work in Progress")
 
     # Admin functions
     elif target == 'admin':
@@ -255,6 +258,17 @@ def longenough(startdate,enddate,timeframe):
     else:
         return False
 
-# Half hour timer section
-# Each half hour that has passed while online will refill 1 bar of your bladder
-#
+##########################
+## 30 minute automation ##
+##########################
+@sopel.module.interval(1800)
+def halfhourtimer(bot):
+    now = time.time()
+    for u in bot.users:
+        bladdercontents = bot.db.get_nick_value(u,'bladdercapacity') or 'unused'
+        if bladdercontents == 'unused':
+            bladdercontents = 10
+            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
+        elif bladdercontents < bladdersize:
+            bladdercontents = bladdercontents + 1
+            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
