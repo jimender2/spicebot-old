@@ -18,11 +18,15 @@ privcmdlist = ['check','admin','bladder','drink','fridge']
 # Admin Commands
 admincommands = ['reset']
 
+# Protected users
+protectednicks = ['rycuda','Tech_Angel']
+
 # Names of drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
 
 # Days before reclaim available
 maxtime = 7
+
 # Spicebuck reward values
 firstclaim = 5
 renewclaim = 2
@@ -140,6 +144,12 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == 'everyone':
         okaytoclaim = 0
         bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
+
+    # Can't claim protected individuals
+    elif target in protectednicks:
+        okaytoclaim = 0
+        bot.say(target + " is under my protection, " + instigator)
+        bot.action("pisses all over " + instigator + " to teach them a lesson")
 
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
