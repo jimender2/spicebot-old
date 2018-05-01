@@ -19,7 +19,7 @@ privcmdlist = ['check','admin','bladder','drink','fridge']
 admincommands = ['reset']
 
 # Protected users
-protectednicks = ['rycuda','Tech_Angel']
+protectednicks = ['rycuda','Tech_Angel','Reginald']
 
 # Names of drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
