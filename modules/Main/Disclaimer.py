@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if subdisclaimer == 'doctor':
             bot.say(instigator + " is not your doctor. The views/opinions/information expressed by " + instigator + " is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment.")
         if subdisclaimer == 'EULA':
-            bot.say("Spicebot may occasionally (read 'frequently') use colorful language to carry out its tasks. By remaining in this channel and continuing to use the bot you acknowledge that you are not, in fact, too weak to handle this fact.")
+            bot.say("Spicebot may occasionally (read 'frequently') use colorful language to carry out its tasks. By remaining in this channel and continuing to use the bot you acknowledge that you are not, in fact, too weak to handle this.")
         if subdisclaimer == 'IT':
             bot.say("While most members of this channel have some level of technical knowledge, your decision to trust the recommendations of " + instigator + " are entirely your own risk.")
         if subdisclaimer == 'Cipher-0' or 'Cipher':
