@@ -91,7 +91,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if target == 'notarget'or target==trigger.nick:
                 reset(bot,target)
                 bot.say('Payday reset for ' + trigger.nick)
-            elif validtarget==1:
+            elif not validtarget==0:
                 reset(bot,target)
                 bot.say('Payday reset for ' + target)
             else:
