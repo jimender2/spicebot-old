@@ -151,7 +151,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                             taxtotal= paytaxes(bot, target)
                             if taxtotal >=100:
-                                kickback=int(taxtotal*.001)                                
+                                kickback=int(taxtotal*.01)                                
                                 adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
                                 bot.action("gives " + trigger.nick + " a kickback of " +  str(kickback) + " for bringing this delinquent to our attention")
 
