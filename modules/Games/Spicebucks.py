@@ -294,6 +294,7 @@ def paytaxes(bot, target):
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
     inbank = bank(bot,target) or 0    
+    taxtotal = 0
     if lasttaxday == 0 or lasttaxday < datetoday:
         reset_botdatabase_value(bot,target,'usedtaxes')
         taxtotal = int(inbank * .1)
