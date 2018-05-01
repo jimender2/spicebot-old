@@ -130,7 +130,7 @@ def execute_main(bot, trigger, triggerargsarray):
         okaytoclaim = 0
         if not admintarget:
             admintarget = instigator
-        fridgecontents[] = bot.db.get_nick_value(admintarget,'fridgecontents')
+        fridgecontents = bot.db.get_nick_value(admintarget,'fridgecontents')
         bot.say("The fridge is a Work in Progress")
 
     # Admin functions
