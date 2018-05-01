@@ -18,11 +18,13 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
-def execute_main(bot, trigger, triggerargsarray):
-    istarget = 0
+def execute_main(bot, trigger, triggerargsarray):    
     istarget,targetmsg =testtargetcheck(bot,get_trigger_arg(bot,triggerargsarray, 1),trigger.nick)
+    bot.say(str(istarget))
     if istarget ==1:
-        bot.say("Target is valid")  
+        bot.say("Target is valid")
+    elif istarget==0:
+        bot.say("Target is invalid")
     else:
         bot.say(str(istarget) + " " +targetmsg)
 ##copy of targetcheck in spicebot shared##
