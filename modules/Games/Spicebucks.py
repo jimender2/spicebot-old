@@ -56,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray):
                                     target = randomuser(bot,trigger.nick)
                                 spicebucks(bot, trigger.nick, 'plus', 50)
                                 bankbalance = bank(bot,trigger.nick)
-                                maxpayout = bankbalance
+                                maxpayout = bankbalance-(int(bankbalance*.50))
                                 bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
                                 winnings=random.randint(1,maxpayout)
                                 transfer(bot, trigger.nick, target, winnings)
@@ -71,7 +71,7 @@ def execute_main(bot, trigger, triggerargsarray):
                             else:
                                 spicebucks(bot, trigger.nick, 'plus', 50)
                                 bankbalance = bank(bot,trigger.nick)
-                                maxpayout = bankbalance
+                                maxpayout = bankbalance-(int(bankbalance*.50))
                                 bot.say(trigger.nick + ' rains Spicebucks down on ' + target)
                                 winnings=random.randint(1,maxpayout)
                                 mypayday = 30-winnings
@@ -251,7 +251,7 @@ def checkpayday(bot, target):
     spicebank = bank(bot,'SpiceBank')
     lastpayday = get_botdatabase_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
-        paydayamount = int(spicebank * 0.03)
+        paydayamount = int(spicebank * 0.01)
         set_botdatabase_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydayamount=0
