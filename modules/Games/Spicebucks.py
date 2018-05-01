@@ -303,6 +303,7 @@ def paytaxes(bot, target):
             spicebucks(bot, target, 'minus', taxtotal)
             set_botdatabase_value(bot,target, 'spicebucks_taxday', datetoday)
             bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
+            return taxtotal            
         else:
             bot.say(target + ' is broke and cannot pay taxes today')
     else:
