@@ -106,24 +106,24 @@ def execute_main(bot, trigger, triggerargsarray):
             elif admintarget == instigator:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say("You have " + int(bladdercontents/claimcost) + " claims left in your bladder at present.")
+                bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
             elif admintarget == creator:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say(admintarget + "has " + int(bladdercontents/SeanCost) + " claims left in his almighty bladder.")
+                bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say(admintarget + " has " + int(bladdercontents/claimcost) + " claims left in their bladder at present.")
+                bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
         else:
             if admintarget.lower() not in [u.lower() for u in bot.users]:
                 bot.say("Please specify someone to check")
             elif admintarget == instigator:
-                bot.say("You have " + int(bladdercontents/claimcost) + " claims left in your bladder at present.")
+                bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
             elif admintarget == creator:
-                bot.say(admintarget + "has " + int(bladdercontents/SeanCost) + " claims left in his almighty bladder.")
+                bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
-                bot.say(admintarget + " has " + int(bladdercontents/claimcost) + " claims left in their bladder at present.")
+                bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
 
     # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
     elif target == 'fridge':
