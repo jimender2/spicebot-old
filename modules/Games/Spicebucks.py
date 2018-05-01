@@ -189,7 +189,7 @@ def execute_main(bot, trigger, triggerargsarray):
                         bot.say(trigger.nick + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
                         spicebucks(bot,trigger.nick,'minus',fine)
                     else:
-                        payout = int(bank *.01)
+                        payout = int(balance *.01)
                         bot.say(trigger.nick + " pickpockets " + str(payout) + " from " + target)
                         adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                         transfer(bot,target,trigger.nick,payout)                  
@@ -200,8 +200,7 @@ def execute_main(bot, trigger, triggerargsarray):
         ##Bank
         elif commandused == 'bank':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            checkedtarget =targetcheck(bot,target,trigger.nick) or 0
-            bot.say(str(checkedtarget))
+            checkedtarget =targetcheck(bot,target,trigger.nick) or 0            
            
             if not target == 'notarget':
                 if target == 'spicebank':
