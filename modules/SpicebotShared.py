@@ -487,7 +487,7 @@ def targetcheck(bot, target,instigator):
         else:
             validtarget = '1'
     
-    return validtarget,validtargetmsg
+    return validtarget
 
 
 ##############
