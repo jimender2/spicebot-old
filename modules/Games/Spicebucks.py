@@ -151,8 +151,10 @@ def execute_main(bot, trigger, triggerargsarray):
                             adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                             taxtotal= paytaxes(bot, target)
                             if taxtotal >1:
-                                kickback=int(taxtotal*.001)
+                                kickback=int(taxtotal*.001)                                
                                 adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
+                                bot.action("give " + trigger.nick + " a kickback of + " str(kickback) + " for bring this delinquent to our attention")
+
                             
                         else:
                             inbank = bank(bot,trigger.nick)
@@ -167,9 +169,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 else:
                     adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     taxtotal =paytaxes(bot, trigger.nick)
-                    if taxtotal >1:
-                        kickback=int(taxtotal*.001)
-                        adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
+                    
                     
         ##Bank
         elif commandused == 'bank':
