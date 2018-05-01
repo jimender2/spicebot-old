@@ -176,7 +176,8 @@ def execute_main(bot, trigger, triggerargsarray):
             if targetcheck(bot,target,trigger.nick)==0:
                 bot.say("I'm sorry, I do not know who " + target + " is.")
             else:
-                if get_botdatabase_value(bot,trigger.nick,'usedtaxes')>3:
+                if get_botdatabase_value(bot,trigger.nick,'usedtaxes')>2:
+                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     triggerbalance=bank(bot, trigger.nick)
                     fine = int(triggerbalance*.20)
                     bot.say(trigger.nick + " get's caught pickpocketing and is fined " + str(fine))
@@ -191,7 +192,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     else:
                         payout = int(balance *.01)
                         bot.say(trigger.nick + " pickpockets " + str(payout) + " from " + target)
-                        adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                        
                         transfer(bot,target,trigger.nick,payout)                  
                 
                 
