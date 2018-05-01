@@ -462,7 +462,7 @@ def excrange_minus_array(bot, inputs, number):
 ####################################
 
 def targetcheck(bot, target,instigator):
-    validtarget = '0'
+    validtarget = 0
     validtargetmsg = ''
     botusersarray=[]
     botuseron=[]
@@ -487,7 +487,7 @@ def targetcheck(bot, target,instigator):
         else:
             validtarget = '1'
     
-    return validtarget,validtargetmsg
+    return validtarget
 
 
 ##############
