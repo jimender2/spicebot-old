@@ -15,4 +15,12 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say("*Tap, Tap* ...is this thing on?")
+    instigator = trigger.nick
+    decide = randint(1,5)
+    if decide == 4:
+        bot.say("FFS "+ instigator + ", of course it's bloody well on!")
+    elif decide == 5:
+        bot.action("clocks " + instigator + " around the head with a mic stand.")
+        bot.say(instigator + ", if you do that again you'll be eating a speaker.")
+    else:
+        bot.say("*Tap, Tap* ...is this thing on?")
