@@ -54,7 +54,7 @@ def blackjackscore(bot,hand):
             myhand = hand.replace('A','1')
             myscore = 0
             blackjackscore(bot,myhand)
-            adjust_botdatabase(bot, 'casino', 'deckscorecount',1)
+            adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
         else:
             return myscore
     return myscore
