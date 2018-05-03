@@ -10,12 +10,12 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@sopel.module.commands('ERMAHGERD','ermahgerd')
+@sopel.module.commands('ermahgerd')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ERMAHGERD')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     ernpert = get_trigger_arg(bot, triggerargsarray, 0)
     if ernpert:
@@ -28,7 +28,7 @@ def trernslert(werds):
     terkerns = werds.split()
     er = ''
     for terk in terkerns:
-        
+
         if terk.endswith(','):
             terk = re.sub(r"[,]+", '', terk)
             cermmer = 'true'
@@ -40,13 +40,13 @@ def trernslert(werds):
             lerftperernthersers = 'true'
         else:
             lerftperernthersers = 'false'
-        
+
         if terk.endswith(')'):
             terk = re.sub(r"[)]+", '', terk)
             rerghtperernthersers = 'true'
         else:
             rerghtperernthersers = 'false'
-            
+
         if terk.endswith('%'):
             terk = re.sub(r"[%]+", '', terk)
             percernt = 'true'
@@ -54,23 +54,23 @@ def trernslert(werds):
             percernt = 'false'
 
         werd = ermergerd(terk)
-        
+
         if lerftperernthersers == 'true':
             werd = str('(' + werd)
-        
+
         if percernt == 'true':
             werd = str(werd + ' PERCERNT')
-        
+
         if rerghtperernthersers == 'true':
             werd = str(werd + ')')
-        
+
         if cermmer == 'true':
             werd = str(werd + ',')
         cermmer
-        
+
         er = er + ' ' + werd
     return er
-    
+
 def ermergerd(w):
     w = w.strip().lower()
     derctshernerer = {'me':'meh','you':'u', 'are':'er', "you're":"yer", "i'm":"erm", "i've":"erv", "my":"mah", "the":"da", "omg":"ermahgerd"}
@@ -86,7 +86,7 @@ def ermergerd(w):
         if w.startswith('y'):
             er = 'y' + re.sub(pat, "er", w[1:])
         if w.endswith('e') and not w.endswith('ee') and len(w)>3:
-            er = re.sub(pat, "er", w[:-1]) 
+            er = re.sub(pat, "er", w[:-1])
         if w.endswith('ing'):
             er = re.sub(pat, "er", w[:-3]) + 'in'
         er = er[0] + er[1:].replace('y', 'er')
