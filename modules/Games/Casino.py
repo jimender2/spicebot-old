@@ -189,7 +189,7 @@ def roulette(bot,trigger,arg):
             players = get_botdatabase_value(bot, 'casino', 'rouletteplayers') or []
             for i in players:
                 if i == player:
-                    bot.say(trigger.nick + " has asked the dealer to finish the roulette game. Last call for bets")
+                    bot.say(trigger.nick + " has asked Spicebot to finish the roulette game. Last call for bets")
                     set_botdatabase_value(bot,'casino','casinochannel',str(trigger.sender))    
                     set_botdatabase_value(bot,'casino','counter','roulette')
                     set_botdatabase_value(bot,'casino','countertimer',now)
@@ -275,7 +275,7 @@ def roulette(bot,trigger,arg):
                     if numberofplayers>=maxplayers:
                         runroulette(bot)
                     else:
-                        bot.say("Dealer will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
+                        bot.say("Spicebot will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
                 else:
                     bot.notice("You don't have enough Spicebucks to place that bet",player)
             
@@ -288,7 +288,7 @@ def runroulette(bot):
     
     if not players == []:
         channel = get_botdatabase_value(bot,'casino','casinochannel')
-        dispmsg = "The dealer collects all bets"
+        dispmsg = "Spicebot collects all bets"
         onscreentext(bot, channel, dispmsg)
         winningnumber = spin(wheel)
         if winningnumber == 0:
@@ -300,7 +300,7 @@ def runroulette(bot):
         totalwon = 0        
         displaymessage = get_trigger_arg(bot, players , "list")
         
-        dispmsg = "The dealer spins the wheel good luck to " + displaymessage
+        dispmsg = "Spicebot spins the wheel good luck to " + displaymessage
         onscreentext(bot, channel, dispmsg)
         dispmsg = "The wheel stops on " + str(winningnumber) + " " + color
         onscreentext(bot, channel, dispmsg)
@@ -513,7 +513,7 @@ def blackjack(bot,trigger,arg):
                             if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:                               
                                 myhand = deal(bot,deck, 2)
                                 dealerhand = deal(bot,deck, 2)            
-                                bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' The dealer has a ' + str(dealerhand[1]) + ' showing.')
+                                bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' Spicebot has a ' + str(dealerhand[1]) + ' showing.')
                                 myscore = blackjackscore(bot,myhand)
                                 dealerscore = blackjackscore(bot,dealerhand)
                                 payout = mybet
@@ -537,7 +537,7 @@ def blackjack(bot,trigger,arg):
             else:
                 playerhitlist = ''
                 #bot.say(player + ' has ' + str(myhand))
-                #bot.say('The dealer has ' + str(dealerhand))
+                #bot.say('Spicebot has ' + str(dealerhand))
                 playerhits=deal(bot,deck, 1)
                 playerhits=playerhits[0]                
                 
@@ -558,7 +558,7 @@ def blackjack(bot,trigger,arg):
             else:                    
                 myhand =  get_botdatabase_value(bot,target, 'myhand') or 0
                 dealerhand = get_botdatabase_value(bot,target, 'dealerhand') or 0
-                bot.say(target + ' has ' + str(myhand) + ' The dealer has ' + str(dealerhand))
+                bot.say(target + ' has ' + str(myhand) + ' Spicebot has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
             myhand = get_botdatabase_value(bot,player, 'myhand') or 0
@@ -571,8 +571,7 @@ def blackjack(bot,trigger,arg):
                     mybet=payout+payout
                     set_botdatabase_value(bot,player, 'mybet', mybet)
                     playerhitlist = ''
-                    #bot.say(player + ' has ' + str(myhand))
-                    #bot.say('The dealer has ' + str(dealerhand))
+                   
                     playerhits=deal(bot,deck, 1)
                     playerhits=playerhits[0]        
                     myhand.append(playerhits)
@@ -589,7 +588,7 @@ def blackjack(bot,trigger,arg):
             blackjackstand(bot,player,myhand,dealerhand,payout)
             
         elif mychoice == 'payout':
-            bot.say("Getting blackjack pays 2x, getting 21 pays 1x, beating the dealer pays 1/2 your bet.")
+            bot.say("Getting blackjack pays 2x, getting 21 pays 1x, beating Spicebot pays 1/2 your bet.")
 
         else:
             bot.say('Choose an option: deal, hit, or stand')
@@ -637,9 +636,9 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             if not dealerhitlist == '':
                 hitlist=len(dealerhitlist)-2 #minus two for spaces
                 if hitlist>1:                        
-                    bot.say('The dealer takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
+                    bot.say('Spicebot takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
                 else: 
-                    bot.say('The dealer takes a hit and gets a' + dealerhitlist)
+                    bot.say('Spicebot takes a hit and gets a' + dealerhitlist)
             showdealerhand = ''
            
             for i in dealerhand:                        
@@ -648,16 +647,16 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             if dealerscore > 21:
                 payout=payout + int((payout/2))
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
-                bot.say("The dealer had " + showdealerhand + " busts")
+                bot.say("Spicebot had " + showdealerhand + " busts")
                 bot.say(player + ' wins ' + str(payout))
             elif dealerscore == 21:
-                bot.say("The dealer has " + showdealerhand + " and wins")
+                bot.say("Spicebot has " + showdealerhand + " and wins")
             elif dealerscore < myscore:
                 payout=payout + int((payout/2))
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
-                bot.say("The dealer had " + showdealerhand + " " + player + " wins " + str(payout))
+                bot.say("Spicebot had " + showdealerhand + " " + player + " wins " + str(payout))
             elif dealerscore > myscore:
-                bot.say("The dealer had " + showdealerhand + " and wins")
+                bot.say("Spicebot had " + showdealerhand + " and wins")
             elif dealerscore == myscore:            
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
                 bot.say('It is a draw and ' + player + ' gets ' + str(payout))
