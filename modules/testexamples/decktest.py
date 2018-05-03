@@ -30,6 +30,7 @@ def execute_main(bot, trigger, arg):
         bot.say("Input: "+ str(myhand))
         myscore= blackjackscore(bot,myhand)    
     bot.say(str(myscore))
+    reset_botdatabase_value(bot,'casino','deckscorecount')
     
 
 def blackjackscore(bot,hand):
@@ -45,11 +46,15 @@ def blackjackscore(bot,hand):
             myscore = myscore + 10
         elif card=='A':
             myscore = myscore + 11              
-    if myscore > 21:              
-        if 'A' in hand:
-            hand.replace('A','1')
+    if myscore > 21:
+        counter = get_botdatabase_value(bot,'casino','deckscorecount')
+        if counter >2:
+            return myscore
+        elif 'A' in hand:
+            myhand = hand.replace('A','1')
             myscore = 0
-            blackjackscore(bot,hand)
+            blackjackscore(bot,myhand)
+            adjust_botdatabase(bot, 'casino', 'deckscorecount',1)
         else:
             return myscore
     return myscore
