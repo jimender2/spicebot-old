@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg):
     myscore=0
     myhand = get_trigger_arg(bot, arg, '1+') or 'A'
-    if myhand.len()>11:
+    if myhand.len()>=12:
         bot.say("Player wins for having more then 6 cards.")
     else:
         myhand =get_trigger_arg(bot,myhand,'list')    
