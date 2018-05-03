@@ -47,7 +47,7 @@ def blackjackscore(bot,hand):
         if 'A' in hand:
             hand.replace('A','1')
             myscore = 0
-            #blackjackscore(bot,hand)
+            blackjackscore(bot,hand)
    
     return myscore
 
