@@ -22,11 +22,11 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
     myscore=0
-    myhand = get_trigger_arg(bot, arg, '1+') or 'A'
-    myhand =get_trigger_arg(bot,myhand,'list')   
-    if myhand.len()>=12:
+    myhand = get_trigger_arg(bot, arg, '1+') or 'A'    
+    if len(myhand)>=12:
         bot.say("Player wins for having more then 6 cards.")
     else:        
+        myhand =get_trigger_arg(bot,myhand,'list')   
         bot.say("Input: "+ str(myhand))
         myscore= blackjackscore(bot,myhand)    
     bot.say(str(myscore))
