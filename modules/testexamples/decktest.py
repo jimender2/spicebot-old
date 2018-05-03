@@ -46,10 +46,12 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11              
     if myscore > 21:              
-        if 'A' in myhand:
+        if 'A' in hand:
             hand.replace('A','1')
             myscore = 0
-            blackjackscore(bot,hand)   
+            blackjackscore(bot,hand)
+        else:
+            return myscore
     return myscore
 
 def blackjackreset(bot,player):   
