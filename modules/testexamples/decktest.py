@@ -22,12 +22,15 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, arg):
     myscore=0
-    myhand = get_trigger_arg(bot, arg, '1+') or 'A'  
-    #myhand =get_trigger_arg(bot,myhand,'list')
-    bot.say("Input: "+ str(myhand))
-    myscore= blackjackscore(bot,myhand)
-    
+    myhand = get_trigger_arg(bot, arg, '1+') or 'A'    
+    if len(myhand)>=12:
+        bot.say("Player wins for having more then 6 cards.")
+    else:        
+        myhand =get_trigger_arg(bot,myhand,'list')   
+        bot.say("Input: "+ str(myhand))
+        myscore= blackjackscore(bot,myhand)    
     bot.say(str(myscore))
+    reset_botdatabase_value(bot,'casino','deckscorecount')
     
 
 def blackjackscore(bot,hand):
@@ -44,11 +47,15 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11              
     if myscore > 21:
-        if 'A' in hand:
-            hand.replace('A','1')
-            myscore = 0
-            #blackjackscore(bot,hand)
-   
+        counter = get_botdatabase_value(bot,'casino','deckscorecount')
+        if counter >2:
+            return myscore
+        elif 'A' in hand:
+            myhand = hand.replace('A','1') 
+            adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
+            blackjackscore(bot,myhand)            
+        else:
+            return myscore
     return myscore
 
 def blackjackreset(bot,player):   
