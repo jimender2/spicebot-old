@@ -21,4 +21,4 @@ def execute_main(bot, trigger, triggerargsarray):
 	while (loop <= 5):
 		bot.say("Bueller")
 		loop = loop + 1
-		thread.sleep(2)
+		time.sleep(2)
