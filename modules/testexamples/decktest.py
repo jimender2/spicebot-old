@@ -39,29 +39,25 @@ def blackjackscore(bot,hand):
     myhand= []
     #testing
     handlen = len(hand)
-    counter = get_botdatabase_value(bot,'casino','deckscorecount')
-    bot.say("Scoring:" + hand + ", number of cards:" + str(handlen) + " Loop counter:" + str(counter) + " I:" +str(i) + " Score:" +str(myscore))
+    #counter = get_botdatabase_value(bot,'casino','deckscorecount')
+    #
     
     for i in range(0,(len(hand))):
-        card = hand[i]
-    #   bot.say("Count: "+ str(i) + " Card: " + str(card))
+        card = hand[i]    
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
-            myscore = myscore + 11              
-    bot.say("Score: " + str(myscore))
-    if myscore > 21:
-        bot.say("Score over 21")
-        counter = get_botdatabase_value(bot,'casino','deckscorecount')       
-        if counter >5:
-            return myscore
-        elif 'A' in hand:
+            myscore = myscore + 11                 
+    if myscore > 21:        
+        #counter = get_botdatabase_value(bot,'casino','deckscorecount')       
+        #if counter >5:
+           # return myscore
+        if 'A' in hand:
             myhand = hand.replace('A','1')
-            adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
-            newscore = blackjackscore(bot,myhand)  
-            bot.say("new score:" + str(newscore))
+            #adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
+            newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
             return myscore
