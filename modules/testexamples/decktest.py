@@ -35,8 +35,13 @@ def execute_main(bot, trigger, arg):
 
 def blackjackscore(bot,hand):
     myscore = 0
+    i=0
     myhand= []
-    bot.say("Scoring: " + hand)
+    #testing
+    handlen = len(hand)
+    counter = get_botdatabase_value(bot,'casino','deckscorecount')
+    bot.say("Scoring: " + hand + ", number of cards " + str(handlen) + " Loop counter " + str(counter) + " I: " +str(i) + "Score: " +str(myscore))
+    
     for i in range(0,(len(hand))):
         card = hand[i]
     #   bot.say("Count: "+ str(i) + " Card: " + str(card))
@@ -48,13 +53,11 @@ def blackjackscore(bot,hand):
             myscore = myscore + 11              
     if myscore > 21:
         counter = get_botdatabase_value(bot,'casino','deckscorecount')
-        bot.say(str(counter))
+       
         if counter >5:
             return myscore
         elif 'A' in hand:
-            myhand = hand.replace('A','1') 
-            myscore = 0
-            i=0
+            myhand = hand.replace('A','1')
             adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
             blackjackscore(bot,myhand)            
         else:
