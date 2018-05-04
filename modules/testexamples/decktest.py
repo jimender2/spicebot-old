@@ -49,7 +49,7 @@ def blackjackscore(bot,hand):
             myscore = myscore + 11              
     if myscore > 21:
         counter = get_botdatabase_value(bot,'casino','deckscorecount')
-        if counter >2:
+        if counter >5:
             return myscore
         elif 'A' in hand:
             myhand = hand.replace('A','1') 
