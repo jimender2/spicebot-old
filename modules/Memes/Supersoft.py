@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif validtarget == 2:
         bot.say("I'm all metal, baby")
     else:
-        pick=random.randint(1,3)
+        pick=random.randint(1,20)
         if pick ==1:
             bot.say(target + " is going to have a super soft birthday party this year.")
         else:
