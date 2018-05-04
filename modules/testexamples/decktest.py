@@ -61,7 +61,7 @@ def blackjackscore(bot,hand):
             myhand = hand.replace('A','1')
             adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
             newscore = blackjackscore(bot,myhand)  
-            bot.say("new score:" + newscore)
+            bot.say("new score:" + str(newscore))
             return newscore
         else:
             return myscore
