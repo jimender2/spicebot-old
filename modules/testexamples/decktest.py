@@ -57,7 +57,7 @@ def blackjackscore(bot,hand):
             blackjackscore(bot,myhand)            
         else:
             return myscore
-    return myscore
+  
 
 def blackjackreset(bot,player):   
     reset_botdatabase_value(bot,player, 'myhand')
