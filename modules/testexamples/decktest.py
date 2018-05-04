@@ -40,7 +40,7 @@ def blackjackscore(bot,hand):
     #testing
     handlen = len(hand)
     counter = get_botdatabase_value(bot,'casino','deckscorecount')
-    bot.say("Scoring: " + hand + ", number of cards " + str(handlen) + " Loop counter " + str(counter) + " I: " +str(i) + "Score: " +str(myscore))
+    bot.say("Scoring:" + hand + ", number of cards:" + str(handlen) + " Loop counter:" + str(counter) + " I:" +str(i) + " Score:" +str(myscore))
     
     for i in range(0,(len(hand))):
         card = hand[i]
@@ -51,6 +51,7 @@ def blackjackscore(bot,hand):
             myscore = myscore + 10
         elif card=='A':
             myscore = myscore + 11              
+    bot.say("Score: " + str(myscore))
     if myscore > 21:
         bot.say("Score over 21")
         counter = get_botdatabase_value(bot,'casino','deckscorecount')       
