@@ -10,18 +10,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-replies = ["Eat My Shorts!",
-			"Don't Have a Cow, Man!",
-			"¡Ay, caramba!",
-			"Get Bent.",
-			"I'm Bart Simpson, Who the Hell are You?",
-			"Cowabunga!",
-			"I Didn't Do It!",
-			"Nobody saw me do it. You can't prove anything!",
-			"Aw, Man!",
-			"Aw, Geez!",
-			"Whoa, mama!",
-			"Eep!"]
+replies = [""]
 
 @sopel.module.commands('wtf')
 def mainfunction(bot, trigger):
