@@ -36,9 +36,10 @@ def execute_main(bot, trigger, arg):
 def blackjackscore(bot,hand):
     myscore = 0
     myhand= []
+    bot.say("Scoring: " + hand)
     for i in range(0,(len(hand))):
         card = hand[i]
-        bot.say("Count: "+ str(i) + " Card: " + str(card))
+    #   bot.say("Count: "+ str(i) + " Card: " + str(card))
         if card.isdigit():  
                                                      
             myscore=myscore+int(card)            
