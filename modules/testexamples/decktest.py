@@ -52,8 +52,8 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11              
     if myscore > 21:
-        counter = get_botdatabase_value(bot,'casino','deckscorecount')
-       
+        bot.say("Score over 21")
+        counter = get_botdatabase_value(bot,'casino','deckscorecount')       
         if counter >5:
             return myscore
         elif 'A' in hand:
@@ -64,6 +64,7 @@ def blackjackscore(bot,hand):
             return myscore
     else:
         return myscore
+    bot.say("Return error")
   
 
 def blackjackreset(bot,player):   
