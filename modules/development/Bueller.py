@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
 	loop = 1
-	while (loop > 5):
+	while (loop < 5):
 		bot.say("Bueller")
 		loop = loop + 1
