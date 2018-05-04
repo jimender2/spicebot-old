@@ -15,5 +15,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-	what =  get_trigger_arg(triggerargsarray, 0)
+	what =  get_trigger_arg(bot, triggerargsarray, 0)
 	bot.say("Wait...What? there\'s a " + what + " now?")
