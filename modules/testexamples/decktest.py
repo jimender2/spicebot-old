@@ -40,8 +40,7 @@ def blackjackscore(bot,hand):
     for i in range(0,(len(hand))):
         card = hand[i]
     #   bot.say("Count: "+ str(i) + " Card: " + str(card))
-        if card.isdigit():  
-                                                     
+        if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
@@ -53,6 +52,7 @@ def blackjackscore(bot,hand):
             return myscore
         elif 'A' in hand:
             myhand = hand.replace('A','1') 
+            myscore = 0
             adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
             blackjackscore(bot,myhand)            
         else:
