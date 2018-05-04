@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
 	loop = 1
-	while (loop <= 5):
+	while (loop <= 10):
 		bot.say("Bueller")
 		loop = loop + 1
-		time.sleep(2)
+		time.sleep(5)
