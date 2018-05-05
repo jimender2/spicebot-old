@@ -29,34 +29,42 @@ def execute_main(bot, trigger, arg):
         myhand =get_trigger_arg(bot,myhand,'list')   
         bot.say("Input: "+ str(myhand))
         myscore= blackjackscore(bot,myhand)    
-    bot.say(str(myscore))
+    bot.say("Player score is: " + str(myscore))
     reset_botdatabase_value(bot,'casino','deckscorecount')
     
 
 def blackjackscore(bot,hand):
     myscore = 0
+    i=0
     myhand= []
+    #testing
+    handlen = len(hand)
+    #counter = get_botdatabase_value(bot,'casino','deckscorecount')
+    #
+    
     for i in range(0,(len(hand))):
-        card = hand[i]
-        bot.say("Count: "+ str(i) + " Card: " + str(card))
-        if card.isdigit():  
-                                                     
+        card = hand[i]    
+        if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
-            myscore = myscore + 11              
-    if myscore > 21:
-        counter = get_botdatabase_value(bot,'casino','deckscorecount')
-        if counter >2:
-            return myscore
-        elif 'A' in hand:
-            myhand = hand.replace('A','1') 
-            adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
-            blackjackscore(bot,myhand)            
+            myscore = myscore + 11                 
+    if myscore > 21:        
+        #counter = get_botdatabase_value(bot,'casino','deckscorecount')       
+        #if counter >5:
+           # return myscore
+        if 'A' in hand:
+            myhand = hand.replace('A','1')
+            #adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
+            newscore = blackjackscore(bot,myhand)              
+            return newscore
         else:
             return myscore
-    return myscore
+    else:
+        return myscore
+    
+  
 
 def blackjackreset(bot,player):   
     reset_botdatabase_value(bot,player, 'myhand')
