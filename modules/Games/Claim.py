@@ -131,7 +131,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if not admintarget:
             admintarget = instigator
         fridgecontents = bot.db.get_nick_value(admintarget,'fridgecontents')
-        bot.say("The fridge is a Work in Progress")
+        bot.say("The fridge is a Work in Progress, " + admintarget)
 
     # Admin functions
     elif target == 'admin':
