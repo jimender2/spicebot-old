@@ -532,24 +532,30 @@ def blackjack(bot,trigger,arg):
                                 bot.notice('You do not have enough spicebucks.',player)
         elif mychoice == 'hit' or mychoice == '2':
             myhand =  get_botdatabase_value(bot,player, 'myhand') or 0            
+            payout = get_botdatabase_value(bot,player, 'mybet') or 0
             if (myhand == [] or myhand ==0):
                 bot.say('Use deal to start a new game')
             else:
-                playerhitlist = ''
-                #bot.say(player + ' has ' + str(myhand))
-                #bot.say('Spicebot has ' + str(dealerhand))
-                playerhits=deal(bot,deck, 1)
-                playerhits=playerhits[0]                
-                
-                myhand.append(playerhits)
-                myscore = blackjackscore(bot,myhand)               
-                               
-                if myscore < 21:                
-                    set_botdatabase_value(bot, player, 'myhand', myhand)
-                    bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
-                else:
-                    bot.say(player + ' got ' + str(playerhits) + ' busted and gets nothing')
-                    blackjackreset(bot,player)
+                if len(myhand)>=6:    
+                    payment = payout+(int(payout/2))
+                    bot.say(player + str(payment) + " wins for having more then 5 cards.")
+                    Spicebucks.spicebucks(bot, player, 'plus', payout)
+                    blackjackreset(bot,player)                    
+                        
+                else:                    
+                    playerhitlist = ''                    
+                    playerhits=deal(bot,deck, 1)
+                    playerhits=playerhits[0]                
+
+                    myhand.append(playerhits)
+                    myscore = blackjackscore(bot,myhand)               
+
+                    if myscore < 21:                
+                        set_botdatabase_value(bot, player, 'myhand', myhand)
+                        bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
+                    else:
+                        bot.say(player + ' got ' + str(playerhits) + ' busted and gets nothing')
+                        blackjackreset(bot,player)
                     
         elif mychoice == 'check':
             target = mychoice2
