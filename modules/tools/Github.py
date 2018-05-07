@@ -25,7 +25,7 @@ REPO_NAME = 'SpiceBot'
 # Invalid Requests
 dontaskforthese = ['instakill','instant kill','random kill','random deaths','butterfingers','bad grenade','grenade failure','suicide','go off in','dud grenade']
 
-@sopel.module.commands('feature','issue','wiki','feetcher')
+@sopel.module.commands('feature','feetcher','bug','issue','wiki')
 def execute_main(bot, trigger):
     banneduserarray = get_botdatabase_value(bot, bot.nick, 'githubblockedusers') or [] # Banned Users
     maincommand = trigger.group(1)

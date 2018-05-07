@@ -10,7 +10,9 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-replies = [""]
+replies = ["test",
+			"",
+			""]
 
 @sopel.module.commands('wtf')
 def mainfunction(bot, trigger):
@@ -20,4 +22,4 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
-    bot.say(answer)
+    bot.say("" + answer)

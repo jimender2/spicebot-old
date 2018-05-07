@@ -11,7 +11,7 @@ def mainfunction(bot, trigger):
     enablestatus = spicebot_prerun(bot, trigger,trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger)
-    
+
 def execute_main(bot, trigger):
     if not trigger.group(2):
         bot.say('response')
@@ -34,9 +34,9 @@ def execute_main(bot, trigger):
 # trigger.group(5) = Word3
 # trigger.group(6) = Word4
 # str(trigger.group(2).split(six, 1)[1]).strip() = Word5 Word6 Word7 Word8 Word9
-       
+
 # trigger.nick = the person asking command
-# trigger.sender = the current room 
+# trigger.sender = the current room
 # trigger.admin = detects if trigger.nick is a bot admin
 
 ##############
@@ -66,7 +66,7 @@ def execute_main(bot, trigger):
 # determine if somebody is in the room right now
 # if target.lower() not in bot.privileges[channel.lower()]:
 
-# I use this to see if I'm using the dev bot, and overide timeouts
+# I use this to see if I'm using the dev bot, and override timeouts
 # if bot.nick.endswith('dev'):
 
 # use this to affect all users in the room
@@ -103,7 +103,7 @@ def get_database_value(bot, nick, databasekey):
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('challenges_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
-    
+
 # get current value and update it adding newvalue
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
