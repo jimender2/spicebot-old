@@ -666,24 +666,28 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 
 def blackjackscore(bot,hand):
     myscore = 0
-    for card in hand:
-        if(card == 'J' or card == 'Q' or card == 'K'):
+    hand=get_trigger_arg(bot,hand,'list')
+    i=0
+    myhand= []   
+    handlen = len(hand)       
+    for i in range(0,(len(hand))):
+        card = hand[i]    
+        if card.isdigit():                                                       
+            myscore=myscore+int(card)            
+        elif(card == 'J' or card == 'Q' or card == 'K'):
             myscore = myscore + 10
         elif card=='A':
-            testscore = myscore + 11
-            if testscore>21:
-                myscore = myscore + 1
-            else:
-                myscore = myscore + 11
+            myscore = myscore + 11                 
+    if myscore > 21:             
+           
+        if 'A' in hand:
+            myhand = hand.replace('A','1')            
+            newscore = blackjackscore(bot,myhand)              
+            return newscore
         else:
-            try:
-                myscore = myscore + int(card)
-            except ValueError:
-                myscore=myscore
-    if myscore >21:
-        hand =get_trigger_arg(bot,hand,'list')
-        hand=hand.replace('A','1')
-        blackjackscore(bot,hand)     
+            return myscore
+    else:
+        return myscore
     return myscore
 
 def blackjackreset(bot,player):   
