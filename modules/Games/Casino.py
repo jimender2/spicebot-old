@@ -206,7 +206,7 @@ def roulette(bot,trigger,arg):
                         myitem2 = 'noitem'
                         inputcheck = 1                        
                     else:
-                        bot.notice("You can only bet on a number going all in.")
+                        bot.notice("You can only bet on a number going all in.",player)
                 else:
                     bot.notice('You do not have any spicebucks',player)
                     inputcheck = 0
