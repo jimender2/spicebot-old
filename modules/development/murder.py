@@ -27,16 +27,16 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         bot.say("Who/what would you like to murder?")
     
-    # Can slap the bot
+    # How to kill spicebot
     if target == bot.nick:
-        message = trigger.nick + " slaps " + target + " with " + msg + " for " + reason + "."
+        message = trigger.nick + " murders " + target + " with " + msg + " for " + reason + "."
         bot.say(message)
-        bot.say("That hurts")
+        bot.say("You do not have permission to do that")
         
     # Target is fine
     else:
         if not reason:
-            message = trigger.nick + " slaps " + target + " with " + msg + "."
+            message = trigger.nick + " murders " + target + " with " + msg + "."
         else:
             if reason.startswith('for ') or reason.startswith('because ') or reason.startswith('cause '):
                 message = trigger.nick + " slaps " + target + " with " + msg + " " + reason + "."
