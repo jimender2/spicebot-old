@@ -492,7 +492,7 @@ def blackjack(bot,trigger,arg):
         
     else:
         if bot.nick == "Spicebotdev":
-            deck = [2, 3, 4, 5, 6, 7, 8, 'A']*4
+            deck = [2, 3, 4, 5, 6, 7, 8, 10, 'J', 'A']*4
         else:
             deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
         myhand = []
