@@ -491,7 +491,10 @@ def blackjack(bot,trigger,arg):
         bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
         
     else:
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
+        if bot.nick == "Spicebotdev":
+            deck = [2, 3, 4, 5, 6, 7, 8, 'A']*4
+        else:
+            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
         myhand = []
         dealerhand = []
         player=trigger.nick
@@ -542,12 +545,14 @@ def blackjack(bot,trigger,arg):
                     Spicebucks.spicebucks(bot, player, 'plus', payout)
                     blackjackreset(bot,player)                    
                         
-                else:                    
+                else:       
+                    bot.say("Player hand before hit: " + myhand)
                     playerhitlist = ''                    
                     playerhits=deal(bot,deck, 1)
                     playerhits=playerhits[0]                
 
                     myhand.append(playerhits)
+                    bot.say("Player hand after hit: " + myhand)
                     myscore = blackjackscore(bot,myhand)               
 
                     if myscore < 21:                
