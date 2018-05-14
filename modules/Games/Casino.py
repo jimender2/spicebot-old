@@ -645,7 +645,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 dealerhand.append(dealerhits)                
                 dealerscore=blackjackscore(bot,dealerhand)
             if not dealerhitlist == '':
-                hitlist=len(dealerhitlist)-2 #minus two for spaces
+                hitlist=len(dealerhitlist)/2 #count spaces
                 if hitlist>1:                        
                     bot.say('Spicebot takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
                 else: 
