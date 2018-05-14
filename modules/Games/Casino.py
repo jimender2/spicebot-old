@@ -555,7 +555,7 @@ def blackjack(bot,trigger,arg):
                     bot.say("Player hand after hit: " + str(myhand))
                     myscore = blackjackscore(bot,myhand)               
 
-                    if myscore < 21:                
+                    if myscore <= 21:                
                         set_botdatabase_value(bot, player, 'myhand', myhand)
                         bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
                     else:
