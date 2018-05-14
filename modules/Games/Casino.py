@@ -696,6 +696,7 @@ def blackjackscore(bot,hand):
             newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
+            bot.say("Return player score : " + str(myscore))
             return myscore
     else:
         return myscore
