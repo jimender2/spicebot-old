@@ -548,8 +548,8 @@ def blackjack(bot,trigger,arg):
                 else:       
                     bot.say("Player hand before hit: " + str(myhand))
                     playerhitlist = ''                    
-                    playerhits=deal(bot,deck, 1)
-                    playerhits=playerhits[0]                
+                    hitcard=deal(bot,deck, 1)
+                    playerhits=hitcard[0]                
 
                     myhand.append(playerhits)
                     bot.say("Player hand after hit: " + str(myhand))
