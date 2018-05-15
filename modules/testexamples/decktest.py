@@ -41,7 +41,7 @@ def blackjackscore(bot,hand):
     #counter = get_botdatabase_value(bot,'casino','deckscorecount')
     #
     
-    for i in range(0,handlen)
+    for i in range(0,handlen):
         card = get_trigger_arg(bot, hand, i)
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
