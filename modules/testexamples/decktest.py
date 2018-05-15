@@ -34,16 +34,15 @@ def execute_main(bot, trigger, arg):
     
 
 def blackjackscore(bot,hand):
-    myscore = 0
-    i=0
+    myscore = 0    
     myhand= []
    
     handlen = len(hand)
     #counter = get_botdatabase_value(bot,'casino','deckscorecount')
     #
     
-    for i in hand:
-        card = i  
+    for i in range(0,handlen)
+        card = get_trigger_arg(bot, hand, i)
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
