@@ -690,13 +690,13 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11                 
     if myscore > 21:             
-        bot.say("Player score: " + str(myscore))
+       # bot.say("Player score: " + str(myscore))
         if 'A' in hand:
             myhand = hand.replace('A','1')            
             newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
-            bot.say("Return player score : " + str(myscore))
+           # bot.say("Return player score : " + str(myscore))
             return myscore
     else:
         return myscore
