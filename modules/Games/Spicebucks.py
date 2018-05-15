@@ -184,7 +184,8 @@ def execute_main(bot, trigger, triggerargsarray):
                     fine = int(triggerbalance*.20)
                     bot.say(trigger.nick + " get's caught pickpocketing and is fined " + str(fine))
                     spicebucks(bot,trigger.nick,'minus',fine)                    
-                else:                    
+                else:  
+                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     randomcheck = random.randint(0,5)
                     if randomcheck==3:
                         triggerbalance=bank(bot, trigger.nick)
