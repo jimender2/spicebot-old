@@ -677,12 +677,12 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 
 def blackjackscore(bot,hand):
     myscore = 0
-    hand=get_trigger_arg(bot,hand,'list')
+    #hand=get_trigger_arg(bot,hand,'list')
     i=0
     myhand= []   
     handlen = len(hand)       
-    for i in range(0,(len(hand))):
-        card = hand[i]    
+    for i in range(0,handlen):
+        card = get_trigger_arg(bot, hand, i)   
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
