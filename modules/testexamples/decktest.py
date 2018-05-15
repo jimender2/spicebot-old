@@ -37,6 +37,7 @@ def blackjackscore(bot,hand):
     myscore = 0
     i=0
     myhand= []
+    hand = str(hand)
     #testing
     handlen = len(hand)
     #counter = get_botdatabase_value(bot,'casino','deckscorecount')
