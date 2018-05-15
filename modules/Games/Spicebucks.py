@@ -173,6 +173,8 @@ def execute_main(bot, trigger, triggerargsarray):
         elif commandused=='rob':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
             balance=bank(bot, target)
+            taxcount = get_botdatabase_value(bot,trigger.nick,'usedtaxes')
+            bot.say(str(taxcount))
             if targetcheck(bot,target,trigger.nick)==0:
                 bot.say("I'm sorry, I do not know who " + target + " is.")
             else:
