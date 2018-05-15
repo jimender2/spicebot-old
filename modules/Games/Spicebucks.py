@@ -180,7 +180,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     triggerbalance=bank(bot, trigger.nick)
                     fine = int(triggerbalance*.20)
-                    bot.say(trigger.nick + " get's caught pickpocketing and is fined " + str(fine))
+                    bot.say(trigger.nick + " get's caught for pickpocketing too much and is fined " + str(fine))
                     spicebucks(bot,trigger.nick,'minus',fine)                    
                 else:  
                     adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
