@@ -206,7 +206,7 @@ def roulette(bot,trigger,arg):
                         myitem2 = 'noitem'
                         inputcheck = 1                        
                     else:
-                        bot.notice("You can only bet on a number going all in.")
+                        bot.notice("You can only bet on a number going all in.",player)
                 else:
                     bot.notice('You do not have any spicebucks',player)
                     inputcheck = 0
@@ -491,7 +491,10 @@ def blackjack(bot,trigger,arg):
         bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
         
     else:
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
+        if bot.nick == "Spicebotdev":
+            deck = [2, 3, 4, 5, 6, 7, 8, 10, 'J', 'A']*4
+        else:
+            deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
         myhand = []
         dealerhand = []
         player=trigger.nick
@@ -542,15 +545,17 @@ def blackjack(bot,trigger,arg):
                     Spicebucks.spicebucks(bot, player, 'plus', payout)
                     blackjackreset(bot,player)                    
                         
-                else:                    
+                else:       
+                    bot.say("Player hand before hit: " + str(myhand))
                     playerhitlist = ''                    
                     playerhits=deal(bot,deck, 1)
                     playerhits=playerhits[0]                
 
                     myhand.append(playerhits)
+                    bot.say("Player hand after hit: " + str(myhand))
                     myscore = blackjackscore(bot,myhand)               
 
-                    if myscore < 21:                
+                    if myscore <= 21:                
                         set_botdatabase_value(bot, player, 'myhand', myhand)
                         bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
                     else:
@@ -640,7 +645,7 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 dealerhand.append(dealerhits)                
                 dealerscore=blackjackscore(bot,dealerhand)
             if not dealerhitlist == '':
-                hitlist=len(dealerhitlist)-2 #minus two for spaces
+                hitlist=int(len(dealerhitlist)/2) #count spaces
                 if hitlist>1:                        
                     bot.say('Spicebot takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
                 else: 
@@ -685,12 +690,13 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11                 
     if myscore > 21:             
-           
+        bot.say("Player score: " + str(myscore))
         if 'A' in hand:
             myhand = hand.replace('A','1')            
             newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
+            bot.say("Return player score : " + str(myscore))
             return myscore
     else:
         return myscore
