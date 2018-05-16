@@ -1290,7 +1290,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ## Display Text
     instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
-    if instigatorcurse:
+    if manualpick == 1:
+        onscreentext(bot, inchannel, instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
+    elif instigatorcurse:
         onscreentext(bot, inchannel, instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
     elif roulettelastplayer == instigator and int(roulettecount) > 1:
         onscreentext(bot, inchannel, instigator + " spins the revolver and pulls the trigger.")
