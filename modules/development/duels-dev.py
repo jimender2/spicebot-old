@@ -4140,7 +4140,7 @@ def create_array(bot, inputs):
                 string = str(x)
         inputs = string
     outputs = []
-    if inputs:
+    if inputs != '' and inputs != []:
         for word in inputs.split():
             outputs.append(word)
     return outputs
