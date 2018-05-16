@@ -17,6 +17,7 @@ import os
 from os.path import exists
 from num2words import num2words
 from difflib import SequenceMatcher
+from more_itertools import sort_together
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -2006,7 +2007,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                zip(*sorted(zip(statvaluearray, playerarray)))[1]
+                sort_together([statvaluearray, playerarray])[1]
+                #zip(*sorted(zip(statvaluearray, playerarray)))
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
@@ -2051,7 +2053,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             playerarray.append(u)
             statvaluearray.append(statamount)
     if playerarray != [] and statvaluearray != []:
-        zip(*sorted(zip(statvaluearray, playerarray)))[1]
+        sort_together([statvaluearray, playerarray])[1]
+        #zip(*sorted(zip(statvaluearray, playerarray)))
         if subcommand.lower() == 'highest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
