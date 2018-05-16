@@ -1999,6 +1999,12 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             for u in currentduelplayersarray:
                 if x != 'winlossratio' and x != 'health':
                     statamount = get_database_value(bot, u, x)
+                elif x == 'health':
+                    totalhealth = 0
+                    for j in stats_healthbodyparts:
+                        gethowmany = get_database_value(bot, u, j)
+                        totalhealth = totalhealth + gethowmany
+                    statamount = totalhealth
                 else:
                     scriptdef = str('get_' + x + '(bot,u)')
                     statamount = eval(scriptdef)
@@ -2044,6 +2050,12 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
     for u in currentduelplayersarray:
         if subcommanda.lower() != 'winlossratio' and subcommanda.lower() != 'health':
             statamount = get_database_value(bot, u, subcommanda.lower())
+        elif subcommanda.lower() == 'health':
+            totalhealth = 0
+            for x in stats_healthbodyparts:
+                gethowmany = get_database_value(bot, u, x)
+                totalhealth = totalhealth + gethowmany
+            statamount = totalhealth
         else:
             scriptdef = str('get_' + subcommanda.lower() + '(bot,u)')
             statamount = eval(scriptdef)
