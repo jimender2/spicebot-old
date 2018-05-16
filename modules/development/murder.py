@@ -42,8 +42,8 @@ def execute_main(bot, trigger, triggerargsarray):
 		message = instigator + " cannot murder themselves. That would be suicide."
 		bot.say(message)
 
-        message = instigator + " cannot murder themselves. That would be suicide."
-        bot.say(message)
+		message = instigator + " cannot murder themselves. That would be suicide."
+		bot.say(message)
 
     # Target is fine
     else:
