@@ -34,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Cannot kill self
     elif target == instigator:
-		message = instigator + " cannot murder themselves. That would be suicide."
+		message = "Killing yourself would be suicide, " + instigator + ", not murder. Idiot."
 		bot.say(message)
 
     # Target is fine
