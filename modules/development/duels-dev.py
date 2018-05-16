@@ -2008,7 +2008,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
                 #sort_together([statvaluearray, playerarray])[1]
-                zip(*sorted(zip(statvaluearray, playerarray)))
+                statvaluearray,playerarray = zip(*sorted(zip(statvaluearray, playerarray)))
                 bot.say(str(statvaluearray))
                 bot.say(str(playerarray))
                 if x == 'health':
