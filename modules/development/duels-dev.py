@@ -2009,6 +2009,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             if playerarray != [] and statvaluearray != []:
                 sort_together([statvaluearray, playerarray])[1]
                 #zip(*sorted(zip(statvaluearray, playerarray)))
+                bot.say(str(statvaluearray))
+                bot.say(str(playerarray))
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
