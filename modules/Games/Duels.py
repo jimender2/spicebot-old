@@ -1279,7 +1279,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     manualpick = 0
     roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
     if roulettesubcom == 'last':
-        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("unknown")
+        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("I don't have a record of the last roulette.")
         onscreentext(bot, inchannel, roulettelastplayeractual)
         return
     elif str(roulettesubcom).isdigit():
