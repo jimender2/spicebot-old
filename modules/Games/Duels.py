@@ -1231,6 +1231,20 @@ def subcommand_harakiri(bot, instigator, triggerargsarray, botvisibleusers, curr
 ## Russian Roulette
 def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
 
+    ## subcommands
+    manualpick = 0
+    roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
+    if roulettesubcom == 'last':
+        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("I don't have a record of the last roulette.")
+        onscreentext(bot, inchannel, roulettelastplayeractual)
+        return
+    elif str(roulettesubcom).isdigit():
+        if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
+            manualpick = 1
+        else:
+            onscreentext(bot, inchannel, "Invalid Chamber Number!")
+            return
+            
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
     if roulettelastshot == instigator:
@@ -1274,20 +1288,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     if not roulettechamber:
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
-
-    ## subcommands
-    manualpick = 0
-    roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
-    if roulettesubcom == 'last':
-        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("I don't have a record of the last roulette.")
-        onscreentext(bot, inchannel, roulettelastplayeractual)
-        return
-    elif str(roulettesubcom).isdigit():
-        if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
-            manualpick = 1
-        else:
-            onscreentext(bot, inchannel, "Invalid Chamber Number!")
-            return
 
     ## Display Text
     instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
@@ -1457,7 +1457,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
     set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
-
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -2178,7 +2177,7 @@ def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, cur
         onscreentext(bot, inchannel, instigator + " strikes a deathblow upon " + deathblowtarget + ".")
         deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
         onscreentext(bot, inchannel, deathblowkilltext)
-    
+
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     instigatorclass = get_database_value(bot, instigator, 'class_setting')
