@@ -1279,7 +1279,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     manualpick = 0
     roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
     if roulettesubcom == 'last':
-        onscreentext(bot, inchannel, "The Last person to spin was " + roulettelastplayer)
+        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("unknown")
+        onscreentext(bot, inchannel, roulettelastplayeractual)
         return
     elif str(roulettesubcom).isdigit():
         if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
@@ -1341,9 +1342,12 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         time.sleep(randint(1, 3)) # added to build suspense
         onscreentext(bot, inchannel, "*click*")
         if manualpick == 1:
+            roulettelastplayeractualtext = str(instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
             onscreentext(bot, inchannel, instigator + " picked a chamber without the bullet. Bullet will be moved.")
             roulettechambernew = randint(1, 6)
             set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechambernew)
+        else:
+            roulettelastplayeractualtext = str(instigator + " pulled the trigger and was safe.")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
@@ -1357,6 +1361,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         tierscaling = tierratio_level(bot)
         currenttierstart = get_database_value(bot, duelrecorduser, 'tier') or 0
         dispmsgarray = []
+        
         if roulettecount == 1:
             if instigatorcurse:
                 dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
@@ -1381,6 +1386,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         damagescale = tierratio_level(bot)
         damage = damagescale * damage
         dispmsgarray.append(instigator + " shoots themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
+        roulettelastplayeractualtext = str(instigator + " shot themself in the head with the " + revolver + ", dealing " + str(damage) + " damage. ")
         damage, damagetextarray = damage_resistance(bot, instigator, damage, bodypart)
         for x in damagetextarray:
             dispmsgarray.append(x)
@@ -1450,6 +1456,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettewinners')
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
+    set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
+
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
