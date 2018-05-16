@@ -2007,8 +2007,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                #sort_together([statvaluearray, playerarray])[1]
-                statvaluearray,playerarray = zip(*sorted(zip(statvaluearray, playerarray)))
+                statvaluearray,playerarray =  sort_together([statvaluearray, playerarray])[1]
+                #statvaluearray,playerarray =  zip(*sorted(zip(statvaluearray, playerarray)))
                 bot.say(str(statvaluearray))
                 bot.say(str(playerarray))
                 if x == 'health':
@@ -4140,7 +4140,7 @@ def create_array(bot, inputs):
                 string = str(x)
         inputs = string
     outputs = []
-    if inputs != '' and inputs != []:
+    if inputs:
         for word in inputs.split():
             outputs.append(word)
     return outputs
