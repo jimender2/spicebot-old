@@ -1338,9 +1338,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ### current spin is safe
     if int(currentspin) != int(roulettechamber):
-        if manualpick != 1:
-            time.sleep(randint(1, 3)) # added to build suspense
-            onscreentext(bot, inchannel, "*click*")
+        time.sleep(randint(1, 3)) # added to build suspense
+        onscreentext(bot, inchannel, "*click*")
+        if manualpick == 1:
             onscreentext(bot, inchannel, instigator + " picked a chamber without the bullet. Bullet will be moved.")
             roulettechambernew = randint(1, 6)
             set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechambernew)
