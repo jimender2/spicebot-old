@@ -1275,9 +1275,24 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettechamber = randint(1, 6)
         set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechamber)
 
+    ## subcommands
+    manualpick = 0
+    roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
+    if roulettesubcom == 'last':
+        onscreentext(bot, inchannel, "The Last person to spin was " + roulettelastplayer)
+        return
+    elif str(roulettesubcom).isdigit():
+        if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
+            manualpick = 1
+        else:
+            onscreentext(bot, inchannel, "Invalid Chamber Number!")
+            return
+
     ## Display Text
     instigatorcurse = get_database_value(bot, instigator, 'curse') or 0
-    if instigatorcurse:
+    if manualpick == 1:
+        onscreentext(bot, inchannel, instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
+    elif instigatorcurse:
         onscreentext(bot, inchannel, instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
     elif roulettelastplayer == instigator and int(roulettecount) > 1:
         onscreentext(bot, inchannel, instigator + " spins the revolver and pulls the trigger.")
@@ -1292,6 +1307,9 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, instigator, 'curse', -1)
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = roulettechamber
+    ## manual number
+    elif manualpick == 1:
+        currentspin = int(roulettesubcom)
     ### If instigator uses multiple times in a row, decrease odds of success
     elif roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
@@ -1322,6 +1340,10 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     if int(currentspin) != int(roulettechamber):
         time.sleep(randint(1, 3)) # added to build suspense
         onscreentext(bot, inchannel, "*click*")
+        if manualpick == 1:
+            onscreentext(bot, inchannel, instigator + " picked a chamber without the bullet. Bullet will be moved.")
+            roulettechambernew = randint(1, 6)
+            set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechambernew)
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
