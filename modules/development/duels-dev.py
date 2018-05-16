@@ -1347,7 +1347,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
             roulettechambernew = randint(1, 6)
             set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechambernew)
         else:
-            roulettelastplayeractualtext = str(instigator + " Pulled the trigger and was safe.")
+            roulettelastplayeractualtext = str(instigator + " pulled the trigger and was safe.")
         roulettecount = roulettecount + 1
         roulettepayout = roulette_payout_default * roulettecount
         currentpayout = get_database_value(bot, instigator, 'roulettepayout')
