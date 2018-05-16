@@ -255,17 +255,6 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
 
-# Date checker
-def longenough(startdate,enddate,timeframe):
-    datea = arrow.get(startdate)
-    dateb = arrow.get(enddate)
-    timepassed = startdate - enddate
-    dayspassed = timepassed.days
-    if timepassed.days >= int(timeframe):
-        return True
-    else:
-        return False
-
 ##########################
 ## 30 minute automation ##
 ##########################
