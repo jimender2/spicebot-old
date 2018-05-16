@@ -30,22 +30,22 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Cannot kill spicebot
     if target == bot.nick:
-		if not reason:
-			message = instigator + " attempts to murder " + target + " with " + msg + "."
-		else:
-			message = instigator + " attempts to murder " + target + " with " + msg + " for " + reason + "."
-		bot.say(message)
-		bot.say("You cannot kill a nonliving entity")
+        if not reason:
+            message = instigator + " attempts to murder " + target + " with " + msg + "."
+        else:
+            message = instigator + " attempts to murder " + target + " with " + msg + " for " + reason + "."
+        bot.say(message)
+        bot.say("You cannot kill a nonliving entity")
 
     # Cannot kill self
-	else if target == instigator:
-		message = instigator + " cannot murder themselves. That would be suicide."
-		bot.say(message)
+    else if target == instigator:
+        message = instigator + " cannot murder themselves. That would be suicide."
+        bot.say(message)
 
-	# Target is fine
-	else:
-		if not reason:
-			message = instigator + " murders " + target + " with " + msg + "."
+    # Target is fine
+    else:
+        if not reason:
+            message = instigator + " murders " + target + " with " + msg + "."
         else:
-			message = instigator + " murders " + target + " with " + msg + " for " + reason + "."	
-		bot.say(message)
+            message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
+        bot.say(message)
