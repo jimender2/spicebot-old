@@ -26,7 +26,7 @@ def execute_main(bot, trigger, arg):
     if len(myhand)>=12:
         bot.say("Player wins for having more then 6 cards.")
     else:        
-        myhand =get_trigger_arg(bot,myhand,'list')   
+        #myhand =get_trigger_arg(bot,myhand,'list')   
         bot.say("Input: "+ str(myhand))
         myscore= blackjackscore(bot,myhand)    
     bot.say("Player score is: " + str(myscore))
@@ -34,16 +34,15 @@ def execute_main(bot, trigger, arg):
     
 
 def blackjackscore(bot,hand):
-    myscore = 0
-    i=0
+    myscore = 0    
     myhand= []
-    #testing
+   
     handlen = len(hand)
     #counter = get_botdatabase_value(bot,'casino','deckscorecount')
     #
     
-    for i in range(0,(len(hand))):
-        card = hand[i]    
+    for i in range(0,handlen):
+        card = get_trigger_arg(bot, hand, i)
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
