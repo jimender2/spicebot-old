@@ -238,18 +238,18 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 ########################
 
 ## work with /me ACTION (does not work with manual weapon)
-@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
-@module.intent('ACTION')
-@module.require_chanmsg
-def duel_action(bot, trigger):
-    triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
-    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
+#@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+#@module.intent('ACTION')
+#@module.require_chanmsg
+#def duel_action(bot, trigger):
+#    triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
+#    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
     #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     #if not enablestatus: ## not needed if using without spicebot
     #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
-@sopel.module.commands('duel','challenge')
+@sopel.module.commands('duels','challenges')
 def mainfunction(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create') # enable if not using with spicebot
     execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
@@ -1458,7 +1458,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, instigator, 'roulettepayout')
     set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
 
-
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
@@ -2178,7 +2177,7 @@ def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, cur
         onscreentext(bot, inchannel, instigator + " strikes a deathblow upon " + deathblowtarget + ".")
         deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
         onscreentext(bot, inchannel, deathblowkilltext)
-    
+
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     instigatorclass = get_database_value(bot, instigator, 'class_setting')
