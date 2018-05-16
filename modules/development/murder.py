@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		else:
 			message = instigator + " attempts to murder " + target + " with " + msg + " for " + reason + "."
 		bot.say(message)
-        bot.say("You cannot kill a nonliving entity")
+		bot.say("You cannot kill a nonliving entity")
 
     # Cannot kill self
 	if target == instigator:
