@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
-	reason = get_trigger_arg(bot, triggerargsarray, '2+')
+    reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
     weapontype = get_trigger_arg(bot,weapontypes,'random')
     msg = "a " + weapontype
