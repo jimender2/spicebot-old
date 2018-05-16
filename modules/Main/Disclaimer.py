@@ -8,7 +8,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-specifics = ['brightlights','doctor','EULA','IT','Cipher-0','Cipher','IT_Sean']
+specifics = ['brightlights','doctor','EULA','IT','Cipher-0','Cipher','IT_Sean','parent']
 
 @sopel.module.commands('disclaimer')
 def mainfunction(bot, trigger):
@@ -18,8 +18,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    person = instigator
     subdisclaimer = get_trigger_arg(bot,triggerargsarray,1)
+    person = get_trigger_arg(bot,triggerargsarray,2) or instigator
     if subdisclaimer in specifics:
         if subdisclaimer == 'brightlights':
             bot.say("Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.")
@@ -29,6 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("Spicebot may occasionally (read 'frequently') use colorful language to carry out its tasks. By remaining in this channel and continuing to use the bot you acknowledge that you are not, in fact, too weak to handle this.")
         elif subdisclaimer == 'IT':
             bot.say("While most members of this channel have some level of technical knowledge, your decision to trust the recommendations of " + person + " are entirely your own risk.")
+        elif subdisclaimer == 'parent'
         elif subdisclaimer == 'Cipher-0' or 'Cipher':
             bot.say("Frivolously pestering Cipher comes with a high risk of termination, " + person)
         elif subdisclaimer == 'IT_Sean':
