@@ -15,7 +15,6 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     message = target + " wants to put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
     bot.say(message)
