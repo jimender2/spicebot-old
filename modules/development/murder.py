@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if target == bot.nick:
 		if not reason:
 			message = instigator + " attempts to murder " + target + " with " + msg + "."
-        else:
+		else:
 			message = instigator + " attempts to murder " + target + " with " + msg + " for " + reason + "."
 		bot.say(message)
         bot.say("You cannot kill a nonliving entity")
