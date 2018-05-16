@@ -3338,7 +3338,11 @@ def damage_resistance(bot, nick, damage, bodypart):
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(nick + "s "+ armorname + " alleviated " + str(damagereduced) + " of the damage.")
+            if nick.endswith('s'):
+                damagenick = str(nick + "'")
+            else:
+                damagenick = str(nick + "s")
+            damagetext = str(damagenick + " "+ armorname + " alleviated " + str(damagereduced) + " of the damage.")
             armornick = get_database_value(bot, nick, armortype) or 0
             if armornick <= 0:
                 reset_database_value(bot, nick, armortype)
