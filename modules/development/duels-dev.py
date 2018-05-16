@@ -1277,7 +1277,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ## subcommands
     roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
-    bot.say(roulettesubcom)
     if roulettesubcom == 'last':
         onscreentext(bot, inchannel, "The Last person to spin was " + roulettelastplayer)
         return
@@ -1299,6 +1298,20 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         adjust_database_value(bot, instigator, 'curse', -1)
         reset_database_value(bot, duelrecorduser, 'roulettespinarray')
         currentspin = roulettechamber
+    ## manual number
+    elif str(roulettesubcom).isdigit():
+        if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
+            currentspin = int(roulettesubcom)
+            if currentspin == roulettechamber:
+                onscreentext(bot, inchannel, instigator + " picked the chamber with the bullet.")
+            else:
+                onscreentext(bot, inchannel, instigator + " picked a chamber without the bullet. Bullet will be moved.")
+                roulettechambernew = randint(1, 6)
+                set_database_value(bot, duelrecorduser, 'roulettechamber', roulettechambernew)
+        else:
+            onscreentext(bot, inchannel, "Invalid Chamber Number!")
+            return
+        
     ### If instigator uses multiple times in a row, decrease odds of success
     elif roulettelastplayer == instigator:
         roulettespinarray = get_database_value(bot, duelrecorduser, 'roulettespinarray')
