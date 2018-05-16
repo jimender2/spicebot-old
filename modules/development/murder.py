@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Who/what would you like to murder?")
 
     # Cannot kill spicebot
-    if target == bot.nick:
+    elif target == bot.nick:
         if not reason:
             message = instigator + " attempts to murder " + target + " with " + msg + "."
         else:
@@ -39,9 +39,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Cannot kill self
     elif target == instigator:
-		message = instigator + " cannot murder themselves. That would be suicide."
-		bot.say(message)
-
 		message = instigator + " cannot murder themselves. That would be suicide."
 		bot.say(message)
 
