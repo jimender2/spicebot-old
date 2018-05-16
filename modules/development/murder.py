@@ -33,12 +33,11 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(message)
         bot.say("You can not kill a nonliving entity")
 	
-	else:
-		if (target == trigger.nick):
-			message = trigger.nick + " cannot murder themselves because if they did it would be suicide."
-			bot.say(message)
+	elif (target == trigger.nick):
+		message = trigger.nick + " cannot murder themselves because if they did it would be suicide."
+		bot.say(message)
 		
 	# Target is fine
-		else:
-			message = trigger.nick + " murders " + target + " with " + msg + "."
-			bot.say(message)
+	else:
+		message = trigger.nick + " murders " + target + " with " + msg + "."
+		bot.say(message)
