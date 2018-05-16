@@ -2067,7 +2067,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         playerarray = []
         for k in Zy:
             playerarray.append(k)
-        if subcommand.lower() == 'highest':
+        if subcommand.lower() == 'lowest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
         else:
