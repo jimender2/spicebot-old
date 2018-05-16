@@ -492,7 +492,7 @@ def blackjack(bot,trigger,arg):
         
     else:
         if bot.nick == "Spicebotdev":
-            deck = [2, 3, 4, 5, 6, 7, 8, 10, 'J', 'A']*4
+            deck = [2, 3, 4, 5, 6, 10, 10, 10, 'J', 'A']*4
         else:
             deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
         myhand = []
@@ -548,8 +548,8 @@ def blackjack(bot,trigger,arg):
                 else:       
                     bot.say("Player hand before hit: " + str(myhand))
                     playerhitlist = ''                    
-                    playerhits=deal(bot,deck, 1)
-                    playerhits=playerhits[0]                
+                    hitcard=deal(bot,deck, 1)
+                    playerhits=hitcard[0]                
 
                     myhand.append(playerhits)
                     bot.say("Player hand after hit: " + str(myhand))
@@ -677,12 +677,12 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
 
 def blackjackscore(bot,hand):
     myscore = 0
-    hand=get_trigger_arg(bot,hand,'list')
+    #hand=get_trigger_arg(bot,hand,'list')
     i=0
     myhand= []   
     handlen = len(hand)       
-    for i in range(0,(len(hand))):
-        card = hand[i]    
+    for i in range(0,handlen):
+        card = get_trigger_arg(bot, hand, i)   
         if card.isdigit():                                                       
             myscore=myscore+int(card)            
         elif(card == 'J' or card == 'Q' or card == 'K'):
@@ -690,13 +690,13 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11                 
     if myscore > 21:             
-        bot.say("Player score: " + str(myscore))
+       # bot.say("Player score: " + str(myscore))
         if 'A' in hand:
             myhand = hand.replace('A','1')            
             newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
-            bot.say("Return player score : " + str(myscore))
+           # bot.say("Return player score : " + str(myscore))
             return myscore
     else:
         return myscore

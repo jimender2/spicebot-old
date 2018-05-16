@@ -50,12 +50,12 @@ def execute_main(bot, trigger, triggerargsarray):
 
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
         if pointsreason:
-            if pointsreason[-1] not in string.punctuation:
-                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
                 pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone'+ str(pointsreasonmsg))
         bot.say(randopoints)
         for u in bot.users:
@@ -66,12 +66,12 @@ def execute_main(bot, trigger, triggerargsarray):
         target = get_trigger_arg(bot, triggerargsarray, 2)
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         if pointsreason:
-            if pointsreason[-1] not in string.punctuation:
-                pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
                 pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
         if not target:
             target = 'everyone'
         if target == instigator:
@@ -94,12 +94,12 @@ def execute_main(bot, trigger, triggerargsarray):
         pointsreason = get_trigger_arg(bot, triggerargsarray, '3+')
         rando = randint(1, 333)
         if pointsreason:
-            if pointsreason[-1] not in string.punctuation:
-                    pointsreason = pointsreason + "."
             if pointsreason.startswith('for'):
                 pointsreasonmsg = ' ' + str(pointsreason) + '.'
             else:
                 pointsreasonmsg = ' for ' + str(pointsreason) + '.'
+            if pointsreason[-1] not in string.punctuation:
+                pointsreason = pointsreason + "."
             if not target:
                 target = 'everyone'
         if target == instigator:

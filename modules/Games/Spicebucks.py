@@ -172,7 +172,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     
         elif commandused=='rob':
             target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-            balance=bank(bot, target)
+            balance=bank(bot, target)            
             if targetcheck(bot,target,trigger.nick)==0:
                 bot.say("I'm sorry, I do not know who " + target + " is.")
             else:
@@ -180,9 +180,10 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     triggerbalance=bank(bot, trigger.nick)
                     fine = int(triggerbalance*.20)
-                    bot.say(trigger.nick + " get's caught pickpocketing and is fined " + str(fine))
+                    bot.say(trigger.nick + " get's caught for pickpocketing too much and is fined " + str(fine))
                     spicebucks(bot,trigger.nick,'minus',fine)                    
-                else:                    
+                else:  
+                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
                     randomcheck = random.randint(0,5)
                     if randomcheck==3:
                         triggerbalance=bank(bot, trigger.nick)
