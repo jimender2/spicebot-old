@@ -17,6 +17,7 @@ import os
 from os.path import exists
 from num2words import num2words
 from difflib import SequenceMatcher
+from more_itertools import sort_together
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -571,6 +572,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
 
+        ## Death Loop Start
+        mainduelerdeathstart = get_database_value(bot, maindueler, 'assault_deaths') or 0
+
         ## Update Time Of Combat
         set_database_value(bot, maindueler, 'timeout_timeout', now)
         set_database_value(bot, target, 'timeout_timeout', now)
@@ -825,7 +829,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                                 combattextarraycomplete.append(winner + "'s " + bodypartnameb + " has become crippled!")
 
         ## Chance that maindueler loses found loot
-        if target != bot.nick and maindueler != target:
+        mainduelerdeathend = get_database_value(bot, maindueler, 'assault_deaths') or 0
+        if target != bot.nick and maindueler != target and mainduelerdeathend == mainduelerdeathstart:
             if randominventoryfind == 'true':
                 ## Barbarians get a 50/50 chance of getting loot even if they lose
                 classloser = get_database_value(bot, loser, 'class_setting') or 'notclassy'
@@ -1457,6 +1462,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
     set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1570,6 +1584,15 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     onscreentext(bot, ['say'], reverseddisplay)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1641,6 +1664,15 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         dispmsgarray.append(displaymessage + " died in this event.")
     adjust_database_value(bot, winner, 'coin', riskcoins)
     onscreentext(bot, [inchannel], dispmsgarray)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1963,6 +1995,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
         bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
+            currentdispmsg = eval(x+"dispmsg")
+            currentdispmsgb = eval(x+"dispmsgb")
             playerarray = []
             statvaluearray = []
             for u in currentduelplayersarray:
@@ -1975,7 +2009,13 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                zip(*sorted(zip(statvaluearray, playerarray)))
+                Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
+                statvaluearray = []
+                for j in Zx:
+                    statvaluearray.append(j)
+                playerarray = []
+                for k in Zy:
+                    playerarray.append(k)
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
@@ -1990,7 +2030,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 else:
                     statleadername = get_trigger_arg(bot, playerarray, 1)
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
-                leaderscript.append(eval(x+"dispmsg") + " "+ statleadername + " at "+ str(statleadernumber)+ " "+ eval(x+"dispmsgb"))
+                leaderscript.append(str(currentdispmsg) + " " + str(statleadername) + " at " + str(statleadernumber) + " " + str(currentdispmsgb))
         if leaderscript == []:
             leaderscript.append("Leaderboard appears to be empty")
         onscreentext(bot, ['say'], leaderscript)
@@ -2020,8 +2060,14 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             playerarray.append(u)
             statvaluearray.append(statamount)
     if playerarray != [] and statvaluearray != []:
-        zip(*sorted(zip(statvaluearray, playerarray)))
-        if subcommand.lower() == 'highest':
+        Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
+        statvaluearray = []
+        for j in Zx:
+            statvaluearray.append(j)
+        playerarray = []
+        for k in Zy:
+            playerarray.append(k)
+        if subcommand.lower() == 'lowest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
         else:
@@ -3334,7 +3380,11 @@ def damage_resistance(bot, nick, damage, bodypart):
             damagereduced = damage * damagepercent
             damagereduced = int(damagereduced)
             damage = damage - damagereduced
-            damagetext = str(nick + "s "+ armorname + " alleviated " + str(damagereduced) + " of the damage.")
+            if nick.endswith('s'):
+                damagenick = str(nick + "'")
+            else:
+                damagenick = str(nick + "s")
+            damagetext = str(damagenick + " "+ armorname + " alleviated " + str(damagereduced) + " of the damage.")
             armornick = get_database_value(bot, nick, armortype) or 0
             if armornick <= 0:
                 reset_database_value(bot, nick, armortype)
