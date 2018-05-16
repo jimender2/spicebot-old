@@ -1279,7 +1279,8 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
     manualpick = 0
     roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
     if roulettesubcom == 'last':
-        onscreentext(bot, inchannel, "The Last person to spin was " + roulettelastplayer)
+        roulettelastplayeractual = get_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext') or str("unknown")
+        onscreentext(bot, inchannel, roulettelastplayeractual)
         return
     elif str(roulettesubcom).isdigit():
         if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
