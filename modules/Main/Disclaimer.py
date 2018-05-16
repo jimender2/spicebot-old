@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif subdisclaimer == 'IT':
             bot.say("While most members of this channel have some level of technical knowledge, your decision to trust the recommendations of " + person + " are entirely your own risk.")
         elif subdisclaimer == 'parent':
-            bot.say(person + "is not your parent. Don't expect them to deal with your shit.")
+            bot.say(person + " is not your parent. Don't expect them to deal with your shit.")
         elif subdisclaimer == 'Cipher-0' or 'Cipher':
             bot.say("Frivolously pestering Cipher comes with a high risk of termination, " + person)
         elif subdisclaimer == 'IT_Sean':
