@@ -1461,6 +1461,15 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
     set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1574,6 +1583,15 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     onscreentext(bot, ['say'], reverseddisplay)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -1645,6 +1663,15 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         dispmsgarray.append(displaymessage + " died in this event.")
     adjust_database_value(bot, winner, 'coin', riskcoins)
     onscreentext(bot, [inchannel], dispmsgarray)
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [inchannel], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
