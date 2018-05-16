@@ -2009,8 +2009,6 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                #statvaluearray,playerarray =  zip(*sorted(zip(statvaluearray, playerarray)))
-                #zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
                 Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
                 statvaluearray = []
                 for j in Zx:
@@ -2018,9 +2016,6 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 playerarray = []
                 for k in Zy:
                     playerarray.append(k)
-                bot.say(str(statvaluearray))
-                bot.say(str(playerarray))
-                #zip(*sorted(zip(statvaluearray, playerarray)))
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
@@ -2065,7 +2060,13 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             playerarray.append(u)
             statvaluearray.append(statamount)
     if playerarray != [] and statvaluearray != []:
-        zip(*sorted(zip(statvaluearray, playerarray)))
+        Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
+        statvaluearray = []
+        for j in Zx:
+            statvaluearray.append(j)
+        playerarray = []
+        for k in Zy:
+            playerarray.append(k)
         if subcommand.lower() == 'highest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
