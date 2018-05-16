@@ -1277,6 +1277,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ## subcommands
     roulettesubcom = get_trigger_arg(bot, triggerargsarray, 2)
+    bot.say(roulettesubcom)
     if roulettesubcom == 'last':
         onscreentext(bot, inchannel, "The Last person to spin was " + roulettelastplayer)
         return
