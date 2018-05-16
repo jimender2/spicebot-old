@@ -8,11 +8,11 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-weapontypes = ["Axe","example"]
+weapontypes = ["Axe","Sword","Revolver"]
 
-@sopel.module.commands('murder')
+@sopel.module.commands('murder','moida')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'murder')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -28,14 +28,15 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         bot.say("Who/what would you like to murder?")
 
-    # How to kill spicebot
+    # Cannot kill spicebot
     if target == bot.nick:
         message = instigator + " attempts to murder " + target + " with " + msg + " for " + reason + "."
         bot.say(message)
-        bot.say("You can not kill a nonliving entity")
+        bot.say("You cannot kill a nonliving entity")
 
-	elif target == instigator:
-		message = instigator + " cannot murder themselves because if they did it would be suicide."
+    # Cannot kill self
+	if target == instigator:
+		message = instigator + " cannot murder themselves. That would be suicide."
 		bot.say(message)
 
 	# Target is fine
