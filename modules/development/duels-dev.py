@@ -2010,9 +2010,15 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 #statvaluearray,playerarray =  zip(*sorted(zip(statvaluearray, playerarray)))
                 #zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
                 Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
-                bot.say(str(Zx))
-                bot.say(str(Zy))
-                zip(*sorted(zip(statvaluearray, playerarray)))
+                statvaluearray = []
+                for j in Zx:
+                    statvaluearray.append(j)
+                playerarray = []
+                for k in Zy:
+                    playerarray.append(k)
+                bot.say(str(statvaluearray))
+                bot.say(str(playerarray))
+                #zip(*sorted(zip(statvaluearray, playerarray)))
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 'last')
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
