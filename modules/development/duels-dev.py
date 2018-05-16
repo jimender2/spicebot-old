@@ -571,6 +571,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
 
+        ## Death Loop Start
+        mainduelerdeathstart = get_database_value(bot, maindueler, 'assault_deaths') or 0
+
         ## Update Time Of Combat
         set_database_value(bot, maindueler, 'timeout_timeout', now)
         set_database_value(bot, target, 'timeout_timeout', now)
@@ -825,7 +828,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                                 combattextarraycomplete.append(winner + "'s " + bodypartnameb + " has become crippled!")
 
         ## Chance that maindueler loses found loot
-        if target != bot.nick and maindueler != target:
+        mainduelerdeathend = get_database_value(bot, maindueler, 'assault_deaths') or 0
+        if target != bot.nick and maindueler != target and mainduelerdeathend == mainduelerdeathstart:
             if randominventoryfind == 'true':
                 ## Barbarians get a 50/50 chance of getting loot even if they lose
                 classloser = get_database_value(bot, loser, 'class_setting') or 'notclassy'
