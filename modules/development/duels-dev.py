@@ -2009,16 +2009,15 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
+                Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(statvaluearray, playerarray))])
                 statvaluearray = []
                 for j in Zx:
                     statvaluearray.append(j)
                 playerarray = []
                 for k in Zy:
                     playerarray.append(k)
-                bot.say(x)
                 if x == 'health':
-                    #bot.say("health")
+                    bot.say("health")
                     statleadername = get_trigger_arg(bot, playerarray, 1)
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
                     leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
