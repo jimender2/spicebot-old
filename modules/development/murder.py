@@ -9,6 +9,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 weapontypes = ["Axe","Sword","Revolver"]
+adjectives = ["big", "small", "tiny", "huge", "bloody", "shiny"]
 
 @sopel.module.commands('murder','moida')
 def mainfunction(bot, trigger):
@@ -22,7 +23,8 @@ def execute_main(bot, trigger, triggerargsarray):
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
     weapontype = get_trigger_arg(bot,weapontypes,'random')
-    msg = "a " + weapontype
+    adjective = get_trigger_arg(bot,adjectives,'random')
+    msg = "a " + adjective + weapontype
 
     # No target specified
     if not target:
