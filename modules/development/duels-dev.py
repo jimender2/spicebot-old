@@ -239,18 +239,18 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 ########################
 
 ## work with /me ACTION (does not work with manual weapon)
-#@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
-#@module.intent('ACTION')
-#@module.require_chanmsg
-#def duel_action(bot, trigger):
-#    triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
-#    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
+@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
+@module.intent('ACTION')
+@module.require_chanmsg
+def duel_action(bot, trigger):
+    triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create') # enable if not using with spicebot
+    execute_main(bot, trigger, triggerargsarray, 'actionduel') # enable if not using with spicebot
     #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     #if not enablestatus: ## not needed if using without spicebot
     #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
 ## Base command
-@sopel.module.commands('duels','challenges')
+@sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create') # enable if not using with spicebot
     execute_main(bot, trigger, triggerargsarray, 'normalcom') # enable if not using with spicebot
@@ -2009,7 +2009,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
+                Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(statvaluearray, playerarray))])
                 statvaluearray = []
                 for j in Zx:
                     statvaluearray.append(j)
@@ -2017,19 +2017,19 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 for k in Zy:
                     playerarray.append(k)
                 if x == 'health':
-                    statleadername = get_trigger_arg(bot, playerarray, 'last')
-                    statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
+                    statleadername = get_trigger_arg(bot, playerarray, 1)
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
                     leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
                     if leaderclass == 'vampire':
                         statleadernumber = int(statleadernumber)
                         statleadernumber = -abs(statleadernumber)
                 elif x == 'winlossratio':
-                    statleadername = get_trigger_arg(bot, playerarray, 1)
-                    statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
+                    statleadername = get_trigger_arg(bot, playerarray, 'last')
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
                     statleadernumber = format(statleadernumber, '.3f')
                 else:
-                    statleadername = get_trigger_arg(bot, playerarray, 1)
-                    statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
+                    statleadername = get_trigger_arg(bot, playerarray, 'last')
+                    statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
                 leaderscript.append(str(currentdispmsg) + " " + str(statleadername) + " at " + str(statleadernumber) + " " + str(currentdispmsgb))
         if leaderscript == []:
             leaderscript.append("Leaderboard appears to be empty")
