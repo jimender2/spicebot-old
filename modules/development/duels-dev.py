@@ -2017,6 +2017,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                 for k in Zy:
                     playerarray.append(k)
                 if x == 'health':
+                    bot.say("health")
                     statleadername = get_trigger_arg(bot, playerarray, 1)
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
                     leaderclass = get_database_value(bot, statleadername, 'class_setting') or 'notclassy'
