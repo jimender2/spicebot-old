@@ -16,6 +16,9 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    message = target + " says pics or it never happened."
+    target = get_trigger_arg(bot, triggerargsarray, 1) or instigator
+    if target == instigator:
+        message = target + " wants to put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
+    else:
+        message = target + " should put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
     bot.say(message)

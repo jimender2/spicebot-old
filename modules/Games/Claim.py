@@ -217,7 +217,11 @@ def execute_main(bot, trigger, triggerargsarray):
         # Renewed claim
         elif claimedby == instigator:
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
-            if longenough(claimdate,todaydate,maxtime):
+            datea = arrow.get(todaydate)
+            dateb = arrow.get(claimdate)
+            timepassed = datea - dateb
+            dayspassed = timepassed.days
+            if timepassed.days >= int(maxtime):
                 if instigator == creator:
                     bot.say(instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
                 else:
@@ -231,7 +235,11 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             # Stolen claim
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
-            if longenough(claimdate,todaydate,maxtime):
+            datea = arrow.get(todaydate)
+            dateb = arrow.get(claimdate)
+            timepassed = datea - dateb
+            dayspassed = timepassed.days
+            if timepassed.days >= int(maxtime):
                 if instigator == creator:
                     bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
@@ -246,17 +254,6 @@ def execute_main(bot, trigger, triggerargsarray):
         return
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
-
-# Date checker
-def longenough(startdate,enddate,timeframe):
-    datea = arrow.get(startdate)
-    dateb = arrow.get(enddate)
-    timepassed = startdate - enddate
-    dayspassed = timepassed.days
-    if timepassed.days >= int(timeframe):
-        return True
-    else:
-        return False
 
 ##########################
 ## 30 minute automation ##
