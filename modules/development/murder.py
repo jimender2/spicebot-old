@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
     message = "Whoops, something went wrong."
     weapontype = get_trigger_arg(bot,weapontypes,'random')
     adjective = get_trigger_arg(bot,adjectives,'random')
-    msg = "a " + adjective + weapontype
+    msg = "a " + adjective + " " + weapontype
 
     # No target specified
     if not target:
