@@ -28,12 +28,6 @@ from more_itertools import sort_together
 ## Configurables ##
 ###################
 
-## bot restart service
-moduledir = os.path.dirname(__file__)
-duelsservice = "spicebot-duels"
-log_path = "data/templog.txt"
-log_file_path = os.path.join(moduledir, log_path)
-
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
@@ -1047,34 +1041,6 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
     elif command == 'off':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
         osd_notice(bot, instigator, "Duels is off in " + inchannel + ".")
-    ## this is for the game running on it's own bot
-    elif command == 'patch':
-        bot.say('Restarting Service...')
-        os.system("sudo service " + str(duelsservice) + " restart")
-        bot.say('If you see this, the service is hanging. Making another attempt.')
-    elif command == 'debug':
-        debugloglinenumberarray = []
-        bot.action('Is Copying Log')
-        os.system("sudo journalctl -u " + duelsservice + " >> " + log_file_path)
-        bot.action('Is Filtering Log')
-        search_phrase = "Welcome to Sopel. Loading modules..."
-        ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
-        mostrecentstartbot = 0
-        with open(log_file_path) as f:
-            line_num = 0
-            for line in f:
-                line_num += 1
-                if search_phrase in line:
-                    mostrecentstartbot = line_num
-            line_num = 0
-        with open(log_file_path) as fb:
-            for line in fb:
-                line_num += 1
-                currentline = line_num
-                if int(currentline) >= int(mostrecentstartbot) and not any(x in line for x in ignorearray):
-                    bot.say(line)
-        bot.action('Is Removing Log')
-        os.system("sudo rm " + log_file_path)
     else:
         osd_notice(bot, instigator, " Invalid command.")
         
