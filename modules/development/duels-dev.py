@@ -29,6 +29,7 @@ from more_itertools import sort_together
 ###################
 
 ## bot restart service
+moduledir = os.path.dirname(__file__)
 duelsservice = "spicebot-duels"
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
