@@ -28,6 +28,9 @@ from more_itertools import sort_together
 ## Configurables ##
 ###################
 
+## bot restart service
+duelsservice = "spicebot-duels"
+
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
@@ -1038,9 +1041,17 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if command == 'on':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'add')
         osd_notice(bot, instigator, "Duels is on in " + inchannel + ".")
-    else:
+    elif command == 'off':
         adjust_database_array(bot, duelrecorduser, [inchannel], 'gameenabled', 'del')
         osd_notice(bot, instigator, "Duels is off in " + inchannel + ".")
+    ## this is for the game running on it's own bot
+    elif command == 'patch':
+        bot.say('Restarting Service...')
+        os.system("sudo service " + str(duelsservice) + " restart")
+        bot.say('If you see this, the service is hanging. Making another attempt.')
+    else:
+        osd_notice(bot, instigator, " Invalid command.")
+        
 
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
