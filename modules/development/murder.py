@@ -21,16 +21,16 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
 
-#start of test code
 
+#start of test code
     allchanweaponsarray = []
     for u in bot.users:
-        weaponslist = get_database_value(bot, u, 'weaponslocker_complete') or ['fist']
+        weaponslist = get_database_value(bot, u, 'weaponslocker_complete') #or ['fist']
         for x in weaponslist:
             allchanweaponsarray.append(x)
     weapontype = get_trigger_arg(bot, allchanweaponsarray, 'random')
-
 #end of test code
+
 
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
