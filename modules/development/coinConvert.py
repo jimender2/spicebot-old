@@ -1,3 +1,4 @@
+#working on this
 ## Get a value
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
