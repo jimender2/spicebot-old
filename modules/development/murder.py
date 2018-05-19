@@ -19,10 +19,19 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
+
+#start of test code
+    databasekey = 'weaponslocker_complete'
+    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
+    weapontype = get_trigger_arg(bot,existingarray,'random')
+    if not weapontype:
+        weapontype = "Test weapon"
+#end of test code
+
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
-    weapontype = get_trigger_arg(bot,weapontypes,'random')
+#    weapontype = get_trigger_arg(bot,weapontypes,'random')
     adjective = get_trigger_arg(bot,adjectives,'random')
     msg = "a " + adjective + " " + weapontype
 
