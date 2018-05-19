@@ -23,12 +23,12 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 #start of test code
-    allchanweaponsarray = []
-    for u in bot.users:
-        weaponslist = get_database_value(bot, u, 'weaponslocker_complete') #or ['fist']
-        for x in weaponslist:
-            allchanweaponsarray.append(x)
-    weapontype = get_trigger_arg(bot, allchanweaponsarray, 'random')
+	allchanweaponsarray = []
+	for u in bot.users:
+		weaponslist = get_database_value(bot, u, 'weaponslocker_complete') #or ['fist']
+		for x in weaponslist:
+			allchanweaponsarray.append(x)
+	weapontype = get_trigger_arg(bot, allchanweaponsarray, 'random')
 #end of test code
 
 
