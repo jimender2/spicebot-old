@@ -23,8 +23,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 #start of test code
-x = 0
-u = 0
     allchanweaponsarray = []
     for u in bot.users:
         weaponslist = get_database_value(bot, u, 'weaponslocker_complete') #or ['fist']
