@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
@@ -21,11 +22,14 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
 
 #start of test code
-    databasekey = 'weaponslocker_complete'
-    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
-    weapontype = get_trigger_arg(bot,existingarray,'random')
-    if not weapontype:
-        weapontype = "Test weapon"
+
+    allchanweaponsarray = []
+    for u in bot.users:
+        weaponslist = get_database_value(bot, u, 'weaponslocker_complete') or ['fist']
+        for x in weaponslist:
+            allchanweaponsarray.append(x)
+    weapontype = get_trigger_arg(bot, allchanweaponsarray, 'random')
+
 #end of test code
 
     target = get_trigger_arg(bot, triggerargsarray, 1)
