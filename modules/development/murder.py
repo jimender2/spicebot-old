@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     instigator = trigger.nick
     inchannel = trigger.sender
-    databasekey = 'fixes'
+    databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
