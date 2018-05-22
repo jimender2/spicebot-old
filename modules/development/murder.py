@@ -58,11 +58,11 @@ def execute_main(bot, trigger, triggerargsarray):
 	
 	# No target specified
 	if not target:
-	bot.say("Who/what would you like to murder?")
+		bot.say("Who/what would you like to murder?")
 
 	# Cannot kill spicebot
 	elif target == bot.nick:
-	bot.say("You cannot kill a nonliving entity")
+		bot.say("You cannot kill a nonliving entity")
 	
 	# Cannot kill self
 	elif target == instigator:
