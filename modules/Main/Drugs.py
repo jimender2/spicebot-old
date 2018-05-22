@@ -13,11 +13,28 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
-    druglocation = trigger.group(2)
-    if not druglocation:
-        druglocation = "somewhere tropical"
+
+    locationorperson = get_trigger_arg(bot,triggerargsarray,'1+')
+    person = trigger.nick
+    druglocation = "somewhere tropical"
+    drugdisplay = "to " + druglocation
+    displaymsg = "Whoops, something went wrong. Not sure how that got fucked up."
+
+    # Nothing special
+    if not locationorperson:
+        displaymsg = instigator + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+    # Someone specified
+    if locationorperson.lower() in [u.lower() for u in bot.users]:
+        person = locationorperson
+        displaymsg = person + " should really consider selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+    # Location specified
     else:
-        druglocation = str("to " + druglocation)
-    bot.say(trigger.nick + " contemplates selling everything and moving " + druglocation + " to sell drugs on a beach.")
+        druglocation = locationorperson
+        drugdisplay = "to " + druglocation
+        displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+    bot.say(displaymsg)
