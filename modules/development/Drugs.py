@@ -29,6 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     # Someone specified
     elif locationorperson.lower() in [u.lower() for u in bot.users]:
         person = locationorperson
+        druglocation = get_trigger_arg(bot,triggerargsarray,'2+')
         displaymsg = person + " should really consider selling everything and moving " + drugdisplay + " to sell drugs on a beach."
 
     # Location specified
