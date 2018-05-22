@@ -24,8 +24,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Nothing special
     if not locationorperson:
+        drugdisplay = "to " + druglocation
         displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
-
     # Someone specified
     if locationorperson.lower() in [u.lower() for u in bot.users]:
         person = locationorperson
