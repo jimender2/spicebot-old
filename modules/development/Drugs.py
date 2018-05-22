@@ -22,22 +22,25 @@ def execute_main(bot, trigger, triggerargsarray):
     drugdisplay = "to " + druglocation
     displaymsg = "Whoops, something went wrong. Not sure how that got fucked up."
 
-    # Nothing special
+    # Nothing specified
     if not locationorperson:
         displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
 
-    # Someone specified
-    elif locationorperson.lower() in [u.lower() for u in bot.users]:
-        druglocation = get_trigger_arg(bot,triggerargsarray,'2+') or "somewhere tropical"
-        displaymsg = person + " should really consider selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+    # Something specified
+    elif locationorperson:
+        # input is person
+        if locationorperson.lower() in [u.lower() for u in bot.users]:
+            druglocation = get_trigger_arg(bot,triggerargsarray,'2+') or "somewhere tropical"
+            drugdisplay = "to " + druglocation
+            displaymsg = person + " should really consider selling everything and moving " + drugdisplay + " to sell drugs on a beach."
 
-    # Location specified
-    elif locationorperson.lower() not in [u.lower() for u in bot.users]:
-        person = trigger.nick
-        displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+        # input is location
+        else:
+            person = trigger.nick
+            displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
 
     # Error encountered, nothing worked
     else:
         displaymsg = "I appear to have some fucked up code rules going on. Someone fix this shit."
-        
+
     bot.say(displaymsg)
