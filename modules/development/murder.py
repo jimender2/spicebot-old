@@ -20,9 +20,17 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-
-    instigator = trigger.nick
     inchannel = trigger.sender
+
+    
+#test
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    if target.lower() in [u.lower() for u in bot.users]:
+        
+    else:
+        bot.say(target + " is not in this channel.")
+#test
+
     databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
@@ -56,7 +64,7 @@ def execute_main(bot, trigger, triggerargsarray):
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':
         	message = "No response found. Have any been added?"
-	target = get_trigger_arg(bot, triggerargsarray, 1)
+	#target = get_trigger_arg(bot, triggerargsarray, 1)
 	reason = get_trigger_arg(bot, triggerargsarray, '2+')
 	msg = "a " + weapontype
 	
