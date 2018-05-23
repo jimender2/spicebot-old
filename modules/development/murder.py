@@ -22,14 +22,13 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    
-#test
+    #test
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if target.lower() in [u.lower() for u in bot.users]:
 		target=target
 	else:
 		bot.say(target + " is not in this channel.")
-#test
+    #test
 
     databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
@@ -56,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		messagecount = len(existingarray)
 		message = "There are currently " + str(messagecount) + " responses for that in the database."
 		bot.say(message)
-        
+
         elif command == "last":
 		message = get_trigger_arg(bot, existingarray, "last")
 		bot.say(message)
@@ -67,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
 	#target = get_trigger_arg(bot, triggerargsarray, 1)
 	reason = get_trigger_arg(bot, triggerargsarray, '2+')
 	msg = "a " + weapontype
-	
+
 	# No target specified
 	if not target:
 		bot.say("Who/what would you like to murder?")
@@ -75,7 +74,7 @@ def execute_main(bot, trigger, triggerargsarray):
 	# Cannot kill spicebot
 	elif target == bot.nick:
 		bot.say("You cannot kill a nonliving entity")
-	
+
 	# Cannot kill self
 	elif target == instigator:
 		message = "Killing yourself would be suicide, " + instigator + ", not murder. Idiot."
@@ -89,7 +88,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		else:
 			message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
         		bot.say(message)
-	
+
 def get_database_value(bot, nick, databasekey):
 	databasecolumn = str('duels_' + databasekey)
 	database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
