@@ -33,6 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if inputstring not in existingarray:
                 adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
+		bot.say(message)
             else:
                 message = "That response is already in the database."
 		bot.say(message)
