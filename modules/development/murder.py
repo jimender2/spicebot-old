@@ -10,7 +10,6 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 weapontypes = ["Axe","Sword","Revolver"]
-adjectives = ["big", "small", "tiny", "huge", "bloody", "shiny"]
 commandarray = ["add","remove","count","last"]
 
 @sopel.module.commands('murder','moida')
@@ -59,8 +58,6 @@ def execute_main(bot, trigger, triggerargsarray):
         	message = "No response found. Have any been added?"
 	target = get_trigger_arg(bot, triggerargsarray, 1)
 	reason = get_trigger_arg(bot, triggerargsarray, '2+')
-	adjective = get_trigger_arg(bot,adjectives,'random')
-	msg = "a " + adjective + " " + weapontype
 	
 	# No target specified
 	if not target:
