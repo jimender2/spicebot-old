@@ -73,9 +73,10 @@ def execute_main(bot, trigger, triggerargsarray):
 	else:
 		if not reason:
 			message = instigator + " murders " + target + " with " + msg + "."
+        		bot.say(message)
 		else:
 			message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
-        bot.say(message)
+        		bot.say(message)
 	
 def get_database_value(bot, nick, databasekey):
 	databasecolumn = str('duels_' + databasekey)
