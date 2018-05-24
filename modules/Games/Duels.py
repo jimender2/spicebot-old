@@ -36,7 +36,7 @@ commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
 commandarray_alt_random = ['anyone','somebody','available','someone']
-commandarray_alt_assault = ['everyone','everybody']
+commandarray_alt_assault = ['everyone','everybody','channel']
 commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
