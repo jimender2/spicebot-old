@@ -22,14 +22,6 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    #test
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    if target.lower() in [u.lower() for u in bot.users]:
-		target=target
-	else:
-		bot.say(target + " is not in this channel.")
-    #test
-
     databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
