@@ -17,6 +17,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     myline = get_trigger_arg(bot, triggerargsarray, 0)
     if not myline:
-        bot.say("What is your buddy good at?")
+        bot.say("Madness? THIS—IS—SPARTA!")
     else:
-        bot.say("let me call my buddy and get him down here... he's an expert on " + myline)
+        bot.say("Madness? THIS—IS—"+myline.upper()+"!")
