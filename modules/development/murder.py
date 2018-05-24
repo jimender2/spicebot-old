@@ -55,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray):
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':
         	message = "No response found. Have any been added?"
-	#target = get_trigger_arg(bot, triggerargsarray, 1)
+	target = get_trigger_arg(bot, triggerargsarray, 1)
 	reason = get_trigger_arg(bot, triggerargsarray, '2+')
 	msg = "a " + weapontype
 
