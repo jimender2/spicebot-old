@@ -13,11 +13,34 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
-    druglocation = trigger.group(2)
-    if not druglocation:
-        druglocation = "somewhere tropical"
+
+    locationorperson = get_trigger_arg(bot,triggerargsarray,1)
+    person = get_trigger_arg(bot,triggerargsarray,1) or trigger.nick
+    druglocation = get_trigger_arg(bot,triggerargsarray,'1+') or "somewhere tropical"
+    drugdisplay = "to " + druglocation
+    displaymsg = "Whoops, something went wrong. Not sure how that got fucked up."
+
+    # Nothing specified
+    if not locationorperson:
+        displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+    # Something specified
+    elif locationorperson:
+        # input is person
+        if locationorperson.lower() in [u.lower() for u in bot.users]:
+            druglocation = get_trigger_arg(bot,triggerargsarray,'2+') or "somewhere tropical"
+            drugdisplay = "to " + druglocation
+            displaymsg = person + " should really consider selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+        # input is location
+        else:
+            person = trigger.nick
+            displaymsg = person + " contemplates selling everything and moving " + drugdisplay + " to sell drugs on a beach."
+
+    # Error encountered, nothing worked
     else:
-        druglocation = str("to " + druglocation)
-    bot.say(trigger.nick + " contemplates selling everything and moving " + druglocation + " to sell drugs on a beach.")
+        displaymsg = "I appear to have some fucked up code rules going on. Someone fix this shit."
+
+    bot.say(displaymsg)
