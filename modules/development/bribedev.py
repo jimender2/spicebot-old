@@ -19,17 +19,22 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
+    databasekey = bribedev
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if targetcheck(bot,target,trigger.nick)==0:
         bot.say("I'm sorry, I do not know who " + target + " is.")
-    else:    
-        money = random.randint(1,100001)
-        balance=bank(bot, target)
+    else:
+        balance = bank(bot, instigator)
+        money = random.randint(0, balance)
         bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+        inputstring = target + "#" + str(money)
+        adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+        spicebucks(bot, instigator, minus, money)
 
 
-    
+
+
 #    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
 #    channel = trigger.sender
 #    botuseron=[]
@@ -60,3 +65,8 @@ def spicebucks(bot, target, plusminus, amount):
         #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
         success = 'false'
     return success #returns simple true or false so modules can check the if tranaction was a success
+
+def get_database_value(bot, nick, databasekey):
+	databasecolumn = databasekey
+	database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
+	return database_value
