@@ -21,20 +21,24 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    money = random.randint(1,100001)
-    bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+    if targetcheck(bot,target,trigger.nick)==0:
+        bot.say("I'm sorry, I do not know who " + target + " is.")
+    elif:    
+        money = random.randint(1,100001)
 
     
     
-    balance=bank(bot, target)
+        balance=bank(bot, target)
+        bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+
 
     
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-    channel = trigger.sender
-    botuseron=[]
-    for u in bot.users:
-        if u in botusersarray and u != bot.nick:
-            botuseron.append(u)
+#    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+#    channel = trigger.sender
+#    botuseron=[]
+#    for u in bot.users:
+#        if u in botusersarray and u != bot.nick:
+#            botuseron.append(u)
             
 def bank(bot, nick):
     balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
