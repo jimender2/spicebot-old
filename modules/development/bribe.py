@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 
 from SpicebotShared import *
 
-@sopel.module.commands('')
+@sopel.module.commands('bribe')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
