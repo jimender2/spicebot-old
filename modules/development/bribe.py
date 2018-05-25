@@ -22,4 +22,4 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     money = random.randint(1,100001)
-    bot.say(instigator + " bribes " + target + " with $" + money + " in nonsequental, unmarked bills.")
+    bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
