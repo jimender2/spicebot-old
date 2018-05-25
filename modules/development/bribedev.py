@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if targetcheck(bot,target,trigger.nick)==0:
         bot.say("I'm sorry, I do not know who " + target + " is.")
-    elif targetcheck(bot,target,trigger.nick)==1:    
+    else:    
         money = random.randint(1,100001)
         balance=bank(bot, target)
         bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
