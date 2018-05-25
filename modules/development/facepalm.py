@@ -31,6 +31,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("There is not enough facepalm in the world for this")           
     else:
         bot.say("You are really facepalmming")
+
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
