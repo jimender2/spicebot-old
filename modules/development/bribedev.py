@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
         inputstring = target + "#" + str(money)
         adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
-        spicebucks(bot, instigator, minus, money)
+        spicebucks(bot, instigator, 'minus', money)
 
 
 
