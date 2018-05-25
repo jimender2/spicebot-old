@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    databasekey = bribedev
+    databasekey = "bribedev"
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if targetcheck(bot,target,trigger.nick)==0:
