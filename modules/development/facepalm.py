@@ -28,7 +28,9 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             bot.say("Hmm...Couldn't find a gif for that!")
     elif target == "major":
-        bot.say("There is not enough facepalm in the world for this")           
+        bot.say("There is not enough facepalm in the world for this")  
+    elif target == "help":
+		bot.say("Commands: help, gif, major, and blank")
     else:
         bot.say("You are really facepalmming")
 
