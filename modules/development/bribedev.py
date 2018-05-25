@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if targetcheck(bot,target,trigger.nick)==0:
         bot.say("I'm sorry, I do not know who " + target + " is.")
-    elif:    
+    elif targetcheck(bot,target,trigger.nick)==1:    
         money = random.randint(1,100001)
 
     
