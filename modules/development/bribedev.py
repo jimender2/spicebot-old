@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
     databasekey = "bribedev"
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    if command in commandarray:
+    if target in commandarray:
         if command == "accept":
             amount = get_database_value(bot, nick, databasekey)
             bot.say("debug " + amount)
