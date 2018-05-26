@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
             spicebucks(bot, instigator, "plus", 1000)
     
     else:
-        if targetcheck(bot,target,trigger.nick)==0:
+        if targetcheck(bot,target,trigger.nick)==0 ||  1:
             bot.say("I'm sorry, I do not know who " + target + " is.")
         else:
             balance = bank(bot, instigator)
