@@ -12,6 +12,8 @@ sys.path.append(shareddir)
 
 from SpicebotShared import *
 
+commandarray = ["accept","delete"]
+
 @sopel.module.commands('bribedev')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -22,15 +24,30 @@ def execute_main(bot, trigger, triggerargsarray):
     databasekey = "bribedev"
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    if targetcheck(bot,target,trigger.nick)==0:
-        bot.say("I'm sorry, I do not know who " + target + " is.")
+    if command in commandarray:
+        if command == "accept":
+                amount = get_database_value(bot, nick, databasekey)
+                bot.say("debug " + amount)
+                message = "Accepted the bribe."
+                bot.say(message)
+            else:
+                message = "That response is already in the database."
+                bot.say(message)
+        elif command == "delete":
+            if inputstring not in existingarray:
+
+    
     else:
-        balance = bank(bot, instigator)
-        money = random.randint(0, balance)
-        bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
-        inputstring = target + "#" + str(money)
-        adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
-        spicebucks(bot, instigator, 'minus', money)
+        if targetcheck(bot,target,trigger.nick)==0:
+        bot.say("I'm sorry, I do not know who " + target + " is.")
+        
+        else:
+            balance = bank(bot, instigator)
+            money = random.randint(0, balance)
+            bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+            inputstring = target + "#" + str(money)
+            adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+            spicebucks(bot, instigator, 'minus', money)
 
 
 
