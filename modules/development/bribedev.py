@@ -37,15 +37,24 @@ def execute_main(bot, trigger, triggerargsarray):
             spicebucks(bot, instigator, "plus", 1000)
     
     else:
-        if targetcheck(bot,target,trigger.nick)==0:
-            bot.say("I'm sorry, I do not know who " + target + " is.")
-        else:
+#        if targetcheck(bot,target,trigger.nick)==0:
+#            bot.say("I'm sorry, I do not know who " + target + " is.")
+#        else:
+#            balance = bank(bot, instigator)
+#            money = random.randint(0, balance)
+#            bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+#            inputstring = target + "#" + str(money)
+#            adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+#            spicebucks(bot, instigator, 'minus', money)
+         if target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = target + "#" + str(money)
             adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
             spicebucks(bot, instigator, 'minus', money)
+         else:
+            bot.say("I'm sorry, I do not know who " + target + " is.")
 
 
 
