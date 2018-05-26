@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 
 from SpicebotShared import *
 
-commandarray = ["accept","delete"]
+commandarray = ["accept","delete","money"]
 
 @sopel.module.commands('bribedev')
 def mainfunction(bot, trigger):
@@ -26,16 +26,14 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-                amount = get_database_value(bot, nick, databasekey)
-                bot.say("debug " + amount)
-                message = "Accepted the bribe."
-                bot.say(message)
-            else:
-                message = "That response is already in the database."
-                bot.say(message)
+            amount = get_database_value(bot, nick, databasekey)
+            bot.say("debug " + amount)
+            message = "Accepted the bribe."
+            bot.say(message)
         elif command == "delete":
-            if inputstring not in existingarray:
-
+            amount = 1
+        elif command == "money":
+            spicebucks(bot, instigator, plus, 1000)
     
     else:
         if targetcheck(bot,target,trigger.nick)==0:
