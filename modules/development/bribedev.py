@@ -41,8 +41,8 @@ def execute_main(bot, trigger, triggerargsarray):
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
-            inputstring = target + "#" + str(money)
-            adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+            inputstring = str(money)
+            adjust_botdatabase_array(bot, target, inputstring, databasekey, 'add')
             spicebucks(bot, instigator, 'minus', money)
          else:
             bot.say("I'm sorry, I do not know who " + target + " is.")
