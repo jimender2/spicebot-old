@@ -34,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif command == "delete":
             amount = 1
         elif command == "money":
-            spicebucks(bot, instigator, plus, 1000)
+            spicebucks(bot, instigator, "plus", 1000)
     
     else:
         if targetcheck(bot,target,trigger.nick)==0:
