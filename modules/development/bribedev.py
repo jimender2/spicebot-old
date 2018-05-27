@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
             amount = get_database_value(bot, instigator, databasekey)
             adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
             bot.say("debug " + str(amount))
-            message = "Accepted the bribe."
+            message = instigator + " accepted the bribe."
             bot.say(message)
         elif command == "delete":
             amount = 1
