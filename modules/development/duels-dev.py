@@ -1998,6 +1998,8 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
         bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
+            playerarray, statvaluearray = [],[]
+            statleadername, statleadernumber = "",""
             currentdispmsg = eval(x+"dispmsg")
             currentdispmsgb = eval(x+"dispmsgb")
             playerarray = []
