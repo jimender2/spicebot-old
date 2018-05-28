@@ -2012,13 +2012,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
                     playerarray.append(u)
                     statvaluearray.append(statamount)
             if playerarray != [] and statvaluearray != []:
-                Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(statvaluearray, playerarray))])
-                statvaluearray = []
-                for j in Zx:
-                    statvaluearray.append(j)
-                playerarray = []
-                for k in Zy:
-                    playerarray.append(k)
+                statvaluearray, playerarray = array_arrangesort(bot, statvaluearray, playerarray)
                 if x == 'health':
                     statleadername = get_trigger_arg(bot, playerarray, 1)
                     statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
@@ -2063,13 +2057,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
             playerarray.append(u)
             statvaluearray.append(statamount)
     if playerarray != [] and statvaluearray != []:
-        Zx, Zy = zip(*[(x, y) for x, y in sorted(zip(statvaluearray, playerarray))])
-        statvaluearray = []
-        for j in Zx:
-            statvaluearray.append(j)
-        playerarray = []
-        for k in Zy:
-            playerarray.append(k)
+        statvaluearray, playerarray = array_arrangesort(bot, statvaluearray, playerarray)
         if subcommand.lower() == 'lowest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
@@ -2993,13 +2981,6 @@ def duels_valid_stats(bot):
         for duelstat in stattypeeval:
             duelstatsadminarray.append(duelstat)
     return duelstatsadminarray
-
-def array_compare(bot, indexitem, arraytoindex, arraytocompare):
-    item = ''
-    for x, y in zip(arraytoindex, arraytocompare):
-        if x == indexitem:
-            item = y
-    return item
 
 def duels_valid_commands(bot):
     duelcommandsarray = []
@@ -3984,6 +3965,7 @@ def get_winlossratio(bot,target):
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
+
 ##############
 ## Database ##
 ##############
@@ -4347,3 +4329,24 @@ def excrange_minus_array(bot, inputs, number):
     if not str(rangea).isdigit() or not str(rangeb).isdigit():
         return string
     return range_array(bot, inputs, rangea, rangeb)
+
+######################
+## Array comparison ##
+######################
+
+def array_compare(bot, indexitem, arraytoindex, arraytocompare):
+    item = ''
+    for x, y in zip(arraytoindex, arraytocompare):
+        if x == indexitem:
+            item = y
+    return item
+
+def array_arrangesort(bot, sortbyarray, arrayb):
+    Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
+    statvaluearray = []
+    for j in Zx:
+        sortbyarray.append(j)
+    arrayb = []
+    for k in Zy:
+        arrayb.append(k)
+    return sortbyarray, arrayb
