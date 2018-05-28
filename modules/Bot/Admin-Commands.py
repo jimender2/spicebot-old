@@ -221,7 +221,7 @@ def main_command(bot, trigger):
     
     ## sometimes Update from github doesn't work because of file permissions
     elif subcommand == 'permfix':
-        os.system("sudo chown -R sopel:sudo /home/sopel/.sopel/")
+        os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
         bot.say("Permissions should now be fixed")
     
     ## restart the bot's service
