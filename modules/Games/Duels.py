@@ -69,7 +69,7 @@ commandarray_tier_display_exclude = ['admin','game','devmode','version','author'
 bodyparts_required = ['torso','head']
 
 ## Admin Stats Cycling
-stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other']
+stats_admin_types = ['healthbodyparts','armor','loot','record','magic','streak','timeout','class','title','bounty','weaponslocker','leveling','other','stamina']
 ## Health Stats
 stats_healthbodyparts = ['head','torso','left_arm','right_arm','left_leg','right_leg','junk']
 ## Armor Stats
@@ -90,6 +90,8 @@ stats_class = ['class_setting','class_freebie','class_timeout']
 stats_title = ['title_setting']
 ## Bounty Stats
 stats_bounty = ['bounty']
+## Stamina
+stats_stamina = ['stamina']
 ## Weaponslocker Stats
 stats_weaponslocker = ['weaponslocker_complete','weaponslocker_lastweaponusedarray','weaponslocker_lastweaponused']
 ## Leveling Stats
@@ -196,7 +198,12 @@ armor_durability = 10
 armor_durability_blacksmith = 15
 armor_relief_percentage = 33 ## has to be converted to decimal later
 health_bodypart_max = [330,1000,250,250,500,500,40]
+
+## Stamina
+staminamax = 60
+
 ## Bodypart damage modifiers
+## todo
 
 ## Half Hour Timer
 timeout_auto_opt_out = 259200 ## Opt out users after 3 days of inactivity
@@ -231,7 +238,7 @@ xp_loser_ranger = 15 ## xp earned as a loser and ranger
 ## Records
 duelrecorduser = 'duelrecorduser'
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class_setting','curse','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout_timeout','bounty']
+stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout_timeout','bounty']
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 
@@ -337,6 +344,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             canduelarray.append(player)
             #statreset(bot, player)
             #healthcheck(bot, player)
+    random.shuffle(canduelarray)
 
     ## Time when Module use started
     now = time.time()
@@ -1506,6 +1514,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         for player in canduelarray:
             if player != maindueler:
                 targetarray.append(player)
+        random.shuffle(targetarray)
         duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
     for user in canduelarray:
         assaultstatsarray = []
@@ -2909,6 +2918,7 @@ def halfhourtimer(bot):
                 adjust_database_value(bot, u, 'coin', halfhour_coin)
 
                 ## health regenerates for all
+                set_database_value(bot, u, 'stamina', staminamax)
                 for part in stats_healthbodyparts:
                     currenthealthtier = tierratio_level(bot)
                     maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
@@ -3403,6 +3413,8 @@ def whokilledwhom(bot, winner, loser):
         adjust_database_value(bot, winner, 'coin', bountyonloser)
         reset_database_value(bot, loser, 'bounty')
         winnertextarray.append(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
+    ## stamina at max
+    set_database_value(bot, loser, 'stamina', staminamax)
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
         for x in potion_types:
@@ -3429,6 +3441,8 @@ def suicidekill(bot,loser):
     if bountyonloser:
         suicidetextarray.append(loser + " wastes the bounty of " + str(bountyonloser) + " coin.")
     reset_database_value(bot, loser, 'bounty')
+    ## stamina at 0
+    set_database_value(bot, loser, 'stamina', 2)
     ## rangers don't lose their stuff
     loserclass = get_database_value(bot, loser, 'class_setting') or 'notclassy'
     if loserclass != 'ranger':
@@ -3453,6 +3467,10 @@ def healthcheck(bot, nick):
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
+    ## stamina at max
+    stamina = get_database_value(bot, nick, 'stamina')
+    if int(stamina) <= 0 or int(stamina) > staminamax:
+        set_database_value(bot, nick, 'stamina', staminamax)
 
 ## Health after death
 def healthfresh(bot, nick):
@@ -3469,6 +3487,10 @@ def healthfresh(bot, nick):
     mana = get_database_value(bot, nick, 'mana')
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
+    ## stamina at max
+    stamina = get_database_value(bot, nick, 'stamina')
+    if int(stamina) <= 0 or int(stamina) > staminamax:
+        set_database_value(bot, nick, 'stamina', staminamax)
 
 ## Total Health
 def get_health(bot,nick):
@@ -3965,7 +3987,6 @@ def get_winlossratio(bot,target):
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
-
 
 ##############
 ## Database ##
