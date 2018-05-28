@@ -14,7 +14,7 @@ from SpicebotShared import *
 
 ## Creds
 config = ConfigParser.ConfigParser()
-config.read("/home/sopel/spicebot.conf")
+config.read("/home/spicebot/spicebot.conf")
 USERNAME = config.get("github","username")
 PASSWORD = config.get("github","password")
     
