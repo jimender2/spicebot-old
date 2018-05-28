@@ -4342,6 +4342,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     return item
 
 def array_arrangesort(bot, sortbyarray, arrayb):
+    Zx, Zy = [],[]
     Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
     statvaluearray = []
     for j in Zx:
