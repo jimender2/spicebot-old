@@ -337,7 +337,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             canduelarray.append(player)
             #statreset(bot, player)
             #healthcheck(bot, player)
-    canduelarray = get_trigger_arg(bot, canduelarray, 'shuffle')
+    #canduelarray = get_trigger_arg(bot, canduelarray, 'shuffle')
 
     ## Time when Module use started
     now = time.time()
