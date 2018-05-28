@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# coding=utf-8
+# coding=utf-8Feeds/
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
 ## These help parse the info from the webpage
