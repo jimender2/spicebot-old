@@ -2918,6 +2918,7 @@ def halfhourtimer(bot):
                 adjust_database_value(bot, u, 'coin', halfhour_coin)
 
                 ## health regenerates for all
+                set_database_value(bot, u, 'stamina', staminamax)
                 for part in stats_healthbodyparts:
                     currenthealthtier = tierratio_level(bot)
                     maxhealthpart = array_compare(bot, part, stats_healthbodyparts, health_bodypart_max)
