@@ -1998,8 +1998,6 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         streak_win_bestdispmsg, streak_win_bestdispmsgb = "Best Win Streak:", ""
         bountydispmsg, bountydispmsgb = "Largest Bounty:", "coins"
         for x in leaderboardarraystats:
-            playerarray, statvaluearray = [],[]
-            statleadername, statleadernumber = "",""
             currentdispmsg = eval(x+"dispmsg")
             currentdispmsgb = eval(x+"dispmsgb")
             playerarray = []
@@ -2063,11 +2061,7 @@ def subcommand_leaderboard(bot, instigator, triggerargsarray, botvisibleusers, c
         if subcommand.lower() == 'lowest':
             statleadername = get_trigger_arg(bot, playerarray, 1)
             statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
-        elif subcommand.lower() == 'highest':
-            statleadername = get_trigger_arg(bot, playerarray, 'last')
-            statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
         else:
-            bot.say("niether")
             statleadername = get_trigger_arg(bot, playerarray, 'last')
             statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
         if subcommanda.lower() == 'health':
@@ -4348,7 +4342,6 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     return item
 
 def array_arrangesort(bot, sortbyarray, arrayb):
-    Zx, Zy = [],[]
     Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
     statvaluearray = []
     for j in Zx:
