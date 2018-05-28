@@ -337,6 +337,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             canduelarray.append(player)
             #statreset(bot, player)
             #healthcheck(bot, player)
+    random.shuffle(canduelarray)
 
     ## Time when Module use started
     now = time.time()
@@ -1506,6 +1507,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         for player in canduelarray:
             if player != maindueler:
                 targetarray.append(player)
+        random.shuffle(targetarray)
         duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
     for user in canduelarray:
         assaultstatsarray = []
