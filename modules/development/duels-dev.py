@@ -3467,6 +3467,7 @@ def healthcheck(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
     ## stamina at max
+    stamina = get_database_value(bot, nick, 'stamina')
     if int(stamina) <= 0 or int(stamina) > staminamax:
         set_database_value(bot, nick, 'stamina', staminamax)
 
@@ -3486,6 +3487,7 @@ def healthfresh(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
     ## stamina at max
+    stamina = get_database_value(bot, nick, 'stamina')
     if int(stamina) <= 0 or int(stamina) > staminamax:
         set_database_value(bot, nick, 'stamina', staminamax)
 
