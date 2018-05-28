@@ -3412,6 +3412,8 @@ def whokilledwhom(bot, winner, loser):
         adjust_database_value(bot, winner, 'coin', bountyonloser)
         reset_database_value(bot, loser, 'bounty')
         winnertextarray.append(winner + " wins a bounty of " + str(bountyonloser) + " that was placed on " + loser + ".")
+    ## stamina at max
+    set_database_value(bot, loser, 'stamina', staminamax)
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
         for x in potion_types:
@@ -3438,6 +3440,8 @@ def suicidekill(bot,loser):
     if bountyonloser:
         suicidetextarray.append(loser + " wastes the bounty of " + str(bountyonloser) + " coin.")
     reset_database_value(bot, loser, 'bounty')
+    ## stamina at 0
+    set_database_value(bot, loser, 'stamina', 2)
     ## rangers don't lose their stuff
     loserclass = get_database_value(bot, loser, 'class_setting') or 'notclassy'
     if loserclass != 'ranger':
@@ -3463,7 +3467,8 @@ def healthcheck(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
     ## stamina at max
-    set_database_value(bot, nick, 'stamina', staminamax)
+    if int(stamina) <= 0 or int(stamina) > staminamax:
+        set_database_value(bot, nick, 'stamina', staminamax)
 
 ## Health after death
 def healthfresh(bot, nick):
@@ -3481,7 +3486,8 @@ def healthfresh(bot, nick):
     if int(mana) <= 0:
         reset_database_value(bot, nick, 'mana')
     ## stamina at max
-    set_database_value(bot, nick, 'stamina', staminamax)
+    if int(stamina) <= 0 or int(stamina) > staminamax:
+        set_database_value(bot, nick, 'stamina', staminamax)
 
 ## Total Health
 def get_health(bot,nick):
@@ -3978,7 +3984,6 @@ def get_winlossratio(bot,target):
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
-
 
 ##############
 ## Database ##
