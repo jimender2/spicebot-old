@@ -337,7 +337,7 @@ def execute_main(bot, trigger, triggerargsarray, commandtype):
             canduelarray.append(player)
             #statreset(bot, player)
             #healthcheck(bot, player)
-    #canduelarray = get_trigger_arg(bot, canduelarray, 'shuffle')
+    random.shuffle(canduelarray)
 
     ## Time when Module use started
     now = time.time()
@@ -4091,8 +4091,6 @@ def get_trigger_arg(bot, inputs, outputtask):
     ## reverse
     if outputtask == 'reverse':
         return reverse_array(bot, inputs)
-    if outputtask == 'shuffle':
-        return shuffle_array(bot, inputs)
     ## Comma Seperated List
     if outputtask == 'list':
         return list_array(bot, inputs)
@@ -4168,20 +4166,6 @@ def reverse_array(bot, inputs):
     for d in inputs:
         outputs.append(d)
     outputs.reverse()
-    return outputs
-
-## output reverse order
-def shuffle_array(bot, inputs):
-    if not isinstance(inputs, list):
-        inputs = create_array(bot, inputs)
-    if len(inputs) == 1:
-        return inputs
-    outputs = []
-    if inputs == []:
-        return outputs
-    for d in inputs:
-        outputs.append(d)
-    outputs = random.shuffle(outputs)
     return outputs
 
 ## Comma Seperated List
