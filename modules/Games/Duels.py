@@ -18,6 +18,7 @@ from os.path import exists
 from num2words import num2words
 from difflib import SequenceMatcher
 from more_itertools import sort_together
+from operator import itemgetter
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -4342,12 +4343,12 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
     return item
 
 def array_arrangesort(bot, sortbyarray, arrayb):
-    Zx, Zy = [],[]
-    Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
-    statvaluearray = []
-    for j in Zx:
-        sortbyarray.append(j)
-    arrayb = []
-    for k in Zy:
-        arrayb.append(k)
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
+    #Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
+    #statvaluearray = []
+    #for j in Zx:
+    #    sortbyarray.append(j)
+    #arrayb = []
+    #for k in Zy:
+    #    arrayb.append(k)
     return sortbyarray, arrayb
