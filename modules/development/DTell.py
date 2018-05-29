@@ -27,7 +27,7 @@ from SpicebotShared import *
 
 maximum = 4
 
-# Load things to tell from database
+# Load things to tell from file
 def loadReminders(fn, lock):
     lock.acquire()#Lock file access
     try:
@@ -48,27 +48,27 @@ def loadReminders(fn, lock):
         lock.release()#release lock
     return result#return info
 
-
+#write reminders to file
 def dumpReminders(fn, data, lock):
-    lock.acquire()
+    lock.acquire()#lock file
     try:
-        f = open(fn, 'w')
-        for tellee in iterkeys(data):
+        f = open(fn, 'w')#open file with write access
+        for tellee in iterkeys(data): #go through everything
             for remindon in data[tellee]:
                 line = '\t'.join((tellee,) + remindon)
                 try:
                     to_write = line + '\n'
                     if sys.version_info.major < 3:
                         to_write = to_write.encode('utf-8')
-                    f.write(to_write)
+                    f.write(to_write)#store the data
                 except IOError:
                     break
         try:
-            f.close()
+            f.close()#close the file
         except IOError:
             pass
     finally:
-        lock.release()
+        lock.release()#release the lock
     return True
 
 
@@ -87,8 +87,8 @@ def setup(self):
     self.memory['reminders'] = loadReminders(self.tell_filename, self.memory['tell_lock'])
 
 
-@commands('tell', 'ask')
-@nickname_commands('tell', 'ask')
+@commands('dtell', 'dask')
+@nickname_commands('dtell', 'dask')
 @example('$nickname, tell Embolalia he broke something again.')
 def execute_main(bot, trigger):
     """Give someone a message the next time they're seen"""
