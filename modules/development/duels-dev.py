@@ -29,7 +29,10 @@ from operator import itemgetter
 ## Configurables ##
 ###################
 
+## Check Last modified date
 duelsversion = '1.5.17'
+remote_source = "https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/modules/Games/Duels.py"
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'}
 
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
@@ -989,7 +992,11 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
+    #onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
+    response = requests.head(remote_source, headers = headers)
+    remote_source_last_modified = response.headers["last-modified"]
+    remote_source_last_modified = time.mktime(datetime.datetime.strptime(remote_source_last_modified[:-4], "%a, %d %b %Y %H:%M:%S").timetuple())
+    bot.say(str(remote_source_last_modified))
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
