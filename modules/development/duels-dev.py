@@ -995,9 +995,8 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    #onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
-    response = versionnumber(bot)
-    bot.say(str(response))
+    versionfetch = versionnumber(bot)
+    onscreentext(bot, inchannel, "The duels framework is currently at version " + str(versionfetch))
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
