@@ -996,9 +996,9 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     #onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
     response = requests.get(remote_source, headers = headers)
-    remote_source_last_modified = response.headers["last-modified"]
-    remote_source_last_modified = time.mktime(datetime.datetime.strptime(remote_source_last_modified[:-4], "%a, %d %b %Y %H:%M:%S").timetuple())
-    bot.say(str(remote_source_last_modified))
+    #remote_source_last_modified = response.headers["last-modified"]
+    #remote_source_last_modified = time.mktime(datetime.datetime.strptime(remote_source_last_modified[:-4], "%a, %d %b %Y %H:%M:%S").timetuple())
+    bot.say(str(response))
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
