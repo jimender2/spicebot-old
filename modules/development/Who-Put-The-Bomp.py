@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+from sopel.module import nickname_command
 import sys
 import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
