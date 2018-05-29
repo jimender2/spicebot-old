@@ -26,9 +26,9 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[COMPTIA Webinar]")
-        dispmsg.append("{"+getwebbytimeuntil()+"}")
+        #dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
-        dispmsg.append(getwebbylink())
+        #dispmsg.append(getwebbylink())
         onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
@@ -42,9 +42,9 @@ def webbyauto(bot):
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[COMPTIA Webinar]")
-            dispmsg.append("{"+getwebbytimeuntil()+"}")
+            #dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
-            dispmsg.append(getwebbylink())
+            #dispmsg.append(getwebbylink())
             for channel in bot.channels:
                 onscreentext(bot, channel, dispmsg)
 
