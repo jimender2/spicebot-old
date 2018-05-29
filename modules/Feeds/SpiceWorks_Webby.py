@@ -76,6 +76,7 @@ def getwebbylink():
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
     webbylink = str(webbylink.split("&", 1)[0])
+    webbylink = str("https://community.spiceworks.com" + webbylink)
     return webbylink
 
 def getwebbybonus():
