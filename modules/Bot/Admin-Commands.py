@@ -252,8 +252,9 @@ def main_command(bot, trigger):
         with open(log_file_path) as f:
             line_num = 0
             for line in f:
+                line = line.decode('utf-8', 'ignore')
                 line_num += 1
-                if search_phrase in str(line):
+                if search_phrase in line:
                     mostrecentstartbot = line_num
             line_num = 0
         with open(log_file_path) as fb:
