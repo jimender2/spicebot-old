@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
-import sopel.module
-from sopel.module import nickname_command
+#import sopel.module
+from sopel.module import commands, nickname_commands, rule, priority, example
 import sys
 import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
@@ -10,7 +10,8 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 @nickname_commands('who put the')
-@sopel.module.commands('who')
+#@sopel.module.commands('who')
+@commands('who')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
