@@ -253,7 +253,7 @@ xp_loser_ranger = 15 ## xp earned as a loser and ranger
 ## Records
 duelrecorduser = 'duelrecorduser'
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout_timeout','bounty']
+stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty'] ## 'timeout_timeout'
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 
@@ -562,10 +562,10 @@ def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchan
         reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## Check that the target doesn't have a timeout preventing them from playing
-    executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+    #executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+    #if not executedueling:
+    #    osd_notice(bot, instigator, executeduelingmsg)
+    #    return
 
     ## Perform Lockout, run target duel, then unlock
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
@@ -612,9 +612,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         mainduelerdeathstart = get_database_value(bot, maindueler, 'assault_deaths') or 0
 
         ## Update Time Of Combat
-        set_database_value(bot, maindueler, 'timeout_timeout', now)
-        set_database_value(bot, target, 'timeout_timeout', now)
-        set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
+        #set_database_value(bot, maindueler, 'timeout_timeout', now)
+        #set_database_value(bot, target, 'timeout_timeout', now)
+        #set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
 
         ## Display Naming
         mainduelername = duel_names(bot, maindueler, inchannel)
@@ -3159,9 +3159,9 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         useralastfought = bot.nick
 
     ## Timeout Retrieval
-    useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
-    userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
-    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
 
     ## Last instigator
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
@@ -3196,19 +3196,19 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         validtarget = 0
 
     ## usera Timeout
-    if useratime <= USERTIMEOUT:
-        validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
-        validtarget = 0
+    #if useratime <= USERTIMEOUT:
+    #    validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
+    #    validtarget = 0
 
     ## Target Timeout
-    if userbtime <= USERTIMEOUT:
-        validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
-        validtarget = 0
+    #if userbtime <= USERTIMEOUT:
+    #    validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
+    #    validtarget = 0
 
     ## Channel Timeout
-    if channeltime <= CHANTIMEOUT:
-        validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
-        validtarget = 0
+    #if channeltime <= CHANTIMEOUT:
+    #    validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+    #    validtarget = 0
 
     return validtarget, validtargetmsg
 
@@ -3228,32 +3228,32 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
         return validtarget
 
     ## Don't allow usera to duel twice in a row
-    useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
+    if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
         return validtarget
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     howmanyduelusers = len(currentduelplayersarray)
-    userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
     useralastfought = get_database_value(bot, usera, 'lastfought') or ''
-    if userb == useralastfought and howmanyduelusers > 2:
+    if userb == useralastfought:# and howmanyduelusers > 2:
         useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
         if useraclass != 'knight':
             return validtarget
 
     ## usera Timeout
-    if useratime <= USERTIMEOUT:
-        return validtarget
+    #if useratime <= USERTIMEOUT:
+    #    return validtarget
 
     ## Target Timeout
-    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
-    if userbtime <= USERTIMEOUT:
-        return validtarget
+    #if userbtime <= USERTIMEOUT:
+    #    return validtarget
 
     ## Channel Timeout
-    if channeltime <= CHANTIMEOUT:
-        return validtarget
+    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    #if channeltime <= CHANTIMEOUT:
+    #    return validtarget
 
     validtarget = 1
     return validtarget
