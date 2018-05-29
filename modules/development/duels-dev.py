@@ -72,7 +72,7 @@ command_stamina_deathblow = 1
 command_stamina_harakiri = 1
 command_stamina_magic = 2
 command_stamina_assault = 10
-command_stamina_roulette 2
+command_stamina_roulette = 2
 command_stamina_random = 3
 command_stamina_colosseum = 20
 command_stamina_mayhem = 25
