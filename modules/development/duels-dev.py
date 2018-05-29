@@ -33,7 +33,7 @@ from fake_useragent import UserAgent
 
 ## Check Last modified date
 duelsversion = '1.5.17'
-remote_source = "https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/modules/Games/Duels.py"
+remote_source = "https://github.com/deathbybandaid/SpiceBot/blob/dev/modules/Games/Duels.py"
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'}
 
 ## Command Structure
