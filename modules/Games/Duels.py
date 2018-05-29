@@ -90,7 +90,7 @@ stats_healthbodyparts = ['head','torso','left_arm','right_arm','left_leg','right
 ## Armor Stats
 stats_armor = ['helmet','breastplate','left_gauntlet','right_gauntlet','left_greave','right_greave','codpiece']
 ## Loot Stats
-stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade','coin']
+stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','staminapotion','poisonpotion','manapotion','grenade','coin']
 ## Record Stats
 stats_record = ['wins','losses','xp','respawns','kills','lastfought']
 ## Streak Stats
@@ -155,8 +155,8 @@ title_cost = 100 ## ## how many coin to change title
 bugbounty_reward = 100 ## users that find a bug in the code, get a reward
 
 ## Loot
-loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
-potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
+loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## how to organize backpack
+potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## types of potions
 loot_transaction_types = ['buy','sell','trade','use'] ## valid commands for loot
 ### Buy
 loot_buy = 100 ## normal cost to buy a loot item
@@ -188,6 +188,9 @@ loot_null = ['water','vinegar','mud']
 timepotiondispmsg = str(": Removes multiple timeouts.")
 timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
 timepotiontimeoutarray = ['timeout_timeout','lastfullroomcolosseum','lastfullroomassult','timeout_opttime','class_timeout']
+## stamina potion
+staminapotion_worth = 15 ##normal stamina potion worth
+staminapotiondispmsg = str(": worth " + str(staminapotion_worth) + " stamina.")
 ## Magic Potions
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
@@ -253,7 +256,7 @@ xp_loser_ranger = 15 ## xp earned as a loser and ranger
 ## Records
 duelrecorduser = 'duelrecorduser'
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','timeout_timeout','bounty']
+stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty','timeout_timeout']
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 
@@ -431,10 +434,9 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() in validcommands:
         ## If command was issued as an action
         if commandtype != 'actionduel':
-            staminapass = staminacheck(bot, instigator, commandortarget.lower())
+            staminapass = staminacheck(bot, instigator, inchannel, commandortarget.lower())
             if staminapass:
                 subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
-                staminacharge(bot, instigator, commandortarget.lower())
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
@@ -487,13 +489,12 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         return
 
     ## stamina check TODO
-    staminapass = staminacheck(bot, instigator, 'combat')
+    staminapass = staminacheck(bot, instigator, inchannel, 'combat')
     if staminapass:
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
-        staminacharge(bot, instigator, 'combat')
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
-    
+
 
     ## Usage Counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
@@ -535,6 +536,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands)')
     eval(subcommand_run)
+    staminacharge(bot, instigator, commandortarget.lower())
 
     ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
@@ -562,14 +564,15 @@ def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchan
         reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## Check that the target doesn't have a timeout preventing them from playing
-    executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+    #executedueling, executeduelingmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+    #if not executedueling:
+    #    osd_notice(bot, instigator, executeduelingmsg)
+    #    return
 
     ## Perform Lockout, run target duel, then unlock
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target', devenabledchannels)
+    staminacharge(bot, instigator, 'combat')
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter
@@ -612,9 +615,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         mainduelerdeathstart = get_database_value(bot, maindueler, 'assault_deaths') or 0
 
         ## Update Time Of Combat
-        set_database_value(bot, maindueler, 'timeout_timeout', now)
-        set_database_value(bot, target, 'timeout_timeout', now)
-        set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
+        #set_database_value(bot, maindueler, 'timeout_timeout', now)
+        #set_database_value(bot, target, 'timeout_timeout', now)
+        #set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
 
         ## Display Naming
         mainduelername = duel_names(bot, maindueler, inchannel)
@@ -1079,7 +1082,7 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
         osd_notice(bot, instigator, "Duels is off in " + inchannel + ".")
     else:
         osd_notice(bot, instigator, " Invalid command.")
-        
+
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     command = get_trigger_arg(bot, triggerargsarray, 2)
@@ -1287,7 +1290,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         else:
             onscreentext(bot, inchannel, "Invalid Chamber Number!")
             return
-            
+
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
     if roulettelastshot == instigator:
@@ -1404,7 +1407,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         tierscaling = tierratio_level(bot)
         currenttierstart = get_database_value(bot, duelrecorduser, 'tier') or 0
         dispmsgarray = []
-        
+
         if roulettecount == 1:
             if instigatorcurse:
                 dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
@@ -2447,6 +2450,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 else:
                     potionmaths = int(uselootarraytotal) * manapotion_worth
                 extramsg = str(" restoring " + str(potionmaths) + " mana.")
+            elif lootitem == 'staminapotion':
+                potionmaths = int(uselootarraytotal) * staminapotion_worth
+                extramsg = str(" restoring " + str(potionmaths) + " stamina.")
             elif lootitem == 'timepotion':
                 extramsg = str(" removing timeouts.")
             if target == instigator:
@@ -2478,6 +2484,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         adjust_database_value(bot, target, 'mana', manapotion_worth_mage)
                     else:
                         adjust_database_value(bot, target, 'mana', manapotion_worth)
+                elif x == 'staminapotion':
+                    adjust_database_value(bot, target, 'stamina', staminapotion_worth)
                 elif x == 'timepotion':
                     reset_database_value(bot, target, 'lastfought')
                     reset_database_value(bot, duelrecorduser, 'timeout_timeout')
@@ -3159,9 +3167,9 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         useralastfought = bot.nick
 
     ## Timeout Retrieval
-    useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
-    userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
-    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
 
     ## Last instigator
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
@@ -3196,19 +3204,19 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         validtarget = 0
 
     ## usera Timeout
-    if useratime <= USERTIMEOUT:
-        validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
-        validtarget = 0
+    #if useratime <= USERTIMEOUT:
+    #    validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
+    #    validtarget = 0
 
     ## Target Timeout
-    if userbtime <= USERTIMEOUT:
-        validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
-        validtarget = 0
+    #if userbtime <= USERTIMEOUT:
+    #    validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
+    #    validtarget = 0
 
     ## Channel Timeout
-    if channeltime <= CHANTIMEOUT:
-        validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
-        validtarget = 0
+    #if channeltime <= CHANTIMEOUT:
+    #    validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+    #    validtarget = 0
 
     return validtarget, validtargetmsg
 
@@ -3219,7 +3227,6 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Devroom bypass
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
-    devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
     if inchannel in devenabledchannels:
         validtarget = 1
         return validtarget
@@ -3228,32 +3235,32 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
         return validtarget
 
     ## Don't allow usera to duel twice in a row
-    useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
+    if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
         return validtarget
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     howmanyduelusers = len(currentduelplayersarray)
-    userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
     useralastfought = get_database_value(bot, usera, 'lastfought') or ''
-    if userb == useralastfought and howmanyduelusers > 2:
+    if userb == useralastfought:# and howmanyduelusers > 2:
         useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
         if useraclass != 'knight':
             return validtarget
 
     ## usera Timeout
-    if useratime <= USERTIMEOUT:
-        return validtarget
+    #if useratime <= USERTIMEOUT:
+    #    return validtarget
 
     ## Target Timeout
-    channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
-    if userbtime <= USERTIMEOUT:
-        return validtarget
+    #if userbtime <= USERTIMEOUT:
+    #    return validtarget
 
     ## Channel Timeout
-    if channeltime <= CHANTIMEOUT:
-        return validtarget
+    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    #if channeltime <= CHANTIMEOUT:
+    #    return validtarget
 
     validtarget = 1
     return validtarget
@@ -4011,7 +4018,18 @@ def get_winlossratio(bot,target):
 ## Stamina ##
 #############
 
-def staminacheck(bot, nick, command):
+def staminacheck(bot, nick, inchannel, command):
+
+    ## Devroom bypass
+    devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
+    if inchannel in devenabledchannels:
+        staminapass = 1
+        return staminapass
+    if not inchannel.startswith("#") and len(devenabledchannels) > 0:
+        staminapass = 1
+        return staminapass
+
+
     stamina = get_database_value(bot, nick, 'stamina') or 0
     if command in command_stamina_free:
         commandstaminacost = 0
@@ -4028,7 +4046,7 @@ def staminacharge(bot, nick, command):
     else:
         commandstaminacost = eval("command_stamina_"+command)
         adjust_database_value(bot, nick, 'stamina', -abs(commandstaminacost))
-    
+
 #############
 ## Similar ##
 #############
