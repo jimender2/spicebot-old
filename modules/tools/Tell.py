@@ -132,7 +132,7 @@ def execute_main(bot, trigger):
 
         bot.reply(response)
     elif Identifier(teller) == tellee:
-        bot.say('You can %s yourself that.' % verb)
+        bot.say("You can %s yourself that. I'm not your fucking secretary." % verb)
     else:
         bot.say("Hey, I'm not as stupid as Monty you know!")
 
