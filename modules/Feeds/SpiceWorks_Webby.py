@@ -63,7 +63,7 @@ def getwebbytime():
 
 def getwebbytitle():
     tree = gettree()
-    webbytitle = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/text()'))
+    webbytitle = str(tree.xpath('//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()'))
     for r in (("u'", ""), ("['", ""), ("[", ""), ("']", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
@@ -71,16 +71,19 @@ def getwebbytitle():
 
 def getwebbylink():
     tree = gettree()
-    webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
+    webbylink = str(tree.xpath('//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/@href'))
+    #webbylink = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/h1/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
     webbylink = str(webbylink.split("&", 1)[0])
+    webbylink = str("https://community.spiceworks.com" + webbylink)
     return webbylink
 
 def getwebbybonus():
     tree = gettree()
     try:
-        webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
+        webbybonus = str(tree.xpath('//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()'))
+        #webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
         webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
         for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
             webbybonus = webbybonus.replace(*r)
