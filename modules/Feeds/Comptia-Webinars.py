@@ -50,7 +50,7 @@ def webbyauto(bot):
 
 def getwebbytitle():
     tree = gettree()
-    webbytitle = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4'))
+    webbytitle = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4/text'))
     #webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
     for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
         webbytitle = webbytitle.replace(*r)
