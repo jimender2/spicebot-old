@@ -4074,7 +4074,7 @@ def versionnumber(bot):
     return duelsversionnow
 
 def gettree():
-    page = requests.get(url,headers = None)
+    page = requests.get(duelsversionpage,headers = None)
     tree= html.fromstring(page.content)
     return tree
 
