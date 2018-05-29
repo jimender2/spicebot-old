@@ -4072,7 +4072,7 @@ def versionnumber(bot):
     if page.status_code == 200:
         tree = gettree()
         duelsversionnow = str(tree.xpath(duels_xpath))
-        for r in (("\\n", ""), ("['",""), ("']",""), ("'",""), ('"',"")):
+        for r in (("\\n", ""), ("['",""), ("']",""), ("'",""), ('"',""), (',',""), ('Commits on',"")):
             duelsversionnow = duelsversionnow.replace(*r)
         duelsversionnow = duelsversionnow.strip()
     return duelsversionnow
