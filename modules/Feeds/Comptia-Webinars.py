@@ -17,7 +17,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-url = 'https://events.actualtechmedia.com'
+url = 'https://www.comptia.org/events/webinars'
 
 @sopel.module.commands('comptiawebby')
 def execute_main(bot, trigger):
