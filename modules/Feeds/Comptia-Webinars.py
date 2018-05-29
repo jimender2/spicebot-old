@@ -26,8 +26,7 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[COMPTIA Webinar]")
-        dispmsg.append(str(getwebbytime()))
-        #dispmsg.append("{"+getwebbytimeuntil()+"}")
+        dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
         onscreentext(bot, trigger.sender, dispmsg)
@@ -43,7 +42,7 @@ def webbyauto(bot):
         if int(timeuntil) < 900 and int(timeuntil) > 840:
             dispmsg = []
             dispmsg.append("[COMPTIA Webinar]")
-            #dispmsg.append("{"+getwebbytimeuntil()+"}")
+            dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
             for channel in bot.channels:
