@@ -36,6 +36,9 @@ def main_command(bot, trigger):
     elif subcommand == 'github':
         bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
 
+    ## gender
+    elif subcommand == 'gender':
+        bot.say("Female.")
     ## Modules
     elif subcommand == 'modulecount':
         cmdarray = []
