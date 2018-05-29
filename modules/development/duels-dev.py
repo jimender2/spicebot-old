@@ -285,7 +285,8 @@ def duel_action(bot, trigger):
 ## bot.nick do this
 @nickname_commands('duel')
 def duel_nickcom(bot, trigger):
-    bot.say("Don't tell me what to do!")
+    inchannel = trigger.sender
+    onscreentext(bot, inchannel, "Don't tell me what to do!")
 
 ## Base command
 @sopel.module.commands('duel','challenge')
