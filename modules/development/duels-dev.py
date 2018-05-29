@@ -188,9 +188,9 @@ loot_null = ['water','vinegar','mud']
 timepotiondispmsg = str(": Removes multiple timeouts.")
 timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
 timepotiontimeoutarray = ['timeout_timeout','lastfullroomcolosseum','lastfullroomassult','timeout_opttime','class_timeout']
-## staminapotion
-staminapotiondispmsg = str(": Restores stamina.")
-staminapotion_worth = 15 ##normal mana potion worth
+## stamina potion
+staminapotion_worth = 15 ##normal stamina potion worth
+staminapotiondispmsg = str(": worth " + str(staminapotion_worth) + " stamina.")
 ## Magic Potions
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
@@ -494,7 +494,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
-    
+
 
     ## Usage Counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
@@ -1082,7 +1082,7 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
         osd_notice(bot, instigator, "Duels is off in " + inchannel + ".")
     else:
         osd_notice(bot, instigator, " Invalid command.")
-        
+
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     command = get_trigger_arg(bot, triggerargsarray, 2)
@@ -1290,7 +1290,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         else:
             onscreentext(bot, inchannel, "Invalid Chamber Number!")
             return
-            
+
     ## instigator must wait until the next round
     roulettelastshot = get_database_value(bot, duelrecorduser, 'roulettelastplayershot') or bot.nick
     if roulettelastshot == instigator:
@@ -1407,7 +1407,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         tierscaling = tierratio_level(bot)
         currenttierstart = get_database_value(bot, duelrecorduser, 'tier') or 0
         dispmsgarray = []
-        
+
         if roulettecount == 1:
             if instigatorcurse:
                 dispmsgarray.append("First in the chamber. Looks like " + instigator + " was cursed!")
@@ -4029,7 +4029,7 @@ def staminacheck(bot, nick, inchannel, command):
         staminapass = 1
         return staminapass
 
-    
+
     stamina = get_database_value(bot, nick, 'stamina') or 0
     if command in command_stamina_free:
         commandstaminacost = 0
@@ -4046,7 +4046,7 @@ def staminacharge(bot, nick, command):
     else:
         commandstaminacost = eval("command_stamina_"+command)
         adjust_database_value(bot, nick, 'stamina', -abs(commandstaminacost))
-    
+
 #############
 ## Similar ##
 #############
