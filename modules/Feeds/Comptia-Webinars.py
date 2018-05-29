@@ -77,10 +77,9 @@ def getwebbytime():
 def getwebbylink():
     tree = gettree()
     webbylink = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href'))
-    #webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    #webbylink = str(webbylink.split("eventid=cm060518", 1)[0])
+    webbylink = str("https://www.comptia.org/"+webbylink)
     return webbylink
 
 def gettree():
