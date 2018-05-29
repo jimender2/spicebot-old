@@ -19,6 +19,8 @@ from num2words import num2words
 from difflib import SequenceMatcher
 from more_itertools import sort_together
 from operator import itemgetter
+import requests
+from fake_useragent import UserAgent
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
