@@ -2452,7 +2452,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 extramsg = str(" restoring " + str(potionmaths) + " mana.")
             elif lootitem == 'staminapotion':
                 potionmaths = int(uselootarraytotal) * staminapotion_worth
-                extramsg = str(" restoring " + str(potionmaths) + ".")
+                extramsg = str(" restoring " + str(potionmaths) + " stamina.")
             elif lootitem == 'timepotion':
                 extramsg = str(" removing timeouts.")
             if target == instigator:
