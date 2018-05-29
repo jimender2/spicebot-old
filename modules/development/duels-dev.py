@@ -281,6 +281,11 @@ def duel_action(bot, trigger):
     #if not enablestatus: ## not needed if using without spicebot
     #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
 
+## bot.nick do this
+@nickname_commands('duel')
+def duel_nickcom(bot, trigger):
+    bot.say("Don't tell me what to do!")
+
 ## Base command
 @sopel.module.commands('duel','challenge')
 def mainfunction(bot, trigger):
