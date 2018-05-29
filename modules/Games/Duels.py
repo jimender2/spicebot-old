@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+from sopel.module import commands, nickname_commands, rule, priority, example
 import sopel.module
 from sopel.module import OP
 from sopel.module import ADMIN
@@ -280,6 +281,11 @@ def duel_action(bot, trigger):
     #enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'duel') ## not needed if using without spicebot
     #if not enablestatus: ## not needed if using without spicebot
     #    execute_main(bot, trigger, triggerargsarray, 'actionduel') ## not needed if using without spicebot
+
+## bot.nick do this
+@nickname_commands('duel')
+def duel_nickcom(bot, trigger):
+    bot.say("Don't tell me what to do!")
 
 ## Base command
 @sopel.module.commands('duel','challenge')
@@ -3201,7 +3207,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
         return validtarget, validtargetmsg
 
     ## Don't allow usera to duel twice in a row
-    if usera == channellastinstigator and useratime <= INSTIGATORTIMEOUT:
+    if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
         validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
 
