@@ -80,7 +80,7 @@ def getwebbylink():
     #webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    webbylink = str(webbylink.split("eventid=cm060518", 1)[0])
+    #webbylink = str(webbylink.split("eventid=cm060518", 1)[0])
     return webbylink
 
 def gettree():
