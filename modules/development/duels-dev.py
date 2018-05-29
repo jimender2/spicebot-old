@@ -34,7 +34,7 @@ from lxml import html
 
 ## Check Last modified date
 duelsversion = '1.5.17'
-duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/dev/modules/Games/Duels.py"
+duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/master/modules/Games/Duels.py"
 duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 ## Command Structure
@@ -4072,6 +4072,9 @@ def versionnumber(bot):
     if page.status_code == 200:
         tree = gettree()
         duelsversionnow = str(tree.xpath(duels_xpath))
+        for r in (("\\n", ""), ("['",""), ("']",""), ('("']",""),','')):
+            duelsversionnow = duelsversionnow.replace(*r)
+        duelsversionnow = duelsversionnow.strip()
     return duelsversionnow
 
 def gettree():
