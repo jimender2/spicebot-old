@@ -34,7 +34,7 @@ from fake_useragent import UserAgent
 ## Check Last modified date
 duelsversion = '1.5.17'
 duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/dev/modules/Games/Duels.py"
-duels_xpath = "//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()"
+duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
