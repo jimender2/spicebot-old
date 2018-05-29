@@ -12,6 +12,10 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+BLOCKSIZE = 1048576
+targetpath="data/templog.txt"
+target_file_path = os.path.join(moduledir, targetpath)
+
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
@@ -250,6 +254,15 @@ def main_command(bot, trigger):
         search_phrase = "Welcome to Sopel. Loading modules..."
         ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
         mostrecentstartbot = 0
+        with codecs.open(log_file_path, "r", "your-source-encoding") as fa:
+            with codecs.open(target_file_path, "w", "utf-8") as targetFile:
+                while True:
+                    contents = log_file_path.read(BLOCKSIZE)
+                    if not contents:
+                        break
+                    target_file_path.write(contents)
+        os.system("sudo rm " + log_file_path)
+        os.system("sudo mv " + target_file_path + log_file_path)
         with codecs.open(log_file_path, 'r', 'UTF-8') as f:
             line_num = 0
             for line in f:
