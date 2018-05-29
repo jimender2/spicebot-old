@@ -429,10 +429,10 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() in validcommands:
         ## If command was issued as an action
         if commandtype != 'actionduel':
-            staminapass = staminacheck(bot, instigator, commandortarget)
+            staminapass = staminacheck(bot, instigator, commandortarget.lower())
             if staminapass:
                 subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
-                staminacharge(bot, nick, command)
+                staminacharge(bot, instigator, commandortarget.lower())
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
@@ -488,7 +488,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     staminapass = staminacheck(bot, instigator, 'combat')
     if staminapass:
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
-        staminacharge(bot, nick, command)
+        staminacharge(bot, instigator, 'combat')
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
     
