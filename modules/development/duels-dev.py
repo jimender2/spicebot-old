@@ -33,8 +33,8 @@ from fake_useragent import UserAgent
 
 ## Check Last modified date
 duelsversion = '1.5.17'
-remote_source = "https://github.com/deathbybandaid/SpiceBot/blob/dev/modules/Games/Duels.py"
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'}
+duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/dev/modules/Games/Duels.py"
+duels_xpath = "//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()"
 
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
@@ -995,9 +995,7 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     #onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
-    response = requests.get(remote_source, headers = headers)
-    remote_source_last_modified = response.headers["last-modified"]
-    remote_source_last_modified = time.mktime(datetime.datetime.strptime(remote_source_last_modified[:-4], "%a, %d %b %Y %H:%M:%S").timetuple())
+    response = versionnumber(bot)
     bot.say(str(response))
 
 ## Docs Subcommand
@@ -4062,6 +4060,17 @@ def staminacharge(bot, nick, command):
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
+###################
+## Duels Version ##
+###################
+
+def versionnumber(bot):
+    duelsversionnow = duelsversion
+    page = requests.get(duelsversionpage,headers = None)
+    if page.status_code == 200:
+        duelsversionnow = str(tree.xpath(duels_xpath))
+    return duelsversionnow
 
 ##############
 ## Database ##
