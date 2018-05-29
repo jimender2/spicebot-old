@@ -434,7 +434,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() in validcommands:
         ## If command was issued as an action
         if commandtype != 'actionduel':
-            staminapass = staminacheck(bot, instigator, commandortarget.lower())
+            staminapass = staminacheck(bot, instigator, inchannel, commandortarget.lower())
             if staminapass:
                 subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
             else:
@@ -489,7 +489,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         return
 
     ## stamina check TODO
-    staminapass = staminacheck(bot, instigator, 'combat')
+    staminapass = staminacheck(bot, instigator, inchannel, 'combat')
     if staminapass:
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
     else:
