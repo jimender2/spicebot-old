@@ -9,8 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-@nickname_commands('^(who|\S|put|\S|the|*')
-#@sopel.module.commands('who')
+@nickname_commands('who')
 @commands('who')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
