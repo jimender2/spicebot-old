@@ -19,6 +19,9 @@ from num2words import num2words
 from difflib import SequenceMatcher
 from more_itertools import sort_together
 from operator import itemgetter
+import requests
+from fake_useragent import UserAgent
+from lxml import html
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -29,7 +32,10 @@ from operator import itemgetter
 ## Configurables ##
 ###################
 
+## Check Last modified date
 duelsversion = '1.5.17'
+duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/master/modules/Games/Duels.py"
+duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
@@ -989,7 +995,8 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
+    versionfetch = versionnumber(bot)
+    onscreentext(bot, inchannel, "The duels framework is was last modified on " + str(versionfetch) + ".")
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
@@ -4053,6 +4060,26 @@ def staminacharge(bot, nick, command):
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
+
+###################
+## Duels Version ##
+###################
+
+def versionnumber(bot):
+    duelsversionnow = duelsversion
+    page = requests.get(duelsversionpage,headers = None)
+    if page.status_code == 200:
+        tree = gettree()
+        duelsversionnow = str(tree.xpath(duels_xpath))
+        for r in (("\\n", ""), ("['",""), ("']",""), ("'",""), ('"',""), (',',""), ('Commits on',"")):
+            duelsversionnow = duelsversionnow.replace(*r)
+        duelsversionnow = duelsversionnow.strip()
+    return duelsversionnow
+
+def gettree():
+    page = requests.get(duelsversionpage,headers = None)
+    tree= html.fromstring(page.content)
+    return tree
 
 ##############
 ## Database ##
