@@ -256,7 +256,7 @@ xp_loser_ranger = 15 ## xp earned as a loser and ranger
 ## Records
 duelrecorduser = 'duelrecorduser'
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
-stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty'] ## 'timeout_timeout'
+stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty','timeout_timeout']
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 
