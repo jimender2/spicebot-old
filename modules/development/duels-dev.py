@@ -29,6 +29,8 @@ from operator import itemgetter
 ## Configurables ##
 ###################
 
+duelsversion = '1.5.17'
+
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
@@ -984,7 +986,7 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
     onscreentext(bot, inchannel, "The author of Duels is deathbybandaid.")
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    bot.say("WIP") ## TODO
+    onscreentext(bot, inchannel, "The duels framework is currently at version " + str(duelsversion))
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
