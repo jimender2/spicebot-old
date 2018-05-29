@@ -65,6 +65,19 @@ commandarray_tier_ratio = [1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.1,2.2,2.3,2.4
 commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace','pure capsaicin'] ## Pepper Levels
 commandarray_tier_display_exclude = ['admin','game','devmode','version','author','deathblow'] ## Do NOT display
 
+## Stamina required
+command_stamina_free = ['on','off','admin','devmode','game','stats','loot','streaks','health','tier','docs','author','version','usage','streaks','bounty','weaponslocker','class','armor','title']
+command_stamina_combat = 5
+command_stamina_deathblow = 1
+command_stamina_harakiri = 1
+command_stamina_magic = 2
+command_stamina_assault = 10
+command_stamina_roulette 2
+command_stamina_random = 3
+command_stamina_colosseum = 20
+command_stamina_mayhem = 25
+command_stamina_hungergames = 20
+
 ## more stuff
 bodyparts_required = ['torso','head']
 
@@ -416,7 +429,11 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     if commandortarget.lower() in validcommands:
         ## If command was issued as an action
         if commandtype != 'actionduel':
-            subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
+            staminapass = staminacheck(bot, instigator, commandortarget)
+            if staminapass:
+                subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
+            else:
+                osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
             osd_notice(bot, instigator, "Action duels should not be able to run commands. Targets Only")
         return
@@ -466,7 +483,13 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
         osd_notice(bot, instigator, "Duels must be in channel.")
         return
 
-    duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
+    ## stamina check TODO
+    staminapass = staminacheck(bot, instigator, 'combat')
+    if staminapass:
+        duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
+    else:
+        osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
+    
 
     ## Usage Counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
@@ -3982,6 +4005,21 @@ def get_winlossratio(bot,target):
     return winlossratio
 
 #############
+## Stamina ##
+#############
+
+def staminacheck(bot, nick, command):
+    stamina = get_database_value(bot, nick, 'stamina') or 0
+    if command in command_stamina_free:
+        commandstaminacost = 0
+    else:
+        commandstaminacost = eval("command_stamina_"+command)
+    staminapass = 0
+    if commandstaminacost <= stamina:
+        staminapass = 1
+    return staminapass
+
+#############
 ## Similar ##
 #############
 
@@ -4365,11 +4403,4 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 
 def array_arrangesort(bot, sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
-    #Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
-    #statvaluearray = []
-    #for j in Zx:
-    #    sortbyarray.append(j)
-    #arrayb = []
-    #for k in Zy:
-    #    arrayb.append(k)
     return sortbyarray, arrayb
