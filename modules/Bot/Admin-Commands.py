@@ -6,6 +6,7 @@ import re
 import git
 import os
 import sys
+import codecs
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
@@ -249,14 +250,14 @@ def main_command(bot, trigger):
         search_phrase = "Welcome to Sopel. Loading modules..."
         ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
         mostrecentstartbot = 0
-        with open(log_file_path, 'r+', encoding="utf-8") as f:
+        with codecs.open(log_file_path, 'r', 'UTF-8') as f:
             line_num = 0
             for line in f:
                 line_num += 1
                 if search_phrase in str(line):
                     mostrecentstartbot = line_num
             line_num = 0
-        with open(log_file_path, 'r+', encoding="utf-8") as fb:
+        with codecs.open(log_file_path, 'r', 'UTF-8') as fb:
             for line in fb:
                 line_num += 1
                 currentline = line_num
