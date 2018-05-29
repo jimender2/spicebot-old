@@ -26,6 +26,7 @@ def execute_main(bot, trigger):
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[COMPTIA Webinar]")
+        dispmsg.append(getwebbytime())
         #dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
         dispmsg.append(getwebbylink())
@@ -43,7 +44,6 @@ def webbyauto(bot):
             dispmsg = []
             dispmsg.append("[COMPTIA Webinar]")
             #dispmsg.append("{"+getwebbytimeuntil()+"}")
-            dispmsg.append(getwebbytime())
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
             for channel in bot.channels:
