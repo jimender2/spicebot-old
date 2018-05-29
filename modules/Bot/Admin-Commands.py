@@ -249,11 +249,11 @@ def main_command(bot, trigger):
         search_phrase = "Welcome to Sopel. Loading modules..."
         ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
         mostrecentstartbot = 0
-        with open(log_file_path, encoding="utf-8") as f:
+        with open(log_file_path) as f:
             line_num = 0
             for line in f:
                 line_num += 1
-                if search_phrase in line:
+                if search_phrase in str(line):
                     mostrecentstartbot = line_num
             line_num = 0
         with open(log_file_path) as fb:
@@ -261,7 +261,7 @@ def main_command(bot, trigger):
                 line_num += 1
                 currentline = line_num
                 if int(currentline) >= int(mostrecentstartbot) and not any(x in line for x in ignorearray):
-                    bot.say(line)
+                    bot.say(str(line))
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
         
