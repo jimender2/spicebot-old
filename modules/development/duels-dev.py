@@ -432,6 +432,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             staminapass = staminacheck(bot, instigator, commandortarget)
             if staminapass:
                 subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
+                staminacharge(bot, nick, command)
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
@@ -487,6 +488,7 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     staminapass = staminacheck(bot, instigator, 'combat')
     if staminapass:
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
+        staminacharge(bot, nick, command)
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
     
@@ -1076,7 +1078,6 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
     else:
         osd_notice(bot, instigator, " Invalid command.")
         
-
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     command = get_trigger_arg(bot, triggerargsarray, 2)
@@ -4026,7 +4027,6 @@ def staminacharge(bot, nick, command):
         commandstaminacost = eval("command_stamina_"+command)
         adjust_database_value(bot, nick, 'stamina', -abs(commandstaminacost))
     
-
 #############
 ## Similar ##
 #############
