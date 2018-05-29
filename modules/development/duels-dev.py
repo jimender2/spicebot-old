@@ -90,7 +90,7 @@ stats_healthbodyparts = ['head','torso','left_arm','right_arm','left_leg','right
 ## Armor Stats
 stats_armor = ['helmet','breastplate','left_gauntlet','right_gauntlet','left_greave','right_greave','codpiece']
 ## Loot Stats
-stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','poisonpotion','manapotion','grenade','coin']
+stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','staminapotion','poisonpotion','manapotion','grenade','coin']
 ## Record Stats
 stats_record = ['wins','losses','xp','respawns','kills','lastfought']
 ## Streak Stats
@@ -155,8 +155,8 @@ title_cost = 100 ## ## how many coin to change title
 bugbounty_reward = 100 ## users that find a bug in the code, get a reward
 
 ## Loot
-loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## how to organize backpack
-potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','mysterypotion','magicpotion'] ## types of potions
+loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## how to organize backpack
+potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## types of potions
 loot_transaction_types = ['buy','sell','trade','use'] ## valid commands for loot
 ### Buy
 loot_buy = 100 ## normal cost to buy a loot item
@@ -188,6 +188,9 @@ loot_null = ['water','vinegar','mud']
 timepotiondispmsg = str(": Removes multiple timeouts.")
 timepotiontargetarray = ['lastinstigator','lastfullroomcolosseuminstigator','lastfullroomassultinstigator']
 timepotiontimeoutarray = ['timeout_timeout','lastfullroomcolosseum','lastfullroomassult','timeout_opttime','class_timeout']
+## staminapotion
+staminapotiondispmsg = str(": Restores stamina.")
+staminapotion_worth = 15 ##normal mana potion worth
 ## Magic Potions
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 
@@ -2447,6 +2450,9 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 else:
                     potionmaths = int(uselootarraytotal) * manapotion_worth
                 extramsg = str(" restoring " + str(potionmaths) + " mana.")
+            elif lootitem == 'staminapotion':
+                potionmaths = int(uselootarraytotal) * staminapotion_worth
+                extramsg = str(" restoring " + str(potionmaths) + ".")
             elif lootitem == 'timepotion':
                 extramsg = str(" removing timeouts.")
             if target == instigator:
@@ -2478,6 +2484,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         adjust_database_value(bot, target, 'mana', manapotion_worth_mage)
                     else:
                         adjust_database_value(bot, target, 'mana', manapotion_worth)
+                elif x == 'staminapotion':
+                    adjust_database_value(bot, target, 'stamina', staminapotion_worth)
                 elif x == 'timepotion':
                     reset_database_value(bot, target, 'lastfought')
                     reset_database_value(bot, duelrecorduser, 'timeout_timeout')
@@ -3218,7 +3226,6 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, inchannel):
     validtarget = 0
 
     ## Devroom bypass
-    devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
     devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
     if inchannel in devenabledchannels:
         validtarget = 1
@@ -4011,7 +4018,18 @@ def get_winlossratio(bot,target):
 ## Stamina ##
 #############
 
-def staminacheck(bot, nick, command):
+def staminacheck(bot, nick, inchannel, command):
+
+    ## Devroom bypass
+    devenabledchannels = get_database_value(bot, duelrecorduser, 'devenabled') or []
+    if inchannel in devenabledchannels:
+        staminapass = 1
+        return staminapass
+    if not inchannel.startswith("#") and len(devenabledchannels) > 0:
+        staminapass = 1
+        return staminapass
+
+    
     stamina = get_database_value(bot, nick, 'stamina') or 0
     if command in command_stamina_free:
         commandstaminacost = 0
