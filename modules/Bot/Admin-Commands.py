@@ -252,6 +252,7 @@ def main_command(bot, trigger):
         with open(log_file_path) as f:
             line_num = 0
             for line in f:
+                line = line.decode('utf-8', 'ignore')
                 line_num += 1
                 if search_phrase in line:
                     mostrecentstartbot = line_num
@@ -261,7 +262,7 @@ def main_command(bot, trigger):
                 line_num += 1
                 currentline = line_num
                 if int(currentline) >= int(mostrecentstartbot) and not any(x in line for x in ignorearray):
-                    bot.say(line)
+                    bot.say(str(line))
         bot.action('Is Removing Log')
         os.system("sudo rm " + log_file_path)
         
