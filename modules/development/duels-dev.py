@@ -4069,8 +4069,14 @@ def versionnumber(bot):
     duelsversionnow = duelsversion
     page = requests.get(duelsversionpage,headers = None)
     if page.status_code == 200:
+        tree = gettree()
         duelsversionnow = str(tree.xpath(duels_xpath))
     return duelsversionnow
+
+def gettree():
+    page = requests.get(url,headers = None)
+    tree= html.fromstring(page.content)
+    return tree
 
 ##############
 ## Database ##
