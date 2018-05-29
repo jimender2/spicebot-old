@@ -76,7 +76,7 @@ def getwebbytime():
 
 def getwebbylink():
     tree = gettree()
-    webbylink = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href'))
+    webbylink = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a/@href'))
     #webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
