@@ -434,7 +434,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
             staminapass = staminacheck(bot, instigator, commandortarget.lower())
             if staminapass:
                 subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, commandortarget, dueloptedinarray, botvisibleusers, now, currentuserlistarray, inchannel, currentduelplayersarray, canduelarray, devenabledchannels, validcommands)
-                staminacharge(bot, instigator, commandortarget.lower())
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
@@ -490,7 +489,6 @@ def commandortargetsplit(bot, trigger, triggerargsarray, instigator, botvisibleu
     staminapass = staminacheck(bot, instigator, 'combat')
     if staminapass:
         duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchannel, triggerargsarray, now, devenabledchannels)
-        staminacharge(bot, instigator, 'combat')
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
     
@@ -535,6 +533,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, fullcommandused, com
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + commandortarget.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands)')
     eval(subcommand_run)
+    staminacharge(bot, instigator, commandortarget.lower())
 
     ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
@@ -570,6 +569,7 @@ def duel_valid(bot, instigator, commandortarget, currentduelplayersarray, inchan
     ## Perform Lockout, run target duel, then unlock
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     duel_combat(bot, instigator, instigator, [commandortarget], triggerargsarray, now, inchannel, 'target', devenabledchannels)
+    staminacharge(bot, instigator, 'combat')
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter
