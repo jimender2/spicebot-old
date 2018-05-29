@@ -996,7 +996,7 @@ def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, curren
 
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     versionfetch = versionnumber(bot)
-    onscreentext(bot, inchannel, "The duels framework is was last modified on " + str(versionfetch))
+    onscreentext(bot, inchannel, "The duels framework is was last modified on " + str(versionfetch) + ".")
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
