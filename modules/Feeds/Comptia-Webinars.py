@@ -28,7 +28,7 @@ def execute_main(bot, trigger):
         dispmsg.append("[COMPTIA Webinar]")
         #dispmsg.append("{"+getwebbytimeuntil()+"}")
         dispmsg.append(getwebbytitle())
-        #dispmsg.append(getwebbylink())
+        dispmsg.append(getwebbylink())
         onscreentext(bot, trigger.sender, dispmsg)
 
 @sopel.module.interval(60)
@@ -44,7 +44,7 @@ def webbyauto(bot):
             dispmsg.append("[COMPTIA Webinar]")
             #dispmsg.append("{"+getwebbytimeuntil()+"}")
             dispmsg.append(getwebbytitle())
-            #dispmsg.append(getwebbylink())
+            dispmsg.append(getwebbylink())
             for channel in bot.channels:
                 onscreentext(bot, channel, dispmsg)
 
@@ -76,7 +76,8 @@ def getwebbytime():
 
 def getwebbylink():
     tree = gettree()
-    webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
+    webbylink = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href'))
+    #webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
     webbylink = str(url + webbylink.split("&", 1)[0])
