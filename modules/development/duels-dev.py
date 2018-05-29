@@ -68,7 +68,7 @@ commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','ja
 commandarray_tier_display_exclude = ['admin','game','devmode','version','author','deathblow'] ## Do NOT display
 
 ## Stamina required
-command_stamina_free = ['on','off','admin','devmode','game','stats','loot','streaks','health','tier','docs','author','version','usage','streaks','bounty','weaponslocker','class','armor','title']
+command_stamina_free = ['on','off','admin','devmode','game','stats','loot','streaks','health','tier','docs','author','version','usage','streaks','bounty','weaponslocker','class','armor','title','leaderboard', 'warroom']
 command_stamina_combat = 5
 command_stamina_deathblow = 1
 command_stamina_harakiri = 1
