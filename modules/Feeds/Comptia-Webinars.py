@@ -79,7 +79,7 @@ def getwebbylink():
     webbylink = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/div/div/div/a[1]/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    webbylink = str("https://www.comptia.org/"+webbylink)
+    webbylink = str("https://www.comptia.org"+webbylink)
     return webbylink
 
 def gettree():
