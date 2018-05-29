@@ -4019,6 +4019,14 @@ def staminacheck(bot, nick, command):
         staminapass = 1
     return staminapass
 
+def staminacharge(bot, nick, command):
+    if command in command_stamina_free:
+        commandstaminacost = 0
+    else:
+        commandstaminacost = eval("command_stamina_"+command)
+        adjust_database_value(bot, nick, 'stamina', -abs(commandstaminacost))
+    
+
 #############
 ## Similar ##
 #############
@@ -4403,11 +4411,4 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 
 def array_arrangesort(bot, sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
-    #Zx, Zy = zip(*[(w, y) for w, y in sorted(zip(sortbyarray, arrayb))])
-    #statvaluearray = []
-    #for j in Zx:
-    #    sortbyarray.append(j)
-    #arrayb = []
-    #for k in Zy:
-    #    arrayb.append(k)
     return sortbyarray, arrayb
