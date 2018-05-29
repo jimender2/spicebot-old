@@ -43,6 +43,7 @@ def webbyauto(bot):
             dispmsg = []
             dispmsg.append("[COMPTIA Webinar]")
             #dispmsg.append("{"+getwebbytimeuntil()+"}")
+            dispmsg.append(getwebbytime())
             dispmsg.append(getwebbytitle())
             dispmsg.append(getwebbylink())
             for channel in bot.channels:
@@ -51,7 +52,6 @@ def webbyauto(bot):
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4/text()'))
-    #webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
     for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
         webbytitle = webbytitle.replace(*r)
     webbytitle = unicode_string_cleanup(webbytitle)
@@ -66,7 +66,8 @@ def getwebbytimeuntil():
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
-    webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
+    webbytime = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h5/text()'))
+    #webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
     webbytz = pytz.timezone('US/Eastern')
