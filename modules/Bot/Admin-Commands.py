@@ -249,7 +249,7 @@ def main_command(bot, trigger):
         search_phrase = "Welcome to Sopel. Loading modules..."
         ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
         mostrecentstartbot = 0
-        with open(log_file_path) as f:
+        with open(log_file_path, encoding="utf-8") as f:
             line_num = 0
             for line in f:
                 line_num += 1
