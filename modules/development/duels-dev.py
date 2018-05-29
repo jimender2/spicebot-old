@@ -21,6 +21,7 @@ from more_itertools import sort_together
 from operator import itemgetter
 import requests
 from fake_useragent import UserAgent
+from lxml import html
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
