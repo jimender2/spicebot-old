@@ -266,6 +266,54 @@ stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty','timeout_timeout']
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
+## Monster List
+monsterarray = [
+"Aboleth","Beholder","Blue slaad","Chuul","Cloaker","Death kiss","Death slaad","Elder brain","Flumph","Gauth","Gazer","Gibbering mouther","Gray slaad","Green slaad","Grell","Intellect devourer",
+"Mind flayer","Mind flayer arcanist","Mindwitness","Morkoth","Neogi","Neogi hatchling","Neogi master","Neothelid","Nothic","Otyugh","Red slaad","Slaad tadpole","Spectator","Ulitharid","Allosaurus",
+"Ankylosaurus","Ape","Aurochs","Axe beak","Baboon","Badger","Bat","Black bear","Blood hawk","Boar","Brontosaurus","Brown bear","Camel","Cat","Constrictor snake","Cow","Crab","Cranium rat","Crocodile",
+"Deer","Deinonychus","Dimetrodon","Dire wolf","Dolphin","Draft horse","Eagle","Elephant","Elk","Flying snake","Frog","Giant ape","Giant badger","Giant bat","Giant boar","Giant centipede",
+"Giant constrictor snake","Giant crab","Giant crocodile","Giant eagle","Giant elk","Giant fire beetle","Giant frog","Giant goat","Giant hyena","Giant lizard","Giant octopus","Giant owl",
+"Giant poisonous snake","Giant rat","Giant scorpion","Giant sea horse","Giant shark","Giant spider","Giant toad","Giant vulture","Giant wasp","Giant weasel","Giant wolf spider","Goat","Hadrosaurus",
+"Hawk","Hunter shark","Hyena","Jackal","Killer whale","Lion","Lizard","Mammoth","Mastiff","Mule","Octopus","Owl","Panther","Plesiosaurus","Poisonous snake","Polar bear","Pony","Pteranodon",
+"Quetzalcoatlus","Quipper","Rat","Raven","Reef shark","Rhinoceros","Riding horse","Saber-toothed tiger","Scorpion","Sea horse","Spider","Stegosaurus","Stirge","Swarm of bats","Swarm of cranium rats",
+"Swarm of insects","Swarm of poisonous snakes","Swarm of quippers","Swarm of rats","Swarm of ravens","Swarm of rot grubs","Tiger","Triceratops","Tyrannosaurus rex","Velociraptor","Vulture","Warhorse",
+"Weasel","Wolf","Couatl","Deva","Empyrean","Ki-rin","Pegasus","Planetar","Solar","Unicorn","Animated armor","Clay golem","Duodrone","Flesh golem","Flying sword","Helmed horror","Homunculus","Iron golem",
+"Monodrone","Pentadrone","Quadrone","Rug of smothering","Scarecrow","Shield guardian","Stone golem","Tridrone","Adult black dragon","Adult blue dragon","Adult brass dragon","Adult bronze dragon",
+"Adult copper dragon","Adult gold dragon","Adult green dragon","Adult red dragon","Adult silver dragon","Adult white dragon","Ancient black dragon","Ancient blue dragon","Ancient brass dragon",
+"Ancient bronze dragon","Ancient copper dragon","Ancient gold dragon","Ancient green dragon","Ancient red dragon","Ancient silver dragon","Ancient white dragon","Black dragon wyrmling",
+"Blue dragon wyrmling","Brass dragon wyrmling","Bronze dragon wyrmling","Copper dragon wyrmling","Dragon turtle","Faerie dragon","Faerie dragon","Gold dragon wyrmling","Green dragon wyrmling","Guard drake",
+"Pseudodragon","Red dragon wyrmling","Silver dragon wyrmling","White dragon wyrmling","Wyvern","Young black dragon","Young blue dragon","Young brass dragon","Young bronze dragon","Young copper dragon",
+"Young gold dragon","Young green dragon","Young red dragon","Young red shadow dragon","Young silver dragon","Young white dragon","Air elemental","Azer","Dao","Djinni","Dust mephit","Earth elemental",
+"Efreeti","Fire elemental","Fire snake","Flail snail","Galeb duhr","Gargoyle","Ice mephit","Invisible stalker","Magma mephit","Magmin","Marid","Mud mephit","Salamander","Smoke mephit","Steam mephit",
+"Water elemental","Water weird","Xorn","Annis hag","Bheur hag","Blink dog","Boggle","Darkling","Darkling elder","Dryad","Green hag","Green hag","Korred","Meenlock","Pixie","Quickling","Redcap","Satyr",
+"Sea hag","Sea hag","Sprite","Yeth hound","Arcanaloth","Babau","Balor","Barbed devil","Barghest","Barlgura","Bearded devil","Bone devil","Cambion","Chain devil","Chasme","Devourer","Draegloth","Dretch",
+"Erinyes","Glabrezu","Gnoll fang of Yeenoghu","Goristro","Hell hound","Hezrou","Horned devil","Ice devil","Imp","Incubus","Lemure","Manes","Marilith","Maw demon","Mezzoloth","Nalfeshnee","Night hag",
+"Night hag","Nightmare","Nycaloth","Pit fiend","Quasit","Rakshasa","Shadow demon","Shoosuva","Spined devil","Succubus","Tanarukk","Ultroloth","Vargouille","Vrock","Yochlol","Cloud giant",
+"Cloud giant smiling one","Cyclops","Ettin","Fire giant","Fire giant dreadnought","Fomorian","Frost giant","Frost giant everlasting one","Half-ogre","Hill giant","Mouth of Grolantor","Ogre","Oni",
+"Stone giant","Stone giant dreamwalker","Storm giant","Storm giant quintessent","Troll","Aarakocra","Abjurer","Acolyte","Apprentice wizard","Archdruid","Archer","Archmage","Assassin","Bandit",
+"Bandit captain","Bard","Berserker","Blackguard","Bugbear","Bugbear chief","Bullywug","Champion","Commoner","Conjurer","Cult fanatic","Cultist","Deep gnome","Deep scion","Diviner","Drow",
+"Drow elite warrior","Drow mage","Drow priestess of Lolth","Druid","Duergar","Enchanter","Evoker","Firenewt","Firenewt warlock of Imix","Flind","Githyanki knight","Githyanki warrior",
+"Githzerai monk","Githzerai zerth","Gladiator","Gnoll","Gnoll flesh gnawer","Gnoll hunter","Gnoll pack lord","Goblin","Goblin boss","Grimlock","Grung","Grung elite warrior","Grung wildling","Guard",
+"Half-red dragon veteran","Hobgoblin","Hobgoblin captain","Hobgoblin devastator","Hobgoblin Iron Shadow","Hobgoblin warlord","Illusionist","Jackalwere","Kenku","Knight","Kobold","Kobold dragonshield",
+"Kobold inventor","Kobold scale sorcerer","Kraken priest","Kuo-toa","Kuo-toa archpriest","Kuo-toa monitor","Kuo-toa whip","Lizard king/queen","Lizardfolk","Lizardfolk shaman","Mage","Martial arts adept",
+"Master thief","Merfolk","Necromancer","Nilbog","Noble","Orc","Orc Blade of Ilneval","Orc Claw of Luthic","Orc eye of Gruumsh","Orc Hand of Yurtrus","Orc Nurtured One of Yurtrus","Orc Red Fang of Shargaas",
+"Orc war chief","Orog","Priest","Quaggoth","Quaggoth thonot","Sahuagin","Sahuagin baron","Sahuagin priestess","Sea spawn","Scout","Spy","Swashbuckler","Thri-kreen","Thug","Transmuter","Tribal warrior",
+"Troglodyte","Veteran","War priest","Warlock of the archfey","Warlock of the fiend","Warlock of the Great Old One","Warlord","Werebear","Wereboar","Wererat","Weretiger","Werewolf","Winged kobold","Xvart",
+"Xvart warlock of Raxivort","Yuan-ti broodguard","Yuan-ti pureblood","Abominable yeti","Androsphinx","Ankheg","Banderhobb","Basilisk","Behir","Bulette","Carrion crawler","Catoblepas","Cave fisher",
+"Centaur","Chimera","Chitine","Choldrith","Cockatrice","Darkmantle","Death dog","Displacer beast","Doppelganger","Drider","Ettercap","Froghemoth","Giant strider","Girallon","Gorgon","Grick","Grick alpha",
+"Griffon","Guardian naga","Gynosphinx","Harpy","Hippogriff","Hook horror","Hydra","Kraken","Lamia","Leucrotta","Manticore","Medusa","Merrow","Mimic","Minotaur","Owlbear","Peryton","Phase spider","Piercer",
+"Purple worm","Remorhaz","Roc","Roper","Rust monster","Shadow mastiff","Spirit naga","Tarrasque","Tlincalli","Trapper","Umber hulk","Winter wolf","Worg","Yeti","Young remorhaz","Yuan-ti abomination",
+"Yuan-ti anathema","Yuan-ti malison","Yuan-ti mind whisperer","Yuan-ti nightmare speaker","Yuan-ti pit master","Black pudding","Gelatinous cube","Gray ooze","Ochre jelly","Slithering tracker",
+"Awakened shrub","Awakened tree","Gas spore","Myconid adult","Myconid sovereign","Myconid sprout","Needle blight","Quaggoth spore servant","Shambling mound","Shrieker","Thorny","Treant","Twig blight",
+"Vegepygmy","Vegepygmy chief","Vine blight","Violet fungus","Wood woad","Alhoon","Adult blue dracolich","Banshee","Beholder zombie","Bodak","Bone naga","Crawling claw","Death knight","Death tyrant",
+"Demilich","Flameskull","Ghast","Ghost","Ghoul","Gnoll witherling","Lich","Mind flayer lich","Minotaur skeleton","Mummy","Mummy lord","Ogre zombie","Poltergeist","Revenant","Shadow","Skeleton",
+"Spawn of Kyuss","Specter","Vampire","Vampire","Awakened shrub","Baboon","Badger","Bat","Cat","Commoner","Crab","Cranium rat","Crawling claw","Deer","Eagle","Frog","Giant fire beetle","Goat","Hawk",
+"Homunculus","Hyena","Jackal","Lemure","Lizard","Myconid sprout","Octopus","Owl","Quipper","Rat","Raven","Scorpion","Sea horse","Shrieker","Spider","Vulture","Weasel","Blood hawk","Boggle","Camel",
+"Cultist","Dolphin","Flumph","Flying snake","Giant crab","Giant rat","Giant weasel","Guard","Kobold","Manes","Mastiff","Merfolk","Monodrone","Mule","Neogi hatchling","Noble","Poisonous snake","Pony",
+"Slaad tadpole","Stirge","Tribal warrior","Twig blight","Xvart","Pseudodragon","Pteranodon","Riding horse","Skeleton","Smoke mephit","Sprite","Steam mephit","Swarm of bats","Swarm of rats","Swarm of ravens",
+"Troglodyte","Vegepygmy","Velociraptor","Violet fungus","Winged kobold","Wolf","Zombie","Vine blight","Warhorse","Warhorse skeleton","Worg"
+]
+
 
 ########################
 ## Main Command Usage ##
