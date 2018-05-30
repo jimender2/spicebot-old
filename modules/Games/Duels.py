@@ -42,7 +42,7 @@ duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/tex
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
-commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames','devmode'] ## Must Be inchannel
+commandarray_inchannel = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow'] ## Must Be inchannel
 ### Alternative Commands
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
@@ -126,7 +126,7 @@ stats_other = ['chanstatsreset']
 
 ## Documentation and Development
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels" ## Wiki URL, change if not using with spicebot
-development_team = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score'] ## Dev Team
+development_team = ['deathbybandaid','Mace_Whatdo','dysonparkes','under_score'] ## Dev Team
 
 ## On/off
 timeout_opt = 1800 ## Time between opting in and out of the game - Half hour
@@ -1050,7 +1050,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             combattextarraycomplete.append(maindueler + " won the random attack payout of " + str(random_payout)+ " coin!")
 
         ## On Screen Text
-        if typeofduel == 'assault' and typeofduel == 'colosseum':
+        if typeofduel == 'assault' or typeofduel == 'colosseum':
             onscreentext(bot, [winner,loser], combattextarraycomplete)
         elif typeofduel == 'quest':
             onscreentext(bot, [target], combattextarraycomplete)
