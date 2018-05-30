@@ -791,7 +791,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
-            if winner != 'duelsmonster':
+            if loser == 'duelsmonster':
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
             else:
                 bot.say("test")
