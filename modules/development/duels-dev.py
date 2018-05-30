@@ -664,11 +664,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         texttargetarray = []
         deathblowarray = []
 
-        ## Update last fought
-        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
-            set_database_value(bot, maindueler, 'lastfought', target)
-            set_database_value(bot, target, 'lastfought', maindueler)
-
         ## Assault does not touch lastfought
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
@@ -1054,6 +1049,17 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             bot.notice("  ", maindueler)
             time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
+        ## Update last fought
+        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
+            if maindueler == 'duelsmonster':
+                set_database_value(bot, target, 'lastfought', mainduelername)
+            else:
+                set_database_value(bot, target, 'lastfought', maindueler)
+            if target == 'duelsmonster':
+                set_database_value(bot, maindueler, 'lastfought', targetname)
+            else:
+                set_database_value(bot, maindueler, 'lastfought', target)
+            
         ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
