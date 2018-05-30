@@ -657,7 +657,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     ## Monster
     if 'duelsmonster' in targetarray:
         duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
-        if typeofduel == 'quest':
+        if typeofduel != 'quest':
             duelmonsterlevel = str("A lower level "+duelsmonstername)
         else:
             duelmonsterlevel = str("A high level "+duelsmonstername)
