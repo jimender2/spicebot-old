@@ -28,9 +28,6 @@ def execute_main(bot, trigger, triggerargsarray):
     if not outputtext:
         outputtext = "An error has occured."
     bot.say(outputtext)
-    
-    
-    
 
 def getoutputtext(bot, pictype):
     if pictype == 'dog':
