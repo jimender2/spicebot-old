@@ -3296,7 +3296,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, inchannel):
 
     ## Don't allow usera to duel twice in a row
     if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
-        validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate."#, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+        validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate.")#, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
