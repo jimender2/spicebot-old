@@ -19,29 +19,29 @@ baseurl = 'https://down.com/?q='
 
 @sopel.module.commands('isup')
 def execute_main(bot, trigger):
+    checksite = get_trigger_arg(bot, triggerargsarray, 1)
+    if not checksite:
+        bot.say("please enter a site")
+    else:
+        url = str(baseurl + checksite)
+        page = requests.get(url,headers = None)
+        if page.status_code == 200:
+            dispmsg = []
+            upornot = isupparse(url)
+            if upornot:
+                bot.say(checksite + " appears to be up.")
+            else:
+                bot.say(checksite + " appears to be down.")
 
-    page = requests.get(url,headers = None)
-    if page.status_code == 200:
-        dispmsg = []
-        upornot = upparse()
-        if bonus and bonus != '':
-            dispmsg.append('BONUS: ' + getwebbybonus())
-        onscreentext(bot, trigger.sender, dispmsg)
+def isupparse(url):
+    upornot = 0
+    tree = gettree(url)
+    isuptext = str(tree.xpath(''))
+    if isuptext.startswith("It's you!"):
+        upornot = 1
+    return upornot
 
-def upparse():
-    tree = gettree()
-    try:
-        webbybonus = str(tree.xpath('//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()'))
-        #webbybonus = str(tree.xpath('//*[@id="primary"]/div/ul/li[1]/div[2]/div[2]/p/text()'))
-        webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-        for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '","")):
-            webbybonus = webbybonus.replace(*r)
-        webbybonus = unicode_string_cleanup(webbybonus)
-    except IndexError:
-        webbybonus = ''
-    return webbybonus
-
-def gettree():
+def gettree(url):
     page = requests.get(url,headers = None)
     tree= html.fromstring(page.content)
     return tree
