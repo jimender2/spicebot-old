@@ -10,13 +10,15 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
-validpicarray = ['dog','cat','bird']
+validpicarray = ['dog','cat','bird','fox']
 dog_url = 'https://random.dog/woof.json'
 dog_json = 'url'
 cat_url = 'http://aws.random.cat/meow'
 cat_json = 'file'
 bird_url = 'http://shibe.online/api/birds?count=[1-100]&urls=[true/false]&httpsUrls=[true/false]'
 bird_json = ''
+fox_url = 'https://randomfox.ca/floof/'
+fox_json = 'image'
 
 
 @sopel.module.commands('random')
