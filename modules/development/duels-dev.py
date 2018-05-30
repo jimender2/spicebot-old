@@ -693,7 +693,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         elif target == 'duelsmonster':
             targetname = get_trigger_arg(bot, monstersarray, 'random')
             targetnamemonster = targetname
-            targetname = str("An Unexpected lower level "+targetname)
+            targetname = str("An lower level "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -3653,7 +3653,7 @@ def deathblowcheck(bot, instigator):
 def duel_names(bot, nick, channel):
     if nick == 'duelsmonster':
         nickname = get_trigger_arg(bot, monstersarray, 'random')
-        nickname = str("An Unexpected lower level "+nickname)
+        nickname = str("A lower level "+nickname)
         return nickname
     nickname = ''
     for q in duel_nick_order:
