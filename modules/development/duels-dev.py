@@ -23,6 +23,7 @@ from operator import itemgetter
 import requests
 from fake_useragent import UserAgent
 from lxml import html
+from statistics import mean
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -1854,13 +1855,14 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
         canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
         osd_notice(bot, instigator, validtargetmsg)
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
-    statreset(bot, 'duelsmonster')
+    monsterstats(bot, currentduelplayersarray)
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
@@ -3958,9 +3960,25 @@ def refreshbot(bot):
         set_database_value(bot, bot.nick, x, None)
 
 def refreshduelsmonster(bot):
-    duelstatsadminarray = duels_valid_stats('duelsmonster')
+    duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
         set_database_value(bot, 'duelsmonster', x, None)
+
+def monsterstats(bot, currentduelplayersarray):
+    duelstatsadminarray = duels_valid_stats(bot)
+    for x in duelstatsadminarray:
+        playerstatarrayaverage = 0
+        currentstatarray = []
+        for player in currentduelplayersarray:
+            playernumber = get_database_value(bot, player, x)
+            if str(playernumber).isdigit():
+                currentstatarray.append(playernumber)
+        playerstatarrayaverage = mean(currentstatarray)
+        playerstatarrayaverage = int(playerstatarrayaverage)
+        if playerstatarrayaverage > 0:
+            set_database_value(bot, 'duelsmonster', x, playerstatarrayaverage)
+        
+    
 
 ######################
 ## Winner Selection ##
