@@ -37,7 +37,8 @@ def isupparse(bot,url):
     upornot = 0
     tree = gettree(bot,url)
     isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
-    bot.say(str(isuptext))
+    isuptext = isuptext.replace(""]","")
+    isuptext = isuptext.replace("["","")
     if str(isuptext) == "It's you!":
         upornot = 1
     return upornot
