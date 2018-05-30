@@ -757,9 +757,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             weapon = ''
         else:
             weapon = weaponofchoice(bot, winner)
-        bot.say(weapon)
         weapon = weaponformatter(bot, weapon)
-        bot.say(weapon)
         if weapon != '':
             weapon = str(" " + weapon)
 
@@ -3471,6 +3469,7 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
     if losername == winnername:
         losername = "themself"
 
+    bot.say(weapon)
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winnername != losername:
