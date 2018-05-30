@@ -141,6 +141,9 @@ roulette_revolver_list = ['.357 Magnum','Colt PeaceMaker','Colt Repeater','Colt 
 timeout_assault = 1800 ## Time Between Full Channel Assaults
 assault_results = ['wins','losses','potionswon','potionslost','kills','deaths','damagetaken','damagedealt','levelups','xp']
 
+## Quest
+timeout_quest = 1800 ## Time Between Full Channel Quests
+
 ## Colosseum
 timeout_colosseum = 1800 ## Time Between colosseum events
 
