@@ -655,7 +655,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     tierscaling = tierratio_level(bot)
 
     ## Monster
-    if 'duelsmonster' in targetarray:
+    if 'duelsmonster' in targetarray or maindueler == 'duelsmonster':
         duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
         set_database_value(bot, duelrecorduser, 'last_monster', duelsmonstername)
         if typeofduel != 'quest':
