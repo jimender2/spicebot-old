@@ -27,21 +27,22 @@ def execute_main(bot, trigger):
         page = requests.get(url,headers = None)
         if page.status_code == 200:
             dispmsg = []
-            upornot = isupparse(url)
+            upornot = isupparse(bot,url)
             if upornot:
                 bot.say("Looks like " + checksite + " appears to be online.")
             else:
                 bot.say("Looks like " + checksite + " appears to be offline.")
 
-def isupparse(url):
+def isupparse(bot,url):
     upornot = 0
-    tree = gettree(url)
+    tree = gettree(bot,url)
     isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
+    bot.say(str(isuptext))
     if str(isuptext) == "It's you!":
         upornot = 1
     return upornot
 
-def gettree(url):
+def gettree(bot,url):
     page = requests.get(url,headers = None)
     tree= html.fromstring(page.content)
     return tree
