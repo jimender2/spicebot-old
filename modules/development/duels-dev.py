@@ -59,7 +59,7 @@ commandarray_tier_unlocks_4 = ['leaderboard', 'warroom']
 commandarray_tier_unlocks_5 = ['stats', 'loot','health']
 commandarray_tier_unlocks_6 = ['magic', 'armor']
 commandarray_tier_unlocks_7 = ['assault']
-commandarray_tier_unlocks_8 = ['roulette']
+commandarray_tier_unlocks_8 = ['roulette','monster']
 commandarray_tier_unlocks_9 = ['random']
 commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
@@ -80,6 +80,7 @@ command_stamina_combat = 5
 command_stamina_deathblow = 1
 command_stamina_harakiri = 1
 command_stamina_magic = 2
+command_stamina_monster = 10
 command_stamina_assault = 10
 command_stamina_roulette = 2
 command_stamina_random = 3
@@ -687,8 +688,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetname = "themself"
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
+            targetname = target
+            targetpepperstart = get_pepper(bot, target)
+        elif target == 'duelsmonster':
             targetname = get_trigger_arg(bot, monstersarray, 'random')
-            targetname = str("An Unexpected "+targetname)
+            targetnamemonster = targetname
+            targetname = str("An Unexpected lower level "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -726,8 +731,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, maindueler, 'assault_wins', 1)
             adjust_database_value(bot, target, 'assault_losses', 1)
         else:
-            adjust_database_value(bot, maindueler, 'assault_losses', 1)
-            adjust_database_value(bot, target, 'assault_wins', 1)
+            if winner != 'duelsmonster' or winner != bot.nick:
+                adjust_database_value(bot, maindueler, 'assault_losses', 1)
+                adjust_database_value(bot, target, 'assault_wins', 1)
 
         ## Classes
         classwinner = get_database_value(bot, winner, 'class_setting') or 'notclassy'
@@ -751,7 +757,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             elif weapon == 'target' or weapon == target:
                 weapon = weaponofchoice(bot, target)
                 weapon = str(target + "'s " + weapon)
-        elif winner == bot.nick:
+        elif winner == bot.nick or winner == 'duelsmonster':
             weapon = ''
         else:
             weapon = weaponofchoice(bot, winner)
@@ -770,14 +776,17 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        if classloser == 'rogue':
+        if classloser == 'rogue' and loser != 'duelsmonster':
             if winner == loser or winner == bot.nick:
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
             else:
+                if loser != 'duelsmonster':
                 damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
                 damage = int(damage)
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+        elif loser == 'duelsmonster':
+            damagetext = str(winner + " slays the " + targetnamemonster + " with " + weapon + ".")
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
@@ -791,7 +800,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 adjust_database_value(bot, winner, part, splitdamage)
 
         ## Berserker Rage
-        if classwinner == 'barbarian' and winner != loser:
+        if classwinner == 'barbarian' and winner != loser and loser != 'duelsmonster':
             rageodds = randint(1, duel_advantage_barbarian_rage_chance)
             if rageodds == 1:
                 extradamage = randint(1, duel_advantage_barbarian_rage_max)
@@ -801,7 +810,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Paladin deflect
         persontotakedamage = loser
-        if classloser == 'paladin' and damage > 0 and winner != loser:
+        if classloser == 'paladin' and damage > 0 and winner != loser and loser != 'duelsmonster':
             deflectodds = randint(1, duel_advantage_paladin_deflect_chance)
             if deflectodds == 1:
                 persontotakedamage = winner
@@ -842,7 +851,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damage = 0
 
         ## Damage Resist
-        if damage > 0:
+        if damage > 0 and loser != 'duelsmonster':
             damage, damagetextarray = damage_resistance(bot, loser, damage, bodypart)
             for x in damagetextarray:
                 combattextarraycomplete.append(x)
@@ -878,7 +887,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
 
         ## Knight Retaliation
-        if classloser == 'knight' and winner != loser:
+        if classloser == 'knight' and winner != loser and loser != 'duelsmonster':
             retaliateodds = randint(1, duel_advantage_knight_retaliate_chance)
             if retaliateodds == 1:
                 ## Weapon
@@ -936,21 +945,22 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Barbarians get a 50/50 chance of getting loot even if they lose
                 classloser = get_database_value(bot, loser, 'class_setting') or 'notclassy'
                 barbarianstealroll = randint(0, 100)
-                if classloser == 'barbarian' and barbarianstealroll >= 50:
+                if classloser == 'barbarian' and barbarianstealroll >= 50 and loser != 'duelsmonster':
                     combattextarraycomplete.append(loser + " steals the " + str(loot))
                     lootwinner = loser
-                elif winner == target:
+                elif winner == target and loser != 'duelsmonster':
                     combattextarraycomplete.append(winner + " gains the " + str(loot))
                     lootwinner = winner
                 else:
                     lootwinner = winner
-                adjust_database_value(bot, lootwinner, loot, 1)
-                if lootwinner == maindueler:
-                    adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
-                    adjust_database_value(bot, target, 'assault_potionslost', 1)
-                else:
-                    adjust_database_value(bot, maindueler, 'assault_potionslost', 1)
-                    adjust_database_value(bot, target, 'assault_potionswon', 1)
+                if lootwinner != 'duelsmonster':
+                    adjust_database_value(bot, lootwinner, loot, 1)
+                    if lootwinner == maindueler:
+                        adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
+                        adjust_database_value(bot, target, 'assault_potionslost', 1)
+                    else:
+                        adjust_database_value(bot, maindueler, 'assault_potionslost', 1)
+                        adjust_database_value(bot, target, 'assault_potionswon', 1)
 
         ## Update XP points
         if classwinner == 'ranger':
@@ -962,20 +972,21 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         else:
             XPearnedloser = xp_loser
         if maindueler != target and target != bot.nick:
-            winnertier = get_database_value(bot, winner, 'tier')
-            losertier = get_database_value(bot, loser, 'tier')
-            if winnertier < currenttierstart:
-                XPearnedwinner = XPearnedwinner * tierscaling
-            if losertier < currenttierstart:
-                XPearnedloser = XPearnedloser * tierscaling
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
-            if winner == maindueler:
-                adjust_database_value(bot, maindueler, 'assault_xp', XPearnedwinner)
-                adjust_database_value(bot, target, 'assault_xp', XPearnedloser)
-            else:
-                adjust_database_value(bot, maindueler, 'assault_xp', XPearnedloser)
-                adjust_database_value(bot, target, 'assault_xp', XPearnedwinner)
+            if winner != 'duelsmonster' and loser != 'duelsmonster':
+                winnertier = get_database_value(bot, winner, 'tier')
+                losertier = get_database_value(bot, loser, 'tier')
+                if winnertier < currenttierstart:
+                    XPearnedwinner = XPearnedwinner * tierscaling
+                if losertier < currenttierstart:
+                    XPearnedloser = XPearnedloser * tierscaling
+                adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+                adjust_database_value(bot, loser, 'xp', XPearnedloser)
+                if winner == maindueler:
+                    adjust_database_value(bot, maindueler, 'assault_xp', XPearnedwinner)
+                    adjust_database_value(bot, target, 'assault_xp', XPearnedloser)
+                else:
+                    adjust_database_value(bot, maindueler, 'assault_xp', XPearnedloser)
+                    adjust_database_value(bot, target, 'assault_xp', XPearnedwinner)
 
         ## Streaks Text
         if maindueler != target:
@@ -985,11 +996,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## new pepper level?
         mainduelerpeppernow = get_pepper(bot, maindueler)
-        if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
+        if mainduelerpeppernow != mainduelerpepperstart and maindueler != target and maindueler != 'duelsmonster':
             combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
             adjust_database_value(bot, maindueler, 'assault_levelups', 1)
         targetpeppernow = get_pepper(bot, target)
-        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
+        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick and target != 'duelsmonster':
             adjust_database_value(bot, target, 'assault_levelups', 1)
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
 
@@ -1019,7 +1030,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
         ## Random Bonus
-        if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser:
+        if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser and winner != 'duelsmonster':
             adjust_database_value(bot, winner, 'coin', random_payout)
             combattextarraycomplete.append(maindueler + " won the random attack payout!")
 
@@ -1030,7 +1041,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [winner,loser], combattextarraycomplete)
 
         ## deathblow text
-        if typeofduel == 'target' and deathblowarray != []:
+        if typeofduel == 'target' and deathblowarray != [] and 'duelsmonster' not in deathblowarray:
             onscreentext(bot, [inchannel], deathblowarray)
 
         ## Pause Between duels
@@ -1832,6 +1843,18 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    if instigator not in canduelarray:
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+        osd_notice(bot, instigator, validtargetmsg)
+        return
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    statreset(bot, target)
+    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
+    refreshduelsmonster(bot)
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+    
+    
 ## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
@@ -1851,9 +1874,12 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     if bot.nick not in canduelarray:
         canduelarray.append(bot.nick)
+    canduelarray.append('duelsmonster')
     target = get_trigger_arg(bot, canduelarray, 'random')
     statreset(bot, target)
     duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random', devenabledchannels)
+    if target == 'duelsmonster':
+        refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter
@@ -3625,9 +3651,9 @@ def deathblowcheck(bot, instigator):
 
 ## Build Duel Name Text
 def duel_names(bot, nick, channel):
-    if nick == bot.nick:
+    if nick == 'duelsmonster':
         nickname = get_trigger_arg(bot, monstersarray, 'random')
-        nickname = str("An Unexpected "+nickname)
+        nickname = str("An Unexpected lower level "+nickname)
         return nickname
     nickname = ''
     for q in duel_nick_order:
@@ -3919,6 +3945,11 @@ def refreshbot(bot):
     duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
         set_database_value(bot, bot.nick, x, None)
+
+def refreshduelsmonster(bot):
+    duelstatsadminarray = duels_valid_stats('duelsmonster')
+    for x in duelstatsadminarray:
+        set_database_value(bot, 'duelsmonster', x, None)
 
 ######################
 ## Winner Selection ##
