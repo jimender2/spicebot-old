@@ -661,8 +661,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             duelmonsterlevel = str("A lower level "+duelsmonstername)
         else:
             duelmonsterlevel = str("A high level "+duelsmonstername)
-        targetnamemonster = duelsmonstername
-        targetnamemonstertext = str("The " + duelsmonstername)
+        namemonster = duelsmonstername
+        namemonstertext = str("The " + duelsmonstername)
         
     ## Targetarray Start
     targetarraytotal = len(targetarray)
@@ -677,7 +677,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         deathblowarray = []
 
         ## Assault does not touch lastfought
-        if typeofduel == 'assault':
+        if typeofduel == 'assault' or typeofduel == 'quest':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
 
         ## Death Loop Start
@@ -689,20 +689,20 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         #set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
 
         ## Display Naming
-        mainduelername = duel_names(bot, maindueler, inchannel)
+        if maindueler != 'duelsmonster':
+            mainduelername = duel_names(bot, maindueler, inchannel)
+        else:
+            mainduelername = duelmonsterlevel
         mainduelerpepperstart = get_pepper(bot, maindueler)
         if target == maindueler:
             targetname = "themself"
-            targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             targetname = target
-            targetpepperstart = get_pepper(bot, target)
         elif target == 'duelsmonster':
             targetname = duelmonsterlevel
-            targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
-            targetpepperstart = get_pepper(bot, target)
+        targetpepperstart = get_pepper(bot, target)
 
         ## Announce Combat
         combattextarraycomplete.append(mainduelername + " versus " + targetname)
@@ -791,11 +791,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         elif loser == 'duelsmonster':
             damage = 0
-            damagetext = str(winner + " slays the " + targetnamemonster +  weapon + ".")
+            damagetext = str(winner + " slays the " + namemonster +  weapon + ".")
         elif winner == 'duelsmonster':
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
-            damagetext = duels_damage_text(bot, damage, targetnamemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+            damagetext = duels_damage_text(bot, damage, namemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
@@ -1044,10 +1044,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             combattextarraycomplete.append(maindueler + " won the random attack payout of " + str(random_payout)+ " coin!")
 
         ## On Screen Text
-        if typeofduel != 'assault' and typeofduel != 'colosseum':
-            onscreentext(bot, [inchannel], combattextarraycomplete)
-        else:
+        if typeofduel == 'assault' and typeofduel == 'colosseum':
             onscreentext(bot, [winner,loser], combattextarraycomplete)
+        elif typeofduel == 'quest':
+            onscreentext(bot, [target], combattextarraycomplete)
+        else:
+            onscreentext(bot, [inchannel], combattextarraycomplete)
+            
 
         ## deathblow text
         if typeofduel == 'target' and deathblowarray != [] and 'duelsmonster' not in deathblowarray:
@@ -1059,7 +1062,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
         ## Update last fought
-        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
+        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum' and typeofduel != 'quest':
             if maindueler == 'duelsmonster':
                 set_database_value(bot, target, 'lastfought', mainduelername)
             else:
@@ -1070,7 +1073,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 set_database_value(bot, maindueler, 'lastfought', target)
             
         ## End Of assault
-        if typeofduel == 'assault':
+        if typeofduel == 'assault' or typeofduel == 'quest':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
 
 #################
