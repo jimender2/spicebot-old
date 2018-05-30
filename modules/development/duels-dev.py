@@ -757,7 +757,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             weapon = ''
         else:
             weapon = weaponofchoice(bot, winner)
+        bot.say(weapon)
         weapon = weaponformatter(bot, weapon)
+        bot.say(weapon)
         if weapon != '':
             weapon = str(" " + weapon)
 
@@ -1864,8 +1866,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
-    
-    
+        
 ## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
@@ -3902,6 +3903,8 @@ def weaponformatter(bot, weapon):
             weapon = str("with " + weapon + "s")
     elif weapon.lower().startswith('with'):
         weapon = str(weapon)
+    elif weapon.lower().startswith(' with'):
+        weapon = str(weapon).strip()
     else:
         weapon = str('with a ' + weapon)
     return weapon
