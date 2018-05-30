@@ -3972,7 +3972,7 @@ def monsterstats(bot, currentduelplayersarray):
             playernumber = get_database_value(bot, player, x)
             currentstatarray.append(playernumber)
         playerstatarrayaverage = sum(currentstatarray) / float(len(currentstatarray))
-        bot.say(str(playerstatarrayaverage))
+        bot.say(str(x) + " stat = "+str(playerstatarrayaverage))
         set_database_value(bot, 'duelsmonster', x, playerstatarrayaverage)
         
     
