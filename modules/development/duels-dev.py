@@ -1002,7 +1002,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if maindueler != target:
             if winner == 'duelsmonster':
                 streaktext = get_streaktext(bot, namemonstertext, loser, winner_loss_streak, loser_win_streak) or ''
-            elif loser == 'duelsmonster'
+            elif loser == 'duelsmonster':
                 streaktext = get_streaktext(bot, winner, namemonstertext, winner_loss_streak, loser_win_streak) or ''
             else:
                 streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
