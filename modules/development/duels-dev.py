@@ -657,6 +657,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     ## Monster
     if 'duelsmonster' in targetarray:
         duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
+        set_database_value(bot, duelrecorduser, 'last_monster', duelsmonstername)
         if typeofduel != 'quest':
             duelmonsterlevel = str("A lower level "+duelsmonstername)
         else:
@@ -1841,11 +1842,55 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'quest', devenabledchannels)
+    osd_notice(bot, instigator, "It looks like the Full Channel Quest has completed.")
+    assaultstatsarray = []
+    monstername = get_database_value(bot, 'duelsmonster', "last_monster")
+    assaultstatsarray.append(monstername + "'s Full Channel Quest results:")
+    for astat in assault_results:
+        astateval = get_database_value(bot, duelrecorduser, "assault_" + astat) or 0
+        if astateval:
+            astatstr = str(str(astat) + " = " + str(astateval))
+            assaultstatsarray.append(astatstr)
+            reset_database_value(bot, 'duelsmonster', "assault_" + astat)
+    onscreentext(bot, [inchannel], assaultstatsarray)
+    for player in canduelarray:
+        for astat in assault_results:
+            reset_database_value(bot, player, "assault_" + astat)
+
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+
+    ## usage counter ## TODO use len(canduelarray)
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_combat', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
+
+## Quest
+def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
+    if not executedueling:
+        osd_notice(bot, instigator, executeduelingmsg)
+        return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            osd_notice(bot, instigator, "Duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.")
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    displaymessage = get_trigger_arg(bot, canduelarray, "list")
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
     duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
-    maindueler = instigator
+    maindueler = 'duelsmonster'
     osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
-    assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
+    assaultstatsarray.append("Full Channel Quest results:")
     for astat in assault_results:
         astateval = get_database_value(bot, instigator, "assault_" + astat) or 0
         if astateval:
@@ -1860,15 +1905,6 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
-    ## usage counter ## TODO use len(canduelarray)
-    adjust_database_value(bot, instigator, 'usage_total', 1)
-    adjust_database_value(bot, instigator, 'usage_combat', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
-
-## Quest
-def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
-    bot.say("wip")
     
 ## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
