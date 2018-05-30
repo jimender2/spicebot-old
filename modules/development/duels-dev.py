@@ -781,7 +781,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
             else:
-                if loser != 'duelsmonster':
                 damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
                 damage = int(damage)
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
