@@ -688,7 +688,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             #targetname = target
-            targetname = get_trigger_arg(bot, monsterslist, 'random')
+            targetname = get_trigger_arg(bot, monstersarray, 'random')
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -3626,7 +3626,7 @@ def deathblowcheck(bot, instigator):
 ## Build Duel Name Text
 def duel_names(bot, nick, channel):
     if nick == bot.nick:
-        nickname = get_trigger_arg(bot, monsterslist, 'random')
+        nickname = get_trigger_arg(bot, monstersarray, 'random')
         nickname = str("An Unexpected "+nickname)
         return nickname
     nickname = ''
