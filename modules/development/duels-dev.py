@@ -66,7 +66,7 @@ commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
 commandarray_tier_unlocks_12 = ['mayhem']
 commandarray_tier_unlocks_13 = ['hungergames']
-commandarray_tier_unlocks_14 = []
+commandarray_tier_unlocks_14 = ['quest']
 commandarray_tier_unlocks_15 = []
 
 ## Tiers, XP, Pepper levels
@@ -88,6 +88,7 @@ command_stamina_random = 3
 command_stamina_colosseum = 20
 command_stamina_mayhem = 25
 command_stamina_hungergames = 20
+command_stamina_quest = 30
 
 ## more stuff
 bodyparts_required = ['torso','head']
@@ -653,6 +654,16 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     tierunlockweaponslocker = tier_command(bot, 'weaponslocker_complete')
     tierscaling = tierratio_level(bot)
 
+    ## Monster
+    if 'duelsmonster' in targetarray:
+        duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
+        if typeofduel == 'quest':
+            duelmonsterlevel = str("A lower level "+duelsmonstername)
+        else:
+            duelmonsterlevel = str("A high level "+duelsmonstername)
+        targetnamemonster = duelsmonstername
+        targetnamemonstertext = str("The " + duelsmonstername)
+        
     ## Targetarray Start
     targetarraytotal = len(targetarray)
     for target in targetarray:
@@ -687,10 +698,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetname = target
             targetpepperstart = get_pepper(bot, target)
         elif target == 'duelsmonster':
-            targetname = get_trigger_arg(bot, monstersarray, 'random')
-            targetnamemonster = targetname
-            targetnamemonstertext = str("The " + targetnamemonster)
-            targetname = str("A lower level "+targetname)
+            targetname = duelmonsterlevel
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -1033,7 +1041,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Random Bonus
         if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser and winner != 'duelsmonster':
             adjust_database_value(bot, winner, 'coin', random_payout)
-            combattextarraycomplete.append(maindueler + " won the random attack payout!")
+            combattextarraycomplete.append(maindueler + " won the random attack payout of " + str(random_payout)+ " coin!")
 
         ## On Screen Text
         if typeofduel != 'assault' and typeofduel != 'colosseum':
@@ -1855,6 +1863,10 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+## Quest
+def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    bot.say("wip")
+    
 ## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
