@@ -59,7 +59,7 @@ commandarray_tier_unlocks_4 = ['leaderboard', 'warroom']
 commandarray_tier_unlocks_5 = ['stats', 'loot','health']
 commandarray_tier_unlocks_6 = ['magic', 'armor']
 commandarray_tier_unlocks_7 = ['assault']
-commandarray_tier_unlocks_8 = ['roulette']
+commandarray_tier_unlocks_8 = ['roulette','monster']
 commandarray_tier_unlocks_9 = ['random']
 commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
@@ -80,6 +80,7 @@ command_stamina_combat = 5
 command_stamina_deathblow = 1
 command_stamina_harakiri = 1
 command_stamina_magic = 2
+command_stamina_monster = 10
 command_stamina_assault = 10
 command_stamina_roulette = 2
 command_stamina_random = 3
@@ -265,6 +266,54 @@ duelrecorduser = 'duelrecorduser'
 stat_admin_commands = ['set','reset','view'] ## valid admin subcommands
 stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','losses','winlossratio','respawns','kills','lastfought','bounty','timeout_timeout']
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
+
+## Monster List
+monstersarray = [
+"Aboleth","Beholder","Blue slaad","Chuul","Cloaker","Death kiss","Death slaad","Elder brain","Flumph","Gauth","Gazer","Gibbering mouther","Gray slaad","Green slaad","Grell","Intellect devourer",
+"Mind flayer","Mind flayer arcanist","Mindwitness","Morkoth","Neogi","Neogi hatchling","Neogi master","Neothelid","Nothic","Otyugh","Red slaad","Slaad tadpole","Spectator","Ulitharid","Allosaurus",
+"Ankylosaurus","Ape","Aurochs","Axe beak","Baboon","Badger","Bat","Black bear","Blood hawk","Boar","Brontosaurus","Brown bear","Camel","Cat","Constrictor snake","Cow","Crab","Cranium rat","Crocodile",
+"Deer","Deinonychus","Dimetrodon","Dire wolf","Dolphin","Draft horse","Eagle","Elephant","Elk","Flying snake","Frog","Giant ape","Giant badger","Giant bat","Giant boar","Giant centipede",
+"Giant constrictor snake","Giant crab","Giant crocodile","Giant eagle","Giant elk","Giant fire beetle","Giant frog","Giant goat","Giant hyena","Giant lizard","Giant octopus","Giant owl",
+"Giant poisonous snake","Giant rat","Giant scorpion","Giant sea horse","Giant shark","Giant spider","Giant toad","Giant vulture","Giant wasp","Giant weasel","Giant wolf spider","Goat","Hadrosaurus",
+"Hawk","Hunter shark","Hyena","Jackal","Killer whale","Lion","Lizard","Mammoth","Mastiff","Mule","Octopus","Owl","Panther","Plesiosaurus","Poisonous snake","Polar bear","Pony","Pteranodon",
+"Quetzalcoatlus","Quipper","Rat","Raven","Reef shark","Rhinoceros","Riding horse","Saber-toothed tiger","Scorpion","Sea horse","Spider","Stegosaurus","Stirge","Swarm of bats","Swarm of cranium rats",
+"Swarm of insects","Swarm of poisonous snakes","Swarm of quippers","Swarm of rats","Swarm of ravens","Swarm of rot grubs","Tiger","Triceratops","Tyrannosaurus rex","Velociraptor","Vulture","Warhorse",
+"Weasel","Wolf","Couatl","Deva","Empyrean","Ki-rin","Pegasus","Planetar","Solar","Unicorn","Animated armor","Clay golem","Duodrone","Flesh golem","Flying sword","Helmed horror","Homunculus","Iron golem",
+"Monodrone","Pentadrone","Quadrone","Rug of smothering","Scarecrow","Shield guardian","Stone golem","Tridrone","Adult black dragon","Adult blue dragon","Adult brass dragon","Adult bronze dragon",
+"Adult copper dragon","Adult gold dragon","Adult green dragon","Adult red dragon","Adult silver dragon","Adult white dragon","Ancient black dragon","Ancient blue dragon","Ancient brass dragon",
+"Ancient bronze dragon","Ancient copper dragon","Ancient gold dragon","Ancient green dragon","Ancient red dragon","Ancient silver dragon","Ancient white dragon","Black dragon wyrmling",
+"Blue dragon wyrmling","Brass dragon wyrmling","Bronze dragon wyrmling","Copper dragon wyrmling","Dragon turtle","Faerie dragon","Faerie dragon","Gold dragon wyrmling","Green dragon wyrmling","Guard drake",
+"Pseudodragon","Red dragon wyrmling","Silver dragon wyrmling","White dragon wyrmling","Wyvern","Young black dragon","Young blue dragon","Young brass dragon","Young bronze dragon","Young copper dragon",
+"Young gold dragon","Young green dragon","Young red dragon","Young red shadow dragon","Young silver dragon","Young white dragon","Air elemental","Azer","Dao","Djinni","Dust mephit","Earth elemental",
+"Efreeti","Fire elemental","Fire snake","Flail snail","Galeb duhr","Gargoyle","Ice mephit","Invisible stalker","Magma mephit","Magmin","Marid","Mud mephit","Salamander","Smoke mephit","Steam mephit",
+"Water elemental","Water weird","Xorn","Annis hag","Bheur hag","Blink dog","Boggle","Darkling","Darkling elder","Dryad","Green hag","Green hag","Korred","Meenlock","Pixie","Quickling","Redcap","Satyr",
+"Sea hag","Sea hag","Sprite","Yeth hound","Arcanaloth","Babau","Balor","Barbed devil","Barghest","Barlgura","Bearded devil","Bone devil","Cambion","Chain devil","Chasme","Devourer","Draegloth","Dretch",
+"Erinyes","Glabrezu","Gnoll fang of Yeenoghu","Goristro","Hell hound","Hezrou","Horned devil","Ice devil","Imp","Incubus","Lemure","Manes","Marilith","Maw demon","Mezzoloth","Nalfeshnee","Night hag",
+"Night hag","Nightmare","Nycaloth","Pit fiend","Quasit","Rakshasa","Shadow demon","Shoosuva","Spined devil","Succubus","Tanarukk","Ultroloth","Vargouille","Vrock","Yochlol","Cloud giant",
+"Cloud giant smiling one","Cyclops","Ettin","Fire giant","Fire giant dreadnought","Fomorian","Frost giant","Frost giant everlasting one","Half-ogre","Hill giant","Mouth of Grolantor","Ogre","Oni",
+"Stone giant","Stone giant dreamwalker","Storm giant","Storm giant quintessent","Troll","Aarakocra","Abjurer","Acolyte","Apprentice wizard","Archdruid","Archer","Archmage","Assassin","Bandit",
+"Bandit captain","Bard","Berserker","Blackguard","Bugbear","Bugbear chief","Bullywug","Champion","Commoner","Conjurer","Cult fanatic","Cultist","Deep gnome","Deep scion","Diviner","Drow",
+"Drow elite warrior","Drow mage","Drow priestess of Lolth","Druid","Duergar","Enchanter","Evoker","Firenewt","Firenewt warlock of Imix","Flind","Githyanki knight","Githyanki warrior",
+"Githzerai monk","Githzerai zerth","Gladiator","Gnoll","Gnoll flesh gnawer","Gnoll hunter","Gnoll pack lord","Goblin","Goblin boss","Grimlock","Grung","Grung elite warrior","Grung wildling","Guard",
+"Half-red dragon veteran","Hobgoblin","Hobgoblin captain","Hobgoblin devastator","Hobgoblin Iron Shadow","Hobgoblin warlord","Illusionist","Jackalwere","Kenku","Knight","Kobold","Kobold dragonshield",
+"Kobold inventor","Kobold scale sorcerer","Kraken priest","Kuo-toa","Kuo-toa archpriest","Kuo-toa monitor","Kuo-toa whip","Lizard king/queen","Lizardfolk","Lizardfolk shaman","Mage","Martial arts adept",
+"Master thief","Merfolk","Necromancer","Nilbog","Noble","Orc","Orc Blade of Ilneval","Orc Claw of Luthic","Orc eye of Gruumsh","Orc Hand of Yurtrus","Orc Nurtured One of Yurtrus","Orc Red Fang of Shargaas",
+"Orc war chief","Orog","Priest","Quaggoth","Quaggoth thonot","Sahuagin","Sahuagin baron","Sahuagin priestess","Sea spawn","Scout","Spy","Swashbuckler","Thri-kreen","Thug","Transmuter","Tribal warrior",
+"Troglodyte","Veteran","War priest","Warlock of the archfey","Warlock of the fiend","Warlock of the Great Old One","Warlord","Werebear","Wereboar","Wererat","Weretiger","Werewolf","Winged kobold","Xvart",
+"Xvart warlock of Raxivort","Yuan-ti broodguard","Yuan-ti pureblood","Abominable yeti","Androsphinx","Ankheg","Banderhobb","Basilisk","Behir","Bulette","Carrion crawler","Catoblepas","Cave fisher",
+"Centaur","Chimera","Chitine","Choldrith","Cockatrice","Darkmantle","Death dog","Displacer beast","Doppelganger","Drider","Ettercap","Froghemoth","Giant strider","Girallon","Gorgon","Grick","Grick alpha",
+"Griffon","Guardian naga","Gynosphinx","Harpy","Hippogriff","Hook horror","Hydra","Kraken","Lamia","Leucrotta","Manticore","Medusa","Merrow","Mimic","Minotaur","Owlbear","Peryton","Phase spider","Piercer",
+"Purple worm","Remorhaz","Roc","Roper","Rust monster","Shadow mastiff","Spirit naga","Tarrasque","Tlincalli","Trapper","Umber hulk","Winter wolf","Worg","Yeti","Young remorhaz","Yuan-ti abomination",
+"Yuan-ti anathema","Yuan-ti malison","Yuan-ti mind whisperer","Yuan-ti nightmare speaker","Yuan-ti pit master","Black pudding","Gelatinous cube","Gray ooze","Ochre jelly","Slithering tracker",
+"Awakened shrub","Awakened tree","Gas spore","Myconid adult","Myconid sovereign","Myconid sprout","Needle blight","Quaggoth spore servant","Shambling mound","Shrieker","Thorny","Treant","Twig blight",
+"Vegepygmy","Vegepygmy chief","Vine blight","Violet fungus","Wood woad","Alhoon","Adult blue dracolich","Banshee","Beholder zombie","Bodak","Bone naga","Crawling claw","Death knight","Death tyrant",
+"Demilich","Flameskull","Ghast","Ghost","Ghoul","Gnoll witherling","Lich","Mind flayer lich","Minotaur skeleton","Mummy","Mummy lord","Ogre zombie","Poltergeist","Revenant","Shadow","Skeleton",
+"Spawn of Kyuss","Specter","Vampire","Vampire","Awakened shrub","Baboon","Badger","Bat","Cat","Commoner","Crab","Cranium rat","Crawling claw","Deer","Eagle","Frog","Giant fire beetle","Goat","Hawk",
+"Homunculus","Hyena","Jackal","Lemure","Lizard","Myconid sprout","Octopus","Owl","Quipper","Rat","Raven","Scorpion","Sea horse","Shrieker","Spider","Vulture","Weasel","Blood hawk","Boggle","Camel",
+"Cultist","Dolphin","Flumph","Flying snake","Giant crab","Giant rat","Giant weasel","Guard","Kobold","Manes","Mastiff","Merfolk","Monodrone","Mule","Neogi hatchling","Noble","Poisonous snake","Pony",
+"Slaad tadpole","Stirge","Tribal warrior","Twig blight","Xvart","Pseudodragon","Pteranodon","Riding horse","Skeleton","Smoke mephit","Sprite","Steam mephit","Swarm of bats","Swarm of rats","Swarm of ravens",
+"Troglodyte","Vegepygmy","Velociraptor","Violet fungus","Winged kobold","Wolf","Zombie","Vine blight","Warhorse","Warhorse skeleton","Worg"
+]
 
 
 ########################
@@ -615,11 +664,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         texttargetarray = []
         deathblowarray = []
 
-        ## Update last fought
-        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
-            set_database_value(bot, maindueler, 'lastfought', target)
-            set_database_value(bot, target, 'lastfought', maindueler)
-
         ## Assault does not touch lastfought
         if typeofduel == 'assault':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
@@ -640,6 +684,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             targetname = target
+            targetpepperstart = get_pepper(bot, target)
+        elif target == 'duelsmonster':
+            targetname = get_trigger_arg(bot, monstersarray, 'random')
+            targetnamemonster = targetname
+            targetnamemonstertext = str("The " + targetnamemonster)
+            targetname = str("A lower level "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -677,8 +727,9 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, maindueler, 'assault_wins', 1)
             adjust_database_value(bot, target, 'assault_losses', 1)
         else:
-            adjust_database_value(bot, maindueler, 'assault_losses', 1)
-            adjust_database_value(bot, target, 'assault_wins', 1)
+            if winner != 'duelsmonster' or winner != bot.nick:
+                adjust_database_value(bot, maindueler, 'assault_losses', 1)
+                adjust_database_value(bot, target, 'assault_wins', 1)
 
         ## Classes
         classwinner = get_database_value(bot, winner, 'class_setting') or 'notclassy'
@@ -702,7 +753,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             elif weapon == 'target' or weapon == target:
                 weapon = weaponofchoice(bot, target)
                 weapon = str(target + "'s " + weapon)
-        elif winner == bot.nick:
+        elif winner == bot.nick or winner == 'duelsmonster':
             weapon = ''
         else:
             weapon = weaponofchoice(bot, winner)
@@ -721,7 +772,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        if classloser == 'rogue':
+        if classloser == 'rogue' and loser != 'duelsmonster' and winner != 'duelsmonster':
             if winner == loser or winner == bot.nick:
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
@@ -729,6 +780,13 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
                 damage = int(damage)
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+        elif loser == 'duelsmonster':
+            damage = 0
+            damagetext = str(winner + " slays the " + targetnamemonster + " with " + weapon + ".")
+        elif winner == 'duelsmonster':
+            damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
+            damage = int(damage)
+            damagetext = duels_damage_text(bot, damage, targetnamemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
@@ -742,7 +800,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 adjust_database_value(bot, winner, part, splitdamage)
 
         ## Berserker Rage
-        if classwinner == 'barbarian' and winner != loser:
+        if classwinner == 'barbarian' and winner != loser and loser != 'duelsmonster':
             rageodds = randint(1, duel_advantage_barbarian_rage_chance)
             if rageodds == 1:
                 extradamage = randint(1, duel_advantage_barbarian_rage_max)
@@ -752,7 +810,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Paladin deflect
         persontotakedamage = loser
-        if classloser == 'paladin' and damage > 0 and winner != loser:
+        if classloser == 'paladin' and damage > 0 and winner != loser and loser != 'duelsmonster':
             deflectodds = randint(1, duel_advantage_paladin_deflect_chance)
             if deflectodds == 1:
                 persontotakedamage = winner
@@ -793,7 +851,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damage = 0
 
         ## Damage Resist
-        if damage > 0:
+        if damage > 0 and loser != 'duelsmonster':
             damage, damagetextarray = damage_resistance(bot, loser, damage, bodypart)
             for x in damagetextarray:
                 combattextarraycomplete.append(x)
@@ -829,7 +887,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                         combattextarraycomplete.append(loser + "'s " + bodypartname + " has become crippled!")
 
         ## Knight Retaliation
-        if classloser == 'knight' and winner != loser:
+        if classloser == 'knight' and winner != loser and loser != 'duelsmonster':
             retaliateodds = randint(1, duel_advantage_knight_retaliate_chance)
             if retaliateodds == 1:
                 ## Weapon
@@ -887,21 +945,22 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 ## Barbarians get a 50/50 chance of getting loot even if they lose
                 classloser = get_database_value(bot, loser, 'class_setting') or 'notclassy'
                 barbarianstealroll = randint(0, 100)
-                if classloser == 'barbarian' and barbarianstealroll >= 50:
+                if classloser == 'barbarian' and barbarianstealroll >= 50 and loser != 'duelsmonster':
                     combattextarraycomplete.append(loser + " steals the " + str(loot))
                     lootwinner = loser
-                elif winner == target:
+                elif winner == target and loser != 'duelsmonster':
                     combattextarraycomplete.append(winner + " gains the " + str(loot))
                     lootwinner = winner
                 else:
                     lootwinner = winner
-                adjust_database_value(bot, lootwinner, loot, 1)
-                if lootwinner == maindueler:
-                    adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
-                    adjust_database_value(bot, target, 'assault_potionslost', 1)
-                else:
-                    adjust_database_value(bot, maindueler, 'assault_potionslost', 1)
-                    adjust_database_value(bot, target, 'assault_potionswon', 1)
+                if lootwinner != 'duelsmonster':
+                    adjust_database_value(bot, lootwinner, loot, 1)
+                    if lootwinner == maindueler:
+                        adjust_database_value(bot, maindueler, 'assault_potionswon', 1)
+                        adjust_database_value(bot, target, 'assault_potionslost', 1)
+                    else:
+                        adjust_database_value(bot, maindueler, 'assault_potionslost', 1)
+                        adjust_database_value(bot, target, 'assault_potionswon', 1)
 
         ## Update XP points
         if classwinner == 'ranger':
@@ -913,20 +972,21 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         else:
             XPearnedloser = xp_loser
         if maindueler != target and target != bot.nick:
-            winnertier = get_database_value(bot, winner, 'tier')
-            losertier = get_database_value(bot, loser, 'tier')
-            if winnertier < currenttierstart:
-                XPearnedwinner = XPearnedwinner * tierscaling
-            if losertier < currenttierstart:
-                XPearnedloser = XPearnedloser * tierscaling
-            adjust_database_value(bot, winner, 'xp', XPearnedwinner)
-            adjust_database_value(bot, loser, 'xp', XPearnedloser)
-            if winner == maindueler:
-                adjust_database_value(bot, maindueler, 'assault_xp', XPearnedwinner)
-                adjust_database_value(bot, target, 'assault_xp', XPearnedloser)
-            else:
-                adjust_database_value(bot, maindueler, 'assault_xp', XPearnedloser)
-                adjust_database_value(bot, target, 'assault_xp', XPearnedwinner)
+            if winner != 'duelsmonster' and loser != 'duelsmonster':
+                winnertier = get_database_value(bot, winner, 'tier')
+                losertier = get_database_value(bot, loser, 'tier')
+                if winnertier < currenttierstart:
+                    XPearnedwinner = XPearnedwinner * tierscaling
+                if losertier < currenttierstart:
+                    XPearnedloser = XPearnedloser * tierscaling
+                adjust_database_value(bot, winner, 'xp', XPearnedwinner)
+                adjust_database_value(bot, loser, 'xp', XPearnedloser)
+                if winner == maindueler:
+                    adjust_database_value(bot, maindueler, 'assault_xp', XPearnedwinner)
+                    adjust_database_value(bot, target, 'assault_xp', XPearnedloser)
+                else:
+                    adjust_database_value(bot, maindueler, 'assault_xp', XPearnedloser)
+                    adjust_database_value(bot, target, 'assault_xp', XPearnedwinner)
 
         ## Streaks Text
         if maindueler != target:
@@ -936,11 +996,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## new pepper level?
         mainduelerpeppernow = get_pepper(bot, maindueler)
-        if mainduelerpeppernow != mainduelerpepperstart and maindueler != target:
+        if mainduelerpeppernow != mainduelerpepperstart and maindueler != target and maindueler != 'duelsmonster':
             combattextarraycomplete.append(maindueler + " graduates to " + mainduelerpeppernow + "! ")
             adjust_database_value(bot, maindueler, 'assault_levelups', 1)
         targetpeppernow = get_pepper(bot, target)
-        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick:
+        if targetpeppernow != targetpepperstart and maindueler != target and target != bot.nick and target != 'duelsmonster':
             adjust_database_value(bot, target, 'assault_levelups', 1)
             combattextarraycomplete.append(target + " graduates to " + targetpeppernow + "! ")
 
@@ -970,7 +1030,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
         ## Random Bonus
-        if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser:
+        if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser and winner != 'duelsmonster':
             adjust_database_value(bot, winner, 'coin', random_payout)
             combattextarraycomplete.append(maindueler + " won the random attack payout!")
 
@@ -981,7 +1041,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             onscreentext(bot, [winner,loser], combattextarraycomplete)
 
         ## deathblow text
-        if typeofduel == 'target' and deathblowarray != []:
+        if typeofduel == 'target' and deathblowarray != [] and 'duelsmonster' not in deathblowarray:
             onscreentext(bot, [inchannel], deathblowarray)
 
         ## Pause Between duels
@@ -989,6 +1049,17 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             bot.notice("  ", maindueler)
             time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
+        ## Update last fought
+        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
+            if maindueler == 'duelsmonster':
+                set_database_value(bot, target, 'lastfought', mainduelername)
+            else:
+                set_database_value(bot, target, 'lastfought', maindueler)
+            if target == 'duelsmonster':
+                set_database_value(bot, maindueler, 'lastfought', targetname)
+            else:
+                set_database_value(bot, maindueler, 'lastfought', target)
+            
         ## End Of assault
         if typeofduel == 'assault':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
@@ -1783,6 +1854,18 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    if instigator not in canduelarray:
+        canduel, validtargetmsg = duelcriteria(bot, instigator, commandortarget, currentduelplayersarray, inchannel)
+        osd_notice(bot, instigator, validtargetmsg)
+        return
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    statreset(bot, 'duelsmonster')
+    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
+    refreshduelsmonster(bot)
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+    
+    
 ## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
@@ -1802,9 +1885,12 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     if bot.nick not in canduelarray:
         canduelarray.append(bot.nick)
+    canduelarray.append('duelsmonster')
     target = get_trigger_arg(bot, canduelarray, 'random')
     statreset(bot, target)
     duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, inchannel, 'random', devenabledchannels)
+    if target == 'duelsmonster':
+        refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter
@@ -3576,6 +3662,10 @@ def deathblowcheck(bot, instigator):
 
 ## Build Duel Name Text
 def duel_names(bot, nick, channel):
+    if nick == 'duelsmonster':
+        nickname = get_trigger_arg(bot, monstersarray, 'random')
+        nickname = str("A lower level "+nickname)
+        return nickname
     nickname = ''
     for q in duel_nick_order:
         nickscriptdef = str(q + "(bot, nick, channel)")
@@ -3866,6 +3956,11 @@ def refreshbot(bot):
     duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
         set_database_value(bot, bot.nick, x, None)
+
+def refreshduelsmonster(bot):
+    duelstatsadminarray = duels_valid_stats('duelsmonster')
+    for x in duelstatsadminarray:
+        set_database_value(bot, 'duelsmonster', x, None)
 
 ######################
 ## Winner Selection ##
