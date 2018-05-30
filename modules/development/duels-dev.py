@@ -3627,6 +3627,7 @@ def deathblowcheck(bot, instigator):
 def duel_names(bot, nick, channel):
     if nick == bot.nick:
         nickname = get_trigger_arg(bot, monsterslist, 'random')
+        nickname = str("An Unexpected "+nickname)
         return nickname
     nickname = ''
     for q in duel_nick_order:
