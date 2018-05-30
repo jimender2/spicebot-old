@@ -1848,7 +1848,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
         osd_notice(bot, instigator, validtargetmsg)
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
-    statreset(bot, target)
+    statreset(bot, 'duelsmonster')
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
