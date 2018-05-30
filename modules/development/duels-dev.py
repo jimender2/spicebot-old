@@ -23,6 +23,7 @@ from operator import itemgetter
 import requests
 from fake_useragent import UserAgent
 from lxml import html
+from statistics import mean
 
 ## not needed if using without spicebot
 #shareddir = os.path.dirname(os.path.dirname(__file__)) ## not needed if using without spicebot
@@ -3971,7 +3972,8 @@ def monsterstats(bot, currentduelplayersarray):
         for player in currentduelplayersarray:
             playernumber = get_database_value(bot, player, x)
             currentstatarray.append(playernumber)
-        playerstatarrayaverage = sum(currentstatarray) / float(len(currentstatarray))
+        #playerstatarrayaverage = sum(currentstatarray) / float(len(currentstatarray))
+        playerstatarrayaverage = mean(currentstatarray)
         playerstatarrayaverage = int(playerstatarrayaverage)
         bot.say(str(x) + " stat = "+str(playerstatarrayaverage))
         set_database_value(bot, 'duelsmonster', x, playerstatarrayaverage)
