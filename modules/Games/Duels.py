@@ -66,7 +66,7 @@ commandarray_tier_unlocks_10 = ['colosseum']
 commandarray_tier_unlocks_11 = ['title']
 commandarray_tier_unlocks_12 = ['mayhem']
 commandarray_tier_unlocks_13 = ['hungergames']
-commandarray_tier_unlocks_14 = []
+commandarray_tier_unlocks_14 = ['quest']
 commandarray_tier_unlocks_15 = []
 
 ## Tiers, XP, Pepper levels
@@ -88,6 +88,7 @@ command_stamina_random = 3
 command_stamina_colosseum = 20
 command_stamina_mayhem = 25
 command_stamina_hungergames = 20
+command_stamina_quest = 30
 
 ## more stuff
 bodyparts_required = ['torso','head']
@@ -653,6 +654,17 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
     tierunlockweaponslocker = tier_command(bot, 'weaponslocker_complete')
     tierscaling = tierratio_level(bot)
 
+    ## Monster
+    if 'duelsmonster' in targetarray or maindueler == 'duelsmonster':
+        duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
+        set_database_value(bot, duelrecorduser, 'last_monster', duelsmonstername)
+        if typeofduel != 'quest':
+            duelmonsterlevel = str("A lower level "+duelsmonstername)
+        else:
+            duelmonsterlevel = str("A high level "+duelsmonstername)
+        namemonster = duelsmonstername
+        namemonstertext = str("The " + duelsmonstername)
+        
     ## Targetarray Start
     targetarraytotal = len(targetarray)
     for target in targetarray:
@@ -666,7 +678,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         deathblowarray = []
 
         ## Assault does not touch lastfought
-        if typeofduel == 'assault':
+        if typeofduel == 'assault' or typeofduel == 'quest':
             targetlastfoughtstart = get_database_value(bot, target, 'lastfought')
 
         ## Death Loop Start
@@ -678,23 +690,20 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         #set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
 
         ## Display Naming
-        mainduelername = duel_names(bot, maindueler, inchannel)
+        if maindueler != 'duelsmonster':
+            mainduelername = duel_names(bot, maindueler, inchannel)
+        else:
+            mainduelername = duelmonsterlevel
         mainduelerpepperstart = get_pepper(bot, maindueler)
         if target == maindueler:
             targetname = "themself"
-            targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
             targetname = target
-            targetpepperstart = get_pepper(bot, target)
         elif target == 'duelsmonster':
-            targetname = get_trigger_arg(bot, monstersarray, 'random')
-            targetnamemonster = targetname
-            targetnamemonstertext = str("The " + targetnamemonster)
-            targetname = str("A lower level "+targetname)
-            targetpepperstart = get_pepper(bot, target)
+            targetname = duelmonsterlevel
         else:
             targetname = duel_names(bot, target, inchannel)
-            targetpepperstart = get_pepper(bot, target)
+        targetpepperstart = get_pepper(bot, target)
 
         ## Announce Combat
         combattextarraycomplete.append(mainduelername + " versus " + targetname)
@@ -783,11 +792,11 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         elif loser == 'duelsmonster':
             damage = 0
-            damagetext = str(winner + " slays the " + targetnamemonster +  weapon + ".")
+            damagetext = str(winner + " slays the " + namemonster +  weapon + ".")
         elif winner == 'duelsmonster':
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
-            damagetext = duels_damage_text(bot, damage, targetnamemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
+            damagetext = duels_damage_text(bot, damage, namemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
@@ -991,7 +1000,12 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 
         ## Streaks Text
         if maindueler != target:
-            streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
+            if winner == 'duelsmonster':
+                streaktext = get_streaktext(bot, namemonstertext, loser, winner_loss_streak, loser_win_streak) or ''
+            elif loser == 'duelsmonster':
+                streaktext = get_streaktext(bot, winner, namemonstertext, winner_loss_streak, loser_win_streak) or ''
+            else:
+                streaktext = get_streaktext(bot, winner, loser, winner_loss_streak, loser_win_streak) or ''
             if streaktext != '':
                 combattextarraycomplete.append(streaktext)
 
@@ -1033,13 +1047,16 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Random Bonus
         if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser and winner != 'duelsmonster':
             adjust_database_value(bot, winner, 'coin', random_payout)
-            combattextarraycomplete.append(maindueler + " won the random attack payout!")
+            combattextarraycomplete.append(maindueler + " won the random attack payout of " + str(random_payout)+ " coin!")
 
         ## On Screen Text
-        if typeofduel != 'assault' and typeofduel != 'colosseum':
-            onscreentext(bot, [inchannel], combattextarraycomplete)
-        else:
+        if typeofduel == 'assault' and typeofduel == 'colosseum':
             onscreentext(bot, [winner,loser], combattextarraycomplete)
+        elif typeofduel == 'quest':
+            onscreentext(bot, [target], combattextarraycomplete)
+        else:
+            onscreentext(bot, [inchannel], combattextarraycomplete)
+            
 
         ## deathblow text
         if typeofduel == 'target' and deathblowarray != [] and 'duelsmonster' not in deathblowarray:
@@ -1051,7 +1068,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
         ## Update last fought
-        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum':
+        if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum' and typeofduel != 'quest':
             if maindueler == 'duelsmonster':
                 set_database_value(bot, target, 'lastfought', mainduelername)
             else:
@@ -1062,7 +1079,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 set_database_value(bot, maindueler, 'lastfought', target)
             
         ## End Of assault
-        if typeofduel == 'assault':
+        if typeofduel == 'assault' or typeofduel == 'quest':
             set_database_value(bot, target, 'lastfought', targetlastfoughtstart)
 
 #################
@@ -1830,9 +1847,8 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
-    maindueler = instigator
-    osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    osd_notice(bot, instigator, "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
     assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
     for astat in assault_results:
@@ -1855,6 +1871,51 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_combat', 1)
 
+## Quest
+def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, commandortarget, instigator, currentduelplayersarray, inchannel)
+    if not executedueling:
+        osd_notice(bot, instigator, executeduelingmsg)
+        return
+    duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
+    if duelslockout:
+        lockoutsince = get_timesince_duels(bot, instigator, 'duelslockout')
+        if lockoutsince < duel_lockout_timer:
+            osd_notice(bot, instigator, "Duel(s) is/are currently in progress. You must wait. If this is an error, it should clear itself in 5 minutes.")
+            return
+        reset_database_value(bot, duelrecorduser, 'duelslockout')
+    set_database_value(bot, duelrecorduser, 'duelslockout', now)
+    displaymessage = get_trigger_arg(bot, canduelarray, "list")
+    onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
+    set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
+
+    monsterstats(bot, currentduelplayersarray, 5)
+    
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'quest', devenabledchannels)
+
+    osd_notice(bot, instigator, "It looks like the Full Channel Quest has completed.")
+    lastmonstername = get_database_value(bot, duelrecorduser, 'last_monster')
+
+    assaultstatsarray = []
+    assaultstatsarray.append("Full Channel Quest results (Monster was The " + lastmonstername + "):")
+    for astat in assault_results:
+        astateval = get_database_value(bot, 'duelsmonster', "assault_" + astat) or 0
+        if astateval:
+            astatstr = str(str(astat) + " = " + str(astateval))
+            assaultstatsarray.append(astatstr)
+            reset_database_value(bot, 'duelsmonster', "assault_" + astat)
+    onscreentext(bot, [inchannel], assaultstatsarray)
+    for player in canduelarray:
+        for astat in assault_results:
+            reset_database_value(bot, player, "assault_" + astat)
+
+    refreshduelsmonster(bot)
+    reset_database_value(bot, duelrecorduser, 'duelslockout')
+
+    
 ## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
@@ -1862,7 +1923,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
         osd_notice(bot, instigator, validtargetmsg)
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
-    monsterstats(bot, currentduelplayersarray)
+    monsterstats(bot, currentduelplayersarray, 1)
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, inchannel, 'random', devenabledchannels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
@@ -3964,7 +4025,7 @@ def refreshduelsmonster(bot):
     for x in duelstatsadminarray:
         set_database_value(bot, 'duelsmonster', x, None)
 
-def monsterstats(bot, currentduelplayersarray):
+def monsterstats(bot, currentduelplayersarray, scale):
     duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
         playerstatarrayaverage = 0
@@ -3976,7 +4037,7 @@ def monsterstats(bot, currentduelplayersarray):
         playerstatarrayaverage = mean(currentstatarray)
         playerstatarrayaverage = int(playerstatarrayaverage)
         if playerstatarrayaverage > 0:
-            set_database_value(bot, 'duelsmonster', x, playerstatarrayaverage)
+            set_database_value(bot, 'duelsmonster', x, int(playerstatarrayaverage * scale))
         
     
 
