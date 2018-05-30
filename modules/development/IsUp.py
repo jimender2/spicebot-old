@@ -36,7 +36,7 @@ def execute_main(bot, trigger):
 def isupparse(url):
     upornot = 0
     tree = gettree(url)
-    isuptext = str(tree.xpath(''))
+    isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
     if isuptext.startswith("It's you!"):
         upornot = 1
     return upornot
