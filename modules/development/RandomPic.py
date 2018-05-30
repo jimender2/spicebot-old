@@ -44,7 +44,7 @@ def getoutputtext(bot, pictype):
       result = page.content
       jsonpoop = json.loads(result)
       outputtext = jsonpoop[jsontype]
-      outputtext = outputtext.replace("/","")
+      #outputtext = outputtext.replace("/","")
     except:
       outputtext = ""
     return outputtext
