@@ -19,7 +19,7 @@ baseurl = 'https://down.com/?q='
 
 @sopel.module.commands('isup')
 def execute_main(bot, trigger):
-    checksite = get_trigger_arg(bot, triggerargsarray, 1)
+    checksite = trigger.group(2)
     if not checksite:
         bot.say("please enter a site")
     else:
