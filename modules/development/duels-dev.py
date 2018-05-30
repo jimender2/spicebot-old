@@ -687,8 +687,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetname = "themself"
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
-            #targetname = target
             targetname = get_trigger_arg(bot, monstersarray, 'random')
+            targetname = str("An Unexpected "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
