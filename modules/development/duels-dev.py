@@ -693,7 +693,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         elif target == 'duelsmonster':
             targetname = get_trigger_arg(bot, monstersarray, 'random')
             targetnamemonster = targetname
-            targetname = str("An lower level "+targetname)
+            targetname = str("A lower level "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
