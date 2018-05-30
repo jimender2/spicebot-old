@@ -75,7 +75,7 @@ def getwebbylink():
     webbylink = str(tree.xpath('//*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[4]/a/@href'))
     for r in (("['", ""), ("']", "")):
         webbylink = webbylink.replace(*r)
-    webbylink = str(webbylink.split("&", 1)[0])
+    #webbylink = str(webbylink.split("&", 1)[0])
     webbylink = str("https://community.spiceworks.com" + webbylink)
     return webbylink
 
