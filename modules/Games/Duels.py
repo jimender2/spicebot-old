@@ -772,7 +772,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        if classloser == 'rogue' and loser != 'duelsmonster' winner != 'duelsmonster':
+        if classloser == 'rogue' and loser != 'duelsmonster' and winner != 'duelsmonster':
             if winner == loser or winner == bot.nick:
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
