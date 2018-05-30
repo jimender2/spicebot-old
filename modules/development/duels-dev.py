@@ -772,7 +772,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         striketype = get_trigger_arg(bot, duel_hit_types, 'random')
 
         ## Damage
-        if classloser == 'rogue' and loser != 'duelsmonster' and winner != 'duelsmonster':
+        if classloser == 'rogue' and loser != 'duelsmonster' winner != 'duelsmonster':
             if winner == loser or winner == bot.nick:
                 damage = 0
                 damagetext = str(loser + " takes no damage in this encounter")
@@ -782,7 +782,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
                 damagetext = duels_damage_text(bot, damage, winner, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         elif loser == 'duelsmonster':
             damage = 0
-            damagetext = str(winner + " slays the " + targetnamemonster + " with " + weapon + ".")
+            damagetext = str(winner + " slays the " + targetnamemonster +  weapon + ".")
         elif winner == 'duelsmonster':
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
@@ -3468,8 +3468,6 @@ def duels_damage_text(bot, damage, winnername, losername, bodypart, striketype, 
 
     if losername == winnername:
         losername = "themself"
-
-    bot.say(weapon)
     if damage == 0:
         damagetext = str(winnername + " " + striketype + " " + losername + " in the " + bodypartname + weapon + ', but deals no damage.')
     elif classwinner == 'vampire' and winnername != losername:
