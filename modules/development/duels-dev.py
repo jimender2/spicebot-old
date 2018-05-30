@@ -693,6 +693,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         elif target == 'duelsmonster':
             targetname = get_trigger_arg(bot, monstersarray, 'random')
             targetnamemonster = targetname
+            targetnamemonstertext = str("The " + targetnamemonster)
             targetname = str("A lower level "+targetname)
             targetpepperstart = get_pepper(bot, target)
         else:
@@ -787,6 +788,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         elif loser == 'duelsmonster':
             damage = 0
             damagetext = str(winner + " slays the " + targetnamemonster + " with " + weapon + ".")
+        elif winner == 'duelsmonster':
+            damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
+            damage = int(damage)
+            damagetext = duels_damage_text(bot, damage, targetnamemonstertext, loser, bodypart, striketype, weapon, classwinner, bodypartname)
         else:
             damage = duels_damage(bot, tierscaling, classwinner, classloser, winner, loser)
             damage = int(damage)
