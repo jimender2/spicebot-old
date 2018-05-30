@@ -29,15 +29,15 @@ def execute_main(bot, trigger):
             dispmsg = []
             upornot = isupparse(url)
             if upornot:
-                bot.say(checksite + " appears to be up.")
+                bot.say("Looks like " + checksite + " appears to be up.")
             else:
-                bot.say(checksite + " appears to be down.")
+                bot.say("Looks like " + checksite + " appears to be down.")
 
 def isupparse(url):
     upornot = 0
     tree = gettree(url)
-    isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
-    if isuptext == "It's you!":
+    isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/text()[2]'))
+    if isuptext == " is online.":
         upornot = 1
     return upornot
 
