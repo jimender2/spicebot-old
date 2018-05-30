@@ -1898,7 +1898,7 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
         if astateval:
             astatstr = str(str(astat) + " = " + str(astateval))
             assaultstatsarray.append(astatstr)
-            reset_database_value(bot, instigator, "assault_" + astat)
+            reset_database_value(bot, 'duelsmonster', "assault_" + astat)
     onscreentext(bot, [inchannel], assaultstatsarray)
     for player in canduelarray:
         for astat in assault_results:
