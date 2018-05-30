@@ -1842,22 +1842,22 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'quest', devenabledchannels)
-    osd_notice(bot, instigator, "It looks like the Full Channel Quest has completed.")
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    osd_notice(bot, instigator, "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
-    monstername = get_database_value(bot, 'duelsmonster', "last_monster")
-    assaultstatsarray.append(monstername + "'s Full Channel Quest results:")
+    assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
     for astat in assault_results:
-        astateval = get_database_value(bot, duelrecorduser, "assault_" + astat) or 0
+        astateval = get_database_value(bot, instigator, "assault_" + astat) or 0
         if astateval:
             astatstr = str(str(astat) + " = " + str(astateval))
             assaultstatsarray.append(astatstr)
-            reset_database_value(bot, 'duelsmonster', "assault_" + astat)
+            reset_database_value(bot, instigator, "assault_" + astat)
     onscreentext(bot, [inchannel], assaultstatsarray)
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
 
+    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     ## usage counter ## TODO use len(canduelarray)
@@ -1886,13 +1886,15 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
     onscreentext(bot, inchannel, instigator + " Initiated a full channel " + commandortarget + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + commandortarget + 'instigator'), instigator)
-    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
-    maindueler = 'duelsmonster'
-    osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'quest', devenabledchannels)
+
+    osd_notice(bot, instigator, "It looks like the Full Channel Quest has completed.")
+    lastmonstername = get_database_value(bot, duelrecorduser, 'last_monster')
+
     assaultstatsarray = []
-    assaultstatsarray.append("Full Channel Quest results:")
+    assaultstatsarray.append("Full Channel Quest results (Monster was The " + lastmonstername + "):")
     for astat in assault_results:
-        astateval = get_database_value(bot, instigator, "assault_" + astat) or 0
+        astateval = get_database_value(bot, 'duelsmonster', "assault_" + astat) or 0
         if astateval:
             astatstr = str(str(astat) + " = " + str(astateval))
             assaultstatsarray.append(astatstr)
@@ -1902,7 +1904,6 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
 
-    set_database_value(bot, instigator, 'lastfought', lastfoughtstart)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
     
