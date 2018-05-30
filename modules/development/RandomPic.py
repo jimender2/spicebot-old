@@ -17,32 +17,34 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-
-    joke = getJoke()
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    for c in bot.channels:
-        channel = c
-    if joke:
-        if not target:
-            bot.say(joke)
-        else:
-            if not target.lower() not in bot.privileges[channel.lower()]:
-                if target == bot.nick:        
-                    bot.say('I have no mother' )            
-                else:
-                    bot.say('Hey, ' + target + '! ' + joke)
-            else:
-                bot.say(target + ' is not here but ' + trigger.nick + ' ' + joke )
+    pictype = get_trigger_arg(bot, triggerargsarray, 1)
+    outputtext = ''
+    if pictype == 'dog':
+        outputtext = getoutputtext(bot, 'dog')
+    elif pictype == 'cat':
+        outputtext = getoutputtext(bot, 'cat')
     else:
-        bot.say('Please leave the mothers out of it.')
+        outputtext = str("I don't currently have an api for " + str(pictype))
+    if not outputtext:
+        outputtext = "An error has occured."
+    bot.say(outputtext)
+    
+    
+    
 
-def getJoke():
-    url = 'http://api.yomomma.info'
+def getoutputtext(bot, pictype):
+    if pictype == 'dog':
+        url = 'https://random.dog/woof.json'
+        jsontype = 'url'
+    elif pictype == 'cat':
+        url = 'http://aws.random.cat/meow'
+        jsontype = 'file'
     try:
       page = requests.get(url)
       result = page.content
-      jsonjoke = json.loads(result)
-      joke = jsonjoke['joke']
+      jsonpoop = json.loads(result)
+      outputtext = jsonpoop[jsontype]
+      outputtext = outputtext.replace("/","")
     except:
-      joke = "yo momma broke the interwebs."
-    return joke
+      outputtext = ""
+    return outputtext
