@@ -267,7 +267,7 @@ stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','los
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 ## Monster List
-monsterarray = [
+monstersarray = [
 "Aboleth","Beholder","Blue slaad","Chuul","Cloaker","Death kiss","Death slaad","Elder brain","Flumph","Gauth","Gazer","Gibbering mouther","Gray slaad","Green slaad","Grell","Intellect devourer",
 "Mind flayer","Mind flayer arcanist","Mindwitness","Morkoth","Neogi","Neogi hatchling","Neogi master","Neothelid","Nothic","Otyugh","Red slaad","Slaad tadpole","Spectator","Ulitharid","Allosaurus",
 "Ankylosaurus","Ape","Aurochs","Axe beak","Baboon","Badger","Bat","Black bear","Blood hawk","Boar","Brontosaurus","Brown bear","Camel","Cat","Constrictor snake","Cow","Crab","Cranium rat","Crocodile",
@@ -687,7 +687,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             targetname = "themself"
             targetpepperstart = mainduelerpepperstart
         elif target == bot.nick:
-            targetname = target
+            #targetname = target
+            targetname = get_trigger_arg(bot, monsterslist, 'random')
             targetpepperstart = get_pepper(bot, target)
         else:
             targetname = duel_names(bot, target, inchannel)
@@ -3624,6 +3625,9 @@ def deathblowcheck(bot, instigator):
 
 ## Build Duel Name Text
 def duel_names(bot, nick, channel):
+    if nick == bot.nick:
+        nickname = get_trigger_arg(bot, monsterslist, 'random')
+        return nickname
     nickname = ''
     for q in duel_nick_order:
         nickscriptdef = str(q + "(bot, nick, channel)")
