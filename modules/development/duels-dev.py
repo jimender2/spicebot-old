@@ -1850,8 +1850,9 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
-    osd_notice(bot, instigator, "It looks like the Full Channel Assault has completed.")
+    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, inchannel, 'assault', devenabledchannels)
+    maindueler = instigator
+    osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
     assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
     for astat in assault_results:
@@ -1918,7 +1919,6 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
-    
 ## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
     if instigator not in canduelarray:
