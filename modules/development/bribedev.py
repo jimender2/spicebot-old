@@ -27,7 +27,8 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-            amount = get_database_value(bot, instigator, databasekey)
+            amount = get_database_value(bot, instigator, 'bets')
+	    reset_botdatabase_value(bot,player, 'bets')
             adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
             bot.say("debug " + str(amount))
             message = instigator + " accepted the bribe."
@@ -43,7 +44,11 @@ def execute_main(bot, trigger, triggerargsarray):
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
-            adjust_botdatabase_array(bot, target, money, databasekey, 'add')
+
+            #test
+            set_botdatabase_value(bot,target, 'bets', money)
+
+            #adjust_botdatabase_array(bot, target, money, databasekey, 'add')
             spicebucks(bot, instigator, 'minus', money)
          else:
             bot.say("I'm sorry, I do not know who " + target + " is.")
