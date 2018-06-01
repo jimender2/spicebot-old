@@ -27,7 +27,8 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-            amo = get_database_value(bot, instigator, 'bets')
+            amo = get_botdatabase_value(bot, instigator, 'bets') or '0'
+
             amount = int(amo)
 	    reset_botdatabase_value(bot,instigator, 'bets')
             #adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
