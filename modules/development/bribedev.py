@@ -27,10 +27,12 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-            amount = get_database_value(bot, instigator, 'bets')
+            amo = get_database_value(bot, instigator, 'bets')
+            amount = int(amo)
 	    reset_botdatabase_value(bot,instigator, 'bets')
-            adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
+            #adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
             bot.say("debug " + str(amount))
+            spicebucks(bot, instigator, "plus", amount)
             message = instigator + " accepted the bribe."
             bot.say(message)
         elif command == "delete":
@@ -46,7 +48,7 @@ def execute_main(bot, trigger, triggerargsarray):
             inputstring = str(money)
 
             #test
-            set_botdatabase_value(bot,target, 'bets', money)
+            set_botdatabase_value(bot,target, 'bets', inputstring)
 
             #adjust_botdatabase_array(bot, target, money, databasekey, 'add')
             spicebucks(bot, instigator, 'minus', money)
