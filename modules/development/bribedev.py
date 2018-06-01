@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if command in commandarray:
         if command == "accept":
             amount = get_database_value(bot, instigator, 'bets')
-	    reset_botdatabase_value(bot,player, 'bets')
+	    reset_botdatabase_value(bot,instigator, 'bets')
             adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
             bot.say("debug " + str(amount))
             message = instigator + " accepted the bribe."
