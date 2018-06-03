@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
 		bot.say(instigator + " accepted the bribe of $" + amount + ".")
         elif command == "decline":
-            bot.say(instigator + " declines a bribe worth $" + amount +
+            bot.say(instigator + " declines a bribe worth $" + amount + ".")
         elif command == "money":
             spicebucks(bot, instigator, "plus", 100000)
     
