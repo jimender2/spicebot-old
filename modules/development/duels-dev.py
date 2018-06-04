@@ -412,7 +412,7 @@ def check_command_full(bot, trigger, instigator, command_full, command_type):
         return checkpass
 
     ## Don't attempt multi-commands in /me
-    if command_type != 'actionduel':
+    if command_type == 'actionduel':
         if "&&" not in command_full:
             osd_notice(bot, instigator, "you cannot run multiple commands via action.")
             return checkpass
