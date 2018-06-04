@@ -2307,78 +2307,110 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
             dispmsgarrayb.append(instigator + ", It looks like " + target + " has no " +  commandortarget + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif subcommand == 'buy':
-        instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-        costinvolved = armor_cost
-        if instigatorclass == 'blacksmith':
-            costinvolved = costinvolved * armor_cost_blacksmith_cut
-        costinvolved = int(costinvolved)
-        if not typearmor or typearmor not in stats_armor:
-            armors = get_trigger_arg(bot, stats_armor, 'list')
-            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
-        elif instigatorcoin < costinvolved:
-            onscreentext(bot, inchannel, "Insufficient Funds.")
-        else:
+        if typearmor != 'all':
+            if not typearmor or typearmor not in stats_armor:
+                armors = get_trigger_arg(bot, stats_armor, 'list')
+                onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+                return
             getarmor = get_database_value(bot, instigator, typearmor) or 0
             if getarmor and getarmor > 0:
                 onscreentext(bot, inchannel, "It looks like you already have a " + typearmor + ".")
-            else:
-                onscreentext(bot, inchannel, instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
-                adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
-                set_database_value(bot, instigator, typearmor, armor_durability)
-    elif subcommand == 'sell':
-        if not typearmor or typearmor not in stats_armor:
-            armors = get_trigger_arg(bot, stats_armor, 'list')
-            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+                return
+            armorcommandarray = [typearmor]
+            costinvolved = armor_cost
         else:
+            armorcommandarray = []
+            for armor in stats_armor:
+                getarmor = get_database_value(bot, instigator, armor) or 0
+                if not getarmor or getarmor <= 0:
+                    armorcommandarray.append(armor)
+            costinvolved = armor_cost * len(armorcommandarray)
+        if instigatorclass == 'blacksmith':
+            costinvolved = costinvolved * armor_cost_blacksmith_cut
+        costinvolved = int(costinvolved)
+        instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+        if instigatorcoin < costinvolved:
+            onscreentext(bot, inchannel, "Insufficient Funds.")
+        else:
+            onscreentext(bot, inchannel, instigator + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
+            adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
+            for armorscom in armorcommandarray:
+                set_database_value(bot, instigator, armorscom, armor_durability)
+    elif subcommand == 'sell':
+        if typearmor != 'all':
+            if not typearmor or typearmor not in stats_armor:
+                armors = get_trigger_arg(bot, stats_armor, 'list')
+                onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+                return
             getarmor = get_database_value(bot, instigator, typearmor) or 0
             if not getarmor:
                 onscreentext(bot, inchannel, "You don't have a " + typearmor + " to sell.")
-            elif getarmor < 0:
+                return
+            if getarmor < 0:
                 onscreentext(bot, inchannel, "Your armor is too damaged to sell.")
                 reset_database_value(bot, instigator, typearmor)
-            else:
-                durabilityremaining = getarmor / armor_durability
-                sellingamount = durabilityremaining * armor_cost
-                if instigatorclass == 'blacksmith':
-                    sellingamount = sellingamount * armor_sell_blacksmith_cut
-                sellingamount = int(sellingamount)
-                if sellingamount <= 0:
-                    onscreentext(bot, inchannel, "Your armor is too damaged to sell.")
-                else:
-                    onscreentext(bot, inchannel, "Selling your "+typearmor +" earned you " + str(sellingamount) + " coins.")
-                    adjust_database_value(bot, instigator, 'coin', sellingamount)
-                    reset_database_value(bot, instigator, typearmor)
-    elif subcommand == 'repair':
-        if not typearmor or typearmor not in stats_armor:
-            armors = get_trigger_arg(bot, stats_armor, 'list')
-            onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+                return
+            armorcommandarray = [typearmor]
+            durabilityremaining = getarmor / armor_durability
         else:
+            armorcommandarray = []
+            durabilityremaininga = 0
+            for armor in stats_armor:
+                getarmor = get_database_value(bot, instigator, armor) or 0
+                if getarmor and getarmor > 0:
+                    armorcommandarray.append(armor)
+                    durabilityremaininga = getarmor + durabilityremaininga
+            durabilityremainingmax = len(armorcommandarray) * armor_durability
+            durabilityremaining = durabilityremaininga / durabilityremainingmax
+        sellingamount = durabilityremaining * armor_cost
+        if instigatorclass == 'blacksmith':
+            sellingamount = sellingamount * armor_sell_blacksmith_cut
+        sellingamount = int(sellingamount)
+        onscreentext(bot, inchannel, "Selling your " + typearmor +" earned you " + str(sellingamount) + " coins.")
+        adjust_database_value(bot, instigator, 'coin', sellingamount)
+        for armorscom in armorcommandarray:
+            reset_database_value(bot, instigator, armorscom)
+    elif subcommand == 'repair':
+        if typearmor != 'all':
+            if not typearmor or typearmor not in stats_armor:
+                armors = get_trigger_arg(bot, stats_armor, 'list')
+                onscreentext(bot, inchannel, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+                return
             getarmor = get_database_value(bot, instigator, typearmor) or 0
+            if not getarmor:
+                onscreentext(bot, inchannel, "You don't have a " + typearmor + " to repair.")
+                return
             durabilitycompare = armor_durability
             if instigatorclass == 'blacksmith':
                 durabilitycompare = armor_durability_blacksmith
-            if not getarmor:
-                onscreentext(bot, inchannel, "You don't have a " + typearmor + " to repair.")
-            elif getarmor >= durabilitycompare:
+            if getarmor >= durabilitycompare:
                 onscreentext(bot, inchannel, "It looks like your armor does not need repair.")
-            else:
-                durabilitytorepair = durabilitycompare - getarmor
-                if durabilitytorepair <= 0:
-                    onscreentext(bot, inchannel, "Looks like you can't repair that right now.")
-                else:
-                    instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
-                    costinvolved  = durabilitytorepair / durabilitycompare
-                    costinvolved = costinvolved * armor_cost
-                    costinvolved = costinvolved * armor_repair_cost
-                    if instigatorclass == 'blacksmith':
-                        costinvolved = costinvolved * armor_cost_blacksmith_cut
-                    costinvolved = int(costinvolved)
-                    if instigatorcoin < costinvolved:
-                        onscreentext(bot, inchannel, "Insufficient Funds.")
-                    else:
-                        onscreentext(bot, inchannel, typearmor + " repaired  for " + str(costinvolved)+" coins.")
-                        adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
-                        set_database_value(bot, instigator, typearmor, durabilitycompare)
+                return
+            durabilitytorepair = durabilitycompare - getarmor
+        else:
+            armorcommandarray = []
+            durabilityremaininga = 0
+            for armor in stats_armor:
+                getarmor = get_database_value(bot, instigator, armor) or 0
+                if getarmor and getarmor > 0:
+                    armorcommandarray.append(armor)
+                    durabilityremaininga = getarmor + durabilityremaininga
+            durabilitycompare = len(armorcommandarray) * armor_durability
+            durabilitytorepair = durabilitycompare - durabilityremaininga
+        instigatorcoin = get_database_value(bot, instigator, 'coin') or 0
+        costinvolved  = durabilitytorepair / durabilitycompare
+        costinvolved = costinvolved * armor_cost
+        costinvolved = costinvolved * armor_repair_cost
+        if instigatorclass == 'blacksmith':
+            costinvolved = costinvolved * armor_cost_blacksmith_cut
+        costinvolved = int(costinvolved)
+        if instigatorcoin < costinvolved:
+            onscreentext(bot, inchannel, "Insufficient Funds.")
+        else:
+            onscreentext(bot, inchannel, typearmor + " repaired  for " + str(costinvolved)+" coins.")
+            adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
+            for armorscom in armorcommandarray:
+                set_database_value(bot, instigator, armorscom, armor_durability)
 
 ## Bounty
 def subcommand_bounty(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, commandortarget, now, trigger, currenttier, inchannel, currentduelplayersarray, canduelarray, fullcommandused, tiercommandeval, tierpepperrequired, tiermath, devenabledchannels, validcommands):
