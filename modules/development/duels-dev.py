@@ -427,7 +427,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
     ## Check that the game is enabled in current channel. This is ignored if messaged in privmsg.
     if channel_current.startswith("#"):
-        game_enabled_pass = = check_game_enabled(bot, trigger, instigator, channel_current)
+        game_enabled_pass = check_game_enabled(bot, trigger, instigator, channel_current)
         if not game_enabled_pass:
             return
 
