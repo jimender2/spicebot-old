@@ -2466,7 +2466,7 @@ def subcommand_armor(bot, instigator, triggerargsarray, botvisibleusers, current
         if instigatorcoin < costinvolved:
             onscreentext(bot, channel_current, "Insufficient Funds.")
         else:
-            onscreentext(bot, channel_current, "Repairing " typearmor + " armor cost " + str(costinvolved)+" coins.")
+            onscreentext(bot, channel_current, "Repairing " + typearmor + " armor cost " + str(costinvolved)+" coins.")
             adjust_database_value(bot, instigator, 'coin', -abs(costinvolved))
             for armorscom in armorcommandarray:
                 set_database_value(bot, instigator, armorscom, armor_durability)
