@@ -506,6 +506,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 def users_bot_lists(bot, instigator, commands_valid):
 
     ## user lists
+    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
     currentuserlistarray = []
     botvisibleusersappendarray = []
