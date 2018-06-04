@@ -321,7 +321,6 @@ monstersarray = [
 "Troglodyte","Vegepygmy","Velociraptor","Violet fungus","Winged kobold","Wolf","Zombie","Vine blight","Warhorse","Warhorse skeleton","Worg"
 ]
 
-
 ########################
 ## Main Command Usage ##
 ########################
@@ -356,70 +355,6 @@ def mainfunction(bot, trigger):
 ## Seperate Targets from Commands ##
 ####################################
 
-def check_game_enabled(bot, trigger, instigator, channel_current):
-    checkpass = 0
-
-    ## Get list of channels Duels game is enabled.
-    duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-
-    ## No Channels Enabled
-    if duels_enabled_channels == []:
-        if not trigger.admin:
-            osd_notice(bot, instigator, "Duels has not been enabled in any bot channels. Talk to a bot admin.")
-            return checkpass
-
-    ## Current Channel is not enabled
-    if channel_current not in duels_enabled_channels:
-        if not trigger.admin:
-            osd_notice(bot, instigator, "Duels has not been enabled in " + channel_current + ". Talk to a bot admin.")
-            return checkpass
-
-    checkpass = 1
-    return checkpass
-
-def check_instigator(bot, trigger, instigator, commands_valid):
-    checkpass = 0
-
-    ## Instigator can't be a command, and can't enable duels
-    if instigator.lower() in commands_valid:
-        osd_notice(bot, instigator, "Your nick is the same as a valid command for duels.")
-        return
-
-    ## Instigator can't duelrecorduser
-    if instigator.lower() == duelrecorduser:
-        osd_notice(bot, instigator, "Your nick is not able to play duels.")
-        return checkpass
-
-    ## Check if Instigator is Opted in
-    ## TODO check opt timeout and enable duels for this player. Inform them that they opted in, don't set the timestamp, but let them know they can opt out
-    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
-    if instigator not in dueloptedinarray and command_main.lower() not in commandarray_instigator_bypass:
-        osd_notice(bot, instigator, "You are not opted into duels. Run `.duel on` to enable duels.")
-        return checkpass
-
-    checkpass = 1
-    return checkpass
-
-def check_command_full(bot, trigger, instigator, command_full, command_type):
-    checkpass = 0
-
-    ## There must be a command passed along with ".duel" and "/me duel"
-    if not command_full:
-        if command_type != 'actionduel':
-            osd_notice(bot, instigator, "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
-        else:
-            osd_notice(bot, instigator, "You must specify a target. Online Docs: " + GITWIKIURL)
-        return checkpass
-
-    ## Don't attempt multi-commands in /me
-    if command_type == 'actionduel':
-        if "&&" not in command_full:
-            osd_notice(bot, instigator, "you cannot run multiple commands via action.")
-            return checkpass
-
-    checkpass = 1
-    return checkpass
-
 def execute_main(bot, trigger, triggerargsarray, command_type):
 
     ## Instigator variable to describe the nickname that initiated the command
@@ -447,7 +382,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     commands_valid = duels_valid_commands(bot)
 
     ## Validate Instigator
-    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid)
+    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid, command_main)
     if not check_instigator_pass:
         return
 
@@ -502,36 +437,6 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         chanstatreset(bot)
         duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-
-def users_bot_lists(bot, instigator, commands_valid, channel_current):
-
-    ## user lists
-    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
-    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
-    currentuserlistarray = []
-    botvisibleusersappendarray = []
-    for user in bot.users:
-        if user not in commands_valid:
-            currentuserlistarray.append(user)
-            if user not in botvisibleusers:
-                botvisibleusersappendarray.append(user)
-    adjust_database_array(bot, duelrecorduser, botvisibleusersappendarray, 'botvisibleusers', 'add')
-    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
-
-    ## Current Duelable Players
-    currentduelplayersarray = []
-    canduelarray = []
-    dowedisplay = 0
-    for player in currentuserlistarray:
-        if player in dueloptedinarray:
-            currentduelplayersarray.append(player)
-    for player in currentduelplayersarray:
-        executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, channel_current)
-        if executedueling == 1:
-            canduelarray.append(player)
-    random.shuffle(canduelarray)
-
-    return botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray
 
 def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type):
 
@@ -3274,6 +3179,104 @@ def halfhourpotionwinner(bot, randomuarray):
     adjust_database_array(bot, duelrecorduser, [lootwinner], 'lasttimedlootwinners', 'add')
     set_database_value(bot, duelrecorduser, 'lasttimedlootwinner', lootwinner)
     return lootwinner
+
+################################
+## Preflight Checks and setup ##
+################################
+
+def check_game_enabled(bot, trigger, instigator, channel_current):
+    checkpass = 0
+
+    ## Get list of channels Duels game is enabled.
+    duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+
+    ## No Channels Enabled
+    if duels_enabled_channels == []:
+        if not trigger.admin:
+            osd_notice(bot, instigator, "Duels has not been enabled in any bot channels. Talk to a bot admin.")
+            return checkpass
+
+    ## Current Channel is not enabled
+    if channel_current not in duels_enabled_channels:
+        if not trigger.admin:
+            osd_notice(bot, instigator, "Duels has not been enabled in " + channel_current + ". Talk to a bot admin.")
+            return checkpass
+
+    checkpass = 1
+    return checkpass
+
+def check_instigator(bot, trigger, instigator, commands_valid, command_main):
+    checkpass = 0
+
+    ## Instigator can't be a command, and can't enable duels
+    if instigator.lower() in commands_valid:
+        osd_notice(bot, instigator, "Your nick is the same as a valid command for duels.")
+        return
+
+    ## Instigator can't duelrecorduser
+    if instigator.lower() == duelrecorduser:
+        osd_notice(bot, instigator, "Your nick is not able to play duels.")
+        return checkpass
+
+    ## Check if Instigator is Opted in
+    ## TODO check opt timeout and enable duels for this player. Inform them that they opted in, don't set the timestamp, but let them know they can opt out
+    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
+    if instigator not in dueloptedinarray and command_main.lower() not in commandarray_instigator_bypass:
+        osd_notice(bot, instigator, "You are not opted into duels. Run `.duel on` to enable duels.")
+        return checkpass
+
+    checkpass = 1
+    return checkpass
+
+def check_command_full(bot, trigger, instigator, command_full, command_type):
+    checkpass = 0
+
+    ## There must be a command passed along with ".duel" and "/me duel"
+    if not command_full:
+        if command_type != 'actionduel':
+            osd_notice(bot, instigator, "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
+        else:
+            osd_notice(bot, instigator, "You must specify a target. Online Docs: " + GITWIKIURL)
+        return checkpass
+
+    ## Don't attempt multi-commands in /me
+    if command_type == 'actionduel':
+        if "&&" not in command_full:
+            osd_notice(bot, instigator, "you cannot run multiple commands via action.")
+            return checkpass
+
+    checkpass = 1
+    return checkpass
+
+def users_bot_lists(bot, instigator, commands_valid, channel_current):
+
+    ## user lists
+    dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
+    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
+    currentuserlistarray = []
+    botvisibleusersappendarray = []
+    for user in bot.users:
+        if user not in commands_valid:
+            currentuserlistarray.append(user)
+            if user not in botvisibleusers:
+                botvisibleusersappendarray.append(user)
+    adjust_database_array(bot, duelrecorduser, botvisibleusersappendarray, 'botvisibleusers', 'add')
+    botvisibleusers = get_database_value(bot, duelrecorduser, 'botvisibleusers') or []
+
+    ## Current Duelable Players
+    currentduelplayersarray = []
+    canduelarray = []
+    dowedisplay = 0
+    for player in currentuserlistarray:
+        if player in dueloptedinarray:
+            currentduelplayersarray.append(player)
+    for player in currentduelplayersarray:
+        executedueling = duelcriteriashort(bot, instigator, player, currentduelplayersarray, channel_current)
+        if executedueling == 1:
+            canduelarray.append(player)
+    random.shuffle(canduelarray)
+
+    return botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray
 
 #######################
 ## Valid Stats Array ##
