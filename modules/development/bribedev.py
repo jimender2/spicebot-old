@@ -27,15 +27,18 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-            amount = get_database_value(bot, instigator, databasekey)
-            adjust_botdatabase_array(bot, instigator, amount, databasekey, 'remove')
-            bot.say("debug " + str(amount))
-            message = instigator + " accepted the bribe."
-            bot.say(message)
-        elif command == "delete":
-            amount = 1
+            amo = get_botdatabase_value(bot, instigator, 'bets') or '0'
+            amount = int(amo)
+	    reset_botdatabase_value(bot,instigator, 'bets')
+            spicebucks(bot, instigator, "plus", amount)
+            if amount == 0:
+                bot.say("There are no bribes for you to accept")
+            else:
+		bot.say(instigator + " accepted the bribe of $" + amount + ".")
+        elif command == "decline":
+            bot.say(instigator + " declines a bribe worth $" + amount + ".")
         elif command == "money":
-            spicebucks(bot, instigator, "plus", 1000)
+            spicebucks(bot, instigator, "plus", 100000)
     
     else:
          if target.lower() in [u.lower() for u in bot.users]:
@@ -43,21 +46,11 @@ def execute_main(bot, trigger, triggerargsarray):
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
-            adjust_botdatabase_array(bot, target, money, databasekey, 'add')
+            set_botdatabase_value(bot,target, 'bets', inputstring)
             spicebucks(bot, instigator, 'minus', money)
          else:
             bot.say("I'm sorry, I do not know who " + target + " is.")
 
-
-
-
-#    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
-#    channel = trigger.sender
-#    botuseron=[]
-#    for u in bot.users:
-#        if u in botusersarray and u != bot.nick:
-#            botuseron.append(u)
-            
 def bank(bot, nick):
     balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
     return balance
@@ -72,15 +65,13 @@ def spicebucks(bot, target, plusminus, amount):
        success = 'true'
     elif plusminus == 'minus':
         if inbank - amount < 0:
-            #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
             success = 'false'
         else:
             adjust_botdatabase_value(bot,target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
-        #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
         success = 'false'
-    return success #returns simple true or false so modules can check the if tranaction was a success
+    return success
 
 def get_database_value(bot, nick, databasekey):
 	databasecolumn = databasekey
