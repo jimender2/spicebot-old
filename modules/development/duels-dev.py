@@ -466,8 +466,8 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
             time.sleep(randint(1, 3))
             daisychaincount = 1
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
-        command_full_part = get_trigger_arg(bot, triggerargsarraypart, 0)
-        command_main_part = get_trigger_arg(bot, triggerargsarraypart, 1)
+        command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
+        command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
         bot.say("command_full_part")
         #command_mainsplit(bot, trigger, triggerargsarray_part, instigator, botvisibleusers, currentuserlistarray, dueloptedinarray, now, currentduelplayersarray, canduelarray, command_type, duels_dev_channels, commands_valid, command_full_part, command_main_part)
 
