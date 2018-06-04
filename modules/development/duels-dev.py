@@ -3233,6 +3233,7 @@ def check_instigator(bot, trigger, instigator, commands_valid, dev_bypass_checks
             onscreentext(bot, gameenabledchannels, dispmsgarray)
             adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
             osd_notice(bot, instigator, "Duels Has been enabled for you automatically. To disable, run .duel off.")
+            checkpass = 1
         return checkpass
 
     checkpass = 1
