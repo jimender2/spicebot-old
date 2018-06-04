@@ -380,6 +380,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
     ## Valid Commands
     commands_valid = duels_valid_commands(bot)
+    command_main = get_trigger_arg(bot, triggerargsarray, 1)
 
     ## Validate Instigator
     check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid, command_main)
