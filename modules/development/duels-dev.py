@@ -484,7 +484,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
         command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
         command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
-        command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
+        command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
@@ -533,7 +533,7 @@ def users_bot_lists(bot, instigator, commands_valid, channel_current):
 
     return botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray
 
-def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray):
+def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type):
 
     ## Cheap error handling for people that like to find issues
     if command_main.isdigit():
@@ -606,7 +606,7 @@ def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_de
                     command_main = player
         ## Did we match?
         if command_main != comorig:
-            command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
+            command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type)
         else:
             onscreentext(bot, [instigator], validtargetmsg)
         return
