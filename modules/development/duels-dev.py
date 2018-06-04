@@ -383,7 +383,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     command_main = get_trigger_arg(bot, triggerargsarray, 1)
 
     ## Validate Instigator
-    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid, command_main)
+    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid)
     if not check_instigator_pass:
         return
 
@@ -3206,7 +3206,7 @@ def check_game_enabled(bot, trigger, instigator, channel_current):
     checkpass = 1
     return checkpass
 
-def check_instigator(bot, trigger, instigator, commands_valid, command_main):
+def check_instigator(bot, trigger, instigator, commands_valid):
     checkpass = 0
 
     ## Instigator can't be a command, and can't enable duels
@@ -3222,8 +3222,17 @@ def check_instigator(bot, trigger, instigator, commands_valid, command_main):
     ## Check if Instigator is Opted in
     ## TODO check opt timeout and enable duels for this player. Inform them that they opted in, don't set the timestamp, but let them know they can opt out
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
-    if instigator not in dueloptedinarray and command_main.lower() not in commandarray_instigator_bypass:
-        osd_notice(bot, instigator, "You are not opted into duels. Run `.duel on` to enable duels.")
+    if instigator not in dueloptedinarray:
+        instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
+        if instigatoropttime < timeout_opt:
+            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
+        else:
+            gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+            dispmsgarray = []
+            dispmsgarray.append(instigator + " has entered the arena!")
+            onscreentext(bot, gameenabledchannels, dispmsgarray)
+            adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
+            osd_notice(bot, instigator, "Duels Has been enabled for you automatically. To disable, run .duel off.")
         return checkpass
 
     checkpass = 1
