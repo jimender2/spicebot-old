@@ -383,7 +383,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     command_main = get_trigger_arg(bot, triggerargsarray, 1)
 
     ## Validate Instigator
-    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid)
+    check_instigator_pass = check_instigator(bot, trigger, instigator, commands_valid, dev_bypass_checks)
     if not check_instigator_pass:
         return
 
@@ -3206,7 +3206,7 @@ def check_game_enabled(bot, trigger, instigator, channel_current):
     checkpass = 1
     return checkpass
 
-def check_instigator(bot, trigger, instigator, commands_valid):
+def check_instigator(bot, trigger, instigator, commands_valid, dev_bypass_checks):
     checkpass = 0
 
     ## Instigator can't be a command, and can't enable duels
@@ -3224,8 +3224,8 @@ def check_instigator(bot, trigger, instigator, commands_valid):
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     if instigator not in dueloptedinarray:
         instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
-        if instigatoropttime < timeout_opt:
-            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
+        if instigatoropttime < timeout_opt and dev_bypass_checks == 1 and not trigger.admin:
+            osd_notice(bot, instigator, "You are not opted into duels. It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
         else:
             gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
             dispmsgarray = []
