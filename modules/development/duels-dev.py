@@ -484,7 +484,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
         command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
         command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
-        command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current)
+        command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
