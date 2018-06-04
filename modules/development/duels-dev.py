@@ -458,7 +458,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         return
 
     ## User Lists
-    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid)
+    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     ## MOVE
     statreset(bot, instigator)
@@ -503,7 +503,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
-def users_bot_lists(bot, instigator, commands_valid):
+def users_bot_lists(bot, instigator, commands_valid, channel_current):
 
     ## user lists
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
