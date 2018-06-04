@@ -2232,6 +2232,7 @@ def subcommand_stats(bot, instigator, triggerargsarray, botvisibleusers, current
             statname = x
             if statname == 'class_setting':
                 statname = 'class'
+                gethowmany = gethowmany.title()
             statname = statname.title()
             dispmsgarray.append(statname + "=" + str(gethowmany))
     dispmsgarrayb = []
