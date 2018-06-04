@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    message = get_trigger_arg(bot, triggerargsarray, '2+')
+    message = get_trigger_arg(bot, triggerargsarray, '1+')
     if not message:
         message = "Add what you want me to say"
     bot.say(message)
