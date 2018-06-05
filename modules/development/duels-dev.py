@@ -396,9 +396,9 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     if not command_full_pass:
         return
 
-    ## MOVE
-    statreset(bot, instigator)
-    healthcheck(bot, instigator)
+    ## MOVE ## TODO
+    #statreset(bot, instigator)
+    #healthcheck(bot, instigator)
 
     ## Empty For now
     botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = [],[],[],[],[]
@@ -415,7 +415,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     ## Cycle through command array
     daisychaincount = 0
     for command_split_partial in commands_array:
-        deathblowcheck(bot, instigator) ## TODO
+        #deathblowcheck(bot, instigator) ## TODO
         daisychaincount = daisychaincount + 1
         if daisychaincount <= 5:
             time.sleep(randint(1, 3))
