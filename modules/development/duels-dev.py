@@ -489,6 +489,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
 
     ## Alternative Commands
     altcoms = alternative_commands_valid(bot, commands_valid)
+    bot.say(str(altcoms))
     if command_main.lower() in altcoms:
         for subcom in altcoms:
             bot.say(subcom)
