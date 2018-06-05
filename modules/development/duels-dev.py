@@ -393,13 +393,13 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     if not command_full_pass:
         return
 
-    ## User Lists
-    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
-
     ## MOVE
     statreset(bot, instigator)
     healthcheck(bot, instigator)
-    
+
+    ## Empty For now
+    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = [],[],[],[],[]
+
     ## IF "&&" is in the full input, it is treated as multiple commands, and is split
     commands_array = []
     ## Build array of commands used
@@ -420,14 +420,18 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
         command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
         command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
-        command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type)
+        command_main_process(bot, trigger, triggerargsarray_part, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
 
     ## bot does not need stats or backpack items
     refreshbot(bot)
 
     ## Instigator last used
     set_database_value(bot, instigator, 'lastcommand', now)
-    
+
+    ## Usage Counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+
     ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
     if currenttier >= 15:
@@ -439,25 +443,12 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         duelrecordwipe(bot)
         set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
 
-def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type):
-
+def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray):
+    
     ## Cheap error handling for people that like to find issues
     if command_main.isdigit():
         osd_notice(bot, instigator, "Commands can't be numbers.")
         return
-
-    ## Alternative commands
-    altcoms = []
-    for subcom in commands_valid:
-        try:
-            commandarray_alt_eval = eval("commandarray_alt_"+subcom)
-            for x in commandarray_alt_eval:
-                altcoms.append(x)
-            if command_main.lower() in commandarray_alt_eval:
-                command_main = subcom
-                continue
-        except NameError:
-            continue
 
     ## channel_current Block
     channel_current = trigger.sender
@@ -471,7 +462,7 @@ def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_de
         if command_type != 'actionduel':
             staminapass = staminacheck(bot, instigator, channel_current, command_main.lower())
             if staminapass:
-                subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels, commands_valid)
+                subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, now, channel_current, duels_dev_channels, commands_valid)
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
@@ -488,41 +479,33 @@ def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_de
         onscreentext(bot, channel_current, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
-    ## Check if target is valid
-    comorig = command_main
-    validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
-    if not validtarget:
-        ## Mis-spellings ## TODO add alternative commands
-        ## Check Commands
-        for com in commands_valid:
-            similarlevel = similar(command_main.lower(),com)
-            if similarlevel >= .75:
-                command_main = com
-        ## Check alt commands
-        if command_main == comorig:
-            for com in altcoms:
-                similarlevel = similar(command_main.lower(),com)
-                if similarlevel >= .75:
-                    command_main = com
-        ## Check players, but only if we didn't alreayd match a command
-        if command_main == comorig:
-            for player in botvisibleusers:
-                similarlevel = similar(command_main.lower(),player)
-                if similarlevel >= .75:
-                    command_main = player
-        ## Did we match?
-        if command_main != comorig:
-            command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, command_type)
-        else:
-            onscreentext(bot, [instigator], validtargetmsg)
+    ## Alternative Commands
+    altcoms = alternative_commands_valid(bot)
+    if command_main.lower() in altcoms:
+        for subcom in altcoms:
+            commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+            if command_main.lower() in commandarray_alt_eval:
+                command_main = subcom
+                command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type)
         return
+
+    ## User Lists
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    if command_main in botvisibleusers:
+        validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+
+        ## Check for Mis-Spelled commands or targets
+        if not validtarget:
+            command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
+            return
 
     ## Run the duel
     ## Targets must be dueled in channel
     if not channel_current.startswith("#"):
         osd_notice(bot, instigator, "Duels must be in channel.")
         return
-
+    
     ## stamina check TODO
     staminapass = staminacheck(bot, instigator, channel_current, 'combat')
     if staminapass:
@@ -530,10 +513,43 @@ def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_de
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
 
-
-    ## Usage Counter
-    adjust_database_value(bot, instigator, 'usage_total', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+def alternative_commands_valid(bot):
+    altcoms = []
+    for subcom in commands_valid:
+        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+        for x in commandarray_alt_eval:
+            altcoms.append(x)
+    return altcoms
+            
+def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray):
+    comorig = command_main
+    
+    ## Check Commands
+    for com in commands_valid:
+        similarlevel = similar(command_main.lower(),com)
+        if similarlevel >= .75:
+            command_main = com
+            
+    ## Check alt commands
+    if command_main == comorig:
+        for com in altcoms:
+            similarlevel = similar(command_main.lower(),com)
+            if similarlevel >= .75:
+                command_main = com
+                
+    ## Check players, but only if we didn't alreayd match a command
+    if command_main == comorig:
+        for player in botvisibleusers:
+            similarlevel = similar(command_main.lower(),player)
+            if similarlevel >= .75:
+                command_main = player
+                
+    ## Did we match?
+    if command_main != comorig:
+        command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
+    else:
+        onscreentext(bot, [instigator], validtargetmsg)
+    return
 
 #######################
 ## Subcommands Usage ##
@@ -542,6 +558,10 @@ def command_main_split(bot, trigger, triggerargsarray, instigator, now, duels_de
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid):
 
+    ## temp userlist for commands that need it ## TODO
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        
     ## Admin Command Blocker
     if command_main.lower() in commandarray_admin and not trigger.admin:
         osd_notice(bot, instigator, "This admin function is only available to bot admins.")
@@ -589,6 +609,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
 #####################
 
 def duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels):
+
     ## Lockout Check, don't allow multiple duels simultaneously
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
@@ -4150,8 +4171,6 @@ def monsterstats(bot, currentduelplayersarray, scale):
         playerstatarrayaverage = int(playerstatarrayaverage)
         if playerstatarrayaverage > 0:
             set_database_value(bot, 'duelsmonster', x, int(playerstatarrayaverage * scale))
-
-
 
 ######################
 ## Winner Selection ##
