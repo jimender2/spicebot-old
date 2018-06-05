@@ -396,7 +396,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     if not command_full_pass:
         return
 
-    ## MOVE
+    ## MOVE ## TODO
     statreset(bot, instigator)
     healthcheck(bot, instigator)
 
@@ -413,13 +413,13 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         for command_split in command_full_split:
             commands_array.append(command_split)
     ## Cycle through command array
-    daisychaincount = 0
+    #daisychaincount = 0
     for command_split_partial in commands_array:
         deathblowcheck(bot, instigator) ## TODO
-        daisychaincount = daisychaincount + 1
-        if daisychaincount <= 5:
-            time.sleep(randint(1, 3))
-            daisychaincount = 1
+        #daisychaincount = daisychaincount + 1
+        #if daisychaincount <= 5:
+        #    time.sleep(randint(1, 3))
+        #    daisychaincount = 1
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
         command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
         command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
