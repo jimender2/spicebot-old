@@ -489,10 +489,8 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
 
     ## Alternative Commands
     altcoms = alternative_commands_valid(bot, commands_valid)
-    bot.say(str(altcoms))
     if command_main.lower() in altcoms:
         for subcom in altcoms:
-            bot.say(subcom)
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if command_main.lower() in commandarray_alt_eval:
                 command_main = subcom
@@ -524,9 +522,9 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
             command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms)
             return
 
-def alternative_commands_valid(bot, commands_valid):
+def alternative_commands_valid(bot):
     altcoms = []
-    for subcom in commands_valid:
+    for subcom in commandarray_alternate_list:
         commandarray_alt_eval = eval("commandarray_alt_"+subcom)
         for x in commandarray_alt_eval:
             altcoms.append(x)
