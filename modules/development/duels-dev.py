@@ -423,6 +423,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         triggerargsarray_part = get_trigger_arg(bot, command_split_partial, 'create')
         command_full_part = get_trigger_arg(bot, triggerargsarray_part, 0)
         command_main_part = get_trigger_arg(bot, triggerargsarray_part, 1)
+        bot.say("respose time")
         command_main_process(bot, trigger, triggerargsarray_part, instigator, now, duels_dev_channels, commands_valid, command_full_part, command_main_part, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
 
     ## bot does not need stats or backpack items
