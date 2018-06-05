@@ -63,7 +63,7 @@ def execute_main(bot, trigger):
             else:
                 bot.say("That feature has already been rejected by the dev team.")
         if baduser:
-            bot.say("Due to abusing this module you have been banned from using it, " + str(instigator))
+            bot.say("Due to abusing this module you have been banned from using it, %s" % instigator)
         if noquery:
             bot.say("What feature/issue do you want to post?")
     else:
