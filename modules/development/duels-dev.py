@@ -359,7 +359,6 @@ def mainfunction(bot, trigger):
 ####################################
 
 def execute_main(bot, trigger, triggerargsarray, command_type):
-    bot.say("respose time")
 
     ## Instigator variable to describe the nickname that initiated the command
     instigator = trigger.nick
