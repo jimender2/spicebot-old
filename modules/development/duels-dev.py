@@ -580,12 +580,6 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
                 onscreentext(bot, channel_current, "Duel " + command_main + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
                 return
 
-    ## usage counter
-    adjust_database_value(bot, instigator, 'usage_total', 1)
-    adjust_database_value(bot, instigator, 'usage_'+command_main.lower(), 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
-    adjust_database_value(bot, duelrecorduser, 'usage_'+command_main.lower(), 1)
-
     ## Temporary during rewrite
     #if botvisibleusers == []:
     #    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
@@ -594,6 +588,12 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)')
     eval(subcommand_run)
     staminacharge(bot, instigator, command_main.lower())
+    
+    ## usage counter
+    adjust_database_value(bot, instigator, 'usage_total', 1)
+    adjust_database_value(bot, instigator, 'usage_'+command_main.lower(), 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
+    adjust_database_value(bot, duelrecorduser, 'usage_'+command_main.lower(), 1)
 
     ## reset the game
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
