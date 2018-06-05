@@ -397,8 +397,8 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         return
 
     ## MOVE
-    statreset(bot, instigator)
-    healthcheck(bot, instigator)
+    #statreset(bot, instigator)
+    #healthcheck(bot, instigator)
 
     ## Empty For now
     botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = [],[],[],[],[]
