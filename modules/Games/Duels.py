@@ -1168,7 +1168,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     if target != instigator:
         dispmsgarray.append(target + " has entered the arena!")
     else:
-        dispmsgarray.append(instigator + " has entered the arena!")
+        dispmsgarray.append(target + " has entered the arena!")
     onscreentext(bot, duels_enabled_channels, dispmsgarray)
 
 ## Off Subcommand
