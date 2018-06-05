@@ -462,7 +462,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         if command_type != 'actionduel':
             staminapass = staminacheck(bot, instigator, channel_current, command_main.lower())
             if staminapass:
-                subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, now, channel_current, duels_dev_channels, commands_valid)
+                subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid)
             else:
                 osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         else:
