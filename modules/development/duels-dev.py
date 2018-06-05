@@ -1119,7 +1119,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
         if target.lower() in [x.lower() for x in dueloptedinarray]:
             osd_notice(bot, instigator, "It looks like " + target + " already has duels on.")
             return
-        reasonmessage = get_trigger_arg(bot, triggerargsarray, 3+)
+        reasonmessage = get_trigger_arg(bot, triggerargsarray, '3+')
         if not reasonmessage:
             if not trigger.admin:
                 osd_notice(bot, instigator, "if you would like " + target + " to play duels, you can run this command along with a message, that they will get privately.")
