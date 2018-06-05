@@ -1107,6 +1107,33 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid):
 
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+
+    target = get_trigger_arg(bot, triggerargsarray, 2)
+    if target and target != instigator:    
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+        if not validtarget:
+            osd_notice(bot, instigator, validtargetmsg)
+            return
+        if target.lower() in [x.lower() for x in dueloptedinarray]:
+            osd_notice(bot, instigator, "It looks like " + target + " already has duels on.")
+            return
+        reasonmessage = get_trigger_arg(bot, triggerargsarray, 3+)
+        if not reasonmessage:
+            if not trigger.admin:
+                osd_notice(bot, instigator, "if you would like " + target + " to play duels, you can run this command along with a message, that they will get privately.")
+            else:
+                osd_notice(bot, instigator, "you must include a message to send to " + target + " as to why you are changing their ot-in status to on.")
+        else:
+            if trigger.admin:
+                osd_notice(bot, target, instigator + " enabled duels for you for the following reason: " + str(reasonmessage)+ ".")
+            else:
+                osd_notice(bot, target, instigator + " thinks you should opt into duels for the following reason: " + str(reasonmessage)+ ". To opt in, run .duel on.")
+        return
+        
+
+            
     ## User can't toggle status all the time
     instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
     if instigatoropttime < timeout_opt:
