@@ -513,7 +513,13 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
 
-        
+def alternative_commands_valid(bot):
+    altcoms = []
+    for subcom in commands_valid:
+        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+        for x in commandarray_alt_eval:
+            altcoms.append(x)
+    return altcoms
             
 def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray):
     comorig = command_main
