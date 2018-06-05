@@ -4306,6 +4306,7 @@ def refreshduelsmonster(bot):
 
 def monsterstats(bot, currentduelplayersarray, scale):
     duelstatsadminarray = duels_valid_stats(bot)
+    bot.say(str(currentduelplayersarray))
     for x in duelstatsadminarray:
         playerstatarrayaverage = 0
         currentstatarray = []
