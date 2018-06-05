@@ -1096,7 +1096,9 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         onscreentext(bot, channel_current, "Online Docs: " + GITWIKIURL)
         return
     ## private message player
-    validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
     if not validtarget:
         osd_notice(bot, instigator, validtargetmsg)
         return
