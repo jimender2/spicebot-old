@@ -489,7 +489,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if command_main.lower() in commandarray_alt_eval:
                 command_main = subcom
-                command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type)
+                command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
         return
 
     ## User Lists
