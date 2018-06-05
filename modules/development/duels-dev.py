@@ -3318,7 +3318,7 @@ def check_instigator(bot, trigger, instigator, commands_valid, dev_bypass_checks
     ## Instigator can't be a command, and can't enable duels
     if instigator.lower() in commands_valid:
         osd_notice(bot, instigator, "Your nick is the same as a valid command for duels.")
-        return
+        return checkpass
 
     ## Instigator can't duelrecorduser
     if instigator.lower() == duelrecorduser:
@@ -3326,23 +3326,22 @@ def check_instigator(bot, trigger, instigator, commands_valid, dev_bypass_checks
         return checkpass
 
     ## Check if Instigator is Opted in
-    ## TODO check opt timeout and enable duels for this player. Inform them that they opted in, don't set the timestamp, but let them know they can opt out
     dueloptedinarray = get_database_value(bot, duelrecorduser, 'duelusers') or []
     if instigator not in dueloptedinarray:
         instigatoropttime = get_timesince_duels(bot, instigator, 'timeout_opttime')
         if instigatoropttime < timeout_opt and dev_bypass_checks == 1 and not trigger.admin:
             osd_notice(bot, instigator, "You are not opted into duels. It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
-        elif command_main == 'off' or command_main == 'on':
-            checkpass = 1
+            return checkpass
         else:
-            gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
-            dispmsgarray = []
-            dispmsgarray.append(instigator + " has entered the arena!")
-            onscreentext(bot, gameenabledchannels, dispmsgarray)
-            adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
-            osd_notice(bot, instigator, "Duels Has been enabled for you automatically. To disable, run .duel off.")
+            if command_main != 'off' and command_main != 'on':
+                osd_notice(bot, instigator, "Duels Has been enabled for you automatically. To disable, run .duel off.")
+                gameenabledchannels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+                dispmsgarray = []
+                dispmsgarray.append(instigator + " has entered the arena!")
+                onscreentext(bot, gameenabledchannels, dispmsgarray)
+                adjust_database_array(bot, duelrecorduser, [instigator], 'duelusers', 'add')
             checkpass = 1
-        return checkpass
+            return checkpass
 
     checkpass = 1
     return checkpass
