@@ -495,28 +495,29 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     ## User Lists
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
-    if command_main in botvisibleusers:
-        validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
-        if validtarget:
-            ## Run the duel
-            ## Targets must be dueled in channel
-            if not channel_current.startswith("#"):
-                osd_notice(bot, instigator, "Duels must be in channel.")
-                return
-            
-            ## stamina check TODO
-            staminapass = staminacheck(bot, instigator, channel_current, 'combat')
-            if staminapass:
-                duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels)
-            else:
-                osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
+
+    ## Spell Check for non-nicks
+    if command_main not in botvisibleusers:
+        command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms)
+        return
+        
+    ## Duel Run
+    validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+    if validtarget:
+        ## Run the duel
+        ## Targets must be dueled in channel
+        if not channel_current.startswith("#"):
+            osd_notice(bot, instigator, "Duels must be in channel.")
             return
-            
-        ## Check for Mis-Spelled commands or targets
-        if not validtarget:
-            command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms)
-            return
-            
+        
+        ## stamina check TODO
+        staminapass = staminacheck(bot, instigator, channel_current, 'combat')
+        if staminapass:
+            duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels)
+        else:
+            osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
+        return
+
 def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms):
     comorig = command_main
     
