@@ -1112,7 +1112,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
 
     target = get_trigger_arg(bot, triggerargsarray, 2)
     if target and target != instigator:    
-        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+        validtarget, validtargetmsg = nickcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
         if not validtarget:
             osd_notice(bot, instigator, validtargetmsg)
             return
@@ -3478,6 +3478,55 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
         target = actualname(bot, target)
         validtarget = 0
         validtargetmsg.append(target + " has duels disabled.")
+
+    ## None of the above
+    if target.lower() not in [y.lower() for y in currentuserlistarray]:
+        target = actualname(bot, target)
+        validtarget = 0
+        validtargetmsg.append(target + " is either not here, or not a valid nick to target.")
+
+    if target != instigator and validtarget == 1:
+        statreset(bot, target)
+        healthcheck(bot, target)
+
+    return validtarget, validtargetmsg
+
+## actual nick
+def nickcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid):
+
+    ## Guilty until proven Innocent
+    validtarget = 1
+    validtargetmsg = []
+
+    ## Target is instigator
+    if target == instigator:
+        return validtarget, validtargetmsg
+    
+    ## Null Target
+    if not target:
+        validtarget = 0
+        validtargetmsg.append("You must specify a target.")
+
+    ## Bot
+    if target == bot.nick or target == 'duelrecorduser':
+        validtarget = 0
+        validtargetmsg.append(target + " can't be targeted.")
+
+    ## Target can't be a valid command
+    if target.lower() in commands_valid:
+        validtarget = 0
+        validtargetmsg.append(target + "'s nick is the same as a valid command for duels.")
+
+    ## Target can't be duelrecorduser
+    if target.lower() == duelrecorduser:
+        validtarget = 0
+        validtargetmsg.append(target + "'s nick is unusable for duels.")
+
+    ## Offline User
+    if target.lower() in [x.lower() for x in botvisibleusers] and target.lower() not in [y.lower() for y in currentuserlistarray]:
+        validtarget = 0
+        target = actualname(bot, target)
+        validtargetmsg.append(target + " is offline right now.")
 
     ## None of the above
     if target.lower() not in [y.lower() for y in currentuserlistarray]:
