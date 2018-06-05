@@ -1239,9 +1239,9 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     dispmsgarray = []
     if target == instigator:
         cowardterm = get_trigger_arg(bot, cowardarray, 'random')
-        dispmsgarray.append(instigator + " has left the arena! " + cowardterm)
+        dispmsgarray.append(target + " has left the arena! " + cowardterm)
     else:
-        dispmsgarray.append(instigator + " has left the arena! ")
+        dispmsgarray.append(target + " has left the arena! ")
     onscreentext(bot, duels_enabled_channels, dispmsgarray)
 
 ## Enable game
