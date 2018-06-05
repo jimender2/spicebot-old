@@ -1165,7 +1165,10 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
     ## Anounce to channels
     duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     dispmsgarray = []
-    dispmsgarray.append(instigator + " has entered the arena!")
+    if target != instigator:
+        dispmsgarray.append(target + " has entered the arena!")
+    else:
+        dispmsgarray.append(instigator + " has entered the arena!")
     onscreentext(bot, duels_enabled_channels, dispmsgarray)
 
 ## Off Subcommand
@@ -1234,8 +1237,11 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
     ## Anounce to channels
     duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     dispmsgarray = []
-    cowardterm = get_trigger_arg(bot, cowardarray, 'random')
-    dispmsgarray.append(instigator + " has left the arena! " + cowardterm)
+    if target == instigator:
+        cowardterm = get_trigger_arg(bot, cowardarray, 'random')
+        dispmsgarray.append(instigator + " has left the arena! " + cowardterm)
+    else:
+        dispmsgarray.append(instigator + " has left the arena! ")
     onscreentext(bot, duels_enabled_channels, dispmsgarray)
 
 ## Enable game
