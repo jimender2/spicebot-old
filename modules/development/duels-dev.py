@@ -1075,6 +1075,8 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 ## Subcommands ##
 #################
 
+## targetcheck not needed if instigator
+
 ## temp userlist for commands that need it ## TODO
 #if botvisibleusers == []:
 #    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
@@ -3412,6 +3414,10 @@ def targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlista
     validtarget = 1
     validtargetmsg = []
 
+    ## Target is instigator
+    if target == instigator:
+        return validtarget, validtargetmsg
+    
     ## Null Target
     if not target:
         validtarget = 0
