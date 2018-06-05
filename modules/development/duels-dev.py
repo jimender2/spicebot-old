@@ -587,8 +587,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     adjust_database_value(bot, duelrecorduser, 'usage_'+command_main.lower(), 1)
 
     ## Temporary during rewrite
-    if botvisibleusers == []:
-        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
         
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)')
@@ -4314,8 +4313,11 @@ def monsterstats(bot, currentduelplayersarray, scale):
             playernumber = get_database_value(bot, player, x)
             if str(playernumber).isdigit():
                 currentstatarray.append(playernumber)
-        playerstatarrayaverage = mean(currentstatarray)
-        playerstatarrayaverage = int(playerstatarrayaverage)
+        if playerstatarrayaverage == []:
+            playerstatarrayaverage = mean(currentstatarray)
+            playerstatarrayaverage = int(playerstatarrayaverage)
+        else:
+            playerstatarrayaverage = 0
         if playerstatarrayaverage > 0:
             set_database_value(bot, 'duelsmonster', x, int(playerstatarrayaverage * scale))
 
