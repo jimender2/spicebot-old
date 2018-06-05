@@ -485,7 +485,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     ## Alternative Commands
     altcoms = alternative_commands_valid(bot)
     if command_main.lower() in altcoms:
-        for subcom in altcoms:
+        for subcom in commandarray_alternate_list:
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if command_main.lower() in commandarray_alt_eval:
                 command_main = subcom
