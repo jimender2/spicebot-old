@@ -491,6 +491,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     altcoms = alternative_commands_valid(bot, commands_valid)
     if command_main.lower() in altcoms:
         for subcom in altcoms:
+            bot.say(subcom)
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
             if command_main.lower() in commandarray_alt_eval:
                 command_main = subcom
@@ -571,7 +572,6 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
-    bot.say(command_main)
     ## Admin Command Blocker
     if command_main.lower() in commandarray_admin and not trigger.admin:
         osd_notice(bot, instigator, "This admin function is only available to bot admins.")
@@ -619,6 +619,7 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
 #####################
 
 def duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels):
+
     ## Lockout Check, don't allow multiple duels simultaneously
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
     if duelslockout:
