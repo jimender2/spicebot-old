@@ -502,6 +502,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         return
         
     ## Duel Run
+    bot.say("test")
     validtarget, validtargetmsg = targetcheck(bot, command_main, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
     if validtarget:
         ## Run the duel
