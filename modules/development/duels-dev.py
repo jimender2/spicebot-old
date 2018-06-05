@@ -570,7 +570,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     ## temp userlist for commands that need it ## TODO
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
-        
+
+    bot.say(command_main)
     ## Admin Command Blocker
     if command_main.lower() in commandarray_admin and not trigger.admin:
         osd_notice(bot, instigator, "This admin function is only available to bot admins.")
