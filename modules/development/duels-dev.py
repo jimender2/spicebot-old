@@ -413,7 +413,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
         for command_split in command_full_split:
             commands_array.append(command_split)
     ## Cycle through command array
-    #daisychaincount = 0
+    #daisychaincount = 0 ## TODO flood protection shouldn't soley rely on ZNC
     for command_split_partial in commands_array:
         deathblowcheck(bot, instigator) ## TODO
         #daisychaincount = daisychaincount + 1
@@ -581,8 +581,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
                 return
 
     ## Temporary during rewrite
-    #if botvisibleusers == []:
-    #    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)')
