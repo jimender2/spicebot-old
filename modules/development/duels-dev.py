@@ -1970,7 +1970,7 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main + 'instigator'), instigator)
 
-    monsterstats(bot, currentduelplayersarray, 5)
+    monsterstats(bot, instigator, currentduelplayersarray, 5)
 
     duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, channel_current, 'quest', duels_dev_channels)
 
@@ -2000,7 +2000,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
         osd_notice(bot, instigator, validtargetmsg)
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
-    monsterstats(bot, currentduelplayersarray, 1)
+    monsterstats(bot, instigator, currentduelplayersarray, 1)
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'random', duels_dev_channels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
@@ -4305,7 +4305,7 @@ def refreshduelsmonster(bot):
     for x in duelstatsadminarray:
         set_database_value(bot, 'duelsmonster', x, None)
 
-def monsterstats(bot, currentduelplayersarray, scale):
+def monsterstats(bot, instigator, currentduelplayersarray, scale):
     duelstatsadminarray = duels_valid_stats(bot)
     for x in duelstatsadminarray:
         playerstatarrayaverage = 0
@@ -4314,8 +4314,11 @@ def monsterstats(bot, currentduelplayersarray, scale):
             playernumber = get_database_value(bot, player, x)
             if str(playernumber).isdigit():
                 currentstatarray.append(playernumber)
-        playerstatarrayaverage = mean(currentstatarray)
-        playerstatarrayaverage = int(playerstatarrayaverage)
+        if currentstatarray != []
+            playerstatarrayaverage = mean(currentstatarray)
+            playerstatarrayaverage = int(playerstatarrayaverage)
+        else:
+            playerstatarrayaverage = get_database_value(bot, instigator, x)
         if playerstatarrayaverage > 0:
             set_database_value(bot, 'duelsmonster', x, int(playerstatarrayaverage * scale))
 
