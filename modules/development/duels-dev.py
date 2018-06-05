@@ -481,15 +481,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     if command_main.lower() == instigator.lower():
         onscreentext(bot, channel_current, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
-
-    if command_main.lower() == 'on':
-        subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)
-        return
-
-    if command_main.lower() == 'off':
-        subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)
-        return
-
+ 
     ## Alternative Commands
     altcoms = alternative_commands_valid(bot)
     if command_main.lower() in altcoms:
@@ -588,6 +580,10 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     adjust_database_value(bot, duelrecorduser, 'usage_total', 1)
     adjust_database_value(bot, duelrecorduser, 'usage_'+command_main.lower(), 1)
 
+    ## Temporary during rewrite
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)')
     eval(subcommand_run)
@@ -1108,7 +1104,15 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
-    if target and target != instigator:    
+    if target and target != instigator:  
+        if target == 'all' or target == 'everyone':
+            duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+            if not trigger.admin:
+                onscreentext(bot, duels_enabled_channels, instigator + " thinks everybody should play duels!")
+            else:
+                onscreentext(bot, duels_enabled_channels, instigator + " enabled duels for everyone!")
+                adjust_database_array(bot, duelrecorduser, botvisibleusers, 'duelusers', 'add')
+            return
         validtarget, validtargetmsg = nickcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
         if not validtarget:
             osd_notice(bot, instigator, validtargetmsg)
@@ -1169,7 +1173,15 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
-    if target and target != instigator:    
+    if target and target != instigator:
+        if target == 'all' or target == 'everyone':
+            duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
+            if not trigger.admin:
+                onscreentext(bot, duels_enabled_channels, instigator + " thinks everybody should stop playing duels!")
+            else:
+                onscreentext(bot, duels_enabled_channels, instigator + " disabled duels for everyone!")
+                reset_database_value(bot, duelrecorduser, 'duelusers')
+            return
         validtarget, validtargetmsg = nickcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
         if not validtarget:
             osd_notice(bot, instigator, validtargetmsg)
