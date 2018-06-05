@@ -17,7 +17,7 @@ config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
 USERNAME = config.get("github","username")
 PASSWORD = config.get("github","password")
-    
+
 # Repo
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
@@ -30,9 +30,10 @@ def execute_main(bot, trigger):
     banneduserarray = get_botdatabase_value(bot, bot.nick, 'githubblockedusers') or [] # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
-    inputtext = trigger.group(2)
+    inputtext = trigger.group(2) or 'nothing'
     badquery = 0
     baduser = 0
+    noquery = 0
     if maincommand == 'feature' or maincommand == 'feetcher':
         labels=['Feature Request']
         title='Feature Request'
@@ -48,14 +49,14 @@ def execute_main(bot, trigger):
         title='Issue Report'
         action = " found an issue"
         assignee = ''
-    if not inputtext:
-        bot.say("What feature/issue do you want to post?")
+    if inputtext == 'nothing':
+        noquery = 1
     for request in dontaskforthese:
         if request in inputtext and not trigger.admin:
             badquery = 1
     if str(instigator) in banneduserarray:
-        baduser = 1    
-    if badquery or baduser:
+        baduser = 1
+    if badquery or baduser or noquery:
         if badquery:
             if inputtext.startswith('duel'):
                 bot.say("The duels developer has already said no to that. Stop asking.")
@@ -63,6 +64,8 @@ def execute_main(bot, trigger):
                 bot.say("That feature has already been rejected by the dev team.")
         if baduser:
             bot.say("Due to abusing this module you have been banned from using it, " + str(instigator))
+        if noquery:
+            bot.say("What feature/issue do you want to post?")
     else:
         if inputtext.startswith('duel'):
             title = "DUELS: " + title
