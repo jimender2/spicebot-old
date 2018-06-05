@@ -2000,7 +2000,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     monsterstats(bot, currentduelplayersarray, 1)
-    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'random', duels_dev_channels)
+    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'combat', duels_dev_channels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
