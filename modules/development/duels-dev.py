@@ -1150,7 +1150,7 @@ def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuse
         elif trigger.admin and target != instigator:
             allowpass = 1
         else:
-            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
+            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))) + ".")
             return
 
     ## check if player already has duels on
@@ -1222,7 +1222,7 @@ def subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentus
         elif trigger.admin and target != instigator:
             allowpass = 1
         else:
-            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - instigatoropttime))) + ".")
+            osd_notice(bot, instigator, "It looks like you can't enable/disable duels for " + str(hours_minutes_seconds((timeout_opt - targetopttime))) + ".")
             return
 
     ## check if player already has duels on
