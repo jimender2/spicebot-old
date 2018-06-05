@@ -480,7 +480,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         return
 
     ## Alternative Commands
-    altcoms = alternative_commands_valid(bot)
+    altcoms = alternative_commands_valid(bot, commands_valid)
     if command_main.lower() in altcoms:
         for subcom in altcoms:
             commandarray_alt_eval = eval("commandarray_alt_"+subcom)
@@ -513,7 +513,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     else:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
 
-def alternative_commands_valid(bot):
+def alternative_commands_valid(bot, commands_valid):
     altcoms = []
     for subcom in commands_valid:
         commandarray_alt_eval = eval("commandarray_alt_"+subcom)
