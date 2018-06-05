@@ -544,9 +544,9 @@ def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duel
     if command_main != comorig:
         command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray)
     else:
+        validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
         if not validtarget:
-            validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
-        onscreentext(bot, [instigator], validtargetmsg)
+            onscreentext(bot, [instigator], validtargetmsg)
     return
 
 #######################
