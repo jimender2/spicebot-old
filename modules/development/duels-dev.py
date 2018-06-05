@@ -4314,7 +4314,7 @@ def monsterstats(bot, instigator, currentduelplayersarray, scale):
             playernumber = get_database_value(bot, player, x)
             if str(playernumber).isdigit():
                 currentstatarray.append(playernumber)
-        if currentstatarray != []
+        if currentstatarray != []:
             playerstatarrayaverage = mean(currentstatarray)
             playerstatarrayaverage = int(playerstatarrayaverage)
         else:
