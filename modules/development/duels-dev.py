@@ -479,6 +479,14 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         onscreentext(bot, channel_current, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
+    if command_main.lower() == 'on':
+        subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)
+        return
+
+    if command_main.lower() == 'off':
+        subcommand_off(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid)
+        return
+
     ## Alternative Commands
     altcoms = alternative_commands_valid(bot, commands_valid)
     if command_main.lower() in altcoms:
@@ -513,8 +521,6 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         if not validtarget:
             command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms)
             return
-
-    
 
 def alternative_commands_valid(bot, commands_valid):
     altcoms = []
