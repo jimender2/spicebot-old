@@ -30,7 +30,7 @@ def execute_main(bot, trigger):
     banneduserarray = get_botdatabase_value(bot, bot.nick, 'githubblockedusers') or [] # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
-    inputtext = trigger.group(2)
+    inputtext = trigger.group(2) or 'nothing'
     badquery = 0
     baduser = 0
     noquery = 0
@@ -49,7 +49,7 @@ def execute_main(bot, trigger):
         title='Issue Report'
         action = " found an issue"
         assignee = ''
-    if not inputtext:
+    if inputtext == 'nothing':
         noquery = 1
     for request in dontaskforthese:
         if request in inputtext and not trigger.admin:
