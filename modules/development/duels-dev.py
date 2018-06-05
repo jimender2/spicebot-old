@@ -521,14 +521,6 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         if not validtarget:
             command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms)
             return
-
-def alternative_commands_valid(bot):
-    altcoms = []
-    for subcom in commandarray_alternate_list:
-        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
-        for x in commandarray_alt_eval:
-            altcoms.append(x)
-    return altcoms
             
 def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, altcoms):
     comorig = command_main
@@ -566,10 +558,6 @@ def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duel
 
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid):
-
-    ## temp userlist for commands that need it ## TODO
-    if botvisibleusers == []:
-        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     ## Admin Command Blocker
     if command_main.lower() in commandarray_admin and not trigger.admin:
@@ -1086,6 +1074,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 #################
 ## Subcommands ##
 #################
+
+## temp userlist for commands that need it ## TODO
+#if botvisibleusers == []:
+#    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
 ## Author Subcommand
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid):
@@ -3318,6 +3310,14 @@ def users_bot_lists(bot, instigator, commands_valid, channel_current):
     random.shuffle(canduelarray)
 
     return botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray
+
+def alternative_commands_valid(bot):
+    altcoms = []
+    for subcom in commandarray_alternate_list:
+        commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+        for x in commandarray_alt_eval:
+            altcoms.append(x)
+    return altcoms
 
 #######################
 ## Valid Stats Array ##
