@@ -1329,7 +1329,7 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
         adjust_database_array(bot, duelrecorduser, [channeltarget], 'devenabled', 'add')
         onscreentext(bot, channeltarget, "Duels devmode has been enabled in " + channeltarget + "!")
     elif command == 'off':
-        if channeltarget in duels_enabled_channels:
+        if channeltarget not in duels_enabled_channels:
             osd_notice(bot, instigator, "Duels devmode is already off in " + channel_current + ".")
             return
         adjust_database_array(bot, duelrecorduser, [channeltarget], 'devenabled', 'del')
