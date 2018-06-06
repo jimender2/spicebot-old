@@ -3141,6 +3141,10 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
 
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
+
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+
     subcommand = get_trigger_arg(bot, triggerargsarray, 2).lower()
     if subcommand not in commands_valid and subcommand != 'bugbounty' and subcommand != 'channel':
         osd_notice(bot, instigator, "What Admin adjustment do you want to make?")
