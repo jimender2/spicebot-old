@@ -1191,6 +1191,13 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
             endmessage.append("Alternate Commands: "+alternatelist)
         ## TODO add tier unlock info
+        commandtier = tier_command(bot, command)
+        commandpepper = pepper_tier(bot, commandtier)
+        endmessage.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
+        tiermath = commandtier - currenttier
+        if tiermath > 0:
+            endmessage.append(str(tiermath) + " tier(s) remaining!")    
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
 
