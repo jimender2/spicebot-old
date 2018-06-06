@@ -282,6 +282,12 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 ## array of insulting departures
 cowardarray = ["What a coward!"]
 
+## Built-in docs
+helpdocs_on = "This Opts you into Duels. Running any command should opt you in, but this is the alternate way to do so."
+
+help_todo = ['tier','game', 'docs', 'admin', 'author','off','devmode','version','deathblow','combat','usage','streaks', 'bounty', 'harakiri','weaponslocker', 'class','leaderboard', 'warroom','stats',
+'loot','health','magic', 'armor','assault','roulette','monster','random','colosseum','title','mayhem','hungergames','quest']
+
 ## Monster List
 monstersarray = [
 "Aboleth","Beholder","Blue slaad","Chuul","Cloaker","Death kiss","Death slaad","Elder brain","Flumph","Gauth","Gazer","Gibbering mouther","Gray slaad","Green slaad","Grell","Intellect devourer",
