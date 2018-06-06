@@ -1142,12 +1142,15 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         target = inputtarget
 
     if messagetype != 'main':
-        try:
-            help_run = str('helpdocs_' + messagetype.lower())
-            endmessageeval = eval(help_run)
-            endmessage.append(endmessageeval)
-        except NameError:
-            endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
+        if messagetype in commandarray_alt_docs or messagetype == 'docs':
+            endmessage.append("Online Docs: " + GITWIKIURL)
+        else:
+            try:
+                help_run = str('helpdocs_' + messagetype.lower())
+                endmessageeval = eval(help_run)
+                endmessage.append(endmessageeval)
+            except NameError:
+                endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
         if messagetype in commandarray_alternate_list:
             commandarray_alt_evalb = eval("commandarray_alt_"+messagetype)
             alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
