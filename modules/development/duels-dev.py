@@ -459,6 +459,11 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         osd_notice(bot, instigator, "Duel " + command_main + " must be in channel.")
         return
 
+    ## Combat Command
+    if command_main.lower() == 'combat':
+        subcommand_combat(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, duels_enabled_channels)
+        return
+
     ## Subcommand Versus Target
     if command_main.lower() in commands_valid:
         ## If command was issued as an action
