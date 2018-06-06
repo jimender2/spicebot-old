@@ -1255,14 +1255,31 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not command:
         osd_notice(bot, instigator, "Options are On or Off.")
         return
+    channeltarget = get_trigger_arg(bot, triggerargsarray, 3)
+    if not channeltarget:
+        osd_notice(bot, instigator, "You must specify a channel.")
+        return
+    if not channeltarget.startswith("#"):
+        osd_notice(bot, instigator, "You must specify a valid channel.")
+        return
+    valid_channel_list = valid_bot_channels(bot)
+    if channeltarget not in valid_channel_list:
+        osd_notice(bot, instigator, "I don't appear to be in that channel.")
+        return
     if command == 'on':
-        adjust_database_array(bot, duelrecorduser, [channel_current], 'gameenabled', 'add')
-        osd_notice(bot, instigator, "Duels is on in " + channel_current + ".")
+        if channel_current in duels_enabled_channels:
+            osd_notice(bot, instigator, "Duels is already on in " + channel_current + ".")
+            return
+        adjust_database_array(bot, duelrecorduser, [channeltarget], 'gameenabled', 'add')
+        onscreentext(bot, channeltarget, "Duels has been enabled in " + channeltarget + "!")
     elif command == 'off':
-        adjust_database_array(bot, duelrecorduser, [channel_current], 'gameenabled', 'del')
-        osd_notice(bot, instigator, "Duels is off in " + channel_current + ".")
+        if channel_current not in duels_enabled_channels:
+            osd_notice(bot, instigator, "Duels is already off in " + channeltarget + ".")
+            return
+        adjust_database_array(bot, duelrecorduser, [channeltarget], 'gameenabled', 'del')
+        onscreentext(bot, channeltarget, "Duels has been disabled in " + channeltarget + "!")
     else:
-        osd_notice(bot, instigator, " Invalid command.")
+        osd_notice(bot, instigator, "Invalid command.")
 
 ## dev bypass
 def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
@@ -3401,6 +3418,12 @@ def alternative_commands_valid(bot):
         for x in commandarray_alt_eval:
             altcoms.append(x)
     return altcoms
+
+def valid_bot_channels(bot):
+    valid_channel_list = []
+    for c in bot.channels:
+        valid_channel_list.append(c)
+    return valid_channel_list
 
 #######################
 ## Valid Stats Array ##
