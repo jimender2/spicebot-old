@@ -2663,7 +2663,7 @@ def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, curre
                     adjust_database_value(bot, x, part, -abs(splitdamage))
                 playerheadhealth = get_database_value(bot, player, 'head')
                 playertorsohealth = get_database_value(bot, player, 'torso')
-                if loserheadhealth  <= 0 or playertorsohealth <= 0:
+                if playerheadhealth  <= 0 or playertorsohealth <= 0:
                     winnertextarray = whokilledwhom(bot, instigator, player)
                     diedinbattle.append(player)
                 else:
