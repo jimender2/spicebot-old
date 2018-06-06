@@ -78,7 +78,7 @@ commandarray_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','ja
 commandarray_tier_display_exclude = ['admin','game','devmode','version','author','deathblow'] ## Do NOT display
 
 ## Stamina required
-command_stamina_free = ['on','off','admin','devmode','game','stats','loot','streaks','health','tier','docs','author','version','usage','streaks','bounty','weaponslocker','class','armor','title','leaderboard', 'warroom']
+command_stamina_free = ['on','off','admin','devmode','game','stats','loot','streaks','health','tier','docs','author','version','usage','streaks','bounty','weaponslocker','class','armor','title','leaderboard', 'warroom','grenade']
 command_stamina_combat = 5
 command_stamina_deathblow = 1
 command_stamina_harakiri = 1
@@ -211,7 +211,8 @@ staminapotiondispmsg = str(": worth " + str(staminapotion_worth) + " stamina.")
 ## Magic Potions
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 ## stimpacks
-stimpackdispmsg = str(": Worth 100 health to a specific bodypart. Apply directly wear it hurts!!")
+stimpack_worth = 100
+stimpackdispmsg = str(": Worth "+str(stimpack_worth)+" health to a specific bodypart. Apply directly wear it hurts!!")
 
 ## Weapons Locker
 weapon_name_length = 70 ## prevents text that destroys OSD
@@ -473,11 +474,7 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     if command_main.lower() in commands_valid:
         ## If command was issued as an action
         if command_type != 'actionduel':
-            staminapass = staminacheck(bot, instigator, channel_current, command_main.lower())
-            if staminapass:
-                subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid, duels_enabled_channels)
-            else:
-                osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
+            subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid, duels_enabled_channels)
         else:
             osd_notice(bot, instigator, "Action duels should not be able to run commands. Targets Only")
         return
@@ -490,6 +487,11 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
     ## Instigator versus Instigator
     if command_main.lower() == instigator.lower():
         onscreentext(bot, channel_current, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
+        return
+
+    ## Admin Command Blocker
+    if command_main.lower() in commandarray_admin and not trigger.admin:
+        osd_notice(bot, instigator, "This admin function is only available to bot admins.")
         return
 
     ## Alternative Commands
@@ -570,11 +572,6 @@ def command_spelling_check(bot, trigger, triggerargsarray, instigator, now, duel
 ## Subcommands
 def subcommands(bot, trigger, triggerargsarray, instigator, command_full , command_main, dueloptedinarray, botvisibleusers, now, currentuserlistarray, channel_current, currentduelplayersarray, canduelarray, duels_dev_channels,commands_valid, duels_enabled_channels):
 
-    ## Admin Command Blocker
-    if command_main.lower() in commandarray_admin and not trigger.admin:
-        osd_notice(bot, instigator, "This admin function is only available to bot admins.")
-        return
-
     ## Is the Tier Unlocked?
     currenttier = get_database_value(bot, duelrecorduser, 'tier') or 0
     tiercommandeval = tier_command(bot, command_main)
@@ -591,14 +588,22 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
                 return
 
     ## Temporary during rewrite
-    #if botvisibleusers == []:
-    #    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
-    ## If the above passes all above checks
+    ## Stamina Check
+    staminapass = staminacheck(bot, instigator, channel_current, command_main.lower())
+    if not staminapass:
+        osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
+        return
+        
+    ## If the above passes all above checks    
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels)')
     eval(subcommand_run)
-    staminacharge(bot, instigator, command_main.lower())
-    
+
+    ## Stamina charge
+    staminacharge(bot, instigator, command_main.lower()) ## TODO make sure we only charge successful usage
+
     ## usage counter
     adjust_database_value(bot, instigator, 'usage_total', 1)
     adjust_database_value(bot, instigator, 'usage_'+command_main.lower(), 1)
@@ -1389,6 +1394,24 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         if currentbodyparthealth >= maxbodyparthealth:
             osd_notice(bot, instigator, "It appears your " + bodypartselect + " is at max health.")
             return
+        quantity = get_trigger_arg(bot, triggerargsarray, 4) or 1
+        quantity = int(quantity)
+        instigatorstimpacks = get_database_value(bot, instigator, 'stimpack') or 0
+        instigatorstimpacks = int(instigatorstimpacks)
+        if quantity > instigatorstimpacks:
+            osd_notice(bot, instigator, "You don't appear to have " + str(quantity) + " stimpack(s).")
+            return
+        adjustmentamount = stimpack_worth * quantity
+        adjust_database_value(bot, instigator, bodypartselect, adjustmentamount)
+        currentbodyparthealth = get_database_value(bot, instigator, bodypartselect)
+        if currentbodyparthealth > maxbodyparthealth:
+            set_database_value(bot, instigator, bodypartselect, maxbodyparthealth)
+            currentbodyparthealth = maxbodyparthealth
+        if currentbodyparthealth == maxbodyparthealth:
+            onscreentext(bot, ['say'], instigator + " uses stimpack to heal " + bodypartselect + " to the maximum health of " + str(currentbodyparthealth) + ".")
+        else:
+            onscreentext(bot, ['say'], instigator + " uses stimpack to heal " + bodypartselect + " to " + str(currentbodyparthealth) + " health of the maximum " + str(maxbodyparthealth) + ".")
+        adjust_database_value(bot, instigator, 'stimpack', -abs(quantity))
     else:
         osd_notice(bot, instigator, "Invalid command.")
 
@@ -2727,7 +2750,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif lootitem == 'magicpotion':
             osd_notice(bot, instigator, "Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
         elif lootitem == 'stimpack':
-            bot.say("wip")
+            osd_notice(bot, instigator, "This is currently only avaliable by running .duel health stimpack .")
         elif lootitem == 'grenade':
             subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels)
             return
@@ -3130,6 +3153,10 @@ def subcommand_magic(bot, instigator, triggerargsarray, botvisibleusers, current
 
 ## Admin ## TODO
 def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
+
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+
     subcommand = get_trigger_arg(bot, triggerargsarray, 2).lower()
     if subcommand not in commands_valid and subcommand != 'bugbounty' and subcommand != 'channel':
         osd_notice(bot, instigator, "What Admin adjustment do you want to make?")
