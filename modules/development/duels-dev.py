@@ -1375,7 +1375,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             return
         if bodypartselect not in stats_healthbodyparts:
             bodypartlist = get_trigger_arg(bot, stats_healthbodyparts, 'list')
-            osd_notice(bot, instigator, "Select a valid body part to apply the stimpack to. Valid options: " = bodypartlist)
+            osd_notice(bot, instigator, "Select a valid body part to apply the stimpack to. Valid options: " + bodypartlist)
             return
     else:
         osd_notice(bot, instigator, "Invalid command.")
