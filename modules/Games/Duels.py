@@ -42,7 +42,7 @@ duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/tex
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
-commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat'] ## Must Be channel_current
+commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat','grenade'] ## Must Be channel_current
 ### Alternative Commands
 commandarray_alternate_list = ['on','off','random','assault','author','docs','loot']
 commandarray_alt_on = ['enable','activate']
@@ -54,7 +54,7 @@ commandarray_alt_loot = ['backpack']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat']
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat','grenade']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -280,7 +280,42 @@ stats_view = ['class_setting','curse','stamina','shield','mana','xp','wins','los
 stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use their own functions to get a value
 
 ## array of insulting departures
-cowardarray = ["What a coward!"]
+cowardarray = ["What a coward!","What a Woosy!","Run away, loser!","Shame on you!","Scaredy-cat!"]
+
+## Built-in docs
+helpdocs_on = "opts you into Duels. Running any command should opt you in, but this is the alternate way to do so. Your opt status will announce to the channel."
+helpdocs_off = "opts you out of Duels. Your opt status will announce to the channel."
+helpdocs_admin = "allows bot admins to make changes to the game and player stats."
+helpdocs_devmode = "is used by bot admins to cause the game to bypass game-limiting features for a specific channel."
+helpdocs_game = "is used by bot admins to enable/disable the game for a specific channel."
+helpdocs_tier = "will display information about the channels progress in the game."
+helpdocs_author = "will display the author of Duels."
+helpdocs_version = "checks the last modified date of the Master branch of the game."
+helpdocs_deathblow = "checks to see if a recent combat provided you with the chance to finish a player."
+helpdocs_combat = "is the main function of gameplay. Target a player."
+helpdocs_usage = "is used to track your usage of the game. You can also specify a subcommand."
+helpdocs_streaks = "shows your current winning/losing streak. A streak is more than 2 in a row."
+helpdocs_bounty = "allows you to place a bounty on another player. This bounty can be won by the player that kills them. This should be incentive for players to gang up on another."
+helpdocs_harakiri = "is a suicide command. You will lose all your items and respawn. You must Confirm this command."
+helpdocs_weaponslocker = "allows you to add, remove, and view items in your weapons locker. These weapon names are included in combat, and provide a boost for having."
+helpdocs_class = "allows you to set a class for your character. Different Classes have Different Perks."
+helpdocs_leaderboard = "shows the top scores/stats of the game."
+helpdocs_warroom = "allows you to see what channel users are opted into the game and can be challenged."
+helpdocs_stats = "provides a brief sysnopsis of your current condition."
+helpdocs_loot = "shows the items you currently possess and can use. You may also buy, sell, and trade these items with the ingame store."
+helpdocs_health = "displays a detailed look at each bodyparts current status."
+helpdocs_magic = "allows you to use mana to do various magic functions."
+helpdocs_armor = "displays the current durability of any armor that you may possess."
+helpdocs_assault = "is a combat event that allows you to attack every other duels player."
+helpdocs_roulette = "allows you to risk a shot in the head for the chance at big coin winnings."
+helpdocs_monster = "allows you to do combat against a random low-level monster."
+helpdocs_random = "allows you to combat a random player. This has an added bonus if you win. There is a chance that the bot or monster may be selected. The bot always wins."
+helpdocs_colosseum = "pits all users against eachother with a prize that is based on the amount of players present."
+helpdocs_title = "allows you to set a vanity title in front of your nick during combat."
+helpdocs_mayhem = "is a combat event that finds every combination of duels possible."
+helpdocs_hungergames = "pits all duels players against eachother with one victorious."
+helpdocs_quest = "is a work in progress event that will pit multiple players against a high-level monster."
+helpdocs_grenade = "allows you to throw a grenade into the room. Damage is randomly based on who is able to jump out of the way."
 
 ## Monster List
 monstersarray = [
@@ -1115,18 +1150,69 @@ def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, curre
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    target = get_trigger_arg(bot, triggerargsarray, 2)
-    if not target:
+
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        
+    inputtarget = get_trigger_arg(bot, triggerargsarray, 2)
+    if not inputtarget:
         onscreentext(bot, channel_current, "Online Docs: " + GITWIKIURL)
         return
-    ## private message player
+
+    endmessage = []
+
+    altcoms = alternative_commands_valid(bot)
+    if inputtarget in altcoms or inputtarget in commands_valid:
+        if inputtarget in commandarray_alt_docs or inputtarget == 'docs':
+            messagetype = "docs"
+        else:
+            for subcom in commandarray_alternate_list:
+                commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+                if inputtarget.lower() in commandarray_alt_eval:
+                    inputtarget = subcom
+            messagetype = inputtarget 
+        target = get_trigger_arg(bot, triggerargsarray, 3) or instigator
+    else:
+        messagetype = "main"
+        target = inputtarget
+
+    if messagetype != 'main':
+        if messagetype in commandarray_alt_docs or messagetype == 'docs':
+            endmessage.append("Online Docs: " + GITWIKIURL)
+        else:
+            try:
+                help_run = str('helpdocs_' + messagetype.lower())
+                endmessageeval = eval(help_run)
+                endmessage.append("The " + messagetype + " command " + endmessageeval)
+            except NameError:
+                endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
+        if messagetype in commandarray_alternate_list:
+            commandarray_alt_evalb = eval("commandarray_alt_"+messagetype)
+            alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
+            endmessage.append("Alternate Commands: "+alternatelist)
+        ## TODO add tier unlock info
+        commandtier = tier_command(bot, messagetype)
+        commandpepper = pepper_tier(bot, commandtier)
+        endmessage.append("The " + str(messagetype) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
+        tiermath = commandtier - currenttier
+        if tiermath > 0:
+            endmessage.append(str(tiermath) + " tier(s) remaining!")    
+        if messagetype in command_stamina_free:
+            commandstaminacost = 0
+        else:
+            commandstaminacost = eval("command_stamina_"+messagetype)
+        endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
+    else:
+        endmessage.append("Online Docs: " + GITWIKIURL)
+
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
     if not validtarget:
         osd_notice(bot, instigator, validtargetmsg)
         return
-    osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
+    osd_notice(bot, target, endmessage)
 
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
