@@ -2654,7 +2654,7 @@ def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, curre
             damagescale = tierratio_level(bot)
             damage = damagescale * damage
             bodypart, bodypartname = bodypart_select(bot, player)
-            damage, damagetextarray = damage_resistance(bot, player, damage, bodypart, bodypartname)
+            damage, damagetextarray = damage_resistance(bot, player, damage, bodypart)
             for j in damagetextarray:
                 dispmsgarray.append(j)
             if damage > 0:
