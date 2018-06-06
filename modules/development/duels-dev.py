@@ -1191,13 +1191,19 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
             endmessage.append("Alternate Commands: "+alternatelist)
         ## TODO add tier unlock info
-        commandtier = tier_command(bot, command)
+        commandtier = tier_command(bot, messagetype)
         commandpepper = pepper_tier(bot, commandtier)
-        endmessage.append("The " + str(command) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+        endmessage.append("The " + str(messagetype) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         tiermath = commandtier - currenttier
         if tiermath > 0:
             endmessage.append(str(tiermath) + " tier(s) remaining!")    
+        ## TODO stamina cost
+        if command in command_stamina_free:
+            commandstaminacost = 0
+        else:
+            commandstaminacost = eval("command_stamina_"+command)
+        endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
 
