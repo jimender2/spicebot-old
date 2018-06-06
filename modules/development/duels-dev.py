@@ -1322,7 +1322,6 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
     if channeltarget not in valid_channel_list:
         osd_notice(bot, instigator, "I don't appear to be in that channel.")
         return
-    bot.say(str(duels_dev_channels))
     if command == 'on':
         if channeltarget in duels_dev_channels:
             osd_notice(bot, instigator, "Duels devmode is already on in " + channel_current + ".")
