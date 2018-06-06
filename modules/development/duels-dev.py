@@ -588,8 +588,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
                 return
 
     ## Temporary during rewrite
-    #if botvisibleusers == []:
-    #    botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
 
     ## Stamina Check
     staminapass = staminacheck(bot, instigator, channel_current, command_main.lower())
