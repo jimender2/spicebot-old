@@ -372,7 +372,9 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     ## Check that the game is enabled in current channel. This is ignored if messaged in privmsg.
     duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if channel_current.startswith("#"):
+        bot.say("passed")
         game_enabled_pass = check_game_enabled(bot, trigger, instigator, channel_current, duels_enabled_channels)
+        bot.say(str(game_enabled_pass))
         if not game_enabled_pass:
             return
 
