@@ -3243,18 +3243,24 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                 newvalue = None
             if subcommand == 'set' and newvalue == None:
                 osd_notice(bot, instigator, "When using set, you must specify a value. " + incorrectdisplay)
-            elif target == 'everyone':
-                set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
-                reset_database_value(bot, duelrecorduser, 'tier')
-                reset_database_value(bot, duelrecorduser, 'specevent')
+                return
+            if target == 'everyone':
+                targets = []
                 for u in botvisibleusers:
-                    if statset == 'all':
-                         for x in duelstatsadminarray:
-                             set_database_value(bot, u, x, newvalue)
-                    else:
-                        set_database_value(bot, u, statset, newvalue)
-                osd_notice(bot, instigator, "Possibly done Adjusting stat(s).")
+                    targets.append(u)
             else:
+                targets = [target]
+                #set_database_value(bot, duelrecorduser, 'chanstatsreset', now)
+                #reset_database_value(bot, duelrecorduser, 'tier')
+                #reset_database_value(bot, duelrecorduser, 'specevent')
+                #for u in botvisibleusers:
+                #    if statset == 'all':
+                #         for x in duelstatsadminarray:
+                #             set_database_value(bot, u, x, newvalue)
+                #    else:
+                #        set_database_value(bot, u, statset, newvalue)
+                #osd_notice(bot, instigator, "Possibly done Adjusting stat(s).")
+            for player in targets:
                 try:
                     if newvalue.isdigit():
                         newvalue = int(newvalue)
@@ -3262,10 +3268,10 @@ def subcommand_admin(bot, instigator, triggerargsarray, botvisibleusers, current
                     newvalue = newvalue
                 if statset == 'all':
                     for x in duelstatsadminarray:
-                        set_database_value(bot, target, x, newvalue)
+                        set_database_value(bot, player, x, newvalue)
                 else:
-                    set_database_value(bot, target, statset, newvalue)
-                osd_notice(bot, instigator, "Possibly done Adjusting stat(s).")
+                    set_database_value(bot, player, statset, newvalue)
+            osd_notice(bot, instigator, "Possibly done Adjusting stat(s).")
     elif subcommand == 'channel':
         settingchange = get_trigger_arg(bot, triggerargsarray, 3)
         if not settingchange:
