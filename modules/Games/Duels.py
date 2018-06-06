@@ -584,8 +584,9 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
             elif not channel_current.startswith("#") and len(duels_dev_channels) > 0:
                 allowpass = 1
             else:
-                onscreentext(bot, channel_current, "Duel " + command_main + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
-                return
+                if channel_current not in duels_dev_channels:
+                    onscreentext(bot, channel_current, "Duel " + command_main + " will be unlocked when somebody reaches " + str(tierpepperrequired) + ". " + str(tiermath) + " tier(s) remaining!")
+                    return
 
     ## Temporary during rewrite
     if botvisibleusers == []:
