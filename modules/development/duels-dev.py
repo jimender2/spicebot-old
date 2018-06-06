@@ -1399,7 +1399,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         if currentbodyparthealth == maxbodyparthealth:
             onscreentext(bot, ['say'], instigator + " uses a stimpack to heal " + bodypartselect + " to the maximum health of " + str(currentbodyparthealth) + ".")
         else:
-            onscreentext(bot, ['say'], instigator + " uses a stimpack to heal " + bodypartselect + " to " + str(currentbodyparthealth) + " health of the maximum " + maxbodyparthealth + ".")
+            onscreentext(bot, ['say'], instigator + " uses a stimpack to heal " + bodypartselect + " to " + str(currentbodyparthealth) + " health of the maximum " + str(maxbodyparthealth) + ".")
     else:
         osd_notice(bot, instigator, "Invalid command.")
 
