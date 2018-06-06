@@ -1394,12 +1394,22 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         if currentbodyparthealth >= maxbodyparthealth:
             osd_notice(bot, instigator, "It appears your " + bodypartselect + " is at max health.")
             return
-        adjust_database_value(bot, instigator, bodypartselect, 100)
+        quantity = get_trigger_arg(bot, triggerargsarray, 4) or 1
+        instigatorstimpacks = get_database_value(bot, instigator, 'stimpack') or 0
+        if quantity > instigatorstimpacks:
+            osd_notice(bot, instigator, "You don't appear to have " + str(quantity) + " stimpack(s).")
+            return
+        adjustmentamount = stimpack_worth * quantity
+        adjust_database_value(bot, instigator, bodypartselect, adjustmentamount)
         currentbodyparthealth = get_database_value(bot, instigator, bodypartselect)
+        if currentbodyparthealth > maxbodyparthealth:
+            set_database_value(bot, instigator, bodypartselect, maxbodyparthealth)
+            currentbodyparthealth = maxbodyparthealth
         if currentbodyparthealth == maxbodyparthealth:
-            onscreentext(bot, ['say'], instigator + " uses a stimpack to heal " + bodypartselect + " to the maximum health of " + str(currentbodyparthealth) + ".")
+            onscreentext(bot, ['say'], instigator + " uses stimpack to heal " + bodypartselect + " to the maximum health of " + str(currentbodyparthealth) + ".")
         else:
-            onscreentext(bot, ['say'], instigator + " uses a stimpack to heal " + bodypartselect + " to " + str(currentbodyparthealth) + " health of the maximum " + str(maxbodyparthealth) + ".")
+            onscreentext(bot, ['say'], instigator + " uses stimpack to heal " + bodypartselect + " to " + str(currentbodyparthealth) + " health of the maximum " + str(maxbodyparthealth) + ".")
+        adjust_database_value(bot, instigator, 'stimpack', -abs(quantity))
     else:
         osd_notice(bot, instigator, "Invalid command.")
 
