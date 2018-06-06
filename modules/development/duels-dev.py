@@ -42,7 +42,7 @@ duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/tex
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
-commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow'] ## Must Be channel_current
+commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat'] ## Must Be channel_current
 ### Alternative Commands
 commandarray_alternate_list = ['on','off','random','assault','author','docs']
 commandarray_alt_on = ['enable','activate']
@@ -53,7 +53,7 @@ commandarray_alt_author = ['credit']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow']
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -372,9 +372,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
     ## Check that the game is enabled in current channel. This is ignored if messaged in privmsg.
     duels_enabled_channels = get_database_value(bot, duelrecorduser, 'gameenabled') or []
     if channel_current.startswith("#"):
-        bot.say("passed")
         game_enabled_pass = check_game_enabled(bot, trigger, instigator, channel_current, duels_enabled_channels)
-        bot.say(str(game_enabled_pass))
         if not game_enabled_pass:
             return
 
@@ -457,7 +455,6 @@ def command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_
         return
 
     ## channel_current Block
-    channel_current = trigger.sender
     if command_main.lower() in commandarray_inchannel  and not channel_current.startswith("#"):
         osd_notice(bot, instigator, "Duel " + command_main + " must be in channel.")
         return
@@ -612,6 +609,14 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
 #####################
 ## Main Duel Usage ##
 #####################
+
+def subcommand_combat(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, duels_enabled_channels):
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    command_full.remove(command_main)
+    command_main = get_trigger_arg(bot, command_full, 1)
+    command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, duels_enabled_channels)
+
 
 def duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels, duels_enabled_channels):
 
