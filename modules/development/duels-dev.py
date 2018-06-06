@@ -212,7 +212,7 @@ staminapotiondispmsg = str(": worth " + str(staminapotion_worth) + " stamina.")
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
 ## stimpacks
 stimpack_worth = 100
-stimpackdispmsg = str(": Worth "+stimpack_worth+" health to a specific bodypart. Apply directly wear it hurts!!")
+stimpackdispmsg = str(": Worth "+str(stimpack_worth)+" health to a specific bodypart. Apply directly wear it hurts!!")
 
 ## Weapons Locker
 weapon_name_length = 70 ## prevents text that destroys OSD
