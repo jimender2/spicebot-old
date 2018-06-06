@@ -44,12 +44,13 @@ commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for O
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
 commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat'] ## Must Be channel_current
 ### Alternative Commands
-commandarray_alternate_list = ['on','off','random','assault','author','docs']
+commandarray_alternate_list = ['on','off','random','assault','author','docs','loot']
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
 commandarray_alt_random = ['anyone','somebody','available','someone']
 commandarray_alt_assault = ['everyone','everybody','channel']
 commandarray_alt_author = ['credit']
+commandarray_alt_loot = ['backpack']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
@@ -169,8 +170,9 @@ title_cost = 100 ## ## how many coin to change title
 bugbounty_reward = 100 ## users that find a bug in the code, get a reward
 
 ## Loot
-loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## how to organize backpack
+loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion','stimpack'] ## how to organize backpack
 potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## types of potions
+loot_purchase_only = ['stimpack']
 loot_transaction_types = ['buy','sell','trade','use'] ## valid commands for loot
 ### Buy
 loot_buy = 100 ## normal cost to buy a loot item
@@ -207,6 +209,8 @@ staminapotion_worth = 15 ##normal stamina potion worth
 staminapotiondispmsg = str(": worth " + str(staminapotion_worth) + " stamina.")
 ## Magic Potions
 magicpotiondispmsg = str(": Not consumable, sellable, or purchasable. Trade this for the potion you want!")
+## stimpacks
+stimpackdispmsg = str(": Worth 100 health to a specific bodypart. Apply directly wear it hurts!!")
 
 ## Weapons Locker
 weapon_name_length = 70 ## prevents text that destroys OSD
@@ -1376,6 +1380,13 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         if bodypartselect not in stats_healthbodyparts:
             bodypartlist = get_trigger_arg(bot, stats_healthbodyparts, 'list')
             osd_notice(bot, instigator, "Select a valid body part to apply the stimpack to. Valid options: " + bodypartlist)
+            return
+        maxbodyparthealth = array_compare(bot, bodypartselect, stats_healthbodyparts, health_bodypart_max)
+        tierratio = tierratio_level(bot)
+        maxbodyparthealth = maxbodyparthealth * tierratio
+        currentbodyparthealth = get_database_value(bot, instigator, bodypartselect)
+        if currentbodyparthealth >= maxbodyparthealth:
+            osd_notice(bot, instigator, "It appears your " + bodypartselect + " is at max health.")
             return
     else:
         osd_notice(bot, instigator, "Invalid command.")
@@ -2634,12 +2645,14 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
             osd_notice(bot, instigator, "Invalid loot item.")
         elif not gethowmanylootitem:
             osd_notice(bot, instigator, "You do not have any " +  lootitem + "!")
         elif lootitem == 'magicpotion':
             osd_notice(bot, instigator, "Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
+        elif lootitem == 'stimpack':
+            bot.say("wip")
         elif lootitem == 'grenade':
             if not channel_current.startswith("#"):
                 osd_notice(bot, instigator, "Grenades must be used in channel.")
@@ -2867,7 +2880,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
             osd_notice(bot, instigator, "Invalid loot item.")
         elif lootitem == 'magicpotion':
             osd_notice(bot, instigator, "Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
@@ -2897,7 +2910,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade':
+        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
             osd_notice(bot, instigator, "Invalid loot item.")
         elif not gethowmanylootitem:
             osd_notice(bot, instigator, "You do not have any " +  lootitem + "!")
@@ -2927,6 +2940,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
             osd_notice(bot, instigator, "Invalid loot item.")
         elif lootitem == 'grenade' or lootitemb == 'grenade':
             osd_notice(bot, instigator, "You can't trade for grenades.")
+        elif lootitem == 'stimpack' or lootitemb == 'stimpack':
+            osd_notice(bot, instigator, "You can't trade for stimpacks.")
         elif lootitemb == lootitem:
             osd_notice(bot, instigator, "You can't trade for the same type of potion.")
         else:
