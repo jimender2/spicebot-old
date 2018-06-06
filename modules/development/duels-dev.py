@@ -1139,8 +1139,14 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         messagetype = "main"
         target = inputtarget
 
-    help_run = str('helpdocs_' + messagetype.lower())
-    eval(help_run)
+    if messagetype != 'main':
+        try:
+            help_run = str('helpdocs_' + messagetype.lower())
+            endmessage = eval(help_run)
+        except NameError:
+            endmessage = "That Command has no Instructions yet."
+    else:
+        endmessage = str("Online Docs: " + GITWIKIURL)
 
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
@@ -1148,8 +1154,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if not validtarget:
         osd_notice(bot, instigator, validtargetmsg)
         return
-    #osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
-    osd_notice(bot, target, messagetype)
+    osd_notice(bot, target, endmessage)
 
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
