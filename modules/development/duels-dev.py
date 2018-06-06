@@ -1368,8 +1368,17 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         else:
             dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  command_main + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
-    if healthcommand == 'stimpack':
-        bot.say("wip")
+    elif healthcommand == 'stimpack':
+        bodypartselect = get_trigger_arg(bot, triggerargsarray, 3)
+        if not bodypartselect:
+            osd_notice(bot, instigator, "Select a body part to apply the stimpack to. Stimpacks can only be self used.")
+            return
+        if bodypartselect not in stats_healthbodyparts:
+            bodypartlist = get_trigger_arg(bot, stats_healthbodyparts, 'list')
+            osd_notice(bot, instigator, "Select a valid body part to apply the stimpack to. Valid options: " = bodypartlist)
+            return
+    else:
+        osd_notice(bot, instigator, "Invalid command.")
 
 ## Tier Subcommand
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
