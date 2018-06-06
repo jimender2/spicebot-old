@@ -283,7 +283,7 @@ stats_view_functions = ['winlossratio','timeout_timeout'] ## stats that use thei
 cowardarray = ["What a coward!"]
 
 ## Built-in docs
-helpdocs_on = "This Opts you into Duels. Running any command should opt you in, but this is the alternate way to do so."
+helpdocs_on = "opts you into Duels. Running any command should opt you in, but this is the alternate way to do so."
 
 help_todo = ['tier','game', 'docs', 'admin', 'author','off','devmode','version','deathblow','combat','usage','streaks', 'bounty', 'harakiri','weaponslocker', 'class','leaderboard', 'warroom','stats',
 'loot','health','magic', 'armor','assault','roulette','monster','random','colosseum','title','mayhem','hungergames','quest']
@@ -1154,7 +1154,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             try:
                 help_run = str('helpdocs_' + messagetype.lower())
                 endmessageeval = eval(help_run)
-                endmessage.append(endmessageeval)
+                endmessage.append("The "+ messagetype+ " command " endmessageeval)
             except NameError:
                 endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
         if messagetype in commandarray_alternate_list:
