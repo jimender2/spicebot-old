@@ -102,7 +102,7 @@ stats_healthbodyparts = ['head','torso','left_arm','right_arm','left_leg','right
 ## Armor Stats
 stats_armor = ['helmet','breastplate','left_gauntlet','right_gauntlet','left_greave','right_greave','codpiece']
 ## Loot Stats
-stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','staminapotion','poisonpotion','manapotion','grenade','coin']
+stats_loot = ['magicpotion','healthpotion','mysterypotion','timepotion','staminapotion','poisonpotion','manapotion','grenade','coin','stimpack']
 ## Record Stats
 stats_record = ['wins','losses','xp','respawns','kills','lastfought']
 ## Streak Stats
@@ -172,7 +172,8 @@ bugbounty_reward = 100 ## users that find a bug in the code, get a reward
 ## Loot
 loot_view = ['coin','grenade','healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion','stimpack'] ## how to organize backpack
 potion_types = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion'] ## types of potions
-loot_purchase_only = ['stimpack']
+loot_winnable = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion']
+loot_all_types = ['healthpotion','manapotion','poisonpotion','timepotion','staminapotion','mysterypotion','magicpotion','stimpack','grenade']
 loot_transaction_types = ['buy','sell','trade','use'] ## valid commands for loot
 ### Buy
 loot_buy = 100 ## normal cost to buy a loot item
@@ -722,7 +723,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         if target != bot.nick and maindueler != target:
             randominventoryfind = randominventory(bot, maindueler)
             if randominventoryfind == 'true':
-                loot = get_trigger_arg(bot, potion_types, 'random')
+                loot = get_trigger_arg(bot, loot_winnable, 'random')
                 loot_text = eval(loot+"dispmsg")
                 combattextarraycomplete.append(maindueler + ' found a ' + str(loot) + ' ' + str(loot_text))
 
@@ -2645,7 +2646,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
+        elif lootitem not in loot_all_types:
             osd_notice(bot, instigator, "Invalid loot item.")
         elif not gethowmanylootitem:
             osd_notice(bot, instigator, "You do not have any " +  lootitem + "!")
@@ -2880,7 +2881,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         lootitem = get_trigger_arg(bot, triggerargsarray, 3).lower()
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
+        elif lootitem not in loot_all_types:
             osd_notice(bot, instigator, "Invalid loot item.")
         elif lootitem == 'magicpotion':
             osd_notice(bot, instigator, "Magic Potions are not purchasable, sellable, or usable. They can only be traded.")
@@ -2910,7 +2911,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         gethowmanylootitem = get_database_value(bot, instigator, lootitem) or 0
         if not lootitem:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types and lootitem != 'grenade' and lootitem != 'stimpack':
+        elif lootitem not in loot_all_types:
             osd_notice(bot, instigator, "Invalid loot item.")
         elif not gethowmanylootitem:
             osd_notice(bot, instigator, "You do not have any " +  lootitem + "!")
@@ -2936,7 +2937,7 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         lootitemb = get_trigger_arg(bot, triggerargsarray, 4).lower()
         if not lootitem or not lootitemb:
             osd_notice(bot, instigator, "What do you want to " + str(lootcommand) + "?")
-        elif lootitem not in potion_types or lootitemb not in potion_types:
+        elif lootitem not in loot_all_types or lootitemb not in loot_all_types:
             osd_notice(bot, instigator, "Invalid loot item.")
         elif lootitem == 'grenade' or lootitemb == 'grenade':
             osd_notice(bot, instigator, "You can't trade for grenades.")
@@ -3974,7 +3975,7 @@ def whokilledwhom(bot, winner, loser):
     set_database_value(bot, loser, 'stamina', staminamax)
     ## rangers don't lose their stuff
     if loserclass != 'ranger':
-        for x in potion_types:
+        for x in loot_all_types:
             gethowmany = get_database_value(bot, loser, x)
             ## TODO array of loot won
             adjust_database_value(bot, winner, x, gethowmany)
@@ -4003,7 +4004,7 @@ def suicidekill(bot,loser):
     ## rangers don't lose their stuff
     loserclass = get_database_value(bot, loser, 'class_setting') or 'notclassy'
     if loserclass != 'ranger':
-        for x in potion_types:
+        for x in loot_all_types:
             reset_database_value(bot, loser, x)
         suicidetextarray.append(loser + " loses all loot.")
     return suicidetextarray
