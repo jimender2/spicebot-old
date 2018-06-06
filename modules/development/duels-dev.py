@@ -1139,6 +1139,9 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         messagetype = "main"
         target = inputtarget
 
+    help_run = str('helpdocs_' + messagetype.lower())
+    eval(help_run)
+
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
