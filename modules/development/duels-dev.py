@@ -1154,7 +1154,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             try:
                 help_run = str('helpdocs_' + messagetype.lower())
                 endmessageeval = eval(help_run)
-                endmessage.append("The "+ messagetype+ " command " endmessageeval)
+                endmessage.append("The " + messagetype + " command " + endmessageeval)
             except NameError:
                 endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
         if messagetype in commandarray_alternate_list:
