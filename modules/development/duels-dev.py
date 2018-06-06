@@ -1198,8 +1198,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiermath = commandtier - currenttier
         if tiermath > 0:
             endmessage.append(str(tiermath) + " tier(s) remaining!")    
-        ## TODO stamina cost
-        if command in command_stamina_free:
+        if messagetype in command_stamina_free:
             commandstaminacost = 0
         else:
             commandstaminacost = eval("command_stamina_"+command)
