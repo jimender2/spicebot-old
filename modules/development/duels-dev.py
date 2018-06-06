@@ -2603,6 +2603,80 @@ def subcommand_deathblow(bot, instigator, triggerargsarray, botvisibleusers, cur
         deathblowkilltext = whokilledwhom(bot, instigator, deathblowtarget) or ''
         onscreentext(bot, channel_current, deathblowkilltext)
 
+## Grenade Command
+def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
+    if not channel_current.startswith("#"):
+        osd_notice(bot, instigator, "Grenades must be used in channel.")
+        return
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+    instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
+    if instigator in canduelarray:
+        canduelarray.remove(instigator)
+    if bot.nick in canduelarray:
+        canduelarray.remove(bot.nick)
+    if canduelarray == []:
+        osd_notice(bot, instigator, "It looks like using a grenade right now won't hurt anybody.")
+    else:
+        dispmsgarray = []
+        adjust_database_value(bot, instigator, lootitem, -1)
+        fulltarget, secondarytarget, thirdtarget = '','',''
+        fulltarget = get_trigger_arg(bot, canduelarray, "random")
+        dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenade_full_damage)) + " damage.")
+        canduelarray.remove(fulltarget)
+        if canduelarray != []:
+            secondarytarget = get_trigger_arg(bot, canduelarray, "random")
+            canduelarray.remove(secondarytarget)
+            if canduelarray != []:
+                thirdtarget = get_trigger_arg(bot, canduelarray, "random")
+                dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenade_secondary_damage)) + " damage.")
+                canduelarray.remove(thirdtarget)
+                if canduelarray != []:
+                    remainingarray = get_trigger_arg(bot, canduelarray, "list")
+                    dispmsgarray.append(remainingarray + " completely jump out of the way")
+            else:
+                dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenade_secondary_damage)) + " damage.")
+        painarray = []
+        damagearray = []
+        deatharray = []
+        if fulltarget != '':
+            painarray.append(fulltarget)
+            damagearray.append(grenade_full_damage)
+        if secondarytarget != '':
+            painarray.append(secondarytarget)
+            damagearray.append(grenade_secondary_damage)
+        if thirdtarget != '':
+            painarray.append(thirdtarget)
+            damagearray.append(grenade_secondary_damage)
+        diedinbattle = []
+        for player, damage in zip(painarray, damagearray):
+            damage = int(damage)
+            damagescale = tierratio_level(bot)
+            damage = damagescale * damage
+            bodypart, bodypartname = bodypart_select(bot, player)
+            damage, damagetextarray = damage_resistance(bot, player, damage, bodypart, bodypartname)
+            for j in damagetextarray:
+                dispmsgarray.append(j)
+            if damage > 0:
+                splitdamage = int(damage) / len(stats_healthbodyparts)
+                for part in stats_healthbodyparts:
+                    adjust_database_value(bot, x, part, -abs(splitdamage))
+                loserheadhealth = get_database_value(bot, loser, 'head')
+                losertorsohealth = get_database_value(bot, loser, 'torso')
+                if loserheadhealth  <= 0 or losertorsohealth <= 0:
+                    winnertextarray = whokilledwhom(bot, instigator, player)
+                    diedinbattle.append(player)
+                else:
+                    for part in stats_healthbodyparts:
+                        losercurrenthealthbody  = get_database_value(bot, loser, part)
+                        if losercurrenthealthbody  <= 0:
+                            bodypartname = bodypartname.replace("_", " ")
+                            dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
+        if diedinbattle != []:
+            displaymessage = get_trigger_arg(bot, diedinbattle, "list")
+            dispmsgarray.append(displaymessage + " died by this grenade volley.")
+        onscreentext(bot, [channel_current], dispmsgarray)
+
 ## Loot ## TODO
 def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
     instigatorclass = get_database_value(bot, instigator, 'class_setting')
@@ -2655,75 +2729,8 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
         elif lootitem == 'stimpack':
             bot.say("wip")
         elif lootitem == 'grenade':
-            if not channel_current.startswith("#"):
-                osd_notice(bot, instigator, "Grenades must be used in channel.")
-                return
-            instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
-            if instigator in canduelarray:
-                canduelarray.remove(instigator)
-            if bot.nick in canduelarray:
-                canduelarray.remove(bot.nick)
-            if canduelarray == []:
-                osd_notice(bot, instigator, "It looks like using a grenade right now won't hurt anybody.")
-            else:
-                dispmsgarray = []
-                adjust_database_value(bot, instigator, lootitem, -1)
-                fulltarget, secondarytarget, thirdtarget = '','',''
-                fulltarget = get_trigger_arg(bot, canduelarray, "random")
-                dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenade_full_damage)) + " damage.")
-                canduelarray.remove(fulltarget)
-                if canduelarray != []:
-                    secondarytarget = get_trigger_arg(bot, canduelarray, "random")
-                    canduelarray.remove(secondarytarget)
-                    if canduelarray != []:
-                        thirdtarget = get_trigger_arg(bot, canduelarray, "random")
-                        dispmsgarray.append(secondarytarget + " and " + thirdtarget + " jump away but still take " + str(abs(grenade_secondary_damage)) + " damage.")
-                        canduelarray.remove(thirdtarget)
-                        if canduelarray != []:
-                            remainingarray = get_trigger_arg(bot, canduelarray, "list")
-                            dispmsgarray.append(remainingarray + " completely jump out of the way")
-                    else:
-                        dispmsgarray.append(secondarytarget + " jumps away but still takes " + str(abs(grenade_secondary_damage)) + " damage.")
-                painarray = []
-                damagearray = []
-                deatharray = []
-                if fulltarget != '':
-                    painarray.append(fulltarget)
-                    damagearray.append(grenade_full_damage)
-                if secondarytarget != '':
-                    painarray.append(secondarytarget)
-                    damagearray.append(grenade_secondary_damage)
-                if thirdtarget != '':
-                    painarray.append(thirdtarget)
-                    damagearray.append(grenade_secondary_damage)
-                diedinbattle = []
-                for player, damage in zip(painarray, damagearray):
-                    damage = int(damage)
-                    damagescale = tierratio_level(bot)
-                    damage = damagescale * damage
-                    bodypart, bodypartname = bodypart_select(bot, player)
-                    damage, damagetextarray = damage_resistance(bot, player, damage, bodypart, bodypartname)
-                    for j in damagetextarray:
-                        dispmsgarray.append(j)
-                    if damage > 0:
-                        splitdamage = int(damage) / len(stats_healthbodyparts)
-                        for part in stats_healthbodyparts:
-                            adjust_database_value(bot, x, part, -abs(splitdamage))
-                        loserheadhealth = get_database_value(bot, loser, 'head')
-                        losertorsohealth = get_database_value(bot, loser, 'torso')
-                        if loserheadhealth  <= 0 or losertorsohealth <= 0:
-                            winnertextarray = whokilledwhom(bot, instigator, player)
-                            diedinbattle.append(player)
-                        else:
-                            for part in stats_healthbodyparts:
-                                losercurrenthealthbody  = get_database_value(bot, loser, part)
-                                if losercurrenthealthbody  <= 0:
-                                    bodypartname = bodypartname.replace("_", " ")
-                                    dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
-                if diedinbattle != []:
-                    displaymessage = get_trigger_arg(bot, diedinbattle, "list")
-                    dispmsgarray.append(displaymessage + " died by this grenade volley.")
-                onscreentext(bot, [channel_current], dispmsgarray)
+            subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels)
+            return
         else:
             targnum = get_trigger_arg(bot, triggerargsarray, 4).lower()
             if not targnum:
