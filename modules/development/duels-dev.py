@@ -42,7 +42,7 @@ duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/tex
 ## Command Structure
 commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
-commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat'] ## Must Be channel_current
+commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat','grenade'] ## Must Be channel_current
 ### Alternative Commands
 commandarray_alternate_list = ['on','off','random','assault','author','docs','loot']
 commandarray_alt_on = ['enable','activate']
@@ -54,7 +54,7 @@ commandarray_alt_loot = ['backpack']
 commandarray_alt_docs = ['help','man']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
-commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat']
+commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat','grenade']
 commandarray_tier_unlocks_1 = ['usage']
 commandarray_tier_unlocks_2 = ['streaks', 'bounty', 'harakiri']
 commandarray_tier_unlocks_3 = ['weaponslocker', 'class']
@@ -315,6 +315,7 @@ helpdocs_title = "allows you to set a vanity title in front of your nick during 
 helpdocs_mayhem = "is a combat event that finds every combination of duels possible."
 helpdocs_hungergames = "pits all duels players against eachother with one victorious."
 helpdocs_quest = "is a work in progress event that will pit multiple players against a high-level monster."
+helpdocs_grenade = "allows you to throw a grenade into the room. Damage is randomly based on who is able to jump out of the way."
 
 ## Monster List
 monstersarray = [
