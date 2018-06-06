@@ -633,8 +633,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     if not staminapass:
         osd_notice(bot, instigator, "You do not have enough stamina to perform this action.")
         return
-        
-    ## If the above passes all above checks    
+
+    ## If the above passes all above checks
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels)')
     eval(subcommand_run)
 
@@ -1118,7 +1118,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         ## Pause Between duels
         if typeofduel == 'assault':
             bot.notice("  ", maindueler)
-            time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
+            #time.sleep(randint(2, 5)) # added to protect bot from "excess flood"
 
         ## Update last fought
         if maindueler != target and typeofduel != 'assault' and typeofduel != 'colosseum' and typeofduel != 'quest':
@@ -1153,7 +1153,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
 
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
-        
+
     inputtarget = get_trigger_arg(bot, triggerargsarray, 2)
     if not inputtarget:
         onscreentext(bot, channel_current, "Online Docs: " + GITWIKIURL)
@@ -1170,7 +1170,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 commandarray_alt_eval = eval("commandarray_alt_"+subcom)
                 if inputtarget.lower() in commandarray_alt_eval:
                     inputtarget = subcom
-            messagetype = inputtarget 
+            messagetype = inputtarget
         target = get_trigger_arg(bot, triggerargsarray, 3) or instigator
     else:
         messagetype = "main"
@@ -1197,7 +1197,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
         tiermath = commandtier - currenttier
         if tiermath > 0:
-            endmessage.append(str(tiermath) + " tier(s) remaining!")    
+            endmessage.append(str(tiermath) + " tier(s) remaining!")
         if messagetype in command_stamina_free:
             commandstaminacost = 0
         else:
@@ -1753,7 +1753,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
     ### current spin is safe
     if int(currentspin) != int(roulettechamber):
-        time.sleep(randint(1, 3)) # added to build suspense
+        #time.sleep(randint(1, 3)) # added to build suspense
         onscreentext(bot, channel_current, "*click*")
         if manualpick == 1:
             roulettelastplayeractualtext = str(instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
@@ -1857,7 +1857,7 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         roulettecount = get_database_value(bot, duelrecorduser, 'roulettecount') or 1
         if roulettecount > 1:
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
-        time.sleep(randint(1, 2)) # added to build suspense
+        #time.sleep(randint(1, 2)) # added to build suspense
         onscreentext(bot, [channel_current], dispmsgarray)
 
         ## instigator must wait until the next round
@@ -1924,7 +1924,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
                 reset_database_value(bot, user, "assault_" + astat)
         if len(assaultstatsarray) > 1:
             onscreentext(bot, [channel_current], assaultstatsarray)
-            time.sleep(1)
+            #time.sleep(1)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main + 'instigator'), instigator)
 
