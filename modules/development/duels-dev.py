@@ -1124,6 +1124,8 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         onscreentext(bot, channel_current, "Online Docs: " + GITWIKIURL)
         return
 
+    endmessage = []
+
     altcoms = alternative_commands_valid(bot)
     if inputtarget in altcoms or inputtarget in commands_valid:
         if inputtarget in commandarray_alt_docs or inputtarget == 'docs':
@@ -1142,11 +1144,16 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
     if messagetype != 'main':
         try:
             help_run = str('helpdocs_' + messagetype.lower())
-            endmessage = eval(help_run)
+            endmessageeval = eval(help_run)
+            endmessage.append(endmessageeval)
         except NameError:
-            endmessage = "The "+messagetype+" command has no instructions built into the game yet."
+            endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
+        if messagetype in commandarray_alternate_list:
+            commandarray_alt_evalb = eval("commandarray_alt_"+messagetype)
+            alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
+            endmessage.append("Alternate Commands: "+alternatelist)
     else:
-        endmessage = str("Online Docs: " + GITWIKIURL)
+        endmessage.append("Online Docs: " + GITWIKIURL)
 
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
