@@ -1201,7 +1201,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if messagetype in command_stamina_free:
             commandstaminacost = 0
         else:
-            commandstaminacost = eval("command_stamina_"+command)
+            commandstaminacost = eval("command_stamina_"+messagetype)
         endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
