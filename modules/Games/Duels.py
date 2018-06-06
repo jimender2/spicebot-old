@@ -2630,17 +2630,17 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                         splitdamage = int(damage) / len(stats_healthbodyparts)
                         for part in stats_healthbodyparts:
                             adjust_database_value(bot, x, part, -abs(splitdamage))
-                        loserheadhealth = get_database_value(bot, loser, 'head')
-                        losertorsohealth = get_database_value(bot, loser, 'torso')
-                        if loserheadhealth  <= 0 or losertorsohealth <= 0:
+                        playerheadhealth = get_database_value(bot, player, 'head')
+                        playertorsohealth = get_database_value(bot, player, 'torso')
+                        if loserheadhealth  <= 0 or playertorsohealth <= 0:
                             winnertextarray = whokilledwhom(bot, instigator, player)
                             diedinbattle.append(player)
                         else:
                             for part in stats_healthbodyparts:
-                                losercurrenthealthbody  = get_database_value(bot, loser, part)
-                                if losercurrenthealthbody  <= 0:
+                                playercurrenthealthbody  = get_database_value(bot, player, part)
+                                if playercurrenthealthbody  <= 0:
                                     bodypartname = bodypartname.replace("_", " ")
-                                    dispmsgarray.append(loser + "'s " + bodypartname + " has become crippled!")
+                                    dispmsgarray.append(player + "'s " + bodypartname + " has become crippled!")
                 if diedinbattle != []:
                     displaymessage = get_trigger_arg(bot, diedinbattle, "list")
                     dispmsgarray.append(displaymessage + " died by this grenade volley.")
