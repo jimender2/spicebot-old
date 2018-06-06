@@ -2619,7 +2619,7 @@ def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, curre
         osd_notice(bot, instigator, "It looks like using a grenade right now won't hurt anybody.")
     else:
         dispmsgarray = []
-        adjust_database_value(bot, instigator, lootitem, -1)
+        adjust_database_value(bot, instigator, 'grenade', -1)
         fulltarget, secondarytarget, thirdtarget = '','',''
         fulltarget = get_trigger_arg(bot, canduelarray, "random")
         dispmsgarray.append(fulltarget + " takes the brunt of the grenade dealing " + str(abs(grenade_full_damage)) + " damage.")
