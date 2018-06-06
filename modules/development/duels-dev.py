@@ -1132,7 +1132,8 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             for subcom in commandarray_alternate_list:
                 commandarray_alt_eval = eval("commandarray_alt_"+subcom)
                 if inputtarget.lower() in commandarray_alt_eval:
-                    messagetype = subcom
+                    inputtarget = subcom
+            messagetype = inputtarget 
         target = get_trigger_arg(bot, triggerargsarray, 3) or instigator
     else:
         messagetype = "main"
