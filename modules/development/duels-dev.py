@@ -1368,6 +1368,8 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         else:
             dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  command_main + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
+    if healthcommand == 'stimpack':
+        bot.say("wip")
 
 ## Tier Subcommand
 def subcommand_tier(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
