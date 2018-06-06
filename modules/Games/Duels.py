@@ -1826,7 +1826,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
             if player != maindueler:
                 targetarray.append(player)
         random.shuffle(targetarray)
-        duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels)
+        duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
     for user in canduelarray:
         assaultstatsarray = []
         assaultstatsarray.append(user + "'s Full Channel Mayhem results:")
@@ -2026,7 +2026,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
     for player in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, player, "assault_" + astat)
-    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels)
+    duel_combat(bot, instigator, instigator, canduelarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
     maindueler = instigator
     osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
@@ -2074,7 +2074,7 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
 
     monsterstats(bot, currentduelplayersarray, 5)
 
-    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, channel_current, 'quest', duels_dev_channels)
+    duel_combat(bot, instigator, 'duelsmonster', canduelarray, triggerargsarray, now, channel_current, 'quest', duels_dev_channels, duels_enabled_channels)
 
     osd_notice(bot, instigator, "It looks like the Full Channel Quest has completed.")
     lastmonstername = get_database_value(bot, duelrecorduser, 'last_monster')
@@ -2103,7 +2103,7 @@ def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, curre
         return
     set_database_value(bot, duelrecorduser, 'duelslockout', now)
     monsterstats(bot, currentduelplayersarray, 1)
-    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'combat', duels_dev_channels)
+    duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'combat', duels_dev_channels, duels_enabled_channels)
     refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
 
@@ -2129,7 +2129,7 @@ def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, curren
     canduelarray.append('duelsmonster')
     target = get_trigger_arg(bot, canduelarray, 'random')
     statreset(bot, target)
-    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, channel_current, 'random', duels_dev_channels)
+    duel_combat(bot, instigator, instigator, [target], triggerargsarray, now, channel_current, 'random', duels_dev_channels, duels_enabled_channels)
     if target == 'duelsmonster':
         refreshduelsmonster(bot)
     reset_database_value(bot, duelrecorduser, 'duelslockout')
