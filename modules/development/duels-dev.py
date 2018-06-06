@@ -622,7 +622,6 @@ def subcommand_combat(bot, trigger, triggerargsarray, instigator, now, duels_dev
     command_main = get_trigger_arg(bot, command_full, 1)
     command_main_process(bot, trigger, triggerargsarray, instigator, now, duels_dev_channels, commands_valid, command_full, command_main, channel_current, command_type, botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray, duels_enabled_channels)
 
-
 def duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_current, triggerargsarray, now, duels_dev_channels, duels_enabled_channels):
 
     ## Lockout Check, don't allow multiple duels simultaneously
@@ -1097,6 +1096,7 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
 def subcommand_author(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
     onscreentext(bot, channel_current, "The author of Duels is deathbybandaid.")
 
+## Version
 def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
     versionfetch = versionnumber(bot)
     onscreentext(bot, channel_current, "The duels framework was last modified on " + str(versionfetch) + ".")
@@ -1279,13 +1279,13 @@ def subcommand_game(bot, instigator, triggerargsarray, botvisibleusers, currentu
         osd_notice(bot, instigator, "I don't appear to be in that channel.")
         return
     if command == 'on':
-        if channel_current in duels_enabled_channels:
+        if channeltarget in duels_enabled_channels:
             osd_notice(bot, instigator, "Duels is already on in " + channel_current + ".")
             return
         adjust_database_array(bot, duelrecorduser, [channeltarget], 'gameenabled', 'add')
         onscreentext(bot, channeltarget, "Duels has been enabled in " + channeltarget + "!")
     elif command == 'off':
-        if channel_current not in duels_enabled_channels:
+        if channeltarget not in duels_enabled_channels:
             osd_notice(bot, instigator, "Duels is already off in " + channeltarget + ".")
             return
         adjust_database_array(bot, duelrecorduser, [channeltarget], 'gameenabled', 'del')
@@ -1299,17 +1299,40 @@ def subcommand_devmode(bot, instigator, triggerargsarray, botvisibleusers, curre
     if not command:
         osd_notice(bot, instigator, "Options are On or Off.")
         return
+    channeltarget = get_trigger_arg(bot, triggerargsarray, 3)
+    if not channeltarget:
+        osd_notice(bot, instigator, "You must specify a channel.")
+        return
+    if not channeltarget.startswith("#"):
+        osd_notice(bot, instigator, "You must specify a valid channel.")
+        return
+    valid_channel_list = valid_bot_channels(bot)
+    if channeltarget not in valid_channel_list:
+        osd_notice(bot, instigator, "I don't appear to be in that channel.")
+        return
     if command == 'on':
-        adjust_database_array(bot, duelrecorduser, [channel_current], 'devenabled', 'add')
-        osd_notice(bot, instigator, "Duels devmode is on in " + channel_current + ".")
+        if channeltarget in duels_enabled_channels:
+            osd_notice(bot, instigator, "Duels devmode is already on in " + channel_current + ".")
+            return
+        adjust_database_array(bot, duelrecorduser, [channeltarget], 'devenabled', 'add')
+        onscreentext(bot, channeltarget, "Duels devmode has been enabled in " + channeltarget + "!")
+    elif command == 'off':
+        if channeltarget in duels_enabled_channels:
+            osd_notice(bot, instigator, "Duels devmode is already off in " + channel_current + ".")
+            return
+        adjust_database_array(bot, duelrecorduser, [channeltarget], 'devenabled', 'del')
+        onscreentext(bot, channeltarget, "Duels devmode has been disabled in " + channeltarget + "!")
     else:
-        adjust_database_array(bot, duelrecorduser, [channel_current], 'devenabled', 'del')
-        osd_notice(bot, instigator, "Duels devmode is off in " + channel_current + ".")
+        osd_notice(bot, instigator, "Invalid command.")
 
 ## Health Subcommand
 def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
+
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+
     healthcommand = get_trigger_arg(bot, triggerargsarray, 2) or instigator
-    if not healthcommand or healthcommand.lower() in [x.lower() for x in dueloptedinarray]:
+    if not healthcommand or healthcommand.lower() in [x.lower() for x in botvisibleusers]:
         if int(tiercommandeval) > int(currenttier) and healthcommand != instigator:
             if channel_current in duels_dev_channels:
                 allowpass = 1
@@ -1318,11 +1341,12 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             else:
                 osd_notice(bot, instigator, "Health for other players cannot be viewed until somebody reaches " + str(tierpepperrequired.title()) + ". "+str(tiermath) + " tier(s) remaining!")
                 return
-        validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
-        if not validtarget:
-            osd_notice(bot, instigator, validtargetmsg)
-            return
-        healthcommand = actualname(bot, healthcommand)
+        if healthcommand != instigator:
+            validtarget, validtargetmsg = targetcheck(bot, healthcommand, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
+            if not validtarget:
+                osd_notice(bot, instigator, validtargetmsg)
+                return
+            healthcommand = actualname(bot, healthcommand)
         dispmsgarray = []
         totalhealth = 0
         targetclass = get_database_value(bot, healthcommand, 'class_setting') or 'notclassy'
