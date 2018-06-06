@@ -1115,18 +1115,37 @@ def subcommand_version(bot, instigator, triggerargsarray, botvisibleusers, curre
 
 ## Docs Subcommand
 def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    target = get_trigger_arg(bot, triggerargsarray, 2)
-    if not target:
+
+    if botvisibleusers == []:
+        botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        
+    inputtarget = get_trigger_arg(bot, triggerargsarray, 2)
+    if not inputtarget:
         onscreentext(bot, channel_current, "Online Docs: " + GITWIKIURL)
         return
-    ## private message player
+
+    altcoms = alternative_commands_valid(bot)
+    if inputtarget in altcoms or inputtarget in commands_valid:
+        if inputtarget in commandarray_alt_docs or inputtarget == 'docs':
+            messagetype = "docs"
+        else:
+            for subcom in commandarray_alternate_list:
+                commandarray_alt_eval = eval("commandarray_alt_"+subcom)
+                if inputtarget.lower() in commandarray_alt_eval:
+                    messagetype = subcom
+        target = get_trigger_arg(bot, triggerargsarray, 3) or instigator
+    else:
+        messagetype = "main"
+        target = inputtarget
+
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
     validtarget, validtargetmsg = targetcheck(bot, target, dueloptedinarray, botvisibleusers, currentuserlistarray, instigator, currentduelplayersarray, commands_valid)
     if not validtarget:
         osd_notice(bot, instigator, validtargetmsg)
         return
-    osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
+    #osd_notice(bot, target, "Online Docs: " + GITWIKIURL)
+    osd_notice(bot, target, messagetype)
 
 ## On Subcommand
 def subcommand_on(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
