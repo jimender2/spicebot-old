@@ -1395,8 +1395,9 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             osd_notice(bot, instigator, "It appears your " + bodypartselect + " is at max health.")
             return
         quantity = get_trigger_arg(bot, triggerargsarray, 4) or 1
+        quantity = int(quantity)
         instigatorstimpacks = get_database_value(bot, instigator, 'stimpack') or 0
-        bot.say(str(instigatorstimpacks))
+        instigatorstimpacks = int(instigatorstimpacks)
         if quantity > instigatorstimpacks:
             osd_notice(bot, instigator, "You don't appear to have " + str(quantity) + " stimpack(s).")
             return
