@@ -1144,7 +1144,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             help_run = str('helpdocs_' + messagetype.lower())
             endmessage = eval(help_run)
         except NameError:
-            endmessage = "That Command has no Instructions yet."
+            endmessage = "The "+messagetype+" command has no instructions built into the game yet."
     else:
         endmessage = str("Online Docs: " + GITWIKIURL)
 
