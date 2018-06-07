@@ -14,3 +14,5 @@ from sopel.formatting import *
 
 @sopel.module.commands('dbbtest')
 def mainfunction(bot, trigger):
+  bot.say("normal text")
+  bot.say("Red", colors.RED)
