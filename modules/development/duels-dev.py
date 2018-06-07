@@ -1204,8 +1204,8 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 endmessage.append("[ADMIN ONLY]")
 
             ## Command Name
-            endmessage.append("Basic info for the " + messagetype + ":")
-                
+            endmessage.append("Basic info for Duel " + messagetype + ":")
+
             ## Basic info
             try:
                 help_run = str('helpdocs_basic_' + messagetype.lower())
@@ -1239,6 +1239,9 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if messagetype not in command_stamina_free:
                 commandstaminacost = eval("command_stamina_"+messagetype)
             endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
+
+            if command_main.lower() in commandarray_inchannel:
+                endmessage.append("Must be run in channel.")
 
     ## Defaults
     else:
