@@ -38,7 +38,7 @@ def reset(bot,trigger):
 ## Automatic Run
 @sopel.module.interval(600)
 def autorss(bot):
-    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)

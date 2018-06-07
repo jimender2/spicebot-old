@@ -1893,14 +1893,34 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     for user in canduelarray:
         for astat in assault_results:
             reset_database_value(bot, instigator, "assault_" + astat)
-    for maindueler in canduelarray:
-        targetarray = []
-        for player in canduelarray:
-            if player != maindueler:
-                targetarray.append(player)
-        random.shuffle(targetarray)
-        duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
+
+    ## Build second canduelarray
+    mainduelerarray = []
+    for userplayer in canduelarray:
+        mainduelerarray.append(userplayer)
+    random.shuffle(mainduelerarray)
+
+    ## Every Player combination
+    for playera, playerb in zip(mainduelerarray, canduelarray):
+        if playera != playerb:
+            playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
+            playerbfought = get_database_value(bot, playerb, 'mayhemorganizer') or []
+            if playera not in playerbfought and playerb not in playerafought:
+                duel_combat(bot, instigator, playera, playerb, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
+                adjust_database_array(bot, playera, [playerb], 'mayhemorganizer', 'add')
+                adjust_database_array(bot, playerb, [playera], 'mayhemorganizer', 'add')
+                
+
+    #for maindueler in canduelarray:
+    #    targetarray = []
+    #    for player in canduelarray:
+    #        if player != maindueler:
+    #            targetarray.append(player)
+    #    random.shuffle(targetarray)
+    #    duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
+        
     for user in canduelarray:
+        reset_database_value(bot, user, 'mayhemorganizer')
         assaultstatsarray = []
         assaultstatsarray.append(user + "'s Full Channel Mayhem results:")
         for astat in assault_results:

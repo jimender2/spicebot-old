@@ -10,7 +10,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 
 from SpicebotShared import *
-import Spicebucks
+import Spicebucksdev
 
 # Commands that work in privmsg
 privcmdlist = ['check','admin','bladder','fridge']
