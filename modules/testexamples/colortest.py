@@ -15,4 +15,4 @@ from sopel.formatting import *
 @sopel.module.commands('colortest')
 def mainfunction(bot, trigger):
   bot.say("normal text")
-  bot.say("Red", colors.RED)
+  bot.say(color("RED STRING", colors.RED))
