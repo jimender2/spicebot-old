@@ -36,7 +36,6 @@ duelsversionpage = "https://github.com/deathbybandaid/SpiceBot/commits/master/mo
 duels_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 ## Command Structure
-commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for Opt status
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
 commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat','grenade'] ## Must Be channel_current
 ### Alternative Commands
@@ -1200,6 +1199,10 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             endmessage.append("Online Docs: " + GITWIKIURL)
         else:
 
+            ## Admin Only
+            if messagetype.lower() in commandarray_admin:
+                endmessage.append("[ADMIN ONLY]")
+                
             ## Basic info
             try:
                 help_run = str('helpdocs_basic_' + messagetype.lower())
