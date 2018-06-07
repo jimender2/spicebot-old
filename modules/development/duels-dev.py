@@ -1919,16 +1919,8 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
                 duel_combat(bot, instigator, playera, [playerb], triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
                 adjust_database_array(bot, playera, playerb, 'mayhemorganizer', 'add')
                 adjust_database_array(bot, playerb, playera, 'mayhemorganizer', 'add')
-                
 
-    #for maindueler in canduelarray:
-    #    targetarray = []
-    #    for player in canduelarray:
-    #        if player != maindueler:
-    #            targetarray.append(player)
-    #    random.shuffle(targetarray)
-    #    duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
-        
+    ## Results
     for user in canduelarray:
         reset_database_value(bot, user, 'mayhemorganizer')
         assaultstatsarray = []
