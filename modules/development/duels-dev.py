@@ -1902,13 +1902,15 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
 
     ## Every Player combination
     for playera, playerb in zip(mainduelerarray, canduelarray):
-        if playera != playerb:
-            playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
-            playerbfought = get_database_value(bot, playerb, 'mayhemorganizer') or []
-            if playera not in playerbfought and playerb not in playerafought:
-                duel_combat(bot, instigator, playera, playerb, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
-                adjust_database_array(bot, playera, [playerb], 'mayhemorganizer', 'add')
-                adjust_database_array(bot, playerb, [playera], 'mayhemorganizer', 'add')
+        bot.say(playera + " " + playerb)
+        #if playera != playerb:
+        #    playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
+        #    playerbfought = get_database_value(bot, playerb, 'mayhemorganizer') or []
+        #    
+        #    if playera not in playerbfought and playerb not in playerafought:
+        #        duel_combat(bot, instigator, playera, playerb, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
+        #        adjust_database_array(bot, playera, [playerb], 'mayhemorganizer', 'add')
+        #        adjust_database_array(bot, playerb, [playera], 'mayhemorganizer', 'add')
                 
 
     #for maindueler in canduelarray:
