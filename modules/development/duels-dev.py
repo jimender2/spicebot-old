@@ -1249,6 +1249,14 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if messagetype.lower() in specialevent_allow:
                 endmessage.append("Eligible for the 50th usage payout of " + str(duel_special_event) + " coins!")
 
+            ## timeout
+            try:
+                help_run = str('timeout_' + messagetype.lower())
+                endmessageeval = eval(help_run)
+                endmessage.append("Has a timeout of " + str(hours_minutes_seconds(endmessageeval))+ " between uses.")
+            except NameError:
+                dummyvar = ""
+
     ## Defaults
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
