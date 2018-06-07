@@ -4817,11 +4817,10 @@ def gettree():
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    if str(database_value).isdigit():
-        if int(database_value) < 0:
-            bot.say(str(databasekey) + " = " + str(database_value))
-            reset_database_value(bot, nick, databasekey)
-            database_value = 0
+    if float(database_value)  < 0:
+        bot.say(str(databasekey) + " = " + str(database_value))
+        reset_database_value(bot, nick, databasekey)
+        database_value = 0
     return database_value
 
 ## set a value
