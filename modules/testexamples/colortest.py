@@ -16,4 +16,4 @@ from sopel.formatting import *
 def mainfunction(bot, trigger):
   bot.say("normal text")
   bot.say(bold("bold text"))
-  bot.say("RED STRING", colors.RED)
+  bot.say("\x0309,01Color STRING\x03")
