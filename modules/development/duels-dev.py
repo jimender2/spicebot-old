@@ -2701,6 +2701,9 @@ def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, curre
     if botvisibleusers == []:
         botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
     instigatorgrenade = get_database_value(bot, instigator, 'grenade') or 0
+    if instigatorgrenade <= 0:
+        osd_notice(bot, instigator, "You don't have a grenade to use!")
+        return
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     if bot.nick in canduelarray:
