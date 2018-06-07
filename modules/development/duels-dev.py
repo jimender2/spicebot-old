@@ -1240,7 +1240,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 commandstaminacost = eval("command_stamina_"+messagetype)
             endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
 
-            if command_main.lower() in commandarray_inchannel:
+            if messagetype.lower() in commandarray_inchannel:
                 endmessage.append("Must be run in channel.")
 
     ## Defaults
