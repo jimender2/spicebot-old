@@ -24,6 +24,7 @@ import requests
 from fake_useragent import UserAgent
 from lxml import html
 from statistics import mean
+import itertools
 
 ###################
 ## Configurables ##
