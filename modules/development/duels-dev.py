@@ -24,6 +24,7 @@ import requests
 from fake_useragent import UserAgent
 from lxml import html
 from statistics import mean
+import itertools
 
 ###################
 ## Configurables ##
@@ -591,8 +592,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
         return
 
     ## Check to see that duels is not locked Out
-    if command_main.lower() in duels_combat_lockout_list:
-        lockoutpass = check_duels_lockout(bot)
+    if command_main.lower() in duels_combat_lockout_list and channel_current not in duels_dev_channels:
+        lockoutpass = check_duels_lockout(bot, instigator)
         if not lockoutpass:
             return
         set_database_value(bot, duelrecorduser, 'duelslockout', now)
@@ -1901,24 +1902,25 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     random.shuffle(mainduelerarray)
 
     ## Every Player combination
-    for playera, playerb in zip(mainduelerarray, canduelarray):
+    playercombinations = []
+    for playercombo in itertools.product(mainduelerarray, canduelarray):
+        playercombinations.append(playercombo)
+    random.shuffle(playercombinations)
+    for usercombo in playercombinations:
+        currentcombo = []
+        for combouser in usercombo:
+            currentcombo.append(combouser)
+        playera = get_trigger_arg(bot, currentcombo, 1)
+        playerb = get_trigger_arg(bot, currentcombo, "last")
         if playera != playerb:
             playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
             playerbfought = get_database_value(bot, playerb, 'mayhemorganizer') or []
             if playera not in playerbfought and playerb not in playerafought:
-                duel_combat(bot, instigator, playera, playerb, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
-                adjust_database_array(bot, playera, [playerb], 'mayhemorganizer', 'add')
-                adjust_database_array(bot, playerb, [playera], 'mayhemorganizer', 'add')
-                
+                duel_combat(bot, instigator, playera, [playerb], triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
+                adjust_database_array(bot, playera, playerb, 'mayhemorganizer', 'add')
+                adjust_database_array(bot, playerb, playera, 'mayhemorganizer', 'add')
 
-    #for maindueler in canduelarray:
-    #    targetarray = []
-    #    for player in canduelarray:
-    #        if player != maindueler:
-    #            targetarray.append(player)
-    #    random.shuffle(targetarray)
-    #    duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
-        
+    ## Results
     for user in canduelarray:
         reset_database_value(bot, user, 'mayhemorganizer')
         assaultstatsarray = []
@@ -3557,7 +3559,7 @@ def valid_bot_channels(bot):
         valid_channel_list.append(c)
     return valid_channel_list
 
-def check_duels_lockout(bot):
+def check_duels_lockout(bot, instigator):
     checkpass = 0
 
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
