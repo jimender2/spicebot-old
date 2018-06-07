@@ -4596,26 +4596,24 @@ def selectwinner(bot, nickarray):
     adjust_database_value(bot, randomrollwinner, 'winnerselection', 1)
 
     ## Stats
+    playerarray,statvaluearray = [],[]
     for x in statcheckarray:
-        statscore = 0
-        if x == 'respawns' or x == 'streak_win_current':
-            statscore = 99999999
-        statleader = ''
         for u in nickarray:
             if x != 'health':
                 value = get_database_value(bot, u, x) or 0
             else:
                 scriptdef = str('get_' + x + '(bot,u)')
                 value = eval(scriptdef)
-            if x == 'respawns' or x == 'streak_win_current':
-                if int(value) < statscore:
-                    statleader = u
-                    statscore = int(value)
-            else:
-                if int(value) > statscore:
-                    statleader = u
-                    statscore = int(value)
-        adjust_database_value(bot, statleader, 'winnerselection', 1)
+            playerarray.append(u)
+            statvaluearray.append(x)
+        statvaluearray, playerarray = array_arrangesort(bot, statvaluearray, playerarray)
+        if x == 'respawns' or x == 'streak_win_current':
+            statleadername = get_trigger_arg(bot, playerarray, 1)
+            statleadernumber = get_trigger_arg(bot, statvaluearray, 1)
+        else:
+            statleadername = get_trigger_arg(bot, playerarray, 'last')
+            statleadernumber = get_trigger_arg(bot, statvaluearray, 'last')
+        adjust_database_value(bot, statleadername, 'winnerselection', 1)
 
     ## weaponslocker not empty
     for user in nickarray:
