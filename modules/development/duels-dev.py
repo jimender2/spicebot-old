@@ -591,8 +591,8 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
         return
 
     ## Check to see that duels is not locked Out
-    if command_main.lower() in duels_combat_lockout_list:
-        lockoutpass = check_duels_lockout(bot)
+    if command_main.lower() in duels_combat_lockout_list and channel_current not in duels_dev_channels:
+        lockoutpass = check_duels_lockout(bot, instigator)
         if not lockoutpass:
             return
         set_database_value(bot, duelrecorduser, 'duelslockout', now)
@@ -3561,7 +3561,7 @@ def valid_bot_channels(bot):
         valid_channel_list.append(c)
     return valid_channel_list
 
-def check_duels_lockout(bot):
+def check_duels_lockout(bot, instigator):
     checkpass = 0
 
     duelslockout = get_database_value(bot, duelrecorduser, 'duelslockout') or 0
