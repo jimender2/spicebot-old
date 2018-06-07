@@ -2704,7 +2704,7 @@ def subcommand_grenade(bot, instigator, triggerargsarray, botvisibleusers, curre
             if damage > 0:
                 splitdamage = int(damage) / len(stats_healthbodyparts)
                 for part in stats_healthbodyparts:
-                    adjust_database_value(bot, x, part, -abs(splitdamage))
+                    adjust_database_value(bot, player, part, -abs(splitdamage))
                 playerheadhealth = get_database_value(bot, player, 'head')
                 playertorsohealth = get_database_value(bot, player, 'torso')
                 if playerheadhealth  <= 0 or playertorsohealth <= 0:
