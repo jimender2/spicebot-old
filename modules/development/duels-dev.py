@@ -1233,7 +1233,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             commandtier = tier_command(bot, messagetype)
             commandpepper = pepper_tier(bot, commandtier)
             if messagetype.lower() in commandarray_tier_self:
-                endmessage.append("Self-usable from the beginning of the game, but use on others, it is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+                endmessage.append("Self-usable from the beginning of the game, but not use on others. It is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
             else:
                 endmessage.append("Unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
 
