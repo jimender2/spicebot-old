@@ -1902,10 +1902,12 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     random.shuffle(mainduelerarray)
 
     ## Every Player combination
-    for x in itertools.product(mainduelerarray, canduelarray):
-        bot.say(str(x))
-
-
+    playercombinations = []
+    for playercombo in itertools.product(mainduelerarray, canduelarray):
+        playercombinations.append(x)
+    random.shuffle(playercombinations)
+    for usercombo in playercombinations:
+        bot.say(str(usercombo))
 
     #for playera, playerb in zip(mainduelerarray, canduelarray):
     #    if playera != playerb:
