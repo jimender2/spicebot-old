@@ -40,13 +40,14 @@ commandarray_instigator_bypass = ['on','admin','devmode','game'] ## bypass for O
 commandarray_admin = ['admin','devmode','game'] ## Admin Functions
 commandarray_inchannel  = ['roulette','assault','colosseum','bounty','hungergames','devmode','quest','deathblow','combat','grenade'] ## Must Be channel_current
 ### Alternative Commands
-commandarray_alternate_list = ['on','off','random','assault','author','docs','loot']
+commandarray_alternate_list = ['on','off','random','assault','author','docs','loot','admin']
 commandarray_alt_on = ['enable','activate']
 commandarray_alt_off = ['disable','deactivate']
 commandarray_alt_random = ['anyone','somebody','available','someone']
 commandarray_alt_assault = ['everyone','everybody','channel']
 commandarray_alt_author = ['credit']
 commandarray_alt_loot = ['backpack']
+commandarray_alt_admin = ['-a']
 commandarray_alt_docs = ['help','man']
 duel_canduel_list = ['mayhem','hungergames','monster','random']
 duel_canduel_nobot_list = ['mayhem','hungergames','colosseum','assault','quest','warroom','grenade']
@@ -287,7 +288,7 @@ cowardarray = ["What a coward!","What a Woosy!","Run away, loser!","Shame on you
 
 ## Built-in docs
 helpdocs_basic_on = "opts you into Duels. Running any command should opt you in, but this is the alternate way to do so. Your opt status will announce to the channel."
-helpdocs_adv_1_on = "You can also use this command to have the bot primsg a nick to reccomend somebody join the fun."
+helpdocs_adv_1_on = "You can also use this command to have the bot primsg a nick to tell somebody join the fun."
 helpdocs_basic_off = "opts you out of Duels. Your opt status will announce to the channel."
 helpdocs_basic_admin = "allows bot admins to make changes to the game and player stats."
 helpdocs_basic_devmode = "is used by bot admins to cause the game to bypass game-limiting features for a specific channel."
@@ -1225,7 +1226,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             ## Tier
             commandtier = tier_command(bot, messagetype)
             commandpepper = pepper_tier(bot, commandtier)
-            endmessage.append("The " + str(messagetype) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+            endmessage.append("The " + str(messagetype) + " command is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
 
             ## Stamina Costs
             commandstaminacost = 0
