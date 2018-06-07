@@ -1227,18 +1227,18 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if messagetype in commandarray_alternate_list:
                 commandarray_alt_evalb = eval("commandarray_alt_"+messagetype)
                 alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
-                endmessage.append("Alternate Commands: "+alternatelist)
+                endmessage.append("Alternate Command(s) = "+alternatelist)
 
             ## Tier
             commandtier = tier_command(bot, messagetype)
             commandpepper = pepper_tier(bot, commandtier)
-            endmessage.append("The " + str(messagetype) + " command is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+            endmessage.append("Unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
 
             ## Stamina Costs
             commandstaminacost = 0
             if messagetype not in command_stamina_free:
                 commandstaminacost = eval("command_stamina_"+messagetype)
-            endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
+            endmessage.append("Costs " + str(commandstaminacost) + " stamina.")
 
             if messagetype.lower() in commandarray_inchannel:
                 endmessage.append("Must be run in channel.")
