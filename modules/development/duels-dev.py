@@ -1901,13 +1901,21 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
     random.shuffle(mainduelerarray)
 
     ## Every Player combination
-    for playera, playerb in zip(mainduelerarray, canduelarray):
-        if playera != playerb:
-            bot.say(playera + " != " + playerb)
+    for x in itertools.product(mainduelerarray, canduelarray):
+        bot.say(str(x))
+
+
+
+    #for playera, playerb in zip(mainduelerarray, canduelarray):
+    #    if playera != playerb:
+    #        playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
+
+            #bot.say(playera + " != " + playerb)
+
             #playerafought = get_database_value(bot, playera, 'mayhemorganizer') or []
             #playerbfought = get_database_value(bot, playerb, 'mayhemorganizer') or []
-        else:
-            bot.say(playera + " = " + playerb)
+        #else:
+            #bot.say(playera + " = " + playerb)
             
             #if playera not in playerbfought and playerb not in playerafought:
             #    duel_combat(bot, instigator, playera, playerb, triggerargsarray, now, channel_current, 'assault', duels_dev_channels, duels_enabled_channels)
