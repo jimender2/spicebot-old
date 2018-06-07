@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
@@ -26,15 +26,25 @@ def execute_main(bot, trigger, triggerargsarray):
     # Vowel awareness
     if fishtype.startswith(vowels):
         fishmsg = "an " + fishtype
-        
+
     # No target specified
     if not target:
-        bot.say("Who/what would you like to slap with a fish?")
-    
+        message = "You haven't told me who or what you want to slap, you moron."
+
     # Can't slap the bot
     if target == bot.nick:
-        bot.say("I will not do that!!")
-        
+        message = "Get fucked, that's not gonna happen."
+
+    # Target is bear
+    elif target.startswith("bear"):
+        if not reason:
+            message = trigger.nick + " feeds " + target + " a tasty " + fishtype + "."
+        else:
+            if reason.startswith('for ') or reason.startswith('because ') or reason.startswith('cause '):
+                message = trigger.nick + " feeds " + target + " a tasty " + fishtype + " " + reason + "."
+            else:
+                message = trigger.nick + " feeds " + target + " a tasty " + fishtype + " for " + reason + "."
+
     # Target is fine
     else:
         if not reason:
@@ -44,5 +54,5 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = trigger.nick + " slaps " + target + " with " + fishmsg + " " + reason + "."
             else:
                 message = trigger.nick + " slaps " + target + " with " + fishmsg + " for " + reason + "."
-        bot.say(message)
-        
+
+    bot.say(message)
