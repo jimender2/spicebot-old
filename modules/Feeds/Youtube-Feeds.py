@@ -20,7 +20,7 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.commands('ytrssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
-    RSSFEEDSDIR = str("/home/sopel/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick.lower()+"/RSS-Feeds/youtube/")
     if not feedselect:
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':

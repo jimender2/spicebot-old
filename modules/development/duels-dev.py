@@ -47,6 +47,9 @@ commandarray_alt_assault = ['everyone','everybody','channel']
 commandarray_alt_author = ['credit']
 commandarray_alt_loot = ['backpack']
 commandarray_alt_docs = ['help','man']
+duel_canduel_list = ['mayhem','hungergames','monster','random']
+duel_canduel_nobot_list = ['mayhem','hungergames','colosseum','assault','quest','warroom','grenade']
+duel_events_list = ['mayhem','hungergames','colosseum','assault','quest']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
 commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat','grenade']
@@ -245,6 +248,7 @@ halfhour_regen_mage_mana, halfhour_regen_mage_mana_max = 50, 500 ## mages regene
 halfhour_coin = 15 ## coin gain per half hour
 
 ## Main Duel Runs
+duel_combat_timeouts = 'false'
 stat_check_commands_list = ['author','version','docs','on','off','game','devmode','admin']
 duel_lockout_timer = 300
 duels_combat_lockout_list = ['combat','mayhem','assault','quest','random','monster']
@@ -598,6 +602,29 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
         statreset(bot, instigator)
         healthcheck(bot, instigator)
 
+    ## Canduelarray Check for certain commands
+    if command_main.lower() in duel_canduel_list:
+        if botvisibleusers == []:
+            botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        if instigator not in canduelarray:
+            canduel, validtargetmsg = duelcriteria(bot, instigator, command_main, currentduelplayersarray, channel_current)
+            osd_notice(bot, instigator, validtargetmsg)
+            return
+
+    ## Check bot is not a player for certain commands
+    if command_main.lower() in duel_canduel_nobot_list:
+        if botvisibleusers == []:
+            botvisibleusers, currentuserlistarray, dueloptedinarray, currentduelplayersarray, canduelarray = users_bot_lists(bot, instigator, commands_valid, channel_current)
+        if bot.nick in canduelarray:
+            canduelarray.remove(bot.nick)
+
+    ## Events Check
+    if command_main.lower() in duel_events_list:
+        executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
+        if not executedueling:
+            osd_notice(bot, instigator, executeduelingmsg)
+            return
+
     ## If the above passes all above checks
     subcommand_run = str('subcommand_' + command_main.lower() + '(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels)')
     eval(subcommand_run)
@@ -714,9 +741,10 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
         mainduelerdeathstart = get_database_value(bot, maindueler, 'assault_deaths') or 0
 
         ## Update Time Of Combat
-        #set_database_value(bot, maindueler, 'timeout_timeout', now)
-        #set_database_value(bot, target, 'timeout_timeout', now)
-        #set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
+        if duel_combat_timeouts == 'true':
+            set_database_value(bot, maindueler, 'timeout_timeout', now)
+            set_database_value(bot, target, 'timeout_timeout', now)
+            set_database_value(bot, duelrecorduser, 'timeout_timeout', now)
 
         ## Display Naming
         if maindueler != 'duelsmonster':
@@ -1860,16 +1888,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
     ## TODO use the database to save a list of these duels temporarily so that there are no repeats
-    if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, instigator, command_main, currentduelplayersarray, channel_current)
-        osd_notice(bot, instigator, validtargetmsg)
-        return
-    if bot.nick in canduelarray:
-        canduelarray.remove(bot.nick)
-    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
     onscreentext(bot, channel_current, instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     for user in canduelarray:
@@ -1898,16 +1916,7 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
 
 ## Hunger Games
 def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, instigator, command_main, currentduelplayersarray, channel_current)
-        osd_notice(bot, instigator, validtargetmsg)
-        return
-    if bot.nick in canduelarray:
-        canduelarray.remove(bot.nick)
-    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+
     totaltributes = len(canduelarray)
     totaltributesstart = totaltributes
     if totaltributes == 1:
@@ -1974,12 +1983,7 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
 
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if bot.nick in canduelarray:
-        canduelarray.remove(bot.nick)
-    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     currenttierstart = get_database_value(bot, duelrecorduser, 'tier') or 0
@@ -2054,12 +2058,7 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
 
 ## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if bot.nick in canduelarray:
-        canduelarray.remove(bot.nick)
-    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+
     if instigator in canduelarray:
         canduelarray.remove(instigator)
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
@@ -2098,12 +2097,7 @@ def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, curre
 
 ## Quest
 def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if bot.nick in canduelarray:
-        canduelarray.remove(bot.nick)
-    executedueling, executeduelingmsg = eventchecks(bot, canduelarray, command_main, instigator, currentduelplayersarray, channel_current)
-    if not executedueling:
-        osd_notice(bot, instigator, executeduelingmsg)
-        return
+
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
     onscreentext(bot, channel_current, instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main), now)
@@ -2133,20 +2127,12 @@ def subcommand_quest(bot, instigator, triggerargsarray, botvisibleusers, current
 
 ## Monster
 def subcommand_monster(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, instigator, command_main, currentduelplayersarray, channel_current)
-        osd_notice(bot, instigator, validtargetmsg)
-        return
     monsterstats(bot, currentduelplayersarray, 1)
     duel_combat(bot, instigator, instigator, ['duelsmonster'], triggerargsarray, now, channel_current, 'combat', duels_dev_channels, duels_enabled_channels)
     refreshduelsmonster(bot)
 
 ## Random Target
 def subcommand_random(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    if instigator not in canduelarray:
-        canduel, validtargetmsg = duelcriteria(bot, instigator, command_main, currentduelplayersarray, channel_current)
-        osd_notice(bot, instigator, validtargetmsg)
-        return
     if canduelarray == []:
         osd_notice(bot, instigator, "It looks like the full channel " + command_main + " event target finder has failed.")
         return
@@ -2890,14 +2876,16 @@ def subcommand_loot(bot, instigator, triggerargsarray, botvisibleusers, currentu
                     adjust_database_value(bot, target, 'stamina', staminapotion_worth)
                 elif x == 'timepotion':
                     reset_database_value(bot, target, 'lastfought')
-                    reset_database_value(bot, duelrecorduser, 'timeout_timeout')
+                    if duel_combat_timeouts == 'true':
+                        reset_database_value(bot, duelrecorduser, 'timeout_timeout')
                     for k in timepotiontargetarray:
                         targetequalcheck = get_database_value(bot, bot.nick, k) or bot.nick
                         if targetequalcheck == target:
                             reset_database_value(bot, bot.nick, k)
                     for j in timepotiontimeoutarray:
                         reset_database_value(bot, target, j)
-                    reset_database_value(bot, bot.nick, 'timeout_timeout')
+                    if duel_combat_timeouts == 'true':
+                        reset_database_value(bot, bot.nick, 'timeout_timeout')
                     targetheadhealth = get_database_value(bot, target, 'head')
                     targettorsohealth = get_database_value(bot, target, 'torso')
                     if targetheadhealth  <= 0 or targettorsohealth <= 0:
@@ -3806,9 +3794,10 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, channel_current):
         useralastfought = bot.nick
 
     ## Timeout Retrieval
-    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
-    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
-    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+    if duel_combat_timeouts == 'true':
+        useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+        userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+        channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
 
     ## Last instigator
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
@@ -3818,7 +3807,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, channel_current):
     for x in currentduelplayersarray:
         if x != bot.nick:
             dueluserslist.append(x)
-    howmanyduelsers = len(dueluserslist)
+    howmanyduelusers = len(dueluserslist)
 
     ## Correct userb Name
     userb = actualname(bot, userb)
@@ -3833,29 +3822,35 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, channel_current):
         return validtarget, validtargetmsg
 
     ## Don't allow usera to duel twice in a row
-    if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
-        validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate.")#, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+    if usera == channellastinstigator:
+        if duel_combat_timeouts == 'true':
+            if useratime <= INSTIGATORTIMEOUT:
+                validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate., or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+        else:
+            validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate.")#, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
-    if userb == useralastfought and howmanyduelsers > 2:
+    if userb == useralastfought and howmanyduelusers > 2:
         validtargetmsg.append('You may not fight the same person twice in a row.')
         validtarget = 0
 
-    ## usera Timeout
-    #if useratime <= USERTIMEOUT:
-    #    validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
-    #    validtarget = 0
+    ## Timeouts
+    if duel_combat_timeouts == 'true':
+        ## usera Timeout
+        if useratime <= USERTIMEOUT:
+            validtargetmsg.append("You can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - useratime)))+".")
+            validtarget = 0
 
-    ## Target Timeout
-    #if userbtime <= USERTIMEOUT:
-    #    validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
-    #    validtarget = 0
+        ## Target Timeout
+        if userbtime <= USERTIMEOUT:
+            validtargetmsg.append(userb + " can't duel for "+str(hours_minutes_seconds((USERTIMEOUT - userbtime)))+".")
+            validtarget = 0
 
-    ## Channel Timeout
-    #if channeltime <= CHANTIMEOUT:
-    #    validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
-    #    validtarget = 0
+        ## Channel Timeout
+        if channeltime <= CHANTIMEOUT:
+            validtargetmsg.append("Channel can't duel for "+str(hours_minutes_seconds((CHANTIMEOUT - channeltime)))+".")
+            validtarget = 0
 
     return validtarget, validtargetmsg
 
@@ -3874,32 +3869,40 @@ def duelcriteriashort(bot, usera, userb, currentduelplayersarray, channel_curren
         return validtarget
 
     ## Don't allow usera to duel twice in a row
-    #useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
     channellastinstigator = get_database_value(bot, duelrecorduser, 'lastinstigator') or bot.nick
-    if usera == channellastinstigator:# and useratime <= INSTIGATORTIMEOUT:
-        return validtarget
+    if duel_combat_timeouts == 'true':
+        useratime = get_timesince_duels(bot, usera, 'timeout_timeout') or 0
+    if usera == channellastinstigator:
+        if duel_combat_timeouts == 'true':
+            if useratime <= INSTIGATORTIMEOUT:
+                return validtarget
+        else:
+            return validtarget
 
     ## usera can't duel the same person twice in a row, unless there are only two people in the channel
     howmanyduelusers = len(currentduelplayersarray)
-    #userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
+    if duel_combat_timeouts == 'true':
+        userbtime = get_timesince_duels(bot, userb, 'timeout_timeout') or 0
     useralastfought = get_database_value(bot, usera, 'lastfought') or ''
-    if userb == useralastfought:# and howmanyduelusers > 2:
+    if userb == useralastfought and howmanyduelusers > 2:
         useraclass = get_database_value(bot, usera, 'class_setting') or 'notclassy'
         if useraclass != 'knight':
             return validtarget
 
-    ## usera Timeout
-    #if useratime <= USERTIMEOUT:
-    #    return validtarget
+    ## Timeouts
+    if duel_combat_timeouts == 'true':
+        ## usera Timeout
+        if useratime <= USERTIMEOUT:
+            return validtarget
 
-    ## Target Timeout
-    #if userbtime <= USERTIMEOUT:
-    #    return validtarget
+        ## Target Timeout
+        if userbtime <= USERTIMEOUT:
+            return validtarget
 
-    ## Channel Timeout
-    #channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
-    #if channeltime <= CHANTIMEOUT:
-    #    return validtarget
+        ## Channel Timeout
+        channeltime = get_timesince_duels(bot, duelrecorduser, 'timeout_timeout') or 0
+        if channeltime <= CHANTIMEOUT:
+            return validtarget
 
     validtarget = 1
     return validtarget
@@ -4303,6 +4306,9 @@ def get_timesince_duels(bot, nick, databasekey):
 
 ## Get timediff for user timeouts for stats display
 def get_timeout_timeout(bot, nick):
+    if duel_combat_timeouts == 'true':
+        timediff = 0
+        return timediff
     time_since = get_timesince_duels(bot, nick, 'timeout_timeout')
     if time_since < USERTIMEOUT:
         timediff = str(hours_minutes_seconds((USERTIMEOUT - time_since)))
