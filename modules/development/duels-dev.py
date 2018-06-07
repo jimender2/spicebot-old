@@ -1472,10 +1472,10 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
             dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  command_main + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
     elif healthcommand == 'healthpotion':
-        targnum = get_trigger_arg(bot, triggerargsarray, 3) or 1
+        quantity = get_trigger_arg(bot, triggerargsarray, 3) or 1
         target = instigator
         gethowmanylootitem = get_database_value(bot, instigator, 'healthpotion') or 0
-        if targnum == 'all':
+        if quantity == 'all':
             quantity = gethowmanylootitem
         quantity = int(quantity)
         targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
