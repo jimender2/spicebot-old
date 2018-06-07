@@ -1480,25 +1480,24 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         quantity = int(quantity)
         targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
         if int(gethowmanylootitem) < int(quantity):
-            osd_notice(bot, instigator, "You do not have enough " +  lootitem + " to use this command!")
+            osd_notice(bot, instigator, "You do not have enough " +  'healthpotion' + " to use this command!")
             return
         uselootarray = []
-        adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+        adjust_database_value(bot, instigator, 'healthpotion', -abs(quantity))
         while int(quantity) > 0:
             quantity = quantity - 1
-            uselootarray.append(lootitem)
+            uselootarray.append('healthpotion')
         uselootarraytotal = len(uselootarray)
         extramsg = '.'
-        if lootitem == 'healthpotion':
-            if targetclass == 'barbarian':
-                potionmaths = int(uselootarraytotal) * healthpotion_worth_barbarian
-            else:
-                potionmaths = int(uselootarraytotal) * healthpotion_worth
-            extramsg = str(" restoring " + str(potionmaths) + " health.")
-        if int(uselootarraytotal) == 1:
-            mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
+        if targetclass == 'barbarian':
+            potionmaths = int(uselootarraytotal) * healthpotion_worth_barbarian
         else:
-            mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
+            potionmaths = int(uselootarraytotal) * healthpotion_worth
+        extramsg = str(" restoring " + str(potionmaths) + " health.")
+        if int(uselootarraytotal) == 1:
+            mainlootusemessage = str(instigator + ' uses ' + 'healthpotion' + extramsg)
+        else:
+            mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + 'healthpotion' + 's' + extramsg)
         for x in uselootarray:
             if targetclass == 'barbarian':
                 splitdamage = healthpotion_worth_barbarian / len(stats_healthbodyparts)
