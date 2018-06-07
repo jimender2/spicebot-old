@@ -18,7 +18,7 @@ def execute_main(bot, trigger, triggerargsarray):
     string = get_trigger_arg(bot, triggerargsarray, 0)
     instigator = trigger.nick
     if string:
-        if string.startswith("your","ur"):
+        if string.startswith("your ") or string.startswith("ur "):
             string = get_trigger_arg(bot,triggerargsarray, '1+')
         if string.endswith("s"):
             bot.say("Your " + str(string) + " are bad, and you should feel bad!")
