@@ -1471,6 +1471,46 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         else:
             dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  command_main + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
+    elif healthcommand == 'healthpotion':
+        targnum = get_trigger_arg(bot, triggerargsarray, 3) or 1
+        target = instigator
+        gethowmanylootitem = get_database_value(bot, instigator, 'healthpotion') or 0
+        if targnumb == 'all':
+            quantity = gethowmanylootitem
+        quantity = int(quantity)
+        targetclass = get_database_value(bot, target, 'class_setting') or 'notclassy'
+        if int(gethowmanylootitem) < int(quantity):
+            osd_notice(bot, instigator, "You do not have enough " +  lootitem + " to use this command!")
+            return
+        uselootarray = []
+        adjust_database_value(bot, instigator, lootitem, -abs(quantity))
+        while int(quantity) > 0:
+            quantity = quantity - 1
+            uselootarray.append(lootitem)
+        uselootarraytotal = len(uselootarray)
+        extramsg = '.'
+        if lootitem == 'healthpotion':
+            if targetclass == 'barbarian':
+                potionmaths = int(uselootarraytotal) * healthpotion_worth_barbarian
+            else:
+                potionmaths = int(uselootarraytotal) * healthpotion_worth
+            extramsg = str(" restoring " + str(potionmaths) + " health.")
+        if int(uselootarraytotal) == 1:
+            mainlootusemessage = str(instigator + ' uses ' + lootitem + extramsg)
+        else:
+            mainlootusemessage = str(instigator + ' uses ' + str(uselootarraytotal) + " " + lootitem + 's' + extramsg)
+        for x in uselootarray:
+            if targetclass == 'barbarian':
+                splitdamage = healthpotion_worth_barbarian / len(stats_healthbodyparts)
+                for part in stats_healthbodyparts:
+                    adjust_database_value(bot, target, part, splitdamage)
+            else:
+                splitdamage = healthpotion_worth / len(stats_healthbodyparts)
+                for part in stats_healthbodyparts:
+                    adjust_database_value(bot, target, part, splitdamage)
+        onscreentext(bot, channel_current, mainlootusemessage)
+        if target != instigator and not channel_current.startswith("#"):
+            osd_notice(bot, target, mainlootusemessage)
     elif healthcommand == 'stimpack':
         bodypartselect = get_trigger_arg(bot, triggerargsarray, 3)
         if not bodypartselect:
@@ -1888,7 +1928,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
-    ## TODO use the database to save a list of these duels temporarily so that there are no repeats
     displaymessage = get_trigger_arg(bot, canduelarray, "list")
     onscreentext(bot, channel_current, instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     for user in canduelarray:
