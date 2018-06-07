@@ -1243,6 +1243,9 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             if messagetype.lower() in commandarray_inchannel:
                 endmessage.append("Must be run in channel.")
 
+            if messagetype.lower() in specialevent_allow:
+                endmessage.append("Eligible for the 50th usage payout of " + str(duel_special_event) " coins!")
+
     ## Defaults
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
