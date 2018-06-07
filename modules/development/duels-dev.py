@@ -1197,29 +1197,33 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
         if messagetype in commandarray_alt_docs or messagetype == 'docs':
             endmessage.append("Online Docs: " + GITWIKIURL)
         else:
+
+            ## Basic info
             try:
                 help_run = str('helpdocs_' + messagetype.lower())
                 endmessageeval = eval(help_run)
                 endmessage.append("The " + messagetype + " command " + endmessageeval)
             except NameError:
                 endmessage.append("The "+messagetype+" command has no instructions built into the game yet.")
+
+        ## Alternate Commands
         if messagetype in commandarray_alternate_list:
             commandarray_alt_evalb = eval("commandarray_alt_"+messagetype)
             alternatelist = get_trigger_arg(bot, commandarray_alt_evalb, 'list')
             endmessage.append("Alternate Commands: "+alternatelist)
-        ## TODO add tier unlock info
+
+        ## Tier
         commandtier = tier_command(bot, messagetype)
         commandpepper = pepper_tier(bot, commandtier)
         endmessage.append("The " + str(messagetype) + " is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
-        tiercheck = eval("commandarray_tier_unlocks_"+str(commandtier))
-        tiermath = commandtier - currenttier
-        if tiermath > 0:
-            endmessage.append(str(tiermath) + " tier(s) remaining!")
-        if messagetype in command_stamina_free:
-            commandstaminacost = 0
-        else:
+
+        ## Stamina Costs
+        commandstaminacost = 0
+        if messagetype not in command_stamina_free:
             commandstaminacost = eval("command_stamina_"+messagetype)
         endmessage.append("The " + str(messagetype) + " command costs " + str(commandstaminacost) + " stamina to run.")
+
+    ## Defaults
     else:
         endmessage.append("Online Docs: " + GITWIKIURL)
 
