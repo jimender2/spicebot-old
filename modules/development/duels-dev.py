@@ -1212,7 +1212,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 endmessageeval = eval(help_run)
                 endmessage.append(endmessageeval)
             except NameError:
-                endmessage.append("The "+messagetype+" command has no basic info built into the game yet.")
+                continue
 
             ## Advanced info
             for i in range(0,16):
@@ -1232,7 +1232,10 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             ## Tier
             commandtier = tier_command(bot, messagetype)
             commandpepper = pepper_tier(bot, commandtier)
-            endmessage.append("Unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+            if messagetype.lower() in commandarray_tier_self:
+                endmessage.append("Self-usable from the beginning of the game, but use on others, it is unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
+            else:
+                endmessage.append("Unlocked at tier " + str(commandtier)+ " ("+ str(commandpepper.title()) + ").")
 
             ## Stamina Costs
             commandstaminacost = 0
