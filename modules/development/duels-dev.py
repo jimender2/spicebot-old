@@ -1907,9 +1907,11 @@ def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, curren
         playercombinations.append(playercombo)
     random.shuffle(playercombinations)
     for usercombo in playercombinations:
-        playera = get_trigger_arg(bot, usercombo, 1)
-        playerb = get_trigger_arg(bot, usercombo, "last")
-        bot.say(playera + " " + playerb)
+        for combouser in usercombo:
+            bot.say(str(combouser))
+        #playera = get_trigger_arg(bot, usercombo, 1)
+        #playerb = get_trigger_arg(bot, usercombo, "last")
+        #bot.say(playera + " " + playerb)
 
     #for playera, playerb in zip(mainduelerarray, canduelarray):
     #    if playera != playerb:
