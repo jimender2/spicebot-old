@@ -1212,7 +1212,7 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
                 endmessageeval = eval(help_run)
                 endmessage.append(endmessageeval)
             except NameError:
-                continue
+                dummyvar = ""
 
             ## Advanced info
             for i in range(0,16):
