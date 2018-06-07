@@ -3825,7 +3825,7 @@ def duelcriteria(bot, usera, userb, currentduelplayersarray, channel_current):
     if usera == channellastinstigator:
         if duel_combat_timeouts == 'true':
             if useratime <= INSTIGATORTIMEOUT:
-                validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate.", or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
+                validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate., or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         else:
             validtargetmsg.append("You may not instigate fights twice in a row within a half hour. You must wait for somebody else to instigate.")#, or "+str(hours_minutes_seconds((INSTIGATORTIMEOUT - useratime)))+" .")
         validtarget = 0
