@@ -51,6 +51,7 @@ commandarray_alt_docs = ['help','man']
 duel_canduel_list = ['mayhem','hungergames','monster','random']
 duel_canduel_nobot_list = ['mayhem','hungergames','colosseum','assault','quest','warroom','grenade']
 duel_events_list = ['mayhem','hungergames','colosseum','assault','quest']
+specialevent_allow = ['combat','roulette','assault','roulette','monster','random','colosseum','mayhem','hungergames','quest']
 ### Command Tiers
 commandarray_tier_self = ['stats', 'loot', 'streaks','health']
 commandarray_tier_unlocks_0 = ['tier','game', 'docs', 'admin', 'author', 'on', 'off','devmode','version','deathblow','combat','grenade']
@@ -633,6 +634,17 @@ def subcommands(bot, trigger, triggerargsarray, instigator, command_full , comma
     if command_main.lower() in duels_combat_lockout_list:
         reset_database_value(bot, duelrecorduser, 'duelslockout')
 
+    ## Special Event
+    if not channel_current.startswith("#") and command_main.lower() in specialevent_allow:
+        speceventtext = ''
+        speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+        if speceventtotal >= 49:
+            set_database_value(bot, duelrecorduser, 'specevent', 1)
+            onscreentext(bot, [channel_current], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+            adjust_database_value(bot, instigator, 'coin', duel_special_event)
+        else:
+            adjust_database_value(bot, duelrecorduser, 'specevent', 1)
+
     ## Stamina charge
     staminacharge(bot, instigator, command_main.lower()) ## TODO make sure we only charge successful usage
 
@@ -692,6 +704,16 @@ def duel_valid(bot, instigator, command_main, currentduelplayersarray, channel_c
 
     if command_main.lower() in duels_combat_lockout_list:
         reset_database_value(bot, duelrecorduser, 'duelslockout')
+
+    ## Special Event
+    speceventtext = ''
+    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
+    if speceventtotal >= 49:
+        set_database_value(bot, duelrecorduser, 'specevent', 1)
+        onscreentext(bot, [channel_current], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
+        adjust_database_value(bot, instigator, 'coin', duel_special_event)
+    else:
+        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
     ## Stamina Cost
     staminacharge(bot, instigator, 'combat')
@@ -1092,16 +1114,6 @@ def duel_combat(bot, instigator, maindueler, targetarray, triggerargsarray, now,
             for x in magicattributestext:
                 combattextarraycomplete.append(x)
 
-        ## Special Event
-        speceventtext = ''
-        speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
-        if speceventtotal >= 49:
-            set_database_value(bot, duelrecorduser, 'specevent', 1)
-            combattextarraycomplete.append(maindueler + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-            adjust_database_value(bot, maindueler, 'coin', duel_special_event)
-        else:
-            adjust_database_value(bot, duelrecorduser, 'specevent', 1)
-
         ## Random Bonus
         if typeofduel == 'random' and winner == maindueler and winner != bot.nick and winner != loser and winner != 'duelsmonster':
             adjust_database_value(bot, winner, 'coin', random_payout)
@@ -1471,6 +1483,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         else:
             dispmsgarrayb.append(instigator + ", It looks like " + healthcommand + " has no " +  command_main + ".")
         onscreentext(bot, ['say'], dispmsgarrayb)
+
     elif healthcommand == 'healthpotion':
         quantity = get_trigger_arg(bot, triggerargsarray, 3) or 1
         target = instigator
@@ -1510,6 +1523,7 @@ def subcommand_health(bot, instigator, triggerargsarray, botvisibleusers, curren
         onscreentext(bot, channel_current, mainlootusemessage)
         if target != instigator and not channel_current.startswith("#"):
             osd_notice(bot, target, mainlootusemessage)
+
     elif healthcommand == 'stimpack':
         bodypartselect = get_trigger_arg(bot, triggerargsarray, 3)
         if not bodypartselect:
@@ -1915,15 +1929,6 @@ def subcommand_roulette(bot, instigator, triggerargsarray, botvisibleusers, curr
         reset_database_value(bot, duelrecorduser, 'roulettecount')
         reset_database_value(bot, instigator, 'roulettepayout')
     set_database_value(bot, duelrecorduser, 'roulettelastplayeractualtext', roulettelastplayeractualtext)
-    ## Special Event
-    speceventtext = ''
-    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
-    if speceventtotal >= 49:
-        set_database_value(bot, duelrecorduser, 'specevent', 1)
-        onscreentext(bot, [channel_current], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-        adjust_database_value(bot, instigator, 'coin', duel_special_event)
-    else:
-        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Mayhem
 def subcommand_mayhem(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
@@ -2031,15 +2036,6 @@ def subcommand_hungergames(bot, instigator, triggerargsarray, botvisibleusers, c
     onscreentext(bot, ['say'], reverseddisplay)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main), now)
     set_database_value(bot, duelrecorduser, str('lastfullroom' + command_main + 'instigator'), instigator)
-    ## Special Event
-    speceventtext = ''
-    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
-    if speceventtotal >= 49:
-        set_database_value(bot, duelrecorduser, 'specevent', 1)
-        onscreentext(bot, [channel_current], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-        adjust_database_value(bot, instigator, 'coin', duel_special_event)
-    else:
-        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Colosseum
 def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
@@ -2106,15 +2102,6 @@ def subcommand_colosseum(bot, instigator, triggerargsarray, botvisibleusers, cur
         dispmsgarray.append(displaymessage + " died in this event.")
     adjust_database_value(bot, winner, 'coin', riskcoins)
     onscreentext(bot, [channel_current], dispmsgarray)
-    ## Special Event
-    speceventtext = ''
-    speceventtotal = get_database_value(bot, duelrecorduser, 'specevent') or 0
-    if speceventtotal >= 49:
-        set_database_value(bot, duelrecorduser, 'specevent', 1)
-        onscreentext(bot, [channel_current], instigator + " triggered the special event! Winnings are "+str(duel_special_event)+" Coins!")
-        adjust_database_value(bot, instigator, 'coin', duel_special_event)
-    else:
-        adjust_database_value(bot, duelrecorduser, 'specevent', 1)
 
 ## Assault
 def subcommand_assault(bot, instigator, triggerargsarray, botvisibleusers, currentuserlistarray, dueloptedinarray, command_main, now, trigger, currenttier, channel_current, currentduelplayersarray, canduelarray, command_full , tiercommandeval, tierpepperrequired, tiermath, duels_dev_channels, commands_valid, duels_enabled_channels):
@@ -4817,8 +4804,6 @@ def gettree():
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    if str(database_value).isdigit():
-        return abs(database_value)
     return database_value
 
 ## set a value
