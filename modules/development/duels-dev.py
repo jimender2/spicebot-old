@@ -1202,12 +1202,15 @@ def subcommand_docs(bot, instigator, triggerargsarray, botvisibleusers, currentu
             ## Admin Only
             if messagetype.lower() in commandarray_admin:
                 endmessage.append("[ADMIN ONLY]")
+
+            ## Command Name
+            endmessage.append("Basic info for the " + messagetype + ":")
                 
             ## Basic info
             try:
                 help_run = str('helpdocs_basic_' + messagetype.lower())
                 endmessageeval = eval(help_run)
-                endmessage.append("The " + messagetype + " command " + endmessageeval)
+                endmessage.append(endmessageeval)
             except NameError:
                 endmessage.append("The "+messagetype+" command has no basic info built into the game yet.")
 
