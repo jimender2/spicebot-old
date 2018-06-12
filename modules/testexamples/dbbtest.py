@@ -25,26 +25,3 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     bot.say("This is deathbybandaid's test module")
-    
-    for rules in bot._callables.values():
-        for func in rules.values():
-            if hasattr(func, "commands"):
-                testing = str("{}.{} = {}".format(func.__module__, func.__name__, func.commands))
-                bot.say(str(testing))
-    
-    #cmdarray = []
-    #for cmds in bot.commands:
-    #    for cmd in cmds:
-    #        if str(cmd).endswith("]"):
-    #            for x in cmd:
-    #                cmdarray.append(x)
-    #cmdlist = get_trigger_arg(cmdarray, 'list')
-    #bot.say(str(cmdlist))
-    #bot.say('The data directory is ' + str(shareddir))
-    
-    #for x in bot._command_groups:
-    #    bot.say(str(x))
-    
-    #for k, v in bot._command_groups.items():
-    #    bot.say("{}: {}".format(k, v))
-    
