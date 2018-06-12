@@ -508,6 +508,7 @@ def execute_main(bot, trigger, triggerargsarray, command_type):
 
 
     bot.say(str(duels_character.setup.required))
+    bot.say("stop")
     return
     
     ## Time when Module use started
