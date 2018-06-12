@@ -116,7 +116,7 @@ def execute_main(bot, trigger):
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
     if tellee.lower() in [u.lower() for u in bot.users]:
-        if not message.endswith("please"):
+        if not msg.endswith("please"):
             return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if not tellee in (Identifier(teller), bot.nick, 'me'):
