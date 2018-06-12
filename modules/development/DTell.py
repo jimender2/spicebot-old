@@ -116,11 +116,13 @@ def execute_main(bot, trigger):
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
     if tellee.lower() in [u.lower() for u in bot.users]:
-        return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
+        if not msg.endswith("please"):
+            return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if not tellee in (Identifier(teller), bot.nick, 'me'):
         tz = get_timezone(bot.db, bot.config, None, tellee)
         timenow = format_time(bot.db, bot.config, tz, tellee)
+        msg = msg.rstrip('please').rstrip()
         bot.memory['tell_lock'].acquire()
         try:
             if not tellee in bot.memory['reminders']:
