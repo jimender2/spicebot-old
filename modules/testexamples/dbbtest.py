@@ -24,5 +24,5 @@ from sopel.module import commands, rule, example, priority
 #    execute_main(bot, trigger, triggerargsarray)
     
 @sopel.module.commands('dbbtest')
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger):
     bot.say("This is deathbybandaid's test module")
