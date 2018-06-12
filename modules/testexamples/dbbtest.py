@@ -18,10 +18,11 @@ from sopel.logger import get_logger
 from sopel.module import commands, rule, example, priority
 
 
-@sopel.module.commands('dbbtest')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
-    execute_main(bot, trigger, triggerargsarray)
+#@sopel.module.commands('dbbtest')
+#def mainfunction(bot, trigger):
+#    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+#    execute_main(bot, trigger, triggerargsarray)
     
+@sopel.module.commands('dbbtest')
 def execute_main(bot, trigger, triggerargsarray):
     bot.say("This is deathbybandaid's test module")
