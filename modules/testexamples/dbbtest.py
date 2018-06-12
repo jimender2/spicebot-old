@@ -26,3 +26,11 @@ from sopel.module import commands, rule, example, priority
 @sopel.module.commands('dbbtest')
 def execute_main(bot, trigger):
     bot.say("This is deathbybandaid's test module")
+    bot.say(str(Foo.abc))
+
+    
+    
+class Foo(object):
+    abc = 100
+    def __init__(self, x):
+        self.x = x
