@@ -101,7 +101,7 @@ def execute_main(bot, trigger):
 
     tellee = trigger.group(3).rstrip('.,:;')
     msg = trigger.group(2).lstrip(tellee).lstrip()
-    message = trigger.group(0)
+    message = str(trigger.group(0))
 
     if not msg:
         bot.reply("%s %s what?" % (verb, tellee))
