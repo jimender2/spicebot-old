@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if subdisclaimer == 'brightlights':
             bot.say("Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.")
         elif subdisclaimer == 'doctor':
-            bot.say("%s is not your doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person, person))
+            bot.say("%s is not a doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person, person))
         elif subdisclaimer == 'EULA':
             bot.say("Spicebot may occasionally (read 'frequently') use colorful language to carry out its tasks. By remaining in this channel and continuing to use the bot you acknowledge that you are not, in fact, too weak to handle this.")
         elif subdisclaimer == 'IT':
