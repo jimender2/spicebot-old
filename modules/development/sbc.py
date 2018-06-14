@@ -14,10 +14,10 @@ commandarray = ["add","remove","count","last"]
 
 @sopel.module.commands('sbc')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fix')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'sbc')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     message = get_trigger_arg(bot, triggerargsarray, '1+')
     if not message:
