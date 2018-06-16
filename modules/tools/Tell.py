@@ -27,7 +27,7 @@ from SpicebotShared import *
 
 maximum = 4
 
-# Load things to tell from database
+# Load things to tell from file
 def loadReminders(fn, lock):
     lock.acquire()#Lock file access
     try:
@@ -48,27 +48,27 @@ def loadReminders(fn, lock):
         lock.release()#release lock
     return result#return info
 
-
+#write reminders to file
 def dumpReminders(fn, data, lock):
-    lock.acquire()
+    lock.acquire()#lock file
     try:
-        f = open(fn, 'w')
-        for tellee in iterkeys(data):
+        f = open(fn, 'w')#open file with write access
+        for tellee in iterkeys(data): #go through everything
             for remindon in data[tellee]:
                 line = '\t'.join((tellee,) + remindon)
                 try:
                     to_write = line + '\n'
                     if sys.version_info.major < 3:
                         to_write = to_write.encode('utf-8')
-                    f.write(to_write)
+                    f.write(to_write)#store the data
                 except IOError:
                     break
         try:
-            f.close()
+            f.close()#close the file
         except IOError:
             pass
     finally:
-        lock.release()
+        lock.release()#release the lock
     return True
 
 
@@ -101,6 +101,7 @@ def execute_main(bot, trigger):
 
     tellee = trigger.group(3).rstrip('.,:;')
     msg = trigger.group(2).lstrip(tellee).lstrip()
+    message = str(trigger.group(0))
 
     if not msg:
         bot.reply("%s %s what?" % (verb, tellee))
@@ -116,7 +117,7 @@ def execute_main(bot, trigger):
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
     if tellee.lower() in [u.lower() for u in bot.users]:
-        if not message.endswith("please"):
+        if not message.endswith('please'):
             return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if not tellee in (Identifier(teller), bot.nick, 'me'):

@@ -101,6 +101,7 @@ def execute_main(bot, trigger):
 
     tellee = trigger.group(3).rstrip('.,:;')
     msg = trigger.group(2).lstrip(tellee).lstrip()
+    message = str(trigger.group(0))
 
     if not msg:
         bot.reply("%s %s what?" % (verb, tellee))
@@ -116,7 +117,7 @@ def execute_main(bot, trigger):
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
     if tellee.lower() in [u.lower() for u in bot.users]:
-        if not msg.endswith("please"):
+        if not message.endswith('please'):
             return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if not tellee in (Identifier(teller), bot.nick, 'me'):
