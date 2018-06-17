@@ -16,7 +16,10 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    message = get_trigger_arg(bot, triggerargsarray, '1+')
+    instigator = trigger.nick
+    inchannel = trigger.sender
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    message = get_trigger_arg(bot, triggerargsarray, '2+')
     if not message:
-        message = "Add what you want me to say"
+        message = instigator + " rolls their eyes at " + target
     bot.say(message)
