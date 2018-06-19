@@ -19,8 +19,15 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    message = get_trigger_arg(bot, triggerargsarray, '1+')
+    wordsToConvert = get_trigger_arg(bot, triggerargsarray, '1+')
     
-    numberOfWords = len(message)
+    numberOfWords = len(wordsToConvert)
+    
+    i = 1
+    while (numberOfWords >= i):
+        workingWord = wordsToConvert[i]
+        letters = len(workingWord)
+        pig = 
+        message = message + 
     
     bot.say(message)
