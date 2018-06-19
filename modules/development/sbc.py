@@ -16,7 +16,6 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    message = get_trigger_arg(bot, triggerargsarray, '1+')
-    if not message:
-        message = "Add what you want me to say"
-    bot.say(message)
+    message = get_trigger_arg(bot, triggerargsarray, '1+') or "whisper-whisper-whisper"
+    displaymessage = "<secret_bot_code> %s </secret_bot_code>" % message
+    bot.say(displaymessage)
