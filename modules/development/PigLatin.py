@@ -27,7 +27,8 @@ def execute_main(bot, trigger, triggerargsarray):
     while (numberOfWords >= i):
         workingWord = wordsToConvert[i]
         letters = len(workingWord)
-        pig = 
-        message = message + 
+        d = letters - 1
+        working = workingWord(:d)
+        message = message + working + " "
     
     bot.say(message)
