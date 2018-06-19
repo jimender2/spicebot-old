@@ -40,4 +40,4 @@ def execute_main(bot, trigger, triggerargsarray):
         elif subdisclaimer == 'IT_Sean':
             bot.say("Should you ever encounter gases released by Sean, please be sure to inform your nearest biosafety agency of the incident.")
     else:
-        bot.say("%s is not your doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person,person))
+        bot.say("%s is not a doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person,person))
