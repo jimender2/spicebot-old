@@ -9,6 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+#author jimender2
+
 weapontypes = ["Axe","Sword","Revolver"]
 commandarray = ["add","remove","count","last"]
 
