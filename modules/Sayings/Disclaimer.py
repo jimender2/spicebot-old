@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
         elif subdisclaimer == 'IT':
             bot.say("While most members of this channel have some level of technical knowledge, your decision to trust the recommendations of %s are entirely your own risk." % person)
         elif subdisclaimer == 'legal' or subdisclaimer == 'law':
-            bot.say("Please note that %s is not a lawyer. Any and all advice given by %s is to be taken with a whole lot of salt. %s, Freenode, Spiceworks, Microsoft, Aperture Science, Black Mesa, and/or Vault-Tec™ cannot be held liable for any injuries resulting from taking aforementioned advice." % (person, person, person))
+            bot.say("Please note that %s is not a lawyer. Any and all advice given by %s is to be taken with a whole lot of salt. %s, Freenode, Spiceworks, Microsoft, and/or Vault-Tec™ cannot be held liable for any injuries resulting from taking aforementioned advice." % (person, person, person))
         elif subdisclaimer == 'parent':
             bot.say(person + " is not your parent. Don't expect them to deal with your shit.")
         elif subdisclaimer.startswith('porn'):
@@ -42,4 +42,4 @@ def execute_main(bot, trigger, triggerargsarray):
         elif subdisclaimer == 'IT_Sean':
             bot.say("Should you ever encounter gases released by Sean, please be sure to inform your nearest biosafety agency of the incident.")
     else:
-        bot.say("%s is not a doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person,person))
+        bot.say("%s is not your doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person,person))
