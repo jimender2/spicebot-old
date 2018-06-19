@@ -26,11 +26,18 @@ from sopel.module import commands, rule, example, priority
 @sopel.module.commands('dbbtest')
 def execute_main(bot, trigger):
     bot.say("This is deathbybandaid's test module")
-    bot.say(str(Foo.abc))
-
     
     
-class Foo(object):
-    abc = 100
-    def __init__(self, x):
-        self.x = x
+def setup(self):
+    fn = self.nick + '-' + self.config.core.host + '.dbbatest.db'
+    self.tell_filename = os.path.join(self.config.core.homedir, fn)
+    if not os.path.exists(self.tell_filename):
+        try:
+            f = open(self.tell_filename, 'w')
+        except OSError:
+            pass
+        else:
+            f.write('')
+            f.close()
+#    self.memory['tell_lock'] = threading.Lock()
+#    self.memory['reminders'] = loadReminders(self.tell_filename, self.memory['tell_lock'])
