@@ -13,11 +13,12 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-
+    
 def execute_main(bot, trigger, triggerargsarray):
-    target=get_trigger_arg(bot,triggerargsarray,1)
+    target=get_trigger_arg(bot,triggerargsarray,1)    
     validtarget = targetcheck(bot,target,trigger.nick)
     if validtarget=='1':
-        bot.say('I do not tell you how to do your job, %s!!' % target) 
-    else:
-        bot.say('I do not tell you how to do your job, %s!!' % trigger.nick)
+        bot.say('I do not tell you how to do your job, ' + target + '!!') 
+    else:       
+        bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
+   
