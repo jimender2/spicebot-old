@@ -20,7 +20,9 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     subdisclaimer = get_trigger_arg(bot,triggerargsarray,1)
     person = get_trigger_arg(bot,triggerargsarray,2) or instigator
-    if subdisclaimer in specifics:
+    if subdisclaimer == 'options':
+        bot.say("Current options for this module are: %s" % get_trigger_arg(bot,specifics,'list'))
+    elif subdisclaimer in specifics:
         if subdisclaimer == 'brightlights':
             bot.say("Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.")
         elif subdisclaimer == 'doctor':

@@ -22,16 +22,16 @@ def execute_main(bot, trigger, triggerargsarray):
     inchannel = trigger.sender
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
-    
-	# No target specified
-	if not target:
-		bot.say("Who/what would you like to murder?")
 
-	# Target is fine
-	else:
-		if not reason:
-			message = instigator + " rolls their eyes at " + target + "."
-        		bot.say(message)
-		else:
-			message = instigator + " rolls their eyes at " + target + " because " + reason + "."
-        		bot.say(message)
+    # No target specified
+    if not target:
+        bot.say("Who/what would you like to murder?")
+
+    # Target is fine
+    else:
+        if not reason:
+            message = instigator + " rolls their eyes at %s." % target
+            bot.say(message)
+        else:
+            message = instigator + " rolls their eyes at %s because %s." % (target, reason)
+            bot.say(message)
