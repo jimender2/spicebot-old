@@ -19,16 +19,18 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    wordsToConvert = get_trigger_arg(bot, triggerargsarray, '1+')
+    words = get_trigger_arg(bot, triggerargsarray, '1+')
     
-    numberOfWords = len(wordsToConvert)
-    
-    i = 1
-    while (numberOfWords >= i):
-        workingWord = wordsToConvert[i]
-        letters = len(workingWord)
-        d = letters - 1
-        working = workingWord(d)
-        message = u"" + message + working + " "
-    
-    bot.say(message)
+    pyg = 'ay'
+
+    if len(words) > 0():
+        words = words.lower()
+        first = word[0]
+        if first == ('a' or 'e' or 'i' or 'o' or 'u'):
+            new_word = word + pyg
+            bot.say(new_word)
+        else:
+            new_word = word[1:] + first + pyg
+            bot.say(new_word)
+    else:
+        bot.say("Oink oink")
