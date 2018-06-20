@@ -34,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if first in firstsarray:
                 new_word = word + pyg
             else:
-                new_word = word[1:] + first + pyg
+                new_word = word[:1] + first + pyg
             rebuildarray.append(new_word)
         words = get_trigger_arg(bot, words, 0)
         bot.say(words)
