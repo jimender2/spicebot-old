@@ -27,9 +27,14 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         bot.say("Who/what would you like to roll your eyes at?")
     
+    #Yourself
     elif target == instigator:
         bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
     
+    #spicebot
+   	elif target == bot.nick:
+        bot.say("Don't even bother. I can't see you")
+        
     # Target is fine
     else:
         if not reason:
