@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     words = get_trigger_arg(bot, words, 'create')
     
     pyg = 'ay'
-    firstsarray = ['a','e'.'i'.'o','u']
+    firstsarray = ['a','e','i','o','u']
 
     rebuildarray = []
     if len(words) > 0:
