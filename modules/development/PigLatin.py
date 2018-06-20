@@ -20,17 +20,21 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     words = get_trigger_arg(bot, triggerargsarray, '1+')
+    words = get_trigger_arg(bot, words, 'create')
     
     pyg = 'ay'
 
+    rebuildarray = []
     if len(words) > 0:
-        words = words.lower()
-        first = words[0]
-        if first == ('a' or 'e' or 'i' or 'o' or 'u'):
-            new_word = word + pyg
-            bot.say(new_word)
-        else:
-            new_word = word[1:] + first + pyg
-            bot.say(new_word)
+        for word in words:
+            word = word.lower()
+            first = word[0]
+            if first == ('a' or 'e' or 'i' or 'o' or 'u'):
+                new_word = word + pyg
+            else:
+                new_word = word[1:] + first + pyg
+            rebuildarray.append(new_word)
+        words = get_trigger_arg(bot, words, 0)
+        bot.say(words)
     else:
         bot.say("Oink oink")
