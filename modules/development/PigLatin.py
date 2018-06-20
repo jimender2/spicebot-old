@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray):
     
     pyg = 'ay'
 
-    if len(words) > 0():
+    if len(words) > 0:
         words = words.lower()
         first = word[0]
         if first == ('a' or 'e' or 'i' or 'o' or 'u'):
