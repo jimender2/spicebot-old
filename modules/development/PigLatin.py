@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if len(words) > 0:
         for word in words:
             word = word.lower()
-            first = get_trigger_arg(bot, word, 1)
+            first = word.startswith()
             bot.say(str(first))
             if first in firstsarray:
                 new_word = word + pyg
