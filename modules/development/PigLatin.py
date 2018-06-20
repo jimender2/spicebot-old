@@ -23,13 +23,14 @@ def execute_main(bot, trigger, triggerargsarray):
     words = get_trigger_arg(bot, words, 'create')
     
     pyg = 'ay'
+    firstsarray = ['a','e'.'i'.'o','u']
 
     rebuildarray = []
     if len(words) > 0:
         for word in words:
             word = word.lower()
             first = word[0]
-            if first == ('a' or 'e' or 'i' or 'o' or 'u'):
+            if first in firstsarray:
                 new_word = word + pyg
             else:
                 new_word = word[1:] + first + pyg
