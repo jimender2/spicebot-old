@@ -25,8 +25,11 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # No target specified
     if not target:
-        bot.say("Who/what would you like to murder?")
-
+        bot.say("Who/what would you like to roll your eyes at?")
+    
+    elif target == instigator:
+        bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
+    
     # Target is fine
     else:
         if not reason:
