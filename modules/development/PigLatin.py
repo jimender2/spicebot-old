@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray):
     firstsarray = ['a','e','i','o','u']
 
     rebuildarray = []
-    if len(words) > 0:
+    if len(triggerargsarray) > 0:
         for word in triggerargsarray:
             word = word.lower()
             first = word[:1]
