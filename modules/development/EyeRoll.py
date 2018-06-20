@@ -32,9 +32,9 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
     
     #spicebot
-   	elif target == bot.nick:
+    elif target == bot.nick:
         bot.say("Don't even bother. I can't see you")
-        
+
     # Target is fine
     else:
         if not reason:
