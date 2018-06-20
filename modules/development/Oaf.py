@@ -24,11 +24,10 @@ def execute_main(bot, trigger, triggerargsarray):
     thingtheyremember = get_trigger_arg(bot,triggerargsarray,'2+')
     message = "%s is so old, they remember shit like %s" % (oldperson, thingtheyremember)
 
-    if not oldperson:
-        message = "%s is so old they forgot how to input the fucking thing they remember." % instigator
-
-    elif oldperson not in [u for u in bot.users]:
+    if oldperson not in [u for u in bot.users]:
         oldperson = instigator
         thingtheyremember = get_trigger_arg(bot,triggerargsarray,'1+')
+    elif not oldperson:
+        message = "%s is so old they forgot how to input the fucking thing they remember." % instigator
 
     bot.say(message)
