@@ -30,8 +30,9 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         if oldperson == bot.nick:
             message = "Hey, I'm not that fucking old, whippersnapper!"
-        elif oldperson.lower() not in [u.lower() for u in bot.users]:
+        elif oldperson not in [u for u in bot.users]:
             oldperson = instigator
             thingtheyremember = get_trigger_arg(bot,triggerargsarray,'1+')
+            message = "%s is so old, they remember shit like %s" % (oldperson, thingtheyremember)
 
     bot.say(message)
