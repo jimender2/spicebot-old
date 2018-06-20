@@ -19,18 +19,16 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    words = get_trigger_arg(bot, triggerargsarray, '1+')
-    words = get_trigger_arg(bot, words, 'create')
     
     pyg = 'ay'
     firstsarray = ['a','e','i','o','u']
 
     rebuildarray = []
     if len(words) > 0:
-        for word in words:
+        for word in triggerargsarray:
             word = word.lower()
             first = word[:1]
-            if str(first) in firstsarray:
+            if first in firstsarray:
                 new_word = word + pyg
             else:
                 new_word = word[1:] + first + pyg
