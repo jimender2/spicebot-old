@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 new_word = word[1:] + first + pyg
             rebuildarray.append(new_word)
-        words = get_trigger_arg(bot, words, 0)
+        words = get_trigger_arg(bot, rebuildarray, 0)
         bot.say(words)
     else:
         bot.say("Oink oink")
