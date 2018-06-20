@@ -30,6 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
         for word in words:
             word = word.lower()
             first = word[0]
+            bot.say(str(first))
             if first in firstsarray:
                 new_word = word + pyg
             else:
