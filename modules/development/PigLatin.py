@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if len(words) > 0:
         words = words.lower()
-        first = word[0]
+        first = words[0]
         if first == ('a' or 'e' or 'i' or 'o' or 'u'):
             new_word = word + pyg
             bot.say(new_word)
