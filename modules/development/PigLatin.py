@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
     wordsToConvert = get_trigger_arg(bot, triggerargsarray, '1+')
     
     numberOfWords = len(wordsToConvert)
-    
+    message = "\u"
     i = 1
     while (numberOfWords >= i):
         workingWord = wordsToConvert[i]
