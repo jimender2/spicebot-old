@@ -19,5 +19,10 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, triggerargsarray):
     person = get_trigger_arg(bot,triggerargsarray,1)
-    message = "Spicebot grabs " + person + " with a hook and drags them out of the room."
+    
+    if person == bot.nick:
+        message = "Spicebot grabs " + trigger.nick + " with a hook and drags them out of the room."
+    else:
+        message = "Spicebot grabs " + person + " with a hook and drags them out of the room."
+    
     bot.say(message)
