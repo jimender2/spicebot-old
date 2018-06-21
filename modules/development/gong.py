@@ -19,10 +19,9 @@ def mainfunction(bot, trigger):
         
 def execute_main(bot, trigger, triggerargsarray):
     person = get_trigger_arg(bot,triggerargsarray,1)
-    instigator = trigger.nick
 
     if person == bot.nick:
-        message = "Spicebot grabs " + instigator + " with a hook and drags them out of the room."
+        message = "Spicebot grabs " + trigger.nick + " with a hook and drags them out of the room because they tried to gong Spicebot."
     else:
         message = "Spicebot grabs " + person + " with a hook and drags them out of the room."
     
