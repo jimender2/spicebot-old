@@ -19,16 +19,21 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    wordsToConvert = get_trigger_arg(bot, triggerargsarray, '1+')
     
-    numberOfWords = len(wordsToConvert)
-    
-    i = 1
-    while (numberOfWords >= i):
-        workingWord = wordsToConvert[i]
-        letters = len(workingWord)
-        d = letters - 1
-        working = workingWord(:d)
-        message = message + working + " "
-    
-    bot.say(message)
+    pyg = 'ay'
+    firstsarray = ['a','e','i','o','u']
+
+    rebuildarray = []
+    if len(triggerargsarray) > 0:
+        for word in triggerargsarray:
+            word = word.lower()
+            first = word[:1]
+            if first in firstsarray:
+                new_word = word + pyg
+            else:
+                new_word = word[1:] + first + pyg
+            rebuildarray.append(new_word)
+        words = get_trigger_arg(bot, rebuildarray, 0)
+        bot.say(words)
+    else:
+        bot.say("Oink oink")
