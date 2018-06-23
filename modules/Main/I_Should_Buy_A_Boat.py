@@ -18,6 +18,6 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if target.lower() in [u.lower() for u in bot.users]:
-        bot.say(target + " should buy a boat")
+        bot.say(target.title() + " should buy a boat")
     else:
-        bot.say(instigator + " should buy a boat.")
+        bot.say(instigator.title() + " should buy a boat.")
