@@ -18,8 +18,6 @@ def mainfunction(bot, trigger):
     
 def execute_main(bot, trigger, triggerargsarray):
     failureodds = 4
-    if bot.nick.endswith('dev'):
-        failureodds = 2
     target = get_trigger_arg(bot, triggerargsarray, 1)
     backfires = [" drops everything they are doing and goes to high five " + target + ", but they miss.", 
                 " overestimated their capabilities and knocks themselves out.",
