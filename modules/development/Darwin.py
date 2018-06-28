@@ -11,7 +11,6 @@ import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-from Giphy import *
 
 @sopel.module.commands('darwin')
 def mainfunction(bot, trigger):
@@ -20,17 +19,21 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    gif = getgif("Darwin Award")
+    gif = getGif("Darwin Award")
     if gif:
         bot.say(gif)
     else:
         bot.action('is not a contender for the Darwin award, thank fuck.')
 
-def shakeshead():
+def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=smh&api_key=' + api + '&limit=100'
+    limit = 50
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,99)
-    id = data['data'][randno]['id']
-    gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    return gif
+    randno = randint(0,limit)
+    try:
+        id = data['data'][randno]['id']
+        gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
+    except IndexError:
+        gif = ""
+    return gif,randno
