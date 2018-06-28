@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    gif = getGif("Darwin%20Award")
+    gif = getGif("Darwin Award")
     if gif:
         bot.say(gif)
     else:
@@ -28,7 +28,8 @@ def execute_main(bot, trigger, triggerargsarray):
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
-    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
+    urlquery = query.replace(" ","%20")
+    url = 'http://api.giphy.com/v1/gifs/search?q=' + str(urlquery)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(0,limit)
     try:
