@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    gif = getGif("Darwin Award")
+    gif = getGif("Darwin%20Award")
     if gif:
         bot.say(gif)
     else:
