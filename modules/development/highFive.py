@@ -12,7 +12,7 @@ from SpicebotShared import *
 
 #author jimender2
 
-@sopel.module.commands('highfive','hf','high-five','highfives')
+@sopel.module.commands('hf','highfive','high-five','highfives')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'hf')
     if not enablestatus:
