@@ -10,6 +10,8 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
 
+#author jimender2
+
 replies = ["clock speed",
 			"solar flares",
 			"electromagnetic radiation from satellite debris",
