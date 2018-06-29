@@ -17,7 +17,6 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
-   url = 'https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif'
-   bot.say(url)
+   bot.say('https://media.giphy.com/media/iqGVHdU2tEBq9JSrtm/giphy.gif')
