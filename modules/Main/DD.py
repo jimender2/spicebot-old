@@ -9,6 +9,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 insultnames = ['motherfucker','prick','wanker']
+usernames = ['user','LUser','Luser','bitch']
 
 @sopel.module.commands('dd','doubled')
 def mainfunction(bot, trigger):
@@ -22,6 +23,8 @@ def execute_main(bot, trigger, triggerargsarray):
     insult = get_trigger_arg(bot, insultnames, 'random')
     if not target:
         bot.say("Who are you pissed at now?")
+    elif target.lower() in [u.lower() for u in usernames]:
+        bot.action('punches ' + target + ', who is clearly a '+ str(insult)+ ', in the mouth.')
     elif target.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
     elif target == bot.nick:

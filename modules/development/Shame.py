@@ -11,9 +11,6 @@ from SpicebotShared import *
 
 #author jimender2
 
-weapontypes = ["Axe","Sword","Revolver"]
-commandarray = ["add","remove","count","last"]
-
 @sopel.module.commands('shame')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'shame')
@@ -21,69 +18,88 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    instigator = trigger.nick
-    inchannel = trigger.sender
+    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    channel = trigger.sender
+    commandused = get_trigger_arg(bot, triggerargsarray, 1) or 'nocommand'
+    botuseron=[]
+    for u in bot.users:
+        if u in botusersarray and u != bot.nick:
+            botuseron.append(u)
 
-    databasekey = 'shame'
-    command = get_trigger_arg(bot, triggerargsarray, 1)
-    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
-    if command in commandarray:
-        if command == "add":
-            if inputstring not in existingarray:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
-                message = "Added to database."
-		bot.say(message)
-            else:
-                message = "That response is already in the database."
-		bot.say(message)
-        elif command == "remove":
-            if inputstring not in existingarray:
-                message = "That response was not found in the database."
-		bot.say(message)
-            else:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'del')
-                message = "Removed from database."
-		bot.say(message)
-        elif command == "count":
-		messagecount = len(existingarray)
-		message = "There are currently " + str(messagecount) + " responses for that in the database."
-		bot.say(message)
-
-        elif command == "last":
-		message = get_trigger_arg(bot, existingarray, "last")
-		bot.say(message)
+    if commandused == 'nocommand':
+        bot.say("")
     else:
-        weapontype = get_trigger_arg(bot, existingarray, "random") or ''
-        if weapontype == '':
-        	message = "No response found. Have any been added?"
-	target = get_trigger_arg(bot, triggerargsarray, 1)
-	reason = get_trigger_arg(bot, triggerargsarray, '2+')
-	msg = "a " + weapontype
+        
+#admin command reset user values
+def reset(bot, target):
+    reset_botdatabase_value(bot,target, '')
+    reset_botdatabase_value(bot,target,'')    
+    reset_botdatabase_value(bot,target,'')
 
-	# No target specified
-	if not target:
-		bot.say("Who/what would you like to shame?")
+def timesShamed(bot, nick):
+    balance = get_botdatabase_value(bot,nick,'') or 0
+    return balance
 
-	# Cannot kill spicebot
-	elif target == bot.nick:
-		bot.say("You cannot kill a nonliving entity")
+def shame(bot, target, plusminus, amount):
+    #command for getting and adding money to account
+    success = 'false'
+    if type(amount) == int:
+        inbank = bank(bot,target)
+    if plusminus == 'plus':
+       adjust_botdatabase_value(bot,target, '', amount)
+       success = 'true'
+    elif plusminus == 'minus':
+        if inbank - amount < 0:
+            success = 'false'
+        else:
+            adjust_botdatabase_value(bot,target, 'spicebucks_bank', -amount)
+            success = 'true'
+    else:
+        success = 'false'
+    return success
 
-	# Cannot kill self
-	elif target == instigator:
-		message = "Killing yourself would be suicide, " + instigator + ", not shame. Idiot."
-		bot.say(message)
+def checkpayday(bot, target):
+    paydayamount=0
+    now = datetime.datetime.now()
+    datetoday = int(now.strftime("%Y%j"))
+    spicebank = bank(bot,'SpiceBank')
+    lastpayday = get_botdatabase_value(bot,target, 'spicebucks_payday') or 0
+    if lastpayday == 0 or lastpayday < datetoday:
+        paydayamount = int(spicebank * 0.01)
+        set_botdatabase_value(bot,target, 'spicebucks_payday', datetoday)
+    else:
+        paydayamount=0
+    return paydayamount
 
-	# Target is fine
-	else:
-		if not reason:
-			message = instigator + " shames " + target + " with " + msg + "."
-        		bot.say(message)
-		else:
-			message = instigator + " shames " + target + " with " + msg + " for " + reason + "."
-        		bot.say(message)
+def paytaxes(bot, target):
+    now = datetime.datetime.now()
+    datetoday = int(now.strftime("%Y%j"))
+    lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
+    inbank = bank(bot,target) or 0    
+    taxtotal = 0
+    if lasttaxday == 0 or lasttaxday < datetoday:
+        reset_botdatabase_value(bot,target,'usedtaxes')
+        taxtotal = int(inbank * .1)
+        if inbank == 1:
+            taxtotal = 1
+        if taxtotal>0:
+            spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
+            spicebucks(bot, target, 'minus', taxtotal)
+            set_botdatabase_value(bot,target, 'spicebucks_taxday', datetoday)
+            bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
+            return taxtotal            
+        else:
+            bot.say(target + ' is broke and cannot pay taxes today')
+            return taxtotal
+    else:
+        bot.say("Taxes already paid today.")
+        return taxtotal
+    
 
-def get_database_value(bot, nick, databasekey):
-	databasecolumn = str('duels_' + databasekey)
-	database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-	return database_value
+def transfer(bot, instigator, target, amount):
+    validamount = 0
+    if amount>=0:
+        if spicebucks(bot, instigator, 'minus', amount) == 'true':
+            spicebucks(bot, target, 'plus', amount)
+            validamount = 1
+    return validamount

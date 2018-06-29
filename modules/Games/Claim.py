@@ -169,14 +169,14 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("I have already been claimed by " + owner +"!")
 
     # Can't claim the creator
-    elif target == creator:
+elif target.lower() == creator.lower():
         okaytoclaim = 0
         bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator + "!")
         bot.db.set_nick_value(instigator,'claimed',target)
         bot.db.set_nick_value(instigator,'claimdate',storedate)
 
     # Can't claim your claimant
-    elif target == mastername:
+elif target.lower() == mastername.lower():
         okaytoclaim = 0
         bot.action("facepalms")
         bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
