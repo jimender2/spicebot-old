@@ -170,7 +170,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say("I have already been claimed by " + owner +"!")
 
     # Can't claim the creator
-    elif target.lower() not in [u.lower() for u in creatornicks]:
+    elif target.lower() in [u.lower() for u in creatornicks]:
         okaytoclaim = 0
         bot.say("Foolish mortal! Tremble before the might of the Almighty %s!" % target)
         bot.db.set_nick_value(instigator,'claimed',target)
