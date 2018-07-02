@@ -10,25 +10,25 @@ import os
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from SpicebotShared import *
-import Spicebucksdev
+import Spicebucks
 
 #hungergamesfee=5
-    
+
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     randomtargetarray = []
     botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
     for u in bot.users:
         if u in botusersarray and u != bot.nick:
-            randomtargetarray.append(u) 
+            randomtargetarray.append(u)
     if randomtargetarray == []:
         bot.say("There is currently no one available to play the hunger games.")
-    else:        
+    else:
         random.shuffle(randomtargetarray)
         totaltributes = len(randomtargetarray)
         if totaltributes == 1:
@@ -79,5 +79,3 @@ def execute_main(bot, trigger, triggerargsarray):
                     #Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
         #else:
             #bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)
-
-                                   
