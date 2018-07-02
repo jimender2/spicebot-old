@@ -20,6 +20,8 @@ admincommands = ['reset']
 
 # Protected users
 protectednicks = ['rycuda','Tech_Angel']
+# Creator user
+creatornicks = ["IT_Sean"]
 
 # Drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
@@ -48,7 +50,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
     instigator = trigger.nick
-    creator = "IT_Sean"
     owner = bot.config.core.owner
     mastername = bot.db.get_nick_value(instigator,'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -81,11 +82,11 @@ def execute_main(bot, trigger, triggerargsarray):
         claimedby = bot.db.get_nick_value(admintarget,'claimed')
         if not claimedby:
             if admintarget == instigator:
-                bot.say("Nobody has a claim on you yet, " + str(instigator) +".")
-            elif admintarget == creator:
-                bot.say("No mere mortal can claim the almighty " + str(creator) +"!")
+                bot.say("Nobody has a claim on you yet, %s." % instigator)
+            elif admintarget.lower() in [u.lower() for u in creatornicks]:
+                bot.say("No mere mortal can claim the almighty %s!" % admintarget)
             else:
-                bot.say("Nobody appears to have claimed " + str(admintarget) + " yet, " + str(instigator) + ".")
+                bot.say("Nobody appears to have claimed %s yet, %s." %(admintarget, instigator))
         else:
             if admintarget == instigator:
                 bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
@@ -107,7 +108,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
                 bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
-            elif admintarget == creator:
+            elif admintarget in creatornick:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
                 bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
@@ -120,7 +121,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Please specify someone to check")
             elif admintarget == instigator:
                 bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
-            elif admintarget == creator:
+            elif admintarget in creatornick:
                 bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
                 bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
@@ -163,20 +164,20 @@ def execute_main(bot, trigger, triggerargsarray):
     # Can't claim the bot
     elif target == bot.nick:
         okaytoclaim = 0
-        if instigator == creator:
+        if instigator in creatornicks:
             bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
         else:
             bot.say("I have already been claimed by " + owner +"!")
 
     # Can't claim the creator
-elif target.lower() == creator.lower():
+    elif target.lower() in [u.lower() for u in creatornicks]:
         okaytoclaim = 0
-        bot.say("Foolish mortal! Tremble before the might of the Almighty " + creator + "!")
+        bot.say("Foolish mortal! Tremble before the might of the Almighty %s!" % target)
         bot.db.set_nick_value(instigator,'claimed',target)
         bot.db.set_nick_value(instigator,'claimdate',storedate)
 
     # Can't claim your claimant
-elif target.lower() == mastername.lower():
+    elif target.lower() == mastername.lower():
         okaytoclaim = 0
         bot.action("facepalms")
         bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
@@ -205,7 +206,7 @@ elif target.lower() == mastername.lower():
         bladdercontents = bot.db.get_nick_value(instigator,'bladdercapacity') or bladdersize
         # First time claimed
         if claimedby == '':
-            if instigator == creator:
+            if instigator in creatornicks:
                 bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!")
             else:
                 bot.say(instigator + " urinates on " + target + "! Claimed!")
@@ -222,7 +223,7 @@ elif target.lower() == mastername.lower():
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                if instigator == creator:
+                if instigator in creatornicks:
                     bot.say(instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
                 else:
                     bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
@@ -240,7 +241,7 @@ elif target.lower() == mastername.lower():
             timepassed = datea - dateb
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
-                if instigator == creator:
+                if instigator in creatornicks:
                     bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
                     bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
