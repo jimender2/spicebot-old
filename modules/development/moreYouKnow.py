@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
         
 def magicFingers():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=themoreyouknow&api_key=' + api + '&limit=100'
+    url = 'http://api.giphy.com/v1/gifs/search?q=themoreyouknow&api_key=' + api + '&limit=50'
     data = json.loads(urllib2.urlopen(url).read())
     randno = randint(1,50)
     id = data['data'][randno]['id']
