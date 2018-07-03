@@ -31,7 +31,7 @@ def magicFingers():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     url = 'http://api.giphy.com/v1/gifs/search?q=themoreyouknow&api_key=' + api + '&limit=100'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,50)
+    randno = randint(1,50)
     id = data['data'][randno]['id']
     gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     return gif
