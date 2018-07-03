@@ -35,11 +35,11 @@ def execute_main(bot, trigger, triggerargsarray):
             message = "Shame. Shame on " + instigator + " for even thinking that " + reason
         
 	# Cannot kill self
-	elif target == instigator:
+    elif target == instigator:
 		message = "Even " + instigator + " thinks they are bad. Shame, Shame on you."
 
 	# Target is fine
-	else:
+    else:
 		if not reason:
 			message = instigator + " thinks " + target + " has been a bad boy."
 		else:
