@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		message = "Who/what would you like to shame?"
 
 	# Cannot shame Spicebot
-	elif target == bot.nick:
+    elif target == bot.nick:
         if not reason:
             message = "Shame. Shame on " + instigator + " for even thinking of that."
         else:
