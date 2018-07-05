@@ -10,6 +10,7 @@ sys.path.append(shareddir)
 from SpicebotShared import *
 
 #author jimender2
+
 @sopel.module.commands('cdh','colddeadhands')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'cdh')
