@@ -18,5 +18,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    something = get_trigger_arg(bot, triggerargsarray, '2+')
-    bot.say("You can have my %s, when you pry it from my cold dead hands!!" % something)
+    something = get_trigger_arg(bot, triggerargsarray, '1+')
+    bot.say("You can have my %s, when you pry it from my cold dead hands!!" %something)
