@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target == bot.nick:
 		message = "Spicebot teaches %s a lesson by sitting on %s" %instigator %instigator
     #target is the instigator
-	elif target == instigator:
+    elif target == instigator:
         message = "Sorry, I cannot let you harm yourself %s" %instigator
     #target is fine
     else:
