@@ -11,7 +11,7 @@ from SpicebotShared import *
 
 #author jimender2
 
-commandarray = ["add","remove","count","last"]
+commandarray = ["yesterday","today","last"]
 
 @sopel.module.commands('til')
 def mainfunction(bot, trigger):
@@ -21,7 +21,6 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    inchannel = trigger.sender
 
     databasekey = 'til'
     command = get_trigger_arg(bot, triggerargsarray, 1)
