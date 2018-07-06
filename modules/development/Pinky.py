@@ -19,6 +19,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(bot,triggerargsarray, '1+')
-    message = "How can you have any %s if you don't eat your meat!?!" %item
+    item = get_trigger_arg(bot,triggerargsarray, '1+')
+    if not item:
+        message = "How can you have anything good if you don't eat your meat!?!"
+    else:
+        message = "How can you have any %s if you don't eat your meat!?!" %item
     bot.say(message)
