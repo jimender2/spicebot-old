@@ -36,9 +36,9 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         #no reason
         if not reason:
-            message = "%s whacks %s with a 42 pound sack of primo cheeba." % (target, instigator)
+            message = "%s whacks %s with a 42 pound sack of primo cheeba." % (instigator, target)
         #reason
         else:
-            message = "%s whacks %s with a 42 pound sack of primo cheeba because %s." %(target, instigator, reason)
+            message = "%s whacks %s with a 42 pound sack of primo cheeba because %s." %(instigator, target, reason)
 
     bot.say(message)
