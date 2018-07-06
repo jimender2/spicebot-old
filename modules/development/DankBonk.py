@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "Who would you like to wack?"
     #target is spicebot
     elif target == bot.nick:
-		message = "Spicebot teaches %s a lesson by sitting on %s" %instigator instigator
+		message = "Spicebot teaches %s a lesson by sitting on %s" %(instigator, instigator)
     #target is the instigator
     elif target == instigator:
         message = "Sorry, I cannot let you harm yourself %s" %instigator
@@ -36,9 +36,9 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         #no reason
         if not reason:
-            message = "%s whacks %s with a 42 pound sack of primo cheeba." %target %instigator
+            message = "%s whacks %s with a 42 pound sack of primo cheeba." % (target, instigator)
         #reason
         else:
-            message = "%s whacks %s with a 42 pound sack of primo cheeba because %s." %target %instigator %reason
+            message = "%s whacks %s with a 42 pound sack of primo cheeba because %s." %(target, instigator, reason)
 
     bot.say(message)
