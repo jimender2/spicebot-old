@@ -19,7 +19,6 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(bot,triggerargsarray, 1)
-    instigator = trigger.nick
-    reason = get_trigger_arg(bot,triggerargsarray, '2+')
-    
+    target = get_trigger_arg(bot,triggerargsarray, '1+')
+    message = "How can you have any %s if you don't eat your meat!?!" %item
+    bot.say(message)
