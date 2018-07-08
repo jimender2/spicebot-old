@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if gif:
         bot.say(gif)
     else:
-        bot.action('the more you know... magic fingers')
+        bot.action('the more you know... **magic fingers**')
         
 def magicFingers():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
