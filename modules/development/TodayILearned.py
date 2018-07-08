@@ -84,21 +84,21 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 def get_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str('til_' + databasekey)
+    databasecolumn = str(databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
 def set_botdatabase_value(bot, nick, databasekey, value):
-    databasecolumn = str('til_' + databasekey)
+    databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
 
 def reset_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str('til_' + databasekey)
+    databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, None)
     
 def adjust_botdatabase_value(bot, nick, databasekey, value):
     oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
-    databasecolumn = str('til_' + databasekey)
+    databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
    
 def get_botdatabase_array_total(bot, nick, databasekey):
