@@ -22,7 +22,8 @@ admincommands = ['reset']
 protectednicks = ['rycuda','Tech_Angel']
 # Creator user
 creatornicks = ["IT_Sean"]
-
+# Bot Nicks
+botnicks = ["spicebot","spiceduels"]
 # Drinks
 drinkslist = ['Gatorade','Water','Soda','Beer']
 drinkscost = 5
@@ -127,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
 
     # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
-    elif target == 'fridge':
+    elif target.lower() == 'fridge':
         okaytoclaim = 0
         if not admintarget:
             admintarget = instigator
@@ -135,7 +136,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("The fridge is a Work in Progress, " + admintarget)
 
     # Admin functions
-    elif target == 'admin':
+    elif target.lower() == 'admin':
         okaytoclaim = 0
         function = get_trigger_arg(bot,triggerargsarray, 2)
         admintarget = get_trigger_arg(bot, triggerargsarray, 3)
@@ -162,12 +163,12 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.action('mutters "moron".')
 
     # Can't claim the bot
-    elif target == bot.nick:
+    elif target.lower() in botnicks:
         okaytoclaim = 0
         if instigator in creatornicks:
-            bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
+            bot.say("I'm sorry Sir, but %s cannot be claimed by anyone but %s." % (target, owner))
         else:
-            bot.say("I have already been claimed by " + owner +"!")
+            bot.say("Nope. %s has a permanent claim on %s!" % (owner, target))
 
     # Can't claim the creator
     elif target.lower() in [u.lower() for u in creatornicks]:
