@@ -14,7 +14,7 @@ from SpicebotShared import *
 
 #author jimender2
 
-@sopel.module.commands('tmyk', 'themoreyouknow')
+@sopel.module.commands('tmyk', 'themoreyouknow', 'myk', 'moreyouknow')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
