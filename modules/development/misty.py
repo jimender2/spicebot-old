@@ -14,24 +14,14 @@ from SpicebotShared import *
 
 #author jimender2
 
-@sopel.module.commands('tmyk', 'themoreyouknow', 'myk', 'moreyouknow')
+@sopel.module.commands('misty')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
     
 def execute_main(bot, trigger, triggerargsarray):
-    gif = magicFingers()
-    if gif:
-        bot.say(gif)
-    else:
-        bot.action('the more you know... **magic fingers**')
-        
-def magicFingers():
-    api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=themoreyouknow&api_key=' + api + '&limit=50'
-    data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,49)
-    id = data['data'][randno]['id']
-    gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
-    return gif
+
+    instigator = trigger.nick
+    inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
+    bot.say("%s thinks it's starting to get a little misty up in %s")
