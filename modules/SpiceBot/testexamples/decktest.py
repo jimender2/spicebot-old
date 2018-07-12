@@ -30,7 +30,7 @@ def execute_main(bot, trigger, arg):
         bot.say("Input: "+ str(myhand))
         myscore= blackjackscore(bot,myhand)    
     bot.say("Player score is: " + str(myscore))
-    reset_botdatabase_value(bot,'casino','deckscorecount')
+    reset_database_value(bot,'casino','deckscorecount')
     
 
 def blackjackscore(bot,hand):
@@ -38,7 +38,7 @@ def blackjackscore(bot,hand):
     myhand= []
    
     handlen = len(hand)
-    #counter = get_botdatabase_value(bot,'casino','deckscorecount')
+    #counter = get_database_value(bot,'casino','deckscorecount')
     #
     
     for i in range(0,handlen):
@@ -50,12 +50,12 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11                 
     if myscore > 21:        
-        #counter = get_botdatabase_value(bot,'casino','deckscorecount')       
+        #counter = get_database_value(bot,'casino','deckscorecount')       
         #if counter >5:
            # return myscore
         if 'A' in hand:
             myhand = hand.replace('A','1')
-            #adjust_botdatabase_value(bot, 'casino', 'deckscorecount',1)
+            #adjust_database_value(bot, 'casino', 'deckscorecount',1)
             newscore = blackjackscore(bot,myhand)              
             return newscore
         else:
@@ -66,6 +66,6 @@ def blackjackscore(bot,hand):
   
 
 def blackjackreset(bot,player):   
-    reset_botdatabase_value(bot,player, 'myhand')
-    reset_botdatabase_value(bot,player, 'dealerhand')
-    reset_botdatabase_value(bot,player, 'mybet')
+    reset_database_value(bot,player, 'myhand')
+    reset_database_value(bot,player, 'dealerhand')
+    reset_database_value(bot,player, 'mybet')

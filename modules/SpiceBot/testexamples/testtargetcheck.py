@@ -43,7 +43,7 @@ def testtargetcheck(bot, target,instigator):
     botuseron=[]
     bot.say(bot.nick)
     for channel in bot.channels:
-        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')    
+        botusersarray = get_database_value(bot, bot.nick, 'botusers')    
     for u in bot.users:
         if u in botusersarray:
             botuseron.append(u)   
