@@ -8,17 +8,17 @@ import random
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
 
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('testtarget')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
-def execute_main(bot, trigger, triggerargsarray):    
+
+def execute_main(bot, trigger, triggerargsarray):
     istarget,targetmsg =testtargetcheck(bot,get_trigger_arg(bot,triggerargsarray, 1),trigger.nick)
     bot.say(str(istarget))
     if istarget ==1:
@@ -43,24 +43,24 @@ def testtargetcheck(bot, target,instigator):
     botuseron=[]
     bot.say(bot.nick)
     for channel in bot.channels:
-        botusersarray = get_database_value(bot, bot.nick, 'botusers')    
+        botusersarray = get_database_value(bot, bot.nick, 'botusers')
     for u in bot.users:
         if u in botusersarray:
-            botuseron.append(u)   
+            botuseron.append(u)
     if not target:
         validtargetmsg = str(instigator + ", you must specify a target.")
         validtarget = 0
     else:
         if target.lower() == bot.nick.lower():
             validtargetmsg = str(instigator + ", can't targetbot.")
-            validtarget=2  
-        elif target == instigator:       
+            validtarget=2
+        elif target == instigator:
             validtargetmsg = str(instigator + ", is the target")
-            validtarget=3         
-            
+            validtarget=3
+
         elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")            
+            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")
         else:
             validtarget = 1
-    
+
     return validtarget, validtargetmsg

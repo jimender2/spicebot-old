@@ -6,12 +6,12 @@ import sys
 import os
 import random
 from sopel.module import OP
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
 def execute_main(bot, trigger):
     trigger = trigger.replace('.', '/', 1)
     bot.say('I believe you wanted to say ' + trigger)
-                

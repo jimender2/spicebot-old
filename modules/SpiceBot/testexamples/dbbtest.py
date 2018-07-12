@@ -4,9 +4,10 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 import textwrap
 import collections
@@ -22,7 +23,7 @@ from sopel.module import commands, rule, example, priority
 #def mainfunction(bot, trigger):
 #    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
 #    execute_main(bot, trigger, triggerargsarray)
-    
+
 @sopel.module.commands('dbbtest')
 def execute_main(bot, trigger):
     bot.say("This is deathbybandaid's test module")

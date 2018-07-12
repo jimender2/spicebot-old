@@ -7,10 +7,12 @@ import os
 import json
 import requests
 import ConfigParser
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
+from BotShared import *
 from sopel.module import ADMIN
-from SpicebotShared import *
+
 
 ## Creds
 config = ConfigParser.ConfigParser()

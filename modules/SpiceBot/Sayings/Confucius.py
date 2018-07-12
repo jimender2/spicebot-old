@@ -5,9 +5,9 @@ import sopel.module
 import os
 import sys
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 commandarray = ["add","remove","count","last"]
 #add reset and sort list
@@ -17,7 +17,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'yes')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender

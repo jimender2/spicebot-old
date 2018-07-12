@@ -19,9 +19,10 @@ import sopel.module
 import sys
 import os
 
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @commands('seen')
 def execute_main(bot, trigger):
