@@ -61,7 +61,7 @@ def bot_command_function_on(bot,trigger,botcom,triggerargsarray):
     if target != botcom.instigator and botcom.instigator not in botcom.opadmin:
         osd_notice(bot, botcom.instigator, "You are unauthorized to use this function on other users.")
         return
-    bot_opted_users = get_database_value(bot, channeltarget, 'users_blocked') or []
+    bot_opted_users = get_database_value(bot, bot.nick, 'users_blocked') or []
     if target not in bot_blocked_users:
         if target == botcom.instigator:
             osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + subcommand+".")
