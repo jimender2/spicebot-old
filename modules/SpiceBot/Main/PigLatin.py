@@ -5,9 +5,9 @@ import sopel.module
 import os
 import sys
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
-    
+
     pyg = 'ay'
     firstsarray = ['a','e','i','o','u']
 

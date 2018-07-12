@@ -8,9 +8,9 @@ import urllib2
 import json
 
 moduledir = os.path.dirname(__file__)
-sys.path.append(moduledir)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
+from BotShared import *
 
 @sopel.module.commands('trivia')
 def mainfunction(bot, trigger):
@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     category,type,question,answer = getQuestion()
     bot.say("Category: " + category + " Type: " + type + " Question: " + question)
-    
+
 
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
