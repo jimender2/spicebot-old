@@ -156,12 +156,12 @@ def bot_command_channels(bot,botcom):
 """
 
 def increment_counter(bot, trigger, commandused):
-    botcom.instigator = trigger.nick # Who to increment for
-    botcom.channel_current = trigger.sender # Channel to increment for
-    adjust_botdatabase_value(bot, botcom.channel_current, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
-    adjust_botdatabase_value(bot, botcom.channel_current, "spicebottotalusage", 1) ## Channel usage of bot overall
-    adjust_botdatabase_value(bot, botcom.instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
-    adjust_botdatabase_value(bot, botcom.instigator, "spicebottotalusage", 1) ## User usage of bot overall
+    instigator = trigger.nick # Who to increment for
+    channel_current = trigger.sender # Channel to increment for
+    adjust_botdatabase_value(bot, channel_current, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
+    adjust_botdatabase_value(bot, channel_current, "spicebottotalusage", 1) ## Channel usage of bot overall
+    adjust_botdatabase_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
+    adjust_botdatabase_value(bot, instigator, "spicebottotalusage", 1) ## User usage of bot overall
 
 """
 ####################################
