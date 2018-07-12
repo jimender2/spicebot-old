@@ -129,14 +129,17 @@ def bot_command_users(bot,botcom):
             botcom.opadmin.append(user)
 
         for channelcheck in bot.channels:
-
-            if bot.privileges[channelcheck][user] == OP:
-                botcom.chanops.append(user)
-                botcom.opadmin.append(user)
-
-            if bot.privileges[channelcheck][user] == VOICE:
-                botcom.chanvoice.append(user)
-
+            try:
+                if bot.privileges[channelcheck][user] == OP:
+                    botcom.chanops.append(user)
+                    botcom.opadmin.append(user)
+            except KeyError:
+                dummyvar = 1
+            try:
+                if bot.privileges[channelcheck][user] == VOICE:
+                    botcom.chanvoice.append(user)
+            except KeyError:
+                dummyvar = 1
 
     return botcom
 
