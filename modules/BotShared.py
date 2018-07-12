@@ -235,60 +235,6 @@ def targetcheck(bot, target,botcom):
     return validtarget
 
 """
-##############
-## Database ## ## TODO
-##############
-"""
-
-def get_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return database_value
-
-def set_botdatabase_value(bot, nick, databasekey, value):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
-
-def reset_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, None)
-
-def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-
-def get_botdatabase_array_total(bot, nick, databasekey):
-    array = get_botdatabase_value(bot, nick, databasekey) or []
-    entriestotal = len(array)
-    return entriestotal
-
-def adjust_botdatabase_array(bot, nick, entries, databasekey, adjustmentdirection):
-    if not isinstance(entries, list):
-        entries = [entries]
-    adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
-    adjustarraynew = []
-    for x in adjustarray:
-        adjustarraynew.append(x)
-    reset_botdatabase_value(bot, nick, databasekey)
-    adjustarray = []
-    if adjustmentdirection == 'add':
-        for y in entries:
-            if y not in adjustarraynew:
-                adjustarraynew.append(y)
-    elif adjustmentdirection == 'del':
-        for y in entries:
-            if y in adjustarraynew:
-                adjustarraynew.remove(y)
-    for x in adjustarraynew:
-        if x not in adjustarray:
-            adjustarray.append(x)
-    if adjustarray == []:
-        reset_botdatabase_value(bot, nick, databasekey)
-    else:
-        set_botdatabase_value(bot, nick, databasekey, adjustarray)
-
-"""
 ############################
 ## Fix unicode in strings ##
 ############################
