@@ -21,8 +21,10 @@ log_file_path = os.path.join(moduledir, log_path)
 ## TODO add warn functionality
 ## TODO channel and user commands
 
+"""
 ## bot.nick do this
-@nickname_commands('modules','msg','action','block','gitblock','on','off','devmode','update','restart','permfix','debug','pip')
+"""
+@nickname_commands('modules','msg','action','block','gitblock','on','off','devmode','update','restart','permfix','debug','pip','channel')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     botcom = botcom_class()
@@ -54,6 +56,37 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
         triggerargsarray.remove(botcom.command_main)
     bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,triggerargsarray)')
     eval(bot_command_function_run)
+
+"""
+Commands
+"""
+
+def bot_command_function_channel(bot,trigger,botcom,triggerargsarray):
+
+    ## SubCommand used
+    valid_subcommands = ['list','op','voice']
+    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_subcommands], 1) or 'list'
+
+    ## list channels
+    if subcommand == 'list':
+        channelarray = []
+        for c in bot.channels:
+            channelarray.append(c)
+        chanlist = get_trigger_arg(bot, channelarray, 'list')
+        onscreentext(bot, ['say'], "You can find me in " + chanlist)
+        return
+
+    ## OP list
+    if subcommand.lower() == 'op':
+        oplist = get_trigger_arg(bot, botcom.chanops, 'list')
+        osd_notice(bot, botcom.instigator, "Channel Operators are: " + oplist)
+        return
+
+    ## Voice List
+    if subcommand.lower() == 'voice':
+        voicelist = get_trigger_arg(bot, botcom.chanvoice, 'list')
+        osd_notice(bot, botcom.instigator, "Channel VOICE are: " + voicelist)
+        return
 
 def bot_command_function_on(bot,trigger,botcom,triggerargsarray):
 
@@ -116,7 +149,7 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
                 botmessagearray.append(command+"[E]")
             else:
                 botmessagearray.append(command+"[A]")
-        onscreentext(bot, ['say'], botmessagearray)
+        osd_notice(bot, botcom.instigator, botmessagearray)
 
     ## Enable/Disable
     if subcommand == 'enable' or subcommand == 'disable':
@@ -402,6 +435,10 @@ def bot_command_function_debug(bot,trigger,botcom,triggerargsarray):
                 bot.say(str(line))
     onscreentext_action(bot, [botcom.channel_current], "Is Removing Log")
     os.system("sudo rm " + log_file_path)
+
+"""
+## Bot Restart/Update
+"""
 
 def restart(bot, trigger, service):
     onscreentext(bot, ['say'], "Restarting Service...")
