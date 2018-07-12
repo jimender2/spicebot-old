@@ -3,9 +3,10 @@ import random
 import urllib
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 devcookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
 cookies='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/fortune_cookie.txt'
@@ -16,7 +17,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fortune')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     if not bot.nick.endswith(devbot):
         filetocheck=cookies #Master branch
@@ -24,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray):
         filetocheck=devcookies #Dev branch
     myline = randomcookie(filetocheck)
     bot.say(myline)
-       
+
 # random cookie
 def randomcookie(filetocheck):
     htmlfile=urllib.urlopen(filetocheck)

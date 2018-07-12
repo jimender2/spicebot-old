@@ -39,15 +39,6 @@ def main_command(bot, trigger):
     ## gender
     elif subcommand == 'gender':
         bot.say("Female.")
-    ## Modules
-    elif subcommand == 'modulecount':
-        cmdarray = []
-        for cmds in bot.command_groups.items():
-            for cmd in cmds:
-                if str(cmd).endswith("]"):
-                    for x in cmd:
-                        cmdarray.append(x)
-        bot.say('There are currently ' + str(len(cmdarray)) +' custom modules installed.')
 
     ## Bot Owner
     elif subcommand == 'owner':

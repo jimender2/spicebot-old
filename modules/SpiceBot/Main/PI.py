@@ -5,10 +5,11 @@ import random
 from random import randint
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
-import decimal 
+from BotShared import *
+import decimal
 
 
 @sopel.module.commands('pi')
@@ -16,7 +17,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     pi = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679'
     digitcount = get_trigger_arg(bot,triggerargsarray, 1) or ''
@@ -33,5 +34,3 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say("Please select a number of decimal places between 1 and " + str(pilengh))
     else:
         bot.say(str(pi))
-            
- 

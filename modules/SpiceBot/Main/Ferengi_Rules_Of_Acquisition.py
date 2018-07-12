@@ -7,9 +7,10 @@ import urllib
 import sys
 import os
 from word2number import w2n
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 fra='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/ferengi_rules.txt'
 
@@ -18,23 +19,23 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     requested = get_trigger_arg(bot, triggerargsarray, 0)
     myline = ''
     if not requested:
         myline = randomfra()
     else:
-        requested.lstrip("-")        
+        requested.lstrip("-")
         if (requested == '0' or requested.lower() == 'zero'):
             myline = 'That doesnt appear to be a rule number.'
         elif requested == 'random':
              myline = randomfra()
         else:
             htmlfile=urllib.urlopen(fra)
-            lines=htmlfile.readlines() 
+            lines=htmlfile.readlines()
             numberoflines = len(lines)
-           
+
             if requested.isdigit():
                 rulenumber = int(requested)
                 if rulenumber > numberoflines:
@@ -44,13 +45,13 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 try:
                     rulenumber = w2n.word_to_num(str(requested))
-                    myline = get_trigger_arg(bot, lines, rulenumber)   
+                    myline = get_trigger_arg(bot, lines, rulenumber)
                 except ValueError:
                     myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
         myline = 'There is no cannonized rule tied to this number.'
     bot.say(myline)
-       
+
 # random rule
 def randomfra():
     htmlfile=urllib.urlopen(fra)

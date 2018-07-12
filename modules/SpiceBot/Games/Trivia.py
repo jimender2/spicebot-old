@@ -9,6 +9,9 @@ import urllib2
 import json
 import random
 moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(shareddir)
+from BotShared import *
 sys.path.append(moduledir)
 import Spicebucks
 
@@ -34,32 +37,32 @@ def execute_main(bot, trigger, triggerargsarray):
             getQuestionFromDb(bot)
         else:
             askQuestion(bot)
-        
+
 
 def resetDbValues(bot):
-    set_database_value(bot,'triviauser','triviaq','')   
+    set_database_value(bot,'triviauser','triviaq','')
     set_database_value(bot,'triviauser','triviaa','')
     set_database_value(bot,'triviauser','triviachoices','')
     set_database_value(bot,'triviauser','triviaanswered','t')
-    
+
 def askQuestion(bot):
     type,question,arrAnswers,answer = getQuestion()
-    set_database_value(bot,'triviauser','triviaq',question)    
+    set_database_value(bot,'triviauser','triviaq',question)
     set_database_value(bot,'triviauser','triviaa',answer)
     set_database_value(bot,'triviauser','triviachoices',arrAnswers)
     set_database_value(bot,'triviauser','triviaanswered','f')
-    
+
     if type == "boolean":
         question = "(T)rue or (F)alse: " + question
         bot.say("Question: " + question)
     else:
         bot.say("Question: " + question)
         bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
-        
+
 def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
-    bot.say("Still waiting for someone to answer this one: " + question)    
+    bot.say("Still waiting for someone to answer this one: " + question)
     #if len(str(arrAnswers) > 2):
     try:
         bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
@@ -69,13 +72,13 @@ def getQuestionFromDb(bot):
         bot.say("Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
     #else:
     #bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
-    
+
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
     data = json.loads(urllib2.urlopen(url).read())
-           
+
     results = str(data['results'])
-    a = results.split("',") 
+    a = results.split("',")
     type = splitEntry(a[1])
     if type != "boolean":
         wrongAnswers = data['results'][0]
@@ -95,22 +98,22 @@ def getQuestion():
         arrAnswers[1] = "B) "+arrAnswers[1]
         arrAnswers[2] = "C) "+arrAnswers[2]
         arrAnswers[3] = "D) "+arrAnswers[3]
-        question  = splitEntry(a[2])        
+        question  = splitEntry(a[2])
     else:
         question  = splitEntry(a[2])
         answer = splitEntry(a[4])
         arrAnswers=['True','False']
-                
+
     return type,question,arrAnswers,answer
 
 def answer(bot,trigger,triggerargsarray):
-    answered = get_database_value(bot,'triviauser','triviaanswered')    
+    answered = get_database_value(bot,'triviauser','triviaanswered')
     if answered != 't':
         if triggerargsarray[0] == "answer":
             guesser = trigger.nick
             lastAttemptTime = getTimeSinceLastAttempt(bot,guesser,'trivia_lastattempt')
             if lastAttemptTime > 10:
-                set_database_value(bot,guesser,'trivia_lastattempt',time.time())                    
+                set_database_value(bot,guesser,'trivia_lastattempt',time.time())
                 useranswer = triggerargsarray[1]
                 correctanswer = get_database_value(bot,'triviauser','triviaa')
                 possibleanswers = get_database_value(bot,'triviauser','triviachoices')
@@ -122,8 +125,8 @@ def answer(bot,trigger,triggerargsarray):
                         break
                 if useranswer == correctanswer:
                    resetDbValues(bot)
-                   Spicebucks.transfer(bot,'SpiceBank',guesser,5)                       
-                   bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")                          
+                   Spicebucks.transfer(bot,'SpiceBank',guesser,5)
+                   bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                 else:
                     bot.say("Sorry, " + guesser + ", that is incorrect.")
             else:
@@ -131,8 +134,8 @@ def answer(bot,trigger,triggerargsarray):
                 bot.say(guesser + ", you must wait " + str(round(timeDiff,2)) + " seconds before attempting to guess again!")
     else:
         bot.say("The last question has been answered! Type .trivia for a new question!")
-                                  
-                                        
+
+
 def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
@@ -159,7 +162,7 @@ def get_database_value(bot, nick, databasekey):
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('trivia_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
-    
+
 # get current value and update it adding newvalue
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
@@ -170,5 +173,3 @@ def getTimeSinceLastAttempt(bot,nick,databasekey):
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
-    
-    

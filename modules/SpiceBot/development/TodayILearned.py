@@ -5,9 +5,9 @@ import sopel.module
 import sys
 import os
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -95,12 +95,12 @@ def set_database_value(bot, nick, databasekey, value):
 def reset_database_value(bot, nick, databasekey):
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, None)
-    
+
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-   
+
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)

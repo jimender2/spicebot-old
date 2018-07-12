@@ -8,9 +8,9 @@ from random import random
 from random import randint
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 import Spicebucks
 
 monopolyfee = 5
@@ -24,7 +24,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot,trigger, 'monopoly')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     channel = trigger.sender
     instigator = trigger.nick
@@ -32,7 +32,7 @@ def execute_main(bot, trigger, triggerargsarray):
     payment = random.uniform(0.1,0.3)
     balance=Spicebucks.bank(bot,instigator)
     payout = int(payment*balance)
-   
+
     if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', monopolyfee) == 1:
         if deckchoice == 1:
           chancecard=get_trigger_arg(bot,gooddeck,'random')
@@ -50,4 +50,3 @@ def execute_main(bot, trigger, triggerargsarray):
         adjust_database_value(bot,instigator, 'spicebucks_bank', payout)
     else:
         bot.notice("You need " + str(monopolyfee) + " Spicebucks to use this command.",instigator)
-    

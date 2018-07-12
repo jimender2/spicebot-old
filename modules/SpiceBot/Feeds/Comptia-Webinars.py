@@ -13,9 +13,10 @@ import sys
 import os
 import pytz
 from dateutil import tz
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 url = 'https://www.comptia.org/events/webinars'
 
@@ -61,7 +62,7 @@ def getwebbytimeuntil():
     webbytime = getwebbytime()
     timecompare = get_timeuntil(nowtime, webbytime)
     return timecompare
-    
+
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()

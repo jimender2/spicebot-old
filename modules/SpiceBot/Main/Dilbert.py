@@ -3,9 +3,10 @@ import sopel.module
 import arrow
 import os
 import sys
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('dilbert')
 def mainfunction(bot, trigger):

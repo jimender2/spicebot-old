@@ -5,9 +5,9 @@ import sopel.module
 import os
 import sys
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -26,11 +26,11 @@ def execute_main(bot, trigger, triggerargsarray):
     # No target specified
     if not target:
         bot.say("Who/what would you like to roll your eyes at?")
-    
+
     #Yourself
     elif target == instigator:
         bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
-    
+
     #spicebot
     elif target == bot.nick:
         bot.say("Don't even bother. I can't see you")

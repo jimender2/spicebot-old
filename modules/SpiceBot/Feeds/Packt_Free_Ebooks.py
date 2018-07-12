@@ -16,9 +16,10 @@ packtminute = str(10)
 ## SpiceBotShared
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 packturl = "https://www.packtpub.com/packt/offers/free-learning"
 

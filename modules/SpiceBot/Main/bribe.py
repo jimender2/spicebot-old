@@ -7,10 +7,11 @@ import sys
 import os
 import datetime
 import random
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
+from BotShared import *
 
-from SpicebotShared import *
 
 commandarray = ["accept","delete","money"]
 
@@ -37,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
 		bot.say(instigator + " accepted the bribe of $" + amount + ".")
         elif command == "decline":
             bot.say(instigator + " declines a bribe worth $" + amount +".")
-    
+
     else:
          if target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)

@@ -7,16 +7,17 @@ from sopel import module, tools
 import random
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('webmd','webmdadd','webmddel')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     commandtrimmed = trigger.group(1)
     commandtrimmed = str(commandtrimmed.split("webmd", 1)[1])
@@ -64,7 +65,7 @@ def get_webmd(bot):
     for channel in bot.channels:
         webmd = bot.db.get_nick_value(channel, 'webmd_locker') or []
         return webmd
-        
+
 def update_webmd(bot, webmd):
     for channel in bot.channels:
         bot.db.set_nick_value(channel, 'webmd_locker', webmd)

@@ -5,9 +5,10 @@ import sopel.module
 import random
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 replies = ["No.","Buy me jewellery!","You haven't done enough around the house lately.","Are you even listening to me?",
 "My mother is coming to stay. You're okay with that, right?","Maybe you should ask your whore, Linda.",
@@ -20,7 +21,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
     bot.say(answer)
