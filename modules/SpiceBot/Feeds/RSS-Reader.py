@@ -21,6 +21,7 @@ header = {'User-Agent': str(ua.chrome)}
 def reset(bot,trigger):
     feedselect = trigger.group(2)
     dirpar = bot.nick
+    bot.say(str(bot.nick))
     RSSFEEDSDIR = str("/home/spicebot/.sopel/"+dirpar+"/RSS-Feeds/main/")
     if not feedselect:
         bot.say("Which Feed are we resetting?")
