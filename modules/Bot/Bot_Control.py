@@ -17,6 +17,8 @@ from BotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
+GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
+
 ## TODO add a notification of traceback errors
 ## TODO add warn functionality
 ## TODO channel and user commands
@@ -24,7 +26,7 @@ log_file_path = os.path.join(moduledir, log_path)
 """
 ## bot.nick do this
 """
-@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     botcom = botcom_class()
@@ -54,12 +56,28 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
     botcom.command_main = get_trigger_arg(bot, triggerargsarray, 1)
     if botcom.command_main in triggerargsarray:
         triggerargsarray.remove(botcom.command_main)
+    if botcom.command_main == 'help':
+        botcom.command_main = 'docs'
     bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,triggerargsarray)')
     eval(bot_command_function_run)
 
 """
 Commands
 """
+
+def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
+    onscreentext(bot, ['say'], ", Online Docs: " + GITWIKIURL)
+
+def bot_command_function_canyouseeme(bot,trigger,botcom,triggerargsarray):
+    onscreentext(bot, ['say'], botcom.instigator + ", I can see you.")
+
+def bot_command_function_owner(bot,trigger,botcom,triggerargsarray):
+    ownerlist = get_trigger_arg(bot, botcom.owner, 'list')
+    osd_notice(bot, botcom.instigator, "Bot Owners are: " + ownerlist)
+
+def bot_command_function_admin(bot,trigger,botcom,triggerargsarray):
+    adminlist = get_trigger_arg(bot, botcom.botadmins, 'list')
+    osd_notice(bot, botcom.instigator, "Bot Admin are: " + adminlist)
 
 def bot_command_function_gender(bot,trigger,botcom,triggerargsarray):
     onscreentext(bot, ['say'], "My gender is Female")
