@@ -6,9 +6,10 @@ import urllib
 from word2number import w2n
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 rulesurl = 'https://pastebin.com/raw/Vrq9bHBD'
 
@@ -21,7 +22,7 @@ def execute_main(bot, trigger):
         rulenumber.lstrip("-")
         if ( rulenumber == '0' or rulenumber.lower() == 'zero'):
             myline='Rule Zero (read the rules):     https://pastebin.com/Vrq9bHBD'
-        else: 
+        else:
             if not rulenumber.isdigit():
                 try:
                     rulenumber = w2n.word_to_num(str(rulenumber))
@@ -38,10 +39,10 @@ def execute_main(bot, trigger):
             elif rulenumber ==69:
                 myline='giggles'
             elif rulenumber == 34:
-                myline='If it exists, there is porn of it.'                
+                myline='If it exists, there is porn of it.'
             else:
                 try:
-                    myline=lines[rulenumber-1] 
+                    myline=lines[rulenumber-1]
                 except:
                     myline= 'That doesnt appear to be a rule number.'
     if myline == 'giggles':

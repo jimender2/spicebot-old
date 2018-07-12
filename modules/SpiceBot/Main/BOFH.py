@@ -6,9 +6,10 @@ import urllib
 from xml.dom.minidom import parseString
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -156,7 +157,7 @@ replies = ["clock speed",
 			"new guy cross-connected phone lines with ac power bus.",
 			"had to use hammer to free stuck disk drive heads.",
 			"Too few computrons available.",
-			"Flat tire on station wagon with tapes.  (\"Never underestimate the bandwidth of a station wagon full of tapes hurling down the highway\" Andrew S. Tannenbaum)", 
+			"Flat tire on station wagon with tapes.  (\"Never underestimate the bandwidth of a station wagon full of tapes hurling down the highway\" Andrew S. Tannenbaum)",
 			"Communications satellite used by the military for star wars.",
 			"Party-bug in the Aloha protocol.",
 			"Insert coin for new game",
@@ -484,7 +485,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
     bot.say(answer)

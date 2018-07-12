@@ -8,9 +8,10 @@ from BeautifulSoup import BeautifulSoup
 from random import randint
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -19,14 +20,14 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     gif = magicFingers()
     if gif:
         bot.say(gif)
     else:
         bot.action('the more you know... **magic fingers**')
-        
+
 def magicFingers():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     url = 'http://api.giphy.com/v1/gifs/search?q=themoreyouknow&api_key=' + api + '&limit=50'

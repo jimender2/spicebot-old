@@ -5,9 +5,9 @@ import sopel.module
 import os
 import sys
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -16,7 +16,7 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'gong')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-        
+
 def execute_main(bot, trigger, triggerargsarray):
     person = get_trigger_arg(bot,triggerargsarray,1)
 
@@ -24,5 +24,5 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "Spicebot grabs " + trigger.nick + " with a hook and drags them out of the room because they tried to gong Spicebot."
     else:
         message = "Spicebot grabs " + person + " with a hook and drags them out of the room."
-    
+
     bot.say(message)

@@ -7,9 +7,10 @@ import urllib
 import sys
 import os
 from word2number import w2n
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 compliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/compliments.txt'
 devcompliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/compliments.txt'
@@ -31,16 +32,16 @@ def execute_main(bot, trigger, triggerargsarray):
     if not requested:
         myline = randomcompliment(filetocheck)
     else:
-        requested.lstrip("-")        
+        requested.lstrip("-")
         if (requested == '0' or requested.lower() == 'zero'):
             myline = 'That doesnt appear to be a compliment number.'
         elif requested == 'random':
              myline = randomcompliment(filetocheck)
         else:
             htmlfile=urllib.urlopen(filetocheck)
-            lines=htmlfile.readlines() 
+            lines=htmlfile.readlines()
             numberoflines = len(lines)
-           
+
             if requested.isdigit():
                 complimentnumber = int(requested)
                 if complimentnumber > numberoflines:
@@ -50,7 +51,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 try:
                     complimentnumber = w2n.word_to_num(str(requested))
-                    myline = get_trigger_arg(lines, complimentnumber)   
+                    myline = get_trigger_arg(lines, complimentnumber)
                 except ValueError:
                     myline = 'That doesnt appear to be a compliment number.'
     if not myline or myline == '\n':
@@ -65,7 +66,7 @@ def duel_action(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'compliment')
     if not enablestatus:
         execute_reply(bot, trigger, triggerargsarray)
-        
+
 def execute_reply(bot, trigger, triggerargsarray):
     myline = ''
     if not bot.nick.endswith(devbot):
@@ -76,7 +77,7 @@ def execute_reply(bot, trigger, triggerargsarray):
     if not myline or myline == '\n':
         myline = 'There is no compliment tied to this number.'
     bot.say(myline)
-    
+
 # random compliment
 def randomcompliment(filetocheck):
     htmlfile=urllib.urlopen(filetocheck)
