@@ -7,7 +7,7 @@ import sys
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
