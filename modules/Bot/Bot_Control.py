@@ -24,7 +24,7 @@ log_file_path = os.path.join(moduledir, log_path)
 """
 ## bot.nick do this
 """
-@nickname_commands('modules','msg','action','block','gitblock','on','off','devmode','update','restart','permfix','debug','pip','channel')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     botcom = botcom_class()
@@ -60,6 +60,9 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
 """
 Commands
 """
+
+def bot_command_function_gender(bot,trigger,botcom,triggerargsarray):
+    onscreentext(bot, ['say'], "My gender is Female")
 
 def bot_command_function_channel(bot,trigger,botcom,triggerargsarray):
 
@@ -296,70 +299,80 @@ def bot_command_function_block(bot,trigger,botcom,triggerargsarray):
             adddelword = "removed from"
             onscreentext(bot, ['say'], "The following users have been " + adddelword + " the " + channeltarget + " block list: "+ blocknewlisttext)
 
-def bot_command_function_gitblock(bot,trigger,botcom,triggerargsarray):
+def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    ## main subcom
+    valid_main_subcom = ['show','block']
+    main_subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_main_subcom], 1) or 'show'
+
+    if main_subcommand == 'show':
+        onscreentext(bot, ['say'], 'Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
         return
 
-    ## Channel
-    channeltarget = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith('#')], 1)
-    if not channeltarget:
-        if botcom.channel_current.startswith('#'):
-            channeltarget = botcom.channel_current
-        else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+    if main_subcommand == 'block':
+        if botcom.instigator not in botcom.opadmin:
+            osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
             return
-    if channeltarget in triggerargsarray:
-        triggerargsarray.remove(channeltarget)
 
-    ## SubCommand used
-    valid_subcommands = ['current','add','del']
-    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_subcommands], 1) or 'current'
+        ## Channel
+        channeltarget = get_trigger_arg(bot, [x for x in triggerargsarray if x.startswith('#')], 1)
+        if not channeltarget:
+            if botcom.channel_current.startswith('#'):
+                channeltarget = botcom.channel_current
+            else:
+                osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+                return
+        if channeltarget in triggerargsarray:
+            triggerargsarray.remove(channeltarget)
 
-    bot_blocked_users_github = get_database_value(bot, channeltarget, 'users_blocked_github') or []
+        ## SubCommand used
+        valid_subcommands = ['current','add','del']
+        subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_subcommands], 1) or 'current'
 
-    if subcommand == 'current':
-        botmessage = []
-        if bot_blocked_users_github != []:
-            botmessage.append("The following users are currently blocked:")
-            current_block_list = get_trigger_arg(bot, bot_blocked_users_github, 'list')
-            botmessage.append(str(current_block_list))
-        else:
-            botmessage.append("No users are currently blocked from github.")
-        onscreentext(bot, ['say'], botmessage)
+        bot_blocked_users_github = get_database_value(bot, channeltarget, 'users_blocked_github') or []
+
+        if subcommand == 'current':
+            botmessage = []
+            if bot_blocked_users_github != []:
+                botmessage.append("The following users are currently blocked:")
+                current_block_list = get_trigger_arg(bot, bot_blocked_users_github, 'list')
+                botmessage.append(str(current_block_list))
+            else:
+                botmessage.append("No users are currently blocked from github.")
+            onscreentext(bot, ['say'], botmessage)
+            return
+
+        if subcommand == 'add' or subcommand == 'del':
+            blocknewlist = []
+            if 'all' in triggerargsarray:
+                for user in botcom.users_all:
+                    if subcommand == 'add' and user not in bot_blocked_users_github:
+                        blocknewlist.append(user)
+                    if subcommand == 'del' and user in bot_blocked_users_github:
+                        blocknewlist.append(user)
+            else:
+                for word in triggerargsarray:
+                    if word in botcom.users_all and word not in blocknewlist:
+                        if subcommand == 'add' and word not in bot_blocked_users_github:
+                            blocknewlist.append(word)
+                        if subcommand == 'del' and word in bot_blocked_users_github:
+                            blocknewlist.append(word)
+
+            if blocknewlist == []:
+                osd_notice(bot, botcom.instigator, "No Valid Users found to block from github.")
+                return
+
+            blocknewlisttext = get_trigger_arg(bot, blocknewlist, 'list')
+
+            if subcommand == 'add':
+                adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked_github', 'add')
+                adddelword = "added to"
+                onscreentext(bot, ['say'], "The following users have been " + adddelword + " the " + channeltarget + " github block list: "+ blocknewlisttext)
+            else:
+                adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked_github', 'del')
+                adddelword = "removed from"
+                onscreentext(bot, ['say'], "The following users have been " + adddelword + " the " + channeltarget + " github block list: "+ blocknewlisttext)
         return
-
-    if subcommand == 'add' or subcommand == 'del':
-        blocknewlist = []
-        if 'all' in triggerargsarray:
-            for user in botcom.users_all:
-                if subcommand == 'add' and user not in bot_blocked_users_github:
-                    blocknewlist.append(user)
-                if subcommand == 'del' and user in bot_blocked_users_github:
-                    blocknewlist.append(user)
-        else:
-            for word in triggerargsarray:
-                if word in botcom.users_all and word not in blocknewlist:
-                    if subcommand == 'add' and word not in bot_blocked_users_github:
-                        blocknewlist.append(word)
-                    if subcommand == 'del' and word in bot_blocked_users_github:
-                        blocknewlist.append(word)
-
-        if blocknewlist == []:
-            osd_notice(bot, botcom.instigator, "No Valid Users found to block from github.")
-            return
-
-        blocknewlisttext = get_trigger_arg(bot, blocknewlist, 'list')
-
-        if subcommand == 'add':
-            adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked_github', 'add')
-            adddelword = "added to"
-            onscreentext(bot, ['say'], "The following users have been " + adddelword + " the " + channeltarget + " github block list: "+ blocknewlisttext)
-        else:
-            adjust_database_array(bot, channeltarget, blocknewlist, 'users_blocked_github', 'del')
-            adddelword = "removed from"
-            onscreentext(bot, ['say'], "The following users have been " + adddelword + " the " + channeltarget + " github block list: "+ blocknewlisttext)
 
 def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
 

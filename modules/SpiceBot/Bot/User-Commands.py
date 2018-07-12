@@ -32,13 +32,6 @@ def main_command(bot, trigger):
         target = get_trigger_arg(bot, triggerargsarray, 2) or ''
         bot.msg(inchannel, target + "This is just a warning. Overuse of the bot, can get you kicked or banned by an operator. If you want to purely play with the bot, go to ##SpiceBot or ##SpiceBotTest, or send Spicebot a PrivateMessage.")
 
-    ## Github Repo
-    elif subcommand == 'github':
-        bot.say('Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
-
-    ## gender
-    elif subcommand == 'gender':
-        bot.say("Female.")
 
     ## Bot Owner
     elif subcommand == 'owner':
