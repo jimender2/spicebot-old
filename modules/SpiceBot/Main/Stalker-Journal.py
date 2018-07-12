@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray):
     if not whotostalk:
         bot.say(instigator + " updates their stalker journal.")
     else:
-        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+        botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
         if whotostalk.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:

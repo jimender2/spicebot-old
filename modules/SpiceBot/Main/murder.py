@@ -27,11 +27,11 @@ def execute_main(bot, trigger, triggerargsarray):
     databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
+    existingarray = get_database_value(bot, bot.nick, databasekey) or []
     if command in commandarray:
         if command == "add":
             if inputstring not in existingarray:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
 		bot.say(message)
             else:
@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = "That response was not found in the database."
 		bot.say(message)
             else:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'del')
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
                 message = "Removed from database."
 		bot.say(message)
         elif command == "count":
