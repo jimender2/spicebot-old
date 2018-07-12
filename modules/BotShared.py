@@ -149,6 +149,38 @@ def bot_command_channels(bot,botcom):
         botcom.channel_list.append(channel)
     return botcom
 
+def special_users(bot):
+    botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray = [], [], [], [], []
+    for channel in bot.channels:
+        for u in bot.users:
+            allusersinroomarray.append(u)
+            if u != bot.nick:
+
+                try:
+                    if u.lower() in bot.config.core.owner.lower():
+                        botownerarray.append(u)
+                except KeyError:
+                    dumbyvar = 1
+
+                try:
+                    if bot.privileges[channel.lower()][u.lower()] == OP:
+                        operatorarray.append(u)
+                except KeyError:
+                    dumbyvar = 1
+
+                try:
+                    if bot.privileges[channel.lower()][u.lower()] == VOICE:
+                        voicearray.append(u)
+                except KeyError:
+                    dumbyvar = 1
+
+                try:
+                    if u in bot.config.core.admins:
+                        adminsarray.append(u)
+                except KeyError:
+                    dumbyvar = 1
+    return botownerarray, operatorarray, voicearray, adminsarray, allusersinroomarray
+
 """
 #####################
 ## Module Counters ##
