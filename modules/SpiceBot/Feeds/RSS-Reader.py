@@ -20,7 +20,9 @@ header = {'User-Agent': str(ua.chrome)}
 @sopel.module.commands('rssreset')
 def reset(bot,trigger):
     feedselect = trigger.group(2)
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick+"/RSS-Feeds/main/")
+    dirpar = bot.nick
+    bot.say(bot.nick)
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+dirpar+"/RSS-Feeds/main/")
     if not feedselect:
         bot.say("Which Feed are we resetting?")
     elif feedselect == 'all':
@@ -38,7 +40,8 @@ def reset(bot,trigger):
 ## Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick+"/RSS-Feeds/main/")
+    dirpar = bot.nick
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+dirpar+"/RSS-Feeds/main/")
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)

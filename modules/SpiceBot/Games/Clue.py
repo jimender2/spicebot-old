@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
         pointsworth = (int(pointsworth*bankbalance)) + 5
         pointsvalue = str(pointsworth)
         bot.say(trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
-        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+        botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
         for u in bot.users:
             if u in botusersarray and u != bot.nick:
                 players.append(u) 

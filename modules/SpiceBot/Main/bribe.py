@@ -27,9 +27,9 @@ def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
         if command == "accept":
-            amo = get_botdatabase_value(bot, instigator, 'bets') or '0'
+            amo = get_database_value(bot, instigator, 'bets') or '0'
             amount = int(amo)
-	    reset_botdatabase_value(bot,instigator, 'bets')
+	    reset_database_value(bot,instigator, 'bets')
             spicebucks(bot, instigator, "plus", amount)
             if amount == 0:
                 bot.say("There are no bribes for you to accept")
@@ -44,13 +44,13 @@ def execute_main(bot, trigger, triggerargsarray):
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
-            set_botdatabase_value(bot,target, 'bets', inputstring)
+            set_database_value(bot,target, 'bets', inputstring)
             spicebucks(bot, instigator, 'minus', money)
          else:
             bot.say("I'm sorry, I do not know who " + target + " is.")
 
 def bank(bot, nick):
-    balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
+    balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
 
 def spicebucks(bot, target, plusminus, amount):
@@ -59,13 +59,13 @@ def spicebucks(bot, target, plusminus, amount):
     if type(amount) == int:
         inbank = bank(bot,target)
     if plusminus == 'plus':
-       adjust_botdatabase_value(bot,target, 'spicebucks_bank', amount)
+       adjust_database_value(bot,target, 'spicebucks_bank', amount)
        success = 'true'
     elif plusminus == 'minus':
         if inbank - amount < 0:
             success = 'false'
         else:
-            adjust_botdatabase_value(bot,target, 'spicebucks_bank', -amount)
+            adjust_database_value(bot,target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
         success = 'false'

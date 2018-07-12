@@ -47,7 +47,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg + ".")
         if (balance + payout)<0:
           payout = balance
-        adjust_botdatabase_value(bot,instigator, 'spicebucks_bank', payout)
+        adjust_database_value(bot,instigator, 'spicebucks_bank', payout)
     else:
         bot.notice("You need " + str(monopolyfee) + " Spicebucks to use this command.",instigator)
     

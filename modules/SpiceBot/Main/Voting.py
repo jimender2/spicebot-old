@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timing = get_trigger_arg(bot, triggerargsarray,2)
             if timing.isdigit():
                 timing=int(timing)
-                set_botdatabase_value(bot,bot.nick,'votetimer',timing)
+                set_database_value(bot,bot.nick,'votetimer',timing)
                 bot.notice("Voting delay set to 10 plus" + str(timing),player)
             else:
                 bot.notice("Please enter a valid number",player)
@@ -35,23 +35,23 @@ def execute_main(bot, trigger, triggerargsarray):
             novotes = 0
             ratings = []
             pollchoice = []
-            voters = get_botdatabase_value(bot, bot.nick, 'voters') or []
+            voters = get_database_value(bot, bot.nick, 'voters') or []
             if player not in voters:
                 if choice == 'yes' or choice == 'ya':
                     bot.notice("Your yes vote has been recorded", player)
-                    adjust_botdatabase_value(bot,bot.nick, 'yesvotes', 1)
-                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                    set_botdatabase_value(bot,bot.nick,'voting',1)
-                    set_botdatabase_value(bot,bot.nick,'voting','True')
-                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
-                    set_botdatabase_value(bot,bot.nick,'votingstart',now)
+                    adjust_database_value(bot,bot.nick, 'yesvotes', 1)
+                    adjust_database_array(bot, bot.nick, player, 'voters', 'add')
+                    set_database_value(bot,bot.nick,'voting',1)
+                    set_database_value(bot,bot.nick,'voting','True')
+                    set_database_value(bot,bot.nick,'votechannel',trigger.sender)
+                    set_database_value(bot,bot.nick,'votingstart',now)
                 elif choice == 'no' or choice == 'na':
                     bot.notice("Your no vote has been recorded", player)
-                    adjust_botdatabase_value(bot,bot.nick, 'novotes', 1)
-                    adjust_botdatabase_array(bot, bot.nick, player, 'voters', 'add')
-                    set_botdatabase_value(bot,bot.nick,'voting','True')
-                    set_botdatabase_value(bot,bot.nick,'votechannel',trigger.sender)
-                    set_botdatabase_value(bot,bot.nick,'votingstart',now)
+                    adjust_database_value(bot,bot.nick, 'novotes', 1)
+                    adjust_database_array(bot, bot.nick, player, 'voters', 'add')
+                    set_database_value(bot,bot.nick,'voting','True')
+                    set_database_value(bot,bot.nick,'votechannel',trigger.sender)
+                    set_database_value(bot,bot.nick,'votingstart',now)
 
                 else:
                     bot.say("Vote yes or no")
@@ -59,7 +59,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.notice("You have already voted",player)
         
     elif commandused == 'rate':
-        raters = get_botdatabase_value(bot, bot.nick, 'raters') or []
+        raters = get_database_value(bot, bot.nick, 'raters') or []
         if not choice:
             bot.say("Rate on scale of -10 through 10")
         elif choice=='results':
@@ -68,7 +68,7 @@ def execute_main(bot, trigger, triggerargsarray):
             timing = get_trigger_arg(bot, triggerargsarray,2)
             if timing.isdigit():
                 timing=int(timing)
-                set_botdatabase_value(bot,bot.nick,'ratetimer',timing)
+                set_database_value(bot,bot.nick,'ratetimer',timing)
                 bot.notice("Rating delay set to 10 plus" + str(timing),player)
         else:
             if not player in raters:
@@ -79,11 +79,11 @@ def execute_main(bot, trigger, triggerargsarray):
                     if choice < -10:
                         choice = -10
                     bot.notice("Your rating of " + str(choice) + " has been recorded", player)
-                    adjust_botdatabase_array(bot, bot.nick, player, 'raters', 'add')
-                    adjust_botdatabase_array(bot, bot.nick, choice, 'ratings', 'add')
-                    set_botdatabase_value(bot,bot.nick,'rating','True')
-                    set_botdatabase_value(bot,bot.nick,'ratechannel',trigger.sender)   
-                    set_botdatabase_value(bot,bot.nick,'ratestart',now)
+                    adjust_database_array(bot, bot.nick, player, 'raters', 'add')
+                    adjust_database_array(bot, bot.nick, choice, 'ratings', 'add')
+                    set_database_value(bot,bot.nick,'rating','True')
+                    set_database_value(bot,bot.nick,'ratechannel',trigger.sender)   
+                    set_database_value(bot,bot.nick,'ratestart',now)
                 else:
                     bot.notice(str(choice) + " is not a number between -10 and 10",player)
             else:
@@ -95,25 +95,25 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("WIP")
                 
 def clearvoting(bot):
-    reset_botdatabase_value(bot,bot.nick,'novotes')
-    reset_botdatabase_value(bot,bot.nick,'yesvotes')
-    reset_botdatabase_value(bot,bot.nick,'voters')
-    reset_botdatabase_value(bot,bot.nick,'voting')
-    reset_botdatabase_value(bot,bot.nick,'votechannel')
+    reset_database_value(bot,bot.nick,'novotes')
+    reset_database_value(bot,bot.nick,'yesvotes')
+    reset_database_value(bot,bot.nick,'voters')
+    reset_database_value(bot,bot.nick,'voting')
+    reset_database_value(bot,bot.nick,'votechannel')
     
 def clearrating(bot):    
-    reset_botdatabase_value(bot,bot.nick,'raters')
-    reset_botdatabase_value(bot,bot.nick,'ratings')
-    reset_botdatabase_value(bot,bot.nick,'ratechannel')
+    reset_database_value(bot,bot.nick,'raters')
+    reset_database_value(bot,bot.nick,'ratings')
+    reset_database_value(bot,bot.nick,'ratechannel')
    
     
     
 @sopel.module.interval(10)
 def countdown(bot): 
-    isvote = get_botdatabase_value(bot,bot.nick,'voting') or ''
-    israte = get_botdatabase_value(bot,bot.nick,'rating') or ''
-    votetimeout =get_botdatabase_value(bot,bot.nick,'votetimer')
-    ratetimeout = get_botdatabase_value(bot,bot.nick,'ratetimer')
+    isvote = get_database_value(bot,bot.nick,'voting') or ''
+    israte = get_database_value(bot,bot.nick,'rating') or ''
+    votetimeout =get_database_value(bot,bot.nick,'votetimer')
+    ratetimeout = get_database_value(bot,bot.nick,'ratetimer')
     if isvote =='True':
         if get_timesince(bot,bot.nick,'votestart')>votetimeout:
             getvotes(bot)
@@ -122,9 +122,9 @@ def countdown(bot):
             getrating(bot)
         
 def getvotes(bot):
-    novotes = get_botdatabase_value(bot, bot.nick, 'novotes') or 0
-    yesvotes = get_botdatabase_value(bot, bot.nick, 'yesvotes') or 0
-    channel = get_botdatabase_value(bot,bot.nick,'votechannel') or ''
+    novotes = get_database_value(bot, bot.nick, 'novotes') or 0
+    yesvotes = get_database_value(bot, bot.nick, 'yesvotes') or 0
+    channel = get_database_value(bot,bot.nick,'votechannel') or ''
     if not channel == '':
         dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
         onscreentext(bot, channel, dispmsg)
@@ -132,8 +132,8 @@ def getvotes(bot):
     
 def getrating(bot):
     sum=0
-    ratings = get_botdatabase_value(bot, bot.nick, 'ratings')
-    channel = get_botdatabase_value(bot,bot.nick,'ratechannel') or ''
+    ratings = get_database_value(bot, bot.nick, 'ratings')
+    channel = get_database_value(bot,bot.nick,'ratechannel') or ''
     if not channel == '':
         if ratings:
             for n in ratings:            

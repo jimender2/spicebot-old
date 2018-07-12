@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
     channel = trigger.sender
     commandused = get_trigger_arg(bot, triggerargsarray, 1) or 'nocommand'
     botuseron=[]
@@ -117,7 +117,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     if amount.isdigit():
                         amount = int(amount)
                         if amount>=0 and amount <10000001:
-                            set_botdatabase_value(bot,target, 'spicebucks_bank', amount)
+                            set_database_value(bot,target, 'spicebucks_bank', amount)
                             targetbalance = bank(bot,target)
                             bot.say(target + ' now has ' + str(targetbalance) + ' in the bank')
                         else:
@@ -145,14 +145,14 @@ def execute_main(bot, trigger, triggerargsarray):
                             
                         else:
                             bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
-                            reset_botdatabase_value(bot,target,'usedtaxes')
+                            reset_database_value(bot,target,'usedtaxes')
                     else:
-                        if get_botdatabase_value(bot,trigger.nick,'usedtaxes')<2:
-                            adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                        if get_database_value(bot,trigger.nick,'usedtaxes')<2:
+                            adjust_database_value(bot,trigger.nick,'usedtaxes',1)
                             taxtotal= paytaxes(bot, target)
                             if taxtotal >=100:
                                 kickback=int(taxtotal*0.1)                                
-                                adjust_botdatabase_value(bot,trigger.nick,'spicebucks_bank',kickback)
+                                adjust_database_value(bot,trigger.nick,'spicebucks_bank',kickback)
                                 bot.action("gives " + trigger.nick + " a kickback of " +  str(kickback) + " for bringing this delinquent to our attention")
 
                             
@@ -165,9 +165,9 @@ def execute_main(bot, trigger, triggerargsarray):
                                 
                             else:
                                 bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
-                                reset_botdatabase_value(bot,target,'usedtaxes')
+                                reset_database_value(bot,target,'usedtaxes')
                 else:
-                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                    adjust_database_value(bot,trigger.nick,'usedtaxes',1)
                     taxtotal =paytaxes(bot, trigger.nick)
                     
         elif commandused=='rob':
@@ -176,14 +176,14 @@ def execute_main(bot, trigger, triggerargsarray):
             if targetcheck(bot,target,trigger.nick)==0:
                 bot.say("I'm sorry, I do not know who " + target + " is.")
             else:
-                if get_botdatabase_value(bot,trigger.nick,'usedtaxes')>2:
-                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                if get_database_value(bot,trigger.nick,'usedtaxes')>2:
+                    adjust_database_value(bot,trigger.nick,'usedtaxes',1)
                     triggerbalance=bank(bot, trigger.nick)
                     fine = int(triggerbalance*.20)
                     bot.say(trigger.nick + " get's caught for pickpocketing too much and is fined " + str(fine))
                     spicebucks(bot,trigger.nick,'minus',fine)                    
                 else:  
-                    adjust_botdatabase_value(bot,trigger.nick,'usedtaxes',1)
+                    adjust_database_value(bot,trigger.nick,'usedtaxes',1)
                     randomcheck = random.randint(0,5)
                     if randomcheck==3:
                         triggerbalance=bank(bot, trigger.nick)
@@ -220,12 +220,12 @@ def execute_main(bot, trigger, triggerargsarray):
 
 #admin command reset user values
 def reset(bot, target):
-    reset_botdatabase_value(bot,target, 'spicebucks_payday')
-    reset_botdatabase_value(bot,target,'spicebucks_taxday')    
-    reset_botdatabase_value(bot,target,'usedtaxes')
+    reset_database_value(bot,target, 'spicebucks_payday')
+    reset_database_value(bot,target,'spicebucks_taxday')    
+    reset_database_value(bot,target,'usedtaxes')
 
 def bank(bot, nick):
-    balance = get_botdatabase_value(bot,nick,'spicebucks_bank') or 0
+    balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
 
 def spicebucks(bot, target, plusminus, amount):
@@ -234,14 +234,14 @@ def spicebucks(bot, target, plusminus, amount):
     if type(amount) == int:
         inbank = bank(bot,target)
     if plusminus == 'plus':
-       adjust_botdatabase_value(bot,target, 'spicebucks_bank', amount)
+       adjust_database_value(bot,target, 'spicebucks_bank', amount)
        success = 'true'
     elif plusminus == 'minus':
         if inbank - amount < 0:
             #bot.say("I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
             success = 'false'
         else:
-            adjust_botdatabase_value(bot,target, 'spicebucks_bank', -amount)
+            adjust_database_value(bot,target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
         #bot.say("The amount you entered does not appear to be a number.  Transaction failed.")
@@ -253,10 +253,10 @@ def checkpayday(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     spicebank = bank(bot,'SpiceBank')
-    lastpayday = get_botdatabase_value(bot,target, 'spicebucks_payday') or 0
+    lastpayday = get_database_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = int(spicebank * 0.01)
-        set_botdatabase_value(bot,target, 'spicebucks_payday', datetoday)
+        set_database_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydayamount=0
     return paydayamount
@@ -264,18 +264,18 @@ def checkpayday(bot, target):
 def paytaxes(bot, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    lasttaxday = get_botdatabase_value(bot,target, 'spicebucks_taxday') or 0
+    lasttaxday = get_database_value(bot,target, 'spicebucks_taxday') or 0
     inbank = bank(bot,target) or 0    
     taxtotal = 0
     if lasttaxday == 0 or lasttaxday < datetoday:
-        reset_botdatabase_value(bot,target,'usedtaxes')
+        reset_database_value(bot,target,'usedtaxes')
         taxtotal = int(inbank * .1)
         if inbank == 1:
             taxtotal = 1
         if taxtotal>0:
             spicebucks(bot, 'SpiceBank', 'plus', taxtotal)
             spicebucks(bot, target, 'minus', taxtotal)
-            set_botdatabase_value(bot,target, 'spicebucks_taxday', datetoday)
+            set_database_value(bot,target, 'spicebucks_taxday', datetoday)
             bot.say("Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank.")
             return taxtotal            
         else:
@@ -297,7 +297,7 @@ def transfer(bot, instigator, target, amount):
 def randomuser(bot,nick):
     randompersons = []
     randomperson=''
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
     for u in bot.users:
         if u in botusersarray and u != bot.nick and u != nick:
             randompersons.append(u)
