@@ -129,7 +129,7 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
             return
 
     ## SubCommand used
-    valid_subcommands = ['enable','disable','list']
+    valid_subcommands = ['enable','disable','list','count']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_subcommands], 1) or 'list'
 
     bot_visible_coms = []
@@ -140,6 +140,10 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
                     bot_visible_coms.append(x)
 
     bot_enabled_coms = get_database_value(bot, channeltarget, 'modules_enabled') or []
+
+    if subcommand == 'count':
+        onscreentext(bot, ['say'],'There are currently ' + str(len(bot_visible_coms)) +' custom modules installed.')
+        return
 
     if subcommand == 'list':
         botmessagearray = []
