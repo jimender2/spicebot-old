@@ -21,7 +21,7 @@ def execute_main(bot, trigger, triggerargsarray):
     whotoblame = get_trigger_arg(bot, triggerargsarray, 1)
     forwhat = get_trigger_arg(bot, triggerargsarray, '2+') or ''
     if not whotoblame:
-        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+        botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
         blametargetarray = []
         for u in bot.users:
             if u in botusersarray and u != instigator and u != bot.nick:

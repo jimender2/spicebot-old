@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return
     rando = randint(1, 666)
     commortarget = get_trigger_arg(bot, triggerargsarray, 1)
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if not commortarget:
         commortarget = 'everyone'
@@ -42,7 +42,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
             return
-        points = get_botdatabase_value(bot, target, 'points') or 0
+        points = get_database_value(bot, target, 'points') or 0
         if not points:
             bot.say(target + ' has no ' + pointsstring + ' history.')
         else:
@@ -60,7 +60,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say(randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
-                adjust_botdatabase_value(bot, u, 'points', rando)
+                adjust_database_value(bot, u, 'points', rando)
 
     elif commortarget == 'take':
         target = get_trigger_arg(bot, triggerargsarray, 2)
@@ -81,13 +81,13 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
-                    adjust_botdatabase_value(bot, u, 'points', -abs(rando))
+                    adjust_database_value(bot, u, 'points', -abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
             randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + str(pointsreasonmsg))
             bot.say(randopoints)
-            adjust_botdatabase_value(bot, target, 'points', -abs(rando))
+            adjust_database_value(bot, target, 'points', -abs(rando))
 
     elif commortarget == 'low':
         target = get_trigger_arg(bot, triggerargsarray, 2)
@@ -109,13 +109,13 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
-                    adjust_botdatabase_value(bot, u, 'points', abs(rando))
+                    adjust_database_value(bot, u, 'points', abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to " + target + str(pointsreasonmsg))
             bot.say(randopoints)
-            adjust_botdatabase_value(bot, target, 'points', abs(rando))
+            adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'high':
         target = get_trigger_arg(bot, triggerargsarray, 2)
@@ -137,13 +137,13 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
-                    adjust_botdatabase_value(bot, u, 'points', abs(rando))
+                    adjust_database_value(bot, u, 'points', abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
             bot.say("I'm not sure who that is.")
         else:
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to " + target + str(pointsreasonmsg))
             bot.say(randopoints)
-            adjust_botdatabase_value(bot, target, 'points', abs(rando))
+            adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'except':
         target = get_trigger_arg(bot, triggerargsarray, 2)
@@ -167,7 +167,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator and u != target:
-                    adjust_botdatabase_value(bot, u, 'points', abs(rando))
+                    adjust_database_value(bot, u, 'points', abs(rando))
 
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")
@@ -181,10 +181,10 @@ def execute_main(bot, trigger, triggerargsarray):
                 pointsreasonmsg = ' for ' + str(pointsreason)
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
         bot.say(randopoints)
-        adjust_botdatabase_value(bot, commortarget, 'points', rando)
+        adjust_database_value(bot, commortarget, 'points', rando)
 
 def addpoints(bot, target, amount):
-    adjust_botdatabase_value(bot, target, 'points', abs(amount))
+    adjust_database_value(bot, target, 'points', abs(amount))
 
 def takepoints(bot, target, amount):
-    adjust_botdatabase_value(bot, target, 'points', -abs(amount))
+    adjust_database_value(bot, target, 'points', -abs(amount))
