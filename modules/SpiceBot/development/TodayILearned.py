@@ -25,11 +25,11 @@ def execute_main(bot, trigger, triggerargsarray):
     databasekey = 'til'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_botdatabase_value(bot, bot.nick, databasekey) or []
+    existingarray = get_database_value(bot, bot.nick, databasekey) or []
     if command in commandarray:
         if command == "add":
             if inputstring not in existingarray:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'add')
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
 		bot.say(message)
             else:
@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 message = "That response was not found in the database."
 		bot.say(message)
             else:
-                adjust_botdatabase_array(bot, bot.nick, inputstring, databasekey, 'del')
+                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
                 message = "Removed from database."
 		bot.say(message)
         elif command == "count":
@@ -83,37 +83,37 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 
-def get_botdatabase_value(bot, nick, databasekey):
+def get_database_value(bot, nick, databasekey):
     databasecolumn = str(databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
-def set_botdatabase_value(bot, nick, databasekey, value):
+def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
 
-def reset_botdatabase_value(bot, nick, databasekey):
+def reset_database_value(bot, nick, databasekey):
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, None)
     
-def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
+def adjust_database_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
    
-def get_botdatabase_array_total(bot, nick, databasekey):
-    array = get_botdatabase_value(bot, nick, databasekey) or []
+def get_database_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
 
-def adjust_botdatabase_array(bot, nick, entries, databasekey, adjustmentdirection):
+def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     if not isinstance(entries, list):
         entries = [entries]
-    adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
+    adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
         adjustarraynew.append(x)
-    reset_botdatabase_value(bot, nick, databasekey)
+    reset_database_value(bot, nick, databasekey)
     adjustarray = []
     if adjustmentdirection == 'add':
         for y in entries:
@@ -127,6 +127,6 @@ def adjust_botdatabase_array(bot, nick, entries, databasekey, adjustmentdirectio
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
-        reset_botdatabase_value(bot, nick, databasekey)
+        reset_database_value(bot, nick, databasekey)
     else:
-        set_botdatabase_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarray)
