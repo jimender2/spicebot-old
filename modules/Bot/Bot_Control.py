@@ -64,9 +64,9 @@ def bot_command_function_on(bot,trigger,botcom,triggerargsarray):
     bot_opted_users = get_database_value(bot, bot.nick, 'users_blocked') or []
     if target not in bot_opted_users:
         if target == botcom.instigator:
-            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + subcommand+".")
+            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
-            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + subcommand+".")
+            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'add')
 
@@ -78,9 +78,9 @@ def bot_command_function_off(bot,trigger,botcom,triggerargsarray):
     bot_opted_users = get_database_value(bot, channeltarget, 'users_blocked') or []
     if target in bot_blocked_users:
         if target == botcom.instigator:
-            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + subcommand+".")
+            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
-            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + subcommand+".")
+            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'del')
 
