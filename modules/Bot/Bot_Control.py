@@ -431,7 +431,7 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
 def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
     for channel in bot.channels:
         onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
-    restart(bot, trigger, service)
+    restart(bot, trigger, botcom.service)
 
 def bot_command_function_permfix(bot,trigger,botcom,triggerargsarray):
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
