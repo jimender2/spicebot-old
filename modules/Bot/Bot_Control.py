@@ -203,7 +203,7 @@ def bot_command_function_msg(bot,trigger,botcom,triggerargsarray):
         osd_notice(bot, botcom.instigator, "You must specify a message.")
         return
     onscreentext(bot, [channeltarget], botmessage)
-
+#test
 def bot_command_function_action(bot,trigger,botcom,triggerargsarray):
 
     if botcom.instigator not in botcom.opadmin:
