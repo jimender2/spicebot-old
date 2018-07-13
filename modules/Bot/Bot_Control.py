@@ -191,6 +191,7 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
 
     # Enable/Disable
     if subcommand == 'enable' or subcommand == 'disable':
+
         if botcom.instigator not in botcom.opadmin:
             osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
             return
@@ -345,6 +346,7 @@ def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
         return
 
     if main_subcommand == 'block':
+
         if botcom.instigator not in botcom.opadmin:
             osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
             return
@@ -442,6 +444,11 @@ def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
 
 
 def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.botadmins:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     for channel in bot.channels:
         onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
     update(bot, trigger)
@@ -449,17 +456,32 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
 
 
 def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.botadmins:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     for channel in bot.channels:
         onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
     restart(bot, trigger, botcom.service)
 
 
 def bot_command_function_permfix(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.botadmins:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
     onscreentext(bot, ['say'], "Permissions should now be fixed")
 
 
 def bot_command_function_pip(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.botadmins:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     pippackage = get_trigger_arg(bot, triggerargsarray, '2+')
     if not pippackage:
         onscreentext(bot, ['say'], "You must specify a pip package.")
@@ -470,6 +492,11 @@ def bot_command_function_pip(bot,trigger,botcom,triggerargsarray):
 
 
 def bot_command_function_debug(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.botadmins:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     debugloglinenumberarray = []
     onscreentext_action(bot, [botcom.channel_current], "Is Copying Log")
     os.system("sudo journalctl -u " + botcom.service + " >> " + log_file_path)
