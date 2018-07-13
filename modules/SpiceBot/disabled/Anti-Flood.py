@@ -16,11 +16,11 @@ from BotShared import *
 def antiflood(bot, trigger):
     instigator = trigger.nick
     if not trigger.is_privmsg and instigator != bot.nick and not bot.nick.endswith(devbot):
-        ## vars
+        # vars
         channel = trigger.sender
         currentmessage = trigger.group(1)
 
-        ## Flooding is 5 lines in a row by the same person or 3 identical lines
+        # Flooding is 5 lines in a row by the same person or 3 identical lines
         floodyell = 0
         antifloodwarning = str(instigator + ", please do not flood the channel.")
         lastnicksubmit = get_database_value(bot, channel, 'automod_antifloodnick') or bot.nick
