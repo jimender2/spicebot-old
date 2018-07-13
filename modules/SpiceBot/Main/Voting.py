@@ -4,22 +4,23 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('vote','rate','poll')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'vote')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     now = time.time()
     commandused = trigger.group(1)
     choice = get_trigger_arg(bot, triggerargsarray,1)
     player=trigger.nick
-    if commandused == 'vote': 
+    if commandused == 'vote':
         if choice=='results':
            getvotes(bot)
         elif choice=='settime' and trigger.admin:
@@ -57,7 +58,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say("Vote yes or no")
             else:
                 bot.notice("You have already voted",player)
-        
+
     elif commandused == 'rate':
         raters = get_database_value(bot, bot.nick, 'raters') or []
         if not choice:
@@ -82,34 +83,34 @@ def execute_main(bot, trigger, triggerargsarray):
                     adjust_database_array(bot, bot.nick, player, 'raters', 'add')
                     adjust_database_array(bot, bot.nick, choice, 'ratings', 'add')
                     set_database_value(bot,bot.nick,'rating','True')
-                    set_database_value(bot,bot.nick,'ratechannel',trigger.sender)   
+                    set_database_value(bot,bot.nick,'ratechannel',trigger.sender)
                     set_database_value(bot,bot.nick,'ratestart',now)
                 else:
                     bot.notice(str(choice) + " is not a number between -10 and 10",player)
             else:
                 bot.notice("You already submitted a rating this round",player)
-       
-             
-            
+
+
+
     elif commandused == 'poll':
         bot.say("WIP")
-                
+
 def clearvoting(bot):
     reset_database_value(bot,bot.nick,'novotes')
     reset_database_value(bot,bot.nick,'yesvotes')
     reset_database_value(bot,bot.nick,'voters')
     reset_database_value(bot,bot.nick,'voting')
     reset_database_value(bot,bot.nick,'votechannel')
-    
-def clearrating(bot):    
+
+def clearrating(bot):
     reset_database_value(bot,bot.nick,'raters')
     reset_database_value(bot,bot.nick,'ratings')
     reset_database_value(bot,bot.nick,'ratechannel')
-   
-    
-    
+
+
+
 @sopel.module.interval(10)
-def countdown(bot): 
+def countdown(bot):
     isvote = get_database_value(bot,bot.nick,'voting') or ''
     israte = get_database_value(bot,bot.nick,'rating') or ''
     votetimeout =get_database_value(bot,bot.nick,'votetimer')
@@ -120,39 +121,37 @@ def countdown(bot):
     if israte =='True':
         if get_timesince(bot,bot.nick,'ratestart')>ratetimeout:
             getrating(bot)
-        
+
 def getvotes(bot):
     novotes = get_database_value(bot, bot.nick, 'novotes') or 0
     yesvotes = get_database_value(bot, bot.nick, 'yesvotes') or 0
     channel = get_database_value(bot,bot.nick,'votechannel') or ''
     if not channel == '':
-        dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"   
+        dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
         onscreentext(bot, channel, dispmsg)
         clearvoting(bot)
-    
+
 def getrating(bot):
     sum=0
     ratings = get_database_value(bot, bot.nick, 'ratings')
     channel = get_database_value(bot,bot.nick,'ratechannel') or ''
     if not channel == '':
         if ratings:
-            for n in ratings:            
+            for n in ratings:
                 n=int(n)
                 sum = sum + n
             average = sum / len(ratings)
-            dispmsg = 'The average is ' + str(average)        
+            dispmsg = 'The average is ' + str(average)
             onscreentext(bot, channel, dispmsg)
             clearrating(bot)
         else:
             dispmsg = 'No ratings found'
-            clearrating(bot)      
+            clearrating(bot)
             onscreentext(bot, channel, dispmsg)
-            
+
 def isfloat(value):
     try:
         float(value)
         return True
     except ValueError:
         return False
-    
-

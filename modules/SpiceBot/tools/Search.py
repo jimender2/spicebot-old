@@ -11,8 +11,10 @@ import re
 import urllib2
 import sopel.web as web
 import json
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
+from BotShared import *
 from sopel.logger import get_logger
 
 from SpicebotShared import *
@@ -24,13 +26,13 @@ def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     if len(triggerargsarray)>=1:
         mysite = get_trigger_arg(bot, triggerargsarray, 1).lower()
         searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
         querystring = get_trigger_arg(bot, triggerargsarray, '2+')
-        if (mysite == 'video' or mysite == 'youtube'):           
+        if (mysite == 'video' or mysite == 'youtube'):
             data=querystring.replace(' ', '+')
             site = '+site%3Ayoutube.com'
             url = 'https://www.youtube.com/'
@@ -47,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('Valid website not found')
 
         elif mysite == 'meme':
-            data=querystring.replace(' ', '+') 
+            data=querystring.replace(' ', '+')
             site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
@@ -62,7 +64,7 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'walmart':
-            data=querystring.replace(' ', '+') 
+            data=querystring.replace(' ', '+')
             site = '+site%3Apeopleofwalmart.com'
             url = 'http://www.peopleofwalmart.com'
             url2 = 'https://www.peopleofwalmart.com'
@@ -75,28 +77,28 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say(query)
                 else:
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-                    
+
         elif mysite == 'urban':
             query=urbansearch(bot,querystring)
             bot.say(query)
-        
+
         elif mysite == 'imdb' or mysite =='movie':
             query=moviesearch(bot,querystring)
             bot.say(query)
-        
+
         else:
             data=searchterm.replace(' ', '+')
             query=searchfor(bot,data)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
-                bot.say(query)   
+                bot.say(query)
 
 def searchfor(bot,data):
     lookfor = data.replace(':', '%3A')
     var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
     query=str(var.url)
-    return query            
+    return query
 
 def urbansearch(bot,searchterm):
     try:

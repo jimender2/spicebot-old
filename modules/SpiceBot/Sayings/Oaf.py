@@ -5,9 +5,9 @@ import sopel.module
 import os
 import sys
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author dysonparkes
 oldthings = ["BBS Servers", "Rev drives","Tape storage"]

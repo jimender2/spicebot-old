@@ -7,16 +7,17 @@ import json
 import sys
 import os
 import html2text
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('chucknorris','chuck')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'chucknorris')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, '1+') or ''
     joke = getJoke()
@@ -26,7 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
             joke = joke.replace('chuck norris', target)
             joke = joke.replace('Norris', target)
             joke = joke.replace('Chuck', target)
-        bot.say(joke)        
+        bot.say(joke)
     else:
         bot.say('Chuck will find you.')
 

@@ -18,9 +18,10 @@ from sopel.formatting import bold
 
 import os
 import sys
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 def setup(bot):
     bot.memory['find_lines'] = SopelMemory()

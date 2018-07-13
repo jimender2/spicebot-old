@@ -5,9 +5,9 @@ import sopel.module
 import sys
 import os
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(__file__))
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 #author jimender2
 
@@ -33,7 +33,7 @@ def execute_main(bot, trigger, triggerargsarray):
             message = "Shame. Shame on " + instigator + " for even thinking of that."
         else:
             message = "Shame. Shame on " + instigator + " for even thinking that " + reason
-        
+
 	# Cannot kill self
     elif target == instigator:
 		message = "Even " + instigator + " thinks they are bad. Shame, Shame on you."
@@ -44,5 +44,5 @@ def execute_main(bot, trigger, triggerargsarray):
 			message = instigator + " thinks " + target + " has been a bad boy."
 		else:
 			message = instigator + " thinks " + target + " has been a bad boy because " + reason + "."
-    
+
     bot.say(message)

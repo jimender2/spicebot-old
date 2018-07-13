@@ -6,16 +6,17 @@ import requests
 import json
 import sys
 import os
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 @sopel.module.commands('urmom')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     joke = getJoke()
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -26,8 +27,8 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(joke)
         else:
             if not target.lower() not in bot.privileges[channel.lower()]:
-                if target == bot.nick:        
-                    bot.say('I have no mother' )            
+                if target == bot.nick:
+                    bot.say('I have no mother' )
                 else:
                     bot.say('Hey, ' + target + '! ' + joke)
             else:

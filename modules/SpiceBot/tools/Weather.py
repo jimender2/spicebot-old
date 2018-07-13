@@ -9,9 +9,10 @@ from sopel.module import commands, example, NOLIMIT
 import sys
 import os
 
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 import requests
 import xmltodict
@@ -64,7 +65,7 @@ def get_chill(parsed):
         f = int(wind_data['@chill'])
     except (KeyError, ValueError):
         return 'unknown'
-    
+
     chill = round(((f-32)*5/9),2)
     return "Feels like: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
 
@@ -128,36 +129,36 @@ def weather(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
-    
+
 def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
-    success = 1   
+    success = 1
     location = get_trigger_arg(bot, triggerargsarray, 1) or 'nolocation'
-     
+
 ##set trigger.nick location
     if location == 'setlocation':
         success = 0
-        mylocation = get_trigger_arg(bot, triggerargsarray, '2+') or 'nolocation'       
+        mylocation = get_trigger_arg(bot, triggerargsarray, '2+') or 'nolocation'
         if mylocation == 'nolocation':
-            bot.say("Enter a location to wish to set to")            
+            bot.say("Enter a location to wish to set to")
         else:
             update_location(bot, trigger,  mylocation)
-                        
+
 ###display target location
-    elif location == 'getlocation' or location =='checklocation': 
+    elif location == 'getlocation' or location =='checklocation':
         success = 0
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
         if target == 'notarget':
-            target = trigger.nick        
+            target = trigger.nick
         if target not in  botusersarray:
-            bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")                
-        else:           
+            bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
+        else:
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                bot.say(target +  " must first set a location using .weather setloction <place>")                
-            else:                
-                display_location(bot, target, woeid)                               
-                
+                bot.say(target +  " must first set a location using .weather setloction <place>")
+            else:
+                display_location(bot, target, woeid)
+
 ###Output weather
     if success==1:
         woeid = ''
@@ -172,7 +173,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 location = get_trigger_arg(bot, triggerargsarray, 0)
                 woeid = bot.db.get_nick_value(location, 'woeid')
-                
+
             if woeid is None:
                 first_result = woeid_search(location)
                 if first_result is not None:
@@ -193,7 +194,7 @@ def execute_main(bot, trigger, triggerargsarray):
         wind = get_wind(results)
         windchill = get_chill(results)
         bot.say(u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
-                              
+
 #An example of how to use a different command in the same module
 #@commands('setlocation', 'setwoeid')
 #@example('.setlocation Columbus, OH')
@@ -201,15 +202,15 @@ def execute_main(bot, trigger, triggerargsarray):
  #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
   #  if not enablestatus:
    #     update_location(bot, trigger, triggerargsarray[0])
-    
-def display_location(bot, target, woeid):     
+
+def display_location(bot, target, woeid):
     query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
     body = requests.get('http://query.yahooapis.com/v1/public/yql?' + query)
     parsed = xmltodict.parse(body.text).get('query')
     results = parsed.get('results')
     if results is None:
-        return bot.reply("Try a more specific location.")  
-    
+        return bot.reply("Try a more specific location.")
+
     location = results['channel']['yweather:location']
     city = str(location['@city'])
     state = str(location['@region'])

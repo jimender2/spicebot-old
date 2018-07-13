@@ -21,9 +21,10 @@ from sopel.tools.time import get_timezone, format_time
 from sopel.module import commands, nickname_commands, rule, priority, example
 import sopel.module
 
-shareddir = os.path.dirname(os.path.dirname(__file__))
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
 
 maximum = 4
 

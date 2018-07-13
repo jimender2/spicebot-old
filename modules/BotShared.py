@@ -60,26 +60,26 @@ def spicebot_prerun(bot,trigger,commandused):
     botcom.now = time.time()
 
     ## User was Blocked by a bot.admin or an OP
-    blockedusersarray = get_botdatabase_value(bot, botcom.channel_current, 'users_blocked') or []
+    blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
     if botcom.instigator in blockedusersarray:
         osd_notice(bot, botcom.instigator, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
         return enablestatus, triggerargsarray
 
     ## devmode bypass
-    devenabledchannels = get_botdatabase_value(bot, bot.nick, 'channels_dev') or []
+    devenabledchannels = get_database_value(bot, bot.nick, 'channels_dev') or []
     if botcom.channel_current in devenabledchannels:
         enablestatus = 0
         return enablestatus, triggerargsarray
 
     ## Channel activated status
     if botcom.channel_current.startswith("#"):
-        channelmodulesarray = get_botdatabase_value(bot, botcom.channel_current, 'modules_enabled') or []
+        channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
             osd_notice(bot, botcom.instigator, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
             return enablestatus, triggerargsarray
 
     ## Bot Enabled Status (botcom.now in an array)
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if botcom.instigator not in botcom.users_all:
         osd_notice(bot, botcom.instigator, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
@@ -190,10 +190,10 @@ def special_users(bot):
 def increment_counter(bot, trigger, commandused):
     instigator = trigger.nick # Who to increment for
     channel_current = trigger.sender # Channel to increment for
-    adjust_botdatabase_value(bot, channel_current, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
-    adjust_botdatabase_value(bot, channel_current, "spicebottotalusage", 1) ## Channel usage of bot overall
-    adjust_botdatabase_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
-    adjust_botdatabase_value(bot, instigator, "spicebottotalusage", 1) ## User usage of bot overall
+    adjust_database_value(bot, channel_current, str(commandused + "moduleusage"), 1) ## Channel usage of specific module
+    adjust_database_value(bot, channel_current, "spicebottotalusage", 1) ## Channel usage of bot overall
+    adjust_database_value(bot, instigator, str(commandused + "moduleusage"), 1) ## User usage of specific module
+    adjust_database_value(bot, instigator, "spicebottotalusage", 1) ## User usage of bot overall
 
 """
 ####################################
@@ -212,7 +212,7 @@ def targetcheck(bot, target,botcom):
     botusersarray=[]
     botuseron=[]
     for channel in bot.channels:
-        botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers')
+        botusersarray = get_database_value(bot, bot.nick, 'botusers')
     for u in bot.users:
         if u in botusersarray:
             botuseron.append(u)
@@ -233,60 +233,6 @@ def targetcheck(bot, target,botcom):
             validtarget = '1'
 
     return validtarget
-
-"""
-##############
-## Database ## ## TODO
-##############
-"""
-
-def get_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return database_value
-
-def set_botdatabase_value(bot, nick, databasekey, value):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
-
-def reset_botdatabase_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, None)
-
-def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-
-def get_botdatabase_array_total(bot, nick, databasekey):
-    array = get_botdatabase_value(bot, nick, databasekey) or []
-    entriestotal = len(array)
-    return entriestotal
-
-def adjust_botdatabase_array(bot, nick, entries, databasekey, adjustmentdirection):
-    if not isinstance(entries, list):
-        entries = [entries]
-    adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
-    adjustarraynew = []
-    for x in adjustarray:
-        adjustarraynew.append(x)
-    reset_botdatabase_value(bot, nick, databasekey)
-    adjustarray = []
-    if adjustmentdirection == 'add':
-        for y in entries:
-            if y not in adjustarraynew:
-                adjustarraynew.append(y)
-    elif adjustmentdirection == 'del':
-        for y in entries:
-            if y in adjustarraynew:
-                adjustarraynew.remove(y)
-    for x in adjustarraynew:
-        if x not in adjustarray:
-            adjustarray.append(x)
-    if adjustarray == []:
-        reset_botdatabase_value(bot, nick, databasekey)
-    else:
-        set_botdatabase_value(bot, nick, databasekey, adjustarray)
 
 """
 ############################
@@ -328,7 +274,7 @@ def enoughdaysbetween(earlydate, laterdate, numberofdays):
 
 def get_timesince(bot, nick, databasekey):
     botcom.now = time.time()
-    last = get_botdatabase_value(bot, nick, databasekey) or 0
+    last = get_database_value(bot, nick, databasekey) or 0
     return abs(botcom.now - int(last))
 
 def get_timeuntil(now, futuretime):
