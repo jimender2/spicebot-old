@@ -535,7 +535,10 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
         # Chance of maindueler finding loot
         randominventoryfind = 0
         if playerbio_target.actual != bot.nick and playerbio_maindueler.actual != playerbio_target.actual and playerbio_maindueler.actual != 'duelsmonster':
-            randomfindchance = randint(playerbio_maindueler.luck * 10, 102)
+            if playerbio_maindueler.luck * 10 > 100:
+                randomfindchance = randint(90, 100)
+            else:
+                randomfindchance = randint(playerbio_maindueler.luck * 10, 100)
             if randomfindchance >= 90:
                 randominventoryfind = 1
             if randominventoryfind:
@@ -603,7 +606,10 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Deflect, Paladins more often
         if damage > 0 and playerbio_winner.actual != playerbio_loser.actual and not playerbio_loser.curse:
-            deflectodds = randint(playerbio_winner.perception * 10, 100)
+            if playerbio_winner.perception * 10 > 100:
+                deflectodds = 100
+            else:
+                deflectodds = randint(playerbio_winner.perception * 10, 100)
             if deflectodds >= 95:
                 combattextarraycomplete.append(playerbio_loser.nametext + " deflects the attack")
                 # rebase the player bios
@@ -629,7 +635,10 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Druid animal shape
         if playerbio_loser.Class == 'druid' and playerbio_winner.actual != playerbio_loser.actual and not playerbio_loser.curse:
-            transformodds = randint(playerbio_loser.agility * 10, 100)
+            if playerbio_loser.agility * 10 > 100:
+                transformodds = 100
+            else:
+                transformodds = randint(playerbio_loser.agility * 10, 100)
             if transformodds >= 80:
                 currentanimals = duels_druid_current_array(bot,playerbio_loser.actual)
                 currentanimal = get_trigger_arg(bot, currentanimals, 'random')
@@ -649,7 +658,10 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
         # Berserker Rage
         if playerbio_winner.race == 'barbarian' and playerbio_winner.actual != playerbio_loser.actual:
             anticharisma = 10 - playerbio_winner.charisma
-            rageodds = randint(anticharisma * 10, 100)
+            if anticharisma <= 0:
+                rageodds = 100
+            else:
+                rageodds = randint(anticharisma * 10, 100)
             if rageodds >= 80:
                 extradamage = playerbio_winner.strength * 10
                 extradamage = extradamage * duels.tierscaling
@@ -1813,7 +1825,10 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     # instigatormagic
     damagedealtmax = array_compare(bot, magicusage, duels_magic_types, duels_magic_damage)
     damagedealtmax = damagedealtmax * duels.tierscaling
-    damage = randint(instigatormagic * 10, abs(damagedealtmax))
+    if instigatormagic * 10 > 100:
+        damage = abs(damagedealtmax)
+    else:
+        damage = randint(instigatormagic * 10, abs(damagedealtmax))
     damagedealt = int(damage) * int(quantity)
 
     durationofeffect = array_compare(bot, magicusage, duels_magic_types, duels_magic_duration)
@@ -5922,7 +5937,10 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
             durationtime = randint(900, 1800)
         else:
             antiagility = 10 - inflictee.agility
-            durationtime = randint(antiagility * 10, 1800)
+            if antiagility <= 0:
+                durationtime = 0
+            else:
+                durationtime = randint(antiagility * 10, 1800)
         set_database_value(bot, inflictee.actual, effect+"_effect_duration", durationtime)
         if effectamount > 0:
             effectamounttext = str("+"+str(effectamount))
@@ -6028,7 +6046,10 @@ def duels_effect_inflict(bot, duels, inflicter, inflictee, bodypartselection, ef
 
             # Agility roll away
             if effectamount > 0 and situation != 'loot' and inflictee.actual != 'duelsmonster' and inflicter.actual != inflictee.actual:
-                dodge = randint(inflictee.agility * 10, 100)
+                if inflictee.agility * 10 > 100:
+                    dodge = 100
+                else:
+                    dodge = randint(inflictee.agility * 10, 100)
                 if dodge > 90:
                     effectamount = 0
                     dispmsgarray.append(inflictee.nametext + " manages to dodge out of the way. ")
