@@ -9,9 +9,9 @@ from sopel import module, tools
 
 # from .Database_adjust import *
 # from .Array_manipulation import *
-from .Display_Text import *
+# from .Display_Text import *
 
-# from ...BotShared import *
+from ...BotShared import *
 
 
 # basic test
