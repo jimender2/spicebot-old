@@ -24,4 +24,4 @@ def execute_main(bot, trigger, triggerargsarray):
     if hashstring == "ym":
         hashstring = "yo momma"
     response = "hashbrown " + str(hashstring)
-    onscreentext(bot,[say],response)
+    onscreentext(bot,['say'],response)

@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('happen')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'happen')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "Stop trying to make stuff happen. It's not going to happen"
     else:
         message = "Stop trying to make " + str(happen) + " happen. It's not going to happen"
-    onscreentext(bot,[say],message)
+    onscreentext(bot,['say'],message)

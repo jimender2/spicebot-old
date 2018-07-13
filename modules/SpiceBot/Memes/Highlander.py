@@ -13,11 +13,11 @@ from BotShared import *
 
 @sopel.module.commands('highlander')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'highlander')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
 
 def execute_main(bot, trigger, triggerargsarray):
     message = "THERE CAN BE ONLY ONE!!"
-    onscreentext(bot,[say],message)
+    onscreentext(bot,['say'],message)

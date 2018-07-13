@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    onscreentext(bot,[say]," ")
+    onscreentext(bot,['say']," ")

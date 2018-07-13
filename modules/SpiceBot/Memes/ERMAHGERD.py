@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('ermahgerd')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ERMAHGERD')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ermahgerd')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "ERMAHGERD," + str(spertitert)
     else:
         message = "Whert der yer wernt ter trernslert?"
-    onscreentext(bot,[say],message)
+    onscreentext(bot,['say'],message)
 
 
 def trernslert(werds):

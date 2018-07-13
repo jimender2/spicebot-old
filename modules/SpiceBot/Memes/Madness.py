@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('madness')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'madness')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "Madness? THIS—IS—SPARTA!"
     else:
         message = "Madness? THIS—IS—"+myline.upper()+"!"
-    onscreentext(bot,[say],message)
+    onscreentext(bot,['say'],message)

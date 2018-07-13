@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('homer')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'homer')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray):
         message = "D'ooooh!"
     else:
         message = str("mmmmmmm " + goodorbad + "!")
-    onscreentext(bot,[say],message)
+    onscreentext(bot,['say'],message)
