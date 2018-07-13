@@ -9,7 +9,6 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-doctorlines = ["I'm a doctor, Jim, I'm busy!","I don't need a doctor, damn it, I am a doctor!"]
 
 @sopel.module.commands('mccoy')
 def mainfunction(bot, trigger):
@@ -17,13 +16,16 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
+    doctorlines = ["I'm a doctor, Jim, I'm busy!","I don't need a doctor, damn it, I am a doctor!"]
     string = get_trigger_arg(bot, triggerargsarray, '1+')
     if string:
         if string == 'doctor':
             reply = get_trigger_arg(bot,doctorlines,'random')
-            bot.say(str(reply))
+            message = str(reply)
         else:
-            bot.say("Dammit Jim, I'm a doctor, not a " + str(string) + "!!!")
+            message = "Dammit Jim, I'm a doctor, not a " + str(string) + "!!!"
     else:
-        bot.say("He's dead, Jim.")
+        message = "He's dead, Jim."
+    onscreentext(bot,[say],message)

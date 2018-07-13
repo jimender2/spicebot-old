@@ -21,5 +21,5 @@ def execute_main(bot, trigger, triggerargsarray):
     usernickname = trigger.nick.lower()
     message = "Im sorry, " + trigger.nick + ", but I cannot help you."
     if "dave" in usernickname:
-        message = ("Is that really you, Dave?")
+        message = "Is that really you, Dave?"
     onscreentext(bot,['say'],message)
