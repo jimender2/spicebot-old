@@ -9,15 +9,18 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('pf')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'pf')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     pfremembers = get_trigger_arg(bot, triggerargsarray, 0)
     if pfremembers:
-        bot.say("Pepperidge Farms remembers " + str(pfremembers))
+        message = "Pepperidge Farms remembers " + str(pfremembers)
     else:
-        bot.say("You're so old Pepperidge Farms doesn't even remember that.")
+        message = "You're so old Pepperidge Farms doesn't even remember that."
+    onscreentext(bot,['say'],message)

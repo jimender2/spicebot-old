@@ -9,19 +9,22 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('oprah')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'oprah')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     item = get_trigger_arg(bot, triggerargsarray, 0)
     if not item:
-        bot.say("What is Oprah going to give to everyone?")
+        item = "car"
     else:
         if item.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
             item = str('an ' + item)
         else:
             item = str('a ' + item)
-        bot.say("You get " + item + "! And You get " + item + "! Everyone gets "+ item + "!")
+        message = "You get " + item + "! And You get " + item + "! Everyone gets " + item + "!"
+        onscreentext(bot,['say'],message)

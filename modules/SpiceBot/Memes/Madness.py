@@ -22,5 +22,5 @@ def execute_main(bot, trigger, triggerargsarray):
     if not myline:
         message = "Madness? THIS—IS—SPARTA!"
     else:
-        message = "Madness? THIS—IS—"+myline.upper()+"!"
+        message = "Madness? THIS—IS—" + myline.upper() + "!"
     onscreentext(bot,['say'],message)

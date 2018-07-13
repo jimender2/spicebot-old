@@ -9,17 +9,20 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('matrix')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'matrix')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     pill = get_trigger_arg(bot, triggerargsarray, 1)
     if not pill:
-        bot.say('You have two choices. redpill or bluepill')
+        message = 'You have two choices. redpill or bluepill'
     elif pill == 'redpill':
-        bot.say('You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.')
+        message = 'You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.'
     elif pill == 'bluepill':
-        bot.say('You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to believe.')
+        message = 'You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to believe.'
+    onscreentext(bot,['say'],message)

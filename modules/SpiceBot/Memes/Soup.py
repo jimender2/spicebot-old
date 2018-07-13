@@ -9,12 +9,15 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('soup')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'soup')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
     item = get_trigger_arg(bot, triggerargsarray, 0).upper() or "SOUP"
-    bot.say("NO " + str(item) + " FOR YOU!!")
+    message = "NO " + str(item) + " FOR YOU!!"
+    onscreentext(bot,['say'],message)
