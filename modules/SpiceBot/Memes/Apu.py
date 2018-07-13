@@ -21,10 +21,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     decide = random.randint(1,10)
     if decide == 1:
-        bot.say("Who needs the Kwik-E-Mart? I do...")
+        message = "Who needs the Kwik-E-Mart? I do..."
+        onscreentext(bot,['say'],message)
         time.sleep(2)
-        message = "starts crying"
-        onscreentext_action(bot,['say'],message)
+        actions = "starts crying"
+        onscreentext_action(bot,['say'],actions)
     else:
         message = "Thank you, come again."
         onscreentext(bot,['say'],message)
