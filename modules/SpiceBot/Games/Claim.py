@@ -35,18 +35,21 @@ maxtime = 7
 firstclaim = 10
 renewclaim = 5
 stolenclaim = 20
-masterclaim = 10 #take, not give
+masterclaim = 10  # Take, not give
 
 # Bladder capacity
 bladdersize = 10
 claimcost = 2
 SeanCost = 1
 
+
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
+    """Function to check if module is enabled."""
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
@@ -57,7 +60,6 @@ def execute_main(bot, trigger, triggerargsarray):
     admintarget = get_trigger_arg(bot, triggerargsarray, 2)
     # Names of channel
     inchannel = trigger.sender
-    channel = trigger.sender
     # Dates for usage
     todaydate = datetime.date.today()
     storedate = str(todaydate)
@@ -87,7 +89,7 @@ def execute_main(bot, trigger, triggerargsarray):
             elif admintarget.lower() in [u.lower() for u in creatornicks]:
                 bot.say("No mere mortal can claim the almighty %s!" % admintarget)
             else:
-                bot.say("Nobody appears to have claimed %s yet, %s." %(admintarget, instigator))
+                bot.say("Nobody appears to have claimed %s yet, %s." % (admintarget, instigator))
         else:
             if admintarget == instigator:
                 bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
@@ -257,12 +259,10 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
 
-##########################
-## 30 minute automation ##
-##########################
-@sopel.module.interval(1800)
+
+@sopel.module.interval(1800)  # 30 minute automation
 def halfhourtimer(bot):
-    now = time.time()
+    """Function for bladder refill on half-hour timer."""
     for u in bot.users:
         bladdercontents = bot.db.get_nick_value(u,'bladdercapacity') or 'unused'
         if bladdercontents == 'unused':

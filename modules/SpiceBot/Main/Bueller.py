@@ -20,8 +20,8 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 def execute_main(bot, trigger, triggerargsarray):
-	loop = 1
-	while (loop <= 5):
-		bot.say("Bueller")
-		loop = loop + 1
-		time.sleep(5)
+    loop = 1
+    while (loop <= 5):
+        bot.say("Bueller")
+        loop = loop + 1
+        time.sleep(5)
