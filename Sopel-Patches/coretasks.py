@@ -49,7 +49,7 @@ def auth_after_register(bot):
             'AUTHSERV auth',
             account + ' ' + password
         ))
-    
+
     elif bot.config.core.auth_method == 'Q':
         account = bot.config.core.auth_username
         password = bot.config.core.auth_password
@@ -164,7 +164,7 @@ def handle_names(bot, trigger):
     """Handle NAMES response, happens when joining to channels."""
     names = trigger.split()
 
-    #TODO specific to one channel type. See issue 281.
+    # TODO specific to one channel type. See issue 281.
     channels = re.search('(#\S*)', trigger.raw)
     if not channels:
         return
@@ -260,7 +260,7 @@ def track_nicks(bot, trigger):
                    "(Usually, it means you tried to give me a nick "
                    "that's protected by NickServ.)") % bot.nick
         debug_msg = ("Nick changed by server. "
-            "This can cause unexpected behavior. Please restart the bot.")
+                     "This can cause unexpected behavior. Please restart the bot.")
         LOGGER.critical(debug_msg)
         bot.msg(bot.config.core.owner, privmsg)
         return

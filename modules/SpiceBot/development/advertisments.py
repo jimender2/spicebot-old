@@ -2,6 +2,13 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+import requests
+from lxml import html
+import datetime
+from time import strptime
+from dateutil import parser
+import calendar
+import arrow
 import sys
 import os
 moduledir = os.path.dirname(__file__)
@@ -11,15 +18,8 @@ from BotShared import *
 
 #author jimender2
 
-commandarray = ["add","remove","count","last"]
-
-@sopel.module.commands('murder','moida')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'murder')
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
-
-def execute_main(bot, trigger, triggerargsarray):
+@sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
+def execute_main(bot, trigger):
     instigator = trigger.nick
     inchannel = trigger.sender
 
@@ -86,3 +86,24 @@ def get_database_value(bot, nick, databasekey):
 	databasecolumn = str('duels_' + databasekey)
 	database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
 	return database_value
+
+
+@sopel.module.interval(60)
+def webbyauto(bot):
+    page = requests.get(url,headers = None)
+    if page.status_code == 200:
+        now = datetime.datetime.utcnow()
+        webbytime = getwebbytime()
+        timeuntil = (webbytime - now).total_seconds()
+        if int(timeuntil) < 900 and int(timeuntil) > 840:
+            dispmsg = []
+            dispmsg.append("[Spiceworks Webinar Reminder]")
+            dispmsg.append("{"+getwebbytimeuntil()+"}")
+            dispmsg.append(getwebbytitle())
+            dispmsg.append(getwebbylink())
+            bonus = getwebbybonus()
+            if bonus and bonus != '':
+                dispmsg.append('BONUS: ' + getwebbybonus())
+            for channel in bot.channels:
+                onscreentext(bot, channel, dispmsg)
+
