@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('yourcommandhere')
+@sopel.module.commands('noah')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say("do the thing")
+    onscreentext(bot, ['say'], "Need an Ark? I know a guy")
