@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             item = str('a ' + item)
         message = "You get " + item + "! And You get " + item + "! Everyone gets " + item + "!"
-        onscreentext(bot,['say'],message)
+    onscreentext(bot,['say'],message)

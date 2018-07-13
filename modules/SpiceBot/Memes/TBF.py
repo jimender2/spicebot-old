@@ -22,5 +22,5 @@ def execute_main(bot, trigger, triggerargsarray):
     if not myline:
         message = "To be faaaaaaiiiihhhrrrr..."
     else:
-        messsage = "To be faaaaaaiiiihhhrrrr; " + myline
+        message = "To be faaaaaaiiiihhhrrrr; " + myline
     onscreentext(bot,['say'],message)
