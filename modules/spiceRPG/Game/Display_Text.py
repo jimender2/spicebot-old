@@ -1,0 +1,54 @@
+"""
+On Screen Text
+"""
+
+
+def osd_notice(bot, target, textarraycomplete):
+    target = duels_nick_actual(bot,target)
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    passthrough = []
+    passthrough.append(target + ", ")
+    for x in textarraycomplete:
+        passthrough.append(x)
+    onscreentext(bot, [target], passthrough)
+
+
+def onscreentext(bot, texttargetarray, textarraycomplete):
+    if not isinstance(textarraycomplete, list):
+        texttoadd = str(textarraycomplete)
+        textarraycomplete = []
+        textarraycomplete.append(texttoadd)
+    if not isinstance(texttargetarray, list):
+        target = texttargetarray
+        texttargetarray = []
+        texttargetarray.append(target)
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        elif len(textstring) > duels_osd_limit:
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+                currentstring = ''
+            combinedtextarray.append(textstring)
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= duels_osd_limit:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+    for combinedline in combinedtextarray:
+        for user in texttargetarray:
+            if user == 'say':
+                bot.say(combinedline)
+            elif user.startswith("#"):
+                bot.msg(user, combinedline)
+            else:
+                bot.notice(combinedline, user)

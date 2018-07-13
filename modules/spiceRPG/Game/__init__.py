@@ -7,9 +7,16 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 import sopel
 from sopel import module, tools
 
+# from .Database_adjust import *
+# from .Array_manipulation import *
+from .Display_Text import *
+
+# from ...BotShared import *
+
 
 # basic test
 @sopel.module.commands('rpgtest')
 @sopel.module.thread(True)
 def rpg_test(bot, trigger):
-    bot.say("I'm alive")
+    onscreentext(bot, trigger.nick, "I'm alive")
+    # bot.say("I'm alive")
