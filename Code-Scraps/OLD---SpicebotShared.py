@@ -31,83 +31,83 @@ LASTTIMEOUTHOUR = 1800
 
 ## This runs for every custom module and decides if the module runs or not
 def spicebot_prerun(bot,trigger):
-    
+
     ## Custom args
     triggerargsarray = create_args_array(trigger.group(2))
-    
+
     ## time
     now = time.time()
-    
+
     ## used to circumvent
     commandused = trigger.group(1)
     allowedcommandsarray = ['duel','challenge']
-    
+
     ## Get Name Of Channel
     botchannel = trigger.sender
-    
+
     ## Nick of user operating command
     instigator = trigger.nick
-    
+
     ## User's Bot Status
-    instigatorbotstatus = get_botdatabase_value(bot, instigator, 'disenable')
-    
+    instigatorbotstatus = get_database_value(bot, instigator, 'disenable')
+
     ## Enable Status default is 1 = don't run
     enablestatus = 1
-    
+
     ## Get User's current total uses
-    usertotal = get_botdatabase_value(bot, instigator, 'usertotal')
-    
+    usertotal = get_database_value(bot, instigator, 'usertotal')
+
     ## When Did the user Join The room
     jointime = get_timesince(bot, instigator, 'jointime')
-    
+
     ## When Did the User Last Use the bot
     lasttime = get_timesince(bot, instigator, 'lastusagetime')
-    
+
     ## Has The user already been warned?
-    warned = get_botdatabase_value(bot, instigator, 'hourwarned')
-    
+    warned = get_database_value(bot, instigator, 'hourwarned')
+
     ## Check user has spicebotenabled
     if not instigatorbotstatus and not warned:
         message = str(instigator + ", you have to run .spicebot on to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
     elif not instigatorbotstatus and warned:
         message = str(instigator + ", it looks like your access to spicebot has been disabled for a while. Check out ##SpiceBotTest.")
-    
+
     ## Make sure the user hasn't overdone the bot in the past hour
     elif instigatorbotstatus and usertotal > TOOMANYTIMES and botchannel.startswith("#") and not bot.nick.endswith('dev'):
         message = str(instigator + ", you must have used Spicebot more than " + str(TOOMANYTIMES) + " times this past hour.")
-    
+
     ## Make sure the user hasn't just entered the room
     elif instigatorbotstatus and jointime <= JOINTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev'):
         jointimemath = int(JOINTIMEOUT - jointime)
         message = str(instigator + ", you need to wait " + str(jointimemath) + " seconds to use Spicebot.")
-    
+
     ## Make users wait between uses
     elif instigatorbotstatus and lasttime <= LASTTIMEOUT and botchannel.startswith("#") and not bot.nick.endswith('dev') and commandused not in allowedcommandsarray:
         lasttimemath = int(LASTTIMEOUT - lasttime)
         message = str(instigator + ", you need to wait " + str(lasttimemath) + " seconds to use Spicebot.")
-    
+
     ## if user passes ALL above checks, we'll run the module
     else:
         enablestatus = 0
         message = ''
-    
+
         ## Update user total
         if botchannel.startswith("#") and not trigger.admin:
-            adjust_botdatabase_value(bot, instigator, 'usertotal', '1')
-    
+            adjust_database_value(bot, instigator, 'usertotal', '1')
+
     ## Update user's last use timestamp
     if botchannel.startswith("#") and not bot.nick.endswith('dev'):
-        set_botdatabase_value(bot, instigator, 'lastusagetime', now)
-    
+        set_database_value(bot, instigator, 'lastusagetime', now)
+
     ## Add usage counter for counts
-    adjust_botdatabase_value(bot, botchannel, str(commandused + "usage"), 1) ## Channel usage of specific module
-    adjust_botdatabase_value(bot, botchannel, "spicebottotalusage", 1) ## Channel usage of bot overall
-    adjust_botdatabase_value(bot, trigger.nick, str(commandused + "usage"), 1) ## User usage of specific module
-    adjust_botdatabase_value(bot, trigger.nick, "spicebottotalusage", 1) ## User usage of bot overall
-    
+    adjust_database_value(bot, botchannel, str(commandused + "usage"), 1) ## Channel usage of specific module
+    adjust_database_value(bot, botchannel, "spicebottotalusage", 1) ## Channel usage of bot overall
+    adjust_database_value(bot, trigger.nick, str(commandused + "usage"), 1) ## User usage of specific module
+    adjust_database_value(bot, trigger.nick, "spicebottotalusage", 1) ## User usage of bot overall
+
     ## message, if any
     bot.notice(message, instigator)
-    
+
     ## Send Status Forward
     return enablestatus, triggerargsarray
 
@@ -120,16 +120,16 @@ def spicebot_prerun(bot,trigger):
 def halfhour(bot):
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
-            set_botdatabase_value(bot, u, 'usertotal', None)
-            set_botdatabase_value(bot, u, 'hourwarned', None)
-        
+            set_database_value(bot, u, 'usertotal', None)
+            set_database_value(bot, u, 'hourwarned', None)
+
 ## Don't let users use the bot the first minute after they join the room
 @event('JOIN')
 @rule('.*')
 def waitaminute(bot, trigger):
     now = time.time()
     target = trigger.nick
-    set_botdatabase_value(bot, target, 'jointime', now)
+    set_database_value(bot, target, 'jointime', now)
     lasttime = get_timesince(bot, target, 'lastusagetime')
     if not lasttime or lasttime < LASTTIMEOUTHOUR:
         bot.db.set_nick_value(target, 'spicebot_usertotal', None)
@@ -156,21 +156,21 @@ def logoutadmin(bot, trigger):
 ### will need to add verification in the .spicebotadmin command
 
 
-## Autoblock users that 
+## Autoblock users that
 @sopel.module.interval(60)
 def autoblock(bot):
     now = time.time()
     for channel in bot.channels:
         for u in bot.privileges[channel.lower()]:
-            usertotal = get_botdatabase_value(bot, u, 'usertotal')
+            usertotal = get_database_value(bot, u, 'usertotal')
             if usertotal > TOOMANYTIMES and not bot.nick.endswith('dev'):
-                set_botdatabase_value(bot, u, 'lastopttime', now)
-                set_botdatabase_value(bot, u, 'disenable', None)
-                warned = get_botdatabase_value(bot, u, 'hourwarned')
+                set_database_value(bot, u, 'lastopttime', now)
+                set_database_value(bot, u, 'disenable', None)
+                warned = get_database_value(bot, u, 'hourwarned')
                 if not warned:
                     bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
-                    set_botdatabase_value(bot, u, 'hourwarned', 'true')
-        
+                    set_database_value(bot, u, 'hourwarned', 'true')
+
 #####################################################################################################################################
 ## Below This Line are Shared Functions
 #####################################################################################################################################
@@ -184,7 +184,7 @@ def special_users(bot):
     for channel in bot.channels:
         for u in bot.channels[channel.lower()].users:
             allusersinroomarray.append(u)
-            udisenable = get_botdatabase_value(bot, u, 'disenable')
+            udisenable = get_database_value(bot, u, 'disenable')
             if u != bot.nick and udisenable:
                 if u.lower() in bot.config.core.owner.lower():
                     botownerarray.append(u)
@@ -278,31 +278,31 @@ def get_trigger_arg(triggerargsarray, number):
 ## Database ##
 ##############
 
-def get_botdatabase_value(bot, nick, databasekey):
+def get_database_value(bot, nick, databasekey):
     databasecolumn = str('spicebot_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
-def set_botdatabase_value(bot, nick, databasekey, value):
+def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
-    
-def adjust_botdatabase_value(bot, nick, databasekey, value):
-    oldvalue = get_botdatabase_value(bot, nick, databasekey) or 0
+
+def adjust_database_value(bot, nick, databasekey, value):
+    oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str('spicebot_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-   
-def get_botdatabase_array_total(bot, nick, databasekey):
-    array = get_botdatabase_value(bot, nick, databasekey) or []
+
+def get_database_array_total(bot, nick, databasekey):
+    array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
 
 def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
-    adjustarray = get_botdatabase_value(bot, nick, databasekey) or []
+    adjustarray = get_database_value(bot, nick, databasekey) or []
     adjustarraynew = []
     for x in adjustarray:
         adjustarraynew.append(x)
-    set_botdatabase_value(bot, nick, databasekey, None)
+    set_database_value(bot, nick, databasekey, None)
     adjustarray = []
     if adjustmentdirection == 'add':
         if entry not in adjustarraynew:
@@ -314,9 +314,9 @@ def adjust_database_array(bot, nick, entry, databasekey, adjustmentdirection):
         if x not in adjustarray:
             adjustarray.append(x)
     if adjustarray == []:
-        set_botdatabase_value(bot, nick, databasekey, None)
+        set_database_value(bot, nick, databasekey, None)
     else:
-        set_botdatabase_value(bot, nick, databasekey, adjustarray)
+        set_database_value(bot, nick, databasekey, adjustarray)
 
 ############################
 ## Fix unicode in strings ##
@@ -326,14 +326,14 @@ def unicode_string_cleanup(string):
     for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
         string = string.replace(*r)
     return string
-    
+
 ##########
 ## Time ##
 ##########
 
 def get_timesince(bot, nick, databasekey):
     now = time.time()
-    last = get_botdatabase_value(bot, nick, databasekey) or 0
+    last = get_database_value(bot, nick, databasekey) or 0
     return abs(now - int(last))
 
 ###########
