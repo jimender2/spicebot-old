@@ -20,11 +20,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     item = get_trigger_arg(bot, triggerargsarray, 0)
     if not item:
-        item = "car"
+        item = "a car"
     else:
         if item.startswith('a') or item.startswith('e') or item.startswith('i') or item.startswith('o') or item.startswith('u'):
             item = str('an ' + item)
         else:
             item = str('a ' + item)
-        message = "You get " + item + "! And You get " + item + "! Everyone gets " + item + "!"
+    message = "You get " + item + "! And You get " + item + "! Everyone gets " + item + "!"
     onscreentext(bot,['say'],message)
