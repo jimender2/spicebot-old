@@ -289,9 +289,9 @@ def enoughdaysbetween(earlydate, laterdate, numberofdays):
 
 
 def get_timesince(bot, nick, databasekey):
-    botcom.now = time.time()
+    now = time.time()
     last = get_database_value(bot, nick, databasekey) or 0
-    return abs(botcom.now - int(last))
+    return abs(now - int(last))
 
 
 def get_timeuntil(now, futuretime):

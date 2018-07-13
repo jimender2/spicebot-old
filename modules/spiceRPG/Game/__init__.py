@@ -7,9 +7,9 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 import sopel
 from sopel import module, tools
 
-
-# basic test
-@sopel.module.commands('rpgtest')
-@sopel.module.thread(True)
-def rpg_test(bot, trigger):
-    bot.say("I'm alive")
+from .RPG_Test import *
+from .Database_adjust import *
+from .Array_manipulation import *
+from .Display_Text import *
+from .RPG_Class import *
+from .Global_Vars import *
