@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray):
     randomtargetarray = []
-    botusersarray = get_botdatabase_value(bot, bot.nick, 'botusers') or []
+    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
     for u in bot.users:
         if u in botusersarray and u != bot.nick:
             randomtargetarray.append(u)
