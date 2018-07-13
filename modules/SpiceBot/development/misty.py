@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray):
     inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
     if not inputstring:
         inputstring = "biznatch"
-    bot.say("%s thinks it's starting to get a little misty up in %s")
+    bot.say("%s thinks it's starting to get a little misty up in %s" %(instigator, inputstring))
