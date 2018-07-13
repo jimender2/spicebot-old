@@ -18,4 +18,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    bot.say("You had ONE job!!!")
+    message = "You had ONE job!!!"
+    onscreentext(bot,['say'],message)
