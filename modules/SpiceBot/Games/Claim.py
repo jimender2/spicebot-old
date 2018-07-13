@@ -262,7 +262,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 @sopel.module.interval(1800)  # 30 minute automation
 def halfhourtimer(bot):
-    now = time.time()
+    """Function for bladder refill on half-hour timer."""
     for u in bot.users:
         bladdercontents = bot.db.get_nick_value(u,'bladdercapacity') or 'unused'
         if bladdercontents == 'unused':
