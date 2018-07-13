@@ -23,6 +23,8 @@ def execute_main(bot, trigger, triggerargsarray):
     if decide == 1:
         bot.say("Who needs the Kwik-E-Mart? I do...")
         time.sleep(2)
-        bot.action("starts crying")
+        message = "starts crying"
+        onscreentext_action(bot,['say'],message)
     else:
-        bot.say("Thank you, come again.")
+        message = "Thank you, come again."
+        onscreentext(bot,['say'],message)
