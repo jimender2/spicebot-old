@@ -635,7 +635,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Druid animal shape
         if playerbio_loser.Class == 'druid' and playerbio_winner.actual != playerbio_loser.actual and not playerbio_loser.curse:
-            if playerbio_loser.agility * > 100:
+            if playerbio_loser.agility * 10 > 100:
                 transformodds = 100
             else:
                 transformodds = randint(playerbio_loser.agility * 10, 100)
