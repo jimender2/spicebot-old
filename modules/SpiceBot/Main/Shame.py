@@ -25,24 +25,24 @@ def execute_main(bot, trigger, triggerargsarray):
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     # No target specified
     if not target:
-		message = "Who/what would you like to shame?"
+        message = "Who/what would you like to shame?"
 
-	# Cannot shame Spicebot
+    # Cannot shame Spicebot
     elif target == bot.nick:
         if not reason:
             message = "Shame. Shame on " + instigator + " for even thinking of that."
         else:
             message = "Shame. Shame on " + instigator + " for even thinking that " + reason
 
-	# Cannot kill self
+    # Cannot kill self
     elif target == instigator:
-		message = "Even " + instigator + " thinks they are bad. Shame, Shame on you."
+        message = "Even " + instigator + " thinks they are bad. Shame, Shame on you."
 
-	# Target is fine
+    # Target is fine
     else:
-		if not reason:
-			message = instigator + " thinks " + target + " has been a bad boy."
-		else:
-			message = instigator + " thinks " + target + " has been a bad boy because " + reason + "."
+        if not reason:
+            message = instigator + " thinks " + target + " has been a bad boy."
+        else:
+            message = instigator + " thinks " + target + " has been a bad boy because " + reason + "."
 
     bot.say(message)
