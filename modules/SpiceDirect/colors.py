@@ -10,7 +10,7 @@ from sopel import module, tools, formatting
 
 
 # basic test
-@sopel.module.commands('rpgtest')
+@sopel.module.commands('colortest')
 @sopel.module.thread(True)
 def color_test(bot, trigger):
     bot.say(formatting.color('Purple', formatting.colors.PURPLE))
