@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # sopel imports
 import sopel.module
 from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
+from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
 
