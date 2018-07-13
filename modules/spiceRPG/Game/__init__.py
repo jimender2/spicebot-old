@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
 import sopel
-from sopel import module, tools
+from sopel import module, tools, formatting
 
 from .RPG_Test import *
 from .Database_adjust import *
@@ -13,3 +13,14 @@ from .Array_manipulation import *
 from .Display_Text import *
 from .RPG_Class import *
 from .Global_Vars import *
+
+
+# basic test
+@sopel.module.commands('rpgtest')
+@sopel.module.thread(True)
+def rpg_test(bot, trigger):
+    welcome = formatting.color('Welcome to:', formatting.colors.PURPLE)
+    bot.say(welcome)
+    # rpg = rpg_class()
+    # triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    # onscreentext(bot, trigger.nick, triggerargsarray)
