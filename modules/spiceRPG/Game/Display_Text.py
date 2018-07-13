@@ -4,7 +4,7 @@ On Screen Text
 
 
 def osd_notice(bot, target, textarraycomplete):
-    target = duels_nick_actual(bot,target)
+    target = nick_actual(bot,target)
     if not isinstance(textarraycomplete, list):
         texttoadd = str(textarraycomplete)
         textarraycomplete = []
@@ -30,14 +30,14 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
     for textstring in textarraycomplete:
         if currentstring == '':
             currentstring = textstring
-        elif len(textstring) > duels_osd_limit:
+        elif len(textstring) > osd_limit:
             if currentstring != '':
                 combinedtextarray.append(currentstring)
                 currentstring = ''
             combinedtextarray.append(textstring)
         else:
             tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= duels_osd_limit:
+            if len(tempstring) <= osd_limit:
                 currentstring = tempstring
             else:
                 combinedtextarray.append(currentstring)
@@ -52,3 +52,18 @@ def onscreentext(bot, texttargetarray, textarraycomplete):
                 bot.msg(user, combinedline)
             else:
                 bot.notice(combinedline, user)
+
+
+"""
+How to Display Nicks
+"""
+
+
+# Outputs Nicks with correct capitalization
+def nick_actual(bot,nick):
+    actualnick = nick
+    for u in bot.users:
+        if u.lower() == actualnick.lower():
+            actualnick = u
+            continue
+    return actualnick
