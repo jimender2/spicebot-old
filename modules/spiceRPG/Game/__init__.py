@@ -20,6 +20,7 @@ from .Global_Vars import *
 @sopel.module.thread(True)
 def rpg_test(bot, trigger):
     welcome = formatting.color('Welcome to:', formatting.colors.PURPLE)
+    welcome = '%s to say: %s' % (bold('meant'), welcome)
     bot.say(welcome)
     # rpg = rpg_class()
     # triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
