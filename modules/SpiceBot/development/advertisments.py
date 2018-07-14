@@ -47,64 +47,29 @@ def execute_main(bot, trigger):
         bot.say(message)
         elif command == "count":
             messagecount = len(existingarray)
-            message = "There are currently " + str(messagecount) + " responses for that in the database."
+            message = "There are currently " + str(messagecount) + " ads in the database."
             bot.say(message)
 
         elif command == "last":
             message = get_trigger_arg(bot, existingarray, "last")
             bot.say(message)
     else:
-        weapontype = get_trigger_arg(bot, existingarray, "random") or ''
-        if weapontype == '':
+        message = get_trigger_arg(bot, existingarray, "random") or ''
+        if message == '':
             message = "No response found. Have any been added?"
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    reason = get_trigger_arg(bot, triggerargsarray, '2+')
-    msg = "a " + weapontype
-
-    # No target specified
-    if not target:
-        bot.say("Who/what would you like to murder?")
-
-    # Cannot kill spicebot
-    elif target == bot.nick:
-        bot.say("You cannot kill a nonliving entity")
-
-    # Cannot kill self
-    elif target == instigator:
-        message = "Killing yourself would be suicide, " + instigator + ", not murder. Idiot."
         bot.say(message)
-
-    # Target is fine
-    else:
-        if not reason:
-            message = instigator + " murders " + target + " with " + msg + "."
-            bot.say(message)
-        else:
-            message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
-            bot.say(message)
 
 
 def get_database_value(bot, nick, databasekey):
-    databasecolumn = str('duels_' + databasekey)
+    databasecolumn = str(databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
 
 @sopel.module.interval(60)
-def webbyauto(bot):
-    page = requests.get(url,headers=None)
-    if page.status_code == 200:
-        now = datetime.datetime.utcnow()
-        webbytime = getwebbytime()
-        timeuntil = (webbytime - now).total_seconds()
-        if int(timeuntil) < 900 and int(timeuntil) > 840:
-            dispmsg = []
-            dispmsg.append("[Spiceworks Webinar Reminder]")
-            dispmsg.append("{"+getwebbytimeuntil()+"}")
-            dispmsg.append(getwebbytitle())
-            dispmsg.append(getwebbylink())
-            bonus = getwebbybonus()
-            if bonus and bonus != '':
-                dispmsg.append('BONUS: ' + getwebbybonus())
-            for channel in bot.channels:
-                onscreentext(bot, channel, dispmsg)
+def advertisement(bot):
+    existingarray = get_database_value(bot, bot.nick, databasekey) or []
+    message = get_trigger_arg(bot, existingarray, "random") or ''
+    if message == '':
+        message = "Spiceduck for Spiceworks mascot 2k18"
+    bot.say(message)
