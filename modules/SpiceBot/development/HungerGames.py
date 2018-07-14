@@ -13,13 +13,15 @@ sys.path.append(shareddir)
 from BotShared import *
 import Spicebucks
 
-#hungergamesfee=5
+# hungergamesfee=5
+
 
 @sopel.module.commands('hungergames')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     randomtargetarray = []
@@ -41,11 +43,11 @@ def execute_main(bot, trigger, triggerargsarray):
             elif totaltributes == 3:
                 bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
             else:
-                #safetribute = str(randomtargetarray[2])
-                #volunteer = str(randomtargetarray[3])
-                #randomtargetarray.pop(2)
-                #random.shuffle(randomtargetarray)
-                #bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
+                # safetribute = str(randomtargetarray[2])
+                # volunteer = str(randomtargetarray[3])
+                # randomtargetarray.pop(2)
+                # random.shuffle(randomtargetarray)
+                # bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 tributes = []
                 weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
                 for tribute in randomtargetarray:
@@ -69,14 +71,14 @@ def execute_main(bot, trigger, triggerargsarray):
                     if tributes[1][1] <= 0:
                         if len(tributes) > 1:
                             bot.notice(tributes[0][0] + " killed " + tributes[1][0], trigger.nick)
-                    if tributes[1][1] <= 0: #remove second tribute first is killed to not mess up order if first is killed
+                    if tributes[1][1] <= 0:  # remove second tribute first is killed to not mess up order if first is killed
                         tributes.pop(1)
                     if tributes[0][1] <= 0:
                         if len(tributes) > 1:
                             tributes.pop(0)
                     totaltributes = len(tributes)
-                #payout =randint(hungergamesfee,35)
+                # payout =randint(hungergamesfee,35)
                 bot.say("The victor is " + tributes[0][0])
-                    #Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
-        #else:
-            #bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)
+                # Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
+        # else:
+            # bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)
