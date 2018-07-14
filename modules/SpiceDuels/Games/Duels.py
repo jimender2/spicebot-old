@@ -8,6 +8,7 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 import sopel
 from sopel import module, tools
 
+
 # Additional
 import random
 from random import randint
