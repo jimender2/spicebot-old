@@ -13,7 +13,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
+
 
 @sopel.module.commands('misty')
 def mainfunction(bot, trigger):
@@ -21,9 +22,10 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
     if not inputstring:
         inputstring = "this biznatch"
-    bot.say("%s thinks it's starting to get a little misty up in %s" %(instigator, inputstring))
+    bot.say("%s thinks it's starting to get a little misty up in %s" % (instigator, inputstring))
