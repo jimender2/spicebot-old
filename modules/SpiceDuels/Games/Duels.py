@@ -1,35 +1,38 @@
 #!/usr/bin/env python
 # coding=utf-8
-from __future__ import unicode_literals, absolute_import, print_function, division
-# sopel imports
-import sopel.module
-from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
-import sopel
-from sopel import module, tools
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
+import datetime
+import itertools
+import os
 # Additional
 import random
-from random import randint
-import time
-import datetime
 import re
 import sys
-import os
-from os.path import exists
-from num2words import num2words
+import time
 from difflib import SequenceMatcher
-from more_itertools import sort_together
 from operator import itemgetter
+from os.path import exists
+from random import randint
+from statistics import mean
+
 import requests
+import sopel
+# sopel imports
+import sopel.module
+from Duels_Vars import *
 from fake_useragent import UserAgent
 from lxml import html
-from statistics import mean
-import itertools
-
+from more_itertools import sort_together
+from num2words import num2words
+from sopel import module, tools
+from sopel.module import (ADMIN, OP, VOICE, commands, event, example,
+                          nickname_commands, priority, rule)
 
 # Global Vars
 moduledir = os.path.dirname(__file__)
 sys.path.append(moduledir)
-from Duels_Vars import *
 
 
 """
