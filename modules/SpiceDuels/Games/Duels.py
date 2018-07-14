@@ -158,11 +158,9 @@ class race benefits for each major location
 
 """
 
-
 """
-Monster has mutated,,, become enraged itsy bitsy
+monster mutates,,, enraged itsy bitsy
 """
-
 
 """
 #
