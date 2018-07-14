@@ -51,8 +51,8 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(message)
 
         elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-        bot.say(message)
+            message = get_trigger_arg(bot, existingarray, "last")
+            bot.say(message)
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':

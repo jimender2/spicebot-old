@@ -12,23 +12,25 @@ sys.path.append(shareddir)
 from BotShared import *
 
 replies = ["Eat My Shorts!",
-			"Don't Have a Cow, Man!",
-			"¡Ay, caramba!",
-			"Get Bent.",
-			"I'm Bart Simpson, Who the Hell are You?",
-			"Cowabunga!",
-			"I Didn't Do It!",
-			"Nobody saw me do it. You can't prove anything!",
-			"Aw, Man!",
-			"Aw, Geez!",
-			"Whoa, mama!",
-			"Eep!"]
+            "Don't Have a Cow, Man!",
+            "¡Ay, caramba!",
+            "Get Bent.",
+            "I'm Bart Simpson, Who the Hell are You?",
+            "Cowabunga!",
+            "I Didn't Do It!",
+            "Nobody saw me do it. You can't prove anything!",
+            "Aw, Man!",
+            "Aw, Geez!",
+            "Whoa, mama!",
+            "Eep!"]
+
 
 @sopel.module.commands('bart')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
