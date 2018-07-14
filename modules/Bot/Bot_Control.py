@@ -71,7 +71,7 @@ Commands
 
 
 def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
-    onscreentext(bot, ['say'], ", Online Docs: " + GITWIKIURL)
+    onscreentext(bot, ['say'], "Online Docs: " + GITWIKIURL)
 
 
 def bot_command_function_canyouseeme(bot,trigger,botcom,triggerargsarray):
