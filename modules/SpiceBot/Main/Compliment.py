@@ -12,9 +12,10 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-compliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/compliments.txt'
-devcompliments='https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/compliments.txt'
-devbot='dev' ## Enables the bot to distinguish if in test
+compliments = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/compliments.txt'
+devcompliments = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/compliments.txt'
+devbot = 'dev'  # Enables the bot to distinguish if in test
+
 
 @sopel.module.commands('compliment')
 def mainfunction(bot, trigger):
@@ -22,13 +23,14 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
     requested = get_trigger_arg(bot, triggerargsarray, 0)
     myline = ''
     if not bot.nick.endswith(devbot):
-        filetocheck=compliments #Master branch
+        filetocheck = compliments  # Master branch
     else:
-        filetocheck=devcompliments #Dev branch
+        filetocheck = devcompliments  # Dev branch
     if not requested:
         myline = randomcompliment(filetocheck)
     else:
@@ -36,16 +38,16 @@ def execute_main(bot, trigger, triggerargsarray):
         if (requested == '0' or requested.lower() == 'zero'):
             myline = 'That doesnt appear to be a compliment number.'
         elif requested == 'random':
-             myline = randomcompliment(filetocheck)
+            myline = randomcompliment(filetocheck)
         else:
-            htmlfile=urllib.urlopen(filetocheck)
-            lines=htmlfile.readlines()
+            htmlfile = urllib.urlopen(filetocheck)
+            lines = htmlfile.readlines()
             numberoflines = len(lines)
 
             if requested.isdigit():
                 complimentnumber = int(requested)
                 if complimentnumber > numberoflines:
-                    myline ="Please select a compliment number between 1 and " + str(numberoflines) + ""
+                    myline = "Please select a compliment number between 1 and " + str(numberoflines) + ""
                 else:
                     myline = get_trigger_arg(bot, lines, complimentnumber)
             else:
@@ -58,8 +60,9 @@ def execute_main(bot, trigger, triggerargsarray):
         myline = 'There is no compliment tied to this number.'
     bot.say(myline)
 
-## work with /me ACTION (does not work with manual weapon)
-@module.rule('(?:(feeling|feels).*(sad|upset)).*') # responds to /me is feeling|feels *** sad|upset
+
+# work with /me ACTION (does not work with manual weapon)
+@module.rule('(?:(feeling|feels).*(sad|upset)).*')  # responds to /me is feeling|feels *** sad|upset
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
@@ -67,22 +70,24 @@ def duel_action(bot, trigger):
     if not enablestatus:
         execute_reply(bot, trigger, triggerargsarray)
 
+
 def execute_reply(bot, trigger, triggerargsarray):
     myline = ''
     if not bot.nick.endswith(devbot):
-        filetocheck=compliments #Master branch
+        filetocheck = compliments  # Master branch
     else:
-        filetocheck=devcompliments #Dev branch
+        filetocheck = devcompliments  # Dev branch
     myline = randomcompliment(filetocheck)
     if not myline or myline == '\n':
         myline = 'There is no compliment tied to this number.'
     bot.say(myline)
 
+
 # random compliment
 def randomcompliment(filetocheck):
-    htmlfile=urllib.urlopen(filetocheck)
-    lines=htmlfile.read().splitlines()
-    myline=random.choice(lines)
+    htmlfile = urllib.urlopen(filetocheck)
+    lines = htmlfile.read().splitlines()
+    myline = random.choice(lines)
     if not myline or myline == '\n':
         myline = randomcompliment(filetocheck)
     return myline

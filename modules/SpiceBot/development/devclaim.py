@@ -35,18 +35,20 @@ maxtime = 7
 firstclaim = 10
 renewclaim = 5
 stolenclaim = 20
-masterclaim = 10 #take, not give
+masterclaim = 10  # take, not give
 
 # Bladder capacity
 bladdersize = 10
 claimcost = 2
 SeanCost = 1
 
+
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     # Names/nicks for code
@@ -87,18 +89,19 @@ def execute_main(bot, trigger, triggerargsarray):
             elif admintarget.lower() in [u.lower() for u in creatornicks]:
                 bot.say("No mere mortal can claim the almighty %s!" % admintarget)
             else:
-                bot.say("Nobody appears to have claimed %s yet, %s." %(admintarget, instigator))
+                bot.say("Nobody appears to have claimed %s yet, %s." % (admintarget, instigator))
         else:
             if admintarget == instigator:
-                bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+                bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) + ", " + str(instigator) + ".")
             elif claimedby == instigator:
-                bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
+                bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) + ", " + instigator + ".")
             else:
-                bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
+                bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) + ", " + instigator + ".")
 
     # Check how full your bladder is
     elif target == 'bladder':
         okaytoclaim = 0
+
         if not admintarget:
             admintarget = instigator
         bladdercontents = bot.db.get_nick_value(admintarget,'bladdercapacity')
@@ -168,7 +171,7 @@ def execute_main(bot, trigger, triggerargsarray):
         if instigator in creatornicks:
             bot.say("I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
         else:
-            bot.say("I have already been claimed by " + owner +"!")
+            bot.say("I have already been claimed by " + owner + "!")
 
     # Can't claim the creator
     elif target.lower() in [u.lower() for u in creatornicks]:
@@ -181,7 +184,7 @@ def execute_main(bot, trigger, triggerargsarray):
     elif target.lower() == mastername.lower():
         okaytoclaim = 0
         bot.action("facepalms")
-        bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
+        bot.say("You can't claim " + target + ", " + instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
 
@@ -208,7 +211,7 @@ def execute_main(bot, trigger, triggerargsarray):
         # First time claimed
         if claimedby == '':
             if instigator in creatornicks:
-                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!")
+                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target + "!")
             else:
                 bot.say(instigator + " urinates on " + target + "! Claimed!")
             bot.db.set_nick_value(target,'claimed',instigator)
@@ -233,7 +236,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 # Pay instigator Spicebucks (renewclaim)
                 Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
             else:
-                bot.say(instigator + ", you already claimed " + target +".")
+                bot.say(instigator + ", you already claimed " + target + ".")
         else:
             # Stolen claim
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
@@ -243,7 +246,7 @@ def execute_main(bot, trigger, triggerargsarray):
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
                 if instigator in creatornicks:
-                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
+                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target + ' should be grateful for their new lord and master!')
                 else:
                     bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
@@ -257,9 +260,10 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
 
-##########################
-## 30 minute automation ##
-##########################
+
+########################
+# 30 minute automation #
+########################
 @sopel.module.interval(1800)
 def halfhourtimer(bot):
     now = time.time()

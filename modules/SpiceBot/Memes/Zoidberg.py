@@ -9,11 +9,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('zoidberg')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'zoidberg')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     string = get_trigger_arg(bot, triggerargsarray, 0)
@@ -22,8 +24,9 @@ def execute_main(bot, trigger, triggerargsarray):
         if string.startswith("your ") or string.startswith("ur "):
             string = get_trigger_arg(bot,triggerargsarray, '2+')
         if string.endswith("s"):
-            bot.say("Your " + str(string) + " are bad, and you should feel bad!")
+            message = "Your " + str(string) + " are bad, and you should feel bad!"
         else:
-            bot.say("Your " + str(string) + " is bad, and you should feel bad!")
+            message = "Your " + str(string) + " is bad, and you should feel bad!"
     else:
-        bot.say("Hey " + instigator + ": your face is bad and you should feel bad!")
+        message = "Hey " + instigator + ": your face is bad and you should feel bad!"
+    onscreentext(bot,['say'],message)

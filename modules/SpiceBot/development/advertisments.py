@@ -16,7 +16,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def execute_main(bot, trigger):
@@ -33,25 +34,25 @@ def execute_main(bot, trigger):
                 adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
         bot.say(message)
-            else:
-                message = "That response is already in the database."
+        else:
+            message = "That response is already in the database."
         bot.say(message)
         elif command == "remove":
             if inputstring not in existingarray:
                 message = "That response was not found in the database."
         bot.say(message)
-            else:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-                message = "Removed from database."
+        else:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            message = "Removed from database."
         bot.say(message)
         elif command == "count":
-        messagecount = len(existingarray)
-        message = "There are currently " + str(messagecount) + " responses for that in the database."
-        bot.say(message)
+            messagecount = len(existingarray)
+            message = "There are currently " + str(messagecount) + " responses for that in the database."
+            bot.say(message)
 
         elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-        bot.say(message)
+            message = get_trigger_arg(bot, existingarray, "last")
+            bot.say(message)
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':
@@ -77,10 +78,11 @@ def execute_main(bot, trigger):
     else:
         if not reason:
             message = instigator + " murders " + target + " with " + msg + "."
-                bot.say(message)
+            bot.say(message)
         else:
             message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
-                bot.say(message)
+            bot.say(message)
+
 
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('duels_' + databasekey)
@@ -90,7 +92,7 @@ def get_database_value(bot, nick, databasekey):
 
 @sopel.module.interval(60)
 def webbyauto(bot):
-    page = requests.get(url,headers = None)
+    page = requests.get(url,headers=None)
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         webbytime = getwebbytime()

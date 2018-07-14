@@ -9,13 +9,15 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
+
 
 @sopel.module.commands('eyeroll')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'eyeroll')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
@@ -27,11 +29,11 @@ def execute_main(bot, trigger, triggerargsarray):
     if not target:
         bot.say("Who/what would you like to roll your eyes at?")
 
-    #Yourself
+    # Yourself
     elif target == instigator:
         bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
 
-    #spicebot
+    # spicebot
     elif target == bot.nick:
         bot.say("Don't even bother. I can't see you")
 

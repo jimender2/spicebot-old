@@ -1,3 +1,9 @@
+
+"""
+# pep ignores
+"""
+# pylama:ignore=W,E201,E202,E203,E221,E222
+
 """
 Easy Configurables
 """

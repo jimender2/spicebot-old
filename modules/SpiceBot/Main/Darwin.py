@@ -13,11 +13,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('darwin')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     gif,randno = getGif("Darwin Award")
@@ -25,6 +27,7 @@ def execute_main(bot, trigger, triggerargsarray):
         bot.say("Result no: %s: %s" % (randno, gif))
     else:
         bot.action('is not a contender for the Darwin award, thank fuck.')
+
 
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'

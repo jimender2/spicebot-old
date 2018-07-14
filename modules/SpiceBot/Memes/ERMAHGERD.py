@@ -11,19 +11,23 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('ermahgerd')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ERMAHGERD')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ermahgerd')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     ernpert = get_trigger_arg(bot, triggerargsarray, 0)
     if ernpert:
         spertitert = trernslert(ernpert)
-        bot.say('ERMAHGERD,' + str(spertitert))
+        message = "ERMAHGERD," + str(spertitert)
     else:
-        bot.say('Whert der yer wernt ter trernslert?')
+        message = "Whert der yer wernt ter trernslert?"
+    onscreentext(bot,['say'],message)
+
 
 def trernslert(werds):
     terkerns = werds.split()
@@ -72,6 +76,7 @@ def trernslert(werds):
         er = er + ' ' + werd
     return er
 
+
 def ermergerd(w):
     w = w.strip().lower()
     derctshernerer = {'me':'meh','you':'u', 'are':'er', "you're":"yer", "i'm":"erm", "i've":"erv", "my":"mah", "the":"da", "omg":"ermahgerd"}
@@ -83,10 +88,10 @@ def ermergerd(w):
             w = num2words(int(w))
         w = re.sub(r"tion", "shun", w)
         pat = r"[aeiouy]+"
-        er =  re.sub(pat, "er", w)
+        er = re.sub(pat, "er", w)
         if w.startswith('y'):
             er = 'y' + re.sub(pat, "er", w[1:])
-        if w.endswith('e') and not w.endswith('ee') and len(w)>3:
+        if w.endswith('e') and not w.endswith('ee') and len(w) > 3:
             er = re.sub(pat, "er", w[:-1])
         if w.endswith('ing'):
             er = re.sub(pat, "er", w[:-3]) + 'in'

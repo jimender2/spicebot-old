@@ -18,9 +18,10 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
-    human = random.uniform(0, 30) # Random number with uniform chances across range
-    time.sleep(human) # Wait for random time
+    human = random.uniform(0, 30)  # Random number with uniform chances across range
+    time.sleep(human)  # Wait for random time
     prefix = "!"
     command = "test"
     bot.say(prefix + command)

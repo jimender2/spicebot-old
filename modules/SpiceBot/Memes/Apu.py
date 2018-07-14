@@ -13,7 +13,7 @@ from BotShared import *
 
 @sopel.module.commands('apu')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'apu')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
@@ -21,8 +21,11 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     decide = random.randint(1,10)
     if decide == 1:
-        bot.say("Who needs the Kwik-E-Mart? I do...")
+        message = "Who needs the Kwik-E-Mart? I do..."
+        onscreentext(bot,['say'],message)
         time.sleep(2)
-        bot.action("starts crying")
+        actions = "starts crying"
+        onscreentext_action(bot,['say'],actions)
     else:
-        bot.say("Thank you, come again.")
+        message = "Thank you, come again."
+        onscreentext(bot,['say'],message)

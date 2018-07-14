@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+
 # sopel imports
 import sopel.module
 from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
 import sopel
 from sopel import module, tools
+
 # Additional
 import random
 from random import randint
@@ -154,6 +156,10 @@ those caught fighting in town are put in jail
 class race benefits for each major location
 
 
+"""
+
+"""
+monster mutates,,, enraged itsy bitsy
 """
 
 """

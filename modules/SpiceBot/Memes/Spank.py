@@ -11,11 +11,13 @@ from BotShared import *
 
 spankweapons = ['paddle','belt']
 
+
 @sopel.module.commands("spank","paddle","paddlin")
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, "spank")
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'spank')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     target = get_trigger_arg(bot, triggerargsarray, 1)
@@ -23,11 +25,11 @@ def execute_main(bot, trigger, triggerargsarray):
     message = "Whoops, something went wrong."
     # Nothing specified
     if not target:
-        bot.say("Thaat's a paddlin'")
+        message = "Thaat's a paddlin'"
 
     # Can't slap the bot
     elif target == bot.nick:
-        bot.say("I will not do that!!")
+        message = "I will not do that!!"
 
     # Target is fine
     else:
@@ -36,7 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
             message = trigger.nick + " spanks " + target + " with a " + weapon + "."
         else:
             if reason.startswith('for'):
-                message = trigger.nick + " spanks " + target + " with a " + weapon + " "+ reason + "."
+                message = trigger.nick + " spanks " + target + " with a " + weapon + " " + reason + "."
             else:
-                message = trigger.nick + " spanks " + target + " with a " + weapon + " "+ reason + "."
-        bot.say(message)
+                message = trigger.nick + " spanks " + target + " with a " + weapon + " " + reason + "."
+    onscreentext(bot,['say'],message)

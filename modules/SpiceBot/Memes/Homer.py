@@ -10,19 +10,21 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('trust')
+@sopel.module.commands('homer')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'trust')
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'homer')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    target = get_trigger_arg(bot, triggerargsarray, 0)
-    if not target:
-        message = "Trust Doesn't Rust."
-    elif target == bot.nick:
-        message = "Why don't you trust me?"
+    goodarray = ['good','g']
+    badarray = ['bad','b','bad?','good?']
+    goodorbad = get_trigger_arg(bot, triggerargsarray, 0) or 'bad'
+    if goodorbad in goodarray:
+        message = "WooHoo!"
+    elif goodorbad in badarray:
+        message = "D'ooooh!"
     else:
-        message = "I just can't ever bring myself to trust " + target + " again. I can never forgive " + target + " for the death of my boy."
+        message = str("mmmmmmm " + goodorbad + "!")
     onscreentext(bot,['say'],message)

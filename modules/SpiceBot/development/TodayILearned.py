@@ -9,15 +9,17 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
 
 commandarray = ["yesterday","today","last"]
+
 
 @sopel.module.commands('til')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'til')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
@@ -31,26 +33,26 @@ def execute_main(bot, trigger, triggerargsarray):
             if inputstring not in existingarray:
                 adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
-        bot.say(message)
+                bot.say(message)
             else:
                 message = "That response is already in the database."
         bot.say(message)
         elif command == "remove":
             if inputstring not in existingarray:
                 message = "That response was not found in the database."
-        bot.say(message)
+                bot.say(message)
             else:
                 adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
                 message = "Removed from database."
         bot.say(message)
         elif command == "count":
-        messagecount = len(existingarray)
-        message = "There are currently " + str(messagecount) + " responses for that in the database."
-        bot.say(message)
+            messagecount = len(existingarray)
+            message = "There are currently " + str(messagecount) + " responses for that in the database."
+            bot.say(message)
 
         elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-        bot.say(message)
+            message = get_trigger_arg(bot, existingarray, "last")
+            bot.say(message)
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':

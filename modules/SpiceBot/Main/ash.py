@@ -11,7 +11,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
 
 replies = ["Ash: Yeah! [after shooting King Arthur's sword in half]",
             "Ash: Alright you Primitive Screwheads, listen up! You see this? This... is my BOOMSTICK! The twelve-gauge double-barreled Remington. S-Mart's top of the line. You can find this in the sporting goods department. That's right, this sweet baby was made in Grand Rapids, Michigan. Retails for about a hundred and nine, ninety five. It's got a walnut stock, cobalt blue steel, and a hair trigger. That's right. Shop smart. Shop S-Mart. You got that?",
@@ -126,11 +126,13 @@ replies = ["Ash: Yeah! [after shooting King Arthur's sword in half]",
             "Evil Ash: I'll spoil those good looks back stabber.",
             "Skeleton: [during the battle, and the undead start ramming the castle gate] Jeez, put your backbones into it!"]
 
+
 @sopel.module.commands('ash')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     answer = get_trigger_arg(bot, replies, 'random')
