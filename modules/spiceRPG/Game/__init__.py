@@ -14,6 +14,9 @@ from .Display_Text import *
 from .RPG_Class import *
 from .Global_Vars import *
 
+"""
+Idea, use exec to dynamically import the subcommands?
+""
 
 # basic test
 @sopel.module.commands('rpgtest')
