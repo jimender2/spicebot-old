@@ -12,6 +12,7 @@ Dynamic Classes
 class rpg_class():
     pass
 
-class rpg_instigator():
-    self = rpg.instigator
+
+class rpg_instigator(nick):
+    self = nick
     pass
