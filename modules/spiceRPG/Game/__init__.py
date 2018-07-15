@@ -66,6 +66,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # trigger test
     bot.say("Output of trigger : " + str(trigger))
 
+    rpg.test = "total crap"
+    bot.say(str(rpg.test))
+
     # instigator
     # class rpg_class_instigator():
         # pass
