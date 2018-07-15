@@ -3,6 +3,8 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 import re
 
+from .Global_Vars import *
+
 """
 Array/List/String Manipulation
 """
