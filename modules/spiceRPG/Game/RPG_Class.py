@@ -17,7 +17,7 @@ def class_create_new(bot,classname):
 
 class class_instigator():
     def __init__(self):
-        self.default = "I am an instance of "+str(instance.__class__.__name__)
+        self.default = "This is a Dynamic Class"
 
     def __repr__(self):
         return self.default
