@@ -13,7 +13,4 @@ class rpg_class():
     pass
 
 class rpg_instigator():
-    def __new__(rpg):
-        self = rpg.insigator
-        return self
     pass
