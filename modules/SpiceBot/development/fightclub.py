@@ -9,6 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
+
 rules = ["The first rule of Fight Club is: You do not talk about Fight Club.",
          "The second rule of Fight Club is: You DO NOT TALK ABOUT FIGHT CLUB!",
          "Third rule of Fight Club: Someone yells stop, goes limp, taps out, the fight is over.",

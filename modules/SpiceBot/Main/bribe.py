@@ -71,7 +71,7 @@ def spicebucks(bot, target, plusminus, amount):
         if inbank - amount < 0:
             success = 'false'
         else:
-            adjust_database_value(bot,target, 'spicebucks_bank', -amount)
+            adjust_database_value(bot, target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
         success = 'false'
