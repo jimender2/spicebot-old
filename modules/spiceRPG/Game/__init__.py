@@ -60,8 +60,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         for command_split in command_full_split:
             rpg.multi_com_list.append(command_split)
 
-    # TODO instigator
-    instigator = rpg_instigator()
+    # instigator
+    instigator = rpg_instigator(trigger.nick)
     bot.say(str(instigator))
 
     return
