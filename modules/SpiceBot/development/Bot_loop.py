@@ -6,6 +6,7 @@ http://sopel.chat
 from sopel.module import rule, priority, rate
 import random
 import time
+import os
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
