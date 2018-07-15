@@ -95,7 +95,7 @@ def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
         osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
         return
 
-    validfolderoptions = ['..']
+    validfolderoptions = ['..','reset']
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     botcom = bot_list_directory(bot,botcom)
 
@@ -112,7 +112,9 @@ def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
         return
 
     if movepath == "..":
-        movepath = os.path.dirname(os.path.dirname(botcom.directory))
+        movepath = os.path.dirname(os.path.dirname(botcom.directory))\
+    elif movepath == 'reset':
+        movepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
