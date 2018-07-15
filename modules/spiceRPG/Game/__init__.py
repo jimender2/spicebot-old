@@ -37,6 +37,7 @@ def rpg_trigger_precede(bot, trigger):
     class rpg_class():
         pass
     rpg = rpg_class()
+
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
@@ -66,9 +67,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     bot.say("Output of trigger : " + str(trigger))
 
     # instigator
-    class rpg_instigator():
+    class rpg_class_instigator():
         pass
-    instigator = rpg_instigator()
+    instigator = rpg_class_instigator()
     rpg.instigator = trigger.nick
     bot.say("Output of instigator : " + str(instigator))
 
@@ -77,7 +78,11 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     bot.say("Output of instigator.nick : " + str(instigator))
     bot.say(str(instigator.nick))
 
-    bot.say("other test")
+    class rpg_instigatortest():
+        pass
+    instigatortest = rpg_instigatortest()
+    instigatortest.chan = trigger.sender
+    bot.say(str(instigatortest.chan))
 
     return
 
