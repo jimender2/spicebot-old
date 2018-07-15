@@ -3,7 +3,7 @@ Dynamic Classes
 """
 
 
-def class_create(classname):
+def class_create(bot,classname):
     exec_str = str("class rpg_class_" + classname + " : pass")
     bot.say(str(exec_str))
     exec(exec_str)
