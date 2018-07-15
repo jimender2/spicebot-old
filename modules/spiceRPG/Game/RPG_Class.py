@@ -10,7 +10,8 @@ def class_create(classname):
 
 
 class MyClass():
+    def __init__(self):
+        self.default = "I am an instance of MyClass at address "+hex(id(self))
     def __repr__(self):
-        defaultvalue = self.default or "I am an instance of MyClass at address "+hex(id(self))
-        return defaultvalue
+        return self.default
     pass
