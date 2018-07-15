@@ -14,4 +14,6 @@ class rpg_class():
 
 
 class rpg_instigator():
+    def __str__(self):
+        return "foo"
     pass
