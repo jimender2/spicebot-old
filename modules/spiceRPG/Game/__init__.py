@@ -62,7 +62,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # instigator
     rpg.instigator = trigger.nick
+    bot.say(str(trigger))
     instigator = rpg_instigator()
+    bot.say(str(instigator))
 
     return
 
