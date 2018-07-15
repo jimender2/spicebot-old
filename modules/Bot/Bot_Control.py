@@ -71,20 +71,12 @@ Commands
 """
 
 
-def bot_list_directory(bot,botcom):
-    botcom.directory_listing = []
-    botcom.filefoldertype = []
-    for filename in os.listdir(botcom.directory):
-        botcom.directory_listing.append(filename)
-        joindpath = os.path.join(botcom.directory, filename)
-        if os.path.isfile(joindpath):
-            botcom.filefoldertype.append("file")
-        else:
-            botcom.filefoldertype.append("folder")
-    return botcom
-
-
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.opadmin:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     botcom = bot_list_directory(bot,botcom)
     if botcom.directory == []:
@@ -98,8 +90,33 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
 
 
 def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.opadmin:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
+    validfolderoptions = ['..']
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    bot.say("wip")
+    botcom = bot_list_directory(bot,botcom)
+
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        if filefoldertype == 'folder':
+            validfolderoptions.append(filename)
+
+    movepath = get_trigger_arg(bot, triggerargsarray, 0)
+    if movepath not in validfolderoptions:
+        if movepath in botcom.directory_listing and movepath not in validfolderoptions:
+            onscreentext(bot, ['say'], "YOu can't Change Direcotry into a File!")
+        else:
+            onscreentext(bot, ['say'], "Invalid Folder Path")
+        return
+
+    if movepath == "..":
+        movepath = os.path.dirname(os.path.dirname(__file__))
+    else:
+        movepath = os.path.join(botcom.directory, str(movepath+"/"))
+
+    bot.say(str(movepath))
 
 
 def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
@@ -571,3 +588,21 @@ def update(bot, trigger):
     onscreentext(bot, ['say'], "Pulling From Github...")
     g = git.cmd.Git(moduledir)
     g.pull()
+
+
+"""
+dir listing
+"""
+
+
+def bot_list_directory(bot,botcom):
+    botcom.directory_listing = []
+    botcom.filefoldertype = []
+    for filename in os.listdir(botcom.directory):
+        botcom.directory_listing.append(filename)
+        joindpath = os.path.join(botcom.directory, filename)
+        if os.path.isfile(joindpath):
+            botcom.filefoldertype.append("file")
+        else:
+            botcom.filefoldertype.append("folder")
+    return botcom
