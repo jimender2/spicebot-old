@@ -23,7 +23,7 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
-    rpg = class_create(bot,'main')
+    rpg = class_create('main')
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     execute_main(bot, trigger, triggerargsarray, rpg)
 
