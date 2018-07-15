@@ -85,7 +85,7 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
     displaymsgarray = []
     displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
-        displaymsgarray.append(str("["+filefoldertype.title()+"]")+str(filename))
+        displaymsgarray.append(str("["+filefoldertype.title()+"] ")+str(filename))
     onscreentext(bot, ['say'], displaymsgarray)
 
 
