@@ -64,7 +64,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     instigator = class_create('instigator')
     instigator.nick = trigger.nick
 
-    instigatortest = class_instigator()
+    # instigatortest = class_instigator()
+    instigatortest = class_create_new('instigator')
     bot.say("Output of instigatortest : " + str(instigatortest))
     instigatortest.default = "awesometest"
     bot.say("Output of instigatortest after default over-ridden : " + str(instigatortest))
