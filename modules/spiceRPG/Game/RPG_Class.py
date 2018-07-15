@@ -18,7 +18,7 @@ def class_create_new(bot, classname):
 
 class MyClass():
     def __init__(self):
-        self.default = "I am an instance of MyClass at address "+hex(id(self))
+        self.default = "I am an instance of " + str(self) + " at address "+hex(id(self))
 
     def __repr__(self):
         return self.default
