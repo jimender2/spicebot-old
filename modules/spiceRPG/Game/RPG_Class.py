@@ -9,9 +9,9 @@ def class_create(classname):
     return newclass
 
 
-class MyClass():
+class class_instigator():
     def __init__(self):
-        self.default = "I am an instance of MyClass at address "+hex(id(self))
+        self.default = "I am an instance of class_instigator at address "+hex(id(self))
 
     def __repr__(self):
         return self.default

@@ -60,19 +60,14 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         for command_split in command_full_split:
             rpg.multi_com_list.append(command_split)
 
-    # trigger test
-    bot.say("Output of trigger : " + str(trigger))
-
     # instigator
     instigator = class_create('instigator')
     instigator.nick = trigger.nick
 
-    bot.say("Output of instigator : " + str(instigator))
-
-    instigatortest = MyClass()
-    instigatortest.default = "awesometest"
+    instigatortest = class_instigator()
     bot.say("Output of instigatortest : " + str(instigatortest))
-    bot.say(instigatortest.default)
+    instigatortest.default = "awesometest"
+    bot.say("Output of instigatortest after default over-ridden : " + str(instigatortest))
 
     return
 
