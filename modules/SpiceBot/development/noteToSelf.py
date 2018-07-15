@@ -14,9 +14,9 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('noteToSelf')
+@sopel.module.commands('nts','noteToSelf')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'nts')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
