@@ -43,6 +43,8 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
+    bot.say("test")
+
     # No Empty Commands
     if triggerargsarray == []:
         osd_notice(bot, trigger.nick, "No Command issued.")
