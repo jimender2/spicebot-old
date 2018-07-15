@@ -14,5 +14,4 @@ class rpg_class():
 
 
 class rpg_instigator():
-    self = 'fuck'
     pass
