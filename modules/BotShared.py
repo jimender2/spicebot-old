@@ -805,3 +805,10 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 class botcom_class():
     pass
+
+
+# Create new blank classes
+def class_create(classname):
+    exec("class rpg_class_" + str(classname) + " : pass")
+    newclass = eval('rpg_class_'+classname+"()")
+    return newclass
