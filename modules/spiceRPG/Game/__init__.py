@@ -64,7 +64,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     rpg.instigator = trigger.nick
     set_database_value(bot, 'class_instigator', 'instigator', trigger.nick)
     bot.say(str(trigger))
-    instigator = rpg_instigator(trigger.nick)
+    instigator = rpg_instigator()
     bot.say(str(instigator))
 
     return
