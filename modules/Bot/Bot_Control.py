@@ -77,9 +77,9 @@ def bot_list_directory(bot,botcom):
     for filename in os.listdir(botcom.directory):
         botcom.directory_listing.append(filename)
         if os.path.isfile(os.path.join(botcom.directory, filename)):
-            botcom.filefoldertype.append("[File]")
+            botcom.filefoldertype.append("file")
         else:
-            botcom.filefoldertype.append("[Folder]")
+            botcom.filefoldertype.append("folder")
     return botcom
 
 
@@ -92,7 +92,7 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
     displaymsgarray = []
     displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
-        displaymsgarray.append(str(filefoldertype)+str(filename))
+        displaymsgarray.append(str("["+filefoldertype.title()+"]")+str(filename))
     onscreentext(bot, ['say'], displaymsgarray)
 
 
