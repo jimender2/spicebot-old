@@ -12,7 +12,5 @@ Dynamic Classes
 class rpg_class():
     pass
 
-class rpg_instigator(instigator):
-    def __init__(self,instigator):
-        self = instigator
+class rpg_instigator():
     pass
