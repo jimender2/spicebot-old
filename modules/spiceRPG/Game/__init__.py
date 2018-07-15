@@ -66,26 +66,11 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # trigger test
     bot.say("Output of trigger : " + str(trigger))
 
-    rpg.test = "total crap"
-    bot.say(str(rpg.test))
-
-    # instigator
-    # class rpg_class_instigator():
-        # pass
-    # instigator = rpg_class_instigator()
-    # rpg.instigator = trigger.nick
-    # bot.say("Output of instigator : " + str(instigator))
-
-    # set and test
-    # instigator.nick = trigger.nick
-    # bot.say("Output of instigator.nick : " + str(instigator))
-    # bot.say(str(instigator.nick))
-
     class rpg_class_instigator():
         pass
-    instigatortest = rpg_class_instigator()
-    instigatortest.chan = trigger.sender
-    bot.say(str(instigatortest.chan))
+    instigator = rpg_class_instigator()
+    instigator.nick = trigger.nick
+    bot.say(instigator.nick)
 
     return
 

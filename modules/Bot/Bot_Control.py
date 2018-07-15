@@ -506,7 +506,7 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
         if bot.nick != 'spiceRPG' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
         else:
-            onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", commandeth me to updateth from the Github and restart. I shall return with great haste!")
+            onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
     update(bot, trigger)
     restart(bot, trigger, botcom.service)
 
@@ -521,7 +521,7 @@ def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
         if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
         else:
-            onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return with great haste!")
+            onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
     restart(bot, trigger, botcom.service)
 
 
