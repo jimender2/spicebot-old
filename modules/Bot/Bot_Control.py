@@ -118,7 +118,9 @@ def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
-    bot.say(str(movepath))
+    set_database_value(bot, bot.nick, 'current_admin_dir', str(movepath))
+
+    onscreentext(bot, ['say'], "Directory Changed to : " + str(movepath))
 
 
 def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
