@@ -64,10 +64,14 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     rpg.instigator = trigger.nick
     bot.say(str(trigger))
     # instigator = rpg_instigator()
-    instigator = class rpg_instigator: pass
     bot.say(str(instigator))
     instigator.name = trigger.nick
     bot.say(str(instigator.name))
+
+    bot.say("other test")
+    class rpg_instigatortest: pass
+    instigatortest = rpg_instigatortest()
+    instigatortest.chan = trigger.sender
 
     return
 
