@@ -11,7 +11,7 @@ def class_create(classname):
 
 class class_instigator():
     def __init__(self):
-        self.default = "This is the dynamic class " + str(self.__class__.__name__)
+        self.default = str(self.__class__.__name__)
 
     def __repr__(self):
         return self.default
