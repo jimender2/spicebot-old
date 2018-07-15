@@ -17,7 +17,7 @@ def class_create_new(bot,classname):
 
 class class_instigator():
     def __init__(self):
-        self.default = "I am an instance of "+id(self)
+        self.default = "I am an instance of "+str(id(self))
 
     def __repr__(self):
         return self.default
