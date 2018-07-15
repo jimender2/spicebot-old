@@ -19,10 +19,14 @@ Idea, use exec to dynamically import the subcommands?
 """
 
 
-# basic test
+# Base command
 @sopel.module.commands('rpgtest')
 @sopel.module.thread(True)
-def rpg_test(bot, trigger):
+def mainfunction(bot, trigger):
     rpg = rpg_class()
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
+    execute_main(bot, trigger, triggerargsarray, rpg)
+
+
+def execute_main(bot, trigger, triggerargsarray, rpg):
     onscreentext(bot, trigger.nick, triggerargsarray)
