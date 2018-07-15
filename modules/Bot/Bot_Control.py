@@ -71,11 +71,11 @@ Commands
 
 
 def bot_list_directory(bot,botcom):
-    directory_listing = []
+    botcom.directory_listing = []
     for filename in os.listdir(botcom.directory):
         directory_listing.append(filename)
         bot.say(filename)
-    return botcom.directory
+    return botcom.directory_listing
 
 
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
