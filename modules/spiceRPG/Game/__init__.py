@@ -61,7 +61,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
             rpg.multi_com_list.append(command_split)
 
     # instigator
-    instigator = rpg_instigator(trigger.nick)
+    instigator = rpg_instigator()
     bot.say(str(instigator))
 
     return
