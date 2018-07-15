@@ -69,8 +69,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     bot.say("Output of instigator : " + str(instigator))
 
-    instigatortest = class_create('instigatortest')
-    instigatortest.__repr__ = "test"
+    instigatortest = MyClass()
     bot.say("Output of instigatortest : " + str(instigatortest))
 
     return
