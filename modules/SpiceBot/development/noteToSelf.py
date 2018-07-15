@@ -37,6 +37,7 @@ def execute_main(bot, trigger, triggerargsarray):
             message = get_trigger_arg(bot, messages, i)
             onscreentext(bot, ['say'], message)
             i = i + 1
+        reset_database_value(bot, instigator, databasekey)
     else:
         now = datetime.datetime.now()
         time = datetime.datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
