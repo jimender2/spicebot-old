@@ -517,6 +517,7 @@ def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
         osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
         return
 
+
     for channel in bot.channels:
         bot.say(bot.nick.lower())
         if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
