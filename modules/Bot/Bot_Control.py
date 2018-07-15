@@ -77,7 +77,6 @@ def bot_list_directory(bot,botcom):
     return botcom.directory
 
 
-
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     botcom.directory_listing = bot_list_directory(bot,botcom)
@@ -86,7 +85,7 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
         return
     displaymsgarray = []
     displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
-    for filename in botcom.directory:
+    for filename in botcom.directory_listing:
         displaymsgarray.append(filename)
     onscreentext(bot, ['say'], displaymsgarray)
 
