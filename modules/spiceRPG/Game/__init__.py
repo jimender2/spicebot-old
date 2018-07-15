@@ -69,6 +69,10 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     bot.say("Output of instigator : " + str(instigator))
 
+    instigatortest = class_create('instigatortest')
+    instigatortest.__str__(self) = "test"
+    bot.say("Output of instigatortest : " + str(instigatortest))
+
     return
 
     # Cycle through command array
