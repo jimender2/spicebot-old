@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+
 # sopel imports
 import sopel.module
 from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
@@ -72,9 +73,14 @@ Commands
 
 def bot_list_directory(bot,botcom):
     botcom.directory_listing = []
+    botcom.filefoldertype = []
     for filename in os.listdir(botcom.directory):
         botcom.directory_listing.append(filename)
-    return botcom.directory_listing
+        if os.path.isfile(os.path.join(botcom.directory, filename)):
+            botcom.filefoldertype.append("[File]")
+        else:
+            botcom.filefoldertype.append("[Folder]")
+    return botcom
 
 
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
@@ -85,8 +91,8 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
         return
     displaymsgarray = []
     displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
-    for filename in botcom.directory_listing:
-        displaymsgarray.append(filename)
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        displaymsgarray.append(str(filefoldertype)+str(filename))
     onscreentext(bot, ['say'], displaymsgarray)
 
 
