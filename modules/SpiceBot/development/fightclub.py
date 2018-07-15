@@ -29,5 +29,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    message = get_trigger_arg(bot, replies, 'random')
+    message = get_trigger_arg(bot, rules, 'random')
     onscreentext(bot,['say'],message)

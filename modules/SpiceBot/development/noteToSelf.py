@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # get notes
     if not command:
-        messages = get_database_value(bot, target, databasekey) or []
+        messages = get_database_value(bot, instigator, databasekey) or []
         numberOfMessages = (len(messages) - 1)
         i = 0
         while (i <= numberOfMessages):
@@ -38,6 +38,6 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(message)
             i = i + 1
     else:
-        time = datetime.datetime.strptime(dayandtime, '%m/%d/%Y %H:%M:%S')
+        time = datetime.datetime.strptime(datetime.now(), '%m/%d/%Y %H:%M:%S')
         input = time + command
         adjust_database_array(bot, target, input, databasekey, 'add')
