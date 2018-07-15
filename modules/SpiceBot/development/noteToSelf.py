@@ -31,8 +31,8 @@ def execute_main(bot, trigger, triggerargsarray):
     # get notes
     if not command:
         messages = get_database_value(bot, instigator, databasekey) or []
-        numberOfMessages = (len(messages) - 1)
-        i = 0
+        numberOfMessages = (len(messages))
+        i = 1
         while (i <= numberOfMessages):
             message = get_trigger_arg(bot, messages, i)
             onscreentext(bot, ['say'], message)
