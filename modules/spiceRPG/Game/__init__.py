@@ -63,8 +63,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     rpg.instigator = trigger.nick
     bot.say(str(trigger))
-    instigator = rpg_instigator()
-    setattr(instigator, 'self', trigger.nick)
+    # instigator = rpg_instigator()
+    instigator = class rpg_instigator: pass
     bot.say(str(instigator))
     instigator.name = trigger.nick
     bot.say(str(instigator.name))
