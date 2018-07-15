@@ -38,6 +38,7 @@ def execute_main(bot, trigger, triggerargsarray):
             bot.say(message)
             i = i + 1
     else:
-        time = datetime.datetime.strptime(datetime.datetime.now(), '%m/%d/%Y %H:%M:%S')
+        now = datetime.datetime.now()
+        time = datetime.datetime.strptime(now, '%m/%d/%Y %H:%M:%S')
         input = time + command
         adjust_database_array(bot, target, input, databasekey, 'add')
