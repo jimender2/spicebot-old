@@ -104,9 +104,10 @@ def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
             validfolderoptions.append(filename)
 
     movepath = get_trigger_arg(bot, triggerargsarray, 0)
+    bot.say(str(movepath))
     if movepath not in validfolderoptions:
         if movepath in botcom.directory_listing and movepath not in validfolderoptions:
-            onscreentext(bot, ['say'], "YOu can't Change Directory into a File!")
+            onscreentext(bot, ['say'], "You can't Change Directory into a File!")
         else:
             onscreentext(bot, ['say'], "Invalid Folder Path")
         return
