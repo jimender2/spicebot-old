@@ -8,6 +8,6 @@ def class_create(bot,classname):
     eval_str = str("class rpg_class_" + classname + "()")
     bot.say(str(exec_str))
     bot.say(str(eval_str))
-    exec(exec_str)
-    newclass = eval(eval_str)
+    exec("class rpg_class_" + classname + " : pass")
+    newclass = eval("class rpg_class_" + classname + "()")
     return newclass
