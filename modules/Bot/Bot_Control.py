@@ -518,7 +518,8 @@ def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
         return
 
     for channel in bot.channels:
-        if bot.nick != 'spiceRPG' and bot.nick != 'spiceRPGdev':
+        bot.say(str(bot.nick))
+        if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
         else:
             onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return with great haste!")
