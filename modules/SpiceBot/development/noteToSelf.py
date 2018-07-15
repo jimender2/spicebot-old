@@ -41,4 +41,4 @@ def execute_main(bot, trigger, triggerargsarray):
         now = datetime.datetime.now()
         time = datetime.datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
         input = time + command
-        adjust_database_array(bot, target, input, databasekey, 'add')
+        adjust_database_array(bot, instigator, input, databasekey, 'add')
