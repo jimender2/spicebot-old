@@ -79,22 +79,14 @@ def bot_list_directory(bot,botcom):
         joindpath = os.path.join(botcom.directory, filename)
         if os.path.isfile(joindpath):
             botcom.filefoldertype.append("file")
-            bot.say("file " + filename)
         else:
             botcom.filefoldertype.append("folder")
-            bot.say("folder " + filename)
-        if not os.path.isdir(joindpath):
-            botcom.filefoldertype.append("file")
-            bot.say("file " + filename)
-        else:
-            botcom.filefoldertype.append("folder")
-            bot.say("folder " + filename)
     return botcom
 
 
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    botcom.directory_listing = bot_list_directory(bot,botcom)
+    botcom = bot_list_directory(bot,botcom)
     if botcom.directory == []:
         onscreentext(bot, ['say'], "It appears this directory is empty.")
         return
