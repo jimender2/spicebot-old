@@ -73,7 +73,7 @@ Commands
 def bot_list_directory(bot,botcom):
     directory_listing = []
     for filename in os.listdir(botcom.directory):
-        directory_listing.append(botcom.directory)
+        directory_listing.append(filename)
     return botcom.directory
 
 
