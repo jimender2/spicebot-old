@@ -503,7 +503,10 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
         return
 
     for channel in bot.channels:
-        onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+        if bot.nick != 'spiceRPG':
+            onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+        else:
+            onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", commandeth me to updateth from the Github and restart. I shall return with great haste!")
     update(bot, trigger)
     restart(bot, trigger, botcom.service)
 
@@ -515,7 +518,10 @@ def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
         return
 
     for channel in bot.channels:
-        onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
+        if bot.nick != 'spiceRPG':
+            onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
+        else:
+            onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return with great haste!")
     restart(bot, trigger, botcom.service)
 
 
