@@ -18,7 +18,7 @@ from BotShared import *
 
 # author jimender2
 
-commandarray = ["accept","delete","money"]
+commandarray = ["add","remove","count", "last"]
 
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
