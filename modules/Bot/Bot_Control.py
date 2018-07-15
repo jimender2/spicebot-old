@@ -76,6 +76,7 @@ def bot_list_directory(bot,botcom):
     botcom.filefoldertype = []
     for filename in os.listdir(botcom.directory):
         botcom.directory_listing.append(filename)
+        bot.say(str(os.path.join(botcom.directory, filename)))
         if os.path.isfile(os.path.join(botcom.directory, filename)):
             botcom.filefoldertype.append("file")
             bot.say("file " + filename)
