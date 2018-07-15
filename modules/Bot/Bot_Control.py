@@ -82,13 +82,13 @@ def bot_list_directory(bot,botcom):
             bot.say("file " + filename)
         else:
             botcom.filefoldertype.append("folder")
-            bot.say("file " + filename)
+            bot.say("folder " + filename)
         if not os.path.isdir(joindpath):
             botcom.filefoldertype.append("file")
             bot.say("file " + filename)
         else:
             botcom.filefoldertype.append("folder")
-            bot.say("file " + filename)
+            bot.say("folder " + filename)
     return botcom
 
 
