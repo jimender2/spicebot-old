@@ -14,5 +14,5 @@ class rpg_class():
 
 
 class rpg_instigator():
-    self = get_database_value(bot, 'class_instigator', 'instigator')
+    self = 'fuck'
     pass
