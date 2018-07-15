@@ -34,6 +34,8 @@ def rpg_trigger_main(bot, trigger):
 @module.rule('^(?:,rpg)\s+?.*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
+    class rpg_class():
+        pass
     rpg = rpg_class()
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
@@ -60,21 +62,22 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         for command_split in command_full_split:
             rpg.multi_com_list.append(command_split)
 
+    # trigger test
+    bot.say("Output of trigger : " + str(trigger))
+
     # instigator
-    rpg.instigator = trigger.nick
-    bot.say(str(trigger))
+    class rpg_instigator():
+        pass
     instigator = rpg_instigator()
-    bot.say(str(instigator))
-    instigator.name = trigger.nick
-    bot.say(str(instigator.name))
+    rpg.instigator = trigger.nick
+    bot.say("Output of instigator : " + str(instigator))
+
+    # set and test
+    instigator.nick = trigger.nick
+    bot.say("Output of instigator.nick : " + str(instigator))
+    bot.say(str(instigator.nick))
 
     bot.say("other test")
-
-    class rpg_instigatortest():
-        pass
-    instigatortest = rpg_instigatortest()
-    instigatortest.chan = trigger.sender
-    bot.say(str(instigatortest.chan))
 
     return
 
