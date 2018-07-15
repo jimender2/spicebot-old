@@ -33,10 +33,10 @@ def execute_main(bot, trigger):
             if inputstring not in existingarray:
                 adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
                 message = "Added to database."
-        bot.say(message)
-        else:
-            message = "That response is already in the database."
-        bot.say(message)
+                bot.say(message)
+            else:
+                message = "That response is already in the database."
+                bot.say(message)
         elif command == "remove":
             if inputstring not in existingarray:
                 message = "That response was not found in the database."

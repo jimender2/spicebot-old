@@ -33,14 +33,15 @@ def execute_main(bot, trigger, triggerargsarray):
         if command == "accept":
             amo = get_database_value(bot, instigator, 'bets') or '0'
             amount = int(amo)
-        reset_database_value(bot,instigator, 'bets')
-        spicebucks(bot, instigator, "plus", amount)
+            reset_database_value(bot,instigator, 'bets')
+            spicebucks(bot, instigator, "plus", amount)
         if amount == 0:
             bot.say("There are no bribes for you to accept")
         else:
             bot.say(instigator + " accepted the bribe of $" + amount + ".")
-        elif command == "decline":
-            bot.say(instigator + " declines a bribe worth $" + amount + ".")
+    elif command == "decline":
+        bot.say(instigator + " declines a bribe worth $" + amount + ".")
+        reset_database_value(bot,instigator, 'bets')
 
     else:
         if target.lower() in [u.lower() for u in bot.users]:
