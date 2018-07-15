@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray)
 
 
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
