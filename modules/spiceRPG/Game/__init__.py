@@ -62,9 +62,12 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # trigger test
     bot.say("Output of trigger : " + str(trigger))
+
+    # instigator
     instigator = class_create('instigator')
     instigator.nick = trigger.nick
-    bot.say(instigator.nick)
+
+    bot.say("Output of instigator : " + str(instigator))
 
     return
 
