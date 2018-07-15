@@ -112,7 +112,7 @@ def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
         return
 
     if movepath == "..":
-        movepath = os.path.dirname(os.path.dirname(__file__))
+        movepath = os.path.dirname(os.path.dirname(botcom.directory))
     else:
         movepath = os.path.join(botcom.directory, str(movepath+"/"))
 
