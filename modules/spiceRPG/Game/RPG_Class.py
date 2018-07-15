@@ -11,5 +11,6 @@ def class_create(classname):
 
 class MyClass():
     def __repr__(self):
-        defaultvalue = self.nick or "I am an instance of MyClass at address "+hex(id(self))
+        defaultvalue = self.default or "I am an instance of MyClass at address "+hex(id(self))
+        return defaultvalue
     pass
