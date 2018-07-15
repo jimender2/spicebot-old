@@ -25,9 +25,6 @@ Idea, use exec to dynamically import the subcommands?
 def rpg_trigger_main(bot, trigger):
     rpg = rpg_class()
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    if triggerargsarray == []:
-        osd_notice(bot, trigger.nick, "No Command issued.")
-        return
     execute_main(bot, trigger, triggerargsarray, rpg)
 
 
@@ -35,18 +32,18 @@ def rpg_trigger_main(bot, trigger):
 # @module.rule('^(?:rpg)\s+?.*')
 # @module.rule('^(?:!rpg)\s+?.*')
 # @module.rule('^(?:,rpg)\s+?.*')
-@module.rule('^(?:rpg)\s+.*')
+@module.rule('^(?:rpg)*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
     rpg = rpg_class()
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    if triggerargsarray == []:
-        osd_notice(bot, trigger.nick, "No Command issued.")
-        return
     execute_main(bot, trigger, triggerargsarray, rpg)
 
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
+    if triggerargsarray == []:
+        osd_notice(bot, trigger.nick, "No Command issued.")
+        return
     onscreentext(bot, trigger.nick, triggerargsarray)
