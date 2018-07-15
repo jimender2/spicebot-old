@@ -35,10 +35,11 @@ def execute_main(bot, trigger, triggerargsarray):
         i = 0
         while (i <= numberOfMessages):
             message = get_trigger_arg(bot, messages, i)
-            bot.say(message)
+            onscreentext(bot, ['say'], message)
             i = i + 1
     else:
         now = datetime.datetime.now()
         time = datetime.datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
-        input = time + command
+        input = time + " " + command
         adjust_database_array(bot, instigator, input, databasekey, 'add')
+        onscreentext(bot, ['say'], "I will remeber that as best as I can")
