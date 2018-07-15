@@ -28,7 +28,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     botcom = botcom_class()
@@ -68,6 +68,32 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
 """
 Commands
 """
+
+
+def bot_list_directory(bot,botcom):
+    directory_listing = []
+    for filename in os.listdir(botcom.directory):
+        directory_listing.append(botcom.directory)
+    return botcom.directory
+
+
+
+def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    botcom.directory_listing = bot_list_directory(bot,botcom)
+    if botcom.directory == []:
+        onscreentext(bot, ['say'], "It appears this directory is empty.")
+        return
+    displaymsgarray = []
+    displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
+    for filename in botcom.directory:
+        displaymsgarray.append(filename)
+    onscreentext(bot, ['say'], displaymsgarray)
+
+
+def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    bot.say("wip")
 
 
 def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
