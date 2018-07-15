@@ -35,7 +35,7 @@ def rpg_trigger_main(bot, trigger):
 # @module.rule('^(?:rpg)\s+?.*')
 # @module.rule('^(?:!rpg)\s+?.*')
 # @module.rule('^(?:,rpg)\s+?.*')
-@module.rule('^(?:rpg)\s+*')
+@module.rule('^(?:rpg)\s+.*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
     rpg = rpg_class()
