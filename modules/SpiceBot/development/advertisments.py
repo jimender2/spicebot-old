@@ -18,6 +18,8 @@ from BotShared import *
 
 # author jimender2
 
+commandarray = ["accept","delete","money"]
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
