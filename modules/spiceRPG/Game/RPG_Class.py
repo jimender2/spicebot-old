@@ -9,5 +9,5 @@ def class_create(bot,classname):
     bot.say(str(exec_str))
     bot.say(str(eval_str))
     exec("class rpg_class_" + classname + " : pass")
-    newclass = eval("class rpg_class_" + classname + "()")
+    newclass = eval("class rpg_class()")
     return newclass
