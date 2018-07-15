@@ -29,9 +29,9 @@ def rpg_trigger_main(bot, trigger):
 
 
 # respond to alternate start for command
-@module.rule('^(?:rpg)*')
-@module.rule('^(?:!rpg)*')
-@module.rule('^(?:,rpg)*')
+@module.rule('^(?:rpg)\s+?.*')
+@module.rule('^(?:!rpg)\s+?.*')
+@module.rule('^(?:,rpg)\s+?.*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
     rpg = rpg_class()
