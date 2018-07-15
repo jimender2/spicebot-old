@@ -159,6 +159,10 @@ class race benefits for each major location
 """
 
 """
+monster mutates,,, enraged itsy bitsy
+"""
+
+"""
 #
 # Seperate Targets from Commands #
 #
