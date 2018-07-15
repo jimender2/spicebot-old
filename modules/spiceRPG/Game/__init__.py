@@ -8,10 +8,6 @@ from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
 
-from .Database_adjust import *
-from .Array_manipulation import *
-from .Display_Text import *
-from .RPG_Class import *
 from .Global_Vars import *
 
 """
