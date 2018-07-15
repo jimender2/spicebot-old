@@ -74,6 +74,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         pass
     instigatortest = rpg_instigatortest()
     instigatortest.chan = trigger.sender
+    bot.say(str(instigatortest.chan))
 
     return
 
