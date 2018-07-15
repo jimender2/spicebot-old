@@ -4,7 +4,8 @@ Dynamic Classes
 
 
 def class_create(classname):
-    exec("class rpg_class_" + classname + " : pass")
+    exec_str = str("class rpg_class_" + classname + " : pass")
+    eval_str = str("class rpg_class_" + classname)
     newclass = str("class rpg_class_" + classname)
-    newclass = eval(newclass)
+    newclass = eval(eval_str)
     return newclass
