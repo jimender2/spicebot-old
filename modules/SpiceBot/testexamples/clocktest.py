@@ -11,7 +11,8 @@ from BotShared import *
 
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
-from SpicebotShared import *
+from BotShared import *
+
 
 @sopel.module.commands('testclock')
 def mainfunction(bot, trigger):
@@ -19,13 +20,14 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
+
 def execute_main(bot, trigger, triggerargsarray):
     commandused = get_trigger_arg(bot, triggerargsarray,1)
     if commandused == 'on':
         set_database_value(bot,bot.nick,'testclock',1)
     elif commandused == 'off':
         set_database_value(bot,bot.nick,'testclock',0)
-    elif commandused=='check':
+    elif commandused == 'check':
         currentsetting = get_database_value(bot,bot.nick,'testclock')
         bot.say(str(currentsetting))
 
@@ -34,6 +36,6 @@ def execute_main(bot, trigger, triggerargsarray):
 def countdown(bot):
     currentsetting = get_database_value(bot,bot.nick,'testclock')
     if currentsetting == 1:
-        channel='##spicebottest'
+        channel = '##spicebottest'
         dispmsg = '15 secs have passed'
         onscreentext(bot, channel, dispmsg)
