@@ -78,9 +78,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # bot.say("Output of instigator.nick : " + str(instigator))
     # bot.say(str(instigator.nick))
 
-    class rpg_class_instigator():
+    class rpg_class_instigatorb():
         pass
-    instigatortest = rpg_class_instigator()
+    instigatortest = rpg_class_instigatorb()
     instigatortest.chan = trigger.sender
     bot.say(str(instigatortest.chan))
 
