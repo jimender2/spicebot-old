@@ -15,5 +15,6 @@ class rpg_class():
 
 class rpg_instigator():
     def __init__(self):
-        return "instigatortest"
+        self = "instigatortest"
+        return self
     pass
