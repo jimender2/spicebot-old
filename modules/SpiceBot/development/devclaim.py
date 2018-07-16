@@ -45,7 +45,7 @@ SeanCost = 1
 
 @sopel.module.commands('claim')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
