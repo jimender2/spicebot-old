@@ -22,6 +22,9 @@ testarray = ["test1", "test2", "test3", "test4", "test5",]
 
 commandarray = ["add","remove","count", "last"]
 
+def setup(self):
+    # Check everything here
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
