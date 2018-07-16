@@ -62,15 +62,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # instigator
     instigator = class_create('instigator')
-    instigator.nick = trigger.nick
-
-    # instigatortest = class_instigator()
-    instigatortest = class_create('instigator')
-    bot.say("Output of instigatortest : " + str(instigatortest))
-    instigatortest.default = "awesometest"
-    bot.say("Output of instigatortest after default over-ridden : " + str(instigatortest))
-
-    return
+    instigator.default = trigger.nick
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
@@ -88,5 +80,5 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         command_main = get_trigger_arg(bot, triggerargsarray_part, 1)
 
         # Run command process
-        command_main_process(bot, trigger, rpg)
-    onscreentext(bot, trigger.nick, triggerargsarray)
+        # command_main_process(bot, trigger, rpg)
+        onscreentext(bot, trigger.nick, command_full)
