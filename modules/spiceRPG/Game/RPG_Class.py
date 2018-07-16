@@ -3,11 +3,11 @@ Dynamic Classes
 """
 
 compiletext = """
-def __init__(self):
-    self.default = str(self.__class__.__name__)
-def __repr__(self):
-    return self.default
-pass
+    def __init__(self):
+        self.default = str(self.__class__.__name__)
+    def __repr__(self):
+        return self.default
+    pass
 """
 
 
