@@ -87,7 +87,6 @@ def database_initialize(bot, nick, array, database):
     existingarray = get_database_value(bot, bot.nick, databasekey)
     if not existingarray:
         arraycount = (len(array) - 1)
-        bot.say("entered")
         i = 0
         while (i <= arraycount):
             inputstring = array[i]
