@@ -74,6 +74,7 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
+            bot.say(str(textpartsleft) + " " + str(textparts))
             if text_type == 'say':
                 bot.say(combinedline)
             elif target.startswith("#"):
