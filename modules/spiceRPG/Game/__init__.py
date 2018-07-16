@@ -81,4 +81,4 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Run command process
         # command_main_process(bot, trigger, rpg)
-        onscreentext(bot, instigator, command_full)
+        onscreentext(bot, str(instigator), command_full)
