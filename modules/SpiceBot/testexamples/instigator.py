@@ -24,10 +24,11 @@ def execute_main(bot, trigger):
 
     # instigator
     instigator = class_create('instigator')
+    bot.say(".default before " + instigator.default)
     instigator.default = trigger.nick
+    bot.say(".default after " + instigator.default)
 
-    bot.say("string wrapped "+ str(instigator))
-    bot.say(".default " + instigator.default)
+    bot.say("string wrapped " + str(instigator))
     bot.say("no wrap " + instigator)
 
     if instigator in botcom.users_all:
