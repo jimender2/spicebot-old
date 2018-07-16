@@ -220,9 +220,9 @@ def targetcheck(bot, botcom, target):
     # Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
-
+    target = target.lower()
     # Target is instigator
-    if target == botcom.instigator:
+    if target == instigator.default:
         return validtarget, validtargetmsg
 
     # Null Target
