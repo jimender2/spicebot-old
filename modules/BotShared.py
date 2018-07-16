@@ -813,12 +813,8 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 
 def class_create(classname):
     compiletext = """
-        def __init__(self):
-            self.default = str(self.__class__.__name__)
-        def __repr__(self):
-            return_default = str(self.default)
-            return_default = return_default.replace("'","")
-            return return_default
+        def __str__(self):
+            return self.default
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
