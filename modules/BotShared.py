@@ -819,6 +819,7 @@ def class_create(classname):
             return self.default
         def __str__(self):
             return self.default
+        self.default = str(self.default)
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
