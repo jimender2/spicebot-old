@@ -35,10 +35,10 @@ def bot_command_hub(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    bot_command_process(bot,trigger,botcom,triggerargsarray)
+    bot_command_process(bot,trigger,triggerargsarray)
 
 
-def bot_command_process(bot,trigger,botcom,triggerargsarray):
+def bot_command_process(bot,trigger,triggerargsarray):
 
     # Dyno Classes
     botcom = class_create('bot')
