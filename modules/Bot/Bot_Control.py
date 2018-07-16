@@ -616,8 +616,9 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
 def restart(bot, trigger, service):
     onscreentext(bot, ['say'], "Restarting Service...")
     os.system("sudo service " + str(service) + " restart")
-    onscreentext(bot, ['say'], "If you see this, the service is hanging. Making another attempt.")
-    os.system("sudo service " + str(service) + " restart")
+    if bot.nick == service:
+        onscreentext(bot, ['say'], "If you see this, the service is hanging. Making another attempt.")
+        os.system("sudo service " + str(service) + " restart")
 
 
 def update(bot, trigger,targetbot):
