@@ -82,3 +82,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         # Run command process
         # command_main_process(bot, trigger, rpg)
         onscreentext(bot, str(instigator), command_full)
+
+        osd(bot, botcom.channel_current, 'say', command_full)
+
+        osd(bot, botcom.channel_current, 'action', command_full)
+
+        osd(bot, str(instigator), 'notice', text_array)

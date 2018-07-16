@@ -22,6 +22,67 @@ def osd_notice(bot, target, textarraycomplete):
     onscreentext(bot, [target], passthrough)
 
 
+def osd(bot, target_array, text_type, text_array):
+
+    # if text_array is a string, make it an array
+    textarraycomplete = []
+    if not isinstance(text_array, list):
+        textarraycomplete.append(str(text_array))
+    else:
+        for x in text_array:
+            textarraycomplete.append(str(x))
+
+    # if target_array is a string, make it an array
+    texttargetarray = []
+    if not isinstance(target_array, list):
+        target = nick_actual(bot,str(target_array))
+        texttargetarray.append(target)
+    else:
+        for target in target_array:
+            target = nick_actual(bot,str(target_array))
+            texttargetarray.append(target)
+
+    # Make sure we don't cross over IRC limits
+    combinedtextarray = []
+    currentstring = ''
+    for textstring in textarraycomplete:
+        if currentstring == '':
+            currentstring = textstring
+        elif len(textstring) > osd_limit:
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+                currentstring = ''
+            combinedtextarray.append(textstring)
+        else:
+            tempstring = str(currentstring + "   " + textstring)
+            if len(tempstring) <= osd_limit:
+                currentstring = tempstring
+            else:
+                combinedtextarray.append(currentstring)
+                currentstring = textstring
+    if currentstring != '':
+        combinedtextarray.append(currentstring)
+
+    # Display the text
+    for target in texttargetarray:
+        if text_type == 'notice':
+            combinedtextarray.insert(0, target + ", ")
+        textparts = len(combinedtextarray)
+        textpartsleft = textparts
+        for combinedline in combinedtextarray:
+            textpartsleft = textpartsleft - 1
+            if text_type == 'say':
+                bot.say(combinedline)
+            elif target.startswith("#"):
+                bot.msg(target, combinedline)
+            elif text_type == 'notice':
+                bot.notice(combinedline, target)
+            elif text_type == 'action' and textpartsleft == textparts:
+                bot.action(combinedline,user)
+            else:
+                bot.say(combinedline)
+
+
 def onscreentext(bot, texttargetarray, textarraycomplete):
     if not isinstance(textarraycomplete, list):
         texttoadd = str(textarraycomplete)
