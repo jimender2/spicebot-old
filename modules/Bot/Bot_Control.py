@@ -32,7 +32,6 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 @nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    botcom = class_create('bot')
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
@@ -41,19 +40,18 @@ def bot_command_hub(bot, trigger):
 
 def bot_command_process(bot,trigger,botcom,triggerargsarray):
 
-    # Basics
-    botcom.instigator = trigger.nick
-    botcom.channel_current = trigger.sender
-    if not botcom.channel_current.startswith("#"):
-        botcom.channel_priv = 1
-        botcom.channel_real = 0
-    else:
-        botcom.channel_priv = 0
-        botcom.channel_real = 1
-    botcom.service = bot.nick
+    # Dyno Classes
+    botcom = class_create('bot')
+    instigator = class_create('instigator')
+    instigator.default = trigger.nick
+
     # time
     botcom.now = time.time()
+
+    # User
     botcom = bot_command_users(bot,botcom)
+
+    # Channels
     botcom = bot_command_channels(bot,botcom)
 
     # Command Used
@@ -62,7 +60,7 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
         triggerargsarray.remove(botcom.command_main)
     if botcom.command_main == 'help':
         botcom.command_main = 'docs'
-    bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,triggerargsarray)')
+    bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,instigator)')
     eval(bot_command_function_run)
 
 
@@ -73,8 +71,8 @@ Commands
 
 def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -91,8 +89,8 @@ def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     validfolderoptions = ['..','reset']
@@ -128,17 +126,17 @@ def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
 
 
 def bot_command_function_canyouseeme(bot,trigger,botcom,triggerargsarray):
-    onscreentext(bot, ['say'], botcom.instigator + ", I can see you.")
+    onscreentext(bot, ['say'], instigator + ", I can see you.")
 
 
 def bot_command_function_owner(bot,trigger,botcom,triggerargsarray):
     ownerlist = get_trigger_arg(bot, botcom.owner, 'list')
-    osd_notice(bot, botcom.instigator, "Bot Owners are: " + ownerlist)
+    osd_notice(bot, instigator, "Bot Owners are: " + ownerlist)
 
 
 def bot_command_function_admin(bot,trigger,botcom,triggerargsarray):
     adminlist = get_trigger_arg(bot, botcom.botadmins, 'list')
-    osd_notice(bot, botcom.instigator, "Bot Admin are: " + adminlist)
+    osd_notice(bot, instigator, "Bot Admin are: " + adminlist)
 
 
 def bot_command_function_gender(bot,trigger,botcom,triggerargsarray):
@@ -163,43 +161,43 @@ def bot_command_function_channel(bot,trigger,botcom,triggerargsarray):
     # OP list
     if subcommand.lower() == 'op':
         oplist = get_trigger_arg(bot, botcom.chanops, 'list')
-        osd_notice(bot, botcom.instigator, "Channel Operators are: " + oplist)
+        osd_notice(bot, instigator, "Channel Operators are: " + oplist)
         return
 
     # Voice List
     if subcommand.lower() == 'voice':
         voicelist = get_trigger_arg(bot, botcom.chanvoice, 'list')
-        osd_notice(bot, botcom.instigator, "Channel VOICE are: " + voicelist)
+        osd_notice(bot, instigator, "Channel VOICE are: " + voicelist)
         return
 
 
 def bot_command_function_on(bot,trigger,botcom,triggerargsarray):
 
-    target = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
-    if target != botcom.instigator and botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function on other users.")
+    target = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.users_all], 1) or instigator
+    if target != instigator and instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function on other users.")
         return
     bot_opted_users = get_database_value(bot, bot.nick, 'users_blocked') or []
     if target not in bot_opted_users:
-        if target == botcom.instigator:
-            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
+        if target == instigator:
+            osd_notice(bot, instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
-            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
+            osd_notice(bot, instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'add')
 
 
 def bot_command_function_off(bot,trigger,botcom,triggerargsarray):
-    target = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.users_all], 1) or botcom.instigator
-    if target != botcom.instigator and botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function on other users.")
+    target = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.users_all], 1) or instigator
+    if target != instigator and instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function on other users.")
         return
     bot_opted_users = get_database_value(bot, channeltarget, 'users_blocked') or []
     if target in bot_blocked_users:
-        if target == botcom.instigator:
-            osd_notice(bot, botcom.instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
+        if target == instigator:
+            osd_notice(bot, instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
-            osd_notice(bot, botcom.instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
+            osd_notice(bot, instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
         return
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'del')
 
@@ -212,7 +210,7 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
         else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+            osd_notice(bot, instigator, "You must specify a valid channel.")
             return
 
     # SubCommand used
@@ -240,26 +238,26 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
                 botmessagearray.append(command+"[E]")
             else:
                 botmessagearray.append(command+"[A]")
-        osd_notice(bot, botcom.instigator, botmessagearray)
+        osd_notice(bot, instigator, botmessagearray)
 
     # Enable/Disable
     if subcommand == 'enable' or subcommand == 'disable':
 
-        if botcom.instigator not in botcom.opadmin:
-            osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        if instigator not in botcom.opadmin:
+            osd_notice(bot, instigator, "You are unauthorized to use this function.")
             return
 
         module_adjust = get_trigger_arg(bot, [x for x in triggerargsarray if x in bot_visible_coms or x == 'all'], 1) or 'no_module'
         if module_adjust == 'no_module':
-            osd_notice(bot, botcom.instigator, "What module do you want to "+str(subcommand)+" for " + channeltarget + "?")
+            osd_notice(bot, instigator, "What module do you want to "+str(subcommand)+" for " + channeltarget + "?")
             return
 
         if module_adjust in bot_enabled_coms and subcommand == 'enable' and module_adjust != 'all':
-            osd_notice(bot, botcom.instigator, "It looks like "+str(module_adjust)+" is already "+subcommand.lower()+"d for " + channeltarget + "?")
+            osd_notice(bot, instigator, "It looks like "+str(module_adjust)+" is already "+subcommand.lower()+"d for " + channeltarget + "?")
             return
 
         if module_adjust not in bot_enabled_coms and subcommand == 'disable' and module_adjust != 'all':
-            osd_notice(bot, botcom.instigator, "It looks like "+str(module_adjust)+" is already "+subcommand.lower()+"d for " + channeltarget + "?")
+            osd_notice(bot, instigator, "It looks like "+str(module_adjust)+" is already "+subcommand.lower()+"d for " + channeltarget + "?")
             return
 
         if module_adjust == 'all':
@@ -276,8 +274,8 @@ def bot_command_function_modules(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_msg(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     # Channel
@@ -286,22 +284,22 @@ def bot_command_function_msg(bot,trigger,botcom,triggerargsarray):
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
         else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+            osd_notice(bot, instigator, "You must specify a valid channel.")
             return
     if channeltarget in triggerargsarray:
         triggerargsarray.remove(channeltarget)
 
     botmessage = get_trigger_arg(bot, triggerargsarray, 0)
     if not botmessage:
-        osd_notice(bot, botcom.instigator, "You must specify a message.")
+        osd_notice(bot, instigator, "You must specify a message.")
         return
     onscreentext(bot, [channeltarget], botmessage)
 
 
 def bot_command_function_action(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     # Channel
@@ -310,22 +308,22 @@ def bot_command_function_action(bot,trigger,botcom,triggerargsarray):
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
         else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+            osd_notice(bot, instigator, "You must specify a valid channel.")
             return
     if channeltarget in triggerargsarray:
         triggerargsarray.remove(channeltarget)
 
     botmessage = get_trigger_arg(bot, triggerargsarray, 0)
     if not botmessage:
-        osd_notice(bot, botcom.instigator, "You must specify a message.")
+        osd_notice(bot, instigator, "You must specify a message.")
         return
     onscreentext_action(bot, [channeltarget], botmessage)
 
 
 def bot_command_function_block(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.opadmin:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.opadmin:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     # Channel
@@ -334,7 +332,7 @@ def bot_command_function_block(bot,trigger,botcom,triggerargsarray):
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
         else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+            osd_notice(bot, instigator, "You must specify a valid channel.")
             return
     if channeltarget in triggerargsarray:
         triggerargsarray.remove(channeltarget)
@@ -373,7 +371,7 @@ def bot_command_function_block(bot,trigger,botcom,triggerargsarray):
                         blocknewlist.append(word)
 
         if blocknewlist == []:
-            osd_notice(bot, botcom.instigator, "No Valid Users found to block.")
+            osd_notice(bot, instigator, "No Valid Users found to block.")
             return
 
         blocknewlisttext = get_trigger_arg(bot, blocknewlist, 'list')
@@ -400,8 +398,8 @@ def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
 
     if main_subcommand == 'block':
 
-        if botcom.instigator not in botcom.opadmin:
-            osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        if instigator not in botcom.opadmin:
+            osd_notice(bot, instigator, "You are unauthorized to use this function.")
             return
 
         # Channel
@@ -410,7 +408,7 @@ def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
             if botcom.channel_current.startswith('#'):
                 channeltarget = botcom.channel_current
             else:
-                osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+                osd_notice(bot, instigator, "You must specify a valid channel.")
                 return
         if channeltarget in triggerargsarray:
             triggerargsarray.remove(channeltarget)
@@ -449,7 +447,7 @@ def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
                             blocknewlist.append(word)
 
             if blocknewlist == []:
-                osd_notice(bot, botcom.instigator, "No Valid Users found to block from github.")
+                osd_notice(bot, instigator, "No Valid Users found to block from github.")
                 return
 
             blocknewlisttext = get_trigger_arg(bot, blocknewlist, 'list')
@@ -467,8 +465,8 @@ def bot_command_function_github(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     # Channel
@@ -477,7 +475,7 @@ def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
         if botcom.channel_current.startswith('#'):
             channeltarget = botcom.channel_current
         else:
-            osd_notice(bot, botcom.instigator, "You must specify a valid channel.")
+            osd_notice(bot, instigator, "You must specify a valid channel.")
             return
     if channeltarget in triggerargsarray:
         triggerargsarray.remove(channeltarget)
@@ -486,7 +484,7 @@ def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
     valid_subcommands = ['on','off']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_subcommands], 1)
     if not subcommand:
-        osd_notice(bot, botcom.instigator, "Do you want devmode on or off in " + channeltarget + "?")
+        osd_notice(bot, instigator, "Do you want devmode on or off in " + channeltarget + "?")
         return
 
     if subcommand == 'on':
@@ -498,8 +496,8 @@ def bot_command_function_devmode(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     for channel in bot.channels:
@@ -513,22 +511,22 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     for channel in bot.channels:
         if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
         else:
-            onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
+            onscreentext(bot, [channel], "My Dungeon Master, " + instigator + ", commandeth me to restart. I shall return post haste!")
     restart(bot, trigger, botcom.service)
 
 
 def bot_command_function_permfix(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
@@ -537,8 +535,8 @@ def bot_command_function_permfix(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_pip(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     pippackage = get_trigger_arg(bot, triggerargsarray, '2+')
@@ -552,8 +550,8 @@ def bot_command_function_pip(bot,trigger,botcom,triggerargsarray):
 
 def bot_command_function_debug(bot,trigger,botcom,triggerargsarray):
 
-    if botcom.instigator not in botcom.botadmins:
-        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+    if instigator not in botcom.botadmins:
+        osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
     debugloglinenumberarray = []

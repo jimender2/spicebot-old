@@ -100,9 +100,9 @@ def spicebot_prerun(bot,trigger,commandused):
 """
 
 """
-########
+##############
 # Bot basics #
-########
+##############
 """
 
 
@@ -148,7 +148,15 @@ def bot_command_users(bot,botcom):
     return botcom
 
 
-def bot_command_channels(bot,botcom):
+def bot_command_channels(bot,botcom,trigger):
+    botcom.channel_current = trigger.sender
+    if not botcom.channel_current.startswith("#"):
+        botcom.channel_priv = 1
+        botcom.channel_real = 0
+    else:
+        botcom.channel_priv = 0
+        botcom.channel_real = 1
+    botcom.service = bot.nick
     botcom.channel_list = []
     for channel in bot.channels:
         botcom.channel_list.append(channel)
