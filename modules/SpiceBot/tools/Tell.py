@@ -118,6 +118,8 @@ def execute_main(bot, trigger):
         return bot.reply('That nickname is too long.')
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
+    if tellee == 'please':
+        tellee = trigger.group(4).rstrip('.,:;')
     if tellee.lower() in [u.lower() for u in bot.users]:
         if not message.endswith('please') or not message.startswith('please'):
             return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
