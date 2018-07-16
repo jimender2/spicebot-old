@@ -18,7 +18,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if not target:

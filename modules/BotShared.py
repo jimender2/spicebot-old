@@ -224,7 +224,7 @@ def targetcheck(bot, botcom, target,instigator):
 
     if target == bot.nick:
         validtarget = 3
-        validtargetmsg.append("Target a bot")
+        validtargetmsg.append("Target is a bot")
         return validtarget, validtargetmsg
 
     # Null Target
