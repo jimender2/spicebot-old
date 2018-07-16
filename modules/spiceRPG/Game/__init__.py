@@ -63,6 +63,10 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
+    if instigator in ['dummy','deathbybandaid','david']:
+        bot.say("in there")
+
+    return
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
