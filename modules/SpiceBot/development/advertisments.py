@@ -22,8 +22,15 @@ testarray = ["test1", "test2", "test3", "test4", "test5",]
 
 commandarray = ["add","remove","count", "last"]
 
-#def setup(self):
+databasekey = 'ads'
+
+
+def setup(self):
     # Check everything here
+    existingarray = get_database_value(bot, bot.nick, databasekey) or []
+    entries = len(existingarray)
+    if entries < 1:
+        bot.say("there are no adverts loaded.")
 
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
@@ -37,9 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    databasekey = 'ads'
-
-    database_initialize(bot, bot.nick, testarray, databasekey)
+    #database_initialize(bot, bot.nick, testarray, databasekey)
 
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
