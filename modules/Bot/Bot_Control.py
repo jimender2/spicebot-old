@@ -43,7 +43,7 @@ def bot_command_process(bot,trigger,triggerargsarray):
     # Dyno Classes
     botcom = class_create('bot')
     instigator = class_create('instigator')
-    instigator.default = str(trigger.nick)
+    instigator.default = trigger.nick
 
     # time
     botcom.now = time.time()
