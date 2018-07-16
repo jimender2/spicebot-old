@@ -1,5 +1,6 @@
 import sopel.module
 import os
+import sys
 
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))

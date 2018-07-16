@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
                 bot.say(message)
             else:
                 message = "That response is already in the database."
-        bot.say(message)
+                bot.say(message)
         elif command == "remove":
             if inputstring not in existingarray:
                 message = "That response was not found in the database."
@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray):
             else:
                 adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
                 message = "Removed from database."
-        bot.say(message)
+                bot.say(message)
         elif command == "count":
             messagecount = len(existingarray)
             message = "There are currently " + str(messagecount) + " responses for that in the database."
