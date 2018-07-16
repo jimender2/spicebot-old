@@ -40,6 +40,8 @@ def bot_command_hub(bot, trigger):
 
 def bot_command_process(bot,trigger,triggerargsarray):
 
+    bot.say(str(instigator))
+
     # Dyno Classes
     botcom = class_create('bot')
     instigator = class_create('instigator')
