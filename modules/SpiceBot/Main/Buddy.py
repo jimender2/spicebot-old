@@ -20,6 +20,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myline = get_trigger_arg(bot, triggerargsarray, 0)
     if not myline:
-        bot.say("What is your buddy good at?")
+        message = "What is your buddy good at?"
     else:
-        bot.say("let me call my buddy and get him down here... he's an expert on " + myline)
+        message = "let me call my buddy and get him down here... he's an expert on " + myline
+    onscreentext(bot,['say'],message)

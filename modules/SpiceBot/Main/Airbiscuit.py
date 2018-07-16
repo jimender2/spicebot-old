@@ -19,13 +19,14 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    for c in bot.channels:
-        channel = c
+    message = ""
+    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if not target:
-        bot.say(trigger.nick + " floats an air biscuit.")
-    elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
-    elif target == bot.nick:
-        bot.say("Well, that was truly disgusting!")
+        message = trigger.nick + " floats an air biscuit.
+    elif isvalid == 0:
+        message = "I'm not sure who that is."
+    elif isvalid == 3:
+        message = "Well, that was truly disgusting!"
     else:
-        bot.say(trigger.nick + " floats an air biscuit in the general direction of " + target + ".")
+        message = trigger.nick + " floats an air biscuit in the general direction of " + target + "."
+    onscreentext(bot,['say'],message)

@@ -22,6 +22,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     something = get_trigger_arg(bot, triggerargsarray, '1+')
     if not something:
-        bot.say("You can have my gun, when you pry it from my cold dead hands!!")
+        message = "You can have my gun, when you pry it from my cold dead hands!!"
     else:
-        bot.say("You can have my %s, when you pry it from my cold dead hands!!" % something)
+        message = "You can have my %s, when you pry it from my cold dead hands!!" % something
+    onscreentext(bot,['say'],message)

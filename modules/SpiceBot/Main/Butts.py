@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         action = "kicks " + instigator + " in the butt."
     else:
         action = "rains butts down on " + target
-    bot.action(action)
+    onscreentext_action(bot,['say'],action)

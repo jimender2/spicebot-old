@@ -20,4 +20,5 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myown = get_trigger_arg(bot, triggerargsarray, 0)
     if myown and bot.nick not in myown:
-        bot.say("Fine! I'll start my own " + myown + ", with blackjack and hookers!")
+        message = "Fine! I'll start my own " + myown + ", with blackjack and hookers!"
+        onscreentext(bot,['say'],message)
