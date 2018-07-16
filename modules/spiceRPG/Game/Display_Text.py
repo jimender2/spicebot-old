@@ -70,7 +70,6 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
-            textpartsleft = textpartsleft - 1
             if text_type == 'say':
                 bot.say(combinedline)
             elif target.startswith("#"):
@@ -81,6 +80,7 @@ def osd(bot, target_array, text_type, text_array):
                 bot.action(combinedline,user)
             else:
                 bot.say(combinedline)
+            textpartsleft = textpartsleft - 1
 
 
 def onscreentext(bot, texttargetarray, textarraycomplete):
