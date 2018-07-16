@@ -11,11 +11,11 @@ from BotShared import *
 
 @sopel.module.commands('poke','prod')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'poke')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'poke')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     commandused = trigger.group(1)
     for c in bot.channels:

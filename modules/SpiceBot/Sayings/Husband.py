@@ -15,11 +15,11 @@ actions = ["burps", "scratches his ass", "farts", "opens a beer"]
 
 @sopel.module.commands('husband')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     decide = random.randint(1,10)
     if decide > 7:
         response = get_trigger_arg(bot, actions, 'random')

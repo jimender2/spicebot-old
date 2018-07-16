@@ -12,11 +12,11 @@ from BotShared import *
 
 @sopel.module.commands('engrish')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'engrish')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'engrish')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "Engrish modgerfukrer, der yer speek?!?!"
     onscreentext(bot,['say'],message)

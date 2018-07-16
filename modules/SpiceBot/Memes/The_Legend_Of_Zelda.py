@@ -12,11 +12,11 @@ from BotShared import *
 
 @sopel.module.commands('sword','link','zelda')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'sword')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'sword')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "it's dangerous to go alone take this 0==\======>"
     onscreentext(bot,['say'],message)

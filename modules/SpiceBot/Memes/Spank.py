@@ -14,12 +14,12 @@ spankweapons = ['paddle','belt']
 
 @sopel.module.commands("spank","paddle","paddlin")
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'spank')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'spank')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."

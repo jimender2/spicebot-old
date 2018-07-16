@@ -12,12 +12,12 @@ from BotShared import *
 
 @sopel.module.commands('dave')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'dave')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'dave')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     usernickname = trigger.nick.lower()
     message = "Im sorry, " + trigger.nick + ", but I cannot help you."
     if "dave" in usernickname:

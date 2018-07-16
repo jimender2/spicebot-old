@@ -21,8 +21,8 @@ from sopel.module import commands, rule, example, priority
 
 #@sopel.module.commands('dbbtest')
 #def mainfunction(bot, trigger):
-#    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
-#    execute_main(bot, trigger, triggerargsarray)
+#    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+#    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 @sopel.module.commands('dbbtest')
 def execute_main(bot, trigger):

@@ -12,12 +12,12 @@ from BotShared import *
 
 @sopel.module.commands('zoidberg')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'zoidberg')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'zoidberg')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     string = get_trigger_arg(bot, triggerargsarray, 0)
     instigator = trigger.nick
     if string:

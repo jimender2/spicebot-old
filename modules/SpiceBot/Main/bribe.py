@@ -19,12 +19,12 @@ commandarray = ["accept","delete","money"]
 
 @sopel.module.commands('bribe')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     databasekey = "bribe"
     instigator = trigger.nick
     command = get_trigger_arg(bot, triggerargsarray, 1)
@@ -33,14 +33,15 @@ def execute_main(bot, trigger, triggerargsarray):
         if command == "accept":
             amo = get_database_value(bot, instigator, 'bets') or '0'
             amount = int(amo)
-        reset_database_value(bot,instigator, 'bets')
-        spicebucks(bot, instigator, "plus", amount)
+            reset_database_value(bot,instigator, 'bets')
+            spicebucks(bot, instigator, "plus", amount)
         if amount == 0:
             bot.say("There are no bribes for you to accept")
         else:
             bot.say(instigator + " accepted the bribe of $" + amount + ".")
-        elif command == "decline":
-            bot.say(instigator + " declines a bribe worth $" + amount + ".")
+    elif command == "decline":
+        bot.say(instigator + " declines a bribe worth $" + amount + ".")
+        reset_database_value(bot,instigator, 'bets')
 
     else:
         if target.lower() in [u.lower() for u in bot.users]:
@@ -71,7 +72,7 @@ def spicebucks(bot, target, plusminus, amount):
         if inbank - amount < 0:
             success = 'false'
         else:
-            adjust_database_value(bot,target, 'spicebucks_bank', -amount)
+            adjust_database_value(bot, target, 'spicebucks_bank', -amount)
             success = 'true'
     else:
         success = 'false'

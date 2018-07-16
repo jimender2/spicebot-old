@@ -12,12 +12,12 @@ from BotShared import *
 
 @sopel.module.commands('whatitis','whatitdo')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'whatitis')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'whatitis')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not trigger.group(2):
         if trigger.group(1) == 'whatitis':
             message = "What it do?"

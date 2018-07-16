@@ -38,32 +38,24 @@ def spicebot_prerun(bot,trigger,commandused):
     except IndexError:
         triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create')
 
-    botcom = botcom_class()
-    botcom = bot_command_users(bot,botcom)
-
-    # Basics
-    botcom.instigator = trigger.nick
-    botcom.channel_current = trigger.sender
-    if not botcom.channel_current.startswith("#"):
-        botcom.channel_priv = 1
-        botcom.channel_real = 0
-    else:
-        botcom.channel_priv = 0
-        botcom.channel_real = 1
-    botcom.service = bot.nick
-    botcom = bot_command_users(bot,botcom)
-    botcom = bot_command_channels(bot,botcom)
-
-    # Command Used
-    botcom.command_main = get_trigger_arg(bot, triggerargsarray, 1)
+    # Dyno Classes
+    botcom = class_create('bot')
+    instigator = class_create('instigator')
+    instigator.default = trigger.nick
 
     # time
     botcom.now = time.time()
 
+    # User
+    botcom = bot_command_users(bot,botcom)
+
+    # Channels
+    botcom = bot_command_channels(bot,botcom,trigger)
+
     # User was Blocked by a bot.admin or an OP
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
-    if botcom.instigator in blockedusersarray:
-        osd_notice(bot, botcom.instigator, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
+    if instigator.default in blockedusersarray:
+        osd_notice(bot, instigator, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
         return enablestatus, triggerargsarray
 
     # devmode bypass
@@ -76,21 +68,21 @@ def spicebot_prerun(bot,trigger,commandused):
     if botcom.channel_current.startswith("#"):
         channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
-            osd_notice(bot, botcom.instigator, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
+            osd_notice(bot, instigator, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
             return enablestatus, triggerargsarray
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
-    if botcom.instigator not in botcom.users_all:
-        osd_notice(bot, botcom.instigator, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+    if instigator.default not in botcom.users_all:
+        osd_notice(bot, instigator, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
         return enablestatus, triggerargsarray
 
     enablestatus = 0
     increment_counter(bot, trigger,commandused)
 
     # Send Status Forward
-    return enablestatus, triggerargsarray
+    return enablestatus, triggerargsarray, botcom, instigator
 
 
 """
@@ -100,17 +92,17 @@ def spicebot_prerun(bot,trigger,commandused):
 """
 
 """
-########
+##############
 # Bot basics #
-########
+##############
 """
 
 
 # Outputs Nicks with correct capitalization
 def actualname(bot,nick):
-    actualnick = nick
+    actualnick = str(nick)
     for u in bot.users:
-        if u.lower() == nick.lower():
+        if u.lower() == str(nick).lower():
             actualnick = u
     return actualnick
 
@@ -119,7 +111,7 @@ def bot_command_users(bot,botcom):
     botcom.opadmin,botcom.owner,botcom.chanops,botcom.chanvoice,botcom.botadmins,botcom.users_current = [],[],[],[],[],[]
 
     for user in bot.users:
-        botcom.users_current.append(user)
+        botcom.users_current.append(str(user))
     adjust_database_array(bot, 'channel', botcom.users_current, 'users_all', 'add')
     botcom.users_all = get_database_value(bot, 'channel', 'users_all') or []
 
@@ -148,7 +140,15 @@ def bot_command_users(bot,botcom):
     return botcom
 
 
-def bot_command_channels(bot,botcom):
+def bot_command_channels(bot,botcom,trigger):
+    botcom.channel_current = trigger.sender
+    if not botcom.channel_current.startswith("#"):
+        botcom.channel_priv = 1
+        botcom.channel_real = 0
+    else:
+        botcom.channel_priv = 0
+        botcom.channel_real = 1
+    botcom.service = bot.nick
     botcom.channel_list = []
     for channel in bot.channels:
         botcom.channel_list.append(channel)
@@ -209,7 +209,7 @@ def increment_counter(bot, trigger, commandused):
 #####Check for target#####
 ##If target valid, validtarget=1  #
 ##If bot is target validtarget=2  #
-##if target is botcom.instigator  #
+##if target is instigator.default  #
 ##validtarget =3                  #
 ##If no target,     validtarget=0 #
 ##################
@@ -227,18 +227,18 @@ def targetcheck(bot, target,botcom):
         if u in botusersarray:
             botuseron.append(u)
     if not target:
-        validtargetmsg = str(botcom.instigator + ", you must specify a target.")
+        validtargetmsg = str(instigator.default + ", you must specify a target.")
         validtarget = '0'
     else:
         if target.lower() == bot.nick.lower():
-            validtargetmsg = str(botcom.instigator + ", can't target bot.")
+            validtargetmsg = str(instigator.default + ", can't target bot.")
             validtarget = '2'
-        elif target == botcom.instigator:
-            validtargetmsg = str(botcom.instigator + ", is the target")
+        elif target == instigator.default:
+            validtargetmsg = str(instigator.default + ", is the target")
             validtarget = '3'
 
         elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(botcom.instigator + " " + target + " isn't a valid target")
+            validtargetmsg = str(instigator.default + " " + target + " isn't a valid target")
         else:
             validtarget = '1'
 
@@ -803,5 +803,18 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 """
 
 
-class botcom_class():
-    pass
+def class_create(classname):
+    compiletext = """
+        def __init__(self):
+            self.default = str(self.__class__.__name__)
+        def __repr__(self):
+            return repr(self.default)
+        def __str__(self):
+            return str(self.default)
+        def __iter__(self):
+            return str(self.default)
+        pass
+        """
+    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    newclass = eval('class_'+classname+"()")
+    return newclass

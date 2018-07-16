@@ -15,9 +15,9 @@ specifics = ['brightlights','doctor','EULA','IT','legal','law','Cipher-0','Ciphe
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'disclaimer')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     subdisclaimer = get_trigger_arg(bot,triggerargsarray,1)
     person = get_trigger_arg(bot,triggerargsarray,2) or instigator

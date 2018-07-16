@@ -9,12 +9,21 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-@sopel.module.commands('rimshot')
+# author jimender2
+
+
+@sopel.module.commands('rrr', 'reducereuserecycle')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    #bot.action('uses drumsticks to hit both the head and the rim of the drum, then the cymbal.')
-    bot.say('*Ba Dum Tss!!!*')
+    something = get_trigger_arg(bot, triggerargsarray, '1+')
+    if not something:
+        message = "Reduce, Reuse, Recycle everything"
+    else:
+        message = "Reduce, Reuse, Recycle " + something
+
+    onscreentext(bot, ['say'], message)

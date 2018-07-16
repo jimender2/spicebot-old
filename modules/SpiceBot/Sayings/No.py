@@ -14,11 +14,11 @@ commandarray = ["add","remove","count","last"]
 
 @sopel.module.commands('no','nope','yeahnah')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'no')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'no')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     inchannel = trigger.sender
     databasekey = 'obviousno'

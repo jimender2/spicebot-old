@@ -2,6 +2,10 @@
 # coding=utf-8
 import os
 
+"""
+Cool idea, but I see some issues going in - deathbybandaid
+"""
+
 
 def save():
     # write buffer to the file

@@ -13,12 +13,12 @@ from BotShared import *
 
 @sopel.module.commands('techsupport','itsupport')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'techsupport')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'techsupport')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     techmessages = ["YOU MUST CONSTRUCT ADDITIONAL PYLONS!",
                     "Have you tried flinging feces at it?",
                     "Have you tried chewing the cable?",

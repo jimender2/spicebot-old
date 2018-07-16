@@ -14,12 +14,12 @@ from BotShared import *
 
 @sopel.module.commands('eyeroll')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'eyeroll')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'eyeroll')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     inchannel = trigger.sender
     target = get_trigger_arg(bot, triggerargsarray, 1)

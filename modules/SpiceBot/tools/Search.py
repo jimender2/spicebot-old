@@ -17,28 +17,30 @@ sys.path.append(shareddir)
 from BotShared import *
 from sopel.logger import get_logger
 
-from SpicebotShared import *
+from BotShared import *
 
 LOGGER = get_logger(__name__)
 
+
 @commands('google', 'search', 'lookup')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
-    if len(triggerargsarray)>=1:
+
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    if len(triggerargsarray) >= 1:
         mysite = get_trigger_arg(bot, triggerargsarray, 1).lower()
         searchterm = get_trigger_arg(bot, triggerargsarray, '1+')
         querystring = get_trigger_arg(bot, triggerargsarray, '2+')
         if (mysite == 'video' or mysite == 'youtube'):
-            data=querystring.replace(' ', '+')
+            data = querystring.replace(' ', '+')
             site = '+site%3Ayoutube.com'
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
             searchterm = data+site
-            query=searchfor(bot,searchterm)
+            query = searchfor(bot,searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
@@ -49,12 +51,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('Valid website not found')
 
         elif mysite == 'meme':
-            data=querystring.replace(' ', '+')
+            data = querystring.replace(' ', '+')
             site = '+site%3Aknowyourmeme.com'
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
             searchterm = data+site
-            query=searchfor(bot,searchterm)
+            query = searchfor(bot,searchterm)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
@@ -64,12 +66,12 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'walmart':
-            data=querystring.replace(' ', '+')
+            data = querystring.replace(' ', '+')
             site = '+site%3Apeopleofwalmart.com'
             url = 'http://www.peopleofwalmart.com'
             url2 = 'https://www.peopleofwalmart.com'
             searchterm = data+site
-            query=searchfor(bot,searchterm)
+            query = searchfor(bot,searchterm)
             if not query:
                 bot.say('https://goo.gl/SsAhv')
             else:
@@ -79,26 +81,28 @@ def execute_main(bot, trigger, triggerargsarray):
                     bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'urban':
-            query=urbansearch(bot,querystring)
+            query = urbansearch(bot,querystring)
             bot.say(query)
 
-        elif mysite == 'imdb' or mysite =='movie':
-            query=moviesearch(bot,querystring)
+        elif mysite == 'imdb' or mysite == 'movie':
+            query = moviesearch(bot,querystring)
             bot.say(query)
 
         else:
-            data=searchterm.replace(' ', '+')
-            query=searchfor(bot,data)
+            data = searchterm.replace(' ', '+')
+            query = searchfor(bot,data)
             if not query:
                 bot.say('I cannot find anything about that')
             else:
                 bot.say(query)
 
+
 def searchfor(bot,data):
     lookfor = data.replace(':', '%3A')
     var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
-    query=str(var.url)
+    query = str(var.url)
     return query
+
 
 def urbansearch(bot,searchterm):
     try:
@@ -112,6 +116,7 @@ def urbansearch(bot,searchterm):
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(searchterm))
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     return response
+
 
 def moviesearch(bot,searchterm):
     """

@@ -19,12 +19,12 @@ devbot = 'dev'  # Enables the bot to distinguish if in test
 
 @sopel.module.commands('compliment')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     requested = get_trigger_arg(bot, triggerargsarray, 0)
     myline = ''
     if not bot.nick.endswith(devbot):
@@ -66,7 +66,7 @@ def execute_main(bot, trigger, triggerargsarray):
 @module.intent('ACTION')
 @module.require_chanmsg
 def duel_action(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'compliment')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'compliment')
     if not enablestatus:
         execute_reply(bot, trigger, triggerargsarray)
 

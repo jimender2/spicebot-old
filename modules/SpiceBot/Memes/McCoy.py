@@ -12,12 +12,12 @@ from BotShared import *
 
 @sopel.module.commands('mccoy')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'mccoy')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'mccoy')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     doctorlines = ["I'm a doctor, Jim, I'm busy!","I don't need a doctor, damn it, I am a doctor!"]
     string = get_trigger_arg(bot, triggerargsarray, '1+')
     if string:

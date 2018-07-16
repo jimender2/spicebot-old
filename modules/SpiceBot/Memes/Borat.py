@@ -10,11 +10,11 @@ from BotShared import *
 
 @sopel.module.commands('borat')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'borat')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'borat')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "much success! Very nice!"
     onscreentext(bot,['say'],message)

@@ -9,16 +9,18 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('lazy','lazyfuckingspicebot','fuckinglazyspicebot','lazyspicebot')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
-    target=get_trigger_arg(bot,triggerargsarray,1)
+
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    target = get_trigger_arg(bot,triggerargsarray,1)
     validtarget = targetcheck(bot,target,trigger.nick)
-    if validtarget=='1':
+    if validtarget == '1':
         bot.say('I do not tell you how to do your job, ' + target + '!!')
     else:
         bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')

@@ -12,11 +12,11 @@ from BotShared import *
 
 @sopel.module.commands('drnick')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'drnick')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'drnick')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "Haai Every-bahdy!"
     onscreentext(bot,['say'],message)

@@ -12,12 +12,12 @@ from BotShared import *
 
 @sopel.module.commands('homer')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'homer')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'homer')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     goodarray = ['good','g']
     badarray = ['bad','b','bad?','good?']
     goodorbad = get_trigger_arg(bot, triggerargsarray, 0) or 'bad'

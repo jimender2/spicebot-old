@@ -11,21 +11,23 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('poop','poops','shit','shits')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'poop')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'poop')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     failureodds = 4
     if bot.nick.endswith('dev'):
         failureodds = 2
     target = get_trigger_arg(bot, triggerargsarray, 1)
     backfires = [" drops their pants and squats on " + target + "'s desk, but all they manage to do is fart.",
-                " overestimated their capabilities and poops themselves.",
-                " gets halfway through pooping before realising that this is their own desk, not " + target + "'s.",
-                " trips over taking their pants off and shits everywhere BUT the desk."]
+                 " overestimated their capabilities and poops themselves.",
+                 " gets halfway through pooping before realising that this is their own desk, not " + target + "'s.",
+                 " trips over taking their pants off and shits everywhere BUT the desk."]
 
     if not target:
         bot.say(trigger.nick + ' poops in the designated corner!')
