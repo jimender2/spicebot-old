@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir','gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
@@ -68,6 +68,14 @@ def bot_command_process(bot,trigger,triggerargsarray):
 """
 Commands
 """
+
+
+def bot_command_function_gitpull(bot,trigger,botcom,instigator):
+
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    onscreentext(bot, ['say'], "attempting to git pull " + botcom.directory)
+    g = git.cmd.Git(botcom.directory)
+    g.pull()
 
 
 def bot_command_function_dir(bot,trigger,botcom,instigator):
