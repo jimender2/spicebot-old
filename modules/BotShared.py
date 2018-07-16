@@ -56,27 +56,27 @@ def spicebot_prerun(bot,trigger,commandused):
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
     if instigator.default in blockedusersarray:
         osd_notice(bot, instigator, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
-        return enablestatus, triggerargsarray
+        return enablestatus, triggerargsarray, botcom, instigator
 
     # devmode bypass
     devenabledchannels = get_database_value(bot, bot.nick, 'channels_dev') or []
     if botcom.channel_current in devenabledchannels:
         enablestatus = 0
-        return enablestatus, triggerargsarray
+        return enablestatus, triggerargsarray, botcom, instigator
 
     # Channel activated status
     if botcom.channel_current.startswith("#"):
         channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
             osd_notice(bot, instigator, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
-            return enablestatus, triggerargsarray
+            return enablestatus, triggerargsarray, botcom, instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if instigator.default not in botcom.users_all:
         osd_notice(bot, instigator, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
-        return enablestatus, triggerargsarray
+        return enablestatus, triggerargsarray, botcom, instigator
 
     enablestatus = 0
     increment_counter(bot, trigger,commandused)
