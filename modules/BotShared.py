@@ -814,13 +814,10 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 def class_create(classname):
     compiletext = """
         def __init__(self):
-            try:
-                self.default = str(self.default) or str(self.__class__.__name__)
-            except AttributeError:
-                self.default = str(self.__class__.__name__)
-            self.default = str(self.default)
+            self.default = str(self.__class__.__name__)
         def __repr__(self):
-            return str(self.default)
+            self.default = str(self.default)
+            return self.default
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
