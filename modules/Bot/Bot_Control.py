@@ -43,7 +43,7 @@ def bot_command_process(bot,trigger,triggerargsarray):
     # Dyno Classes
     botcom = class_create('bot')
     instigator = class_create('instigator')
-    instigator.default = trigger.nick
+    instigator.default = str(trigger.nick)
 
     # time
     botcom.now = time.time()
@@ -497,10 +497,10 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 
 def bot_command_function_update(bot,trigger,botcom,instigator):
 
-    if instigator.default not in botcom.botadmins:
+    if instigator not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
-    bot.say("here")
+
     for channel in bot.channels:
         if bot.nick != 'spiceRPG' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
