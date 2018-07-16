@@ -74,15 +74,15 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
-            bot.say(str(textpartsleft) + " " + str(textparts))
+            # bot.say(str(textpartsleft) + " " + str(textparts))
             if text_type == 'say':
                 bot.say(combinedline)
+            elif text_type == 'action' and textparts == textpartsleft:
+                bot.action(combinedline,user)
             elif target.startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
                 bot.notice(combinedline, target)
-            elif text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline,user)
             else:
                 bot.say(combinedline)
             textpartsleft = textpartsleft - 1
