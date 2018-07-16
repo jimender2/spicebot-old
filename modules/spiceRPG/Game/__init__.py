@@ -43,8 +43,6 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
-    bot.say("here")
-
     # No Empty Commands
     if triggerargsarray == []:
         osd_notice(bot, trigger.nick, "No Command issued.")
@@ -65,8 +63,10 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
-    if instigator in ['dummy','deathbybandaid','david']:
+    if instigator in [u'SpiceBotdev', u'spiceRPGdev', u'dysonparkes', u'jimender2_away', u'SpiceDuelsdev', u'deathbybandaid', u'm4virus1', u'under_score', u'sideone', u'bucketm0use', u'jimender2', u'SpiceDirect', u'Tartanarmy', u'kez|library']:
         bot.say("in there")
+    else:
+        bot.say("not in there")
 
     return
 
