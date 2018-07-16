@@ -50,7 +50,6 @@ def bot_command_process(bot,trigger,triggerargsarray):
 
     # User
     botcom = bot_command_users(bot,botcom)
-    bot.say(str(botcom.users_all))
 
     # Channels
     botcom = bot_command_channels(bot,botcom,trigger)
