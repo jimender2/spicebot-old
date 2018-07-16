@@ -40,4 +40,3 @@ def string2bits(s=''):
 
 def bits2string(b=None):
     return ''.join(chr(int(b[i*8:i*8+8],2)) for i in range(len(b)//8))
-    # return ''.join([chr(int(x, 2)) for x in b])
