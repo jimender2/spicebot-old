@@ -62,6 +62,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # instigator
     instigator = class_create('instigator')
+    bot.say(str(instigator.fart))
     instigator.default = trigger.nick
     if instigator.lower() == 'deathbybandaid':
         bot.say("hello, " + instigator)
