@@ -222,6 +222,11 @@ def targetcheck(bot, botcom, target,instigator):
         validtargetmsg.append("Target is instigator")
         return validtarget, validtargetmsg
 
+    if target == bot.nick:
+        validtarget = 3
+        validtargetmsg.append("Target a bot")
+        return validtarget, validtargetmsg
+
     # Null Target
     if not target:
         validtarget = 0
