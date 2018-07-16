@@ -23,8 +23,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not current_translate:
         spititout = randint(0, 1)
     else:
-        # spititout = map(bin,bytearray(current_translate))
-        spititout = ' '.join(format(ord(x), 'b') for x in current_translate)
+        spititout = map(bin,bytearray(current_translate,encoding='utf-8'))
+        # spititout = ' '.join(format(ord(x), 'b') for x in current_translate)
         # spititout = spititout.replace("[","")
         # spititout = spititout.replace("]","")
         # spititout = spititout.replace("'","")
