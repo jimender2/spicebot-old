@@ -78,7 +78,7 @@ def osd(bot, target_array, text_type, text_array):
             if text_type == 'say':
                 bot.say(combinedline)
             elif text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline,user)
+                bot.action(combinedline,target)
             elif target.startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
