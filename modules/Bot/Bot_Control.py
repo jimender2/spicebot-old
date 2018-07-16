@@ -512,7 +512,7 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
         return
 
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not joindpath.isdir:
+    if not os.path.isfile(joindpath):
         osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
         return
 
@@ -534,7 +534,7 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         return
 
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not joindpath.isdir:
+    if not os.path.isfile(joindpath):
         osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
         return
 
@@ -579,7 +579,7 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not joindpath.isdir:
+    if not os.path.isfile(joindpath):
         osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
         return
 
