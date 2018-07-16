@@ -517,10 +517,12 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
         return
 
     for channel in bot.channels:
-        if targetbot != 'spiceRPG' and targetbot.lower() != 'spicerpgdev':
-            onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
-        else:
+        if targetbot != bot.nick:
+            onscreentext(bot, [channel], trigger.nick + " commanded me to update " + targetbot + "from Github and restart.")
+        elif targetbot == 'spiceRPG' and targetbot.lower() == 'spicerpgdev':
             onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
+        else:
+            onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
     update(bot, trigger,targetbot)
     restart(bot, trigger, targetbot)
 
@@ -539,10 +541,12 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         return
 
     for channel in bot.channels:
-        if targetbot.lower() != 'spicerpg' and targetbot.lower() != 'spicerpgdev':
-            onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
-        else:
+        if targetbot != bot.nick:
+            onscreentext(bot, [channel], trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
+        elif targetbot == 'spiceRPG' and targetbot.lower() == 'spicerpgdev':
             onscreentext(bot, [channel], "My Dungeon Master, " + instigator + ", commandeth me to restart. I shall return post haste!")
+        else:
+            onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
     restart(bot, trigger, targetbot)
 
 
