@@ -18,8 +18,11 @@ from BotShared import *
 
 # author jimender2
 
+testarray = ["test1", "test2", "test3", "test4", "test5",]
+
 commandarray = ["add","remove","count", "last"]
 
+databasekey = 'ads'
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
@@ -32,7 +35,8 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    databasekey = 'ads'
+    database_initialize(bot, bot.nick, testarray, databasekey)
+
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
@@ -74,8 +78,21 @@ def get_database_value(bot, nick, databasekey):
     return database_value
 
 
+def database_initialize(bot, nick, array, database):
+    databasekey = str(database)
+    existingarray = get_database_value(bot, bot.nick, databasekey)
+    if not existingarray:
+        arraycount = (len(array) - 1)
+        i = 0
+        while (i <= arraycount):
+            inputstring = array[i]
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            i = i + 1
+
+
 @sopel.module.interval(60)
 def advertisement(bot):
+    databasekey = 'ads'
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
     message = get_trigger_arg(bot, existingarray, "random") or ''
     if message == '':
