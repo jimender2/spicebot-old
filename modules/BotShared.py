@@ -225,7 +225,7 @@ def targetcheck(bot, botcom, target):
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
 
-    if target is in botcom.users_current:
+    if target in botcom.users_current:
         return validtarget, validtargetmsg
     else:
         validtarget = 0
