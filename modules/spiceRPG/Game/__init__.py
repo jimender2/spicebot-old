@@ -63,10 +63,6 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
-    if instigator.lower() == 'deathbybandaid':
-        bot.say("hello, " + instigator)
-
-    return
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
@@ -85,4 +81,4 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Run command process
         # command_main_process(bot, trigger, rpg)
-        onscreentext(bot, trigger.nick, command_full)
+        onscreentext(bot, instigator, command_full)
