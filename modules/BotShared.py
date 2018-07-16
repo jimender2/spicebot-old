@@ -814,8 +814,7 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 def class_create(classname):
     compiletext = """
         def __init__(self):
-            self.default = str(self.__class__.__name__)
-            return self
+            self.default = str(self.default) or str(self.__class__.__name__)
         def __repr__(self):
             return str(self.default)
         pass
