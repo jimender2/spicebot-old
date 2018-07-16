@@ -439,11 +439,13 @@ def osd(bot, target_array, text_type, text_array):
     # if target_array is a string, make it an array
     texttargetarray = []
     if not isinstance(target_array, list):
-        target = nick_actual(bot,str(target_array))
+        if not target.startswith("#"):
+            target = nick_actual(bot,str(target_array))
         texttargetarray.append(target)
     else:
         for target in target_array:
-            target = nick_actual(bot,str(target_array))
+            if not target.startswith("#"):
+                target = nick_actual(bot,str(target_array))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits

@@ -9,19 +9,6 @@ On Screen Text
 """
 
 
-def osd_notice(bot, target, textarraycomplete):
-    target = nick_actual(bot,target)
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    passthrough = []
-    passthrough.append(target + ", ")
-    for x in textarraycomplete:
-        passthrough.append(x)
-    onscreentext(bot, [target], passthrough)
-
-
 def osd(bot, target_array, text_type, text_array):
 
     # if text_array is a string, make it an array
@@ -35,11 +22,13 @@ def osd(bot, target_array, text_type, text_array):
     # if target_array is a string, make it an array
     texttargetarray = []
     if not isinstance(target_array, list):
-        target = nick_actual(bot,str(target_array))
+        if not target.startswith("#"):
+            target = nick_actual(bot,str(target_array))
         texttargetarray.append(target)
     else:
         for target in target_array:
-            target = nick_actual(bot,str(target_array))
+            if not target.startswith("#"):
+                target = nick_actual(bot,str(target_array))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
@@ -86,44 +75,6 @@ def osd(bot, target_array, text_type, text_array):
             else:
                 bot.say(combinedline)
             textpartsleft = textpartsleft - 1
-
-
-def onscreentext(bot, texttargetarray, textarraycomplete):
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    if not isinstance(texttargetarray, list):
-        target = texttargetarray
-        texttargetarray = []
-        texttargetarray.append(target)
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        elif len(textstring) > osd_limit:
-            if currentstring != '':
-                combinedtextarray.append(currentstring)
-                currentstring = ''
-            combinedtextarray.append(textstring)
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= osd_limit:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
-            else:
-                bot.notice(combinedline, user)
 
 
 """
