@@ -18,7 +18,7 @@ def class_create_new(classname):
         return self.default
     pass
     """
-    exec("class rpg_class_" + str(classname) + ": " + compile(compiletext,"","exec"))
+    exec("class rpg_class_" + str(classname) + ": " + compile(compiletext,"-","exec"))
     newclass = eval('rpg_class_'+classname+"()")
     return newclass
 
