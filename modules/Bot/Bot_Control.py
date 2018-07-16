@@ -44,6 +44,7 @@ def bot_command_process(bot,trigger,triggerargsarray):
     botcom = class_create('bot')
     instigator = class_create('instigator')
     instigator.default = trigger.nick
+    setattr(instigator, 'lower', str(instigator.default).lower())
     bot.say(str(instigator))
 
     # time
