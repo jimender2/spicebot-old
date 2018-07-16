@@ -816,10 +816,9 @@ def class_create(classname):
         def __init__(self):
             self.default = str(self.__class__.__name__)
         def __str__(self):
-            return self.default
+            return str(self.default)
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
     newclass = eval('class_'+classname+"()")
-    setattr(newclass, 'lower', newclass.default.lower())
     return newclass
