@@ -14,7 +14,7 @@ deities = ['God','Cthulhu','Landru','Odin','Satan','Developer','Frigg','Hades','
 
 @sopel.module.commands('today', 'whatdayisit')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'today')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'today')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

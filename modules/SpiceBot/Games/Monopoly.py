@@ -21,7 +21,7 @@ neutraldeck =["a 'Get out of Jail Free' card","a 'Go directly to Jail, Do not pa
 
 @sopel.module.commands('monopoly','chance')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot,trigger, 'monopoly')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot,trigger, 'monopoly')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

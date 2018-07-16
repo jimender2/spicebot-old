@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('poop','poops','shit','shits')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'poop')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'poop')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

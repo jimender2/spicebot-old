@@ -15,7 +15,7 @@ from BotShared import *
 
 @sopel.module.commands('spicebucks','bank')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger,'spicebucks')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'spicebucks')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

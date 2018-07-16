@@ -15,7 +15,7 @@ logicarray = ["New Mission: Refuse This Mission.","Does A Set Of All Sets Contai
 
 @sopel.module.commands('logicbomb')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

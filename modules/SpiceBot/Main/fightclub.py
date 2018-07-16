@@ -23,7 +23,7 @@ rules = ["The first rule of Fight Club is: You do not talk about Fight Club.",
 
 @sopel.module.commands('fightclub')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fightclub')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fightclub')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

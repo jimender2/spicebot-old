@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('eyeroll')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'eyeroll')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'eyeroll')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

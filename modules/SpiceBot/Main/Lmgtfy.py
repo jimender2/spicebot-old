@@ -16,7 +16,7 @@ from BotShared import *
 
 @sopel.module.commands('lmgtfy', 'lmgify', 'gify', 'gtfy')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'lmgtfy')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'lmgtfy')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

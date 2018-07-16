@@ -16,7 +16,7 @@ commandarray = ["add","remove","count","last"]
 
 @sopel.module.commands('murder','moida')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'murder')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'murder')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

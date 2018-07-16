@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('piglatin','pl')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'piglatin')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'piglatin')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

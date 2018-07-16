@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('ping','pong')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'ping')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ping')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

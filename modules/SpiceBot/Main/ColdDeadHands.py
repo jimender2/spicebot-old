@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('cdh','colddeadhands')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'cdh')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'cdh')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

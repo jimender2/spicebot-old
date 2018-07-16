@@ -15,7 +15,7 @@ usernames = ['user','LUser','Luser','bitch']
 
 @sopel.module.commands('dd','doubled')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'dd')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'dd')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

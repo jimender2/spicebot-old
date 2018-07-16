@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('trivia')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'triva')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'triva')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

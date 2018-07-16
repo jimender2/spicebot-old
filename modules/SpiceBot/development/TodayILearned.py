@@ -16,7 +16,7 @@ commandarray = ["yesterday","today","last"]
 
 @sopel.module.commands('til')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'til')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'til')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
