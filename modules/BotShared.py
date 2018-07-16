@@ -206,17 +206,12 @@ def increment_counter(bot, trigger, commandused):
 
 """
 ##################
-#####Check for target#####
-##If target valid, validtarget=1  #
-##If bot is target validtarget=2  #
-##if target is instigator.default  #
-##validtarget =3                  #
-##If no target,     validtarget=0 #
+# Check for target #
 ##################
 """
 
 
-def targetcheck(bot, botcom, target):
+def targetcheck(bot, botcom, target,instigator):
     # Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
