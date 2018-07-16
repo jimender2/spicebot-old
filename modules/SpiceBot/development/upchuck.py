@@ -32,9 +32,9 @@ def execute_main(bot, trigger, triggerargsarray):
         message = instigator + ". You can't do this. Neiner neiner"
     elif target == instigator:
         message = instigator + " leaves his shoes looking like Cambells soup. Chunky."
-    elif rand = 1:
+    elif rand == 1:
         message = instigator + " blows chunks onto " + target + ". " + target + " you can go home and clean up."
-    elif rand = 2:
+    elif rand == 2:
         message = instigator + " feels a little woozy and hits " + target + " with " + instigator + "'s lunch."
     else:
         message = "I screwed up majorly. You should never see this"
