@@ -18,16 +18,15 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
+    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if not target:
         message = "Who are we laughing at?"
-    elif target == instigator:
+    elif isvalid == 2:
         message = "Is your self esteem really that low?"
-        # switch to targetcheck?
-    elif target.lower() not in [u.lower() for u in bot.users]:
+    elif isvalid == 0:
         message = "I'm not sure who that is."
-    elif target == bot.nick:
+    elif isvalid == 3:
         message = "I like to laugh, but not at my own expense."
     else:
         message = bot.nick + " points at " + target + " and laughs."

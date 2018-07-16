@@ -210,6 +210,7 @@ def increment_counter(bot, trigger, commandused):
 ##################
 """
 
+
 def targetcheck(bot, botcom, target,instigator):
     # Guilty until proven Innocent
     validtarget = 1
@@ -221,10 +222,16 @@ def targetcheck(bot, botcom, target,instigator):
         validtargetmsg.append("Target is instigator")
         return validtarget, validtargetmsg
 
+    if target == bot.nick:
+        validtarget = 3
+        validtargetmsg.append("Target is a bot")
+        return validtarget, validtargetmsg
+
     # Null Target
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
+        return validtarget,validtargetmsg
 
     if target in botcom.users_current:
         return validtarget, validtargetmsg
