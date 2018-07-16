@@ -43,30 +43,34 @@ def osd(bot, target_array, text_type, text_array):
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        elif len(textstring) > osd_limit:
-            if currentstring != '':
-                combinedtextarray.append(currentstring)
-                currentstring = ''
-            combinedtextarray.append(textstring)
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= osd_limit:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-
-    # Display the text
     for target in texttargetarray:
+        temptextarray = []
         if text_type == 'notice':
-            combinedtextarray.insert(0, target + ", ")
+            temptextarray.insert(0, target + ", ")
+        for part in textarraycomplete:
+            temptextarray.append(part)
+
+        combinedtextarray = []
+        currentstring = ''
+        for textstring in textarraycomplete:
+            if currentstring == '':
+                currentstring = textstring
+            elif len(textstring) > osd_limit:
+                if currentstring != '':
+                    combinedtextarray.append(currentstring)
+                    currentstring = ''
+                combinedtextarray.append(textstring)
+            else:
+                tempstring = str(currentstring + "   " + textstring)
+                if len(tempstring) <= osd_limit:
+                    currentstring = tempstring
+                else:
+                    combinedtextarray.append(currentstring)
+                    currentstring = textstring
+        if currentstring != '':
+            combinedtextarray.append(currentstring)
+
+        # display
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
@@ -76,7 +80,7 @@ def osd(bot, target_array, text_type, text_array):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
                 bot.notice(combinedline, target)
-            elif text_type == 'action':
+            elif text_type == 'action' and textparts == textpartsleft:
                 bot.action(combinedline,user)
             else:
                 bot.say(combinedline)
