@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     current_translate = get_trigger_arg(bot, triggerargsarray, 0) or 0
     if not current_translate:
         spititout = randint(0, 1)
-    elif current_translate.isdigit():
+    elif str(current_translate).isdigit():
         spititout = text_to_bits(current_translate)
         # spititout = ' '.join(format(ord(x), 'b') for x in current_translate)
         # spititout = spititout.replace("[","")
