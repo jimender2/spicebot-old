@@ -26,9 +26,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Who is supersoft?"
     elif target == instigator:
         message = "Is your self esteem really that low?"
-    elif validtarget == 0:
+    elif isvalid == 0:
         message = "I'm not sure who that is."
-    elif validtarget == 3:
+    elif isvalid == 3:
         message = "I'm all metal, baby"
     else:
         pick = random.randint(1,10)

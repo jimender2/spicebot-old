@@ -22,6 +22,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if isvalid == 1:
-        onscreentext_action(bot,['say'],"applies the Cork of Sean to " + target)
+        action = "applies the Cork of Sean to " + target
     else:
-        onscreentext_action(bot,['say'],"applies the Cork of Sean to " + instigator.default)
+        action = "applies the Cork of Sean to " + instigator.default
+    onscreentext_action(bot,[botcom.channel_current],action)

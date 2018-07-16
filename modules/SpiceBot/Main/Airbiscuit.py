@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('airbiscuit','float')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'airbiscuit')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = ""
     isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if not target:
-        message = trigger.nick + " floats an air biscuit.
+        message = trigger.nick + " floats an air biscuit."
     elif isvalid == 0:
         message = "I'm not sure who that is."
     elif isvalid == 3:
