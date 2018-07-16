@@ -14,7 +14,7 @@ def class_create(classname):
         def __iter__(self):
             return str(self.default)
         def lower(self):
-            return str(self.default)
+            return str(self.default).lower()
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
