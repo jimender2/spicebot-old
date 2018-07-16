@@ -62,7 +62,6 @@ def bot_command_process(bot,trigger,triggerargsarray):
         botcom.command_main = 'docs'
     botcom.triggerargsarray = triggerargsarray
     bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,instigator)')
-    bot.say("here")
     eval(bot_command_function_run)
 
 
@@ -497,11 +496,11 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 
 
 def bot_command_function_update(bot,trigger,botcom,instigator):
-
+    bot.say("here")
     if instigator not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
-
+    bot.say("here")
     for channel in bot.channels:
         if bot.nick != 'spiceRPG' and bot.nick.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
