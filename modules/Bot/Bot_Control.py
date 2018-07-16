@@ -643,5 +643,6 @@ def bot_list_directory(bot,botcom):
         if os.path.isfile(joindpath):
             botcom.filefoldertype.append("file")
         else:
+            bot.say(str(joindpath))
             botcom.filefoldertype.append("folder")
     return botcom
