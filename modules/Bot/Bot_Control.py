@@ -62,6 +62,7 @@ def bot_command_process(bot,trigger,triggerargsarray):
         botcom.command_main = 'docs'
     botcom.triggerargsarray = triggerargsarray
     bot_command_function_run = str('bot_command_function_' + botcom.command_main.lower() + '(bot,trigger,botcom,instigator)')
+    bot.say("here")
     eval(bot_command_function_run)
 
 
