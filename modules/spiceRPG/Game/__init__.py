@@ -89,4 +89,4 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         osd(bot, rpg.channel_current, 'action', command_full)
 
-        osd(bot, str(instigator), 'notice', text_array)
+        osd(bot, str(instigator), 'notice', command_full)
