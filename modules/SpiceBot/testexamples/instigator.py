@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('testcom')
+@sopel.module.commands('instigator')
 def execute_main(bot, trigger):
 
     # botcom
