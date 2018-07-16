@@ -26,10 +26,10 @@ LOGGER = get_logger(__name__)
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if len(triggerargsarray) >= 1:
         mysite = get_trigger_arg(bot, triggerargsarray, 1).lower()
         searchterm = get_trigger_arg(bot, triggerargsarray, '1+')

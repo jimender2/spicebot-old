@@ -15,9 +15,9 @@ from BotShared import *
 @sopel.module.commands('dbshow')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
-    execute_main(bot, triggerargsarray)
+    execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     nick = get_trigger_arg(triggerargsarray, 0)
     bot.say("nick: " + nick)
     dbkey = get_trigger_arg(triggerargsarray, 1)
