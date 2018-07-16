@@ -232,10 +232,12 @@ def targetcheck(bot, botcom, target):
         validtargetmsg.append(target + " isn't a valid user")
         return validtarget,validtargetmsg
 
+"""
 ##############
 # Fix unicode in strings #
 ##############
 """
+
 def unicode_string_cleanup(string):
     for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
         string = string.replace(*r)
