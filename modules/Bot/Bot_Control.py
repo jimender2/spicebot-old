@@ -580,9 +580,9 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     bot.say(str(joindpath))
-    if not os.path.isfile(joindpath):
-        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
-        return
+    # if not os.path.isfile(joindpath):
+    #    osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+    #    return
 
     debugloglinenumberarray = []
     onscreentext_action(bot, [botcom.channel_current], "Is Copying Log")
@@ -643,6 +643,5 @@ def bot_list_directory(bot,botcom):
         if os.path.isfile(joindpath):
             botcom.filefoldertype.append("file")
         else:
-            bot.say(str(joindpath))
             botcom.filefoldertype.append("folder")
     return botcom
