@@ -8,7 +8,7 @@ Licensed under the Eiffel Forum License 2.
 http://sopel.chat
 """
 
-## Small adjustments made to conform to other SpiceBot modules (opt-in)
+#  Small adjustments made to conform to other SpiceBot modules (opt-in)
 
 from __future__ import unicode_literals, absolute_import, print_function, division
 
@@ -28,48 +28,49 @@ from BotShared import *
 
 maximum = 4
 
+
 # Load things to tell from file
 def loadReminders(fn, lock):
-    lock.acquire()#Lock file access
+    lock.acquire()  # Lock file access
     try:
         result = {}
-        f = open(fn) #open file
+        f = open(fn)  # open file
         for line in f:
             line = line.strip()
             if sys.version_info.major < 3:
                 line = line.decode('utf-8')
             if line:
                 try:
-                    tellee, teller, verb, timenow, msg = line.split('\t', 4) # split to key data
+                    tellee, teller, verb, timenow, msg = line.split('\t', 4)  # split to key data
                 except ValueError:
                     continue  # @@ hmm
-                result.setdefault(tellee, []).append((teller, verb, timenow, msg)) #set data to return
-        f.close()#close file
+                result.setdefault(tellee, []).append((teller, verb, timenow, msg))  # set data to return
+        f.close()  # close file
     finally:
-        lock.release()#release lock
-    return result#return info
+        lock.release()  # release lock
+    return result  # return info
 
-#write reminders to file
+# write reminders to file
 def dumpReminders(fn, data, lock):
-    lock.acquire()#lock file
+    lock.acquire()  # lock file
     try:
-        f = open(fn, 'w')#open file with write access
-        for tellee in iterkeys(data): #go through everything
+        f = open(fn, 'w')  # open file with write access
+        for tellee in iterkeys(data):  # go through everything
             for remindon in data[tellee]:
                 line = '\t'.join((tellee,) + remindon)
                 try:
                     to_write = line + '\n'
                     if sys.version_info.major < 3:
                         to_write = to_write.encode('utf-8')
-                    f.write(to_write)#store the data
+                    f.write(to_write)  # store the data
                 except IOError:
                     break
         try:
-            f.close()#close the file
+            f.close()  # close the file
         except IOError:
             pass
     finally:
-        lock.release()#release the lock
+        lock.release()  # release the lock
     return True
 
 
@@ -118,13 +119,13 @@ def execute_main(bot, trigger):
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
     if tellee.lower() in [u.lower() for u in bot.users]:
-        if not message.endswith('please'):
+        if not message.endswith('please') or not message.startswith('please'):
             return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if not tellee in (Identifier(teller), bot.nick, 'me'):
         tz = get_timezone(bot.db, bot.config, None, tellee)
         timenow = format_time(bot.db, bot.config, tz, tellee)
-        msg = msg.rstrip('please').rstrip()
+        msg = msg.lstrip('please').rstrip('please').lstrip().rstrip()
         bot.memory['tell_lock'].acquire()
         try:
             if not tellee in bot.memory['reminders']:

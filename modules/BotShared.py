@@ -38,7 +38,7 @@ def spicebot_prerun(bot,trigger,commandused):
     except IndexError:
         triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create')
 
-    botcom = botcom_class()
+    botcom = class_create('bot')
     botcom = bot_command_users(bot,botcom)
 
     # Basics
@@ -803,5 +803,14 @@ def array_arrangesort(bot, sortbyarray, arrayb):
 """
 
 
-class botcom_class():
-    pass
+def class_create(classname):
+    compiletext = """
+        def __init__(self):
+            self.default = str(self.__class__.__name__)
+        def __repr__(self):
+            return self.default
+        pass
+        """
+    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    newclass = eval('class_'+classname+"()")
+    return newclass

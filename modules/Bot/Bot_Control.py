@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
+
 # sopel imports
 import sopel.module
 from sopel.module import commands, nickname_commands, rule, priority, example, OP, ADMIN, VOICE, event, rule
@@ -28,10 +29,10 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    botcom = botcom_class()
+    botcom = class_create('bot')
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
@@ -68,6 +69,58 @@ def bot_command_process(bot,trigger,botcom,triggerargsarray):
 """
 Commands
 """
+
+
+def bot_command_function_dir(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.opadmin:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    botcom = bot_list_directory(bot,botcom)
+    if botcom.directory == []:
+        onscreentext(bot, ['say'], "It appears this directory is empty.")
+        return
+    displaymsgarray = []
+    displaymsgarray.append("Current files located in " + str(botcom.directory) + " :")
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        displaymsgarray.append(str("["+filefoldertype.title()+"] ")+str(filename))
+    onscreentext(bot, ['say'], displaymsgarray)
+
+
+def bot_command_function_cd(bot,trigger,botcom,triggerargsarray):
+
+    if botcom.instigator not in botcom.opadmin:
+        osd_notice(bot, botcom.instigator, "You are unauthorized to use this function.")
+        return
+
+    validfolderoptions = ['..','reset']
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    botcom = bot_list_directory(bot,botcom)
+
+    for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
+        if filefoldertype == 'folder':
+            validfolderoptions.append(filename)
+
+    movepath = get_trigger_arg(bot, triggerargsarray, 0)
+    if movepath not in validfolderoptions:
+        if movepath in botcom.directory_listing and movepath not in validfolderoptions:
+            onscreentext(bot, ['say'], "You can't Change Directory into a File!")
+        else:
+            onscreentext(bot, ['say'], "Invalid Folder Path")
+        return
+
+    if movepath == "..":
+        movepath = os.path.dirname(botcom.directory)
+    elif movepath == 'reset':
+        movepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    else:
+        movepath = os.path.join(botcom.directory, str(movepath+"/"))
+
+    set_database_value(bot, bot.nick, 'current_admin_dir', str(movepath))
+
+    onscreentext(bot, ['say'], "Directory Changed to : " + str(movepath))
 
 
 def bot_command_function_docs(bot,trigger,botcom,triggerargsarray):
@@ -450,7 +503,10 @@ def bot_command_function_update(bot,trigger,botcom,triggerargsarray):
         return
 
     for channel in bot.channels:
-        onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+        if bot.nick != 'spiceRPG' and bot.nick.lower() != 'spicerpgdev':
+            onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+        else:
+            onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
     update(bot, trigger)
     restart(bot, trigger, botcom.service)
 
@@ -462,7 +518,10 @@ def bot_command_function_restart(bot,trigger,botcom,triggerargsarray):
         return
 
     for channel in bot.channels:
-        onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
+        if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
+            onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
+        else:
+            onscreentext(bot, [channel], "My Dungeon Master, " + botcom.instigator + ", commandeth me to restart. I shall return post haste!")
     restart(bot, trigger, botcom.service)
 
 
@@ -539,3 +598,21 @@ def update(bot, trigger):
     onscreentext(bot, ['say'], "Pulling From Github...")
     g = git.cmd.Git(moduledir)
     g.pull()
+
+
+"""
+dir listing
+"""
+
+
+def bot_list_directory(bot,botcom):
+    botcom.directory_listing = []
+    botcom.filefoldertype = []
+    for filename in os.listdir(botcom.directory):
+        botcom.directory_listing.append(filename)
+        joindpath = os.path.join(botcom.directory, filename)
+        if os.path.isfile(joindpath):
+            botcom.filefoldertype.append("file")
+        else:
+            botcom.filefoldertype.append("folder")
+    return botcom
