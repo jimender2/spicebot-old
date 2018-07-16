@@ -27,7 +27,7 @@ replies = ["Eat My Shorts!",
 
 @sopel.module.commands('bart')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'bart')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
