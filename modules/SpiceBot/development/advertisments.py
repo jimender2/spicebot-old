@@ -24,15 +24,6 @@ commandarray = ["add","remove","count", "last"]
 
 databasekey = 'ads'
 
-
-def setup(self):
-    # Check everything here
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    entries = len(existingarray)
-    if entries < 1:
-        bot.say("there are no adverts loaded.")
-
-
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray = spicebot_prerun(bot, trigger,'ads')
@@ -44,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    #database_initialize(bot, bot.nick, testarray, databasekey)
+    database_initialize(bot, bot.nick, testarray, databasekey)
 
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
