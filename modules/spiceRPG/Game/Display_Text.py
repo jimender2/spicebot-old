@@ -47,13 +47,12 @@ def osd(bot, target_array, text_type, text_array):
         temptextarray = []
         if text_type == 'notice':
             temptextarray.append(target + ", ")
-            bot.say(str(temptextarray))
         for part in textarraycomplete:
             temptextarray.append(part)
 
         combinedtextarray = []
         currentstring = ''
-        for textstring in textarraycomplete:
+        for textstring in temptextarray:
             if currentstring == '':
                 currentstring = textstring
             elif len(textstring) > osd_limit:
