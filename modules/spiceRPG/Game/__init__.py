@@ -81,7 +81,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Run command process
         # command_main_process(bot, trigger, rpg)
-        onscreentext(bot, str(instigator), command_full)
+
+        rpg.channel_current = trigger.sender
+        # onscreentext(bot, str(instigator), command_full)
 
         osd(bot, rpg.channel_current, 'say', command_full)
 
