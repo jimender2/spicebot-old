@@ -27,39 +27,3 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bot.say("Target is good")
     else:
         bot.say(validmsg)
-# copy of targetcheck in spicebot shared##
-"""
-####################################
-##########Check for target##########
-###If target  validtarget =1       #
-###if bot is target validtarget=2  #
-###if target is instigator         #
-###validtarget =2                  #
-####################################
-def testtargetcheck(bot, target,instigator):
-    validtarget = 0
-    validtargetmsg = ''
-
-    bot.say(bot.nick)
-    for channel in bot.channels:
-        botusersarray = get_database_value(bot, bot.nick, 'botusers')
-    for u in bot.users:
-        if u in botusersarray:
-            botuseron.append(u)
-    if not target:
-        validtargetmsg = str(instigator + ", you must specify a target.")
-        validtarget = 0
-    else:
-        if target.lower() == bot.nick.lower():
-            validtargetmsg = str(instigator + ", can't targetbot.")
-            validtarget=2
-        elif target == instigator:
-            validtargetmsg = str(instigator + ", is the target")
-            validtarget=3
-
-        elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(instigator + " " + target +  "isn't a valid target")
-        else:
-            validtarget = 1
-
-    return validtarget, validtargetmsg
