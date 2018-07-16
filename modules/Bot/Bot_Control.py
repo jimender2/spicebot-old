@@ -518,7 +518,7 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
 
     for channel in bot.channels:
         if targetbot != bot.nick:
-            onscreentext(bot, [channel], trigger.nick + " commanded me to update " + targetbot + "from Github and restart.")
+            onscreentext(bot, [channel], trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
         elif targetbot == 'spiceRPG' and targetbot.lower() == 'spicerpgdev':
             onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
         else:
