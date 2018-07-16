@@ -29,7 +29,7 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 """
 
 
-@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
+@nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir','gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
@@ -68,6 +68,14 @@ def bot_command_process(bot,trigger,triggerargsarray):
 """
 Commands
 """
+
+
+def bot_command_function_gitpull(bot,trigger,botcom,instigator):
+
+    botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    onscreentext(bot, ['say'], "attempting to git pull " + botcom.directory)
+    g = git.cmd.Git(botcom.directory)
+    g.pull()
 
 
 def bot_command_function_dir(bot,trigger,botcom,instigator):
@@ -497,31 +505,45 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 
 def bot_command_function_update(bot,trigger,botcom,instigator):
 
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+
     if instigator.default not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
+    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    if not os.path.isdir(joindpath):
+        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+        return
+
     for channel in bot.channels:
-        if bot.nick != 'spiceRPG' and bot.nick.lower() != 'spicerpgdev':
+        if targetbot != 'spiceRPG' and targetbot.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
         else:
             onscreentext(bot, [channel], "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
-    update(bot, trigger)
-    restart(bot, trigger, botcom.service)
+    update(bot, trigger,targetbot)
+    restart(bot, trigger, targetbot)
 
 
 def bot_command_function_restart(bot,trigger,botcom,instigator):
 
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+
     if instigator.default not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
+    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    if not os.path.isdir(joindpath):
+        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+        return
+
     for channel in bot.channels:
-        if bot.nick.lower() != 'spicerpg' and bot.nick.lower() != 'spicerpgdev':
+        if targetbot.lower() != 'spicerpg' and targetbot.lower() != 'spicerpgdev':
             onscreentext(bot, [channel], trigger.nick + " commanded me to restart. Be Back Soon!")
         else:
             onscreentext(bot, [channel], "My Dungeon Master, " + instigator + ", commandeth me to restart. I shall return post haste!")
-    restart(bot, trigger, botcom.service)
+    restart(bot, trigger, targetbot)
 
 
 def bot_command_function_permfix(bot,trigger,botcom,instigator):
@@ -555,9 +577,15 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    if not os.path.isdir(joindpath):
+        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+        return
+
     debugloglinenumberarray = []
     onscreentext_action(bot, [botcom.channel_current], "Is Copying Log")
-    os.system("sudo journalctl -u " + botcom.service + " >> " + log_file_path)
+    os.system("sudo journalctl -u " + targetbot + " >> " + log_file_path)
     onscreentext_action(bot, [botcom.channel_current], "Is Filtering Log")
     search_phrase = "Welcome to Sopel. Loading modules..."
     ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
@@ -592,10 +620,11 @@ def restart(bot, trigger, service):
     os.system("sudo service " + str(service) + " restart")
 
 
-def update(bot, trigger):
+def update(bot, trigger,targetbot):
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
     onscreentext(bot, ['say'], "Pulling From Github...")
-    g = git.cmd.Git(moduledir)
+    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    g = git.cmd.Git(joindpath)
     g.pull()
 
 
