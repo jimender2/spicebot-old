@@ -70,14 +70,14 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Admin only
         rpg.admin = 0
-        if [x for x in triggerargsarray_part if x == "-a"]:
-            triggerargsarray_part.remove("-a")
+        if [x for x in rpg.triggerargsarray if x == "-a"]:
+            rpg.triggerargsarray.remove("-a")
             if trigger.admin:
                 rpg.admin = 1
 
         # Split commands to pass
-        command_full = get_trigger_arg(bot, triggerargsarray_part, 0)
-        command_main = get_trigger_arg(bot, triggerargsarray_part, 1)
+        command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+        command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
         # Run command process
         # command_main_process(bot, trigger, rpg)
