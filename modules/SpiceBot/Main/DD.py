@@ -17,10 +17,10 @@ usernames = ['user','LUser','Luser','bitch']
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'dd')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     insult = get_trigger_arg(bot, insultnames, 'random')

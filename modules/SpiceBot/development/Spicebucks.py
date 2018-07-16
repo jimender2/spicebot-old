@@ -17,10 +17,10 @@ from BotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'spicebucks')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
     channel = trigger.sender
     commandused = get_trigger_arg(bot, triggerargsarray, 1) or 'nocommand'

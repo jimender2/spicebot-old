@@ -14,10 +14,10 @@ from BotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myown = get_trigger_arg(bot, triggerargsarray, 0)
     if myown and bot.nick not in myown:
         bot.say("Fine! I'll start my own " + myown + ", with blackjack and hookers!")

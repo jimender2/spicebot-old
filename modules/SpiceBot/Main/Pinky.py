@@ -17,9 +17,9 @@ from BotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'pinky')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     item = get_trigger_arg(bot,triggerargsarray, '1+')
     if not item:
         message = "How can you have anything good if you don't eat your meat!?!"

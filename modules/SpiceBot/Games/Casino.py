@@ -35,9 +35,9 @@ wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'gamble')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, arg):
+def execute_main(bot, trigger, arg, botcom, instigator):
     mygame = get_trigger_arg(bot, arg, 1) or 'nocommand'
     if mygame == 'docs' or mygame == 'help':
         bot.say("For help with this module, see here: " + wikiurl)

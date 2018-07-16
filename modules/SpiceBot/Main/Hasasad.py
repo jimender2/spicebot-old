@@ -14,8 +14,8 @@ from BotShared import *
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'hasasad')
     if not enablestatus:
-        execute_main(bot, trigger)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.action("sits in the corner and cries.")

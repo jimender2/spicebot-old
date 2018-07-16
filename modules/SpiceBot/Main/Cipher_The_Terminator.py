@@ -22,10 +22,10 @@ spice_mission = ["Protect Technical Angel","INSTALL MOAR PATCHES"]
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'cipher')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if instigator == 'Cipher-0' and not target:

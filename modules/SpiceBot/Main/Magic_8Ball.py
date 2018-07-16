@@ -18,10 +18,10 @@ eightarray = ["Only on Tuesdays","42","Not so sure","Negative", "Could be", "Unc
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.say("Let me dig deep into the waters of life, and find your answer")
     reply = get_trigger_arg(bot, eightarray, 'random')
     bot.say(reply)

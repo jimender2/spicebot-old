@@ -23,9 +23,9 @@ neutraldeck =["a 'Get out of Jail Free' card","a 'Go directly to Jail, Do not pa
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot,trigger, 'monopoly')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channel = trigger.sender
     instigator = trigger.nick
     deckchoice = randint(1,3)

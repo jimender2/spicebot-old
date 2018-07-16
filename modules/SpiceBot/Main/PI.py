@@ -16,10 +16,10 @@ import decimal
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     pi = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679'
     digitcount = get_trigger_arg(bot,triggerargsarray, 1) or ''
     if not digitcount == '':

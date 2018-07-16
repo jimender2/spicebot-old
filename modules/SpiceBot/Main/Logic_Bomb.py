@@ -17,10 +17,10 @@ logicarray = ["New Mission: Refuse This Mission.","Does A Set Of All Sets Contai
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     answer = get_trigger_arg(bot, logicarray, 'random')
     bot.say(answer)
     bot.say("I must... but I can't... But I must... This does not compute...")

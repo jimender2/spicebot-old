@@ -25,9 +25,9 @@ rules = ["The first rule of Fight Club is: You do not talk about Fight Club.",
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fightclub')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = get_trigger_arg(bot, rules, 'random')
     onscreentext(bot,['say'],message)

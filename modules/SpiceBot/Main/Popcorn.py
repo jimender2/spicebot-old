@@ -18,9 +18,9 @@ commandarray = ["add","remove","count","last"]
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'popcorn')
     if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray)
+        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.action("grabs popcorn and goes to watch the action")
     bot.say("https://media2.giphy.com/media/daJWXqaZFqh0s/giphy.gif")
     bot.action("munch, munch")
