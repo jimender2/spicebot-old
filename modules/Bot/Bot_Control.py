@@ -32,9 +32,9 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 @nickname_commands('modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
-    botcom.triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
-    botcom.triggerargsarray = get_trigger_arg(bot, botcom.triggerargsarray, '2+')
-    botcom.triggerargsarray = get_trigger_arg(bot, botcom.triggerargsarray, 'create')
+    triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
+    triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
+    triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     bot_command_process(bot,trigger,triggerargsarray)
 
 
