@@ -815,11 +815,12 @@ def class_create(classname):
     compiletext = """
         def __init__(self):
             self.default = str(self.__class__.__name__)
+        def default(self):
+            self.default = str(self.default)
         def __repr__(self):
             return self.default
         def __str__(self):
             return self.default
-        self.default = str(self.default)
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
