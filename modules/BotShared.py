@@ -110,7 +110,7 @@ def spicebot_prerun(bot,trigger,commandused):
 def actualname(bot,nick):
     actualnick = str(nick)
     for u in bot.users:
-        if u.lower() == nick.lower():
+        if u.lower() == str(nick).lower():
             actualnick = u
     return actualnick
 
