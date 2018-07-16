@@ -44,7 +44,6 @@ def bot_command_process(bot,trigger,triggerargsarray):
     botcom = class_create('bot')
     instigator = class_create('instigator')
     instigator.default = trigger.nick
-    bot.say(str(instigator))
 
     # time
     botcom.now = time.time()
@@ -73,7 +72,7 @@ Commands
 
 def bot_command_function_dir(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.opadmin:
+    if str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -91,7 +90,7 @@ def bot_command_function_dir(bot,trigger,botcom,instigator):
 
 def bot_command_function_cd(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.opadmin:
+    if str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -176,12 +175,12 @@ def bot_command_function_channel(bot,trigger,botcom,instigator):
 def bot_command_function_on(bot,trigger,botcom,instigator):
 
     target = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or instigator
-    if target != instigator and instigator not in botcom.opadmin:
+    if target != str(instigator) and str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function on other users.")
         return
     bot_opted_users = get_database_value(bot, bot.nick, 'users_blocked') or []
     if target not in bot_opted_users:
-        if target == instigator:
+        if target == str(instigator):
             osd_notice(bot, instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
             osd_notice(bot, instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
@@ -191,12 +190,12 @@ def bot_command_function_on(bot,trigger,botcom,instigator):
 
 def bot_command_function_off(bot,trigger,botcom,instigator):
     target = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or instigator
-    if target != instigator and instigator not in botcom.opadmin:
+    if target != str(instigator) and str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function on other users.")
         return
     bot_opted_users = get_database_value(bot, channeltarget, 'users_blocked') or []
     if target in bot_blocked_users:
-        if target == instigator:
+        if target == str(instigator):
             osd_notice(bot, instigator, "It looks like you already have " + bot.nick + " " + botcom.command_main+".")
         else:
             osd_notice(bot, instigator, "It looks like " + target + " already has " + bot.nick + " " + botcom.command_main+".")
@@ -245,7 +244,7 @@ def bot_command_function_modules(bot,trigger,botcom,instigator):
     # Enable/Disable
     if subcommand == 'enable' or subcommand == 'disable':
 
-        if instigator not in botcom.opadmin:
+        if str(instigator) not in botcom.opadmin:
             osd_notice(bot, instigator, "You are unauthorized to use this function.")
             return
 
@@ -276,7 +275,7 @@ def bot_command_function_modules(bot,trigger,botcom,instigator):
 
 def bot_command_function_msg(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.opadmin:
+    if str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -300,7 +299,7 @@ def bot_command_function_msg(bot,trigger,botcom,instigator):
 
 def bot_command_function_action(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.opadmin:
+    if str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -324,7 +323,7 @@ def bot_command_function_action(bot,trigger,botcom,instigator):
 
 def bot_command_function_block(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.opadmin:
+    if str(instigator) not in botcom.opadmin:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -400,7 +399,7 @@ def bot_command_function_github(bot,trigger,botcom,instigator):
 
     if main_subcommand == 'block':
 
-        if instigator not in botcom.opadmin:
+        if str(instigator) not in botcom.opadmin:
             osd_notice(bot, instigator, "You are unauthorized to use this function.")
             return
 
@@ -498,7 +497,7 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 
 def bot_command_function_update(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -513,7 +512,7 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
 
 def bot_command_function_restart(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -527,7 +526,7 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
 
 def bot_command_function_permfix(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -537,7 +536,7 @@ def bot_command_function_permfix(bot,trigger,botcom,instigator):
 
 def bot_command_function_pip(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
@@ -552,7 +551,7 @@ def bot_command_function_pip(bot,trigger,botcom,instigator):
 
 def bot_command_function_debug(bot,trigger,botcom,instigator):
 
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
