@@ -52,7 +52,7 @@ def bot_command_process(bot,trigger,triggerargsarray):
     botcom = bot_command_users(bot,botcom)
 
     # Channels
-    botcom = bot_command_channels(bot,botcom)
+    botcom = bot_command_channels(bot,botcom,trigger)
 
     # Command Used
     botcom.command_main = get_trigger_arg(bot, triggerargsarray, 1)
