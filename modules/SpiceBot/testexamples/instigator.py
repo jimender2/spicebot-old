@@ -25,7 +25,7 @@ def execute_main(bot, trigger):
     # instigator
     instigator = class_create('instigator')
     bot.say(".default before " + instigator.default)
-    instigator.default = str(trigger.nick)
+    instigator.default = trigger.nick
     bot.say(".default after " + instigator.default)
 
     bot.say("string wrapped " + str(instigator))
