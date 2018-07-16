@@ -83,14 +83,13 @@ def database_initialize(bot, nick, array, database):
     databasekey = str(database)
     existingarray = get_database_value(bot, bot.nick, databasekey)
     if not existingarray:
-        arraycount = len(array)
+        arraycount = (len(array) - 1)
         bot.say("entered")
         i = 0
         while (i <= arraycount):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
-            bot.say("test")
 
 
 @sopel.module.interval(60)
