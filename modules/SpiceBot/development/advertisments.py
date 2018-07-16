@@ -88,6 +88,7 @@ def database_initialize(bot, nick, array, databasekey):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
+            bot.say("test")
 
 
 @sopel.module.interval(60)
