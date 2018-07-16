@@ -22,11 +22,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     current_translate = get_trigger_arg(bot, triggerargsarray, 0) or 0
     if not current_translate:
         spititout = randint(0, 1)
-    elif str(current_translate).isdigit():
-        bot.say("digit")
+    elif not str(current_translate).isdigit():
         spititout = string2bits(current_translate)
     else:
-        bot.say("not digit")
         spititout = bits2string(current_translate)
     onscreentext(bot, ['say'], str(spititout))
 
