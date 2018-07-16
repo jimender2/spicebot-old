@@ -76,6 +76,7 @@ def get_database_value(bot, nick, databasekey):
 
 @sopel.module.interval(60)
 def advertisement(bot):
+    databasekey = 'ads'
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
     message = get_trigger_arg(bot, existingarray, "random") or ''
     if message == '':
