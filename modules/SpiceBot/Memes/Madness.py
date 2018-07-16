@@ -12,7 +12,7 @@ from BotShared import *
 
 @sopel.module.commands('madness')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'madness')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'madness')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

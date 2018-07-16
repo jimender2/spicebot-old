@@ -14,7 +14,7 @@ from BotShared import *
 @nickname_commands('who')
 @commands('who')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'who')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'who')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

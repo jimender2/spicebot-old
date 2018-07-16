@@ -14,7 +14,7 @@ devbot='dev' ## Enables the bot to distinguish if in test
 
 @sopel.module.commands('fortune','cookie')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'fortune')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'fortune')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

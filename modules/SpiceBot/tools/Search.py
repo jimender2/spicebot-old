@@ -24,7 +24,7 @@ LOGGER = get_logger(__name__)
 
 @commands('google', 'search', 'lookup')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'google')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'google')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

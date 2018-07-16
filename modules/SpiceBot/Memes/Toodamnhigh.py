@@ -13,7 +13,7 @@ from BotShared import *
 
 @sopel.module.commands('toodamnhigh','toohigh')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'toodamnhigh')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'toodamnhigh')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 

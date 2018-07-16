@@ -13,7 +13,7 @@ from BotShared import *
 @sopel.module.commands('thug')
 def mainfunction(bot, trigger):
     """Check if module is enabled."""
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, 'thug')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'thug')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
 
