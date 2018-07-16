@@ -119,7 +119,7 @@ def bot_command_users(bot,botcom):
     botcom.opadmin,botcom.owner,botcom.chanops,botcom.chanvoice,botcom.botadmins,botcom.users_current = [],[],[],[],[],[]
 
     for user in bot.users:
-        botcom.users_current.append(user)
+        botcom.users_current.append(str(user))
     adjust_database_array(bot, 'channel', botcom.users_current, 'users_all', 'add')
     botcom.users_all = get_database_value(bot, 'channel', 'users_all') or []
 
