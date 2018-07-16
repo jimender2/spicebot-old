@@ -499,7 +499,7 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
 
     bot.say(str(instigator))
     bot.say(str(botcom.botadmins))
-    if instigator not in botcom.botadmins:
+    if str(instigator) not in botcom.botadmins:
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
     bot.say("here")
