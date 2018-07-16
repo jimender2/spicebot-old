@@ -78,11 +78,10 @@ def execute_main(bot, trigger, triggerargsarray):
     else:
         if not reason:
             message = instigator + " tils " + target + " with " + msg + "."
-                bot.say(message)
+            bot.say(message)
         else:
             message = instigator + " tils " + target + " with " + msg + " for " + reason + "."
-                bot.say(message)
-
+            bot.say(message)
 
 
 def get_database_value(bot, nick, databasekey):
@@ -90,23 +89,28 @@ def get_database_value(bot, nick, databasekey):
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
+
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
 
+
 def reset_database_value(bot, nick, databasekey):
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, None)
+
 
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey) or 0
     databasecolumn = str(databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
+
 def get_database_array_total(bot, nick, databasekey):
     array = get_database_value(bot, nick, databasekey) or []
     entriestotal = len(array)
     return entriestotal
+
 
 def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
     if not isinstance(entries, list):
