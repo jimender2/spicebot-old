@@ -82,9 +82,9 @@ def get_database_value(bot, nick, databasekey):
 def database_initialize(bot, nick, array, database):
     databasekey = str(database)
     existingarray = get_database_value(bot, bot.nick, databasekey)
-    bot.say("entered")
     if existingarray == '':
         arraycount = len(array)
+        bot.say("entered")
         i = 1
         while (i <= arraycount):
             inputstring = array[i]
