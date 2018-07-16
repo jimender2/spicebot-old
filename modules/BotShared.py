@@ -823,4 +823,5 @@ def class_create(classname):
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
     newclass = eval('class_'+classname+"()")
+    setattr(newclass, 'lower', newclass.default.lower())
     return newclass
