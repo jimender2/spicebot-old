@@ -4,7 +4,6 @@ Dynamic Classes
 
 
 def class_create(classname):
-
     compiletext = """
         def __init__(self):
             self.default = str(self.__class__.__name__)
@@ -18,7 +17,6 @@ def class_create(classname):
             return str(self.default).lower()
         pass
         """
-
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
