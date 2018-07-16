@@ -47,6 +47,7 @@ def osd(bot, target_array, text_type, text_array):
         temptextarray = []
         if text_type == 'notice':
             temptextarray.append(target + ", ")
+            bot.say(str(temptextarray))
         for part in textarraycomplete:
             temptextarray.append(part)
 
