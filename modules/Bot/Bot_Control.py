@@ -511,10 +511,10 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not os.path.isfile(joindpath):
-        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
-        return
+    # joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    # if not os.path.isfile(joindpath):
+    #    osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+    #    return
 
     for channel in bot.channels:
         if targetbot != 'spiceRPG' and targetbot.lower() != 'spicerpgdev':
@@ -533,10 +533,10 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         osd_notice(bot, instigator, "You are unauthorized to use this function.")
         return
 
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not os.path.isfile(joindpath):
-        osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
-        return
+    # joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+    # if not os.path.isfile(joindpath):
+    #    osd_notice(bot, instigator, "That doesn't appear to be a valid bot directory.")
+    #    return
 
     for channel in bot.channels:
         if targetbot.lower() != 'spicerpg' and targetbot.lower() != 'spicerpgdev':
