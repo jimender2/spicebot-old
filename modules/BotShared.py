@@ -816,7 +816,9 @@ def class_create(classname):
         def __init__(self):
             self.default = str(self.__class__.__name__)
         def __repr__(self):
-            return repr(str(self.default))
+            return_default = str(self.default)
+            return_default = return_default.replace("'","")
+            return return_default
         pass
         """
     exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
