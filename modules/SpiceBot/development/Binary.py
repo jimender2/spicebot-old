@@ -24,6 +24,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         spititout = randint(0, 1)
     elif not str(current_translate).isdigit():
         spititout = string2bits(current_translate) or 'error'
+        spititout = spititout.replace("[","")
+        spititout = spititout.replace("]","")
+        spititout = spititout.replace("'","")
     else:
         spititout = bits2string(current_translate) or 'error'
     onscreentext(bot, ['say'], str(spititout))
