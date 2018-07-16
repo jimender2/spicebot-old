@@ -216,33 +216,26 @@ def increment_counter(bot, trigger, commandused):
 """
 
 
-def targetcheck(bot, target,botcom):
-    validtarget = 0
-    validtargetmsg = ''
-    botusersarray = []
-    botuseron = []
-    for channel in bot.channels:
-        botusersarray = get_database_value(bot, bot.nick, 'botusers')
-    for u in bot.users:
-        if u in botusersarray:
-            botuseron.append(u)
+def targetcheck(bot, botcom, target):
+    # Guilty until proven Innocent
+    validtarget = 1
+    validtargetmsg = []
+
+    # Target is instigator
+    if target == botcom.instigator:
+        return validtarget, validtargetmsg
+
+    # Null Target
     if not target:
-        validtargetmsg = str(instigator.default + ", you must specify a target.")
-        validtarget = '0'
+        validtarget = 0
+        validtargetmsg.append("You must specify a target.")
+
+    if target in botcom.users_current:
+        return validtarget, validtargetmsg
     else:
-        if target.lower() == bot.nick.lower():
-            validtargetmsg = str(instigator.default + ", can't target bot.")
-            validtarget = '2'
-        elif target == instigator.default:
-            validtargetmsg = str(instigator.default + ", is the target")
-            validtarget = '3'
-
-        elif not target.lower() in [u.lower() for u in botuseron]:
-            validtargetmsg = str(instigator.default + " " + target + " isn't a valid target")
-        else:
-            validtarget = '1'
-
-    return validtarget
+        validtarget = 0
+        validtargetmsg.append(target + " isn't a valid user")
+        return validtarget,validtargetmsg
 
 
 """
