@@ -531,7 +531,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             bot.notice("  ", playerbio_maindueler.actual)
             bot.notice("  ", playerbio_target.actual)
         if typeofduel in duels_commands_events:
-            osd(bot, [maindueler,target], 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, [maindueler,target], 'priv', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         else:
             osd(bot, duels.channel_current, 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         if playerbio_maindueler.actual == playerbio_target.actual:
@@ -794,7 +794,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Final Announce
         if typeofduel in duels_commands_events:
-            osd(bot, [playerbio_winner.actual,playerbio_loser.actual], 'say', combattextarraycomplete)
+            osd(bot, [playerbio_winner.actual,playerbio_loser.actual], 'priv', combattextarraycomplete)
         else:
             osd(bot, duels.channel_current, 'say', combattextarraycomplete)
 
@@ -7767,7 +7767,7 @@ def osd(bot, target_array, text_type, text_array):
                 bot.action(combinedline,target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
-            elif text_type == 'notice':
+            elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
                 bot.say(combinedline)
