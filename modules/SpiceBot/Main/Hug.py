@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick()
+    instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1) or 'themself'
     bot.say(instigator + " gives " + target + " a nice big nohomo hug!")

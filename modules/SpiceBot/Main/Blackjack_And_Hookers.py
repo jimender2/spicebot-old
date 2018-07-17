@@ -12,12 +12,14 @@ from BotShared import *
 
 @sopel.module.commands('myown')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'myown')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myown = get_trigger_arg(bot, triggerargsarray, 0)
+    message = "Fine! I'll start my own my casino with blackjack and hookers!"
     if myown and bot.nick not in myown:
-        bot.say("Fine! I'll start my own " + myown + ", with blackjack and hookers!")
+        message = "Fine! I'll start my own " + myown + ", with blackjack and hookers!"
+    onscreentext(bot,['say'],message)

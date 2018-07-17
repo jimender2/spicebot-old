@@ -13,6 +13,8 @@ from .Array_manipulation import *
 from .Display_Text import *
 from .RPG_Class import *
 from .Global_Vars import *
+from .Channel_functions import *
+from .User_Functions import *
 
 """
 Idea, use exec to dynamically import the subcommands?
@@ -49,6 +51,12 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         return
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
+    # Channel Listing
+    rpg = rpg_command_channels(bot,rpg,trigger)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot,rpg)
+
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     rpg.multi_com_list = []
 
@@ -63,10 +71,6 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
-    if instigator.lower() == 'deathbybandaid':
-        bot.say("hello, " + instigator)
-
-    return
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
@@ -85,4 +89,3 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Run command process
         # command_main_process(bot, trigger, rpg)
-        onscreentext(bot, trigger.nick, command_full)

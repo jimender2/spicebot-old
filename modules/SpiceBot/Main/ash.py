@@ -129,11 +129,11 @@ replies = ["Ash: Yeah! [after shooting King Arthur's sword in half]",
 
 @sopel.module.commands('ash')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ash')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     answer = get_trigger_arg(bot, replies, 'random')
-    bot.say(answer)
+    onscreentext(bot,['say'],answer)

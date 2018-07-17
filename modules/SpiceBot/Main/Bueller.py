@@ -16,7 +16,7 @@ from BotShared import *
 
 @sopel.module.commands('bueller')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'bueller')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
@@ -24,6 +24,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     loop = 1
     while (loop <= 5):
-        bot.say("Bueller")
+        onscreentext(bot,['say'],"Bueller")
         loop = loop + 1
         time.sleep(5)

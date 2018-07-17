@@ -18,9 +18,11 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
+
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    if target.lower() in [u.lower() for u in bot.users]:
-        bot.action("applies the Cork of Sean to " + target)
+    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    if isvalid == 1:
+        action = "applies the Cork of Sean to " + target
     else:
-        bot.action("applies the Cork of Sean to " + instigator)
+        action = "applies the Cork of Sean to " + instigator.default
+    onscreentext_action(bot,[botcom.channel_current],action)

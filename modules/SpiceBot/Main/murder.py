@@ -9,9 +9,9 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author jimender2
+databasekey = 'murder'
 
-commandarray = ["add","remove","count","last"]
+# author jimender2
 
 
 @sopel.module.commands('murder','moida')
@@ -25,35 +25,33 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    databasekey = 'murder'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    if command in commandarray:
-        if command == "add":
-            if inputstring not in existingarray:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-                message = "Added to database."
-                bot.say(message)
-            else:
-                message = "That response is already in the database."
-                bot.say(message)
-        elif command == "remove":
-            if inputstring not in existingarray:
-                message = "That response was not found in the database."
-                bot.say(message)
-            else:
-                adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-                message = "Removed from database."
-                bot.say(message)
-        elif command == "count":
-            messagecount = len(existingarray)
-            message = "There are currently " + str(messagecount) + " responses for that in the database."
+    if command == "add":
+        if inputstring not in existingarray:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            message = "Added to database."
             bot.say(message)
+        else:
+            message = "That response is already in the database."
+            bot.say(message)
+    elif command == "remove":
+        if inputstring not in existingarray:
+            message = "That response was not found in the database."
+            bot.say(message)
+        else:
+            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            message = "Removed from database."
+            bot.say(message)
+    elif command == "count":
+        messagecount = len(existingarray)
+        message = "There are currently " + str(messagecount) + " responses for that in the database."
+        bot.say(message)
+    elif command == "last":
+        message = get_trigger_arg(bot, existingarray, "last")
+        bot.say(message)
 
-        elif command == "last":
-            message = get_trigger_arg(bot, existingarray, "last")
-            bot.say(message)
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':

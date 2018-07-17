@@ -20,9 +20,9 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     """Handle the main task itself."""
-    instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1) or instigator
-    message = "%s didn't choose the thug life, the thug life chose %s." % (target, target)
-    if target.lower() not in [u.lower() for u in bot.users]:
-        message = "%s didn't choose the %s life, the %s life chose %s." % (instigator,target,target,instigator)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    message = "%s didn't choose the thug life, the thug life chose %s." % (instigator.default, instigator.default)
+    if not isvalid == 0:
+        message = "%s didn't choose the %s life, the %s life chose %s." % (instigator.default,target,target,instigator.default)
     onscreentext(bot,['say'],message)

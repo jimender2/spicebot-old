@@ -11,7 +11,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
+
 
 @sopel.module.commands('pinky')
 def mainfunction(bot, trigger):
@@ -19,10 +20,11 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     item = get_trigger_arg(bot,triggerargsarray, '1+')
     if not item:
         message = "How can you have anything good if you don't eat your meat!?!"
     else:
-        message = "How can you have any %s if you don't eat your meat!?!" %item
+        message = "How can you have any %s if you don't eat your meat!?!" % item
     bot.say(message)

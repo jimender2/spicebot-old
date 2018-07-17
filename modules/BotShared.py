@@ -206,29 +206,32 @@ def increment_counter(bot, trigger, commandused):
 
 """
 ##################
-#####Check for target#####
-##If target valid, validtarget=1  #
-##If bot is target validtarget=2  #
-##if target is instigator.default  #
-##validtarget =3                  #
-##If no target,     validtarget=0 #
+# Check for target #
 ##################
 """
 
 
-def targetcheck(bot, botcom, target):
+def targetcheck(bot, botcom, target,instigator):
     # Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
     target = target.lower()
     # Target is instigator
     if target == instigator.default:
+        validtarget = 2
+        validtargetmsg.append("Target is instigator")
+        return validtarget, validtargetmsg
+
+    if target == bot.nick:
+        validtarget = 3
+        validtargetmsg.append("Target is a bot")
         return validtarget, validtargetmsg
 
     # Null Target
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
+        return validtarget,validtargetmsg
 
     if target in botcom.users_current:
         return validtarget, validtargetmsg
@@ -421,6 +424,74 @@ def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
 # On Screen Text #
 ###########
 """
+
+
+def osd(bot, target_array, text_type, text_array):
+
+    # if text_array is a string, make it an array
+    textarraycomplete = []
+    if not isinstance(text_array, list):
+        textarraycomplete.append(str(text_array))
+    else:
+        for x in text_array:
+            textarraycomplete.append(str(x))
+
+    # if target_array is a string, make it an array
+    texttargetarray = []
+    if not isinstance(target_array, list):
+        if not target.startswith("#"):
+            target = nick_actual(bot,str(target_array))
+        texttargetarray.append(target)
+    else:
+        for target in target_array:
+            if not target.startswith("#"):
+                target = nick_actual(bot,str(target_array))
+            texttargetarray.append(target)
+
+    # Make sure we don't cross over IRC limits
+    for target in texttargetarray:
+        temptextarray = []
+        if text_type == 'notice':
+            temptextarray.append(target + ", ")
+        for part in textarraycomplete:
+            temptextarray.append(part)
+
+        combinedtextarray = []
+        currentstring = ''
+        for textstring in temptextarray:
+            if currentstring == '':
+                currentstring = textstring
+            elif len(textstring) > osd_limit:
+                if currentstring != '':
+                    combinedtextarray.append(currentstring)
+                    currentstring = ''
+                combinedtextarray.append(textstring)
+            else:
+                tempstring = str(currentstring + "   " + textstring)
+                if len(tempstring) <= osd_limit:
+                    currentstring = tempstring
+                else:
+                    combinedtextarray.append(currentstring)
+                    currentstring = textstring
+        if currentstring != '':
+            combinedtextarray.append(currentstring)
+
+        # display
+        textparts = len(combinedtextarray)
+        textpartsleft = textparts
+        for combinedline in combinedtextarray:
+            # bot.say(str(textpartsleft) + " " + str(textparts))
+            if text_type == 'say':
+                bot.say(combinedline)
+            elif text_type == 'action' and textparts == textpartsleft:
+                bot.action(combinedline,target)
+            elif target.startswith("#"):
+                bot.msg(target, combinedline)
+            elif text_type == 'notice':
+                bot.notice(combinedline, target)
+            else:
+                bot.say(combinedline)
+            textpartsleft = textpartsleft - 1
 
 
 def osd_notice(bot, target, textarraycomplete):

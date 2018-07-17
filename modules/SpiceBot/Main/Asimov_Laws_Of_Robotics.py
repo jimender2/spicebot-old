@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('asimov')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'asimov')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
@@ -44,4 +44,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if not myline:
         myline = myline = get_trigger_arg(bot, laws, 'random')
-    bot.action(str(myline))
+    onscreentext_action(bot,['say'],myline)
