@@ -39,17 +39,17 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
-    # No Empty Commands
-    if triggerargsarray == []:
-        osd(bot, trigger.nick, 'notice', "No Command issued.")
-        return
-    rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
-
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
 
     # Bacic User List
     rpg = rpg_command_users(bot,rpg)
+
+    # No Empty Commands
+    if triggerargsarray == []:
+        osd(bot, trigger.nick, 'notice', "No Command issued.")
+        return
+    rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     rpg.multi_com_list = []
@@ -65,6 +65,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
+    rpg.instigator = trigger.nick
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
@@ -79,14 +80,27 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
-        rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
+        rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
 
         # Run command process
-        command_main_process(bot, trigger, rpg)
+        command_process(bot, trigger, rpg, instigator)
 
 
-def command_main_process(bot, trigger, rpg):
-    osd(bot, rpg.channel_current, 'say', testphrase)
+def command_process(bot, trigger, rpg, instigator):
+
+    # Handle rog commands
+    if rpg.command_main not in rpg_valid_commands:
+        return osd(bot, rpg.instigator, 'notice', "You have not specified a valid command.")
+
+    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+    try:
+        eval(command_function_run)
+    except NameError:
+        return osd(bot, rpg.instigator, 'notice', "That is a valid command, however the functionality has not been developed yet.")
+
+
+def rpg_command_main_admin(bot,rpg):
+    bot.say("wip")
 
 
 """
@@ -95,17 +109,31 @@ Channels
 
 
 def rpg_command_channels(bot,rpg,trigger):
+
+    # current Channels
     rpg.channel_current = trigger.sender
+
+    # determine the type of channel
     if not rpg.channel_current.startswith("#"):
         rpg.channel_priv = 1
         rpg.channel_real = 0
     else:
         rpg.channel_priv = 0
         rpg.channel_real = 1
-    rpg.service = bot.nick
-    rpg.channel_list = []
+
+    # All channels the bot is in
+    rpg.channels_list = []
     for channel in bot.channels:
-        rpg.channel_list.append(channel)
+        rpg.channels_list.append(channel)
+
+    # Game Enabled
+    rpg.channels_enabled = get_database_value(bot, 'rpg_game_records', 'gameenabled') or []
+
+    # Development mode
+    rpg.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
+    rpg.dev_bypass = 0
+    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode]:
+        rpg.dev_bypass = 1
     return rpg
 
 
