@@ -86,7 +86,9 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
 
 def command_main_process(bot, trigger, rpg):
-    osd(bot, rpg.channel_current, 'say', rpg.command_full)
+    # osd(bot, rpg.channel_current, 'say', rpg.command_full)
+    testphrase = "jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because jimender2 thinks I'm angry because"
+    osd(bot, rpg.channel_current, 'say', testphrase)
 
 
 """
