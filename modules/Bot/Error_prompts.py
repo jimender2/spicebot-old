@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 
 def setup(bot):
-    bot.msg("##spicebottest", "running")
+    bot.notice("running","deathbybandaid")
 
 
 def adsfasdf():
