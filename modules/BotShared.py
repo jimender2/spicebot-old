@@ -458,6 +458,7 @@ def osd(bot, target_array, text_type, text_array):
 
     # Make sure we don't cross over IRC limits
     for target in texttargetarray:
+        bot.say(str(target))
         temptextarray = []
         if text_type == 'notice':
             temptextarray.append(target + ", ")
