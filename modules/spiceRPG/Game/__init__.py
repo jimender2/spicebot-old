@@ -13,6 +13,8 @@ from .Array_manipulation import *
 from .Display_Text import *
 from .RPG_Class import *
 from .Global_Vars import *
+from .Channel_functions import *
+from .User_Functions import *
 
 """
 Idea, use exec to dynamically import the subcommands?
@@ -48,6 +50,12 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         osd_notice(bot, trigger.nick, "No Command issued.")
         return
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
+
+    # Channel Listing
+    rpg = rpg_command_channels(bot,rpg,trigger)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot,rpg)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     rpg.multi_com_list = []
