@@ -39,13 +39,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 onscreentext(bot,['say'],"There are no bribes for you to accept")
             else:
                 onscreentext(bot,['say'],instigator + " accepted the bribe of $" + amount + ".")
-    elif command == "decline":
-        onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
-        reset_database_value(bot, instigator, 'bets')
-    elif command == "money":
-        amount = 1000
-        spicebucks(bot, instigator, "plus", amount)
-        bot.say("test")
+        elif command == "decline":
+            onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
+            reset_database_value(bot, instigator, 'bets')
+        elif command == "money":
+            amount = 1000
+            spicebucks(bot, instigator, "plus", amount)
+            bot.say("test")
 
     else:
         if target == instigator:
