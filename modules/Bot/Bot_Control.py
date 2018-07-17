@@ -596,8 +596,8 @@ def bot_command_function_pip(bot,trigger,botcom,instigator):
 
 def bot_command_function_debug(bot,trigger,botcom,instigator):
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
     botcom = bot_config_directory(bot,botcom)
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
     if targetbot == bot.nick:
         if instigator.default not in botcom.botadmins:
