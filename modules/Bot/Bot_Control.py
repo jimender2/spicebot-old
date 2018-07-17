@@ -504,7 +504,9 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 
 def bot_command_function_update(bot,trigger,botcom,instigator):
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+    botcom = bot_config_directory(bot,botcom)
+
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
     if instigator.default not in botcom.botadmins:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -528,16 +530,13 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
 
 def bot_command_function_restart(bot,trigger,botcom,instigator):
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+    botcom = bot_config_directory(bot,botcom)
+
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
     if instigator.default not in botcom.botadmins:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
-        osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
         return
-
-    botcom = bot_config_directory(bot,botcom)
-    if targetbot in botcom.config_listing:
-        bot.say(str(botcom.config_listing))
 
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     if not os.path.isdir(joindpath):
@@ -585,7 +584,10 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
         return
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or bot.nick
+    botcom = bot_config_directory(bot,botcom)
+
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
+
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     if not os.path.isdir(joindpath):
         osd(bot, instigator.default, 'notice', "That doesn't appear to be a valid bot directory.")
