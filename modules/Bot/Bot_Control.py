@@ -610,7 +610,7 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
             line_num += 1
             currentline = line_num
             if int(currentline) >= int(mostrecentstartbot) and not any(x in line for x in ignorearray):
-                bot.say(str(line))
+                osd(bot, botcom.channel_current, 'say', str(line))
     osd(bot, botcom.channel_current, 'action', "Is Removing Log")
     os.system("sudo rm " + log_file_path)
 
