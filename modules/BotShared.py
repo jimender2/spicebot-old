@@ -107,6 +107,14 @@ def actualname(bot,nick):
     return actualnick
 
 
+def nick_actual(bot,nick):
+    actualnick = str(nick)
+    for u in bot.users:
+        if u.lower() == str(nick).lower():
+            actualnick = u
+    return actualnick
+
+
 def bot_command_users(bot,botcom):
     botcom.opadmin,botcom.owner,botcom.chanops,botcom.chanvoice,botcom.botadmins,botcom.users_current = [],[],[],[],[],[]
 
