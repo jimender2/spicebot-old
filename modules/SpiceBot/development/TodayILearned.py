@@ -59,64 +59,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     msg = "a " + weapontype
 
     # Target is fine
+    if if targetcheck(bot,target,trigger.nick) == 0:
+        bot.say("I'm sorry, I do not know who " + target + " is.")
+        return
+    if not reason:
+        message = instigator + " tils " + target + " with " + msg + "."
+        bot.say(message)
     else:
-        if not reason:
-            message = instigator + " tils " + target + " with " + msg + "."
-            bot.say(message)
-        else:
-            message = instigator + " tils " + target + " with " + msg + " for " + reason + "."
-            bot.say(message)
-
-
-def get_database_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return database_value
-
-
-def set_database_value(bot, nick, databasekey, value):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, value)
-
-
-def reset_database_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, None)
-
-
-def adjust_database_value(bot, nick, databasekey, value):
-    oldvalue = get_database_value(bot, nick, databasekey) or 0
-    databasecolumn = str(databasekey)
-    bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
-
-
-def get_database_array_total(bot, nick, databasekey):
-    array = get_database_value(bot, nick, databasekey) or []
-    entriestotal = len(array)
-    return entriestotal
-
-
-def adjust_database_array(bot, nick, entries, databasekey, adjustmentdirection):
-    if not isinstance(entries, list):
-        entries = [entries]
-    adjustarray = get_database_value(bot, nick, databasekey) or []
-    adjustarraynew = []
-    for x in adjustarray:
-        adjustarraynew.append(x)
-    reset_database_value(bot, nick, databasekey)
-    adjustarray = []
-    if adjustmentdirection == 'add':
-        for y in entries:
-            if y not in adjustarraynew:
-                adjustarraynew.append(y)
-    elif adjustmentdirection == 'del':
-        for y in entries:
-            if y in adjustarraynew:
-                adjustarraynew.remove(y)
-    for x in adjustarraynew:
-        if x not in adjustarray:
-            adjustarray.append(x)
-    if adjustarray == []:
-        reset_database_value(bot, nick, databasekey)
-    else:
-        set_database_value(bot, nick, databasekey, adjustarray)
+        message = instigator + " tils " + target + " with " + msg + " for " + reason + "."
+        bot.say(message)
