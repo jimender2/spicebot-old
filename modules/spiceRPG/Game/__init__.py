@@ -83,7 +83,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
         # Run command process
-        command_process(bot, trigger, rpg)
+        command_process(bot, trigger, rpg, instigator)
 
 
 def command_process(bot, trigger, rpg, instigator):
