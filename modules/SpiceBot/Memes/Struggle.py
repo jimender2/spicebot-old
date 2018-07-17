@@ -24,4 +24,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = instigator + " struggles with " + str(string)
     else:
         message = "You don't know me! You don't know my struggles!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

@@ -17,4 +17,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "You funny guy, I kill you last."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

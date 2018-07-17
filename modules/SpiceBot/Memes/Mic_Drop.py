@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    onscreentext(bot,['say']," ")
+    osd(bot, trigger.sender, 'say', " ")

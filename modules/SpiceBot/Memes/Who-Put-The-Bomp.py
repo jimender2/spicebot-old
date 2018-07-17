@@ -22,4 +22,4 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     funlist = ["Who put the bomp in the bomp bah bomp bah bomp","Who put the ram in the rama lama ding dong","Who put the bop in the bop shoo bop shoo bop","Who put the dip in the dip da dip da dip"]
     message = get_trigger_arg(bot, funlist, 'random')
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

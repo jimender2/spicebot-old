@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = 'You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes.'
     elif pill == 'bluepill':
         message = 'You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to believe.'
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

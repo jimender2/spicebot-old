@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "You can have my gun, when you pry it from my cold dead hands!!"
     else:
         message = "You can have my %s, when you pry it from my cold dead hands!!" % something
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

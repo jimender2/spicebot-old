@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "Your " + str(string) + " is bad, and you should feel bad!"
     else:
         message = "Hey " + instigator + ": your face is bad and you should feel bad!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

@@ -22,10 +22,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     decide = random.randint(1,10)
     if decide == 1:
         message = "Who needs the Kwik-E-Mart? I do..."
-        onscreentext(bot,['say'],message)
+        osd(bot, trigger.sender, 'say', message)
         time.sleep(2)
         actions = "starts crying"
-        onscreentext_action(bot,['say'],actions)
+        osd(bot, trigger.sender, 'action', actions)
     else:
         message = "Thank you, come again."
-        onscreentext(bot,['say'],message)
+        osd(bot, trigger.sender, 'say', message)

@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Stop trying to make stuff happen. It's not going to happen"
     else:
         message = "Stop trying to make " + str(happen) + " happen. It's not going to happen"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

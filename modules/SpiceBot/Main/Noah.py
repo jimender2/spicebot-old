@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    onscreentext(bot, ['say'], "Need an Ark? I know a guy")
+    osd(bot, trigger.sender, 'say', "Need an Ark? I know a guy")

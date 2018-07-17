@@ -58,7 +58,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     myline = 'That doesnt appear to be a compliment number.'
     if not myline or myline == '\n':
         myline = 'There is no compliment tied to this number.'
-    onscreentext(bot,['say'],myline)
+    osd(bot, trigger.sender, 'say', myline)
 
 
 # work with /me ACTION (does not work with manual weapon)
@@ -80,7 +80,7 @@ def execute_reply(bot, trigger, triggerargsarray):
     myline = randomcompliment(filetocheck)
     if not myline or myline == '\n':
         myline = 'There is no compliment tied to this number.'
-    onscreentext(bot,['say'],myline)
+    osd(bot, trigger.sender, 'say', myline)
 
 
 # random compliment

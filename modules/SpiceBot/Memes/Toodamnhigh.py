@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not keyword:
         keyword = 'rent'
     message = 'The ' + str(keyword) + ' IS TOO DAMN HIGH!'
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

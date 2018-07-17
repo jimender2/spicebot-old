@@ -26,4 +26,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         message = "Reduce, Reuse, Recycle " + something
 
-    onscreentext(bot, ['say'], message)
+    osd(bot, trigger.sender, 'say', message)

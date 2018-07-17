@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "%s didn't choose the thug life, the thug life chose %s." % (instigator.default, instigator.default)
     if not isvalid == 0:
         message = "%s didn't choose the %s life, the %s life chose %s." % (instigator.default,target,target,instigator.default)
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

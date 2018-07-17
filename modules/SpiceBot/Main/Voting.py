@@ -128,7 +128,7 @@ def getvotes(bot):
     channel = get_database_value(bot,bot.nick,'votechannel') or ''
     if not channel == '':
         dispmsg = str(yesvotes) + " votes for yes and " + str(novotes) + " no votes"
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
         clearvoting(bot)
 
 def getrating(bot):
@@ -142,12 +142,12 @@ def getrating(bot):
                 sum = sum + n
             average = sum / len(ratings)
             dispmsg = 'The average is ' + str(average)
-            onscreentext(bot, channel, dispmsg)
+            osd(bot, trigger.sender, 'say', dispmsg)
             clearrating(bot)
         else:
             dispmsg = 'No ratings found'
             clearrating(bot)
-            onscreentext(bot, channel, dispmsg)
+            osd(bot, trigger.sender, 'say', dispmsg)
 
 def isfloat(value):
     try:

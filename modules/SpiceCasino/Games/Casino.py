@@ -289,7 +289,7 @@ def runroulette(bot):
     if not players == []:
         channel = get_database_value(bot,'casino','casinochannel')
         dispmsg = "Spicebot collects all bets"
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
         winningnumber = spin(wheel)
         if winningnumber == 0:
             winningnumber == 1
@@ -301,9 +301,9 @@ def runroulette(bot):
         displaymessage = get_trigger_arg(bot, players , "list")
 
         dispmsg = "Spicebot spins the wheel good luck to " + displaymessage
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
         dispmsg = "The wheel stops on " + str(winningnumber) + " " + color
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
         for player in players:
             mywinnings= 0
             mynumber = 0
@@ -342,7 +342,7 @@ def runroulette(bot):
             dispmsg=  winnerarray + " won " + str(totalwon)
         else:
             dispmsg = "Winners: " + winnerarray + ". and total winnings were " + str(totalwon)
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
 
 #______Game 3 Lottery________
 def lottery(bot,trigger, arg):
@@ -424,7 +424,7 @@ def lotterydrawing(bot):
 
     #if get_database_array_total(bot, 'casino','lottoplayers') <1:
     #    msg= "No one entered this lottery. Next lottery drawing will be in " + str(hours_minutes_seconds(lotterytimeout-nextlottery))
-    #    onscreentext(bot,channel,msg)
+    #    osd(bot, channel, 'say', msg)
     #else:
     if get_database_array_total(bot, 'casino','lottoplayers') >0:
         if bankbalance <=500:
@@ -434,7 +434,7 @@ def lotterydrawing(bot):
         winningnumbers = random.sample(range(1,lotterymax), 5)
 
         msg ='The winning numbers are ' + str(winningnumbers)
-        onscreentext(bot,channel,msg)
+        osd(bot, channel, 'say', msg)
         for player in lotteryplayers:
             correct = 0
             picks = get_database_value(bot,player,'picks') or []
@@ -473,10 +473,10 @@ def lotterydrawing(bot):
                 msg ="Lottery winners: " + lottowinners + ", and the big winner was " +bigwinner + " winning " + str(bigwinpayout) + " in this drawing"
             else:
                 msg = lottowinners + " won " + str(bigwinpayout) + " in this drawing"
-            onscreentext(bot,channel,msg)
+            osd(bot, channel, 'say', msg)
         else:
             msg="No one won this drawing."
-            onscreentext(bot,channel,msg)
+            osd(bot, channel, 'say', msg)
     reset_database_value(bot, 'casino','lottoplayers')
 
 #____Game 4 Blackjack___

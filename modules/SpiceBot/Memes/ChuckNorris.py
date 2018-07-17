@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             joke = joke.replace('Chuck', target)
     else:
         joke = 'Chuck will find you.'
-    onscreentext(bot,['say'],joke)
+    osd(bot, trigger.sender, 'say', joke)
 
 
 def getJoke():

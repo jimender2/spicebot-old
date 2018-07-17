@@ -33,7 +33,7 @@ def execute_main(bot, trigger):
         bonus = getwebbybonus()
         if bonus and bonus != '':
             dispmsg.append('BONUS: ' + getwebbybonus())
-        onscreentext(bot, trigger.sender, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)
 
 @sopel.module.interval(60)
 def webbyauto(bot):
@@ -53,7 +53,7 @@ def webbyauto(bot):
             if bonus and bonus != '':
                 dispmsg.append('BONUS: ' + getwebbybonus())
             for channel in bot.channels:
-                onscreentext(bot, channel, dispmsg)
+                osd(bot, channel, 'say', dispmsg)
 
 def getwebbytitle():
     tree = gettree()

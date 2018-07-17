@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "D'ooooh!"
     else:
         message = str("mmmmmmm " + goodorbad + "!")
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)
