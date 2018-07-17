@@ -2,6 +2,8 @@
 Channels
 """
 
+from .Database_adjust import *
+
 
 def rpg_command_channels(bot,rpg,trigger):
     rpg.channel_current = trigger.sender
