@@ -9,15 +9,6 @@ On Screen Text
 """
 
 
-def dummytest(weapons):
-    chunks = weapons.split()
-    per_line = 15
-    weaponline = ''
-    for i in range(0, len(chunks), per_line):
-        weaponline = " ".join(chunks[i:i + per_line])
-        bot.notice(str(weaponline), instigator)
-
-
 def osd(bot, target_array, text_type, text_array):
 
     # if text_array is a string, make it an array
@@ -50,9 +41,26 @@ def osd(bot, target_array, text_type, text_array):
 
         combinedtextarray = []
         currentstring = ''
-        combinationcount = 0
+
+        # Make sure no individual string ins longer than it needs to be
+        texttargetarray = []
         for textstring in temptextarray:
-            bot.say(str(combinationcount))
+            if len(textstring) > osd_limit:
+                chunks = textstring.split()
+                per_line = 15
+                chunkline = ''
+                for i in range(0, len(chunks), per_line):
+                    chunkline = " ".join(chunks[i:i + per_line])
+                    if i == 0:
+                        chunkline = str("<" + chunkline)
+                    elif i == len(chunks):
+                        chunkline = str(chunkline + ">")
+                    texttargetarray.append(chunkline)
+            else:
+                texttargetarray.append(textstring)
+
+        # Split text to display nicely
+        for textstring in texttargetarray:
             if currentstring == '':
                 currentstring = textstring
             elif len(textstring) > osd_limit:
@@ -67,7 +75,6 @@ def osd(bot, target_array, text_type, text_array):
                 else:
                     combinedtextarray.append(currentstring)
                     currentstring = textstring
-            combinationcount = combinationcount + 1
         if currentstring != '':
             combinedtextarray.append(currentstring)
 
