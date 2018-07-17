@@ -518,7 +518,7 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
         return
 
     if targetbot != bot.nick:
-        osd(bot, [channel], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
+        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
     else:
         for channel in bot.channels:
             if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
@@ -545,7 +545,7 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         return
 
     if targetbot != bot.nick:
-        osd(bot, [channel], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
+        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
     else:
         for channel in bot.channels:
             if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
