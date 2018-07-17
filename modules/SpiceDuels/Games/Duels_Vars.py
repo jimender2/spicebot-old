@@ -8,7 +8,7 @@
 Easy Configurables
 """
 
-duels_osd_limit = 420  # Ammount of text allowed to display per line
+osd_limit = 420  # Ammount of text allowed to display per line
 
 """
 Github Information

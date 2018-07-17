@@ -527,7 +527,8 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
     if targetbot != bot.nick:
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
     else:
-        if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
+        dungeonmasterarray = ['spiceRPG','spiceRPGdev']
+        if targetbot in dungeonmasterarray:
             osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
         else:
             osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
@@ -559,7 +560,8 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
     if targetbot != bot.nick:
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
     else:
-        if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
+        dungeonmasterarray = ['spiceRPG','spiceRPGdev']
+        if targetbot in dungeonmasterarray:
             osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + instigator.default + ", commandeth me to restart. I shall return post haste!")
         else:
             osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")

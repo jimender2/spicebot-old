@@ -56,7 +56,7 @@ def duel_action(bot, trigger):
 def duel_nickcom(bot, trigger):
     duels = duels_class()
     duels.command_type = 'botnick'
-    onscreentext(bot, ['say'], "Don't tell me what to do!")
+    osd(bot, trigger.sender, 'say', "Don't tell me what to do!")
     # TODO maybe add the non-combat functions here?
 
 
@@ -171,17 +171,20 @@ monster mutates,,, enraged itsy bitsy
 # Check the Instigator, Build basic variables, and divide Multi-commands, Chance of deathblow at end
 def execute_main(bot, trigger, triggerargsarray, duels):
 
+    # All Channels
+    duels = duels_channel_lists(bot,trigger,duels)
+
     # First Command
     command_full = get_trigger_arg(bot, triggerargsarray, 0)
     if not command_full:
         if duels.command_type != 'actionduel':
-            osd_notice(bot, duels.instigator, "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
+            osd(bot, duels.instigator, 'notice', "You must specify either a target, or a subcommand. Online Docs: " + GITWIKIURL)
         else:
-            osd_notice(bot, duels.instigator, "You must specify a target. Online Docs: " + GITWIKIURL)
+            osd(bot, duels.instigator, 'notice', "You must specify a target. Online Docs: " + GITWIKIURL)
         return
     if duels.command_type == 'actionduel':
         if "&&" in command_full:
-            osd_notice(bot, duels.instigator, "you cannot run multiple commands via action.")
+            osd(bot, duels.instigator, 'notice', "you cannot run multiple commands via action.")
             return
     command_main = get_trigger_arg(bot, triggerargsarray, 1)
 
@@ -196,17 +199,14 @@ def execute_main(bot, trigger, triggerargsarray, duels):
     duels.commands_alt = duels_valid_commands_alternative(bot)
     duels.stats_valid = duels_valid_stats(bot)
 
-    # All Channels
-    duels = duels_channel_lists(bot,trigger,duels)
-
     # Verify Game enabled in current channel
     if duels.duels_enabled_channels == []:
         if not trigger.admin:
-            osd_notice(bot, duels.instigator, "Duels has not been enabled in any bot channels. Talk to a bot admin.")
+            osd(bot, duels.instigator, 'notice', "Duels has not been enabled in any bot channels. Talk to a bot admin.")
             return
     if duels.channel_current not in duels.duels_enabled_channels and duels.inchannel:
         if not trigger.admin:
-            osd_notice(bot, duels.instigator, "Duels has not been enabled in " + duels.channel_current + ". Talk to a bot admin.")
+            osd(bot, duels.instigator, 'notice', "Duels has not been enabled in " + duels.channel_current + ". Talk to a bot admin.")
             return
 
     # Build User list
@@ -257,7 +257,7 @@ def execute_main(bot, trigger, triggerargsarray, duels):
             triggerargsarray_part.remove("-a")
             # Block non-admin usage of the admin switch
             if not trigger.admin:
-                onscreentext(bot, ['say'], "The Admin Switch is meant for Bot Admin use only.")
+                osd(bot, duels.channel_current, 'say', "The Admin Switch is meant for Bot Admin use only.")
                 return
 
         # Split commands to pass
@@ -268,7 +268,7 @@ def execute_main(bot, trigger, triggerargsarray, duels):
         if command_main_part.isdigit():
             number_command = get_database_value(bot, duels.instigator, 'hotkey_'+str(command_main_part)) or 0
             if not number_command:
-                osd_notice(bot, duels.instigator, "You don't have a command hotlinked to "+str(command_main_part)+".")
+                osd(bot, duels.instigator, 'notice', "You don't have a command hotlinked to "+str(command_main_part)+".")
                 return
             else:
                 number_command_list = get_database_value(bot, duels.instigator, 'hotkey_complete') or []
@@ -291,7 +291,7 @@ def execute_main(bot, trigger, triggerargsarray, duels):
             if inflicterdeathblowpeoplearray != []:
                 deathblowlist = get_trigger_arg(bot, inflicterdeathblowpeoplearray, "list")
                 deathblowmsg = str(inflicter + " has a chance of striking a deathblow on " + deathblowlist + "! FINISH THEM!!!!")
-                onscreentext(bot, [duels.channel_current], deathblowmsg)
+                osd(bot, duels.channel_current, 'say', deathblowmsg)
                 reset_database_value(bot, inflicter, 'deathblowtargetsnew')
             for inflictee in inflicterdeathblowpeoplearray:
                 deathblownow = time.time()
@@ -311,7 +311,7 @@ def execute_main(bot, trigger, triggerargsarray, duels):
     # reset the game
     currenttier = get_database_value(bot, 'duelrecorduser', 'tier') or 0
     if currenttier >= 15:
-        onscreentext(bot, duels.duels_enabled_channels, "Somebody has Triggered the Endgame! Stats will be reset.")
+        osd(bot, duels.duels_enabled_channels, 'say', "Somebody has Triggered the Endgame! Stats will be reset.")
         duels_endgame(bot, duels)  # TODO
 
 
@@ -320,27 +320,27 @@ def command_main_process(bot, trigger, triggerargsarray, command_full, command_m
 
     # Cheap error handling for people that like to find issues
     if command_main == 'invalidcommand':
-        osd_notice(bot, duels.instigator, "AltCom finder broke.")
+        osd(bot, duels.instigator, 'notice', "AltCom finder broke.")
         return
 
     # channel_current Block
     if command_main.lower() in duels_commands_inchannel and not duels.inchannel and not duels.admin:
-        osd_notice(bot, duels.instigator, "Duel " + command_main + " must be in channel.")
+        osd(bot, duels.instigator, 'notice', "Duel " + command_main + " must be in channel.")
         return
 
     # Instigator versus Bot
     if command_main.lower() == bot.nick.lower() and not duels.admin:
-        onscreentext(bot, duels.channel_current, "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        osd(bot, duels.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
         return
 
     # Instigator versus Instigator
     if command_main.lower() == duels.instigator.lower() and not duels.admin:
-        onscreentext(bot, duels.channel_current, "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
+        osd(bot, duels.channel_current, 'say', "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
     # Admin Command Blocker
     if command_main.lower() in duels_commands_admin and not duels.admin:
-        osd_notice(bot, duels.instigator, "This admin function is only available to bot admins.")
+        osd(bot, duels.instigator, 'notice', "This admin function is only available to bot admins.")
         return
 
     # Cheat
@@ -354,7 +354,7 @@ def command_main_process(bot, trigger, triggerargsarray, command_full, command_m
         if duels.command_type != 'actionduel' or command_main.lower() in duels_action_subcommands:
             subcommands(bot, trigger, triggerargsarray, command_full, command_main, duels, instigatorbio)
         else:
-            osd_notice(bot, duels.instigator, "Action duels should not be able to run commands. Targets Only")
+            osd(bot, duels.instigator, 'notice', "Action duels should not be able to run commands. Targets Only")
         return
 
     # Alternative Commands
@@ -388,7 +388,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     docscheck = get_trigger_arg(bot, duels.command_restructure, 1)
     if docscheck == 'docs' or docscheck in duels_commands_alternate_docs:
         endmessage = duels_docs_commands(bot,command_main)
-        onscreentext(bot, ['say'], endmessage)
+        osd(bot, duels.channel_current, 'say', endmessage)
         return
 
     # Is the Tier Unlocked?
@@ -405,7 +405,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         else:
             tierpass = 1
         if not tierpass:
-            onscreentext(bot, duels.channel_current, "Duel " + command_main.lower() + " will be unlocked when somebody reaches " + str(duels.tierpepperrequired) + ". " + str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.channel_current, 'say', "Duel " + command_main.lower() + " will be unlocked when somebody reaches " + str(duels.tierpepperrequired) + ". " + str(duels.tiermath) + " tier(s) remaining!")
             return
 
     # Rebuild again
@@ -414,7 +414,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     # Stamina Check
     staminapass,stamina,duels.command_stamina_cost = duels_stamina_check(bot, duels.instigator, command_main.lower(), duels)
     if not staminapass and command_main.lower() != 'location':
-        osd_notice(bot, duels.instigator, "You do not have enough stamina to perform duel " + command_main.lower())
+        osd(bot, duels.instigator, 'notice', "You do not have enough stamina to perform duel " + command_main.lower())
         return
 
     # Location Based Commands
@@ -424,9 +424,9 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         staminarequiredtomove = array_compare(bot, 'location', duels_commands_stamina_required, duels_commands_stamina_cost)
         combinedstamina = int(duels.command_stamina_cost) + int(staminarequiredtomove)
         if int(combinedstamina) > int(stamina) and not duels.admin and duels.channel_current not in duels.duels_dev_channels:
-            osd_notice(bot, duels.instigator, "You do not have enough stamina to move from the "+instigatorbio.location+" area to the "+command_location+" area AND perform this action.")
+            osd(bot, duels.instigator, 'notice', "You do not have enough stamina to move from the "+instigatorbio.location+" area to the "+command_location+" area AND perform this action.")
             return
-        osd_notice(bot, duels.instigator, "You have been moved from the " + instigatorbio.location + " area to the " + command_location + " area at an extra cost of "+str(staminarequiredtomove)+" stamina.")
+        osd(bot, duels.instigator, 'notice', "You have been moved from the " + instigatorbio.location + " area to the " + command_location + " area at an extra cost of "+str(staminarequiredtomove)+" stamina.")
         duels_stamina_charge(bot, duels.instigator, 'location')
         duels_location_move(bot,duels,duels.instigator,command_location)
         instigatorbio.location = duels_get_location(bot,duels,duels.instigator)
@@ -448,7 +448,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
     if command_main.lower() in duels_commands_events:
         executedueling, executeduelingmsg = duels_events_check(bot, command_main, duels)
         if not executedueling:
-            osd_notice(bot, duels.instigator, executeduelingmsg)
+            osd(bot, duels.instigator, 'notice', executeduelingmsg)
             return
         for player in duels.users_canduel_allchan:
             if player != duels.instigator:
@@ -468,7 +468,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
         speceventtotal = get_database_value(bot, 'duelrecorduser', 'specevent') or 0
         if speceventtotal >= 49:
             set_database_value(bot, 'duelrecorduser', 'specevent', 1)
-            onscreentext(bot, [duels.channel_current], duels.instigator + " triggered the special event! Winnings are "+str(array_compare(bot, 'specialevent', duels_ingame_coin_usage, duels_ingame_coin))+" Coins!")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " triggered the special event! Winnings are "+str(array_compare(bot, 'specialevent', duels_ingame_coin_usage, duels_ingame_coin))+" Coins!")
             adjust_database_value(bot, duels.instigator, 'coin', array_compare(bot, 'specialevent', duels_ingame_coin_usage, duels_ingame_coin))
         else:
             adjust_database_value(bot, 'duelrecorduser', 'specevent', 1)
@@ -531,11 +531,11 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             bot.notice("  ", playerbio_maindueler.actual)
             bot.notice("  ", playerbio_target.actual)
         if typeofduel in duels_commands_events:
-            onscreentext(bot, [maindueler,target], playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, [maindueler,target], 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         else:
-            onscreentext(bot, [duels.channel_current], playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, duels.channel_current, 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         if playerbio_maindueler.actual == playerbio_target.actual:
-            onscreentext(bot, [duels.channel_current], "Why are you hitting yourself?")
+            osd(bot, duels.channel_current, 'say', "Why are you hitting yourself?")
 
         # Chance of maindueler finding loot
         randominventoryfind = 0
@@ -764,7 +764,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
                 newtierlist = get_trigger_arg(bot, tiercheck, "list")
                 combattextarraycomplete.append("Feature(s) now available: " + newtierlist)
                 if typeofduel in duels_commands_events:
-                    onscreentext(bot, duels.duels_enabled_channels, "New Tier Unlocked!     Feature(s) now available: " + newtierlist)
+                    osd(bot, duels.duels_enabled_channels, 'say', "New Tier Unlocked!     Feature(s) now available: " + newtierlist)
 
         # Magic Attributes text
         magicattributestext = duels_magic_attributes_text(bot, playerbio_winner, playerbio_loser)
@@ -794,9 +794,9 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Final Announce
         if typeofduel in duels_commands_events:
-            onscreentext(bot, [playerbio_winner.actual,playerbio_loser.actual], combattextarraycomplete)
+            osd(bot, [playerbio_winner.actual,playerbio_loser.actual], 'say', combattextarraycomplete)
         else:
-            onscreentext(bot, [duels.channel_current], combattextarraycomplete)
+            osd(bot, duels.channel_current, 'say', combattextarraycomplete)
 
         # Prior Log
         lastlog = []
@@ -818,13 +818,13 @@ def duels_command_function_combat(bot, triggerargsarray, command_main, trigger, 
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if not validtarget and not duels.admin:
-        osd_notice(bot, duels.instigator, validtargetmsg)
+        osd(bot, duels.instigator, 'notice', validtargetmsg)
         duels.command_stamina_cost = 0
         return
 
     if subcommand == 'last':
         combatlastplayeractual = get_database_value(bot, target, 'combatlastplayeractualtext') or str("I don't have a record of the last combat for "+target+".")
-        onscreentext(bot, duels.channel_current, combatlastplayeractual)
+        osd(bot, duels.channel_current, 'say', combatlastplayeractual)
         duels.command_stamina_cost = 0
         return
 
@@ -856,12 +856,12 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
     if target != duels.instigator and target != bot.nick:
         if target == 'monster':
-            osd_notice(bot, duels.instigator, "The monster can't play the classic duels game.")
+            osd(bot, duels.instigator, 'notice', "The monster can't play the classic duels game.")
             duels.command_stamina_cost = 0
             return
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     target = duels_nick_actual(bot, target)
@@ -908,7 +908,7 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
             worstlossessleadername = get_trigger_arg(bot, worstlossesplayers, 'last')
             worstlossesleadernumber = get_trigger_arg(bot, worstlossesscores, 'last')
             classicleaderboardmessage.append("Best win streak is " + worstlossessleadername + " with " + str(worstlossesleadernumber))
-        onscreentext(bot, ['say'], classicleaderboardmessage)
+        osd(bot, duels.channel_current, 'say', classicleaderboardmessage)
         duels.command_stamina_cost = 0
         return
 
@@ -942,17 +942,17 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
     # Run a normal duel if only one opponent
     if len(duels.users_canduel_allchan) <= 1:
         if len(duels.users_canduel_allchan) == 1:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = array_compare(bot, 'combat', duels_commands_stamina_required, duels_commands_stamina_cost)
         else:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
     # Announce to channel the contestants
     displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
-    onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Temp stats
     lastfoughtstart = get_database_value(bot, duels.instigator, 'lastfought')
@@ -972,7 +972,7 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
 
     # Display results
     maindueler = duels.instigator
-    osd_notice(bot, maindueler, "It looks like the Full Channel Assault has completed.")
+    osd(bot, maindueler, 'notice', "It looks like the Full Channel Assault has completed.")
     assaultstatsarray = []
     assaultstatsarray.append(maindueler + "'s Full Channel Assault results:")
     for astat in combat_track_results:
@@ -983,7 +983,7 @@ def duels_command_function_assault(bot, triggerargsarray, command_main, trigger,
             astatstr = str(str(astatname) + " = " + str(astateval))
             assaultstatsarray.append(astatstr)
             reset_database_value(bot, duels.instigator, "combat_track_" + astat)
-    onscreentext(bot, [duels.channel_current], assaultstatsarray)
+    osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
     # Cleanup
     for player in duels.users_canduel_allchan:
@@ -1008,17 +1008,17 @@ def duels_command_function_mayhem(bot, triggerargsarray, command_main, trigger, 
         if duels.instigator in duels.users_canduel_allchan:
             duels.users_canduel_allchan.remove(duels.instigator)
         if len(duels.users_canduel_allchan) == 1:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = array_compare(bot, 'combat', duels_commands_stamina_required, duels_commands_stamina_cost)
         else:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
     # Announce to channel the contestants
     displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
-    onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Temp stats
     for user in duels.users_canduel_allchan:
@@ -1074,7 +1074,7 @@ def duels_command_function_mayhem(bot, triggerargsarray, command_main, trigger, 
             astatname = astatname.title()
             assaultstatsarray.append("Most " + astatname + ": "+str(statleadername) + " at " + str(statleadernumber))
     if len(assaultstatsarray) > 1:
-        onscreentext(bot, [duels.channel_current], assaultstatsarray)
+        osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
 
 def duels_docs_mayhem(bot):
@@ -1092,7 +1092,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
     totaltributes = len(duels.users_canduel_allchan)
     totaltributesstart = totaltributes
     if totaltributes == 1:
-        osd_notice(bot, duels.instigator, "There is only one tribute.  Try again later.")
+        osd(bot, duels.instigator, 'notice', "There is only one tribute.  Try again later.")
         duels.command_stamina_cost = 0
         return
 
@@ -1102,7 +1102,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
 
     # Announce to channel the contestants
     displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
-    onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
 
     # Rebuild array
     hungerarray = []
@@ -1147,7 +1147,7 @@ def duels_command_function_hungergames(bot, triggerargsarray, command_main, trig
     hungerwinner = get_trigger_arg(bot, hungerarray, 1)
     dispmsgarray.append(hungerwinner + " is the victor!")
     dispmsgarray.append(firsttodie + " was the first to fall.")
-    onscreentext(bot, ['say'], dispmsgarray)
+    osd(bot, duels.channel_current, 'say', dispmsgarray)
 
 
 def duels_docs_hungergames(bot):
@@ -1166,11 +1166,11 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
         if duels.instigator in duels.users_canduel_allchan:
             duels.users_canduel_allchan.remove(duels.instigator)
         if len(duels.users_canduel_allchan) == 1:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but only had one opponent.")
             duel_combat(bot, duels.instigator, duels.users_canduel_allchan, duels.command_restructure, 'target', duels)
             duels.command_stamina_cost = array_compare(bot, 'combat', duels_commands_stamina_required, duels_commands_stamina_cost)
         else:
-            onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event, but had no targets.")
             duels.command_stamina_cost = 0
         return
 
@@ -1180,7 +1180,7 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
     displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
 
     # Announce
-    onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
+    osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " event. Good luck to " + displaymessage)
     totalplayers = len(duels.users_canduel_allchan)
     riskcoins = int(totalplayers) * 30
     set_database_value(bot, 'duelrecorduser', 'colosseum_damage', int(riskcoins))
@@ -1212,7 +1212,7 @@ def duels_command_function_colosseum(bot, triggerargsarray, command_main,  trigg
     # Announce winner and pay out
     colosseumwinner = get_trigger_arg(bot, duels.users_canduel_allchan, 1)
     adjust_database_value(bot, colosseumwinner, 'coin', riskcoins)
-    onscreentext(bot, [duels.channel_current], "The Winner is: " + colosseumwinner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
+    osd(bot, duels.channel_current, 'say', "The Winner is: " + colosseumwinner + "! Total winnings: " + str(riskcoins) + " coin! Losers took " + str(riskcoins) + " damage.")
 
 
 def duels_docs_colosseum(bot):
@@ -1255,7 +1255,7 @@ def duels_command_function_monster(bot, triggerargsarray, command_main, trigger,
 
         # Announce to channel the contestants
         displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
-        onscreentext(bot, duels.channel_current, duels.instigator + " Initiated a full channel " + command_main + " hunt event. Good luck to " + displaymessage)
+        osd(bot, duels.channel_current, 'say', duels.instigator + " Initiated a full channel " + command_main + " hunt event. Good luck to " + displaymessage)
 
         lastfoughtstart = get_database_value(bot, duels.instigator, 'lastfought')
         for astat in combat_track_results:
@@ -1285,7 +1285,7 @@ def duels_command_function_monster(bot, triggerargsarray, command_main, trigger,
                 astatstr = str(str(astatname) + " = " + str(astateval))
                 assaultstatsarray.append(astatstr)
                 reset_database_value(bot, 'duelsmonster', "combat_track_" + astat)
-        onscreentext(bot, [duels.channel_current], assaultstatsarray)
+        osd(bot, duels.channel_current, 'say', assaultstatsarray)
 
         # Cleanup
         for player in duels.users_canduel_allchan:
@@ -1344,7 +1344,7 @@ def duels_command_function_random(bot, triggerargsarray, command_main, trigger, 
     else:
         targetname = target
         duels_check_nick_condition(bot, target, duels)
-    onscreentext(bot, duels.channel_current, duels.instigator + " summoned the Flying Fickle Finger of Fate, and it chose " + targetname + " to fight.")
+    osd(bot, duels.channel_current, 'say', duels.instigator + " summoned the Flying Fickle Finger of Fate, and it chose " + targetname + " to fight.")
     duel_combat(bot, duels.instigator, [target], triggerargsarray, 'random', duels)
 
 
@@ -1369,7 +1369,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
 
     if roulettesubcom == 'last':
         roulettelastplayeractual = get_database_value(bot, 'duelrecorduser', 'roulettelastplayeractualtext') or str("I don't have a record of the last roulette.")
-        onscreentext(bot, duels.channel_current, roulettelastplayeractual)
+        osd(bot, duels.channel_current, 'say', roulettelastplayeractual)
         duels.command_stamina_cost = 0
         return
 
@@ -1379,7 +1379,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         if int(roulettesubcom) >= 1 and int(roulettesubcom) <= 6:
             manualpick = 1
         else:
-            onscreentext(bot, duels.channel_current, "Invalid Chamber Number!")
+            osd(bot, duels.channel_current, 'say', "Invalid Chamber Number!")
             duels.command_stamina_cost = 0
             return
 
@@ -1391,7 +1391,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd_notice(bot, duels.instigator, "You must wait for the current round to complete, until you may play again.")
+            osd(bot, duels.instigator, 'notice', "You must wait for the current round to complete, until you may play again.")
             duels.command_stamina_cost = 0
             return
 
@@ -1403,7 +1403,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd_notice(bot, duels.instigator, "You must wait 24 hours between roulette deaths.")
+            osd(bot, duels.instigator, 'notice', "You must wait 24 hours between roulette deaths.")
             duels.command_stamina_cost = 0
             return
 
@@ -1415,7 +1415,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
             allowpass = 1
         else:
-            osd_notice(bot, duels.instigator, "Roulette has a small timeout.")
+            osd(bot, duels.instigator, 'notice', "Roulette has a small timeout.")
             duels.command_stamina_cost = 0
             return
     set_database_value(bot, 'duelrecorduser', str('lastfullroom' + command_main), duels.now)
@@ -1433,15 +1433,15 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
     # Display Text
     instigatorcurse = get_database_value(bot, duels.instigator, 'curse') or 0
     if manualpick == 1:
-        onscreentext(bot, duels.channel_current, duels.instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " is blindfolded while the chamber is set to " + str(roulettesubcom) + ".")
     elif instigatorcurse:
-        onscreentext(bot, duels.channel_current, duels.instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder to the bullet's chamber and pulls the trigger.")
     elif roulettelastplayer == duels.instigator and int(roulettecount) > 1:
-        onscreentext(bot, duels.channel_current, duels.instigator + " spins the revolver and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the revolver and pulls the trigger.")
     elif int(roulettecount) == 1:
-        onscreentext(bot, duels.channel_current, duels.instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " reloads the revolver, spins the cylinder and pulls the trigger.")
     else:
-        onscreentext(bot, duels.channel_current, duels.instigator + " spins the cylinder and pulls the trigger.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " spins the cylinder and pulls the trigger.")
 
     # Default 6 possible chambers for bullet.
     # curses
@@ -1480,10 +1480,10 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
 
     # current spin is safe
     if int(currentspin) != int(roulettechamber):
-        onscreentext(bot, duels.channel_current, "*click*")
+        osd(bot, duels.channel_current, 'say', "*click*")
         if manualpick == 1:
             roulettelastplayeractualtext = str(duels.instigator + " manually picked a chamber without the bullet. The Bullet was moved.")
-            onscreentext(bot, duels.channel_current, duels.instigator + " picked a chamber without the bullet. Bullet will be moved.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " picked a chamber without the bullet. Bullet will be moved.")
             roulettechambernew = randint(1, 6)
             set_database_value(bot, 'duelrecorduser', 'roulettechamber', roulettechambernew)
         else:
@@ -1539,7 +1539,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
                 statvaluearray.append(roulettepayoutx)
             adjust_database_value(bot, x, 'coin', roulettepayoutx)
             if roulettepayoutx > 0:
-                osd_notice(bot, x, "Your roulette payouts = " + str(roulettepayoutx) + " coins!")
+                osd(bot, x, 'notice', "Your roulette payouts = " + str(roulettepayoutx) + " coins!")
             reset_database_value(bot, x, 'roulettepayout')
 
         # unique winner list
@@ -1559,7 +1559,7 @@ def duels_command_function_roulette(bot, triggerargsarray, command_main, trigger
         roulettecount = get_database_value(bot, 'duelrecorduser', 'roulettecount') or 1
         if roulettecount > 1:
             dispmsgarray.append("The chamber spun " + str(roulettecount) + " times. ")
-        onscreentext(bot, [duels.channel_current], dispmsgarray)
+        osd(bot, duels.channel_current, 'say', dispmsgarray)
 
         # instigator must wait until the next round
         reset_database_value(bot, 'duelrecorduser', 'roulettelastplayershot')
@@ -1593,7 +1593,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
 
     # make sure there is at least one target
     if duels.users_canduel_allchan == []:
-        osd_notice(bot, duels.instigator, "It looks like the full channel " + command_main + " event target finder has failed.")
+        osd(bot, duels.instigator, 'notice', "It looks like the full channel " + command_main + " event target finder has failed.")
         duels.command_stamina_cost = 0
         return
 
@@ -1621,7 +1621,7 @@ def duels_command_function_trebuchet(bot, triggerargsarray, command_main, trigge
         damageinflictarray = duels_effect_inflict(bot, duels,  instigatorbio, targetbio, 'random', 'damage', damage, 'trebuchet')
         for k in damageinflictarray:
             dispmsgarray.append(k)
-    onscreentext(bot, duels.channel_current, dispmsgarray)
+    osd(bot, duels.channel_current, 'say', dispmsgarray)
 
 
 def duels_docs_trebuchet(bot):
@@ -1637,14 +1637,14 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
 
     deathblowtargetarray = get_database_value(bot, duels.instigator, 'deathblowtargetarray') or []
     if deathblowtargetarray == []:
-        osd_notice(bot, duels.instigator, "You don't have a deathblow target available.")
+        osd(bot, duels.instigator, 'notice', "You don't have a deathblow target available.")
         duels.command_stamina_cost = 0
         return
 
     firstdeathblowtarget = get_trigger_arg(bot, deathblowtargetarray, 1)
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan or x == 'all'], 1) or firstdeathblowtarget
     if target not in deathblowtargetarray and target != 'all':
-        osd_notice(bot, duels.instigator, target + " is not available for you to finish.")
+        osd(bot, duels.instigator, 'notice', target + " is not available for you to finish.")
         duels.command_stamina_cost = 0
         return
 
@@ -1658,11 +1658,11 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
         deathblowtargettime = duels_time_since(bot, deathblowavail, 'deathblowtargettime') or 0
         if deathblowtargettime <= 120:
             targetbio = duel_target_playerbio(bot, duels, target)
-            onscreentext(bot, duels.channel_current, duels.instigator + " strikes a deathblow upon " + deathblowavail + ".")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " strikes a deathblow upon " + deathblowavail + ".")
             deathblowkilltext = duels_death_handling(bot, duels, instigatorbio, targetbio)
-            onscreentext(bot, duels.channel_current, deathblowkilltext)
+            osd(bot, duels.channel_current, 'say', deathblowkilltext)
         else:
-            onscreentext(bot, duels.channel_current, duels.instigator + " had the opportunity to perform a deathblow, but was too late.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " had the opportunity to perform a deathblow, but was too late.")
         adjust_database_array(bot, duels.instigator, [deathblowavail], 'deathblowtargetarray', 'del')
         reset_database_value(bot, deathblowavail, 'deathblow')
         reset_database_value(bot, deathblowavail, 'deathblowtargettime')
@@ -1683,21 +1683,21 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
 
     # Can't be privmsg
     if not duels.inchannel:
-        osd_notice(bot, duels.instigator, "Grenades must be used in channel.")
+        osd(bot, duels.instigator, 'notice', "Grenades must be used in channel.")
         duels.command_stamina_cost = 0
         return
 
     # verify user has a grenade to use
     instigatorgrenade = get_database_value(bot, duels.instigator, 'grenade') or 0
     if instigatorgrenade <= 0:
-        osd_notice(bot, duels.instigator, "You don't have a grenade to use!")
+        osd(bot, duels.instigator, 'notice', "You don't have a grenade to use!")
         duels.command_stamina_cost = 0
         return
 
     # The quantity the player is applyint to this transaction
     quantity = get_trigger_arg(bot, [x for x in duels.command_restructure if str(x).isdigit()], 1) or 1
     if quantity > 1:
-        osd_notice(bot, duels.instigator, "You can only throw one grenade at a time.")
+        osd(bot, duels.instigator, 'notice', "You can only throw one grenade at a time.")
         duels.command_stamina_cost = 0
         return
 
@@ -1709,7 +1709,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
 
     # verify there is at least one target
     if duels.users_canduel_allchan == []:
-        osd_notice(bot, duels.instigator, "It looks like using a grenade right now won't hurt anybody.")
+        osd(bot, duels.instigator, 'notice', "It looks like using a grenade right now won't hurt anybody.")
         duels.command_stamina_cost = 0
         return
     else:
@@ -1744,7 +1744,7 @@ def duels_command_function_grenade(bot, triggerargsarray, command_main, trigger,
     if duels.users_canduel_allchan != []:
         remainingarray = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
         dispmsgarray.append(remainingarray + " completely jump out of the way")
-    onscreentext(bot, [duels.channel_current], dispmsgarray)
+    osd(bot, duels.channel_current, 'say', dispmsgarray)
 
     # Track usage for vendor
     adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_grenade"), int(quantity))
@@ -1766,14 +1766,14 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     instigatorclass = get_database_value(bot, duels.instigator, 'class')
     instigatormana = get_database_value(bot, duels.instigator, 'mana')
     if not instigatormana:
-        osd_notice(bot, duels.instigator, "You don't have any mana.")
+        osd(bot, duels.instigator, 'notice', "You don't have any mana.")
         duels.command_stamina_cost = 0
         return
 
     magicusage = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_magic_types], 1)
     if not magicusage:
         magicoptions = get_trigger_arg(bot, duels_magic_types, 'list')
-        onscreentext(bot, duels.channel_current, "Magic uses include: " + magicoptions + ".")
+        osd(bot, duels.channel_current, 'say', "Magic uses include: " + magicoptions + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -1782,7 +1782,7 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -1790,17 +1790,17 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
         targetbio = instigatorbio
 
     if targetbio.actual == bot.nick:
-        osd_notice(bot, duels.instigator, "I am immune to magic " + magicusage + ".")
+        osd(bot, duels.instigator, 'notice', "I am immune to magic " + magicusage + ".")
         duels.command_stamina_cost = 0
         return
 
     if magicusage == 'curse' and targetbio.curse:  # TODO
-        osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " is already cursed.")
+        osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " is already cursed.")
         duels.command_stamina_cost = 0
         return
 
     if magicusage == 'shield' and targetbio.shield:  # TODO
-        osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " is already magic shielded.")
+        osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " is already magic shielded.")
         duels.command_stamina_cost = 0
         return
 
@@ -1813,7 +1813,7 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
 
     if int(manarequired) > int(instigatormana):
         manamath = int(int(manarequired) - int(instigatormana))
-        osd_notice(bot, duels.instigator, "You need " + str(manamath) + " more mana to use magic " + magicusage + ".")
+        osd(bot, duels.instigator, 'notice', "You need " + str(manamath) + " more mana to use magic " + magicusage + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -1858,9 +1858,9 @@ def duels_command_function_magic(bot, triggerargsarray, command_main, trigger, c
     for k in damageinflictarray:
         displaymsg.append(k)
 
-    onscreentext(bot, duels.channel_current, displaymsg)
+    osd(bot, duels.channel_current, 'say', displaymsg)
     if not duels.inchannel and targetbio.actual != duels.instigator:
-        osd_notice(bot, duels.instigator, displaymsg)
+        osd(bot, duels.instigator, 'notice', displaymsg)
     instigatormana = get_database_value(bot, duels.instigator, 'mana')
     if instigatormana <= 0:
         reset_database_value(bot, duels.instigator, 'mana')
@@ -1890,7 +1890,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -1918,7 +1918,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
             else:
                 tierpass = 1
             if not tierpass:
-                osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+                osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
                 duels.command_stamina_cost = 0
                 return
         duels_command_function_special(bot, triggerargsarray, command_main, trigger, command_full, duels, instigatorbio)
@@ -1934,14 +1934,14 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
                 validarray = eval("duels_character_valid_" + x)
                 validarraylist = get_trigger_arg(bot, validarray, "list")
                 dispmsgarray.append(x.title() + " = " + validarraylist)
-            onscreentext(bot, duels.channel_current, dispmsgarray)
-            osd_notice(bot, duels.instigator, "Example setup command is        .duel character setup " + randomgender + " " + randomrace + " " + randomclass + "     OR simply run .duel character setup quick")
+            osd(bot, duels.channel_current, 'say', dispmsgarray)
+            osd(bot, duels.instigator, 'notice', "Example setup command is        .duel character setup " + randomgender + " " + randomrace + " " + randomclass + "     OR simply run .duel character setup quick")
             duels.command_stamina_cost = 0
             return
 
         # Block people from creating characters for other players, unless admin
         if targetbio.actual != duels.instigator and not duels.admin:
-            osd_notice(bot, duels.instigator, "you may only run the setup command for yourself.")
+            osd(bot, duels.instigator, 'notice', "you may only run the setup command for yourself.")
             duels.command_stamina_cost = 0
             return
 
@@ -1950,7 +1950,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
         if duels.channel_current not in duels.duels_dev_channels:
             confirm = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'confirm'], 1) or 0
             if not confirm:
-                onscreentext(bot, duels.channel_current, "Your character sheet cannot be changed without resetting ALL stats. You may run this command with the word 'confirm' if you want a new character sheet.")
+                osd(bot, duels.channel_current, 'say', "Your character sheet cannot be changed without resetting ALL stats. You may run this command with the word 'confirm' if you want a new character sheet.")
                 duels.command_stamina_cost = 0
                 return
             playerreset = 1
@@ -1995,29 +1995,29 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
             targetbio_current = eval(str("targetbio."+charcommand))
         if subcommand == 'view':
             if target == duels.instigator:
-                onscreentext(bot, ['say'], targetbio.nametext+", your "+charcommand+" is currently set to " + targetbio_current + ".")
+                osd(bot, duels.channel_current, 'say', targetbio.nametext+", your "+charcommand+" is currently set to " + targetbio_current + ".")
             else:
-                onscreentext(bot, ['say'], targetbio.nametextpos+" "+charcommand+" is currently set to " + targetbio_current + ".")
+                osd(bot, duels.channel_current, 'say', targetbio.nametextpos+" "+charcommand+" is currently set to " + targetbio_current + ".")
             duels.command_stamina_cost = 0
             return
             if target != duels.instigator:
                 if not duels.admin:
-                    osd_notice(bot, duels.instigator, "you cannot change somebody elses "+charcommand)
+                    osd(bot, duels.instigator, 'notice', "you cannot change somebody elses "+charcommand)
                     duels.command_stamina_cost = 0
                     return
         newset = get_trigger_arg(bot, [x for x in duels.command_restructure if x in eval("duels_character_valid_"+charcommand)], 1) or 0
         if not newset:
-            osd_notice(bot, duels.instigator, "Which "+charcommand+" would you like to use? Options are: " + valid_list + ".")
+            osd(bot, duels.instigator, 'notice', "Which "+charcommand+" would you like to use? Options are: " + valid_list + ".")
             duels.command_stamina_cost = 0
             return
 
         if targetbio_current != 'unknown' and not duels.admin and charcommand != 'class' and duels.channel_current not in duels.duels_dev_channels:
-            osd_notice(bot, duels.instigator, "only bot admins can change a players "+charcommand+" after character creation.")
+            osd(bot, duels.instigator, 'notice', "only bot admins can change a players "+charcommand+" after character creation.")
             duels.command_stamina_cost = 0
             return
 
         if newset == targetbio_current:
-            osd_notice(bot, duels.instigator, "Your "+charcommand+" is already set to " + newset + ".")
+            osd(bot, duels.instigator, 'notice', "Your "+charcommand+" is already set to " + newset + ".")
             duels.command_stamina_cost = 0
             return
 
@@ -2026,7 +2026,7 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
             if targetbio.actual == duels.instigator:
                 instigatorcoin = get_database_value(bot, duels.instigator, 'coin') or 0
                 if instigatorcoin < array_compare(bot, 'class', duels_ingame_coin_usage, duels_ingame_coin) and instigatorfreebie:
-                    osd_notice(bot, duels.instigator, "Changing class costs " + str(array_compare(bot, 'class', duels_ingame_coin_usage, duels_ingame_coin)) + " coin. You need more funding.")
+                    osd(bot, duels.instigator, 'notice', "Changing class costs " + str(array_compare(bot, 'class', duels_ingame_coin_usage, duels_ingame_coin)) + " coin. You need more funding.")
                     duels.command_stamina_cost = 0
                     return
 
@@ -2039,16 +2039,16 @@ def duels_command_function_character(bot, triggerargsarray, command_main, trigge
                         allowpass = 1
                     else:
                         instigatorclasstime = duels_time_since(bot, duels.instigator, 'class_timeout')
-                        osd_notice(bot, duels.instigator, "You may not change your class more than once per " + str(duels_hours_minutes_seconds((array_compare(bot, 'class', duels_timeouts, duels_timeouts_duration) - 1))) + ". Please wait "+str(duels_hours_minutes_seconds((array_compare(bot, 'class', duels_timeouts, duels_timeouts_duration) - instigatorclasstime)))+" to change.")
+                        osd(bot, duels.instigator, 'notice', "You may not change your class more than once per " + str(duels_hours_minutes_seconds((array_compare(bot, 'class', duels_timeouts, duels_timeouts_duration) - 1))) + ". Please wait "+str(duels_hours_minutes_seconds((array_compare(bot, 'class', duels_timeouts, duels_timeouts_duration) - instigatorclasstime)))+" to change.")
                         duels.command_stamina_cost = 0
                         return
 
         set_database_value(bot, targetbio.actual, charcommand, newset)
         if targetbio.actual != duels.instigator:
-            osd_notice(bot, duels.instigator, targetbio.nametextpos + " "+charcommand+" is now set to " + newset + ".")
-            osd_notice(bot, targetbio.actual, "Your "+charcommand+" is now set to " + newset + ".")
+            osd(bot, duels.instigator, 'notice', targetbio.nametextpos + " "+charcommand+" is now set to " + newset + ".")
+            osd(bot, targetbio.actual, 'notice', "Your "+charcommand+" is now set to " + newset + ".")
         else:
-            osd_notice(bot, targetbio.actual, "Your "+charcommand+" is now set to " + newset + ".")
+            osd(bot, targetbio.actual, 'notice', "Your "+charcommand+" is now set to " + newset + ".")
             if charcommand == 'class' and duels.channel_current not in duels.duels_dev_channels:
                 set_database_value(bot, targetbio.actual, 'class_timeout', duels.now)
                 if instigatorfreebie:
@@ -2078,7 +2078,7 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2099,7 +2099,7 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2107,12 +2107,12 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
 
         racecommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_character_valid_race], 1)
         if not racecommand:
-            osd_notice(bot, duels.instigator, "you are missing race in the command.")
+            osd(bot, duels.instigator, 'notice', "you are missing race in the command.")
             return
 
         classcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_character_valid_class], 1)
         if not classcommand:
-            osd_notice(bot, duels.instigator, "you are missing class in the command.")
+            osd(bot, duels.instigator, 'notice', "you are missing class in the command.")
             return
 
         classstats = eval("duels_character_special_class_"+classcommand)
@@ -2123,7 +2123,7 @@ def duels_command_function_special(bot, triggerargsarray, command_main, trigger,
             mathed = classstat + racestat
             currentvalue = str(statname.title()+"="+str(mathed))
             combinedarray.append(currentvalue)
-        onscreentext(bot, ['say'], combinedarray)
+        osd(bot, duels.channel_current, 'say', combinedarray)
     if statcommand == 'view':
         customview = 0
         target_stats_view = ['charsheet']
@@ -2152,7 +2152,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2173,7 +2173,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2181,7 +2181,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
 
         if statcommand == 'default':
             reset_database_value(bot, targetbio.actual, 'stats_view')
-            osd_notice(bot, duels.instigator, "Stats settings have been updated.")
+            osd(bot, duels.instigator, 'notice', "Stats settings have been updated.")
             duels.command_stamina_cost = 0
             return
         if targetbio.actual in duels.command_restructure:
@@ -2193,11 +2193,11 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
                 invalidstats.append(stat)
         if invalidstats != []:
             invalidstatslist = get_trigger_arg(bot, invalidstats, 'list')
-            osd_notice(bot, duels.instigator, "the following stats are not valid: " + str(invalidstatslist))
+            osd(bot, duels.instigator, 'notice', "the following stats are not valid: " + str(invalidstatslist))
             duels.command_stamina_cost = 0
             return
         adjust_database_array(bot, targetbio.actual, duels.command_restructure, 'stats_view', statcommand)
-        osd_notice(bot, duels.instigator, "Stats settings have been updated.")
+        osd(bot, duels.instigator, 'notice', "Stats settings have been updated.")
         duels.command_stamina_cost = 0
         return
 
@@ -2213,19 +2213,19 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
     if statcommand == 'admin':
 
         if not duels.admin:
-            osd_notice(bot, duels.instigator, "Stats cannot be adjusted for other players. (with the exception of bot admins.)")
+            osd(bot, duels.instigator, 'notice', "Stats cannot be adjusted for other players. (with the exception of bot admins.)")
             duels.command_stamina_cost = 0
             return
 
         statset = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.stats_valid], 1)
         if not statset:
-            osd_notice(bot, duels.instigator, "Stat Missing.")
+            osd(bot, duels.instigator, 'notice', "Stat Missing.")
             duels.command_stamina_cost = 0
             return
 
         subcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'set' or x == 'reset'], 1)
         if not subcommand:
-            osd_notice(bot, duels.instigator, "Set or Reset. ")
+            osd(bot, duels.instigator, 'notice', "Set or Reset. ")
             duels.command_stamina_cost = 0
             return
 
@@ -2236,7 +2236,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
         duels.command_restructure.remove(subcommand)
         newvalue = get_trigger_arg(bot, duels.command_restructure, 0) or 'None'
         if subcommand == 'set' and newvalue == 'None':
-            osd_notice(bot, duels.instigator, "When using set, you must specify a value.")
+            osd(bot, duels.instigator, 'notice', "When using set, you must specify a value.")
             duels.command_stamina_cost = 0
             return
         if subcommand == 'reset':
@@ -2258,7 +2258,7 @@ def duels_command_function_stats(bot, triggerargsarray, command_main, trigger, c
                     set_database_value(bot, player, x, newvalue)
             else:
                 set_database_value(bot, player, statset, newvalue)
-        osd_notice(bot, duels.instigator, "Possibly done Adjusting "+str(statset)+" stat(s) for "+str(targetbio.actual)+" to " + str(newvalue))
+        osd(bot, duels.instigator, 'notice', "Possibly done Adjusting "+str(statset)+" stat(s) for "+str(targetbio.actual)+" to " + str(newvalue))
 
 
 def duels_docs_stats(bot):
@@ -2281,7 +2281,7 @@ def duels_command_function_health(bot, triggerargsarray, command_main, trigger, 
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2302,7 +2302,7 @@ def duels_command_function_health(bot, triggerargsarray, command_main, trigger, 
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2334,7 +2334,7 @@ def duels_command_function_streaks(bot, triggerargsarray, command_main, trigger,
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2355,7 +2355,7 @@ def duels_command_function_streaks(bot, triggerargsarray, command_main, trigger,
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2385,7 +2385,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2406,7 +2406,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2426,7 +2426,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
         # Main transaction item
         lootitem = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_loot_items or x in plural_loot], 1)
         if not lootitem:
-            osd_notice(bot, duels.instigator, "What do you want to " + str(statcommand) + "?")
+            osd(bot, duels.instigator, 'notice', "What do you want to " + str(statcommand) + "?")
             duels.command_stamina_cost = 0
             return
 
@@ -2446,13 +2446,13 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
 
         # How many of that item
         if not gethowmanylootitem:
-            osd_notice(bot, duels.instigator, "You do not have any " + lootitem + "!")
+            osd(bot, duels.instigator, 'notice', "You do not have any " + lootitem + "!")
             duels.command_stamina_cost = 0
             return
 
         # Block for if the quantity above is greater than the players inventory
         if int(quantity) > int(gethowmanylootitem):
-            osd_notice(bot, duels.instigator, "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
+            osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
             duels.command_stamina_cost = 0
             return
 
@@ -2467,7 +2467,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
             bodypartselect = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_bodyparts], 1) or 'list'
             if bodypartselect not in duels_bodyparts:
                 bodypartlist = get_trigger_arg(bot, duels_bodyparts, 'list')
-                osd_notice(bot, duels.instigator, "Select a valid body part to apply the stimpack to. Valid options: " + bodypartlist)
+                osd(bot, duels.instigator, 'notice', "Select a valid body part to apply the stimpack to. Valid options: " + bodypartlist)
                 duels.command_stamina_cost = 0
                 return
 
@@ -2478,7 +2478,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
 
             # If already at max health. don't use
             if currentbodyparthealth >= maxbodyparthealth:
-                osd_notice(bot, duels.instigator, "It appears your " + bodypartselect + " is at max health.")
+                osd(bot, duels.instigator, 'notice', "It appears your " + bodypartselect + " is at max health.")
                 duels.command_stamina_cost = 0
                 return
 
@@ -2497,7 +2497,7 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
             damageinflictarray = duels_effect_inflict(bot, duels,  targetbio, targetbio, bodypartselect,  'damage', -abs(potionmaths), 'loot')
             for k in damageinflictarray:
                 mainlootusemessage.append(k)
-            onscreentext(bot, duels.channel_current, mainlootusemessage)
+            osd(bot, duels.channel_current, 'say', mainlootusemessage)
 
             return
 
@@ -2577,9 +2577,9 @@ def duels_command_function_loot(bot, triggerargsarray, command_main, trigger, co
                     mainlootusemessage.append(k)
 
         # Display to player/target in privmsg if command issued in privmsg, otherwise in channel
-        onscreentext(bot, duels.channel_current, mainlootusemessage)
+        osd(bot, duels.channel_current, 'say', mainlootusemessage)
         if targetbio.actual != duels.instigator and not duels.inchannel:
-            osd_notice(bot, targetbio.nametext, mainlootusemessage)
+            osd(bot, targetbio.actual, 'notice', mainlootusemessage)
 
 
 def duels_docs_loot(bot):
@@ -2602,7 +2602,7 @@ def duels_command_function_armor(bot, triggerargsarray, command_main, trigger, c
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if target != duels.instigator:
         if not validtarget and not duels.admin:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targetbio = duel_target_playerbio(bot, duels, target)
@@ -2623,7 +2623,7 @@ def duels_command_function_armor(bot, triggerargsarray, command_main, trigger, c
         else:
             tierpass = 1
         if not tierpass:
-            osd_notice(bot, duels.instigator, "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+            osd(bot, duels.instigator, 'notice', "Stats for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
             duels.command_stamina_cost = 0
             return
 
@@ -2647,7 +2647,7 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
     # is the opt in or out
     directionchange = get_trigger_arg(bot, [x for x in triggerargsarray if x in duels_commands_alternate_opt], 1)
     if not directionchange:
-        onscreentext(bot, duels.channel_current, "Do you want to play duels or not?")
+        osd(bot, duels.channel_current, 'say', "Do you want to play duels or not?")
         duels.command_stamina_cost = 0
         return
     if directionchange in opt_enable_array:
@@ -2661,7 +2661,7 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
         duels.optcheck = 0
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     if target != 'everyone':
@@ -2676,32 +2676,32 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
         if target == 'all' or target == 'everyone':
             if not duels.admin:
                 if directionchange == 'on':
-                    onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " thinks everybody should play duels!")
+                    osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " thinks everybody should play duels!")
                 else:
-                    onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " thinks everybody should stop playing duels!")
+                    osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " thinks everybody should stop playing duels!")
             else:
                 if directionchange == 'on':
-                    onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " enabled duels for everyone!")
+                    osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " enabled duels for everyone!")
                     adjust_database_array(bot, 'duelrecorduser', duels.users_all_allchan, 'users_opted_allchan', 'add')
                 else:
-                    onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " disabled duels for everyone!")
+                    osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " disabled duels for everyone!")
                     reset_database_value(bot, 'duelrecorduser', 'users_opted_allchan')
             duels.command_stamina_cost = 0
             return
         if directionchange == 'on':
             if targetbio.actual.lower() in [x.lower() for x in duels.users_opted]:
                 if targetbio.actual != duels.instigator:
-                    osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " already has duels on.")
+                    osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " already has duels on.")
                 else:
-                    osd_notice(bot, duels.instigator, "It looks like you already have duels on.")
+                    osd(bot, duels.instigator, 'notice', "It looks like you already have duels on.")
                 duels.command_stamina_cost = 0
                 return
         if directionchange == 'off':
             if targetbio.actual.lower() not in [x.lower() for x in duels.users_opted]:
                 if targetbio.actual != duels.instigator:
-                    osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " already has duels off.")
+                    osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " already has duels off.")
                 else:
-                    osd_notice(bot, duels.instigator, "It looks like you already have duels off.")
+                    osd(bot, duels.instigator, 'notice', "It looks like you already have duels off.")
                 duels.command_stamina_cost = 0
                 return
 
@@ -2709,16 +2709,16 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
         reasonmessage = get_trigger_arg(bot, triggerargsarray, '3+')
         if not reasonmessage:
             if not duels.admin:
-                osd_notice(bot, duels.instigator, "if you would like " + targetbio.nametext + " to turn duels "+directionchange+", you can run this command along with a message, that they will get privately.")
+                osd(bot, duels.instigator, 'notice', "if you would like " + targetbio.nametext + " to turn duels "+directionchange+", you can run this command along with a message, that they will get privately.")
             else:
-                osd_notice(bot, duels.instigator, "you must include a message to send to " + targetbio.nametext + " as to why you are changing their opt-in status to "+directionchange+".")
+                osd(bot, duels.instigator, 'notice', "you must include a message to send to " + targetbio.nametext + " as to why you are changing their opt-in status to "+directionchange+".")
             duels.command_stamina_cost = 0
             return
         else:
             if duels.admin:
-                osd_notice(bot, targetbio.actual, duels.instigator + " turned duels " + directionchange + " for you for the following reason: " + str(reasonmessage) + ".")
+                osd(bot, targetbio.actual, 'notice', duels.instigator + " turned duels " + directionchange + " for you for the following reason: " + str(reasonmessage) + ".")
             else:
-                osd_notice(bot, targetbio.actual, duels.instigator + " thinks you should duels " + directionchange + " for the following reason: " + str(reasonmessage) + ".")
+                osd(bot, targetbio.actual, 'notice', duels.instigator + " thinks you should duels " + directionchange + " for the following reason: " + str(reasonmessage) + ".")
                 duels.command_stamina_cost = 0
                 return
 
@@ -2732,7 +2732,7 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
         elif duels.admin and targetbio.actual != duels.instigator:
             allowpass = 1
         else:
-            osd_notice(bot, duels.instigator, "It looks like you can't enable/disable duels for " + str(duels_hours_minutes_seconds((array_compare(bot, 'opttime', duels_timeouts, duels_timeouts_duration) - targetopttime))) + ".")
+            osd(bot, duels.instigator, 'notice', "It looks like you can't enable/disable duels for " + str(duels_hours_minutes_seconds((array_compare(bot, 'opttime', duels_timeouts, duels_timeouts_duration) - targetopttime))) + ".")
             duels.command_stamina_cost = 0
             return
 
@@ -2740,17 +2740,17 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
     if directionchange == 'on':
         if targetbio.actual.lower() in [x.lower() for x in duels.users_opted] and targetbio.actual == duels.instigator:
             if targetbio.actual == duels.instigator:
-                osd_notice(bot, duels.instigator, "It looks like you already have duels on.")
+                osd(bot, duels.instigator, 'notice', "It looks like you already have duels on.")
             else:
-                osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " already has duels on.")
+                osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " already has duels on.")
             duels.command_stamina_cost = 0
             return
     else:
         if targetbio.actual.lower() not in [x.lower() for x in duels.users_opted] and targetbio.actual == duels.instigator:
             if targetbio.actual == duels.instigator:
-                osd_notice(bot, duels.instigator, "It looks like you already have duels off.")
+                osd(bot, duels.instigator, 'notice', "It looks like you already have duels off.")
             else:
-                osd_notice(bot, duels.instigator, "It looks like " + targetbio.nametext + " already has duels off.")
+                osd(bot, duels.instigator, 'notice', "It looks like " + targetbio.nametext + " already has duels off.")
             duels.command_stamina_cost = 0
             return
 
@@ -2761,9 +2761,9 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
     else:
         adjust_database_array(bot, 'duelrecorduser', [targetbio.actual], 'users_opted_allchan', 'del')
     if targetbio.actual == duels.instigator:
-        osd_notice(bot, duels.instigator, "Duels should now be " + directionchange + " for you.")
+        osd(bot, duels.instigator, 'notice', "Duels should now be " + directionchange + " for you.")
     elif targetbio.actual != duels.instigator and duels.admin:
-        osd_notice(bot, duels.instigator, "Duels should now be " + directionchange + " for " + targetbio.nametext + ".")
+        osd(bot, duels.instigator, 'notice', "Duels should now be " + directionchange + " for " + targetbio.nametext + ".")
 
     # Anounce to channels
     dispmsgarray = []
@@ -2780,7 +2780,7 @@ def duels_command_function_opt(bot, triggerargsarray, command_main, trigger, com
             else:
                 cowardterm = get_trigger_arg(bot, cowardarray, 'random')
                 dispmsgarray.append(targetbio.nametext + " has left the arena! " + cowardterm)
-        onscreentext(bot, duels.duels_enabled_channels, dispmsgarray)
+        osd(bot, duels.duels_enabled_channels, 'say', dispmsgarray)
 
 
 def duels_docs_opt(bot):
@@ -2801,7 +2801,7 @@ def duels_command_function_location(bot, triggerargsarray, command_main, trigger
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if not validtarget and not duels.admin:
-        osd_notice(bot, duels.instigator, validtargetmsg)
+        osd(bot, duels.instigator, 'notice', validtargetmsg)
         duels.command_stamina_cost = 0
         return
     if target != duels.instigator:
@@ -2809,7 +2809,7 @@ def duels_command_function_location(bot, triggerargsarray, command_main, trigger
     else:
         targetbio = instigatorbio
     if targetbio.actual != duels.instigator and not duels.admin and newlocation != 'view':
-        osd_notice(bot, duels.instigator, "You cannot make other players move location.")
+        osd(bot, duels.instigator, 'notice', "You cannot make other players move location.")
         duels.command_stamina_cost = 0
         return
 
@@ -2818,31 +2818,31 @@ def duels_command_function_location(bot, triggerargsarray, command_main, trigger
     if newlocation == 'view':
         valid_locations = get_trigger_arg(bot, duels_commands_locations, "list")
         if targetbio.actual == duels.instigator:
-            osd_notice(bot, duels.instigator,  "You are currently located at the " + targetlocation + " area. You may run   .duel location $location    to move your player. Valid locations are: " + valid_locations)
+            osd(bot, duels.instigator, 'notice',  "You are currently located at the " + targetlocation + " area. You may run   .duel location $location    to move your player. Valid locations are: " + valid_locations)
         else:
-            onscreentext(bot, [duels.channel_current],  targetbio.nametext + " is currently located at the " + targetlocation + " area.")
+            osd(bot, duels.channel_current, 'say',  targetbio.nametext + " is currently located at the " + targetlocation + " area.")
         duels.command_stamina_cost = 0
         return
 
     if newlocation == targetlocation:
         if targetbio.actual == duels.instigator:
-            osd_notice(bot, duels.instigator, "Your location is already "+targetlocation+".")
+            osd(bot, duels.instigator, 'notice', "Your location is already "+targetlocation+".")
         else:
-            osd_notice(bot, duels.instigator, targetbio.nametextpos+" location is already "+targetlocation+".")
+            osd(bot, duels.instigator, 'notice', targetbio.nametextpos+" location is already "+targetlocation+".")
         duels.command_stamina_cost = 0
         return
 
     # Stamina Check
     staminapass,stamina,duels.command_stamina_cost = duels_stamina_check(bot, duels.instigator, command_main.lower(), duels)
     if not staminapass and command_main.lower() != 'location':
-        osd_notice(bot, duels.instigator, "You do not have enough stamina to perform duel " + command_main.lower())
+        osd(bot, duels.instigator, 'notice', "You do not have enough stamina to perform duel " + command_main.lower())
         return
 
     duels_location_move(bot,duels,targetbio.actual,newlocation)
     if duels.instigator == targetbio.actual:
-        osd_notice(bot, duels.instigator, "You have moved from the " + targetlocation + " area to the " + newlocation + " area.")
+        osd(bot, duels.instigator, 'notice', "You have moved from the " + targetlocation + " area to the " + newlocation + " area.")
     else:
-        osd_notice(bot, targetbio.nametext, "You have moved from the " + targetlocation + " area to the " + newlocation + " area.")
+        osd(bot, targetbio.actual, 'notice', "You have moved from the " + targetlocation + " area to the " + newlocation + " area.")
     dispmsgarray = []
     if newlocation == 'arena':
         dispmsgarray.append(targetbio.nametext + " has entered the arena!")
@@ -2851,7 +2851,7 @@ def duels_command_function_location(bot, triggerargsarray, command_main, trigger
             cowardterm = get_trigger_arg(bot, cowardarray, 'random')
             dispmsgarray.append(targetbio.nametext + " has left the arena! " + cowardterm)
     if dispmsgarray != []:
-        onscreentext(bot, duels.duels_enabled_channels, dispmsgarray)
+        osd(bot, duels.duels_enabled_channels, 'say', dispmsgarray)
 
 
 def duels_docs_location(bot):
@@ -2870,7 +2870,7 @@ def duels_command_function_harakiri(bot, triggerargsarray, command_main, trigger
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -2880,18 +2880,18 @@ def duels_command_function_harakiri(bot, triggerargsarray, command_main, trigger
 
     confirm = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'confirm'], 1) or 0
     if not confirm:
-        onscreentext(bot, duels.channel_current, "You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
+        osd(bot, duels.channel_current, 'say', "You must run this command with 'confirm' to kill yourself. No rewards are given in to cowards.")
         duels.command_stamina_cost = 0
         return
 
     if targetbio.actual != duels.instigator:
         if not duels.admin:
-            onscreentext(bot, duels.channel_current, "You can't suicide other people. It's called Murder.")
+            osd(bot, duels.channel_current, 'say', "You can't suicide other people. It's called Murder.")
             duels.command_stamina_cost = 0
             return
 
     suicidetextarray = duels_death_handling(bot, duels, targetbio, targetbio)
-    onscreentext(bot, ['say'], suicidetextarray)
+    osd(bot, duels.channel_current, 'say', suicidetextarray)
 
 
 def duels_docs_template(bot):
@@ -2911,7 +2911,7 @@ def duels_command_function_title(bot, triggerargsarray, command_main, trigger, c
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -2921,7 +2921,7 @@ def duels_command_function_title(bot, triggerargsarray, command_main, trigger, c
 
     if targetbio.actual != duels.instigator:
         if not duels.admin:
-            onscreentext(bot, duels.channel_current, "You can't change other people's titles.")
+            osd(bot, duels.channel_current, 'say', "You can't change other people's titles.")
             duels.command_stamina_cost = 0
             return
 
@@ -2930,38 +2930,38 @@ def duels_command_function_title(bot, triggerargsarray, command_main, trigger, c
     titletoset = get_trigger_arg(bot, duels.command_restructure, 0)
     if not titletoset:
         if targetbio.actual != duels.instigator:
-            osd_notice(bot, duels.instigator, "What do you want "+targetbio.nametextpos+" your title to be?")
+            osd(bot, duels.instigator, 'notice', "What do you want "+targetbio.nametextpos+" your title to be?")
         else:
-            osd_notice(bot, duels.instigator, "What do you want your title to be?")
+            osd(bot, duels.instigator, 'notice', "What do you want your title to be?")
         duels.command_stamina_cost = 0
         return
 
     if titletoset == 'remove':
         reset_database_value(bot, targetbio.actual, 'title')
         if targetbio.actual != duels.instigator:
-            osd_notice(bot, duels.instigator, targetbio.nametextpos+" title has been removed.")
+            osd(bot, duels.instigator, 'notice', targetbio.nametextpos+" title has been removed.")
         else:
-            osd_notice(bot, duels.instigator, "Your title has been removed.")
+            osd(bot, duels.instigator, 'notice', "Your title has been removed.")
         duels.command_stamina_cost = 0
         return
 
     if targetbio.actual != duels.instigator:
         instigatorcoin = get_database_value(bot, duels.instigator, 'coin') or 0
         if instigatorcoin < array_compare(bot, 'title', duels_ingame_coin_usage, duels_ingame_coin):
-            osd_notice(bot, duels.instigator, "Changing your title costs " + str(array_compare(bot, 'title', duels_ingame_coin_usage, duels_ingame_coin)) + " coin. You need more funding.")
+            osd(bot, duels.instigator, 'notice', "Changing your title costs " + str(array_compare(bot, 'title', duels_ingame_coin_usage, duels_ingame_coin)) + " coin. You need more funding.")
             duels.command_stamina_cost = 0
             return
         if len(titletoset) > 10:
-            osd_notice(bot, duels.instigator, "Purchased titles can be no longer than 10 characters.")
+            osd(bot, duels.instigator, 'notice', "Purchased titles can be no longer than 10 characters.")
             duels.command_stamina_cost = 0
             return
         adjust_database_value(bot, duels.instigator, 'coin', -abs(array_compare(bot, 'title', duels_ingame_coin_usage, duels_ingame_coin)))
 
     set_database_value(bot, targetbio.actual, 'title', titletoset)
     if targetbio.actual != duels.instigator:
-        osd_notice(bot, duels.instigator, targetbio.nametextpos+" title is now " + titletoset + ".")
+        osd(bot, duels.instigator, 'notice', targetbio.nametextpos+" title is now " + titletoset + ".")
     else:
-        osd_notice(bot, duels.instigator, "Your title is now " + titletoset + ".")
+        osd(bot, duels.instigator, 'notice', "Your title is now " + titletoset + ".")
 
 
 def duels_docs_title(bot):
@@ -2978,7 +2978,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
     validdirectionarray = ['total','inv','add','del','reset']
     adjustmentdirection = get_trigger_arg(bot, [x for x in duels.command_restructure if x in validdirectionarray], 1)
     if not adjustmentdirection:
-        osd_notice(bot, duels.instigator, "Use .duel weaponslocker add/del to adjust Locker Inventory.")
+        osd(bot, duels.instigator, 'notice', "Use .duel weaponslocker add/del to adjust Locker Inventory.")
         duels.command_stamina_cost = 0
         return
     duels.command_restructure.remove(adjustmentdirection)
@@ -2991,7 +2991,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     if target in duels.command_restructure:
@@ -3004,55 +3004,55 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
     weaponslist = get_database_value(bot, targetbio.actual, 'weaponslocker_complete') or []
 
     if adjustmentdirection == 'total':
-        onscreentext(bot, duels.channel_current, targetbio.nametext + ' has ' + str(len(weaponslist)) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv .")
+        osd(bot, duels.channel_current, 'say', targetbio.nametext + ' has ' + str(len(weaponslist)) + " weapons in their locker. They Can be viewed in privmsg by running .duel weaponslocker inv .")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'inv':
         if weaponslist == []:
-            osd_notice(bot, duels.instigator, "There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.")
+            osd(bot, duels.instigator, 'notice', "There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.")
             duels.command_stamina_cost = 0
             return
-        onscreentext(bot, [duels.instigator], get_trigger_arg(bot, weaponslist, 'list'))
+        osd(bot, duels.instigator, 'say', get_trigger_arg(bot, weaponslist, 'list'))
         duels.command_stamina_cost = 0
         return
 
     if targetbio.actual != duels.instigator and not duels.admin:
-        osd_notice(bot, duels.instigator, "You may not adjust somebody elses locker.")
+        osd(bot, duels.instigator, 'notice', "You may not adjust somebody elses locker.")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'reset':
         reset_database_value(bot, targetbio.actual, 'weaponslocker_complete')
-        osd_notice(bot, duels.instigator, "Locker Reset.")
+        osd(bot, duels.instigator, 'notice', "Locker Reset.")
         duels.command_stamina_cost = 0
         return
 
     weaponchange = get_trigger_arg(bot, duels.command_restructure, 0)
     if not weaponchange:
-        osd_notice(bot, duels.instigator, "What weapon would you like to add/remove?")
+        osd(bot, duels.instigator, 'notice', "What weapon would you like to add/remove?")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'add' and weaponchange in weaponslist:
-        osd_notice(bot, duels.instigator, weaponchange + " is already in weapons locker.")
+        osd(bot, duels.instigator, 'notice', weaponchange + " is already in weapons locker.")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'del' and weaponchange not in weaponslist:
-        osd_notice(bot, duels.instigator, weaponchange + " is already not in weapons locker.")
+        osd(bot, duels.instigator, 'notice', weaponchange + " is already not in weapons locker.")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'add' and len(weaponchange) > weapon_name_length:
-        osd_notice(bot, duels.instigator, "That weapon exceeds the character limit of "+str(weapon_name_length)+".")
+        osd(bot, duels.instigator, 'notice', "That weapon exceeds the character limit of "+str(weapon_name_length)+".")
         duels.command_stamina_cost = 0
         return
 
     if adjustmentdirection == 'add':
         for word in duels.command_restructure:
             if word.lower() in [x.lower() for x in duels.users_all_allchan] or word.lower() in [str(x.lower()+"s") for x in duels.users_all_allchan] or word.lower() in [str(x.lower()+"'s") for x in duels.users_all_allchan]:
-                osd_notice(bot, duels.instigator, "Weapons may not include user nicks.")
+                osd(bot, duels.instigator, 'notice', "Weapons may not include user nicks.")
                 duels.command_stamina_cost = 0
                 return
 
@@ -3062,7 +3062,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
         weaponlockerstatus = 'no longer'
 
     adjust_database_array(bot, targetbio.actual, [weaponchange], 'weaponslocker_complete', adjustmentdirection)
-    osd_notice(bot, duels.instigator, weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
+    osd(bot, duels.instigator, 'notice', weaponchange + " is " + weaponlockerstatus + " in your weapons locker.")
 
 
 def duels_docs_weaponslocker(bot):
@@ -3089,11 +3089,11 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if subcommand != 'view' and not duels.admin:
-            osd_notice(bot, duels.instigator, "you cannot adjust armor for other players.")
+            osd(bot, duels.instigator, 'notice', "you cannot adjust armor for other players.")
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -3104,7 +3104,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
     if subcommand != 'view':
         typearmor = get_trigger_arg(bot, [x for x in duels.command_restructure if x in stats_armor or x == 'all'], 1)
         if not typearmor:
-            onscreentext(bot, duels.channel_current, "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
+            osd(bot, duels.channel_current, 'say', "What type of armor do you wish to " + subcommand + "? Options are: " + armors + ".")
             duels.command_stamina_cost = 0
             return
 
@@ -3113,7 +3113,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         for armor in stats_armor:
             merchantarray.append(armor + "="+str(armor_cost))
         merchantstock = get_trigger_arg(bot, merchantarray, 'list')
-        onscreentext(bot, [duels.channel_current],  "Forge Supply (item=coin-cost): " + merchantstock)
+        osd(bot, duels.channel_current, 'say',  "Forge Supply (item=coin-cost): " + merchantstock)
         duels.command_stamina_cost = 0
         return
 
@@ -3121,7 +3121,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         if typearmor != 'all':
             getarmor = get_database_value(bot, targetbio.actual, typearmor) or 0
             if getarmor and getarmor > 0:
-                onscreentext(bot, duels.channel_current, "It looks like you already have a " + typearmor + ".")
+                osd(bot, duels.channel_current, 'say', "It looks like you already have a " + typearmor + ".")
                 duels.command_stamina_cost = 0
                 return
             armorcommandarray = [typearmor]
@@ -3134,7 +3134,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
                     armorcommandarray.append(armor)
             costinvolved = armor_cost * len(armorcommandarray)
         if armorcommandarray == []:
-            onscreentext(bot, ['say'], "Looks like you don't have any armor to " + subcommand + ".")
+            osd(bot, duels.channel_current, 'say', "Looks like you don't have any armor to " + subcommand + ".")
             duels.command_stamina_cost = 0
             return
         if targetbio.actual != duels.instigator:
@@ -3142,11 +3142,11 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
                 costinvolved = costinvolved * armor_cost_blacksmith_cut
                 costinvolved = int(costinvolved)
                 if targetbio.coin < costinvolved:
-                    onscreentext(bot, duels.channel_current, "Insufficient Funds.")
+                    osd(bot, duels.channel_current, 'say', "Insufficient Funds.")
                     duels.command_stamina_cost = 0
                     return
                 adjust_database_value(bot, targetbio.actual, 'coin', -abs(costinvolved))
-        onscreentext(bot, duels.channel_current, targetbio.nametext + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
+        osd(bot, duels.channel_current, 'say', targetbio.nametext + " bought " + typearmor + " for " + str(costinvolved) + " coins.")
         for armorscom in armorcommandarray:
             set_database_value(bot, targetbio.actual, armorscom, armor_durability)
         duels.command_stamina_cost = 0
@@ -3156,11 +3156,11 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         if typearmor != 'all':
             getarmor = get_database_value(bot, targetbio.actual, typearmor) or 0
             if not getarmor:
-                onscreentext(bot, duels.channel_current, "You don't have a " + typearmor + " to sell.")
+                osd(bot, duels.channel_current, 'say', "You don't have a " + typearmor + " to sell.")
                 duels.command_stamina_cost = 0
                 return
             if getarmor < 0:
-                onscreentext(bot, duels.channel_current, "Your armor is too damaged to sell.")
+                osd(bot, duels.channel_current, 'say', "Your armor is too damaged to sell.")
                 reset_database_value(bot, targetbio.actual, typearmor)
                 duels.command_stamina_cost = 0
                 return
@@ -3177,14 +3177,14 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
             durabilityremainingmax = len(armorcommandarray) * armor_durability
             durabilityremaining = durabilityremaininga / durabilityremainingmax
         if armorcommandarray == []:
-            onscreentext(bot, ['say'], "Looks like you don't have any armor to " + subcommand + ".")
+            osd(bot, duels.channel_current, 'say', "Looks like you don't have any armor to " + subcommand + ".")
             duels.command_stamina_cost = 0
             return
         sellingamount = durabilityremaining * armor_cost
         if targetbio.Class == 'blacksmith':
             sellingamount = sellingamount * armor_sell_blacksmith_cut
         sellingamount = int(sellingamount)
-        onscreentext(bot, duels.channel_current, "Selling " + typearmor + " armor earned you " + str(sellingamount) + " coins.")
+        osd(bot, duels.channel_current, 'say', "Selling " + typearmor + " armor earned you " + str(sellingamount) + " coins.")
         if targetbio.actual != duels.instigator:
             adjust_database_value(bot, targetbio.actual, 'coin', sellingamount)
         for armorscom in armorcommandarray:
@@ -3196,14 +3196,14 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
         if typearmor != 'all':
             getarmor = get_database_value(bot, targetbio.actual, typearmor) or 0
             if not getarmor:
-                onscreentext(bot, duels.channel_current, "You don't have a " + typearmor + " to repair.")
+                osd(bot, duels.channel_current, 'say', "You don't have a " + typearmor + " to repair.")
                 duels.command_stamina_cost = 0
                 return
             durabilitycompare = armor_durability
             if targetbio.Class == 'blacksmith':
                 durabilitycompare = armor_durability_blacksmith
             if getarmor >= durabilitycompare:
-                onscreentext(bot, duels.channel_current, "It looks like your armor does not need repair.")
+                osd(bot, duels.channel_current, 'say', "It looks like your armor does not need repair.")
                 duels.command_stamina_cost = 0
                 return
             durabilitytorepair = durabilitycompare - getarmor
@@ -3224,7 +3224,7 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
                 durabilitycompare = len(armorcommandarray) * armor_durability_blacksmith
             durabilitytorepair = durabilitycompare - durabilityremaininga
         if armorcommandarray == []:
-            onscreentext(bot, ['say'], "Looks like you don't have any armor to " + subcommand + ".")
+            osd(bot, duels.channel_current, 'say', "Looks like you don't have any armor to " + subcommand + ".")
             duels.command_stamina_cost = 0
             return
         if targetbio.actual != duels.instigator:
@@ -3235,13 +3235,13 @@ def duels_command_function_forge(bot, triggerargsarray, command_main, trigger, c
                 costinvolved = costinvolved * armor_cost_blacksmith_cut
                 costinvolved = int(costinvolved)
             if targetbio.coin < costinvolved:
-                onscreentext(bot, duels.channel_current, "Insufficient Funds.")
+                osd(bot, duels.channel_current, 'say', "Insufficient Funds.")
                 duels.command_stamina_cost = 0
                 return
             adjust_database_value(bot, targetbio.actual, 'coin', -abs(costinvolved))
-            onscreentext(bot, duels.channel_current, "Repairing " + typearmor + " armor for " + str(costinvolved)+" coins.")
+            osd(bot, duels.channel_current, 'say', "Repairing " + typearmor + " armor for " + str(costinvolved)+" coins.")
         else:
-            onscreentext(bot, duels.channel_current, "Repairing " + typearmor + " armor.")
+            osd(bot, duels.channel_current, 'say', "Repairing " + typearmor + " armor.")
         for armorscom in armorcommandarray:
             set_database_value(bot, targetbio.actual, armorscom, armor_durability)
         duels.command_stamina_cost = 0
@@ -3267,11 +3267,11 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if not duels.admin:
-            osd_notice(bot, duels.instigator, "you cannot adjust loot for other players.")  # TODO admin
+            osd(bot, duels.instigator, 'notice', "you cannot adjust loot for other players.")  # TODO admin
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -3299,7 +3299,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
                 merchquant = eval(str("merchinv."+lootitem))
                 if merchquant > 0:
                     merchantarray.append(lootitem.title() + ": "+str(current_loot_cost) + "$ [" + str(merchquant) + "]")
-        onscreentext(bot, [duels.channel_current], merchantarray)
+        osd(bot, duels.channel_current, 'say', merchantarray)
         duels.command_stamina_cost = 0
         return
 
@@ -3312,14 +3312,14 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
     # Main transaction item
     lootitem = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_loot_items or x in plural_loot], 1)
     if not lootitem:
-        osd_notice(bot, duels.instigator, "What do you want to " + str(lootcommand) + "?")
+        osd(bot, duels.instigator, 'notice', "What do you want to " + str(lootcommand) + "?")
         duels.command_stamina_cost = 0
         return
 
     # How many of that item
     gethowmanylootitem = get_database_value(bot, targetbio.actual, lootitem) or 0
     if not gethowmanylootitem and lootcommand != 'buy':
-        osd_notice(bot, duels.instigator, "You do not have any " + lootitem + "!")
+        osd(bot, duels.instigator, 'notice', "You do not have any " + lootitem + "!")
         duels.command_stamina_cost = 0
         return
 
@@ -3339,7 +3339,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
 
     # Block for if the quantity above is greater than the players inventory
     if int(quantity) > int(gethowmanylootitem) and lootcommand != 'buy':
-        osd_notice(bot, duels.instigator, "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
+        osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -3354,13 +3354,13 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
 
         merchquant = eval(str("merchinv."+lootitem))
         if merchquant < quantity:
-            osd_notice(bot, duels.instigator, "The Merchant does not have enough inventory to meet this request.")
+            osd(bot, duels.instigator, 'notice', "The Merchant does not have enough inventory to meet this request.")
             duels.command_stamina_cost = 0
             return
 
         # Block transaction if player doesn not have enough coin
         if int(targetbio.coin) < coinrequired:
-            osd_notice(bot, duels.instigator, "You do not have enough coin for this action.")
+            osd(bot, duels.instigator, 'notice', "You do not have enough coin for this action.")
             duels.command_stamina_cost = 0
             return
 
@@ -3369,8 +3369,8 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
         adjust_database_value(bot, targetbio.actual, lootitem, quantity)
         adjust_database_value(bot, 'duelsmerchant', lootitem, -abs(quantity))
         adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), int(quantity))
-        onscreentext(bot, ['say'], targetbio.nametext + " bought " + str(quantity) + " "+lootitem + "s for " + str(coinrequired) + " coins.")
-        onscreentext(bot, ['say'], 'The Merchant says "Thank you, come again"')
+        osd(bot, duels.channel_current, 'say', targetbio.nametext + " bought " + str(quantity) + " "+lootitem + "s for " + str(coinrequired) + " coins.")
+        osd(bot, duels.channel_current, 'say', 'The Merchant says "Thank you, come again"')
 
     #  Selling lootitem
     if lootcommand == 'sell':
@@ -3385,7 +3385,7 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
         merchquant = eval(str("merchinv."+lootitem))
         combinedquant = int(merchquant) + quantity
         if combinedquant > duels_merchant_inv_max:
-            osd_notice(bot, duels.instigator, "The Merchant does not have enough inventory space to meet this request.")
+            osd(bot, duels.instigator, 'notice', "The Merchant does not have enough inventory space to meet this request.")
             duels.command_stamina_cost = 0
             return
 
@@ -3394,8 +3394,8 @@ def duels_command_function_merchant(bot, triggerargsarray, command_main, trigger
         adjust_database_value(bot, targetbio.actual, lootitem, -abs(quantity))
         adjust_database_value(bot, 'duelsmerchant', lootitem, quantity)
         adjust_database_value(bot, 'duelsmerchant', str("vendor_track_value_"+lootitem), -abs(quantity))
-        onscreentext(bot, duels.channel_current, targetbio.actual + " sold " + str(quantity) + " " + lootitem + "s for " + str(reward) + " coins.")
-        onscreentext(bot, ['say'], 'The Merchant says "Thank you, come again"')
+        osd(bot, duels.channel_current, 'say', targetbio.actual + " sold " + str(quantity) + " " + lootitem + "s for " + str(reward) + " coins.")
+        osd(bot, duels.channel_current, 'say', 'The Merchant says "Thank you, come again"')
 
 
 def duels_docs_merchant(bot):
@@ -3418,12 +3418,12 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if lootcommand == 'buy':
             if not duels.admin:
-                osd_notice(bot, duels.instigator, "you cannot adjust lockers for other players.")
+                osd(bot, duels.instigator, 'notice', "you cannot adjust lockers for other players.")
                 duels.command_stamina_cost = 0
                 return
     if target != duels.instigator:
@@ -3441,7 +3441,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
             elif not duels.inchannel and len(duels.duels_dev_channels) > 0:
                 allowpass = 1
             else:
-                osd_notice(bot, duels.instigator, "Lockers for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
+                osd(bot, duels.instigator, 'notice', "Lockers for other players cannot be viewed until somebody reaches " + str(duels.tierpepperrequired.title()) + ". "+str(duels.tiermath) + " tier(s) remaining!")
                 duels.command_stamina_cost = 0
                 return
 
@@ -3465,7 +3465,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
                 dispmsgarrayb.append(y)
         else:
             dispmsgarrayb.append(duels.instigator + ", It looks like " + targetbio.nametextpos + " locker is empty.")
-        onscreentext(bot, ['say'], dispmsgarrayb)
+        osd(bot, duels.channel_current, 'say', dispmsgarrayb)
         duels.command_stamina_cost = 0
         return
 
@@ -3478,7 +3478,7 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
     # Main transaction item
     lootitem = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_loot_view or x in plural_loot or x == 'everything'], 1)
     if not lootitem:
-        osd_notice(bot, duels.instigator, "What do you want to " + str(lootcommand) + "?")
+        osd(bot, duels.instigator, 'notice', "What do you want to " + str(lootcommand) + "?")
         duels.command_stamina_cost = 0
         return
 
@@ -3489,14 +3489,14 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
                 if gethowmanylootitem:
                     adjust_database_value(bot, duels.instigator, x, -abs(gethowmanylootitem))
                     adjust_database_value(bot, duels.instigator, x+"_locker", gethowmanylootitem)
-            onscreentext(bot, ['say'], duels.instigator + " stores all of their loot in their locker.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " stores all of their loot in their locker.")
         if lootcommand == 'take':
             for x in duels_loot_view:
                 gethowmanylootitem = get_database_value(bot, duels.instigator, x+"_locker") or 0
                 if gethowmanylootitem:
                     adjust_database_value(bot, duels.instigator, x, gethowmanylootitem)
                     adjust_database_value(bot, duels.instigator, x+"_locker", -abs(gethowmanylootitem))
-            onscreentext(bot, ['say'], duels.instigator + " takes all their loot from their locker.")
+            osd(bot, duels.channel_current, 'say', duels.instigator + " takes all their loot from their locker.")
         duels.command_stamina_cost = 0
         return
 
@@ -3521,18 +3521,18 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
     # How many of that item
     if not gethowmanylootitem:
         if lootcommand == 'store':
-            osd_notice(bot, duels.instigator, "You do not have any " + lootitem + "!")
+            osd(bot, duels.instigator, 'notice', "You do not have any " + lootitem + "!")
         if lootcommand == 'take':
-            osd_notice(bot, duels.instigator, "You do not have any " + lootitem + " in your locker!")
+            osd(bot, duels.instigator, 'notice', "You do not have any " + lootitem + " in your locker!")
         duels.command_stamina_cost = 0
         return
 
     # Block for if the quantity above is greater than the players inventory
     if int(quantity) > int(gethowmanylootitem):
         if lootcommand == 'store':
-            osd_notice(bot, duels.instigator, "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
+            osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " to use this command! You only have " + str(gethowmanylootitem) + ".")
         if lootcommand == 'take':
-            osd_notice(bot, duels.instigator, "You do not have enough " + lootitem + " in your locker to use this command! You only have " + str(gethowmanylootitem) + ".")
+            osd(bot, duels.instigator, 'notice', "You do not have enough " + lootitem + " in your locker to use this command! You only have " + str(gethowmanylootitem) + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -3541,11 +3541,11 @@ def duels_command_function_locker(bot, triggerargsarray, command_main, trigger, 
     if lootcommand == 'store':
         adjust_database_value(bot, duels.instigator, lootitem, -abs(quantity))
         adjust_database_value(bot, duels.instigator, lootitem+"_locker", quantity)
-        onscreentext(bot, ['say'], duels.instigator + " stores " + str(quantity) + " " + lootitem + " in their locker.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " stores " + str(quantity) + " " + lootitem + " in their locker.")
     if lootcommand == 'take':
         adjust_database_value(bot, duels.instigator, lootitem, quantity)
         adjust_database_value(bot, duels.instigator, lootitem+"_locker", -abs(quantity))
-        onscreentext(bot, ['say'], duels.instigator + " takes " + str(quantity) + " " + lootitem + " from their locker.")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " takes " + str(quantity) + " " + lootitem + " from their locker.")
 
 
 def duels_docs_locker(bot):
@@ -3564,11 +3564,11 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if not duels.admin:
-            osd_notice(bot, duels.instigator, "you cannot craft for other players.")
+            osd(bot, duels.instigator, 'notice', "you cannot craft for other players.")
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -3581,13 +3581,13 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
     lootcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'recipe' or x == 'create' or x == 'list'], 1) or 'create'
 
     if lootcommand == 'list':
-        onscreentext(bot, ['say'], "Valid Crafting Recipes include: " + validlist)
+        osd(bot, duels.channel_current, 'say', "Valid Crafting Recipes include: " + validlist)
         duels.command_stamina_cost = 0
         return
 
     lootitem = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels_craft_valid], 1)
     if not lootitem:
-        osd_notice(bot, duels.instigator, "what type of loot item would to like to " + lootcommand + "?")
+        osd(bot, duels.instigator, 'notice', "what type of loot item would to like to " + lootcommand + "?")
         duels.command_stamina_cost = 0
         return
 
@@ -3598,7 +3598,7 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
         recipe.append(lootitem+" requires the following items:")
         for part, number in zip(recipe_required, recipe_quantity):
             recipe.append(part+"="+str(number))
-        onscreentext(bot, ['say'], recipe)
+        osd(bot, duels.channel_current, 'say', recipe)
         duels.command_stamina_cost = 0
         return
 
@@ -3615,14 +3615,14 @@ def duels_command_function_craft(bot, triggerargsarray, command_main, trigger, c
             if int(gethowmanypart) < quantityneeded:
                 recipe.append(part)
         if recipe != []:
-            osd_notice(bot, duels.instigator, "you don't have the required components for this recipe")
+            osd(bot, duels.instigator, 'notice', "you don't have the required components for this recipe")
             duels.command_stamina_cost = 0
             return
         for part, number in zip(recipe_required, recipe_quantity):
             quantityneeded = int(number) * quantity
             adjust_database_value(bot, duels.instigator, part, -abs(quantityneeded))
         adjust_database_value(bot, duels.instigator, lootitem, quantity)
-        onscreentext(bot, ['say'], duels.instigator + " has successfully crafted "+str(quantity)+" " + lootitem + "(s)!")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " has successfully crafted "+str(quantity)+" " + lootitem + "(s)!")
         duels.command_stamina_cost = 0
         return
 
@@ -3645,11 +3645,11 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if not duels.admin:
-            osd_notice(bot, duels.instigator, "you cannot drink for other players.")  # TODO admin
+            osd(bot, duels.instigator, 'notice', "you cannot drink for other players.")  # TODO admin
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -3673,7 +3673,7 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
             effectslist = get_trigger_arg(bot, effectsarray, "list")
             currentcost = array_compare(bot, beverage, duels_tavern_items, duels_tavern_cost)
             beveragelisting.append(beverage.title() + "=(" + str(effectslist) + ")" + "[" + str(currentcost) + "$]")
-        onscreentext(bot, duels.channel_current, beveragelisting)
+        osd(bot, duels.channel_current, 'say', beveragelisting)
         duels.command_stamina_cost = 0
         return
 
@@ -3687,7 +3687,7 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
 
     # Block transaction if player doesn not have enough coin
     if int(targetbio.coin) < coinrequired:
-        osd_notice(bot, duels.instigator, "You do not have enough coin for this action.")
+        osd(bot, duels.instigator, 'notice', "You do not have enough coin for this action.")
         duels.command_stamina_cost = 0
         return
     adjust_database_value(bot, targetbio.actual, 'coin', -abs(coinrequired))
@@ -3717,7 +3717,7 @@ def duels_command_function_tavern(bot, triggerargsarray, command_main, trigger, 
             effectinflictarray = duels_effect_inflict(bot, duels,  instigatorbio, targetbio, 'all',  x, currenteval, 'tavern')
             for k in effectinflictarray:
                 mainlootusemessage.append(k)
-    onscreentext(bot, duels.channel_current, mainlootusemessage)
+    osd(bot, duels.channel_current, 'say', mainlootusemessage)
 
 
 def duels_docs_tavern(bot):
@@ -3763,7 +3763,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
     elif command.lower() == 'next':
         nexttier = duels.currenttier + 1
         if nexttier > 15:
-            onscreentext(bot, duels.channel_current, "Tiers do not got past 15 (Pure Capsaicin).")
+            osd(bot, duels.channel_current, 'say', "Tiers do not got past 15 (Pure Capsaicin).")
             duels.command_stamina_cost = 0
             return
         nextpepper = duels_tier_number_to_pepper(bot, nexttier)
@@ -3801,7 +3801,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
     elif command.isdigit():
         command = int(command)
         if int(command) > 15:
-            onscreentext(bot, duels.channel_current, "Tiers do not got past 15 (Pure Capsaicin).")
+            osd(bot, duels.channel_current, 'say', "Tiers do not got past 15 (Pure Capsaicin).")
             duels.command_stamina_cost = 0
             return
         commandpepper = duels_tier_number_to_pepper(bot, command)
@@ -3820,7 +3820,7 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
 
         nexttier = duels.currenttier + 1
         if int(nexttier) > 15:
-            onscreentext(bot, duels.channel_current, "Tiers do not got past 15 (Pure Capsaicin).")
+            osd(bot, duels.channel_current, 'say', "Tiers do not got past 15 (Pure Capsaicin).")
             duels.command_stamina_cost = 0
             return
 
@@ -3853,14 +3853,14 @@ def duels_command_function_tier(bot, triggerargsarray, command_main, trigger, co
     else:
         validtarget, validtargetmsg = duels_target_check(bot, command, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         targettier = get_database_value(bot, command, 'tier') or 0
         dispmsgarray.append(command + "'s current tier is " + str(targettier) + ". ")
 
     # display the info
-    onscreentext(bot, ['say'], dispmsgarray)
+    osd(bot, duels.channel_current, 'say', dispmsgarray)
 
 
 def duels_docs_tier(bot):
@@ -3885,10 +3885,10 @@ def duels_command_function_warroom(bot, triggerargsarray, command_main, trigger,
     if subcommand in duels_commands_locations:
         commandlocation = eval("duels.users_current_allchan_" + subcommand)
         if commandlocation == []:
-            onscreentext(bot, duels.channel_current, "The following nobody is located in " + subcommand + ".")
+            osd(bot, duels.channel_current, 'say', "The following nobody is located in " + subcommand + ".")
         else:
             displaymessage = get_trigger_arg(bot, commandlocation, "list")
-            onscreentext(bot, duels.channel_current, "The following users are located in " + subcommand + ": " + str(displaymessage))
+            osd(bot, duels.channel_current, 'say', "The following users are located in " + subcommand + ": " + str(displaymessage))
         duels.command_stamina_cost = 0
         return
 
@@ -3903,30 +3903,30 @@ def duels_command_function_warroom(bot, triggerargsarray, command_main, trigger,
             duels.users_canduel_allchan.remove(bot.nick)
         if duels.users_canduel_allchan != []:
             displaymessage = get_trigger_arg(bot, duels.users_canduel_allchan, "list")
-            onscreentext(bot, duels.channel_current, duels.instigator + ", you may duel the following users: " + str(displaymessage))
+            osd(bot, duels.channel_current, 'say', duels.instigator + ", you may duel the following users: " + str(displaymessage))
         else:
-            osd_notice(bot, duels.instigator, "It looks like you can't duel anybody at the moment.")
+            osd(bot, duels.instigator, 'notice', "It looks like you can't duel anybody at the moment.")
         duels.command_stamina_cost = 0
         return
 
     if subcommand in duels_commands_events:
         executedueling, executeduelingmsg = duels_events_check(bot, subcommand, duels)
         if not executedueling:
-            osd_notice(bot, duels.instigator, executeduelingmsg)
+            osd(bot, duels.instigator, 'notice', executeduelingmsg)
         else:
-            osd_notice(bot, duels.instigator, "It looks like full channel " + subcommand + " event can be used.")
+            osd(bot, duels.instigator, 'notice', "It looks like full channel " + subcommand + " event can be used.")
         duels.command_stamina_cost = 0
         return
 
     if subcommand in duels.users_all_allchan:
         validtarget, validtargetmsg = duels_target_check(bot, subcommand, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         target = duels_nick_actual(bot, subcommand)
         if target in duels.users_canduel_allchan and duels.instigator in duels.users_canduel_allchan:
-            osd_notice(bot, duels.instigator, "It looks like you can duel " + target + ".")
+            osd(bot, duels.instigator, 'notice', "It looks like you can duel " + target + ".")
 
 
 def duels_docs_warroom(bot):
@@ -3944,7 +3944,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
     if subcommand != 'main' and subcommand not in duels.users_all_allchan:
         stat = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.stats_valid or x == 'health'], 1)
         if not stat:
-            onscreentext(bot, duels.channel_current, "What stat do you want to check?")
+            osd(bot, duels.channel_current, 'say', "What stat do you want to check?")
             duels.command_stamina_cost = 0
             return
 
@@ -3997,7 +3997,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 leaderscript.append(str(currentdispmsg) + " " + str(statleadername) + " at " + str(statleadernumber) + " " + str(currentdispmsgb))
         if leaderscript == []:
             leaderscript.append("Leaderboard appears to be empty")
-        onscreentext(bot, ['say'], leaderscript)
+        osd(bot, duels.channel_current, 'say', leaderscript)
         duels.command_stamina_cost = 0
         return
 
@@ -4029,9 +4029,9 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                     currentranking = format(currentranking, '.3f')
                 leaderscript.append("Leaderboard ranking number "+str(subcommand)+" for "+stat+": " + playeratrankno+" with "+str(currentranking))
         if leaderscript != []:
-            onscreentext(bot, ['say'], leaderscript)
+            osd(bot, duels.channel_current, 'say', leaderscript)
         else:
-            onscreentext(bot, ['say'], "There appears to be no ranking for "+stat+" number "+str(subcommand)+".")
+            osd(bot, duels.channel_current, 'say', "There appears to be no ranking for "+stat+" number "+str(subcommand)+".")
         duels.command_stamina_cost = 0
         return
 
@@ -4040,7 +4040,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
         if target != duels.instigator:
             validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
             if not validtarget:
-                osd_notice(bot, duels.instigator, validtargetmsg)
+                osd(bot, duels.instigator, 'notice', validtargetmsg)
                 duels.command_stamina_cost = 0
                 return
         target = duels_nick_actual(bot, target)
@@ -4085,7 +4085,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 dispmsgarrayb.append(x)
         else:
             dispmsgarrayb.append(target + " has no ranking.")
-        onscreentext(bot, ['say'], dispmsgarrayb)
+        osd(bot, duels.channel_current, 'say', dispmsgarrayb)
 
     if subcommand == 'highest' or subcommand == 'lowest':
         playerarray,statvaluearray = [],[]
@@ -4112,9 +4112,9 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 if leaderclass == 'vampire':
                     statleadernumber = int(statleadernumber)
                     statleadernumber = -abs(statleadernumber)
-            onscreentext(bot, duels.channel_current, "The " + subcommand + " amount for " + stat + " is " + statleadername + " with " + str(statleadernumber) + ".")
+            osd(bot, duels.channel_current, 'say', "The " + subcommand + " amount for " + stat + " is " + statleadername + " with " + str(statleadernumber) + ".")
         else:
-            onscreentext(bot, duels.channel_current, "There doesn't appear to be a " + subcommand + " amount for " + stat + ".")
+            osd(bot, duels.channel_current, 'say', "There doesn't appear to be a " + subcommand + " amount for " + stat + ".")
         duels.command_stamina_cost = 0
         return
 
@@ -4132,7 +4132,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
 
     bountytype = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'bug'], 1) or 'normal'
     if bountytype == 'bug' and not duels.admin:
-        osd_notice(bot, duels.instigator, "Bug Bounty is for bot admins only.")
+        osd(bot, duels.instigator, 'notice', "Bug Bounty is for bot admins only.")
         duels.command_stamina_cost = 0
         return
 
@@ -4141,7 +4141,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     target = duels_nick_actual(bot, target)
@@ -4149,7 +4149,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
     amount = get_trigger_arg(bot, [x for x in duels.command_restructure if str(x).isdigit()], 1) or 0
     if not amount:
         if bountytype == 'normal':
-            osd_notice(bot, duels.instigator, "How much of a bounty do you wish to place on "+target+".")
+            osd(bot, duels.instigator, 'notice', "How much of a bounty do you wish to place on "+target+".")
             duels.command_stamina_cost = 0
             return
         else:
@@ -4157,23 +4157,23 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
     amount = int(amount)
 
     if bountytype == 'bug':
-        onscreentext(bot, duels.channel_current, target + ' is awarded ' + str(amount) + " coin for finding a bug in duels.")
+        osd(bot, duels.channel_current, 'say', target + ' is awarded ' + str(amount) + " coin for finding a bug in duels.")
         adjust_database_value(bot, target, 'coin', amount)
         duels.command_stamina_cost = 0
         return
 
     instigatorcoin = get_database_value(bot, duels.instigator, 'coin') or 0
     if int(instigatorcoin) < int(amount):
-        osd_notice(bot, duels.instigator, "Insufficient Funds.")
+        osd(bot, duels.instigator, 'notice', "Insufficient Funds.")
         duels.command_stamina_cost = 0
         return
 
     adjust_database_value(bot, duels.instigator, 'coin', -abs(amount))
     bountyontarget = get_database_value(bot, target, 'bounty') or 0
     if not bountyontarget:
-        onscreentext(bot, duels.channel_current, duels.instigator + " places a bounty of " + str(amount) + " on " + target + ".")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " places a bounty of " + str(amount) + " on " + target + ".")
     else:
-        onscreentext(bot, duels.channel_current, duels.instigator + " adds " + str(amount) + " to the bounty on " + target + ".")
+        osd(bot, duels.channel_current, 'say', duels.instigator + " adds " + str(amount) + " to the bounty on " + target + ".")
     adjust_database_value(bot, target, 'bounty', amount)
 
 
@@ -4199,20 +4199,20 @@ def duels_command_function_game(bot, triggerargsarray, command_main, trigger, co
         if duels.channel_current.startswith('#'):
             channeltarget = duels.channel_current
         else:
-            osd_notice(bot, duels.instigator, "You must specify a valid channel.")
+            osd(bot, duels.instigator, 'notice', "You must specify a valid channel.")
             duels.command_stamina_cost = 0
             return
 
     # on or off
     command = get_trigger_arg(bot, [x for x in triggerargsarray if x == 'on' or x == 'off'], 1)
     if not command:
-        osd_notice(bot, duels.instigator, "you must specify if you want the channel on or off.")
+        osd(bot, duels.instigator, 'notice', "you must specify if you want the channel on or off.")
         duels.command_stamina_cost = 0
         return
 
     # bot channels
     if channeltarget.lower() not in [x.lower() for x in duels.valid_channel_list]:
-        osd_notice(bot, duels.instigator, "I don't appear to be in that channel.")
+        osd(bot, duels.instigator, 'notice', "I don't appear to be in that channel.")
         duels.command_stamina_cost = 0
         return
 
@@ -4224,20 +4224,20 @@ def duels_command_function_game(bot, triggerargsarray, command_main, trigger, co
     # make the change
     if command == 'on':
         if channeltarget.lower() in [x.lower() for x in duels.duels_enabled_channels]:
-            osd_notice(bot, duels.instigator, "Duels is already on in " + channeltarget + ".")
+            osd(bot, duels.instigator, 'notice', "Duels is already on in " + channeltarget + ".")
             duels.command_stamina_cost = 0
             return
         adjust_database_array(bot, 'duelrecorduser', [channeltarget], 'gameenabled', 'add')
-        onscreentext(bot, channeltarget, "Duels has been enabled in " + channeltarget + "!")
+        osd(bot, channeltarget, 'say', "Duels has been enabled in " + channeltarget + "!")
     elif command == 'off':
         if channeltarget.lower() not in [x.lower() for x in duels.duels_enabled_channels]:
-            osd_notice(bot, duels.instigator, "Duels is already off in " + channeltarget + ".")
+            osd(bot, duels.instigator, 'notice', "Duels is already off in " + channeltarget + ".")
             duels.command_stamina_cost = 0
             return
         adjust_database_array(bot, 'duelrecorduser', [channeltarget], 'gameenabled', 'del')
-        onscreentext(bot, channeltarget, "Duels has been disabled in " + channeltarget + "!")
+        osd(bot, channeltarget, 'say', "Duels has been disabled in " + channeltarget + "!")
     else:
-        osd_notice(bot, duels.instigator, "Invalid command.")
+        osd(bot, duels.instigator, 'notice', "Invalid command.")
 
 
 def duels_docs_game(bot):
@@ -4257,20 +4257,20 @@ def duels_command_function_devmode(bot, triggerargsarray, command_main, trigger,
         if duels.channel_current.startswith('#'):
             channeltarget = duels.channel_current
         else:
-            osd_notice(bot, duels.instigator, "You must specify a valid channel.")
+            osd(bot, duels.instigator, 'notice', "You must specify a valid channel.")
             duels.command_stamina_cost = 0
             return
 
     # on or off
     command = get_trigger_arg(bot, [x for x in triggerargsarray if x == 'on' or x == 'off'], 1)
     if not command:
-        osd_notice(bot, duels.instigator, "you must specify if you want the channel on or off.")
+        osd(bot, duels.instigator, 'notice', "you must specify if you want the channel on or off.")
         duels.command_stamina_cost = 0
         return
 
     # bot channels
     if channeltarget.lower() not in [x.lower() for x in duels.valid_channel_list]:
-        osd_notice(bot, duels.instigator, "I don't appear to be in that channel.")
+        osd(bot, duels.instigator, 'notice', "I don't appear to be in that channel.")
         duels.command_stamina_cost = 0
         return
 
@@ -4282,20 +4282,20 @@ def duels_command_function_devmode(bot, triggerargsarray, command_main, trigger,
     # make the change
     if command == 'on':
         if channeltarget.lower() in [x.lower() for x in duels.duels_dev_channels]:
-            osd_notice(bot, duels.instigator, "Duels devmode is already on in " + channeltarget + ".")
+            osd(bot, duels.instigator, 'notice', "Duels devmode is already on in " + channeltarget + ".")
             duels.command_stamina_cost = 0
             return
         adjust_database_array(bot, 'duelrecorduser', [channeltarget], 'devenabled', 'add')
-        onscreentext(bot, channeltarget, "Duels devmode has been enabled in " + channeltarget + "!")
+        osd(bot, channeltarget, 'say', "Duels devmode has been enabled in " + channeltarget + "!")
     elif command == 'off':
         if channeltarget.lower() not in [x.lower() for x in duels.duels_dev_channels]:
-            osd_notice(bot, duels.instigator, "Duels devmode is already off in " + channeltarget + ".")
+            osd(bot, duels.instigator, 'notice', "Duels devmode is already off in " + channeltarget + ".")
             duels.command_stamina_cost = 0
             return
         adjust_database_array(bot, 'duelrecorduser', [channeltarget], 'devenabled', 'del')
-        onscreentext(bot, channeltarget, "Duels devmode has been disabled in " + channeltarget + "!")
+        osd(bot, channeltarget, 'say', "Duels devmode has been disabled in " + channeltarget + "!")
     else:
-        osd_notice(bot, duels.instigator, "Invalid command.")
+        osd(bot, duels.instigator, 'notice', "Invalid command.")
 
 
 def duels_docs_devmode(bot):
@@ -4311,14 +4311,14 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
 
     subcommand = get_trigger_arg(bot, triggerargsarray, 2).lower()
     if subcommand not in duels.commands_valid and subcommand != 'bugbounty' and subcommand != 'channel':
-        osd_notice(bot, duels.instigator, "What Admin adjustment do you want to make?")
+        osd(bot, duels.instigator, 'notice', "What Admin adjustment do you want to make?")
         duels.command_stamina_cost = 0
         return
 
     if subcommand == 'tier':
         command = get_trigger_arg(bot, triggerargsarray, 3).lower()
         if not command:
-            osd_notice(bot, duels.instigator, "What did you intend to do with tiers?")
+            osd(bot, duels.instigator, 'notice', "What did you intend to do with tiers?")
             duels.command_stamina_cost = 0
             return
         target = get_trigger_arg(bot, triggerargsarray, 4).lower() or duels.instigator
@@ -4326,28 +4326,28 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
             target = 'duelrecorduser'
         if command == 'view':
             viewedtier = get_database_value(bot, target, 'tier')
-            osd_notice(bot, duels.instigator, target + " is at tier " + str(viewedtier) + ".")
+            osd(bot, duels.instigator, 'notice', target + " is at tier " + str(viewedtier) + ".")
         elif command == 'reset':
-            osd_notice(bot, duels.instigator, target + "'s tier has been reset.")
+            osd(bot, duels.instigator, 'notice', target + "'s tier has been reset.")
             reset_database_value(bot, target, 'tier')
         elif command == 'set':
             newsetting = get_trigger_arg(bot, triggerargsarray, 5)
             if not newsetting or not newsetting.isdigit():
-                osd_notice(bot, duels.instigator, "You must specify a number setting.")
+                osd(bot, duels.instigator, 'notice', "You must specify a number setting.")
                 duels.command_stamina_cost = 0
                 return
-            osd_notice(bot, duels.instigator, target + "'s tier has been set to " + str(newsetting) + ".")
+            osd(bot, duels.instigator, 'notice', target + "'s tier has been set to " + str(newsetting) + ".")
             set_database_value(bot, target, 'tier', int(newsetting))
         else:
-            osd_notice(bot, duels.instigator, "This looks to be an invalid command.")
+            osd(bot, duels.instigator, 'notice', "This looks to be an invalid command.")
 
     elif subcommand == 'roulette':
         command = get_trigger_arg(bot, triggerargsarray, 3).lower()
         if command != 'reset':
-            osd_notice(bot, duels.instigator, "What did you intend to do with roulette?")
+            osd(bot, duels.instigator, 'notice', "What did you intend to do with roulette?")
             duels.command_stamina_cost = 0
             return
-        osd_notice(bot, duels.instigator, "Roulette should now be reset.")
+        osd(bot, duels.instigator, 'notice', "Roulette should now be reset.")
         reset_database_value(bot, 'duelrecorduser', 'roulettelastplayer')
         reset_database_value(bot, 'duelrecorduser', 'roulettechamber')
         reset_database_value(bot, 'duelrecorduser', 'roulettewinners')
@@ -4359,25 +4359,25 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
     elif subcommand == 'channel':
         settingchange = get_trigger_arg(bot, triggerargsarray, 3)
         if not settingchange:
-            osd_notice(bot, duels.instigator, "What channel setting do you want to change?")
+            osd(bot, duels.instigator, 'notice', "What channel setting do you want to change?")
         elif settingchange == 'statreset':
             set_database_value(bot, 'duelrecorduser', 'chanstatsreset', duels.now)
         elif settingchange == 'lastassault':
             reset_database_value(bot, 'duelrecorduser', 'lastfullroomassultinstigator')
-            osd_notice(bot, duels.instigator, "Last Assault Instigator removed.")
+            osd(bot, duels.instigator, 'notice', "Last Assault Instigator removed.")
             reset_database_value(bot, 'duelrecorduser', 'lastfullroomassult')
         elif settingchange == 'lastroman':
             reset_database_value(bot, 'duelrecorduser', 'lastfullroomcolosseuminstigator')
-            osd_notice(bot, duels.instigator, "Last Colosseum Instigator removed.")
+            osd(bot, duels.instigator, 'notice', "Last Colosseum Instigator removed.")
             reset_database_value(bot, 'duelrecorduser', 'lastfullroomcolosseum')
         elif settingchange == 'lastinstigator':
             reset_database_value(bot, 'duelrecorduser', 'lastinstigator')
-            osd_notice(bot, duels.instigator, "Last Fought Instigator removed.")
+            osd(bot, duels.instigator, 'notice', "Last Fought Instigator removed.")
         elif settingchange == 'halfhoursim':
-            osd_notice(bot, duels.instigator, "Simulating the half hour automated events.")
+            osd(bot, duels.instigator, 'notice', "Simulating the half hour automated events.")
             duels_halfhourtimer(bot)
         else:
-            osd_notice(bot, duels.instigator, "Must be an invalid command.")
+            osd(bot, duels.instigator, 'notice', "Must be an invalid command.")
 
     elif subcommand == 'deathblow':
         newsetting = get_trigger_arg(bot, triggerargsarray, 3).lower()
@@ -4385,7 +4385,7 @@ def duels_command_function_admin(bot, triggerargsarray, command_main, trigger, c
         set_database_value(bot, duels.instigator, 'deathblowtargettime', duels.now)
 
     else:
-        osd_notice(bot, duels.instigator, "An admin command has not been written for the " + subcommand + " command.")
+        osd(bot, duels.instigator, 'notice', "An admin command has not been written for the " + subcommand + " command.")
 
 
 def duels_docs_admin(bot):
@@ -4403,7 +4403,7 @@ Other Subcommands
 
 
 def duels_command_function_author(bot, triggerargsarray, command_main, trigger, command_full, duels, instigatorbio):
-    onscreentext(bot, duels.channel_current, "The author of Duels is deathbybandaid. Credit to DGW for the original game. Run .duel classic to see his version.")
+    osd(bot, duels.channel_current, 'say', "The author of Duels is deathbybandaid. Credit to DGW for the original game. Run .duel classic to see his version.")
 
 
 def duels_docs_author(bot):
@@ -4422,11 +4422,11 @@ def duels_command_function_hotkey(bot, triggerargsarray, command_main, trigger, 
     if target != duels.instigator:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
         if not duels.admin:
-            osd_notice(bot, duels.instigator, "you cannot adjust hotkeys for other players.")
+            osd(bot, duels.instigator, 'notice', "you cannot adjust hotkeys for other players.")
             duels.command_stamina_cost = 0
             return
     if target != duels.instigator:
@@ -4441,35 +4441,35 @@ def duels_command_function_hotkey(bot, triggerargsarray, command_main, trigger, 
     if hotkeysetting == 'list':
         hotkeyslist = get_database_value(bot, targetbio.actual, 'hotkey_complete') or []
         if hotkeyslist == []:
-            osd_notice(bot, duels.instigator, "looks like you have no hotkeys.")
+            osd(bot, duels.instigator, 'notice', "looks like you have no hotkeys.")
             duels.command_stamina_cost = 0
             return
         hotkeyslist = get_trigger_arg(bot, hotkeyslist, 'list')
-        onscreentext(bot, duels.channel_current, "Your hotkey list: " + hotkeyslist)
+        osd(bot, duels.channel_current, 'say', "Your hotkey list: " + hotkeyslist)
         duels.command_stamina_cost = 0
         return
 
     if numberused == 'nonumber':
-        osd_notice(bot, duels.instigator, "What number would you like to view/modify?")
+        osd(bot, duels.instigator, 'notice', "What number would you like to view/modify?")
         duels.command_stamina_cost = 0
         return
     number_command = get_database_value(bot, duels.instigator, 'hotkey_'+str(numberused)) or 0
 
     if hotkeysetting != 'update':
         if not number_command:
-            osd_notice(bot, duels.instigator, "You don't have a command hotlinked to "+str(numberused)+".")
+            osd(bot, duels.instigator, 'notice', "You don't have a command hotlinked to "+str(numberused)+".")
             duels.command_stamina_cost = 0
             return
 
     if hotkeysetting == 'view':
-        onscreentext(bot, duels.channel_current, "You currently have " + str(numberused) + " set to '" + number_command + "'")
+        osd(bot, duels.channel_current, 'say', "You currently have " + str(numberused) + " set to '" + number_command + "'")
         duels.command_stamina_cost = 0
         return
 
     if hotkeysetting == 'reset':
         reset_database_value(bot, duels.instigator, 'hotkey_'+str(numberused))
         adjust_database_array(bot, targetbio.actual, [numberused], 'hotkey_complete', 'del')
-        onscreentext(bot, duels.channel_current, "Your "+str(numberused)+" command has been reset")
+        osd(bot, duels.channel_current, 'say', "Your "+str(numberused)+" command has been reset")
         duels.command_stamina_cost = 0
         return
     if hotkeysetting == 'update':
@@ -4480,24 +4480,24 @@ def duels_command_function_hotkey(bot, triggerargsarray, command_main, trigger, 
 
         newcommandhot = get_trigger_arg(bot, duels.command_restructure, 0) or 0
         if not newcommandhot:
-            osd_notice(bot, duels.instigator, "you can't set an empty hotkey.")
+            osd(bot, duels.instigator, 'notice', "you can't set an empty hotkey.")
             duels.command_stamina_cost = 0
             return
 
         if [x for x in newcommandhot if x == "&&"]:
-            osd_notice(bot, duels.instigator, "hotkeys do not support multicommands yet")
+            osd(bot, duels.instigator, 'notice', "hotkeys do not support multicommands yet")
             duels.command_stamina_cost = 0
             return
 
         actualcommand_main = get_trigger_arg(bot, newcommandhot, 1) or 0
         if actualcommand_main not in duels.commands_valid and actualcommand_main not in duels.commands_alt:
-            osd_notice(bot, duels.instigator, str(actualcommand_main) + " does not appear to be a valid command to hotkey.")
+            osd(bot, duels.instigator, 'notice', str(actualcommand_main) + " does not appear to be a valid command to hotkey.")
             duels.command_stamina_cost = 0
             return
 
         set_database_value(bot, duels.instigator, 'hotkey_'+str(numberused), newcommandhot)
         adjust_database_array(bot, targetbio.actual, [numberused], 'hotkey_complete', 'add')
-        onscreentext(bot, duels.channel_current, "Your "+str(numberused)+" command has been set to '" + newcommandhot+"'")
+        osd(bot, duels.channel_current, 'say', "Your "+str(numberused)+" command has been set to '" + newcommandhot+"'")
         duels.command_stamina_cost = 0
         return
 
@@ -4517,14 +4517,14 @@ def duels_command_function_konami(bot, duels):
     konami = get_database_value(bot, duels.instigator, 'konami')
     if not konami:
         konamiset = 600
-        osd_notice(bot, duels.instigator, "you have found the cheatcode easter egg!!! For this, you gain " + str(konamiset) + " health restoration!!! DO NOT tell others about this command.")
+        osd(bot, duels.instigator, 'notice', "you have found the cheatcode easter egg!!! For this, you gain " + str(konamiset) + " health restoration!!! DO NOT tell others about this command.")
         adjust_database_value(bot, duels.instigator, 'health', konamiset)
         splitdamage = int(konamiset) / len(duels_bodyparts)
         for part in duels_bodyparts:
             adjust_database_value(bot, duels.instigator, part, splitdamage)
         set_database_value(bot, duels.instigator, 'konami', 1)
     else:
-        osd_notice(bot, duels.instigator, "you can only cheat once.")
+        osd(bot, duels.instigator, 'notice', "you can only cheat once.")
 
 
 """ Intent """
@@ -4535,11 +4535,11 @@ def duels_command_function_intent(bot, triggerargsarray, command_main, trigger, 
     target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan], 1) or duels.instigator
     validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
     if not validtarget and not duels.admin:
-        osd_notice(bot, duels.instigator, validtargetmsg)
+        osd(bot, duels.instigator, 'notice', validtargetmsg)
         duels.command_stamina_cost = 0
         return
     target = duels_nick_actual(bot, target)
-    onscreentext(bot, duels.channel_current, "The intent is to provide "+target+" with a sense of pride and accomplishment...")
+    osd(bot, duels.channel_current, 'say', "The intent is to provide "+target+" with a sense of pride and accomplishment...")
 
 
 def duels_docs_intent(bot):
@@ -4552,7 +4552,7 @@ def duels_docs_intent(bot):
 
 
 def duels_command_function_about(bot, triggerargsarray, command_main, trigger, command_full, duels, instigatorbio):
-    onscreentext(bot, duels.channel_current, "The purpose behind duels is for deathbybandaid to learn python, while providing a fun, evenly balanced gameplay.")
+    osd(bot, duels.channel_current, 'say', "The purpose behind duels is for deathbybandaid to learn python, while providing a fun, evenly balanced gameplay.")
 
 
 def duels_docs_about(bot):
@@ -4566,7 +4566,7 @@ def duels_docs_about(bot):
 
 def duels_command_function_version(bot, triggerargsarray, command_main, trigger, command_full, duels, instigatorbio):
     versionfetch = versionnumber(bot)
-    onscreentext(bot, duels.channel_current, "The duels framework was last modified on " + str(versionfetch) + ".")
+    osd(bot, duels.channel_current, 'say', "The duels framework was last modified on " + str(versionfetch) + ".")
 
 
 def duels_docs_template(bot):
@@ -4586,7 +4586,7 @@ def duels_command_function_docs(bot, triggerargsarray, command_main, trigger, co
     if target != duels.instigator and target != duels.channel_current:
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     target = duels_nick_actual(bot, target)
@@ -4594,7 +4594,7 @@ def duels_command_function_docs(bot, triggerargsarray, command_main, trigger, co
     messageinput = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.commands_alt or x in duels.commands_valid], 1) or 'online'
     if messageinput == 'online':
         endmessage.append("Online Docs: " + GITWIKIURL)
-        onscreentext(bot, [target], endmessage)
+        osd(bot, target, 'say', endmessage)
         duels.command_stamina_cost = 0
         return
 
@@ -4606,7 +4606,7 @@ def duels_command_function_docs(bot, triggerargsarray, command_main, trigger, co
                 if messageinput.lower() in duels_commands_alternate_eval:
                     messageinput = subcom
         endmessage = duels_docs_commands(bot,messageinput)
-        onscreentext(bot, [target], endmessage)
+        osd(bot, target, 'say', endmessage)
         duels.command_stamina_cost = 0
         return
 
@@ -4630,7 +4630,7 @@ def duels_command_function_usage(bot, triggerargsarray, command_main, trigger, c
     if target != duels.instigator and target != 'channel':
         validtarget, validtargetmsg = duels_target_check(bot, target, duels, instigatorbio)
         if not validtarget:
-            osd_notice(bot, duels.instigator, validtargetmsg)
+            osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
     target = duels_nick_actual(bot, target)
@@ -4647,7 +4647,7 @@ def duels_command_function_usage(bot, triggerargsarray, command_main, trigger, c
         subcommand = 'a total of'
     else:
         subcommand = str(subcommand + ' a total of')
-    onscreentext(bot, duels.channel_current, targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
+    osd(bot, duels.channel_current, 'say', targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
 
 
 def duels_docs_usage(bot):
@@ -4748,7 +4748,7 @@ def chance_event_run(bot, duels, eventtype, eventlocation):
     else:
         dispmsgarray.append("The " + str(eventtype) + " affected nobody.")
 
-    onscreentext(bot, duels.duels_enabled_channels, dispmsgarray)
+    osd(bot, duels.duels_enabled_channels, 'say', dispmsgarray)
 
     return
 
@@ -4806,7 +4806,7 @@ def duels_halfhourtimer(bot):
                 dispmsgarray.append(logoutusers + " have been logged out of duels for inactivity!")
             else:
                 dispmsgarray.append(logoutusers + " has been logged out of duels for inactivity!")
-            onscreentext(bot, duels.duels_enabled_channels, dispmsgarray)
+            osd(bot, duels.duels_enabled_channels, 'say', dispmsgarray)
             adjust_database_array(bot, 'duelrecorduser', logoutarray, 'users_opted_allchan', 'del')
 
         # Random winner select
@@ -4826,18 +4826,17 @@ def duels_halfhourtimer(bot):
             adjust_database_value(bot, lootwinner, 'mysterypotion_locker', 1)
             adjust_database_array(bot, 'duelrecorduser', [lootwinner], 'lasttimedlootwinners', 'add')
             set_database_value(bot, 'duelrecorduser', 'lasttimedlootwinner', lootwinner)
-            osd_notice(bot, lootwinner, "You have been awarded a mysterypotion!")
+            osd(bot, lootwinner, 'notice', "You have been awarded a mysterypotion!")
 
 
 """
 channel enter/exit
 """
 
-"""
-#@event('JOIN')
-#@rule('.*')
-#@sopel.module.thread(True)
-#def duel_player_return(bot, trigger):
+# @event('JOIN')
+# @rule('.*')
+# @sopel.module.thread(True)
+# def duel_player_return(bot, trigger):
 #    duels = duels_class()
 #    duels.admin = 0
 #    duels.channel_current = trigger.sender
@@ -4853,12 +4852,12 @@ channel enter/exit
 #    if duels.instigator in duels.users_opted:
 #        duels.instigator_location = duels_get_location(bot,duels,duels.instigator)
 #        if duels.instigator_location == 'arena':
-#            onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " has entered the arena!")
+#            osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " has entered the arena!")
 
-#@event('QUIT','PART')
-#@rule('.*')
-#@sopel.module.thread(True)
-#def duel_player_leave(bot, trigger):
+# @event('QUIT','PART')
+# @rule('.*')
+# @sopel.module.thread(True)
+# def duel_player_leave(bot, trigger):
 #    duels = duels_class()
 #    duels.admin = 0
 #    duels.channel_current = trigger.sender
@@ -4875,8 +4874,7 @@ channel enter/exit
 #        duels.instigator_location = duels_get_location(bot,duels,duels.instigator)
 #        if duels.instigator_location == 'arena':
 #            cowardterm = get_trigger_arg(bot, cowardarray, 'random')
-#            onscreentext(bot, duels.duels_enabled_channels, duels.instigator + " has left the arena! " + cowardterm)
-"""
+#            osd(bot, duels.duels_enabled_channels, 'say', duels.instigator + " has left the arena! " + cowardterm)
 
 
 """
@@ -5178,13 +5176,13 @@ def duels_opening_monologue(bot,duels,user,opening_monologue,tierset, char_basic
     dispmsgarray = []
     dispmsgarray.append("Welcome to Duels, " + user + "!")
     dispmsgarray.append("You have spawned into town as a " + str(randomgender) + " level " + str(playertierarrayaverage) + " " + str(randomrace) + " " + str(randomclass))
-    onscreentext(bot, ['say'], dispmsgarray)
+    osd(bot, duels.channel_current, 'say', dispmsgarray)
 
     # Tutorial in Private message
     dispmsgarray = []
     dispmsgarray.append("You may switch to a new character sheet at any time. Simply run `.duel char setup` for further information.")
     dispmsgarray.append("If you would like a tutorial, run `.duel tutorial`.")  # TODO
-    osd_notice(bot, user, dispmsgarray)
+    osd(bot, user, 'notice', dispmsgarray)
 
 
 def duels_channel_lists(bot,trigger,duels):
@@ -5218,27 +5216,27 @@ def duels_check_instigator(bot, trigger, command_main, duels, instigatorbio):
 
     # Instigator can't be a command, and can't enable duels
     if duels.instigator.lower() in duels.commands_valid or duels.instigator.lower() in duels.commands_alt:
-        osd_notice(bot, duels.instigator, "Your nick is the same as a valid command for duels.")
+        osd(bot, duels.instigator, 'notice', "Your nick is the same as a valid command for duels.")
         return checkpass
 
     # Instigator can't duelrecorduser
     if duels.instigator.lower() == 'duelrecorduser' or duels.instigator.lower() in target_ignore_list or duels.instigator.lower() == 'duelsmonster':
-        osd_notice(bot, duels.instigator, "Your nick is not able to play duels.")
+        osd(bot, duels.instigator, 'notice', "Your nick is not able to play duels.")
         return checkpass
 
     # Check if Instigator is Opted in
     if duels.instigator not in duels.users_opted:
         instigatoropttime = duels_time_since(bot, duels.instigator, 'timeout_opttimetime')
         if instigatoropttime < array_compare(bot, 'opttime', duels_timeouts, duels_timeouts_duration) and duels.dev_bypass_checks == 1 and not trigger.admin:
-            osd_notice(bot, duels.instigator, "You are not opted into duels. It looks like you can't enable/disable duels for " + str(duels_hours_minutes_seconds((array_compare(bot, 'opttime', duels_timeouts, duels_timeouts_duration) - instigatoropttime))) + ".")
+            osd(bot, duels.instigator, 'notice', "You are not opted into duels. It looks like you can't enable/disable duels for " + str(duels_hours_minutes_seconds((array_compare(bot, 'opttime', duels_timeouts, duels_timeouts_duration) - instigatoropttime))) + ".")
             return checkpass
         else:
             if command_main != 'off' and command_main != 'on':
-                osd_notice(bot, duels.instigator, "Duels Has been enabled for you automatically. To disable, run .duel off.")
+                osd(bot, duels.instigator, 'notice', "Duels Has been enabled for you automatically. To disable, run .duel off.")
                 if instigatorbio.location == 'arena':
                     dispmsgarray = []
                     dispmsgarray.append(duels.instigator + " has entered the arena!")
-                    onscreentext(bot, duels.duels_enabled_channels, dispmsgarray)
+                    osd(bot, duels.duels_enabled_channels, 'say', dispmsgarray)
                 adjust_database_array(bot, 'duelrecorduser', [duels.instigator], 'users_opted_allchan', 'add')
             checkpass = 1
             return checkpass
@@ -5248,7 +5246,7 @@ def duels_check_instigator(bot, trigger, command_main, duels, instigatorbio):
         deathblowtargettime = duels_time_since(bot, duels.instigator, 'deathblowtargettime') or 0
         if deathblowtargettime <= 120:
             deathblowkiller = get_database_value(bot, duels.instigator, 'deathblowkiller') or 'unknown'
-            osd_notice(bot, duels.instigator, "you can't run duels for " + str(duels_hours_minutes_seconds((120 - deathblowtargettime))) + " due to a possible deathblow from " + deathblowkiller + ".")
+            osd(bot, duels.instigator, 'notice', "you can't run duels for " + str(duels_hours_minutes_seconds((120 - deathblowtargettime))) + " due to a possible deathblow from " + deathblowkiller + ".")
             return checkpass
 
     checkpass = 1
@@ -5291,7 +5289,7 @@ def duels_command_spelling_check_main(bot, trigger, triggerargsarray, command_fu
     else:
         validtarget, validtargetmsg = duels_target_check(bot, command_main, duels, instigatorbio)
         if not validtarget:
-            onscreentext(bot, [duels.instigator], validtargetmsg)
+            osd(bot, duels.instigator, 'say', validtargetmsg)
     return
 
 
@@ -5560,7 +5558,7 @@ def duels_check_nick_condition(bot, nick, duels):
 
     if setup_check_missing != []:
         missing_settings = get_trigger_arg(bot, setup_check_missing, "list")
-        osd_notice(bot, nick, "you seem to be missing your "+str(missing_settings)+" setting(s). Please talk to " + str(duels_bot_owner) + " to get this fixed.")
+        osd(bot, nick, 'notice', "you seem to be missing your "+str(missing_settings)+" setting(s). Please talk to " + str(duels_bot_owner) + " to get this fixed.")
 
     # New Player?
     playernew = get_database_value(bot, nick, 'newplayer')
@@ -5585,7 +5583,7 @@ def duels_check_nick_condition(bot, nick, duels):
         deathblowtargettime = duels_time_since(bot, nick, 'deathblowtargettime') or 0
         if deathblowtargettime > 120:
             deathblowkiller = get_database_value(bot, nick, 'deathblowkiller') or 'unknown'
-            osd_notice(bot, nick, "it looks like you were almost killed by "+deathblowkiller+", but the deathblow command was not issued in time. Your health has been restored! You have been moved to town.")
+            osd(bot, nick, 'notice', "it looks like you were almost killed by "+deathblowkiller+", but the deathblow command was not issued in time. Your health has been restored! You have been moved to town.")
             duels_location_move(bot,duels,nick,'town')
             for part in duels_bodyparts:
                 maxhealthpart = array_compare(bot, part, duels_bodyparts, duels_bodyparts_health)
@@ -5650,7 +5648,7 @@ def duels_check_nick_condition(bot, nick, duels):
         for loot in stats_loot:
             reset_database_value(bot, nick, loot)
         # respawn the user
-        osd_notice(bot, nick, "it looks like duels missed one of your deaths and your health went negative. You have been respawned with full health, but you lost all of your items. Please let " + duels_bot_owner + " know what killed you, for improvement of the game.")
+        osd(bot, nick, 'notice', "it looks like duels missed one of your deaths and your health went negative. You have been respawned with full health, but you lost all of your items. Please let " + duels_bot_owner + " know what killed you, for improvement of the game.")
         adjust_database_value(bot, nick, 'respawns', 1)
         return
 
@@ -6326,7 +6324,7 @@ def duels_stats_view(bot, duels, target_stats_view, targetbio, customview, actua
             dispmsgarrayb.append(duels.instigator + ", It looks like your current stats settings don't have values.")
         else:
             dispmsgarrayb.append(duels.instigator + ", It looks like " + targetbio.nametext + " has no " + actualstatsview.title() + ".")
-    onscreentext(bot, ['say'], dispmsgarrayb)
+    osd(bot, duels.channel_current, 'say', dispmsgarrayb)
     return
 
 
@@ -6587,7 +6585,7 @@ def duels_criteria(bot, player_two, duels, verbose):
         validtarget = 0
 
     if verbose and validtargetmsg != []:
-        osd_notice(bot, duels.instigator, validtargetmsg)
+        osd(bot, duels.instigator, 'notice', validtargetmsg)
 
     return validtarget, validtargetmsg
 
@@ -7689,55 +7687,93 @@ On Screen Text
 """
 
 
-def osd_notice(bot, target, textarraycomplete):
-    target = duels_nick_actual(bot,target)
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    passthrough = []
-    passthrough.append(target + ", ")
-    for x in textarraycomplete:
-        passthrough.append(x)
-    onscreentext(bot, [target], passthrough)
+def osd(bot, target_array, text_type, text_array):
 
+    # if text_array is a string, make it an array
+    textarraycomplete = []
+    if not isinstance(text_array, list):
+        textarraycomplete.append(str(text_array))
+    else:
+        for x in text_array:
+            textarraycomplete.append(str(x))
 
-def onscreentext(bot, texttargetarray, textarraycomplete):
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    if not isinstance(texttargetarray, list):
-        target = texttargetarray
+    # if target_array is a string, make it an array
+    texttargetarray = []
+    if not isinstance(target_array, list):
+        if not str(target_array).startswith("#"):
+            target_array = nick_actual(bot,str(target_array))
+        texttargetarray.append(target_array)
+    else:
+        for target in target_array:
+            if not str(target).startswith("#"):
+                target = nick_actual(bot,str(target))
+            texttargetarray.append(target)
+
+    # Make sure we don't cross over IRC limits
+    for target in texttargetarray:
+        temptextarray = []
+        if text_type == 'notice':
+            temptextarray.append(target + ", ")
+        for part in textarraycomplete:
+            temptextarray.append(part)
+
+        # Make sure no individual string ins longer than it needs to be
+        currentstring = ''
         texttargetarray = []
-        texttargetarray.append(target)
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        elif len(textstring) > duels_osd_limit:
-            if currentstring != '':
-                combinedtextarray.append(currentstring)
-                currentstring = ''
-            combinedtextarray.append(textstring)
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= duels_osd_limit:
-                currentstring = tempstring
+        for textstring in temptextarray:
+            if len(textstring) > osd_limit:
+                chunks = textstring.split()
+                for chunk in chunks:
+                    if currentstring == '':
+                        currentstring = chunk
+                    else:
+                        tempstring = str(currentstring + " " + chunk)
+                        if len(tempstring) <= osd_limit:
+                            currentstring = tempstring
+                        else:
+                            texttargetarray.append(currentstring)
+                            currentstring = chunk
+                if currentstring != '':
+                    texttargetarray.append(currentstring)
             else:
-                combinedtextarray.append(currentstring)
+                texttargetarray.append(textstring)
+
+        # Split text to display nicely
+        combinedtextarray = []
+        currentstring = ''
+        for textstring in texttargetarray:
+            if currentstring == '':
                 currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
+            elif len(textstring) > osd_limit:
+                if currentstring != '':
+                    combinedtextarray.append(currentstring)
+                    currentstring = ''
+                combinedtextarray.append(textstring)
             else:
-                bot.notice(combinedline, user)
+                tempstring = str(currentstring + "   " + textstring)
+                if len(tempstring) <= osd_limit:
+                    currentstring = tempstring
+                else:
+                    combinedtextarray.append(currentstring)
+                    currentstring = textstring
+        if currentstring != '':
+            combinedtextarray.append(currentstring)
+
+        # display
+        textparts = len(combinedtextarray)
+        textpartsleft = textparts
+        for combinedline in combinedtextarray:
+            if text_type == 'action' and textparts == textpartsleft:
+                bot.action(combinedline,target)
+            elif str(target).startswith("#"):
+                bot.msg(target, combinedline)
+            elif text_type == 'notice':
+                bot.notice(combinedline, target)
+            elif text_type == 'say':
+                bot.say(combinedline)
+            else:
+                bot.say(combinedline)
+            textpartsleft = textpartsleft - 1
 
 
 """

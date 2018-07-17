@@ -42,6 +42,7 @@ def spicebot_prerun(bot,trigger,commandused):
     botcom = class_create('bot')
     instigator = class_create('instigator')
     instigator.default = trigger.nick
+    botcom.instigator = trigger.nick
 
     # time
     botcom.now = time.time()
