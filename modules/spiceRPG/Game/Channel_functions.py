@@ -2,6 +2,7 @@
 Channels
 """
 
+
 def rpg_command_channels(bot,rpg,trigger):
     rpg.channel_current = trigger.sender
     if not rpg.channel_current.startswith("#"):
