@@ -92,9 +92,15 @@ def class_create(classname):
         def __repr__(self):
             return repr(self.default)
         def __str__(self):
-            return str(self.default)
+            if isinstance:
+                outputstring = str(self.default)
+                return outputstring
+            else:
+                return str(self.default)
         def __iter__(self):
             return str(self.default)
+        def __unicode__(self):
+            return str(u+self.default)
         def lower(self):
             return str(self.default).lower()
         pass
