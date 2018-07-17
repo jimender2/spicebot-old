@@ -170,7 +170,7 @@ def bot_command_function_channel(bot,trigger,botcom,instigator):
     # OP list
     if subcommand.lower() == 'op':
         oplist = get_trigger_arg(bot, botcom.chanops, 'list')
-        osd(bot, instigator, 'notice', ""Channel Operators are: " + oplist)
+        osd(bot, instigator, 'notice', "Channel Operators are: " + oplist)
         return
 
     # Voice List
