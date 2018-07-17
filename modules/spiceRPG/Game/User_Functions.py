@@ -2,6 +2,8 @@
 Users
 """
 
+from .Database_adjust import *
+
 
 def rpg_command_users(bot,rpg):
     rpg.opadmin,rpg.owner,rpg.chanops,rpg.chanvoice,rpg.botadmins,rpg.users_current = [],[],[],[],[],[]
