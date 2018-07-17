@@ -55,8 +55,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         response = get_trigger_arg(bot, existingarray, "random") or ''
         if response == '':
-            message = "peice of shit"
-        bot.say(message)
+            response = "peice of shit"
+        bot.say(response)
 
 
 def get_database_value(bot, nick, databasekey):
