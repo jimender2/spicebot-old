@@ -20,12 +20,14 @@ databasekey = "bribe"
 
 @sopel.module.commands('bribe')
 def mainfunction(bot, trigger):
+    """Checks whether the module is enabled."""
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    """Handles bribing other users."""
     instigator = trigger.nick
     command = get_trigger_arg(bot, triggerargsarray, 1)
     target = get_trigger_arg(bot, triggerargsarray, 1)
