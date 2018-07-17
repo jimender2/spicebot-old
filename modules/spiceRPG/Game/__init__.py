@@ -92,4 +92,4 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
 
 def command_main_process(bot, trigger, rpg):
-    bot.say("test")
+    bot.say(rpg.command_full)
