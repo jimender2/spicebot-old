@@ -12,7 +12,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-commandarray = ["accept","delete","money"]
+commandarray = ["accept","decline","money"]
 
 # author jimender2
 
