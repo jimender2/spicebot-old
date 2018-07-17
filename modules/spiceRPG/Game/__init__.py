@@ -182,27 +182,30 @@ def osd(bot, target_array, text_type, text_array):
         for part in textarraycomplete:
             temptextarray.append(part)
 
-        combinedtextarray = []
-        currentstring = ''
-
         # Make sure no individual string ins longer than it needs to be
+        currentstring = ''
         texttargetarray = []
         for textstring in temptextarray:
             if len(textstring) > osd_limit:
                 chunks = textstring.split()
-                per_line = 15
-                chunkline = ''
-                for i in range(0, len(chunks), per_line):
-                    chunkline = " ".join(chunks[i:i + per_line])
-                    if i == 0:
-                        chunkline = str("<" + chunkline)
-                    elif i == len(chunks):
-                        chunkline = str(chunkline + ">")
-                    texttargetarray.append(chunkline)
+                for chunk in chunks:
+                    if currentstring == '':
+                        currentstring = chunk
+                    else:
+                        tempstring = str(currentstring + " " + chunk)
+                        if len(tempstring) <= osd_limit:
+                            currentstring = tempstring
+                        else:
+                            texttargetarray.append(currentstring)
+                            currentstring = chunk
+                if currentstring != '':
+                    texttargetarray.append(currentstring)
             else:
                 texttargetarray.append(textstring)
 
         # Split text to display nicely
+        combinedtextarray = []
+        currentstring = ''
         for textstring in texttargetarray:
             if currentstring == '':
                 currentstring = textstring
