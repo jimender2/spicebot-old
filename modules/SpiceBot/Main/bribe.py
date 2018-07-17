@@ -37,8 +37,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             spicebucks(bot, instigator, "plus", amount)
             if amount == 0:
                 onscreentext(bot,['say'],"There are no bribes for you to accept")
-        else:
-            onscreentext(bot,['say'],instigator + " accepted the bribe of $" + amount + ".")
+            else:
+                onscreentext(bot,['say'],instigator + " accepted the bribe of $" + amount + ".")
     elif command == "decline":
         onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
         reset_database_value(bot, instigator, 'bets')
