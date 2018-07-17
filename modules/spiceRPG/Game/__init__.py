@@ -534,6 +534,7 @@ def array_arrangesort(bot, sortbyarray, arrayb):
     sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
     return sortbyarray, arrayb
 
+
 """
 Database
 """
