@@ -39,17 +39,17 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
-    # No Empty Commands
-    if triggerargsarray == []:
-        osd(bot, trigger.nick, 'notice', "No Command issued.")
-        return
-    rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
-
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
 
     # Bacic User List
     rpg = rpg_command_users(bot,rpg)
+
+    # No Empty Commands
+    if triggerargsarray == []:
+        osd(bot, trigger.nick, 'notice', "No Command issued.")
+        return
+    rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
     rpg.multi_com_list = []
@@ -65,6 +65,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # instigator
     instigator = class_create('instigator')
     instigator.default = trigger.nick
+    rpg.instigator = trigger.nick
 
     # Cycle through command array
     for command_split_partial in rpg.multi_com_list:
@@ -82,12 +83,21 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
         # Run command process
-        command_main_process(bot, trigger, rpg)
+        command_process(bot, trigger, rpg)
 
 
-def command_main_process(bot, trigger, rpg):
-    osd(bot, rpg.channel_current, 'say', testphrase)
+def command_process(bot, trigger, rpg, instigator):
 
+    # Handle rog commands
+    if command_main.lower() not in rpg_valid_commands:
+        return osd(bot, duels.instigator, 'notice', "Invalid command.")
+
+    command_function_run = str('rpg_command_main_' + command_main.lower() + '(bot, rpg, instigator)')
+    eval(command_function_run)
+
+
+def rpg_command_main_adminb(bot,rpg):
+    bot.say("wip")
 
 """
 Channels
@@ -95,17 +105,31 @@ Channels
 
 
 def rpg_command_channels(bot,rpg,trigger):
+
+    # current Channels
     rpg.channel_current = trigger.sender
+
+    # determine the type of channel
     if not rpg.channel_current.startswith("#"):
         rpg.channel_priv = 1
         rpg.channel_real = 0
     else:
         rpg.channel_priv = 0
         rpg.channel_real = 1
-    rpg.service = bot.nick
-    rpg.channel_list = []
+
+    # All channels the bot is in
+    rpg.channels_list = []
     for channel in bot.channels:
-        rpg.channel_list.append(channel)
+        rpg.channels_list.append(channel)
+
+    # Game Enabled
+    rpg.channels_enabled = get_database_value(bot, 'rpg_game_records', 'gameenabled') or []
+
+    # Development mode
+    rpgs.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
+    rpgs.dev_bypass = 0
+    if rpgs.channel_current.lower() in [x.lower() for x in rpgs.channels_devmode]:
+        rpgs.dev_bypass = 1
     return rpg
 
 
