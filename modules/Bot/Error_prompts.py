@@ -47,6 +47,6 @@ def timed_logcheck(bot):
         if total_loading_errors >= 1:
             for channel in bot.channels:
                 if total_loading_errors == 1:
-                    bot.msg(channel, "Notice to Bot Admins: There was a module error upon Bot start. Run the debug command for more information.")
+                    osd(bot, channel, 'say', "Notice to Bot Admins: There was a module error upon Bot start. Run the debug command for more information.")
                 else:
-                    bot.msg(channel, "Notice to Bot Admins: There were " + str(total_loading_errors) + " module errors upon Bot start. Run the debug command for more information.")
+                    osd(bot, channel, 'say', "Notice to Bot Admins: There were " + str(total_loading_errors) + " module errors upon Bot start. Run the debug command for more information.")
