@@ -15,6 +15,7 @@ log_file_path = os.path.join(moduledir, log_path)
 
 @sopel.module.commands('botdebug')
 def mainfunction(bot, trigger):
+    bot.say("here")
     setup(bot)
 
 
