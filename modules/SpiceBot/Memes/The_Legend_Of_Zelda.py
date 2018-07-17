@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "it's dangerous to go alone take this 0==\======>"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

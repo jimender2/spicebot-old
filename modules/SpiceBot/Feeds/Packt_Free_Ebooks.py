@@ -25,7 +25,7 @@ packturl = "https://www.packtpub.com/packt/offers/free-learning"
 
 @sopel.module.commands('packt')
 def execute_main(bot, trigger):
-    onscreentext(bot, trigger.sender, packt_osd(bot))
+    osd(bot, trigger.sender, 'say', packt_osd(bot))
 
 @sopel.module.interval(60)
 def getpackt(bot):
@@ -33,7 +33,7 @@ def getpackt(bot):
     if now.hour == int(packthour) and now.minute == int(packtminute):
         dispmsg = packt_osd(bot)
         for channel in bot.channels:
-            onscreentext(bot, channel, dispmsg)
+            osd(bot, channel, 'say', dispmsg)
 
 def packt_osd(bot):
     dispmsg = []

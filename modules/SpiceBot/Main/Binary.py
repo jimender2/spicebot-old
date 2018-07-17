@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         spititout = spititout.replace(" ","")
     else:
         spititout = bits2string(current_translate) or 'error'
-    onscreentext(bot, ['say'], str(spititout))
+    osd(bot, trigger.sender, 'action', str(spititout))
 
 
 def string2bits(s=''):

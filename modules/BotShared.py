@@ -56,7 +56,7 @@ def spicebot_prerun(bot,trigger,commandused):
     # User was Blocked by a bot.admin or an OP
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
     if instigator.default in blockedusersarray:
-        osd_notice(bot, instigator.default, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
+        osd(bot, instigator.default, 'notice', "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
         return enablestatus, triggerargsarray, botcom, instigator
 
     # devmode bypass
@@ -69,14 +69,14 @@ def spicebot_prerun(bot,trigger,commandused):
     if botcom.channel_current.startswith("#"):
         channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
-            osd_notice(bot, instigator.default, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
+            osd(bot, instigator.default, 'notice', "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
             return enablestatus, triggerargsarray, botcom, instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if instigator.default not in botcom.users_all:
-        osd_notice(bot, instigator.default, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+        osd(bot, instigator.default, 'notice', "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
         return enablestatus, triggerargsarray, botcom, instigator
 
     enablestatus = 0
@@ -515,97 +515,13 @@ def osd(bot, target_array, text_type, text_array):
                 bot.action(combinedline,target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
-            elif text_type == 'notice':
+            elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
                 bot.say(combinedline)
             else:
                 bot.say(combinedline)
             textpartsleft = textpartsleft - 1
-
-
-def osd_notice(bot, target, textarraycomplete):
-    target = actualname(bot,target)
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    passthrough = []
-    passthrough.append(target + ", ")
-    for x in textarraycomplete:
-        passthrough.append(x)
-    onscreentext(bot, [target], passthrough)
-
-
-def onscreentext(bot, texttargetarray, textarraycomplete):
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    if not isinstance(texttargetarray, list):
-        target = texttargetarray
-        texttargetarray = []
-        texttargetarray.append(target)
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        elif len(textstring) > osd_limit:
-            if currentstring != '':
-                combinedtextarray.append(currentstring)
-                currentstring = ''
-            combinedtextarray.append(textstring)
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= osd_limit:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            if user == 'say':
-                bot.say(combinedline)
-            elif user.startswith("#"):
-                bot.msg(user, combinedline)
-            else:
-                bot.notice(combinedline, user)
-
-
-def onscreentext_action(bot, texttargetarray, textarraycomplete):
-    if not isinstance(textarraycomplete, list):
-        texttoadd = str(textarraycomplete)
-        textarraycomplete = []
-        textarraycomplete.append(texttoadd)
-    if not isinstance(texttargetarray, list):
-        target = texttargetarray
-        texttargetarray = []
-        texttargetarray.append(target)
-    combinedtextarray = []
-    currentstring = ''
-    for textstring in textarraycomplete:
-        if currentstring == '':
-            currentstring = textstring
-        elif len(textstring) > osd_limit:
-            if currentstring != '':
-                combinedtextarray.append(currentstring)
-                currentstring = ''
-            combinedtextarray.append(textstring)
-        else:
-            tempstring = str(currentstring + "   " + textstring)
-            if len(tempstring) <= osd_limit:
-                currentstring = tempstring
-            else:
-                combinedtextarray.append(currentstring)
-                currentstring = textstring
-    if currentstring != '':
-        combinedtextarray.append(currentstring)
-    for combinedline in combinedtextarray:
-        for user in texttargetarray:
-            bot.action(combinedline,user)
 
 
 """
@@ -672,7 +588,7 @@ def create_array(bot, inputs):
     outputs = []
     if inputs:
         for word in inputs.split():
-            outputs.append(word)
+            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
     return outputs
 
 

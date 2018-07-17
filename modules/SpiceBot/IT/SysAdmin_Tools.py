@@ -13,4 +13,4 @@ systoolsarray = ["https://sysadmin.it-landscape.info/","https://sysadmin.libhunt
 
 @sopel.module.commands('sysadmintools')
 def execute_main(bot, trigger):
-    onscreentext(bot, trigger.sender, systoolsarray)
+    osd(bot, trigger.sender, 'say', systoolsarray)

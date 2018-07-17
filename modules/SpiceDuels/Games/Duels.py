@@ -531,7 +531,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
             bot.notice("  ", playerbio_maindueler.actual)
             bot.notice("  ", playerbio_target.actual)
         if typeofduel in duels_commands_events:
-            osd(bot, [maindueler,target], 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
+            osd(bot, [maindueler,target], 'priv', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         else:
             osd(bot, duels.channel_current, 'say', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         if playerbio_maindueler.actual == playerbio_target.actual:
@@ -794,7 +794,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Final Announce
         if typeofduel in duels_commands_events:
-            osd(bot, [playerbio_winner.actual,playerbio_loser.actual], 'say', combattextarraycomplete)
+            osd(bot, [playerbio_winner.actual,playerbio_loser.actual], 'priv', combattextarraycomplete)
         else:
             osd(bot, duels.channel_current, 'say', combattextarraycomplete)
 
@@ -864,7 +864,7 @@ def duels_command_function_classic(bot, triggerargsarray, command_main, trigger,
             osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
-    target = duels_nick_actual(bot, target)
+    target = nick_actual(bot, target)
 
     subcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x == 'stats' or x == 'leaderboard'], 1) or 'combat'
 
@@ -1649,7 +1649,7 @@ def duels_command_function_deathblow(bot, triggerargsarray, command_main, trigge
         return
 
     if target != 'all':
-        target = duels_nick_actual(bot,target)
+        target = nick_actual(bot,target)
         deathblowcurrentarray = [target]
     else:
         deathblowcurrentarray = deathblowtargetarray
@@ -3924,7 +3924,7 @@ def duels_command_function_warroom(bot, triggerargsarray, command_main, trigger,
             osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
-        target = duels_nick_actual(bot, subcommand)
+        target = nick_actual(bot, subcommand)
         if target in duels.users_canduel_allchan and duels.instigator in duels.users_canduel_allchan:
             osd(bot, duels.instigator, 'notice', "It looks like you can duel " + target + ".")
 
@@ -4043,7 +4043,7 @@ def duels_command_function_leaderboard(bot, triggerargsarray, command_main, trig
                 osd(bot, duels.instigator, 'notice', validtargetmsg)
                 duels.command_stamina_cost = 0
                 return
-        target = duels_nick_actual(bot, target)
+        target = nick_actual(bot, target)
         for x in leaderboardarraystats:
             currentdispmsg = eval(x+"dispmsg")
             currentdispmsgb = eval(x+"dispmsgb")
@@ -4144,7 +4144,7 @@ def duels_command_function_bounty(bot, triggerargsarray, command_main, trigger, 
             osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
-    target = duels_nick_actual(bot, target)
+    target = nick_actual(bot, target)
 
     amount = get_trigger_arg(bot, [x for x in duels.command_restructure if str(x).isdigit()], 1) or 0
     if not amount:
@@ -4538,7 +4538,7 @@ def duels_command_function_intent(bot, triggerargsarray, command_main, trigger, 
         osd(bot, duels.instigator, 'notice', validtargetmsg)
         duels.command_stamina_cost = 0
         return
-    target = duels_nick_actual(bot, target)
+    target = nick_actual(bot, target)
     osd(bot, duels.channel_current, 'say', "The intent is to provide "+target+" with a sense of pride and accomplishment...")
 
 
@@ -4589,7 +4589,7 @@ def duels_command_function_docs(bot, triggerargsarray, command_main, trigger, co
             osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
-    target = duels_nick_actual(bot, target)
+    target = nick_actual(bot, target)
 
     messageinput = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.commands_alt or x in duels.commands_valid], 1) or 'online'
     if messageinput == 'online':
@@ -4633,7 +4633,7 @@ def duels_command_function_usage(bot, triggerargsarray, command_main, trigger, c
             osd(bot, duels.instigator, 'notice', validtargetmsg)
             duels.command_stamina_cost = 0
             return
-    target = duels_nick_actual(bot, target)
+    target = nick_actual(bot, target)
     targetname = target
     if target == 'channel':
         target = 'duelrecorduser'
@@ -5315,7 +5315,7 @@ def duel_combat_playerbios(bot, playerone, playertwo, typeofduel, duels):
             playerbio.actual = 'duelsmonster'
             duelsmonstername = get_database_value(bot, 'duelsmonster', 'last_monster')
         else:
-            playerbio.actual = duels_nick_actual(bot,player)
+            playerbio.actual = nick_actual(bot,player)
 
         # Title
         playerbio.nicktitle = get_database_value(bot, player, 'title')
@@ -5419,7 +5419,7 @@ def duel_target_playerbio(bot, duels, player):
             duelsmonstername = get_trigger_arg(bot, monstersarray, 'random')
             set_database_value(bot, 'duelsmonster', 'last_monster', duelsmonstername)
     else:
-        playerbio.actual = duels_nick_actual(bot,player)
+        playerbio.actual = nick_actual(bot,player)
 
     # Title
     playerbio.nicktitle = get_database_value(bot, player, 'title') or ''
@@ -6621,7 +6621,7 @@ def duels_target_check(bot, target, duels, instigatorbio):
 
     targetlocation = duels_get_location(bot,duels,target)
     if target.lower() in [x.lower() for x in duels.users_current_allchan] and targetlocation != instigatorbio.location and not duels.admin:
-        target = duels_nick_actual(bot, target)
+        target = nick_actual(bot, target)
         validtargetmsg.append(target + " is in the "+targetlocation+" area. You are in the "+instigatorbio.location+" area.")
         validtarget = 0
 
@@ -6645,18 +6645,18 @@ def duels_target_check(bot, target, duels, instigatorbio):
     # Offline User
     if target.lower() in [x.lower() for x in duels.users_all_allchan] and target.lower() not in [y.lower() for y in duels.users_current_allchan]:
         validtarget = 0
-        target = duels_nick_actual(bot, target)
+        target = nick_actual(bot, target)
         validtargetmsg.append(target + " is offline right now.")
 
     # Opted Out
     if target.lower() in [x.lower() for x in duels.users_current_allchan] and target.lower() not in [j.lower() for j in duels.users_opted] and duels.optcheck:
-        target = duels_nick_actual(bot, target)
+        target = nick_actual(bot, target)
         validtarget = 0
         validtargetmsg.append(target + " has duels disabled.")
 
     # None of the above
     if target.lower() not in [y.lower() for y in duels.users_current_allchan] and validtargetmsg == []:
-        target = duels_nick_actual(bot, target)
+        target = nick_actual(bot, target)
         validtarget = 0
         validtargetmsg.append(target + " is either not here, or not a valid nick to target.")
 
@@ -6721,7 +6721,7 @@ User Nicks
 
 
 # Outputs Nicks with correct capitalization
-def duels_nick_actual(bot,nick):
+def nick_actual(bot,nick):
     actualnick = nick
     for u in bot.users:
         if u.lower() == actualnick.lower():
@@ -7767,7 +7767,7 @@ def osd(bot, target_array, text_type, text_array):
                 bot.action(combinedline,target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
-            elif text_type == 'notice':
+            elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
                 bot.say(combinedline)
@@ -7838,7 +7838,7 @@ def create_array(bot, inputs):
     outputs = []
     if inputs:
         for word in inputs.split():
-            outputs.append(word)
+            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
     return outputs
 
 

@@ -21,4 +21,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     itwas = get_trigger_arg(bot,triggerargsarray, 0) or "it was aliens"
     itwas2 = itwas.upper()
     message = "I'm not saying " + str(itwas) + ", but " + str(itwas2) + "."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

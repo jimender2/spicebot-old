@@ -22,4 +22,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "Im sorry, " + trigger.nick + ", but I cannot help you."
     if "dave" in usernickname:
         message = "Is that really you, Dave?"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

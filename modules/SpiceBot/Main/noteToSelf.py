@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         i = 1
         while (i <= numberOfMessages):
             message = get_trigger_arg(bot, messages, i)
-            onscreentext(bot, ['say'], message)
+            osd(bot, trigger.sender, 'say', message)
             i = i + 1
         reset_database_value(bot, instigator, databasekey)
     else:
@@ -43,4 +43,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         time = datetime.datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
         input = time + " " + command
         adjust_database_array(bot, instigator, input, databasekey, 'add')
-        onscreentext(bot, ['say'], "I will remeber that as best as I can")
+        osd(bot, trigger.sender, 'say', "I will remeber that as best as I can")

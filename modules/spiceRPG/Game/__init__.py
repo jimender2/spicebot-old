@@ -260,7 +260,7 @@ def osd(bot, target_array, text_type, text_array):
                 bot.action(combinedline,target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
-            elif text_type == 'notice':
+            elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
                 bot.say(combinedline)
@@ -346,7 +346,7 @@ def create_array(bot, inputs):
     outputs = []
     if inputs:
         for word in inputs.split():
-            outputs.append(word)
+            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
     return outputs
 
 

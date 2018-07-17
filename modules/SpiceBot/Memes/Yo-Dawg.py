@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Yo Dawg! I heard you liked " + target + ", So I put a " + target + " in/on your " + target + "!!!"
     else:
         message = "I'm not sure who or what the hell that is."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

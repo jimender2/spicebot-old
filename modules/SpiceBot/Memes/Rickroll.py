@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "This link is definately NOT a Rickroll   https://goo.gl/SsAhv"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

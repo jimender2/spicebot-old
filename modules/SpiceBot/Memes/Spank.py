@@ -41,4 +41,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 message = trigger.nick + " spanks " + target + " with a " + weapon + " " + reason + "."
             else:
                 message = trigger.nick + " spanks " + target + " with a " + weapon + " " + reason + "."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

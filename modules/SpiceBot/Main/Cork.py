@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         action = "applies the Cork of Sean to " + target
     else:
         action = "applies the Cork of Sean to " + instigator.default
-    onscreentext_action(bot,[botcom.channel_current],action)
+    osd(bot, botcom.channel_current, 'action', action)

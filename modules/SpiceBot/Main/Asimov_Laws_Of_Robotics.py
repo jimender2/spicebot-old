@@ -44,4 +44,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if not myline:
         myline = myline = get_trigger_arg(bot, laws, 'random')
-    onscreentext_action(bot,['say'],myline)
+    osd(bot, trigger.sender, 'action', myline)

@@ -37,4 +37,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             itema = item
             itemb = item.replace('ing','')
         message = "Only those people who risk " + str(itema) + " too far, ever find out how far they can " + str(itemb) + "!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)
