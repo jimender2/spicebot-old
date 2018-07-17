@@ -99,7 +99,7 @@ def command_process(bot, trigger, rpg, instigator):
         return osd(bot, rpg.instigator, 'notice', "That is a valid command, however the functionality has not been developed yet.")
 
 
-def rpg_command_main_adminb(bot,rpg):
+def rpg_command_main_admin(bot,rpg):
     bot.say("wip")
 
 
