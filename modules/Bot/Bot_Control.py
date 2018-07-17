@@ -597,6 +597,7 @@ def bot_command_function_pip(bot,trigger,botcom,instigator):
 def bot_command_function_debug(bot,trigger,botcom,instigator):
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
+    botcom = bot_config_directory(bot,botcom)
 
     if targetbot == bot.nick:
         if instigator.default not in botcom.botadmins:
@@ -607,8 +608,6 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
         if instigator.default not in targetbotadmins:
             osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
             return
-
-    botcom = bot_config_directory(bot,botcom)
 
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     if not os.path.isdir(joindpath):
