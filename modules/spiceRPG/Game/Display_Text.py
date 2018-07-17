@@ -31,12 +31,12 @@ def osd(bot, target_array, text_type, text_array):
     # if target_array is a string, make it an array
     texttargetarray = []
     if not isinstance(target_array, list):
-        if not target_array.startswith("#"):
+        if not str(target_array).startswith("#"):
             target_array = nick_actual(bot,str(target_array))
         texttargetarray.append(target_array)
     else:
         for target in target_array:
-            if not target.startswith("#"):
+            if not str(target).startswith("#"):
                 target = nick_actual(bot,str(target))
             texttargetarray.append(target)
 
@@ -75,12 +75,11 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
-            # bot.say(str(textpartsleft) + " " + str(textparts))
             if text_type == 'say':
                 bot.say(combinedline)
             elif text_type == 'action' and textparts == textpartsleft:
                 bot.action(combinedline,target)
-            elif target.startswith("#"):
+            elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
                 bot.notice(combinedline, target)
