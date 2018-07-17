@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "ERMAHGERD," + str(spertitert)
     else:
         message = "Whert der yer wernt ter trernslert?"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)
 
 
 def trernslert(werds):

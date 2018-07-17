@@ -36,4 +36,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = target + " is going to have a super soft birthday party this year."
         else:
             message = target + " is supersoft. 10-ply. Now give your balls a tug, tit-fucker and figger it out. Ferda!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

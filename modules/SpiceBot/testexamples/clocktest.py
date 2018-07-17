@@ -38,4 +38,4 @@ def countdown(bot):
     if currentsetting == 1:
         channel = '##spicebottest'
         dispmsg = '15 secs have passed'
-        onscreentext(bot, channel, dispmsg)
+        osd(bot, trigger.sender, 'say', dispmsg)

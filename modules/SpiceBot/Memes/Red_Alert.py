@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = 'Shields Up, Captain ' + trigger.nick + '!!'
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

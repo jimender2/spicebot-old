@@ -24,4 +24,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = instigator + " didn't choose the snowflake life, the snowflake life chose " + instigator + "."
     else:
         message = target + " didn't choose the snowflake life, the snowflake life chose " + target + "."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

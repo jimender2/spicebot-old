@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "You had ONE job!!!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

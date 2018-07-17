@@ -39,4 +39,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         message = "I screwed up majorly. You should never see this"
 
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

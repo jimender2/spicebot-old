@@ -30,4 +30,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = get_trigger_arg(bot, rules, 'random')
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

@@ -30,4 +30,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "I like to laugh, but not at my own expense."
     else:
         message = bot.nick + " points at " + target + " and laughs."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

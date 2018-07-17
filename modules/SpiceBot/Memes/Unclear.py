@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = "Instructions unclear, dick stuck in ceiling fan."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

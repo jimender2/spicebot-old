@@ -34,13 +34,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         reset_database_value(bot,instigator, databasekey)
         spicebucks(bot, instigator, "plus", amount)
         if amount == 0:
-            onscreentext(bot,['say'],"There are no bribes for you to accept")
+            osd(bot, trigger.sender, 'action', "There are no bribes for you to accept")
         else:
             message = str(instigator) + " accepted the bribe of $" + str(amount) + "."
-            onscreentext(bot,['say'], message)
+            osd(bot, trigger.sender, 'action',  message)
     elif command == "decline":
         message = str(instigator) + " declines a bribe worth $" + str(amount) + "."
-        onscreentext(bot,['say'], message)
+        osd(bot, trigger.sender, 'action',  message)
         reset_database_value(bot, instigator, databasekey)
     elif command == "money":
         amount = 1000
@@ -49,16 +49,16 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     else:
         if target == instigator:
-            onscreentext(bot,['say'],"Stupid person. You can't bribe yourself")
+            osd(bot, trigger.sender, 'action', "Stupid person. You can't bribe yourself")
         elif target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
-            onscreentext(bot,['say'],instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+            osd(bot, trigger.sender, 'action', instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
             set_database_value(bot,target, databasekey, inputstring)
             spicebucks(bot, instigator, 'minus', money)
         else:
-            onscreentext(bot,['say'],"I'm sorry, I do not know who " + target + " is.")
+            osd(bot, trigger.sender, 'action', "I'm sorry, I do not know who " + target + " is.")
 
 
 def bank(bot, nick):

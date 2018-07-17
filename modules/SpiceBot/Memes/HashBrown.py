@@ -24,4 +24,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if hashstring == "ym":
         hashstring = "yo momma"
     response = "hashbrown " + str(hashstring)
-    onscreentext(bot,['say'],response)
+    osd(bot, trigger.sender, 'say', response)

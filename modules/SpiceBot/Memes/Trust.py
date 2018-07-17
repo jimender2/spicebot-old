@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Why don't you trust me?"
     else:
         message = "I just can't ever bring myself to trust " + target + " again. I can never forgive " + target + " for the death of my boy."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

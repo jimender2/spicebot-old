@@ -28,4 +28,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "Dammit Jim, I'm a doctor, not a " + str(string) + "!!!"
     else:
         message = "He's dead, Jim."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

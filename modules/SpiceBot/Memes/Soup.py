@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     item = get_trigger_arg(bot, triggerargsarray, 0).upper() or "SOUP"
     message = "NO " + str(item) + " FOR YOU!!"
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

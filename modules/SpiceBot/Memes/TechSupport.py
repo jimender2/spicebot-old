@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     "Error: Keyboard not detected. Press 'F1' to continue.",
                     "Instructions unclear, dick stuck in ceiling fan."]
     message = get_trigger_arg(bot, techmessages, 'random')
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)

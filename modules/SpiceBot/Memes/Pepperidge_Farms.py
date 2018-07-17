@@ -23,4 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Pepperidge Farms remembers " + str(pfremembers)
     else:
         message = "You're so old Pepperidge Farms doesn't even remember that."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)
