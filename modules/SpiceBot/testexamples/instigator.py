@@ -92,7 +92,7 @@ def class_create(classname):
         def __repr__(self):
             return repr(self.default)
         def __str__(self):
-            if isinstance:
+            if isinstance(self.default):
                 outputstring = str(self.default)
                 return outputstring
             else:
