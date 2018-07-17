@@ -44,7 +44,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         reset_database_value(bot,instigator, 'bets')
 
     else:
-        if target.lower() in [u.lower() for u in bot.users]:
+        if target == instigator:
+            bot.say("Stupid person. You can't bribe yourself")
+        elif target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
             bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
