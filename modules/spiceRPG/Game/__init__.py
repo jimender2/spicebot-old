@@ -92,7 +92,7 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main not in rpg_valid_commands:
         return osd(bot, rpg.instigator, 'notice', "Invalid command.")
 
-    command_function_run = str('rpg_command_main_' + command_main.lower() + '(bot, rpg, instigator)')
+    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
     eval(command_function_run)
 
 
