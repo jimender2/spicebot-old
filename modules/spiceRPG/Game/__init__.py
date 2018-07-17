@@ -80,7 +80,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
-        rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
+        rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
 
         # Run command process
         command_process(bot, trigger, rpg, instigator)
@@ -89,8 +89,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 def command_process(bot, trigger, rpg, instigator):
 
     # Handle rog commands
-    if command_main.lower() not in rpg_valid_commands:
-        return osd(bot, duels.instigator, 'notice', "Invalid command.")
+    if rpg.command_main not in rpg_valid_commands:
+        return osd(bot, rpg.instigator, 'notice', "Invalid command.")
 
     command_function_run = str('rpg_command_main_' + command_main.lower() + '(bot, rpg, instigator)')
     eval(command_function_run)
