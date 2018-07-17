@@ -506,7 +506,6 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
 def bot_command_function_update(bot,trigger,botcom,instigator):
 
     botcom = bot_config_directory(bot,botcom)
-    bot.say(str(botcom.config_listing))
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
