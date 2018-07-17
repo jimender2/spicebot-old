@@ -53,16 +53,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bot.say(message)
 
     else:
-        weapontype = get_trigger_arg(bot, existingarray, "random") or ''
-        if weapontype == '':
+        response = get_trigger_arg(bot, existingarray, "random") or ''
+        if response == '':
             message = "No response found. Have any been added?"
             target = get_trigger_arg(bot, triggerargsarray, 1)
             reason = get_trigger_arg(bot, triggerargsarray, '2+')
             msg = "a " + weapontype
-
-    # No target specified
-    if not target:
-        bot.say(msg)
 
 
 def get_database_value(bot, nick, databasekey):
