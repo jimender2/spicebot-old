@@ -94,7 +94,7 @@ def class_create(classname):
         def __str__(self):
             if not isinstance(self.default, (str)):
                 outputstring = str(self.default)
-                return outputstring
+                return str(outputstring)
             else:
                 return str(self.default)
         def __iter__(self):
