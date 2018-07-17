@@ -717,7 +717,7 @@ def setup(bot):
         bot.memory["uptime"] = datetime.datetime.utcnow()
 
 
-def bot_command_function_debug(bot,trigger,botcom,instigator):
+def bot_command_function_uptime(bot,trigger,botcom,instigator):
     """.uptime - Returns the uptime of Sopel."""
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() -
                                               bot.memory["uptime"])
