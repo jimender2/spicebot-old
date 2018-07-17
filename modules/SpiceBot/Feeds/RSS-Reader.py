@@ -13,9 +13,11 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-## user agent and header
+
+# user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
+
 
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
@@ -36,7 +38,8 @@ def reset(bot,trigger):
         else:
             bot.say("There doesn't appear to be record of that feed.")
 
-## Automatic Run
+
+# Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
     RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot,bot.nick)+"/RSS-Feeds/main/")

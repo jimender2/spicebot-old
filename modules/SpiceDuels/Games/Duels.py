@@ -133,7 +133,6 @@ def dual_cloneb(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if target.lower() not in [u.lower() for u in bot.users]:
         bot.say("I'm not sure who that is.")

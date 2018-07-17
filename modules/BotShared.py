@@ -55,7 +55,7 @@ def spicebot_prerun(bot,trigger,commandused):
     # User was Blocked by a bot.admin or an OP
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
     if instigator.default in blockedusersarray:
-        osd_notice(bot, instigator, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
+        osd_notice(bot, instigator.default, "It looks like you have been blocked from using commands in " + botcom.channel_current+".")
         return enablestatus, triggerargsarray, botcom, instigator
 
     # devmode bypass
@@ -68,14 +68,14 @@ def spicebot_prerun(bot,trigger,commandused):
     if botcom.channel_current.startswith("#"):
         channelmodulesarray = get_database_value(bot, botcom.channel_current, 'modules_enabled') or []
         if commandused not in channelmodulesarray:
-            osd_notice(bot, instigator, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
+            osd_notice(bot, instigator.default, "it looks like the " + str(commandused) + " command has not been enabled in " + botcom.channel_current+".")
             return enablestatus, triggerargsarray, botcom, instigator
 
     # Bot Enabled Status (botcom.now in an array)
     botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
 
     if instigator.default not in botcom.users_all:
-        osd_notice(bot, instigator, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
+        osd_notice(bot, instigator.default, "you have to run `" + bot.nick + " on` to allow her to listen to you. For help, see the wiki at https://github.com/deathbybandaid/sopel-modules/wiki/Using-the-Bot.")
         return enablestatus, triggerargsarray, botcom, instigator
 
     enablestatus = 0
@@ -100,6 +100,14 @@ def spicebot_prerun(bot,trigger,commandused):
 
 # Outputs Nicks with correct capitalization
 def actualname(bot,nick):
+    actualnick = str(nick)
+    for u in bot.users:
+        if u.lower() == str(nick).lower():
+            actualnick = u
+    return actualnick
+
+
+def nick_actual(bot,nick):
     actualnick = str(nick)
     for u in bot.users:
         if u.lower() == str(nick).lower():
@@ -439,13 +447,13 @@ def osd(bot, target_array, text_type, text_array):
     # if target_array is a string, make it an array
     texttargetarray = []
     if not isinstance(target_array, list):
-        if not target.startswith("#"):
-            target = nick_actual(bot,str(target_array))
-        texttargetarray.append(target)
+        if not str(target_array).startswith("#"):
+            target_array = nick_actual(bot,str(target_array))
+        texttargetarray.append(target_array)
     else:
         for target in target_array:
-            if not target.startswith("#"):
-                target = nick_actual(bot,str(target_array))
+            if not str(target).startswith("#"):
+                target = nick_actual(bot,str(target))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
@@ -456,9 +464,31 @@ def osd(bot, target_array, text_type, text_array):
         for part in textarraycomplete:
             temptextarray.append(part)
 
+        # Make sure no individual string ins longer than it needs to be
+        currentstring = ''
+        texttargetarray = []
+        for textstring in temptextarray:
+            if len(textstring) > osd_limit:
+                chunks = textstring.split()
+                for chunk in chunks:
+                    if currentstring == '':
+                        currentstring = chunk
+                    else:
+                        tempstring = str(currentstring + " " + chunk)
+                        if len(tempstring) <= osd_limit:
+                            currentstring = tempstring
+                        else:
+                            texttargetarray.append(currentstring)
+                            currentstring = chunk
+                if currentstring != '':
+                    texttargetarray.append(currentstring)
+            else:
+                texttargetarray.append(textstring)
+
+        # Split text to display nicely
         combinedtextarray = []
         currentstring = ''
-        for textstring in temptextarray:
+        for textstring in texttargetarray:
             if currentstring == '':
                 currentstring = textstring
             elif len(textstring) > osd_limit:
@@ -480,12 +510,11 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
-            # bot.say(str(textpartsleft) + " " + str(textparts))
             if text_type == 'say':
                 bot.say(combinedline)
             elif text_type == 'action' and textparts == textpartsleft:
                 bot.action(combinedline,target)
-            elif target.startswith("#"):
+            elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
                 bot.notice(combinedline, target)
