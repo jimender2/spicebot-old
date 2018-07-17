@@ -90,10 +90,13 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Handle rog commands
     if rpg.command_main not in rpg_valid_commands:
-        return osd(bot, rpg.instigator, 'notice', "Invalid command.")
+        return osd(bot, rpg.instigator, 'notice', "You have not specified a valid command.")
 
     command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    eval(command_function_run)
+    try:
+        eval(command_function_run)
+    except NameError:
+        return osd(bot, rpg.instigator, 'notice', "That is a valid command, however the functionality has not been developed yet.")
 
 
 def rpg_command_main_adminb(bot,rpg):
