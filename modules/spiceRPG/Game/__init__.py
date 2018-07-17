@@ -126,10 +126,10 @@ def rpg_command_channels(bot,rpg,trigger):
     rpg.channels_enabled = get_database_value(bot, 'rpg_game_records', 'gameenabled') or []
 
     # Development mode
-    rpgs.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
-    rpgs.dev_bypass = 0
-    if rpgs.channel_current.lower() in [x.lower() for x in rpgs.channels_devmode]:
-        rpgs.dev_bypass = 1
+    rpg.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
+    rpg.dev_bypass = 0
+    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode]:
+        rpg.dev_bypass = 1
     return rpg
 
 
