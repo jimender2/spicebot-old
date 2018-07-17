@@ -15,4 +15,4 @@ def execute_main(bot, trigger):
     dispmsg.append('MX: https://meraki.cisco.com/tc/freemx')
     dispmsg.append('Switch: https://meraki.cisco.com/tc/freeswitch')
     dispmsg.append('AP: https://meraki.cisco.com/tc/freeap')
-    onscreentext(bot, trigger.sender, dispmsg)
+    osd(bot, trigger.sender, 'say', dispmsg)

@@ -73,4 +73,4 @@ def autorss(bot):
                 dispmsg.append(title)
                 dispmsg.append(link)
                 for channel in bot.channels:
-                    onscreentext(bot, channel, dispmsg)
+                    osd(bot, channel, 'say', dispmsg)
