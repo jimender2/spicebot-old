@@ -35,26 +35,26 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             amount = int(amo)
             reset_database_value(bot,instigator, 'bets')
             spicebucks(bot, instigator, "plus", amount)
-        if amount == 0:
-            bot.say("There are no bribes for you to accept")
+            if amount == 0:
+                onscreentext(bot,['say'],"There are no bribes for you to accept")
         else:
-            bot.say(instigator + " accepted the bribe of $" + amount + ".")
+            onscreentext(bot,['say'],instigator + " accepted the bribe of $" + amount + ".")
     elif command == "decline":
-        bot.say(instigator + " declines a bribe worth $" + amount + ".")
-        reset_database_value(bot,instigator, 'bets')
+        onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
+        reset_database_value(bot, instigator, 'bets')
 
     else:
         if target == instigator:
-            bot.say("Stupid person. You can't bribe yourself")
+            onscreentext(bot,['say'],"Stupid person. You can't bribe yourself")
         elif target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
-            bot.say(instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+            onscreentext(bot,['say'],instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
             set_database_value(bot,target, 'bets', inputstring)
             spicebucks(bot, instigator, 'minus', money)
         else:
-            bot.say("I'm sorry, I do not know who " + target + " is.")
+            onscreentext(bot,['say'],"I'm sorry, I do not know who " + target + " is.")
 
 
 def bank(bot, nick):
