@@ -439,7 +439,7 @@ def osd(bot, target_array, text_type, text_array):
     # if target_array is a string, make it an array
     texttargetarray = []
     if not isinstance(target_array, list):
-        if not target.startswith("#"):
+        if not target_array.startswith("#"):
             target = nick_actual(bot,str(target_array))
         texttargetarray.append(target)
     else:
