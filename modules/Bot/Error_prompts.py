@@ -46,4 +46,7 @@ def timed_logcheck(bot):
         os.system("sudo rm " + log_file_path)
         if total_loading_errors >= 1:
             for channel in bot.channels:
-                bot.msg(channel, "Notice to Bot Admins: There were " + str(total_loading_errors) + " error(s) upon Bot start. Run the debug command for more information.")
+                if total_loading_errors == 1:
+                    bot.msg(channel, "Notice to Bot Admins: There was a modules error upon Bot start. Run the debug command for more information.")
+                else:
+                    bot.msg(channel, "Notice to Bot Admins: There were " + str(total_loading_errors) + " module errors upon Bot start. Run the debug command for more information.")
