@@ -528,9 +528,9 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
     else:
         if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
-            osd(bot, bot.channels, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
+            osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
         else:
-            osd(bot, bot.channels, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+            osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
     update(bot, botcom, trigger,targetbot)
     restart(bot, botcom, trigger, targetbot)
 
@@ -560,9 +560,9 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
     else:
         if targetbot.lower() == 'spiceRPG' or targetbot.lower() == 'spicerpgdev':
-            osd(bot, bot.channels, 'say', "My Dungeon Master, " + instigator.default + ", commandeth me to restart. I shall return post haste!")
+            osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + instigator.default + ", commandeth me to restart. I shall return post haste!")
         else:
-            osd(bot, bot.channels, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
+            osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to restart. Be Back Soon!")
     restart(bot, botcom, trigger, targetbot)
 
 
