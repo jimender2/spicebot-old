@@ -21,6 +21,9 @@ def mainfunction(bot, trigger):
 
 def setup(bot):
     bot.msg("##spicebottest", "running")
+
+
+def adsfasdf():
     # Save systemd Log to file
     os.system("sudo journalctl -u " + bot.nick + " >> " + log_file_path)
     errorarray = ['Error loading']
