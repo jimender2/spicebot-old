@@ -7838,7 +7838,7 @@ def create_array(bot, inputs):
     outputs = []
     if inputs:
         for word in inputs.split():
-            outputs.append(word.encode('utf-8').strip())
+            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
     return outputs
 
 
