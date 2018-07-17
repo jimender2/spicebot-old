@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "Well, that was truly disgusting!"
     else:
         message = trigger.nick + " floats an air biscuit in the general direction of " + target + "."
-    onscreentext(bot,['say'],message)
+    osd(bot, trigger.sender, 'say', message)
