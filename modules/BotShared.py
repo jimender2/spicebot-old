@@ -458,7 +458,6 @@ def osd(bot, target_array, text_type, text_array):
 
     # Make sure we don't cross over IRC limits
     for target in texttargetarray:
-        bot.say(str(target))
         temptextarray = []
         if text_type == 'notice':
             temptextarray.append(target + ", ")
@@ -511,14 +510,14 @@ def osd(bot, target_array, text_type, text_array):
         textparts = len(combinedtextarray)
         textpartsleft = textparts
         for combinedline in combinedtextarray:
-            if text_type == 'say':
-                bot.say(combinedline)
-            elif text_type == 'action' and textparts == textpartsleft:
+            if text_type == 'action' and textparts == textpartsleft:
                 bot.action(combinedline,target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice':
                 bot.notice(combinedline, target)
+            elif text_type == 'say':
+                bot.say(combinedline)
             else:
                 bot.say(combinedline)
             textpartsleft = textpartsleft - 1
