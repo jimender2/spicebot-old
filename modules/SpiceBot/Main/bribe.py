@@ -13,6 +13,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 commandarray = ["accept","decline","money"]
+databasekey = "bribe"
 
 # author jimender2
 
@@ -25,14 +26,13 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    databasekey = "bribe"
     instigator = trigger.nick
     command = get_trigger_arg(bot, triggerargsarray, 1)
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if command in commandarray:
+        amo = get_database_value(bot, instigator, 'bets') or '0'
+        amount = int(amo)
         if command == "accept":
-            amo = get_database_value(bot, instigator, 'bets') or '0'
-            amount = int(amo)
             reset_database_value(bot,instigator, 'bets')
             spicebucks(bot, instigator, "plus", amount)
             if amount == 0:
@@ -41,6 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 message = str(instigator) + " accepted the bribe of $" + str(amount) + "."
                 onscreentext(bot,['say'], message)
         elif command == "decline":
+
             message = str(instigator) + " declines a bribe worth $" + str(amount) + "."
             onscreentext(bot,['say'], message)
             reset_database_value(bot, instigator, 'bets')
