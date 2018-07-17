@@ -42,6 +42,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "decline":
         onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
         reset_database_value(bot, instigator, 'bets')
+    elif command == "decline":
+        amount = 1000
+        spicebucks(bot, instigator, "plus", amount)
 
     else:
         if target == instigator:
