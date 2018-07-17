@@ -47,7 +47,7 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # No Empty Commands
     if triggerargsarray == []:
-        osd_notice(bot, trigger.nick, "No Command issued.")
+        osd(bot, trigger.nick, 'notice', "No Command issued.")
         return
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
@@ -92,4 +92,4 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
 
 def command_main_process(bot, trigger, rpg):
-    bot.say(rpg.command_full)
+    osd(bot, rpg.channel_current, 'say', rpg.command_full)
