@@ -13,10 +13,10 @@ log_path = "data/templogauto.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
 
-def setup(self):
-
+def setup(bot):
+    bot.say("running")
     # Save systemd Log to file
-    os.system("sudo journalctl -u " + self.nick + " >> " + log_file_path)
+    os.system("sudo journalctl -u " + bot.nick + " >> " + log_file_path)
     errorarray = ['Error loading']
 
     # Search for most recent start
@@ -41,5 +41,5 @@ def setup(self):
                 total_loading_errors += 1
     os.system("sudo rm " + log_file_path)
     if total_loading_errors >= 1:
-        for channel in self.channels:
-            self.msg(channel, "Notice to Bot Admins: There were " + str(total_loading_errors) + "error(s) upon Bot start. Run the debug command for more information.")
+        for channel in bot.channels:
+            bot.msg(channel, "Notice to Bot Admins: There were " + str(total_loading_errors) + "error(s) upon Bot start. Run the debug command for more information.")
