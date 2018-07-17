@@ -9,6 +9,7 @@ import sopel
 from sopel import module, tools
 import re
 import git
+import ConfigParser
 import os
 import sys
 moduledir = os.path.dirname(__file__)
@@ -529,15 +530,36 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
     restart(bot, botcom, trigger, targetbot)
 
 
+def bot_target_admins(bot, targetbot):
+    targetbotadmins = []
+    configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + targetbot + ".cfg")
+    config = ConfigParser.ConfigParser()
+    config.read(configfile)
+    owner = config.get("core","owner")
+    targetbotadmins.append(owner)
+    admins = config.get("core","admins")
+    admins = admins.split(",")
+    for admin in admins:
+        if admin not in targetbotadmins:
+            targetbotadmins.append(admin)
+    bot.say(str(targetbotadmins))
+    return targetbotadmins
+
+
 def bot_command_function_restart(bot,trigger,botcom,instigator):
 
     botcom = bot_config_directory(bot,botcom)
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
-
-    if instigator.default not in botcom.botadmins:
-        osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
-        return
+    if targetbot == bot.nick:
+        if instigator.default not in botcom.botadmins:
+            osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
+            return
+    else:
+        targetbotadmins = bot_target_admins(bot, targetbot)
+        if instigator.default not in targetbotadmins:
+            osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
+            return
 
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     if not os.path.isdir(joindpath):
