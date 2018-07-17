@@ -12,6 +12,9 @@ from BotShared import *
 log_path = "data/templogauto.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
+@sopel.module.commands('botdebug')
+def mainfunction(bot, trigger):
+    setup(bot)
 
 def setup(bot):
     bot.msg("##spicebottest", "running")
