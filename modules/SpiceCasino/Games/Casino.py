@@ -12,24 +12,11 @@ sys.path.append(shareddir)
 sys.path.append(moduledir)
 from BotShared import *
 import Spicebucks
+from Casino_Vars import *
 
-#shared variables:
-maxbet = 100
+
 now = time.time()
-slottimeout = 5
-#rouletteshared
-roulettetimeout=25
-#maxwheel = get_database_value(bot,'casino','maxwheel')
 
-#Lotteryshared
-match1payout = 2
-match2payout = 4
-match3payout = 0.1#% of jackpot
-match4payout = 0.3 #% of jackpot
-#lotterytimeout=1790
-#lotterymax = get_database_value(bot,'casino','lotterymax')
-
-wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 
 @sopel.module.commands('gamble', 'casino')
 def mainfunction(bot, trigger):
@@ -37,25 +24,26 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, arg, botcom, instigator):
     mygame = get_trigger_arg(bot, arg, 1) or 'nocommand'
     if mygame == 'docs' or mygame == 'help':
         bot.say("For help with this module, see here: " + wikiurl)
-    elif mygame =='slots':
+    elif mygame == 'slots':
         slots(bot,trigger,arg)
-    elif mygame=='blackjack':
+    elif mygame== 'blackjack' :
         blackjack(bot,trigger,arg)
-    elif (mygame=='roulette' or mygame=='spin'):
+    elif (mygame == 'roulette' or mygame == 'spin'):
         roulette(bot,trigger,arg)
-    elif mygame=='lottery':
+    elif mygame == 'lottery':
         lottery(bot,trigger,arg)
-    elif mygame== 'freebie':
+    elif mygame == 'freebie':
         freebie(bot,trigger)
     elif mygame == 'bank':
-        bankbalance=Spicebucks.bank(bot,trigger.nick)
+        bankbalance = Spicebucks.bank(bot,trigger.nick)
         bot.notice(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.', trigger.nick)
     elif mygame == 'jackpot':
-        bankbalance=Spicebucks.bank(bot,'SpiceBank')
+        bankbalance = Spicebucks.bank(bot,'SpiceBank')
         bot.say('The current jackpot is: ' +str(bankbalance))
     elif mygame=='admin':
         if trigger.admin or trigger.nick == 'under_score':
