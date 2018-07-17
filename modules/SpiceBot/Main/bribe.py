@@ -2,10 +2,8 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
-import arrow
 import sys
 import os
-import datetime
 import random
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -31,26 +29,24 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     command = get_trigger_arg(bot, triggerargsarray, 1)
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    if command in commandarray:
-        amo = get_database_value(bot, instigator, 'bets') or '0'
-        amount = int(amo)
-        if command == "accept":
-            reset_database_value(bot,instigator, 'bets')
-            spicebucks(bot, instigator, "plus", amount)
-            if amount == 0:
-                onscreentext(bot,['say'],"There are no bribes for you to accept")
-            else:
-                message = str(instigator) + " accepted the bribe of $" + str(amount) + "."
-                onscreentext(bot,['say'], message)
-        elif command == "decline":
-
-            message = str(instigator) + " declines a bribe worth $" + str(amount) + "."
+    amo = get_database_value(bot, instigator, databasekey) or '0'
+    amount = int(amo)
+    if command == "accept":
+        reset_database_value(bot,instigator, databasekey)
+        spicebucks(bot, instigator, "plus", amount)
+        if amount == 0:
+            onscreentext(bot,['say'],"There are no bribes for you to accept")
+        else:
+            message = str(instigator) + " accepted the bribe of $" + str(amount) + "."
             onscreentext(bot,['say'], message)
-            reset_database_value(bot, instigator, 'bets')
-        elif command == "money":
-            amount = 1000
-            spicebucks(bot, instigator, "plus", amount)
-            bot.say("test")
+    elif command == "decline":
+        message = str(instigator) + " declines a bribe worth $" + str(amount) + "."
+        onscreentext(bot,['say'], message)
+        reset_database_value(bot, instigator, databasekey)
+    elif command == "money":
+        amount = 1000
+        spicebucks(bot, instigator, "plus", amount)
+        bot.say("you got money")
 
     else:
         if target == instigator:
@@ -60,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             money = random.randint(0, balance)
             onscreentext(bot,['say'],instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
-            set_database_value(bot,target, 'bets', inputstring)
+            set_database_value(bot,target, databasekey, inputstring)
             spicebucks(bot, instigator, 'minus', money)
         else:
             onscreentext(bot,['say'],"I'm sorry, I do not know who " + target + " is.")
