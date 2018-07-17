@@ -14,7 +14,7 @@ log_file_path = os.path.join(moduledir, log_path)
 
 
 def setup(bot):
-    bot.say("running")
+    bot.msg("##spicebottest", "running")
     # Save systemd Log to file
     os.system("sudo journalctl -u " + bot.nick + " >> " + log_file_path)
     errorarray = ['Error loading']
