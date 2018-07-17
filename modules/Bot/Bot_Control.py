@@ -535,6 +535,10 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
         return
 
+    botcom = bot_config_directory(bot,botcom)
+    if targetbot in botcom.config_listing:
+        bot.say(str(botcom.config_listing))
+
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     if not os.path.isdir(joindpath):
         osd(bot, instigator.default, 'notice', "That doesn't appear to be a valid bot directory.")
@@ -648,4 +652,13 @@ def bot_list_directory(bot,botcom):
             botcom.filefoldertype.append("file")
         else:
             botcom.filefoldertype.append("folder")
+    return botcom
+
+
+def bot_config_directory(bot,botcom):
+    botcom.config_listing = []
+    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/")
+    for filename in os.listdir(validconfigsdir):
+        filenameminuscfg = str(filename).replace(".cfg","")
+        botcom.config_listing.append(filenameminuscfg)
     return botcom
