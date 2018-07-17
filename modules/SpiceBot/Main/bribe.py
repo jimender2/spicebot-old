@@ -45,6 +45,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "decline":
         amount = 1000
         spicebucks(bot, instigator, "plus", amount)
+        bot.say("test")
 
     else:
         if target == instigator:
