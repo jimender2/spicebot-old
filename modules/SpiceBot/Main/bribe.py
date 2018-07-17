@@ -38,9 +38,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if amount == 0:
                 onscreentext(bot,['say'],"There are no bribes for you to accept")
             else:
-                onscreentext(bot,['say'],instigator + " accepted the bribe of $" + amount + ".")
+                message = instigator + " accepted the bribe of $" + amount + "."
+                onscreentext(bot,['say'], message)
         elif command == "decline":
-            onscreentext(bot,['say'],instigator + " declines a bribe worth $" + amount + ".")
+            message = instigator + " declines a bribe worth $" + amount + "."
+            onscreentext(bot,['say'], message)
             reset_database_value(bot, instigator, 'bets')
         elif command == "money":
             amount = 1000
