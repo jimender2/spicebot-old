@@ -346,7 +346,7 @@ def create_array(bot, inputs):
     outputs = []
     if inputs:
         for word in inputs.split():
-            outputs.append(word)
+            outputs.append(word.encode('ascii', 'ignore').decode('ascii'))
     return outputs
 
 
