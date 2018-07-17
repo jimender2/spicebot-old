@@ -59,9 +59,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     msg = "a " + weapontype
 
     # Target is fine
-    if targetcheck(bot,target,trigger.nick) == 0:
-        bot.say("I'm sorry, I do not know who " + target + " is.")
-        return
     if not reason:
         message = instigator + " tils " + target + " with " + msg + "."
         bot.say(message)
