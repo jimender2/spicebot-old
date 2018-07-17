@@ -84,8 +84,12 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
                 rpg.admin = 1
 
         # Split commands to pass
-        command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
-        command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
+        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+        rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
         # Run command process
-        # command_main_process(bot, trigger, rpg)
+        command_main_process(bot, trigger, rpg)
+
+
+def command_main_process(bot, trigger, rpg):
+    bot.say("test")
