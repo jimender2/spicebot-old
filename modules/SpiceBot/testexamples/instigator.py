@@ -92,11 +92,7 @@ def class_create(classname):
         def __repr__(self):
             return repr(self.default)
         def __str__(self):
-            if isinstance(self.default, self):
-                outputstring = str(self.default)
-                return outputstring
-            else:
-                return str(self.default)
+            return str(self.default)
         def __iter__(self):
             return str(self.default)
         def __unicode__(self):
