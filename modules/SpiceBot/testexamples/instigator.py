@@ -95,8 +95,6 @@ def class_create(classname):
             return str(self.default)
         def __iter__(self):
             return str(self.default)
-        def __unicode__(self):
-            return str(u+self.default)
         def lower(self):
             return str(self.default).lower()
         pass
