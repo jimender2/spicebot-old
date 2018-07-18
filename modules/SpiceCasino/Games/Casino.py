@@ -492,7 +492,7 @@ def blackjack(bot,trigger,arg):
                 osd(bot, player, 'priv', "Please enter an amount you wish to bet")
             else:
                 if not mychoice2.isdigit():
-                    osd(bot, player, 'priv', 'Please bet a number between ' + str(minbet) + ' and ' + str(maxbet)))
+                    osd(bot, player, 'priv', 'Please bet a number between ' + str(minbet) + ' and ' + str(maxbet))
                 else:
                     mybet=int(mychoice2)
                     if (mybet<minbet or mybet>maxbet):
