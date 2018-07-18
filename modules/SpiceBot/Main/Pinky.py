@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "How can you have anything good if you don't eat your meat!?!"
     else:
         message = "How can you have any %s if you don't eat your meat!?!" % item
-    bot.say(message)
+    osd(bot, instigator, 'say', message)
