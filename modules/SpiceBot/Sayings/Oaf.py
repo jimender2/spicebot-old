@@ -36,4 +36,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             thingtheyremember = get_trigger_arg(bot,triggerargsarray,'1+') or get_trigger_arg(bot,oldthings,'random')
             message = "%s is so old, they remember shit like %s" % (oldperson, thingtheyremember)
 
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

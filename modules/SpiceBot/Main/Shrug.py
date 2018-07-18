@@ -16,4 +16,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(" ¯\_(ツ)_/¯ ")
+    osd(bot, trigger.sender, 'say', " ¯\_(ツ)_/¯ ")

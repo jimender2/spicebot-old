@@ -21,4 +21,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         item = "sniffing glue"
     else:
         item = target
-    bot.say("Looks like " + trigger.nick + " picked the wrong week to stop " + str(item) + "?")
+    osd(bot, trigger.sender, 'say', "Looks like " + trigger.nick + " picked the wrong week to stop " + str(item) + "?")

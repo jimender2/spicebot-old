@@ -42,13 +42,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             searchterm = data+site
             query = searchfor(bot,searchterm)
             if not query:
-                bot.say('I cannot find anything about that')
+                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    bot.say(query)
+                    osd(bot, trigger.sender, 'say', query)
                 else:
-                    bot.say(query)
-                    bot.say('Valid website not found')
+                    osd(bot, trigger.sender, 'say', query)
+                    osd(bot, trigger.sender, 'say', 'Valid website not found')
 
         elif mysite == 'meme':
             data = querystring.replace(' ', '+')
@@ -58,12 +58,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             searchterm = data+site
             query = searchfor(bot,searchterm)
             if not query:
-                bot.say('I cannot find anything about that')
+                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    bot.say(query)
+                    osd(bot, trigger.sender, 'say', query)
                 else:
-                    bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    osd(bot, trigger.sender, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'walmart':
             data = querystring.replace(' ', '+')
@@ -73,28 +73,28 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             searchterm = data+site
             query = searchfor(bot,searchterm)
             if not query:
-                bot.say('https://goo.gl/SsAhv')
+                osd(bot, trigger.sender, 'say', 'https://goo.gl/SsAhv')
             else:
                 if(str(query).startswith(url) or str(query).startswith(url2)):
-                    bot.say(query)
+                    osd(bot, trigger.sender, 'say', query)
                 else:
-                    bot.say('I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    osd(bot, trigger.sender, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'urban':
             query = urbansearch(bot,querystring)
-            bot.say(query)
+            osd(bot, trigger.sender, 'say', query)
 
         elif mysite == 'imdb' or mysite == 'movie':
             query = moviesearch(bot,querystring)
-            bot.say(query)
+            osd(bot, trigger.sender, 'say', query)
 
         else:
             data = searchterm.replace(' ', '+')
             query = searchfor(bot,data)
             if not query:
-                bot.say('I cannot find anything about that')
+                osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
-                bot.say(query)
+                osd(bot, trigger.sender, 'say', query)
 
 
 def searchfor(bot,data):
@@ -109,7 +109,7 @@ def urbansearch(bot,searchterm):
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
         data = json.loads(data)
     except:
-        return bot.say("Error connecting to urban dictionary")
+        return osd(bot, trigger.sender, 'say', "Error connecting to urban dictionary")
     if data['result_type'] == 'no_results':
         return "No results found for {0}".format(searchterm)
     result = data['list'][0]

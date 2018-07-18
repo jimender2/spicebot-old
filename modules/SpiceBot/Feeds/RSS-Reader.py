@@ -25,18 +25,18 @@ def reset(bot,trigger):
     feedselect = trigger.group(2)
     RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot,bot.nick)+"/RSS-Feeds/main/")
     if not feedselect:
-        bot.say("Which Feed are we resetting?")
+        osd(bot, trigger.sender, 'say', "Which Feed are we resetting?")
     elif feedselect == 'all':
         for filename in os.listdir(RSSFEEDSDIR):
-            bot.say('Resetting LastBuildTime for ' + str(filename))
+            osd(bot, trigger.sender, 'say', 'Resetting LastBuildTime for ' + str(filename))
             bot.db.set_nick_value(bot.nick, filename + '_lastbuildcurrent', None)
     else:
         istherafeed = bot.db.get_nick_value(bot.nick, feedselect + '_lastbuildcurrent') or 0
         if istherafeed:
-            bot.say('Resetting LastBuildTime for ' + str(feedselect))
+            osd(bot, trigger.sender, 'say', 'Resetting LastBuildTime for ' + str(feedselect))
             bot.db.set_nick_value(bot.nick, feedselect + '_lastbuildcurrent', None)
         else:
-            bot.say("There doesn't appear to be record of that feed.")
+            osd(bot, trigger.sender, 'say', "There doesn't appear to be record of that feed.")
 
 
 # Automatic Run

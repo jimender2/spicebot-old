@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     pointsreason = get_trigger_arg(bot, triggerargsarray, '2+')
     pointsreasonmsg = '.'
     if not channel.startswith("#"):
-        bot.notice(instigator + ", " + pointsstring.title() + " must be in a channel.", instigator)
+        osd(bot, trigger.nick, 'notice', pointsstring.title() + " must be in a channel.")
         return
     rando = randint(1, 666)
     commortarget = get_trigger_arg(bot, triggerargsarray, 1)
@@ -36,18 +36,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         commortarget = 'everyone'
 
     if commortarget == instigator:
-        bot.say("You cannot award " + pointsstring + " to yourself!")
+        osd(bot, trigger.sender, 'say', "You cannot award " + pointsstring + " to yourself!")
 
     elif commortarget == "check":
         target = get_trigger_arg(bot, triggerargsarray, 2) or instigator
         if target.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
             return
         points = get_database_value(bot, target, 'points') or 0
         if not points:
-            bot.say(target + ' has no ' + pointsstring + ' history.')
+            osd(bot, trigger.sender, 'say', target + ' has no ' + pointsstring + ' history.')
         else:
-            bot.say(target + ' has ' + str(points) + ' ' + pointsstring + '.')
+            osd(bot, trigger.sender, 'say', target + ' has ' + str(points) + ' ' + pointsstring + '.')
 
     elif commortarget == 'all' or commortarget == 'everybody' or commortarget == 'everyone':
         if pointsreason:
@@ -58,7 +58,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if pointsreason[-1] not in string.punctuation:
                 pointsreason = pointsreason + "."
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone'+ str(pointsreasonmsg))
-        bot.say(randopoints)
+        osd(bot, trigger.sender, 'say', randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
                 adjust_database_value(bot, u, 'points', rando)
@@ -76,18 +76,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not target:
             target = 'everyone'
         if target == instigator:
-            bot.say("You cannot take " + pointsstring + " from yourself!")
+            osd(bot, trigger.sender, 'say', "You cannot take " + pointsstring + " from yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = str(instigator + " takes " + str(rando) + ' ' + pointsstring + ' from everyone' + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
                     adjust_database_value(bot, u, 'points', -abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
         else:
             randopoints = str(instigator + " takes " + str(rando) + " " + pointsstring + " from " + target + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             adjust_database_value(bot, target, 'points', -abs(rando))
 
     elif commortarget == 'low':
@@ -104,18 +104,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if not target:
                 target = 'everyone'
         if target == instigator:
-            bot.say("You cannot give " + pointsstring + " to yourself!")
+            osd(bot, trigger.sender, 'say', "You cannot give " + pointsstring + " to yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = str(instigator + " gives " + str(rando) + ' ' + pointsstring + ' to everyone' + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
                     adjust_database_value(bot, u, 'points', abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
         else:
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to " + target + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'high':
@@ -132,18 +132,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not target:
             target = 'everyone'
         if target == instigator:
-            bot.say("You cannot give " + pointsstring + " to yourself!")
+            osd(bot, trigger.sender, 'say', "You cannot give " + pointsstring + " to yourself!")
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = str(instigator + " gives " + str(rando) + ' ' + pointsstring + ' from everyone' + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator:
                     adjust_database_value(bot, u, 'points', abs(rando))
         elif target.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
         else:
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to " + target + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             adjust_database_value(bot, target, 'points', abs(rando))
 
     elif commortarget == 'except':
@@ -160,18 +160,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             randopoints = "Oh sure. Who are you leaving out now?"
         elif target == 'all' or target == 'everybody' or target == 'everyone':
             randopoints = "That doesn't work, moron."
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
         elif target.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
         else:
             randopoints = str(instigator + " gives " + str(rando) + " " + pointsstring + " to everyone except " + target + str(pointsreasonmsg))
-            bot.say(randopoints)
+            osd(bot, trigger.sender, 'say', randopoints)
             for u in bot.users:
                 if u in botusersarray and u != bot.nick and u != instigator and u != target:
                     adjust_database_value(bot, u, 'points', abs(rando))
 
     elif commortarget.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     else:
         if pointsreason:
             if pointsreason[-1] not in string.punctuation:
@@ -181,7 +181,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 pointsreasonmsg = ' for ' + str(pointsreason)
         randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to '+commortarget+str(pointsreasonmsg))
-        bot.say(randopoints)
+        osd(bot, trigger.sender, 'say', randopoints)
         adjust_database_value(bot, commortarget, 'points', rando)
 
 def addpoints(bot, target, amount):

@@ -44,9 +44,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif deckchoice==3:
           msg=get_trigger_arg(bot,neutraldeck,'random')
           payout = 0
-        bot.say(instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg + ".")
+        osd(bot, trigger.sender, 'say', instigator + " risks " + str(monopolyfee) +" Spicebucks to draw a card from the chance deck! " + instigator + " gets " + msg + ".")
         if (balance + payout)<0:
           payout = balance
         adjust_database_value(bot,instigator, 'spicebucks_bank', payout)
     else:
-        bot.notice("You need " + str(monopolyfee) + " Spicebucks to use this command.",instigator)
+        osd(bot, instigator, 'priv', "You need " + str(monopolyfee) + " Spicebucks to use this command.")

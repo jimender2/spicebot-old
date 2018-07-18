@@ -22,5 +22,5 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     answer = get_trigger_arg(bot, logicarray, 'random')
-    bot.say(answer)
-    bot.say("I must... but I can't... But I must... This does not compute...")
+    osd(bot, trigger.sender, 'say', answer)
+    osd(bot, trigger.sender, 'say', "I must... but I can't... But I must... This does not compute...")

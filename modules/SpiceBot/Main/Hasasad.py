@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.action("sits in the corner and cries.")
+    osd(bot, trigger.sender, 'action', "sits in the corner and cries.")

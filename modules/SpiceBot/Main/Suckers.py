@@ -19,9 +19,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     myline = get_trigger_arg(bot, triggerargsarray, 0)
     triggerword = get_trigger_arg(bot, triggerargsarray, 1)
     if not myline:
-        bot.say("Who/what are for suckers??")
+        osd(bot, trigger.sender, 'say', "Who/what are for suckers??")
     elif bot.nick in myline:
-        bot.say("Do you really feel that way?")
+        osd(bot, trigger.sender, 'say', "Do you really feel that way?")
     else:
         if myline.endswith('ing'):
             myline = str(myline + " is")
@@ -31,4 +31,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             myline = str(myline + "s are")
         else:
             myline = str(myline + " are")
-        bot.say(myline + ' for suckers!!')
+        osd(bot, trigger.sender, 'say', myline + ' for suckers!!')

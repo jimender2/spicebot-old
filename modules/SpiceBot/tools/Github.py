@@ -61,13 +61,13 @@ def execute_main(bot, trigger):
     if badquery or baduser or noquery:
         if badquery:
             if inputtext.startswith('duel'):
-                bot.say("The duels developer has already said no to that. Stop asking.")
+                osd(bot, trigger.sender, 'say', "The duels developer has already said no to that. Stop asking.")
             else:
-                bot.say("That feature has already been rejected by the dev team.")
+                osd(bot, trigger.sender, 'say', "That feature has already been rejected by the dev team.")
         if baduser:
-            bot.say("Due to abusing this module you have been banned from using it, %s" % instigator)
+            osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % instigator)
         if noquery:
-            bot.say("What feature/issue do you want to post?")
+            osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
     else:
         if inputtext.startswith('duel'):
             title = "DUELS: " + title
@@ -101,7 +101,7 @@ def make_github_issue(bot, body, labels, title, assignee, instigator):
                  'labels': labels}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
-        bot.notice("Successfully created " + title, instigator)
+        osd(bot, instigator, 'priv', "Successfully created " + title)
     else:
-        bot.notice("Could not create " + title, instigator)
-        bot.notice(str('Response:' + r.content), instigator)
+        osd(bot, instigator, 'priv', "Could not create " + title)
+        osd(bot, instigator, 'priv', str('Response:' + r.content))

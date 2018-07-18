@@ -143,4 +143,4 @@ def findandreplace(bot, trigger):
     else:
         phrase = '%s %s' % (trigger.nick, new_phrase)
 
-    bot.say(phrase)
+    osd(bot, trigger.sender, 'say', phrase)

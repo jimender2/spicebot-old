@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 0)
     if not target:
-        bot.say("What don't we need?")
+        osd(bot, trigger.sender, 'say', "What don't we need?")
     else:
-        bot.say(trigger.group(2) + "? weee dun neeeed no steenkin " + trigger.group(2) + "!!")
+        osd(bot, trigger.sender, 'say', trigger.group(2) + "? weee dun neeeed no steenkin " + trigger.group(2) + "!!")

@@ -76,4 +76,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = str('A wiki page for this is in progress.')
         else:
             message = str('An error occurred. Please try again later.')
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not trigger.group(2):
         myline = randomfra()
-        bot.say(myline)
+        osd(bot, trigger.sender, 'say', myline)
 
 
 # random rule

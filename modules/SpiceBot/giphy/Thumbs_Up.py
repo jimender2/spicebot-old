@@ -13,29 +13,28 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author jimender2
-
-
-@sopel.module.commands('tmyk', 'themoreyouknow', 'myk', 'moreyouknow')
+@sopel.module.commands('thumbsup')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
-
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif = magicFingers()
+    gif = getgif()
+    instigator = trigger.nick
+    responsemsg = [' a thumbs up.', ' a pat on the back.', ' a sarcastic smile.', ' a high five.']
     if gif:
-        bot.say(gif)
+        osd(bot, trigger.sender, 'say', gif)
     else:
-        bot.action('the more you know... **magic fingers**')
+        osd(bot, trigger.sender, 'action', 'gives ' + instigator + random.choice(responsemsg))
 
 
-def magicFingers():
+## Get GIF from giphy
+def getgif():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
-    url = 'http://api.giphy.com/v1/gifs/search?q=the%20more%20you%20know&api_key=' + api + '&limit=50'
+    url = 'http://api.giphy.com/v1/gifs/search?q=thumbsup&api_key=' + api + '&limit=100'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,49)
+    randno = randint(0,99)
     id = data['data'][randno]['id']
     gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     return gif

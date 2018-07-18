@@ -22,9 +22,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     gif = shakeshead()
     if gif:
-        bot.say(gif)
+        osd(bot, trigger.sender, 'say', gif)
     else:
-        bot.action('shakes his head...')
+        osd(bot, trigger.sender, 'action', 'shakes his head...')
 
 def shakeshead():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'

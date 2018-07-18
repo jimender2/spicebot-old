@@ -32,25 +32,25 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             message = "Added to database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             message = "That response is already in the database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
     elif command == "remove":
         if inputstring not in existingarray:
             message = "That response was not found in the database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
             message = "Removed from database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
     elif command == "count":
         messagecount = len(existingarray)
         message = "There are currently " + str(messagecount) + " responses for that in the database."
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
 
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
@@ -62,25 +62,25 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     # No target specified
     if not target:
-        bot.say("Who/what would you like to murder?")
+        osd(bot, trigger.sender, 'say', "Who/what would you like to murder?")
 
     # Cannot kill spicebot
     elif target == bot.nick:
-        bot.say("You cannot kill a nonliving entity")
+        osd(bot, trigger.sender, 'say', "You cannot kill a nonliving entity")
 
     # Cannot kill self
     elif target == instigator:
         message = "Killing yourself would be suicide, " + instigator + ", not murder. Idiot."
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
 
     # Target is fine
     else:
         if not reason:
             message = instigator + " murders " + target + " with " + msg + "."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             message = instigator + " murders " + target + " with " + msg + " for " + reason + "."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
 
 
 def get_database_value(bot, nick, databasekey):

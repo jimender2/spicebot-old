@@ -24,17 +24,17 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         channel = c
     if joke:
         if not target:
-            bot.say(joke)
+            osd(bot, trigger.sender, 'say', joke)
         else:
             if not target.lower() not in bot.privileges[channel.lower()]:
                 if target == bot.nick:
-                    bot.say('I have no mother' )
+                    osd(bot, trigger.sender, 'say', 'I have no mother' )
                 else:
-                    bot.say('Hey, ' + target + '! ' + joke)
+                    osd(bot, trigger.sender, 'say', 'Hey, ' + target + '! ' + joke)
             else:
-                bot.say(target + ' is not here but ' + trigger.nick + ' ' + joke )
+                osd(bot, trigger.sender, 'say', target + ' is not here but ' + trigger.nick + ' ' + joke )
     else:
-        bot.say('Please leave the mothers out of it.')
+        osd(bot, trigger.sender, 'say', 'Please leave the mothers out of it.')
 
 def getJoke():
     url = 'http://api.yomomma.info'

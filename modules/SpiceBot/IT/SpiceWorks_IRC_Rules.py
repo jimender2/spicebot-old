@@ -46,6 +46,6 @@ def execute_main(bot, trigger):
                 except:
                     myline= 'That doesnt appear to be a rule number.'
     if myline == 'giggles':
-        bot.action(myline)
+        osd(bot, trigger.sender, 'action', myline)
     else:
-        bot.say(myline)
+        osd(bot, trigger.sender, 'say', myline)

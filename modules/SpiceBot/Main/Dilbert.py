@@ -24,4 +24,4 @@ def execute_main(bot, trigger,triggerargsarray):
         message = "http://dilbert.com/strip/" + currentdate
     else:
         message = 'http://dilbert.com/search_results?terms=' + target.replace(' ', '+')
-    bot.say(str(message))
+    osd(bot, trigger.sender, 'say', str(message))

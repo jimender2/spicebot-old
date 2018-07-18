@@ -43,34 +43,34 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 	if not target:
 		mynumber =  getnumber(maxcomics)
-		bot.say('https://xkcd.com/' + str(mynumber))
+		osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 	else:
 		data = target.strip()
 		if data.isdigit():
 			mynumber=int(data)
 			if not mynumber<= int(maxcomics) and mynumber>=1:
-				bot.say('Please enter a number between 1 and ' +str(maxcomics))
+				osd(bot, trigger.sender, 'say', 'Please enter a number between 1 and ' +str(maxcomics))
 				mynumber = maxcomics
-			bot.say('https://xkcd.com/' + str(mynumber))
+			osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 		else:
 			data.lower()
 			data=data.replace(' ', '%20')
 			if (data == 'today' or data=='latest' or data=='new'):
 				mynumber=maxcomics
-				bot.say('https://xkcd.com/' + str(mynumber))
+				osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 			elif (data == 'first' or data=='oldest'):
 				mynumber = 1
-				bot.say('https://xkcd.com/' + str(mynumber))
+				osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 			elif data == 'random':
 				mynumber = getnumber(maxcomics)
-				bot.say('https://xkcd.com/' + str(mynumber))
+				osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 	  		else:
 				var = requests.get(r'http://www.google.com/search?q=' + data + '%20site:xkcd.com' + '&btnI')
 				if str(var.url).startswith('https://xkcd.com/'):
-					bot.say(str(var.url))
+					osd(bot, trigger.sender, 'say', str(var.url))
 				else:
 					mynumber =  getnumber(maxcomics)
-					bot.say('https://xkcd.com/' + str(mynumber))
+					osd(bot, trigger.sender, 'say', 'https://xkcd.com/' + str(mynumber))
 
 def get_info(number=None, verify_ssl=True):
 	if number:

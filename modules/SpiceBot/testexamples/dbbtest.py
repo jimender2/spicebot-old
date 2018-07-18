@@ -26,4 +26,4 @@ from sopel.module import commands, rule, example, priority
 
 @sopel.module.commands('dbbtest')
 def execute_main(bot, trigger):
-    bot.say("This is deathbybandaid's test module")
+    osd(bot, trigger.sender, 'say', "This is deathbybandaid's test module")

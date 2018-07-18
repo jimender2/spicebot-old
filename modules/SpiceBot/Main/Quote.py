@@ -20,9 +20,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     quote = getQuote()
     if quote:
-        bot.say(quote)
+        osd(bot, trigger.sender, 'say', quote)
     else:
-        bot.say('There is nothing to quote - Abraham Lincoln')
+        osd(bot, trigger.sender, 'say', 'There is nothing to quote - Abraham Lincoln')
 
 def getQuote():
     url = 'https://talaikis.com/api/quotes/random/'

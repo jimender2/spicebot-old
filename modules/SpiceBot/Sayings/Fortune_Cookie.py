@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         filetocheck=devcookies #Dev branch
     myline = randomcookie(filetocheck)
-    bot.say(myline)
+    osd(bot, trigger.sender, 'say', myline)
 
 # random cookie
 def randomcookie(filetocheck):

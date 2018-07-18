@@ -106,7 +106,7 @@ def spicebot_prerun(bot,trigger):
     adjust_database_value(bot, trigger.nick, "spicebottotalusage", 1) ## User usage of bot overall
 
     ## message, if any
-    bot.notice(message, instigator)
+    osd(bot, trigger.sender, 'priv', message)
 
     ## Send Status Forward
     return enablestatus, triggerargsarray
@@ -168,7 +168,7 @@ def autoblock(bot):
                 set_database_value(bot, u, 'disenable', None)
                 warned = get_database_value(bot, u, 'hourwarned')
                 if not warned:
-                    bot.notice(u + ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest", u)
+                    osd(bot, u, 'priv', ", your access to spicebot has been disabled for an hour. If you want to test her, use ##SpiceBotTest")
                     set_database_value(bot, u, 'hourwarned', 'true')
 
 #####################################################################################################################################

@@ -27,12 +27,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         query = str(query)
         playlist = getplaylist(query)
         if playlist == party:
-            bot.say('You have selected the Party Playlist')
+            osd(bot, trigger.sender, 'say', 'You have selected the Party Playlist')
     song = getsong(playlist)
     if song:
-        bot.say(trigger.nick + ' puts a nickel in the jukebox and it starts to play ' + song)
+        osd(bot, trigger.sender, 'say', trigger.nick + ' puts a nickel in the jukebox and it starts to play ' + song)
     else:
-        bot.say('The jukebox starts playing ' + 'Never Gonna Give You Up')
+        osd(bot, trigger.sender, 'say', 'The jukebox starts playing ' + 'Never Gonna Give You Up')
 
 
 def getsong(playlist):

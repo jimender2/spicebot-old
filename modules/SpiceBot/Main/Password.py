@@ -20,8 +20,8 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     password = get_trigger_arg(bot, triggerargsarray, 0)
     if not password:
-        bot.say("If you type your password here, I will obscure it.")
+        osd(bot, trigger.sender, 'say', "If you type your password here, I will obscure it.")
     else:
         amountofletters = len(password)
         mystring = "*" * amountofletters
-        bot.say("Your password is: " + str(mystring))
+        osd(bot, trigger.sender, 'say', "Your password is: " + str(mystring))

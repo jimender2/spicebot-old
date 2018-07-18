@@ -28,4 +28,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
     if not inputstring:
         inputstring = "this biznatch"
-    bot.say("%s thinks it's starting to get a little misty up in %s" % (instigator, inputstring))
+    osd(bot, trigger.sender, 'say', "%s thinks it's starting to get a little misty up in %s" % (instigator, inputstring))

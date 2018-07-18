@@ -27,10 +27,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         parta = "pokes "
         partb = " with a stick."
     if not target:
-        bot.say(trigger.nick + " points awkwardly at nothing.")
+        osd(bot, trigger.sender, 'say', trigger.nick + " points awkwardly at nothing.")
     elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif target == bot.nick:
-        bot.say("I am not going to poke myself for your amusement.")
+        osd(bot, trigger.sender, 'say', "I am not going to poke myself for your amusement.")
     else:
-        bot.action(parta + target + partb)
+        osd(bot, trigger.sender, 'action', parta + target + partb)

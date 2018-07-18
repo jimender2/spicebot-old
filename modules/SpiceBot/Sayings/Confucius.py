@@ -54,4 +54,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "No response found. Have any been added?"
         elif not message.startswith("Confucius"):
             message = "Confucius say " + message
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

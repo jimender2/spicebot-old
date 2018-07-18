@@ -44,4 +44,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             message = "%s whacks %s with a 42 pound sack of primo cheeba because %s." % (instigator, target, reason)
 
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

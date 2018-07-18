@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(parseString(
+    osd(bot, trigger.sender, 'say', parseString(
         urllib.urlopen('http://developerexcuses.com').read().replace('&', '')).
         getElementsByTagName('body')[0].getElementsByTagName('div')[0].
         getElementsByTagName('center')[0].getElementsByTagName('a')[0].

@@ -27,21 +27,21 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     # No target specified
     if not target:
-        bot.say("Who/what would you like to roll your eyes at?")
+        osd(bot, trigger.sender, 'say', "Who/what would you like to roll your eyes at?")
 
     # Yourself
     elif target == instigator:
-        bot.say("Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
+        osd(bot, trigger.sender, 'say', "Unless you pop your eyes out of your head you can't roll your eyes at yourself.")
 
     # spicebot
     elif target == bot.nick:
-        bot.say("Don't even bother. I can't see you")
+        osd(bot, trigger.sender, 'say', "Don't even bother. I can't see you")
 
     # Target is fine
     else:
         if not reason:
             message = instigator + " rolls their eyes at %s." % target
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             message = instigator + " rolls their eyes at %s because %s." % (target, reason)
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)

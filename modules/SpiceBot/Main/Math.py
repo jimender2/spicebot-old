@@ -23,4 +23,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     displaymsg = get_trigger_arg(bot, responselist,'random')
-    bot.say(displaymsg)
+    osd(bot, trigger.sender, 'say', displaymsg)

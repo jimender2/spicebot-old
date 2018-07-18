@@ -29,7 +29,7 @@ def execute_main(bot, trigger):
     """Reports when and where the user was last seen."""
     nick = trigger.group(3)
     if not nick:
-        bot.say(".seen <nick> - Reports when <nick> was last seen.")
+        osd(bot, trigger.sender, 'say', ".seen <nick> - Reports when <nick> was last seen.")
     elif nick == bot.nick:
         bot.reply("I'm right here!")
     else:
@@ -53,9 +53,9 @@ def execute_main(bot, trigger):
                     msg = msg + " in here, saying " + message
             else:
                 msg += " in another channel."
-            bot.say(str(trigger.nick) + ': ' + msg)
+            osd(bot, trigger.sender, 'say', str(trigger.nick) + ': ' + msg)
         else:
-            bot.say("Sorry, I haven't seen {} around.".format(nick))
+            osd(bot, trigger.sender, 'say', "Sorry, I haven't seen {} around.".format(nick))
 
 
 @thread(False)

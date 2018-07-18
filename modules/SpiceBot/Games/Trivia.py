@@ -54,24 +54,24 @@ def askQuestion(bot):
 
     if type == "boolean":
         question = "(T)rue or (F)alse: " + question
-        bot.say("Question: " + question)
+        osd(bot, trigger.sender, 'say', "Question: " + question)
     else:
-        bot.say("Question: " + question)
-        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+        osd(bot, trigger.sender, 'say', "Question: " + question)
+        osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
 
 def getQuestionFromDb(bot):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
-    bot.say("Still waiting for someone to answer this one: " + question)
+    osd(bot, trigger.sender, 'say', "Still waiting for someone to answer this one: " + question)
     #if len(str(arrAnswers) > 2):
     try:
-        bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
+        osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
         #correctanswer = get_database_value(bot,'triviauser','triviaa')
-        #bot.say("The answer is : " + correctanswer)
+        #osd(bot, trigger.sender, 'say', "The answer is : " + correctanswer)
     except IndexError:
-        bot.say("Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
+        osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
     #else:
-    #bot.say("Choices:" + arrAnswers[0] + " " + arrAnswers[1])
+    #osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1])
 
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
@@ -126,14 +126,14 @@ def answer(bot,trigger,triggerargsarray):
                 if useranswer == correctanswer:
                    resetDbValues(bot)
                    Spicebucks.transfer(bot,'SpiceBank',guesser,5)
-                   bot.say(guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
+                   osd(bot, trigger.sender, 'say', guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                 else:
-                    bot.say("Sorry, " + guesser + ", that is incorrect.")
+                    osd(bot, trigger.sender, 'say', "Sorry, " + guesser + ", that is incorrect.")
             else:
                 timeDiff = 10 - lastAttemptTime
-                bot.say(guesser + ", you must wait " + str(round(timeDiff,2)) + " seconds before attempting to guess again!")
+                osd(bot, trigger.sender, 'say', guesser + ", you must wait " + str(round(timeDiff,2)) + " seconds before attempting to guess again!")
     else:
-        bot.say("The last question has been answered! Type .trivia for a new question!")
+        osd(bot, trigger.sender, 'say', "The last question has been answered! Type .trivia for a new question!")
 
 
 def splitEntry(entry):

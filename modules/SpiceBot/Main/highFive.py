@@ -29,15 +29,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 " high-fives " + target + " too enthusiastically and breaks their hand."]
 
     if not target:
-        bot.say(trigger.nick + ' high fives everyone!')
+        osd(bot, trigger.sender, 'say', trigger.nick + ' high fives everyone!')
     elif target == 'group':
-        bot.say(trigger.nick + ', high fives everyone all at once.')
+        osd(bot, trigger.sender, 'say', trigger.nick + ', high fives everyone all at once.')
     elif target == 'all' or target == 'everyone' or target == 'everyones':
-        bot.say(trigger.nick + " high fives, one at a time!")
+        osd(bot, trigger.sender, 'say', trigger.nick + " high fives, one at a time!")
     elif target != bot.nick:
         failchance = random.randint(1,failureodds)
         if failchance == 1:
             hffail = get_trigger_arg(bot, backfires,'random')
-            bot.say(trigger.nick + hffail)
+            osd(bot, trigger.sender, 'say', trigger.nick + hffail)
         else:
-            bot.say(trigger.nick + " high fives %s, maintaining eye contact the entire time!" % target)
+            osd(bot, trigger.sender, 'say', trigger.nick + " high fives %s, maintaining eye contact the entire time!" % target)

@@ -22,4 +22,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "No evidence, no crime."
     else:
         message = "Pictures or it never happened."
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

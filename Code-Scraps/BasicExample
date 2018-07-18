@@ -14,7 +14,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger):
     if not trigger.group(2):
-        bot.say('response')
+        osd(bot, trigger.sender, 'say', 'response')
 
 ## React to /me (ACTION) challenges
 #@module.rule('^(?:challenges|(?:fi(?:ght|te)|duel)s(?:\s+with)?)\s+([a-zA-Z0-9\[\]\\`_\^\{\|\}-]{1,32}).*')
@@ -44,16 +44,16 @@ def execute_main(bot, trigger):
 ##############
 
 # bot.nick = BotNickName
-# bot.say('response') = simple reply
-# bot.action('response') = the same as a /me action
-# bot.notice('response', instigator) = send a privmsg to a user directly
+# osd(bot, trigger.sender, 'say', 'response') = simple reply
+# osd(bot, trigger.sender, 'action', 'response') = the same as a /me action
+# osd(bot, nick, 'priv', 'response') = send a privmsg to a user directly
 
 # * if a value is a number it is best to put str(value)
 
-# * sometimes you can only have so many combinations of variables and strings in a bot.say()
+# * sometimes you can only have so many combinations of variables and strings in a osd(bot, trigger.sender, 'say', )
 # avoind this by doing
 # message = str(long + string + is + too + long + for + botsay)
-# bot.say(message)
+# osd(bot, trigger.sender, 'say', message)
 
 ##################
 ## Funner Usage ##
@@ -83,7 +83,7 @@ def execute_main(bot, trigger):
 #per_line = 15
 #for i in range(0, len(chunks), per_line):
 #    currentline = " ".join(chunks[i:i + per_line])
-#    bot.say(str(currentline))
+#    osd(bot, trigger.sender, 'say', str(currentline))
 
 
 
@@ -126,7 +126,7 @@ def adjust_database_value(bot, nick, databasekey, value):
 #missions  = ["Protect Technical Angel","INSTALL MOAR PATCHES"]
 #mission = random.randint(0,len(missions) - 1)
 #mission = str(missions [mission])
-# bot.say(mission)
+# osd(bot, trigger.sender, 'say', mission)
 
 ## append and remove from an array
 # weaponslist.append(weaponchange)

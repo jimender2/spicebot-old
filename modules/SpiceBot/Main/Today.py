@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if whatdayofweek == 'Sunday':
         specialmsg = ""
     botmotd = str("Today is " + str(whatdayofweek) + ". " + str(daystilfriday) + " " + str(specialmsg))
-    bot.say(botmotd)
+    osd(bot, trigger.sender, 'say', botmotd)
 
 def howlonguntilfriday(whatistoday):
     fridaynumber = '4'

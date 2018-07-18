@@ -19,10 +19,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if not target:
-        bot.say("Did you mean to thump somebody?")
+        osd(bot, trigger.sender, 'say', "Did you mean to thump somebody?")
     elif target.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif target == bot.nick:
-        bot.say("Well, that's not nice!")
+        osd(bot, trigger.sender, 'say', "Well, that's not nice!")
     else:
-        bot.action('thumps ' + target + ' on behalf of ' + instigator)
+        osd(bot, trigger.sender, 'action', 'thumps ' + target + ' on behalf of ' + instigator)

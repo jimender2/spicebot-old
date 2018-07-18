@@ -45,7 +45,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "money":
         amount = 1000
         spicebucks(bot, instigator, "plus", amount)
-        bot.say("you got money")
+        osd(bot, trigger.sender, 'say', "you got money")
 
     else:
         if target == instigator:

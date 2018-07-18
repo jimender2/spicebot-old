@@ -16,4 +16,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(trigger.nick + " shakes their booty in some random fuckery way!")
+    osd(bot, trigger.sender, 'say', trigger.nick + " shakes their booty in some random fuckery way!")

@@ -21,9 +21,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     joke = getDadJoke()
     if joke:
-        bot.say(joke)
+        osd(bot, trigger.sender, 'say', joke)
     else:
-        bot.say('My humor module is broken.')
+        osd(bot, trigger.sender, 'say', 'My humor module is broken.')
 
 
 def getDadJoke():
