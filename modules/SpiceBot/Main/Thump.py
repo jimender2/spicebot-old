@@ -25,4 +25,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target == bot.nick:
         osd(bot, trigger.sender, 'say', "Well, that's not nice!")
     else:
-        bot.action('thumps ' + target + ' on behalf of ' + instigator)
+        osd(bot, trigger.sender, 'action', 'thumps ' + target + ' on behalf of ' + instigator)

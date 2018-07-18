@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if gif:
         osd(bot, trigger.sender, 'say', gif)
     else:
-        bot.action('gives ' + instigator + random.choice(responsemsg))
+        osd(bot, trigger.sender, 'action', 'gives ' + instigator + random.choice(responsemsg))
 
 
 ## Get GIF from giphy

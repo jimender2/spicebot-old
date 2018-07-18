@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target.lower() not in bot.privileges[channel.lower()]:
         osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif target == bot.nick:
-        bot.action("blushes",channel)
+        osd(bot, trigger.sender, 'action', "blushes",channel)
     elif target == trigger.nick:
         osd(bot, trigger.sender, 'say', "Awww. Why don't you pat yourself on the back while you're at it?")
     else:

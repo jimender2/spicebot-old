@@ -22,7 +22,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if decide == 4:
         osd(bot, trigger.sender, 'say', "FFS "+ instigator + ", of course it's bloody well on!")
     elif decide == 5:
-        bot.action("clocks " + instigator + " around the head with a mic stand.")
+        osd(bot, trigger.sender, 'action', "clocks " + instigator + " around the head with a mic stand.")
         osd(bot, trigger.sender, 'say', instigator + ", if you do that again you'll be eating a speaker.")
     else:
         osd(bot, trigger.sender, 'say', "*Tap, Tap* ...is this thing on?")

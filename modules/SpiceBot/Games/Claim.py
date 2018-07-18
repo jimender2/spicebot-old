@@ -162,7 +162,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target == instigator:
         okaytoclaim = 0
         osd(bot, trigger.sender, 'say', "You can't claim yourself!")
-        bot.action('mutters "moron".')
+        osd(bot, trigger.sender, 'action', 'mutters "moron".')
 
     # Can't claim the bot
     elif target.lower() in botnicks:
@@ -182,7 +182,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # Can't claim your claimant
     elif target.lower() == mastername.lower():
         okaytoclaim = 0
-        bot.action("facepalms")
+        osd(bot, trigger.sender, 'action', "facepalms")
         osd(bot, trigger.sender, 'say', "You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
@@ -196,7 +196,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target in protectednicks:
         okaytoclaim = 0
         osd(bot, trigger.sender, 'say', target + " is under my protection, " + instigator)
-        bot.action("pisses all over " + instigator + " to teach them a lesson")
+        osd(bot, trigger.sender, 'action', "pisses all over " + instigator + " to teach them a lesson")
 
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:

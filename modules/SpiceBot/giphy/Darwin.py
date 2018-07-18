@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if gif:
         osd(bot, trigger.sender, 'say', "Result no: %s: %s" % (randno, gif))
     else:
-        bot.action('is not a contender for the Darwin award, thank fuck.')
+        osd(bot, trigger.sender, 'action', 'is not a contender for the Darwin award, thank fuck.')
 
 
 def getGif(query):

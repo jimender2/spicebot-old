@@ -263,9 +263,9 @@ def osd(bot, target_array, text_type, text_array):
             elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
-                osd(bot, trigger.sender, 'say', combinedline)
+                bot.say(combinedline)
             else:
-                osd(bot, trigger.sender, 'say', combinedline)
+                bot.say(combinedline)
             textpartsleft = textpartsleft - 1
 
 

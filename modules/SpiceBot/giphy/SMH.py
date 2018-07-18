@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if gif:
         osd(bot, trigger.sender, 'say', gif)
     else:
-        bot.action('shakes his head...')
+        osd(bot, trigger.sender, 'action', 'shakes his head...')
 
 def shakeshead():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'

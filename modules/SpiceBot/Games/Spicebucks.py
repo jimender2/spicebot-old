@@ -48,7 +48,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                     if (target=='notarget' or target=='everyone'):
                         target = 'Everyone'
-                        bot.action("rains " + trigger.nick + "'s Spicebucks down on " + target)
+                        osd(bot, trigger.sender, 'action', "rains " + trigger.nick + "'s Spicebucks down on " + target)
                     else:
                         if not checkpayday(bot,trigger.nick)==0:
                             if (target == 'random' or target == trigger.nick or target==bot.nick):
@@ -141,11 +141,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         inbank = bank(bot,trigger.nick)
                         auditamount = int(inbank *.20)
                         if auditamount>0:
-                            bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
+                            osd(bot, trigger.sender, 'action', "carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
                             spicebucks(bot,trigger.nick,'minus',auditamount)
 
                         else:
-                            bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
+                            osd(bot, trigger.sender, 'action', "carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                             reset_database_value(bot,target,'usedtaxes')
                     else:
                         if get_database_value(bot,trigger.nick,'usedtaxes')<2:
@@ -154,18 +154,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                             if taxtotal >=100:
                                 kickback=int(taxtotal*0.1)
                                 adjust_database_value(bot,trigger.nick,'spicebucks_bank',kickback)
-                                bot.action("gives " + trigger.nick + " a kickback of " +  str(kickback) + " for bringing this delinquent to our attention")
+                                osd(bot, trigger.sender, 'action', "gives " + trigger.nick + " a kickback of " +  str(kickback) + " for bringing this delinquent to our attention")
 
 
                         else:
                             inbank = bank(bot,trigger.nick)
                             auditamount = int(inbank *.20)
                             if auditamount>0:
-                                bot.action("carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
+                                osd(bot, trigger.sender, 'action', "carries out an audit on " + trigger.nick+ " and takes " + str(auditamount)+ " spicebucks for the pleasure.")
                                 spicebucks(bot,trigger.nick,'minus',auditamount)
 
                             else:
-                                bot.action("carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
+                                osd(bot, trigger.sender, 'action', "carries out an audit on " + trigger.nick+ " but finds no spicebucks to take.")
                                 reset_database_value(bot,target,'usedtaxes')
                 else:
                     adjust_database_value(bot,trigger.nick,'usedtaxes',1)

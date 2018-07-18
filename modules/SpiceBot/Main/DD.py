@@ -27,10 +27,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not target:
         osd(bot, trigger.sender, 'say', "Who are you pissed at now?")
     elif isvalid == 1:
-        bot.action('punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')
+        osd(bot, trigger.sender, 'action', 'punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')
     elif isvalid == 0:
         osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif isvalid == 3:
         osd(bot, trigger.sender, 'say', "Ummm, no. Dumbass.")
     else:
-        bot.action('punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')
+        osd(bot, trigger.sender, 'action', 'punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')

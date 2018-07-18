@@ -33,4 +33,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target == bot.nick:
         osd(bot, trigger.sender, 'say', "I am not going to poke myself for your amusement.")
     else:
-        bot.action(parta + target + partb)
+        osd(bot, trigger.sender, 'action', parta + target + partb)

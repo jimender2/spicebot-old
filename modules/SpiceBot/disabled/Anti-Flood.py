@@ -48,4 +48,4 @@ def antiflood(bot, trigger):
         lastnicksubmitwarned = get_database_value(bot, channel, 'automod_antifloodnickwarned') or bot.nick
         if lastnicksubmitwarned != instigator and floodyell:
             set_database_value(bot, channel, 'automod_antifloodnickwarned', instigator)
-            bot.msg(channel,antifloodwarning)
+            osd(bot, channel, 'action', ,antifloodwarning)

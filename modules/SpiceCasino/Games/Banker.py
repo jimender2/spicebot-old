@@ -81,11 +81,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         inbank = bank(bot,player)
                         auditamount = int(inbank * .20)
                         if auditamount > 0:
-                            bot.action("carries out an audit on " + player + " and takes " + str(auditamount) + " spicebucks for the pleasure.")
+                            osd(bot, trigger.sender, 'action', "carries out an audit on " + player + " and takes " + str(auditamount) + " spicebucks for the pleasure.")
                             spicebucks(bot,player,'minus',auditamount)
 
                         else:
-                            bot.action("carries out an audit on " + player + " but finds no spicebucks to take.")
+                            osd(bot, trigger.sender, 'action', "carries out an audit on " + player + " but finds no spicebucks to take.")
                             reset_database_value(bot,target,'usedtaxes')
                     else:
                         if get_database_value(bot,player,'usedtaxes') < 2:
@@ -94,16 +94,16 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                             if taxtotal >= 100:
                                 kickback = int(taxtotal*0.1)
                                 adjust_database_value(bot,player,'spicebucks_bank',kickback)
-                                bot.action("gives " + player + " a kickback of " + str(kickback) + " for bringing this delinquent to our attention")
+                                osd(bot, trigger.sender, 'action', "gives " + player + " a kickback of " + str(kickback) + " for bringing this delinquent to our attention")
                         else:
                             inbank = bank(bot,player)
                             auditamount = int(inbank * .20)
                             if auditamount > 0:
-                                bot.action("carries out an audit on " + player + " and takes " + str(auditamount) + " spicebucks for the pleasure.")
+                                osd(bot, trigger.sender, 'action', "carries out an audit on " + player + " and takes " + str(auditamount) + " spicebucks for the pleasure.")
                                 spicebucks(bot,player,'minus',auditamount)
 
                             else:
-                                bot.action("carries out an audit on " + player + " but finds no spicebucks to take.")
+                                osd(bot, trigger.sender, 'action', "carries out an audit on " + player + " but finds no spicebucks to take.")
                                 reset_database_value(bot,target,'usedtaxes')
                 else:
                     adjust_database_value(bot,player,'usedtaxes',1)

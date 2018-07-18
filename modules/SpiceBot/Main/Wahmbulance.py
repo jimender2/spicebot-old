@@ -21,6 +21,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if validtarget == 1:
         osd(bot, trigger.sender, 'say', trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
     elif validtarget==2 or validtarget==3:
-        bot.action("calls the waaaaaaaaaaahhhhhhmbulance for " + trigger.nick)
+        osd(bot, trigger.sender, 'action', "calls the waaaaaaaaaaahhhhhhmbulance for " + trigger.nick)
     else:
         osd(bot, trigger.sender, 'say', trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance.")

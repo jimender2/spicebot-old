@@ -40,4 +40,4 @@ def terminateit(bot, trigger, triggerargsarray, target):
     if target == 'notarget':
         osd(bot, trigger.sender, 'say', "Terminate it with extreme prejudice.")
     elif target:
-        bot.action("terminates " + target + " with extreme prejudice.")
+        osd(bot, trigger.sender, 'action', "terminates " + target + " with extreme prejudice.")

@@ -45,8 +45,8 @@ def execute_main(bot, trigger):
 
 # bot.nick = BotNickName
 # osd(bot, trigger.sender, 'say', 'response') = simple reply
-# bot.action('response') = the same as a /me action
-# bot.notice('response', instigator) = send a privmsg to a user directly
+# osd(bot, trigger.sender, 'action', 'response') = the same as a /me action
+# osd(bot, nick, 'priv', 'response') = send a privmsg to a user directly
 
 # * if a value is a number it is best to put str(value)
 

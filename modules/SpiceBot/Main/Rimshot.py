@@ -16,5 +16,5 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    #bot.action('uses drumsticks to hit both the head and the rim of the drum, then the cymbal.')
+    #osd(bot, trigger.sender, 'action', 'uses drumsticks to hit both the head and the rim of the drum, then the cymbal.')
     osd(bot, trigger.sender, 'say', '*Ba Dum Tss!!!*')
