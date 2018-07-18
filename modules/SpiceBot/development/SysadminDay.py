@@ -19,7 +19,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    today = datetime.datetime.now()
+    day = datetime.datetime.now()
+    today = datetime.strptime(day, "%m/%d/%Y")
     sysadminday = datetime.strptime('Jul 27 2018', '%b %d %Y')
     if sysadminday > today:
         daystillsysadminday = sysadminday - today
