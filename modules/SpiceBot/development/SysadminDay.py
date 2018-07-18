@@ -23,9 +23,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     sysadminday = datetime.datetime.strptime('Jul 27 2018', '%b %d %Y')
     if sysadminday > today:
         daystillsysadminday = sysadminday - today
-        message = "There are " + str(daystillsysadminday.days) + " till SysAdmin day"
+        message = "There are " + str(daystillsysadminday.days) + " days till SysAdmin day"
     elif sysadminday < today:
-        message = "We passed sysadmin day"
+        daystillsysadminday = sysadminday - today
+        message = "We SysAdmin day happened " + str(daystillsysadminday.days) + " ago."
     else:
         message = "Happy Sysadmin day"
     bot.say(message)
