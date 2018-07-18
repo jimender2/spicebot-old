@@ -39,6 +39,14 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
+    testarray = ['cat','dog','mouse','bird']
+
+    bot.say("and")
+    bot.say(str(get_trigger_arg(bot, testarray, 'andlist')))
+    bot.say("or")
+    bot.say(str(get_trigger_arg(bot, testarray, 'orlist')))
+    return
+
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
 
@@ -300,6 +308,10 @@ def get_trigger_arg(bot, inputs, outputtask):
     # Comma Seperated List
     if outputtask == 'list':
         return list_array(bot, inputs)
+    if outputtask == 'andlist':
+        return andlist_array(bot, inputs)
+    if outputtask == 'orlist':
+        return orlist_array(bot, inputs)
     if outputtask == 'random':
         return random_array(bot, inputs)
     # Last element
@@ -390,6 +402,46 @@ def list_array(bot, inputs):
             string = str(str(string) + ", " + str(x))
         else:
             string = str(x)
+    return string
+
+
+# Comma Seperated List
+def andlist_array(bot, inputs):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if inputs == []:
+        return string
+    inputnumberstart = len(inputs)
+    inputsnumber = len(inputs)
+    for x in inputs:
+        if inputsnumber == 1 and inputsnumber != inputnumberstart:
+            string = str(str(string) + ", and " + str(x))
+        elif string != '':
+            string = str(str(string) + ", " + str(x))
+        else:
+            string = str(x)
+        inputsnumber = inputsnumber - 1
+    return string
+
+
+# Comma Seperated List
+def orlist_array(bot, inputs):
+    if not isinstance(inputs, list):
+        inputs = create_array(bot, inputs)
+    string = ''
+    if inputs == []:
+        return string
+    inputnumberstart = len(inputs)
+    inputsnumber = len(inputs)
+    for x in inputs:
+        if inputsnumber == 1 and inputsnumber != inputnumberstart:
+            string = str(str(string) + ", or " + str(x))
+        elif string != '':
+            string = str(str(string) + ", " + str(x))
+        else:
+            string = str(x)
+        inputsnumber = inputsnumber - 1
     return string
 
 
