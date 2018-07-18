@@ -162,7 +162,7 @@ def getReminders(bot, channel, key, tellee):
         try:
             del bot.memory['reminders'][key]
         except KeyError:
-            osd(bot, channel, 'action', , 'Er...')
+            osd(bot, channel, 'action', 'Er...')
     finally:
         bot.memory['tell_lock'].release()
     return lines
