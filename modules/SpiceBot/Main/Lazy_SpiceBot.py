@@ -21,6 +21,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot,triggerargsarray,1)
     validtarget = targetcheck(bot,target,trigger.nick)
     if validtarget == '1':
-        bot.say('I do not tell you how to do your job, ' + target + '!!')
+        osd(bot, trigger.sender, 'say', 'I do not tell you how to do your job, ' + target + '!!')
     else:
-        bot.say('I do not tell you how to do your job, ' + trigger.nick + '!!')
+        osd(bot, trigger.sender, 'say', 'I do not tell you how to do your job, ' + trigger.nick + '!!')

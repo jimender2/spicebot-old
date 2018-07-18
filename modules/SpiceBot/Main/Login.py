@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say("It looks like you aren't logged in. Please log in to see the login page.")
+    osd(bot, trigger.sender, 'say', "It looks like you aren't logged in. Please log in to see the login page.")

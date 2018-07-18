@@ -46,4 +46,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         displaymsg = "I appear to have some fucked up code rules going on. Someone fix this shit."
 
-    bot.say(displaymsg)
+    osd(bot, trigger.sender, 'say', displaymsg)

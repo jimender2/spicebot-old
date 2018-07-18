@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rando = randint(2, 22)
-    bot.say("Please insert " + str(rando) + " bitcoins, for that kind of service.")
+    osd(bot, trigger.sender, 'say', "Please insert " + str(rando) + " bitcoins, for that kind of service.")

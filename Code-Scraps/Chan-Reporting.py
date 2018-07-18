@@ -17,9 +17,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     commandused = get_trigger_arg(triggerargsarray, 1)
     if not commandused:
-        bot.say("What report do you want?")
+        osd(bot, trigger.sender, 'say', "What report do you want?")
     elif commandused == 'inactive':
-        bot.say("WIP")
+        osd(bot, trigger.sender, 'say', "WIP")
         # logic for if the user has been in the room for X time but hasn't said anything
         # and is still currently in the room
         # maybe also list how many times they joined and left the room during that time
@@ -37,4 +37,4 @@ def execute_main(bot, trigger, triggerargsarray):
 #@event('JOIN')
 #@rule('.*')
 #def greeting(bot, trigger):
-#    bot.say("hello " + trigger.nick)
+#    osd(bot, trigger.sender, 'say', "hello " + trigger.nick)

@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     category,type,question,answer = getQuestion()
-    bot.say("Category: " + category + " Type: " + type + " Question: " + question)
+    osd(bot, trigger.sender, 'say', "Category: " + category + " Type: " + type + " Question: " + question)
 
 
 def getQuestion():

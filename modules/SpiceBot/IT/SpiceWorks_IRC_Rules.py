@@ -48,4 +48,4 @@ def execute_main(bot, trigger):
     if myline == 'giggles':
         bot.action(myline)
     else:
-        bot.say(myline)
+        osd(bot, trigger.sender, 'say', myline)

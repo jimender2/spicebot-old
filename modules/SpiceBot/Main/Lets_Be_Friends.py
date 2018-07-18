@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(trigger.nick + ", I'm sorry I offended you. Lets try to be friends.")
+    osd(bot, trigger.sender, 'say', trigger.nick + ", I'm sorry I offended you. Lets try to be friends.")

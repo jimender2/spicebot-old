@@ -17,4 +17,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     what =  get_trigger_arg(bot, triggerargsarray, 0)
-    bot.say("Wait...What? there\'s a " + what + " now?")
+    osd(bot, trigger.sender, 'say', "Wait...What? there\'s a " + what + " now?")

@@ -26,7 +26,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     gif = magicFingers()
     if gif:
-        bot.say(gif)
+        osd(bot, trigger.sender, 'say', gif)
     else:
         bot.action('the more you know... **magic fingers**')
 

@@ -28,7 +28,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, arg, botcom, instigator):
     mygame = get_trigger_arg(bot, arg, 1) or 'nocommand'
     if mygame == 'docs' or mygame == 'help':
-        bot.say("For help with this module, see here: " + wikiurl)
+        osd(bot, trigger.sender, 'say', "For help with this module, see here: " + wikiurl)
     elif mygame == 'slots':
         slots(bot,trigger,arg)
     elif mygame== 'blackjack' :
@@ -44,14 +44,14 @@ def execute_main(bot, trigger, arg, botcom, instigator):
         bot.notice(trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.', trigger.nick)
     elif mygame == 'jackpot':
         bankbalance = Spicebucks.bank(bot,'SpiceBank')
-        bot.say('The current jackpot is: ' +str(bankbalance))
+        osd(bot, trigger.sender, 'say', 'The current jackpot is: ' +str(bankbalance))
     elif mygame=='admin':
         if trigger.admin or trigger.nick == 'under_score':
             admincommands(bot,trigger,arg)
         else:
              bot.notice('You must be an admin to use this command', trigger.nick)
     else:
-        bot.say('Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
+        osd(bot, trigger.sender, 'say', 'Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
 
 def freebie(bot,trigger):
     bankbalance=Spicebucks.bank(bot,trigger.nick) or 0
@@ -83,7 +83,7 @@ def slots(bot,trigger,arg):
     #match3jackpot = jackpot or 500
     mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if mychoice == 'payout':
-            bot.say("Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
+            osd(bot, trigger.sender, 'say', "Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
     else:
 #start slots
         if not channel.startswith("#"):
@@ -105,7 +105,7 @@ def slots(bot,trigger,arg):
                     wheel2 = spin(wheel)
                     wheel3 = spin(wheel)
                     reel = [wheel1, wheel2, wheel3]
-                    bot.say(trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
+                    osd(bot, trigger.sender, 'say', trigger.nick + ' inserts 1 spicebuck and the slot machine displays | ' + wheel1 + ' | ' + wheel2 + ' | ' + wheel3 + ' | ')
                     for i in reel:
                         if i==keyword:
                             mywinnings = mywinnings + 1
@@ -114,7 +114,7 @@ def slots(bot,trigger,arg):
 
                     if(wheel1 == wheel2 and wheel2 == wheel3):
                         if wheel1 == keyword:
-                            bot.say(trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
+                            osd(bot, trigger.sender, 'say', trigger.nick + ' hit the Jackpot of ' + str(bankbalance))
                             mywinnings=bankbalance
                         elif wheel1 == 'Patches':
                             mywinnings= mywinnings + match3
@@ -122,20 +122,20 @@ def slots(bot,trigger,arg):
                             mywinnings= mywinnings + match3
                     elif(wheel1 == wheel2 or wheel2==wheel3 or wheel3==wheel1):
                         mywinnings =  mywinnings + match2
-                        #bot.say(trigger.nick + ' a match')
+                        #osd(bot, trigger.sender, 'say', trigger.nick + ' a match')
 
                     if mywinnings <=0:
-                        bot.say(trigger.nick + ' gets nothing')
+                        osd(bot, trigger.sender, 'say', trigger.nick + ' gets nothing')
                     else:
                         bankbalance=Spicebucks.bank(bot,'SpiceBank')
                         if mywinnings > bankbalance:
                             Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
-                            bot.say(trigger.nick + ' wins ' + str(mywinnings))
+                            osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings))
                         else:
                             if Spicebucks.transfer(bot, 'SpiceBank', trigger.nick, mywinnings) == 1:
-                                bot.say(trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
+                                osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings) + " spicebucks")
                             else:
-                                bot.say('Error in banking system')
+                                osd(bot, trigger.sender, 'say', 'Error in banking system')
                 else:
                     bot.notice("You don't have enough Spicebucks",player )
             else:
@@ -169,15 +169,15 @@ def roulette(bot,trigger,arg):
     else:
         #set bet/check for commands
         if mybet == 'nobet':
-            bot.say('Please enter an amount to bet')
+            osd(bot, trigger.sender, 'say', 'Please enter an amount to bet')
             inputcheck = 0
         elif mybet=='payout':
-            bot.say('Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
+            osd(bot, trigger.sender, 'say', 'Picking the winng number will get you ' + str(maxwheel) + ' X your bet. Picking the winning color will get you your bet plus half the amount bet')
         elif mybet =='call':
             players = get_database_value(bot, 'casino', 'rouletteplayers') or []
             for i in players:
                 if i == player:
-                    bot.say(trigger.nick + " has asked Spicebot to finish the roulette game. Last call for bets")
+                    osd(bot, trigger.sender, 'say', trigger.nick + " has asked Spicebot to finish the roulette game. Last call for bets")
                     set_database_value(bot,'casino','casinochannel',str(trigger.sender))
                     set_database_value(bot,'casino','counter','roulette')
                     set_database_value(bot,'casino','countertimer',now)
@@ -250,7 +250,7 @@ def roulette(bot,trigger,arg):
                 if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', mybet) == 1:
                     roulettearray = []
                     Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
-                    bot.say(trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
+                    osd(bot, trigger.sender, 'say', trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                     adjust_database_array(bot, 'casino', player, 'rouletteplayers', 'add')
                     set_database_value(bot,'casino','casinochannel',str(trigger.sender))
                     roulettearray.append(str(mybet))
@@ -263,7 +263,7 @@ def roulette(bot,trigger,arg):
                     if numberofplayers>=maxplayers:
                         runroulette(bot)
                     else:
-                        bot.say("Spicebot will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
+                        osd(bot, trigger.sender, 'say', "Spicebot will spin the wheel after " + str((maxplayers-numberofplayers)) + " more people have placed a bet")
                 else:
                     bot.notice("You don't have enough Spicebucks to place that bet",player)
 
@@ -348,7 +348,7 @@ def lottery(bot,trigger, arg):
         bot.notice(trigger.nick + ", lottery can only be used in a channel.", trigger.nick)
     else:
         if commandused == 'payout':
-            bot.say("Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
+            osd(bot, trigger.sender, 'say', "Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(int(match4payout*bankbalance)) + " and getting 3 correct = " + str(int(bankbalance*match3payout)))
             success = 0
         else:
             picks = []
@@ -387,7 +387,7 @@ def lottery(bot,trigger, arg):
                             bot.notice("You are already in this drawing",player)
                         else:
                             if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
-                                bot.say(player + " bets on the numbers " + str(picks))
+                                osd(bot, trigger.sender, 'say', player + " bets on the numbers " + str(picks))
                                 set_database_value(bot,player,'picks', picks)
                                 adjust_database_array(bot,'casino',player, 'lottoplayers','add')
                                 set_database_value(bot,'casino','lotterychanel',trigger.sender)
@@ -476,7 +476,7 @@ def blackjack(bot,trigger,arg):
     mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
     mychoice2 = get_trigger_arg(bot, arg, 3) or 'nocommand'
     if mychoice == 'nocommand':
-        bot.say("Use .gamble blackjack deal <bet> amount to start a new game")
+        osd(bot, trigger.sender, 'say', "Use .gamble blackjack deal <bet> amount to start a new game")
 
     else:
         if bot.nick == "Spicebotdev":
@@ -504,13 +504,13 @@ def blackjack(bot,trigger,arg):
                             if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
                                 myhand = deal(bot,deck, 2)
                                 dealerhand = deal(bot,deck, 2)
-                                bot.say(player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' Spicebot has a ' + str(dealerhand[1]) + ' showing.')
+                                osd(bot, trigger.sender, 'say', player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' Spicebot has a ' + str(dealerhand[1]) + ' showing.')
                                 myscore = blackjackscore(bot,myhand)
                                 dealerscore = blackjackscore(bot,dealerhand)
                                 payout = mybet
                                 if myscore == 21:
                                     payout=payout + (mybet*blackjackpayout)
-                                    bot.say(player + ' got blackjack and wins ' + str(payout))
+                                    osd(bot, trigger.sender, 'say', player + ' got blackjack and wins ' + str(payout))
                                     Spicebucks.spicebucks(bot, player, 'plus', payout)
                                 else:
 
@@ -525,46 +525,46 @@ def blackjack(bot,trigger,arg):
             myhand =  get_database_value(bot,player, 'myhand') or 0
             payout = get_database_value(bot,player, 'mybet') or 0
             if (myhand == [] or myhand ==0):
-                bot.say('Use deal to start a new game')
+                osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
             else:
                 if len(myhand)>=6:
                     payment = payout+(int(payout/2))
-                    bot.say(player + str(payment) + " wins for having more then 5 cards.")
+                    osd(bot, trigger.sender, 'say', player + str(payment) + " wins for having more then 5 cards.")
                     Spicebucks.spicebucks(bot, player, 'plus', payout)
                     blackjackreset(bot,player)
 
                 else:
-                    bot.say("Player hand before hit: " + str(myhand))
+                    osd(bot, trigger.sender, 'say', "Player hand before hit: " + str(myhand))
                     playerhitlist = ''
                     hitcard=deal(bot,deck, 1)
                     playerhits=hitcard[0]
 
                     myhand.append(playerhits)
-                    bot.say("Player hand after hit: " + str(myhand))
+                    osd(bot, trigger.sender, 'say', "Player hand after hit: " + str(myhand))
                     myscore = blackjackscore(bot,myhand)
 
                     if myscore <= 21:
                         set_database_value(bot, player, 'myhand', myhand)
-                        bot.say(player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
+                        osd(bot, trigger.sender, 'say', player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
                     else:
-                        bot.say(player + ' got ' + str(playerhits) + ' busted and gets nothing')
+                        osd(bot, trigger.sender, 'say', player + ' got ' + str(playerhits) + ' busted and gets nothing')
                         blackjackreset(bot,player)
 
         elif mychoice == 'check':
             target = mychoice2
             if targetcheck(bot, target,player)==0:
-                bot.say("Target not found.")
+                osd(bot, trigger.sender, 'say', "Target not found.")
             else:
                 myhand =  get_database_value(bot,target, 'myhand') or 0
                 dealerhand = get_database_value(bot,target, 'dealerhand') or 0
-                bot.say(target + ' has ' + str(myhand) + ' Spicebot has ' + str(dealerhand))
+                osd(bot, trigger.sender, 'say', target + ' has ' + str(myhand) + ' Spicebot has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
             myhand = get_database_value(bot,player, 'myhand') or 0
             payout = get_database_value(bot,player, 'mybet') or 0
             dealerhand = get_database_value(bot,player, 'dealerhand') or 0
             if (myhand == [] or myhand ==0):
-                bot.say('Use deal to start a new game')
+                osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
             else:
                 if len(myhand) == 2:
                     mybet=payout+payout
@@ -575,7 +575,7 @@ def blackjack(bot,trigger,arg):
                     playerhits=playerhits[0]
                     myhand.append(playerhits)
                     set_database_value(bot,player, 'myhand', myhand)
-                    bot.say(player + " doubles down and gets " + str(playerhits))
+                    osd(bot, trigger.sender, 'say', player + " doubles down and gets " + str(playerhits))
                     blackjackstand(bot,player,myhand,dealerhand,mybet)
 
 
@@ -587,10 +587,10 @@ def blackjack(bot,trigger,arg):
             blackjackstand(bot,player,myhand,dealerhand,payout)
 
         elif mychoice == 'payout':
-            bot.say("Getting blackjack pays 2x, getting 21 pays 1x, beating Spicebot pays 1/2 your bet.")
+            osd(bot, trigger.sender, 'say', "Getting blackjack pays 2x, getting 21 pays 1x, beating Spicebot pays 1/2 your bet.")
 
         else:
-            bot.say('Choose an option: deal, hit, or stand')
+            osd(bot, trigger.sender, 'say', 'Choose an option: deal, hit, or stand')
 
 #__________________________Shared Functions____________________
 def spin(wheel):
@@ -612,7 +612,7 @@ def deal(bot, deck, cardcount):
 def blackjackstand(bot,player,myhand,dealerhand,payout):
     deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
     if (myhand == [] or myhand ==0):
-        bot.say('Use deal to start a new game')
+        osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
     else:
         myscore = blackjackscore(bot,myhand)
 
@@ -620,10 +620,10 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
         dealerwins=''
         if myscore == 21:
             payout=payout + payout
-            bot.say(player + ' got blackjack and is a winner of ' + str(payout))
+            osd(bot, trigger.sender, 'say', player + ' got blackjack and is a winner of ' + str(payout))
             Spicebucks.spicebucks(bot, player, 'plus', payout)
         elif myscore > 21:
-            bot.say(player + ' busted and gets nothing')
+            osd(bot, trigger.sender, 'say', player + ' busted and gets nothing')
         elif myscore < 21:
             dealerhitlist = ''
             while dealerscore < 18:
@@ -635,9 +635,9 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             if not dealerhitlist == '':
                 hitlist=int(len(dealerhitlist)/2) #count spaces
                 if hitlist>1:
-                    bot.say('Spicebot takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
+                    osd(bot, trigger.sender, 'say', 'Spicebot takes ' + str((hitlist)) + ' hits and gets' + dealerhitlist)
                 else:
-                    bot.say('Spicebot takes a hit and gets a' + dealerhitlist)
+                    osd(bot, trigger.sender, 'say', 'Spicebot takes a hit and gets a' + dealerhitlist)
             showdealerhand = ''
 
             for i in dealerhand:
@@ -646,21 +646,21 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
             if dealerscore > 21:
                 payout=payout + int((payout/2))
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
-                bot.say("Spicebot had " + showdealerhand + " busts")
-                bot.say(player + ' wins ' + str(payout))
+                osd(bot, trigger.sender, 'say', "Spicebot had " + showdealerhand + " busts")
+                osd(bot, trigger.sender, 'say', player + ' wins ' + str(payout))
             elif dealerscore == 21:
-                bot.say("Spicebot has " + showdealerhand + " and wins")
+                osd(bot, trigger.sender, 'say', "Spicebot has " + showdealerhand + " and wins")
             elif dealerscore < myscore:
                 payout=payout + int((payout/2))
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
-                bot.say("Spicebot had " + showdealerhand + " " + player + " wins " + str(payout))
+                osd(bot, trigger.sender, 'say', "Spicebot had " + showdealerhand + " " + player + " wins " + str(payout))
             elif dealerscore > myscore:
-                bot.say("Spicebot had " + showdealerhand + " and wins")
+                osd(bot, trigger.sender, 'say', "Spicebot had " + showdealerhand + " and wins")
             elif dealerscore == myscore:
                 Spicebucks.spicebucks(bot, player, 'plus', payout)
-                bot.say('It is a draw and ' + player + ' gets ' + str(payout))
+                osd(bot, trigger.sender, 'say', 'It is a draw and ' + player + ' gets ' + str(payout))
             else:
-                bot.say('No games found say .gamble blackjack deal to start a new game')
+                osd(bot, trigger.sender, 'say', 'No games found say .gamble blackjack deal to start a new game')
         blackjackreset(bot,player)
 
 def blackjackscore(bot,hand):
@@ -678,13 +678,13 @@ def blackjackscore(bot,hand):
         elif card=='A':
             myscore = myscore + 11
     if myscore > 21:
-       # bot.say("Player score: " + str(myscore))
+       # osd(bot, trigger.sender, 'say', "Player score: " + str(myscore))
         if 'A' in hand:
             myhand = hand.replace('A','1')
             newscore = blackjackscore(bot,myhand)
             return newscore
         else:
-           # bot.say("Return player score : " + str(myscore))
+           # osd(bot, trigger.sender, 'say', "Return player score : " + str(myscore))
             return myscore
     else:
         return myscore
@@ -779,7 +779,7 @@ def admincommands(bot,trigger,arg):
 
     elif subcommand == 'blackjackset':
         if targetcheck(bot, commandvalue,player)==0:
-            bot.say("Target not found.")
+            osd(bot, trigger.sender, 'say', "Target not found.")
         else:
             reset_database_value(bot,commandvalue, 'myhand')
             reset_database_value(bot,commandvalue, 'dealerhand')

@@ -140,9 +140,9 @@ def execute_main(bot, trigger):
 
         bot.reply(response)
     elif Identifier(teller) == tellee:
-        bot.say("You can %s yourself that. I'm not your fucking secretary." % verb)
+        osd(bot, trigger.sender, 'say', "You can %s yourself that. I'm not your fucking secretary." % verb)
     else:
-        bot.say("Hey, I'm not as stupid as Monty you know!")
+        osd(bot, trigger.sender, 'say', "Hey, I'm not as stupid as Monty you know!")
 
     dumpReminders(bot.tell_filename, bot.memory['reminders'], bot.memory['tell_lock'])  # @@ tell
 
@@ -189,10 +189,10 @@ def message(bot, trigger):
             reminders.extend(getReminders(bot, channel, remkey, tellee))
 
     for line in reminders[:maximum]:
-        bot.say(line)
+        osd(bot, trigger.sender, 'say', line)
 
     if reminders[maximum:]:
-        bot.say('Further messages sent privately')
+        osd(bot, trigger.sender, 'say', 'Further messages sent privately')
         for line in reminders[maximum:]:
             bot.msg(tellee, line)
 

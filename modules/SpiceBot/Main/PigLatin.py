@@ -36,6 +36,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 new_word = word[1:] + first + pyg
             rebuildarray.append(new_word)
         words = get_trigger_arg(bot, rebuildarray, 0)
-        bot.say(words)
+        osd(bot, trigger.sender, 'say', words)
     else:
-        bot.say("Oink oink")
+        osd(bot, trigger.sender, 'say', "Oink oink")

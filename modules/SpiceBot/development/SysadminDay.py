@@ -29,4 +29,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = "We SysAdmin day happened " + str(daystillsysadminday.days) + " ago."
     else:
         message = "Happy Sysadmin day"
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

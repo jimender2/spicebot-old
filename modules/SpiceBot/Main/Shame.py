@@ -45,4 +45,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             message = instigator + " thinks " + target + " has been a bad boy because " + reason + "."
 
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

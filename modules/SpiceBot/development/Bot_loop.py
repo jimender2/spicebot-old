@@ -26,4 +26,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     time.sleep(human)  # Wait for random time
     prefix = "!"
     command = "test"
-    bot.say(prefix + command)
+    osd(bot, trigger.sender, 'say', prefix + command)

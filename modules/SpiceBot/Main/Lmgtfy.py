@@ -26,5 +26,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # No input
     target = get_trigger_arg(bot,triggerargsarray,0)
     if not target:
-        return bot.say('http://google.com/')
-    bot.say('http://lmgtfy.com/?q=' + target.replace(' ', '+'))
+        return osd(bot, trigger.sender, 'say', 'http://google.com/')
+    osd(bot, trigger.sender, 'say', 'http://lmgtfy.com/?q=' + target.replace(' ', '+'))

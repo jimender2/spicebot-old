@@ -30,15 +30,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                  " trips over taking their pants off and shits everywhere BUT the desk."]
 
     if not target:
-        bot.say(trigger.nick + ' poops in the designated corner!')
+        osd(bot, trigger.sender, 'say', trigger.nick + ' poops in the designated corner!')
     elif target == 'group':
-        bot.say(trigger.nick + ', get your poop in a group.')
+        osd(bot, trigger.sender, 'say', trigger.nick + ', get your poop in a group.')
     elif target == 'all' or target == 'everyone' or target == 'everyones':
-        bot.say(trigger.nick + " poops on everyone's desk, one at a time!")
+        osd(bot, trigger.sender, 'say', trigger.nick + " poops on everyone's desk, one at a time!")
     elif target != bot.nick:
         failchance = random.randint(1,failureodds)
         if failchance == 1:
             poopfail = get_trigger_arg(bot, backfires,'random')
-            bot.say(trigger.nick + poopfail)
+            osd(bot, trigger.sender, 'say', trigger.nick + poopfail)
         else:
-            bot.say(trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")
+            osd(bot, trigger.sender, 'say', trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")

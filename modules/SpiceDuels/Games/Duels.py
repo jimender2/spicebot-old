@@ -116,11 +116,11 @@ def dual_clone(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if not target:
-        bot.say("Who do you want to clone?")
+        osd(bot, trigger.sender, 'say', "Who do you want to clone?")
     elif target.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     else:
-        bot.say("I think one " + target + " is enough for this world.")
+        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
 
 
 @module.rule('^(?:dual)\s+?.*')
@@ -135,9 +135,9 @@ def dual_cloneb(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     target = get_trigger_arg(bot, triggerargsarray, 1)
     if target.lower() not in [u.lower() for u in bot.users]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     else:
-        bot.say("I think one " + target + " is enough for this world.")
+        osd(bot, trigger.sender, 'say', "I think one " + target + " is enough for this world.")
 
 
 """
@@ -7384,10 +7384,10 @@ Classic Duels by DGW
 
 def duelclassic_combat(bot, channel, instigator, target, duels_classic_timeout, is_admin=False, warn_nonexistent=True):
     if target == bot.nick:
-        bot.say("I refuse to duel with the yeller-bellied likes of you!")
+        osd(bot, trigger.sender, 'say', "I refuse to duel with the yeller-bellied likes of you!")
         return module.NOLIMIT
     if target == instigator:
-        bot.say("You can't duel yourself, you coward!")
+        osd(bot, trigger.sender, 'say', "You can't duel yourself, you coward!")
         return module.NOLIMIT
     time_since = duelclassic_time_since_duel(bot, channel, instigator)
     if time_since < duels_classic_timeout:
@@ -7395,7 +7395,7 @@ def duelclassic_combat(bot, channel, instigator, target, duels_classic_timeout, 
         return module.NOLIMIT
     msg = "%s vs. %s, " % (instigator, target)
     msg += "loser's a yeller belly!"
-    bot.say(msg)
+    osd(bot, trigger.sender, 'say', msg)
     combatants = sorted([instigator, target])
     random.shuffle(combatants)
     winner = combatants.pop()
@@ -7410,23 +7410,23 @@ def duelclassic_combat(bot, channel, instigator, target, duels_classic_timeout, 
     streak = ' (Streak: %d)' % win_streak if win_streak > 1 else ''
     broken_streak = ', recovering from a streak of %d losses' % winner_loss_streak if winner_loss_streak > 1 else ''
     broken_streak += ', ending %s\'s streak of %d wins' % (loser, loser_win_streak) if loser_win_streak > 1 else ''
-    bot.say("%s wins%s!%s" % (winner, broken_streak, streak))
+    osd(bot, trigger.sender, 'say', "%s wins%s!%s" % (winner, broken_streak, streak))
     if loser == target:
         kmsg = "%s done killed ya!" % instigator
     else:
         kmsg = "You done got yerself killed!"
-    bot.say(kmsg[:-1] + ", " + loser + kmsg[-1:])
+    osd(bot, trigger.sender, 'say', kmsg[:-1] + ", " + loser + kmsg[-1:])
 
 
 def duelclassic_stats(bot, trigger,target):
     wins, losses = duelclassic_get_duels(bot, target)
     total = wins + losses
     if not total:
-        bot.say("%s has no duel record!" % target)
+        osd(bot, trigger.sender, 'say', "%s has no duel record!" % target)
         return module.NOLIMIT
     streaks = duelclassic_format_streaks(bot, target)
     win_rate = wins / total * 100
-    bot.say("%s has won %d out of %d duels (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
+    osd(bot, trigger.sender, 'say', "%s has won %d out of %d duels (%.2f%%), %s" % (target, wins, total, win_rate, streaks))
 
 
 def duelclassic_format_streaks(bot, nick):
@@ -7770,9 +7770,9 @@ def osd(bot, target_array, text_type, text_array):
             elif text_type == 'notice' or text_type == 'priv':
                 bot.notice(combinedline, target)
             elif text_type == 'say':
-                bot.say(combinedline)
+                osd(bot, trigger.sender, 'say', combinedline)
             else:
-                bot.say(combinedline)
+                osd(bot, trigger.sender, 'say', combinedline)
             textpartsleft = textpartsleft - 1
 
 

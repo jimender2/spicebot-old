@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say("If you need help using help you are truly lost.")
+    osd(bot, trigger.sender, 'say', "If you need help using help you are truly lost.")

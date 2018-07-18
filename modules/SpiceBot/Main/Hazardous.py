@@ -19,4 +19,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     toomuchstuff = trigger.group(2) or trigger.nick
-    bot.say("Too much " + toomuchstuff + " is bad for your health.")
+    osd(bot, trigger.sender, 'say', "Too much " + toomuchstuff + " is bad for your health.")

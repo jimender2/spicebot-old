@@ -27,15 +27,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         query = "facepalm"
         gif,randno = getGif(query)
         if gif:
-            bot.say("Result number " + str(randno) + ": " + gif)
+            osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
-            bot.say("Hmm...Couldn't find a gif for that!")
+            osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
     elif target == "major":
-        bot.say("There is not enough facepalm in the world for this")
+        osd(bot, trigger.sender, 'say', "There is not enough facepalm in the world for this")
     elif target == "help":
-        bot.say("Commands: .facepalm help, .facepalm major, or .facepalm")
+        osd(bot, trigger.sender, 'say', "Commands: .facepalm help, .facepalm major, or .facepalm")
     else:
-        bot.say("You are really facepalming")
+        osd(bot, trigger.sender, 'say', "You are really facepalming")
 
 
 def getGif(query):

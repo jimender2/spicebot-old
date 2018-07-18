@@ -24,14 +24,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     digitcount = get_trigger_arg(bot,triggerargsarray, 1) or ''
     if not digitcount == '':
         if not digitcount.isdigit():
-            bot.say("Please enter the number of digits you want to see.")
+            osd(bot, trigger.sender, 'say', "Please enter the number of digits you want to see.")
         else:
             digits = int(digitcount)+2
             pilength = len(pi)
             if digits >= 1 and digits <= pilength:
                 mynumber = pi[0:digits]
-                bot.say(str(mynumber))
+                osd(bot, trigger.sender, 'say', str(mynumber))
             else:
-                bot.say("Please select a number of decimal places between 1 and " + str(pilengh))
+                osd(bot, trigger.sender, 'say', "Please select a number of decimal places between 1 and " + str(pilengh))
     else:
-        bot.say(str(pi))
+        osd(bot, trigger.sender, 'say', str(pi))

@@ -28,15 +28,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         query = str(query)
         gif,randno = getGif(query)
         if gif:
-            bot.say("Result number " + str(randno) + ": " + gif)
+            osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
-            bot.say("Hmm...Couldn't find a gif for that!")
+            osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
     elif target == "roulette":
         gif = roulette()
         if gif:
-            bot.say("Click at your own risk! " + gif)
+            osd(bot, trigger.sender, 'say', "Click at your own risk! " + gif)
     else:
-        bot.say("Tell me what you're looking for!")
+        osd(bot, trigger.sender, 'say', "Tell me what you're looking for!")
 
 
 def getGif(query):

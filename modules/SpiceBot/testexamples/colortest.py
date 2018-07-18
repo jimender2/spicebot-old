@@ -15,6 +15,6 @@ from sopel.formatting import *
 
 @sopel.module.commands('colortest')
 def mainfunction(bot, trigger):
-  bot.say("normal text")
-  bot.say(bold("bold text"))
-  bot.say("\x0309,01Color STRING\x03")
+  osd(bot, trigger.sender, 'say', "normal text")
+  osd(bot, trigger.sender, 'say', bold("bold text"))
+  osd(bot, trigger.sender, 'say', "\x0309,01Color STRING\x03")

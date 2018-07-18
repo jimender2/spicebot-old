@@ -22,4 +22,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = target + " wants to put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
     else:
         message = target + " should put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

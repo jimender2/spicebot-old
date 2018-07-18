@@ -69,12 +69,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # Make sure claims happen in channel, not privmsg
     if not inchannel.startswith("#") and target not in privcmdlist:
         okaytoclaim = 0
-        bot.say("Claims must be done in channel")
+        osd(bot, trigger.sender, 'say', "Claims must be done in channel")
 
     # Handle if no target is specified
     elif not target:
         okaytoclaim = 0
-        bot.say("Who do you want to claim?")
+        osd(bot, trigger.sender, 'say', "Who do you want to claim?")
 
     # Check if somebody is claimed, return if/when
     elif target == 'check':
@@ -85,18 +85,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         claimedby = bot.db.get_nick_value(admintarget,'claimed')
         if not claimedby:
             if admintarget == instigator:
-                bot.say("Nobody has a claim on you yet, %s." % instigator)
+                osd(bot, trigger.sender, 'say', "Nobody has a claim on you yet, %s." % instigator)
             elif admintarget.lower() in [u.lower() for u in creatornicks]:
-                bot.say("No mere mortal can claim the almighty %s!" % admintarget)
+                osd(bot, trigger.sender, 'say', "No mere mortal can claim the almighty %s!" % admintarget)
             else:
-                bot.say("Nobody appears to have claimed %s yet, %s." % (admintarget, instigator))
+                osd(bot, trigger.sender, 'say', "Nobody appears to have claimed %s yet, %s." % (admintarget, instigator))
         else:
             if admintarget == instigator:
-                bot.say("You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
+                osd(bot, trigger.sender, 'say', "You were claimed by " + str(claimedby) + " on " + str(claimdate) +", " + str(instigator) + ".")
             elif claimedby == instigator:
-                bot.say("You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
+                osd(bot, trigger.sender, 'say', "You claimed " + str(admintarget) + " on " + str(claimdate) +", " + instigator + ".")
             else:
-                bot.say(str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
+                osd(bot, trigger.sender, 'say', str(admintarget) + " was claimed by " + str(claimedby) + " on " + str(claimdate) +", " + instigator + ".")
 
     # Check how full your bladder is
     elif target == 'bladder':
@@ -106,28 +106,28 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bladdercontents = bot.db.get_nick_value(admintarget,'bladdercapacity')
         if not bladdercontents:
             if admintarget.lower() not in [u.lower() for u in bot.users]:
-                bot.say("Please specify someone to check")
+                osd(bot, trigger.sender, 'say', "Please specify someone to check")
             elif admintarget == instigator:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
+                osd(bot, trigger.sender, 'say', "You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
             elif admintarget in creatornick:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
+                osd(bot, trigger.sender, 'say', admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
                 bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
                 bladdercontents = bladdersize
-                bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
+                osd(bot, trigger.sender, 'say', admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
         else:
             if admintarget.lower() not in [u.lower() for u in bot.users]:
-                bot.say("Please specify someone to check")
+                osd(bot, trigger.sender, 'say', "Please specify someone to check")
             elif admintarget == instigator:
-                bot.say("You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
+                osd(bot, trigger.sender, 'say', "You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
             elif admintarget in creatornick:
-                bot.say(admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
+                osd(bot, trigger.sender, 'say', admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
-                bot.say(admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
+                osd(bot, trigger.sender, 'say', admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
 
     # The fridge houses your drinks (similar to loot). You can buy them with spicebucks
     elif target.lower() == 'fridge':
@@ -135,7 +135,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not admintarget:
             admintarget = instigator
         fridgecontents = bot.db.get_nick_value(admintarget,'fridgecontents')
-        bot.say("The fridge is a Work in Progress, " + admintarget)
+        osd(bot, trigger.sender, 'say', "The fridge is a Work in Progress, " + admintarget)
 
     # Admin functions
     elif target.lower() == 'admin':
@@ -144,38 +144,38 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         admintarget = get_trigger_arg(bot, triggerargsarray, 3)
         if trigger.admin:
             if function not in admincommands:
-                bot.say("Please specify what you would like to do. Valid options are: " + str(', '.join(admincommands)))
+                osd(bot, trigger.sender, 'say', "Please specify what you would like to do. Valid options are: " + str(', '.join(admincommands)))
             else:
                 if function == 'reset':
                     if not admintarget:
-                        bot.say("Please specify someone to reset claim on.")
+                        osd(bot, trigger.sender, 'say', "Please specify someone to reset claim on.")
                     elif admintarget.lower() not in [u.lower() for u in bot.users]:
-                        bot.say("I'm not sure who that is.")
+                        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
                     else:
                         bot.db.set_nick_value(admintarget,'claimed','')
                         bot.db.set_nick_value(admintarget,'claimdate','')
-                        bot.say("Claim info for " + admintarget + " has been reset!")
+                        osd(bot, trigger.sender, 'say', "Claim info for " + admintarget + " has been reset!")
         else:
-            bot.say("Ha. You're not an admin, get lost.")
+            osd(bot, trigger.sender, 'say', "Ha. You're not an admin, get lost.")
 
     # Can't claim yourself
     elif target == instigator:
         okaytoclaim = 0
-        bot.say("You can't claim yourself!")
+        osd(bot, trigger.sender, 'say', "You can't claim yourself!")
         bot.action('mutters "moron".')
 
     # Can't claim the bot
     elif target.lower() in botnicks:
         okaytoclaim = 0
         if instigator in creatornicks:
-            bot.say("I'm sorry Sir, but %s cannot be claimed by anyone but %s." % (target, owner))
+            osd(bot, trigger.sender, 'say', "I'm sorry Sir, but %s cannot be claimed by anyone but %s." % (target, owner))
         else:
-            bot.say("Nope. %s has a permanent claim on %s!" % (owner, target))
+            osd(bot, trigger.sender, 'say', "Nope. %s has a permanent claim on %s!" % (owner, target))
 
     # Can't claim the creator
     elif target.lower() in [u.lower() for u in creatornicks]:
         okaytoclaim = 0
-        bot.say("Foolish mortal! Tremble before the might of the Almighty %s!" % target)
+        osd(bot, trigger.sender, 'say', "Foolish mortal! Tremble before the might of the Almighty %s!" % target)
         bot.db.set_nick_value(instigator,'claimed',target)
         bot.db.set_nick_value(instigator,'claimdate',storedate)
 
@@ -183,25 +183,25 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target.lower() == mastername.lower():
         okaytoclaim = 0
         bot.action("facepalms")
-        bot.say("You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
+        osd(bot, trigger.sender, 'say', "You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
         Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
 
     # Can't claim everyone at once
     elif target == 'everyone':
         okaytoclaim = 0
-        bot.say(instigator + " couldn't decide where to aim and pisses everywhere!")
+        osd(bot, trigger.sender, 'say', instigator + " couldn't decide where to aim and pisses everywhere!")
 
     # Can't claim protected individuals
     elif target in protectednicks:
         okaytoclaim = 0
-        bot.say(target + " is under my protection, " + instigator)
+        osd(bot, trigger.sender, 'say', target + " is under my protection, " + instigator)
         bot.action("pisses all over " + instigator + " to teach them a lesson")
 
     # If the target is not online OR a subcommand, handle it
     elif target.lower() not in [u.lower() for u in bot.users] and target not in privcmdlist:
         okaytoclaim = 0
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
 
     # Input checks out. Verify dates and go ahead.
     elif okaytoclaim:
@@ -210,9 +210,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         # First time claimed
         if claimedby == '':
             if instigator in creatornicks:
-                bot.say(instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!")
+                osd(bot, trigger.sender, 'say', instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target +"!")
             else:
-                bot.say(instigator + " urinates on " + target + "! Claimed!")
+                osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + "! Claimed!")
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
             # Pay instigator Spicebucks (firstclaim)
@@ -227,15 +227,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
                 if instigator in creatornicks:
-                    bot.say(instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
+                    osd(bot, trigger.sender, 'say', instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
                 else:
-                    bot.say(instigator + " urinates on " + target + " again! The claim has been renewed!")
+                    osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + " again! The claim has been renewed!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (renewclaim)
                 Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
             else:
-                bot.say(instigator + ", you already claimed " + target +".")
+                osd(bot, trigger.sender, 'say', instigator + ", you already claimed " + target +".")
         else:
             # Stolen claim
             claimdate = bot.db.get_nick_value(target, 'claimdate') or '1999-12-31'
@@ -245,19 +245,19 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             dayspassed = timepassed.days
             if timepassed.days >= int(maxtime):
                 if instigator in creatornicks:
-                    bot.say(instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
+                    osd(bot, trigger.sender, 'say', instigator + ' releases the contents of his bladder on ' + target + '! ' + target +' should be grateful for their new lord and master!')
                 else:
-                    bot.say(instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
+                    osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (stolenclaim)
                 Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
-                bot.say(target + " has already been claimed by " + str(claimedby) + ", so back off!")
+                osd(bot, trigger.sender, 'say', target + " has already been claimed by " + str(claimedby) + ", so back off!")
     elif not okaytoclaim:
         return
     else:
-        bot.say(bot.nick + " had an issue with their aim and peed absolutely everywhere!")
+        osd(bot, trigger.sender, 'say', bot.nick + " had an issue with their aim and peed absolutely everywhere!")
 
 
 @sopel.module.interval(1800)  # 30 minute automation

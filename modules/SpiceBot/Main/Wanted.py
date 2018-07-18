@@ -22,14 +22,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     for c in bot.channels:
         channel = c
     if not target:
-        bot.say('You must choose a Person.')
+        osd(bot, trigger.sender, 'say', 'You must choose a Person.')
     elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif target == bot.nick:
-        bot.say("Well, thanks for thinking of me!")
+        osd(bot, trigger.sender, 'say', "Well, thanks for thinking of me!")
     else:
         rando = randint(0, 50)
         if rando == 0:
-            bot.say(target + " was never wanted as a child, and still isn't wanted!")
+            osd(bot, trigger.sender, 'say', target + " was never wanted as a child, and still isn't wanted!")
         else:
-            bot.say(target + ' was never wanted as a child, but now is wanted in ' + str(rando) + ' states!')
+            osd(bot, trigger.sender, 'say', target + ' was never wanted as a child, but now is wanted in ' + str(rando) + ' states!')

@@ -18,4 +18,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say(trigger.nick + " has a case of the Mondays.")
+    osd(bot, trigger.sender, 'say', trigger.nick + " has a case of the Mondays.")

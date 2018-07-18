@@ -22,5 +22,5 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     bot.action("grabs popcorn and goes to watch the action")
-    bot.say("https://media2.giphy.com/media/daJWXqaZFqh0s/giphy.gif")
+    osd(bot, trigger.sender, 'say', "https://media2.giphy.com/media/daJWXqaZFqh0s/giphy.gif")
     bot.action("munch, munch")

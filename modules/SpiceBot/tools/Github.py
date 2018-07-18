@@ -61,13 +61,13 @@ def execute_main(bot, trigger):
     if badquery or baduser or noquery:
         if badquery:
             if inputtext.startswith('duel'):
-                bot.say("The duels developer has already said no to that. Stop asking.")
+                osd(bot, trigger.sender, 'say', "The duels developer has already said no to that. Stop asking.")
             else:
-                bot.say("That feature has already been rejected by the dev team.")
+                osd(bot, trigger.sender, 'say', "That feature has already been rejected by the dev team.")
         if baduser:
-            bot.say("Due to abusing this module you have been banned from using it, %s" % instigator)
+            osd(bot, trigger.sender, 'say', "Due to abusing this module you have been banned from using it, %s" % instigator)
         if noquery:
-            bot.say("What feature/issue do you want to post?")
+            osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
     else:
         if inputtext.startswith('duel'):
             title = "DUELS: " + title

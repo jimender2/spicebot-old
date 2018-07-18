@@ -43,32 +43,32 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             message = "Added to database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             message = "That response is already in the database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
     elif command == "remove":
         if inputstring not in existingarray:
             message = "That response was not found in the database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
         else:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
             message = "Removed from database."
-            bot.say(message)
+            osd(bot, trigger.sender, 'say', message)
     elif command == "count":
         messagecount = len(existingarray)
         message = "There are currently " + str(messagecount) + " ads in the database."
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
 
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
 
     else:
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if message == '':
             message = "No response found. Have any been added?"
-        bot.say(message)
+        osd(bot, trigger.sender, 'say', message)
 
 
 def get_database_value(bot, nick, databasekey):
@@ -83,12 +83,12 @@ def database_initialize(bot, nick, array, database):
     if not existingarray:
         arraycount = (len(array) - 1)
         i = 0
-        bot.say("tester")
+        osd(bot, trigger.sender, 'say', "tester")
         while (i <= arraycount):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
-            bot.say(i)
+            osd(bot, trigger.sender, 'say', i)
 
 
 @sopel.module.interval(60)
@@ -98,4 +98,4 @@ def advertisement(bot):
     message = get_trigger_arg(bot, existingarray, "random") or ''
     if not message:
         message = "Spiceduck for Spiceworks mascot 2k18"
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

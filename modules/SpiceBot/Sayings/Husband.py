@@ -26,4 +26,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bot.action(response)
     else:
         answer = get_trigger_arg(bot, replies, 'random')
-        bot.say(answer)
+        osd(bot, trigger.sender, 'say', answer)

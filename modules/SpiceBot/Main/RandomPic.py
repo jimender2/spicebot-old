@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         outputtext = getoutputtext(bot, pictype)
     if not outputtext:
         outputtext = "An error has occured."
-    bot.say(outputtext)
+    osd(bot, trigger.sender, 'say', outputtext)
 
 def getoutputtext(bot, pictype):
     url = eval(pictype+"_url")

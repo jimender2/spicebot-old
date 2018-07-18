@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bankbalance=Spicebucks.bank(bot,instigator)
         pointsworth = (int(pointsworth*bankbalance)) + 5
         pointsvalue = str(pointsworth)
-        bot.say(trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
+        osd(bot, trigger.sender, 'say', trigger.nick + " paid " + str(cluefee) + " spicebucks and started a game of clue.")
         botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
         for u in bot.users:
             if u in botusersarray and u != bot.nick:
@@ -50,29 +50,29 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         random.shuffle(weapons)
         random.shuffle(players)
         if rooms[0] == 'secret passage':
-            bot.say(players[2] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[1] + " with the " + weapons[0] + " instead.")
+            osd(bot, trigger.sender, 'say', players[2] + " evaded " + players[0] + " by using the secret passage. So " + players[0] + " killed " + players[1] + " with the " + weapons[0] + " instead.")
         else:
-            bot.say(players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
+            osd(bot, trigger.sender, 'say', players[0] + " killed " + players[1] + " in the " + rooms[0] + " with the " + weapons[0] + ".")
         if target:
             if suspect:
                 if suspect == 'killer' and target == players[0]:
-                    bot.say('You guessed the killer correctly!')
-                    bot.say(bot.nick + ' gives ' + pointsvalue + ' Spicebucks to ' + instigator)
+                    osd(bot, trigger.sender, 'say', 'You guessed the killer correctly!')
+                    osd(bot, trigger.sender, 'say', bot.nick + ' gives ' + pointsvalue + ' Spicebucks to ' + instigator)
                     Points.addpoints(bot, instigator, pointsworth)
                 elif suspect == 'killed' and target == players[1]:
-                    bot.say('You guessed the person murdered!')
-                    bot.say(bot.nick + ' gives ' + pointsvalue + 'Spicebucks to ' + instigator)
+                    osd(bot, trigger.sender, 'say', 'You guessed the person murdered!')
+                    osd(bot, trigger.sender, 'say', bot.nick + ' gives ' + pointsvalue + 'Spicebucks to ' + instigator)
                     Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
         elif target and target == players[0]:
-            bot.say('You guessed the killer correctly!')
-            bot.say(bot.nick + ' gives ' + pointsvalue + ' Spicebucks to' + instigator)
+            osd(bot, trigger.sender, 'say', 'You guessed the killer correctly!')
+            osd(bot, trigger.sender, 'say', bot.nick + ' gives ' + pointsvalue + ' Spicebucks to' + instigator)
             Spicebucks.spicebucks(bot,instigator,'plus',pointsworth)
         if players[0] == trigger.nick:
-            bot.say('You were the killer.')
+            osd(bot, trigger.sender, 'say', 'You were the killer.')
 
             if pointsworth>bankbalance:
                 pointsworth=bankbalance
             Spicebucks.spicebucks(bot,instigator,'minus',pointsworth)
-            bot.say(bot.nick + ' takes ' + pointsvalue + ' Spicebucks from ' + instigator)
+            osd(bot, trigger.sender, 'say', bot.nick + ' takes ' + pointsvalue + ' Spicebucks from ' + instigator)
     else:
         bot.notice("You need " + str(cluefee) + " spicebucks to use this command.",instigator)

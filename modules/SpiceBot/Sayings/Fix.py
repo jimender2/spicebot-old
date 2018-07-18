@@ -52,4 +52,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if message == '':
             message = "No response found. Have any been added?"
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

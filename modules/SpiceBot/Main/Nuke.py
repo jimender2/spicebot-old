@@ -29,15 +29,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 def nukeit(bot, trigger, triggerargsarray):
-    bot.say("Nuke it from orbit... it's the only way to be sure?")
+    osd(bot, trigger.sender, 'say', "Nuke it from orbit... it's the only way to be sure?")
 
 
 def killitnow(bot, trigger, triggerargsarray):
-    bot.say("Kill it with fire. Now.")
+    osd(bot, trigger.sender, 'say', "Kill it with fire. Now.")
 
 
 def terminateit(bot, trigger, triggerargsarray, target):
     if target == 'notarget':
-        bot.say("Terminate it with extreme prejudice.")
+        osd(bot, trigger.sender, 'say', "Terminate it with extreme prejudice.")
     elif target:
         bot.action("terminates " + target + " with extreme prejudice.")

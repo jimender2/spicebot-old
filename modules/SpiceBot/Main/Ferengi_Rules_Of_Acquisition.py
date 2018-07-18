@@ -52,7 +52,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     myline = 'That doesnt appear to be a rule number.'
     if not myline or myline == '\n':
         myline = 'There is no cannonized rule tied to this number.'
-    bot.say(myline)
+    osd(bot, trigger.sender, 'say', myline)
 
 
 # random rule

@@ -24,17 +24,17 @@ def execute_main(bot, trigger):
 
     # instigator
     instigator = class_create('instigator')
-    bot.say(".default before " + instigator.default)
+    osd(bot, trigger.sender, 'say', ".default before " + instigator.default)
     instigator.default = trigger.nick
-    bot.say(".default after " + instigator.default)
+    osd(bot, trigger.sender, 'say', ".default after " + instigator.default)
 
-    bot.say("string wrapped " + str(instigator))
-    bot.say("no wrap " + instigator)
+    osd(bot, trigger.sender, 'say', "string wrapped " + str(instigator))
+    osd(bot, trigger.sender, 'say', "no wrap " + instigator)
 
     if instigator in botcom.users_all:
-        bot.say("in the user list")
+        osd(bot, trigger.sender, 'say', "in the user list")
     else:
-        bot.say("not in the user list")
+        osd(bot, trigger.sender, 'say', "not in the user list")
 
 
 def bot_command_channels(bot,botcom,trigger):

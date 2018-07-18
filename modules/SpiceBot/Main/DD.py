@@ -25,12 +25,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     insult = get_trigger_arg(bot, insultnames, 'random')
     isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
     if not target:
-        bot.say("Who are you pissed at now?")
+        osd(bot, trigger.sender, 'say', "Who are you pissed at now?")
     elif isvalid == 1:
         bot.action('punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')
     elif isvalid == 0:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif isvalid == 3:
-        bot.say("Ummm, no. Dumbass.")
+        osd(bot, trigger.sender, 'say', "Ummm, no. Dumbass.")
     else:
         bot.action('punches ' + target + ', who is clearly a ' + str(insult) + ', in the mouth.')

@@ -55,14 +55,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     set_database_value(bot,bot.nick,'votingstart',now)
 
                 else:
-                    bot.say("Vote yes or no")
+                    osd(bot, trigger.sender, 'say', "Vote yes or no")
             else:
                 bot.notice("You have already voted",player)
 
     elif commandused == 'rate':
         raters = get_database_value(bot, bot.nick, 'raters') or []
         if not choice:
-            bot.say("Rate on scale of -10 through 10")
+            osd(bot, trigger.sender, 'say', "Rate on scale of -10 through 10")
         elif choice=='results':
             getrating(bot)
         elif choice=='settime' and trigger.admin:
@@ -93,7 +93,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
     elif commandused == 'poll':
-        bot.say("WIP")
+        osd(bot, trigger.sender, 'say', "WIP")
 
 def clearvoting(bot):
     reset_database_value(bot,bot.nick,'novotes')

@@ -20,9 +20,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     joke = getJoke()
     if joke:
-        bot.say(joke)
+        osd(bot, trigger.sender, 'say', joke)
     else:
-        bot.say('I would rather not give you a response.')
+        osd(bot, trigger.sender, 'say', 'I would rather not give you a response.')
 
 def getJoke():
     url = 'http://www.rrrather.com/botapi?nsfw=true'

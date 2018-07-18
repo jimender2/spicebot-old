@@ -22,7 +22,7 @@ baseurl = 'https://down.com/?q='
 def execute_main(bot, trigger):
     checksite = trigger.group(2)
     if not checksite:
-        bot.say("please enter a site")
+        osd(bot, trigger.sender, 'say', "please enter a site")
     else:
         url = str(baseurl + checksite)
         page = requests.get(url,headers = None)
@@ -30,9 +30,9 @@ def execute_main(bot, trigger):
             dispmsg = []
             upornot = isupparse(bot,url)
             if upornot:
-                bot.say("Looks like " + checksite + " appears to be online.")
+                osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be online.")
             else:
-                bot.say("Looks like " + checksite + " appears to be offline.")
+                osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be offline.")
 
 def isupparse(bot,url):
     upornot = 0

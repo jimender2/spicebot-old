@@ -140,7 +140,7 @@ def execute_main(bot, trigger, triggerargsarray):
         success = 0
         mylocation = get_trigger_arg(bot, triggerargsarray, '2+') or 'nolocation'
         if mylocation == 'nolocation':
-            bot.say("Enter a location to wish to set to")
+            osd(bot, trigger.sender, 'say', "Enter a location to wish to set to")
         else:
             update_location(bot, trigger,  mylocation)
 
@@ -151,11 +151,11 @@ def execute_main(bot, trigger, triggerargsarray):
         if target == 'notarget':
             target = trigger.nick
         if target not in  botusersarray:
-            bot.say("I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
+            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
         else:
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                bot.say(target +  " must first set a location using .weather setloction <place>")
+                osd(bot, trigger.sender, 'say', target +  " must first set a location using .weather setloction <place>")
             else:
                 display_location(bot, target, woeid)
 
@@ -193,7 +193,7 @@ def execute_main(bot, trigger, triggerargsarray):
         humidity = get_humidity(results)
         wind = get_wind(results)
         windchill = get_chill(results)
-        bot.say(u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
+        osd(bot, trigger.sender, 'say', u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
 
 #An example of how to use a different command in the same module
 #@commands('setlocation', 'setwoeid')
@@ -215,7 +215,7 @@ def display_location(bot, target, woeid):
     city = str(location['@city'])
     state = str(location['@region'])
     country=str(location['@country'])
-    bot.say("I have " + target + " down as being near " + city + "," + state + "," + country)
+    osd(bot, trigger.sender, 'say', "I have " + target + " down as being near " + city + "," + state + "," + country)
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""

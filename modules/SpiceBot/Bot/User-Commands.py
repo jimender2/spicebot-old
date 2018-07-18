@@ -16,4 +16,4 @@ def main_command(bot, trigger):
     subcommand = get_trigger_arg(bot, triggerargsarray, 1)
 
     if not subcommand:
-        bot.say("That's my name. Don't wear it out!")
+        osd(bot, trigger.sender, 'say', "That's my name. Don't wear it out!")

@@ -16,28 +16,28 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     arraytest = ['main']
     if isinstance(arraytest, list):
-        bot.say('array is an array')
+        osd(bot, trigger.sender, 'say', 'array is an array')
     else:
-        bot.say('array is not an array')
+        osd(bot, trigger.sender, 'say', 'array is not an array')
     notarraytest = "not an array"
     if isinstance(notarraytest, list):
-        bot.say('notarray is an array')
+        osd(bot, trigger.sender, 'say', 'notarray is an array')
     else:
-        bot.say('notarray is not an array')
+        osd(bot, trigger.sender, 'say', 'notarray is not an array')
     channelarray = []
     for c in bot.channels:
         channelarray.append(c)
     channel = get_trigger_arg(channelarray, 0)
-    bot.say(str(channel))
+    osd(bot, trigger.sender, 'say', str(channel))
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
     simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!','random','list']
     for i in range(0,totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
-        bot.say("arg " + str(i) + " = " + str(arg))
+        osd(bot, trigger.sender, 'say', "arg " + str(i) + " = " + str(arg))
     for x in simulatedvaluearray:
         value = get_trigger_arg(triggerargsarray, x)
         if value != '':
-            bot.say("arg " + str(x) + " = " + str(value))
+            osd(bot, trigger.sender, 'say', "arg " + str(x) + " = " + str(value))
         else:
-            bot.say("arg " + str(x) + " is empty")
+            osd(bot, trigger.sender, 'say', "arg " + str(x) + " is empty")

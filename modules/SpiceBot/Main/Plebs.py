@@ -18,6 +18,6 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, '1+')
     if target:
-        bot.say(str(target) + " needs more plebs!") #maybe title case later
+        osd(bot, trigger.sender, 'say', str(target) + " needs more plebs!") #maybe title case later
     else:
-        bot.say("Plebs are needed!")
+        osd(bot, trigger.sender, 'say', "Plebs are needed!")

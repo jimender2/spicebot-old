@@ -721,5 +721,5 @@ def bot_command_function_uptime(bot,trigger,botcom,instigator):
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() -
                                               bot.memory["uptime"])
                                              .total_seconds()))
-    bot.say("I've been sitting here for {} and I keep "
+    osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep "
             "going!".format(delta))

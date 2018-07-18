@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         set_database_value(bot,bot.nick,'testclock',0)
     elif commandused == 'check':
         currentsetting = get_database_value(bot,bot.nick,'testclock')
-        bot.say(str(currentsetting))
+        osd(bot, trigger.sender, 'say', str(currentsetting))
 
 
 @sopel.module.interval(15)

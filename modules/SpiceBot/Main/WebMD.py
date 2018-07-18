@@ -33,14 +33,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             resultselected = random.randint(0,len(webmd) - 1)
             result = str(webmd [resultselected])
         conclusion = str(target + ' ' + condition + ' ' + result + '.')
-        bot.say(conclusion)
+        osd(bot, trigger.sender, 'say', conclusion)
     elif not trigger.group(2):
-        bot.say("What would you like to add/remove?")
+        osd(bot, trigger.sender, 'say', "What would you like to add/remove?")
     else:
         webmdchange = str(trigger.group(2))
         if commandtrimmed == 'add':
             if webmdchange in webmd:
-                bot.say(webmdchange + " is already in the webmd locker.")
+                osd(bot, trigger.sender, 'say', webmdchange + " is already in the webmd locker.")
                 rescan = 'False'
             else:
                 webmd.append(webmdchange)
@@ -48,7 +48,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 rescan = 'True'
         elif commandtrimmed == 'del':
             if webmdchange not in webmd:
-                bot.say(webmdchange + " is not in the webmd locker.")
+                osd(bot, trigger.sender, 'say', webmdchange + " is not in the webmd locker.")
                 rescan = 'False'
             else:
                 webmd.remove(webmdchange)
@@ -57,9 +57,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if rescan == 'True':
             webmd = get_webmd(bot)
             if webmdchange in webmd:
-                bot.say(webmdchange + " has been added to the webmd locker.")
+                osd(bot, trigger.sender, 'say', webmdchange + " has been added to the webmd locker.")
             else:
-                bot.say(webmdchange + ' has been removed from the webmd locker.')
+                osd(bot, trigger.sender, 'say', webmdchange + ' has been removed from the webmd locker.')
 
 def get_webmd(bot):
     for channel in bot.channels:

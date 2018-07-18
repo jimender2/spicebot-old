@@ -16,4 +16,4 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    bot.say("You need moar RAM! Get it here: https://downloadmoreram.com/")
+    osd(bot, trigger.sender, 'say', "You need moar RAM! Get it here: https://downloadmoreram.com/")

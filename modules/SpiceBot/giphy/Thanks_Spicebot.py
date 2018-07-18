@@ -22,9 +22,9 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     gif = yourewelcome()
     if gif:
-        bot.say(gif)
+        osd(bot, trigger.sender, 'say', gif)
     else:
-        bot.say('You\'re welcome!')
+        osd(bot, trigger.sender, 'say', 'You\'re welcome!')
 
 def yourewelcome():
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'

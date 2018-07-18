@@ -117,16 +117,16 @@ def enable_service_auth(bot, trigger):
     if bot.config.core.owner_account:
         return
     if 'account-tag' not in bot.enabled_capabilities:
-        bot.say('This server does not fully support services auth, so this '
+        osd(bot, trigger.sender, 'say', 'This server does not fully support services auth, so this '
                 'command is not available.')
         return
     if not trigger.account:
-        bot.say('You must be logged in to network services before using this '
+        osd(bot, trigger.sender, 'say', 'You must be logged in to network services before using this '
                 'command.')
         return
     bot.config.core.owner_account = trigger.account
     bot.config.save()
-    bot.say('Success! I will now use network services to identify you as my '
+    osd(bot, trigger.sender, 'say', 'Success! I will now use network services to identify you as my '
             'owner.')
 
 

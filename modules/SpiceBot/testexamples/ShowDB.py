@@ -19,8 +19,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     nick = get_trigger_arg(triggerargsarray, 0)
-    bot.say("nick: " + nick)
+    osd(bot, trigger.sender, 'say', "nick: " + nick)
     dbkey = get_trigger_arg(triggerargsarray, 1)
-    bot.say("dbkey: " + dbkey)
+    osd(bot, trigger.sender, 'say', "dbkey: " + dbkey)
     #dbresult = get_database_value(bot,
     #get_database_value(bot, nick, databasekey):

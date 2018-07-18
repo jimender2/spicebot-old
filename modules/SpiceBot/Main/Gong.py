@@ -27,4 +27,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         message = "Spicebot grabs " + person + " with a hook and drags them out of the room."
 
-    bot.say(message)
+    osd(bot, trigger.sender, 'say', message)

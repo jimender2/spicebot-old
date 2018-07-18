@@ -21,10 +21,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     whotostalk = get_trigger_arg(bot, triggerargsarray, 1)
     if not whotostalk:
-        bot.say(instigator + " updates their stalker journal.")
+        osd(bot, trigger.sender, 'say', instigator + " updates their stalker journal.")
     else:
         botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
         if whotostalk.lower() not in [u.lower() for u in bot.users]:
-            bot.say("I'm not sure who that is.")
+            osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
         else:
-            bot.say(instigator + " updates their stalker journal entry for " + whotostalk + ".")
+            osd(bot, trigger.sender, 'say', instigator + " updates their stalker journal entry for " + whotostalk + ".")

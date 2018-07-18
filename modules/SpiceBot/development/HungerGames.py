@@ -30,24 +30,24 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if u in botusersarray and u != bot.nick:
             randomtargetarray.append(u)
     if randomtargetarray == []:
-        bot.say("There is currently no one available to play the hunger games.")
+        osd(bot, trigger.sender, 'say', "There is currently no one available to play the hunger games.")
     else:
         random.shuffle(randomtargetarray)
         totaltributes = len(randomtargetarray)
         if totaltributes == 1:
-            bot.say("There is only one tribute.  Try again later.")
+            osd(bot, trigger.sender, 'say', "There is only one tribute.  Try again later.")
         else:
-            bot.say("Let the Hunger Games begin!  May the odds be ever in your favor.")
+            osd(bot, trigger.sender, 'say', "Let the Hunger Games begin!  May the odds be ever in your favor.")
             if totaltributes == 2:
-                bot.say("The victor is " + str(randomtargetarray[0]))
+                osd(bot, trigger.sender, 'say', "The victor is " + str(randomtargetarray[0]))
             elif totaltributes == 3:
-                bot.say("The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
+                osd(bot, trigger.sender, 'say', "The first to die was " + str(randomtargetarray[1]) + " The victor is " + str(randomtargetarray[0]))
             else:
                 # safetribute = str(randomtargetarray[2])
                 # volunteer = str(randomtargetarray[3])
                 # randomtargetarray.pop(2)
                 # random.shuffle(randomtargetarray)
-                # bot.say(volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
+                # osd(bot, trigger.sender, 'say', volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 tributes = []
                 weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
                 for tribute in randomtargetarray:
@@ -78,7 +78,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                             tributes.pop(0)
                     totaltributes = len(tributes)
                 # payout =randint(hungergamesfee,35)
-                bot.say("The victor is " + tributes[0][0])
+                osd(bot, trigger.sender, 'say', "The victor is " + tributes[0][0])
                 # Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
         # else:
             # bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)

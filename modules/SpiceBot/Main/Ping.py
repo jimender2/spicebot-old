@@ -22,4 +22,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         response = 'ping'
     else:
         response = 'pong'
-    bot.say(response)
+    osd(bot, trigger.sender, 'say', response)

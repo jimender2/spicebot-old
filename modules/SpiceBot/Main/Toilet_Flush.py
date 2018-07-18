@@ -17,4 +17,4 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     #bot.action('jiggles toilet tank lever.')
-    bot.say('*splsssssssssssssshhhhhhh gurgle gurgle gurgle*')
+    osd(bot, trigger.sender, 'say', '*splsssssssssssssshhhhhhh gurgle gurgle gurgle*')

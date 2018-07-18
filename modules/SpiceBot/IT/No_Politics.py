@@ -12,4 +12,4 @@ from BotShared import *
 @sopel.module.commands('sign','politics','religion','genders')
 def execute_main(bot, trigger):
     channel = trigger.sender
-    bot.say("NO POLITICS, RELIGION, OR EXCESSIVE GENDER/SJWing IN " + channel + "!")
+    osd(bot, trigger.sender, 'say', "NO POLITICS, RELIGION, OR EXCESSIVE GENDER/SJWing IN " + channel + "!")

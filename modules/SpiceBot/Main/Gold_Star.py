@@ -22,12 +22,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     for c in bot.channels:
         channel = c
     if not target:
-        bot.say("Who deserves a gold star?")
+        osd(bot, trigger.sender, 'say', "Who deserves a gold star?")
     elif target.lower() not in bot.privileges[channel.lower()]:
-        bot.say("I'm not sure who that is.")
+        osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
     elif target == bot.nick:
         bot.action("blushes",channel)
     elif target == trigger.nick:
-        bot.say("Awww. Why don't you pat yourself on the back while you're at it?")
+        osd(bot, trigger.sender, 'say', "Awww. Why don't you pat yourself on the back while you're at it?")
     else:
-        bot.say(trigger.nick + " gives " + target + " a gold star for participation.")
+        osd(bot, trigger.sender, 'say', trigger.nick + " gives " + target + " a gold star for participation.")
