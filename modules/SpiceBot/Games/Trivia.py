@@ -19,11 +19,13 @@ import Spicebucks
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 
+
 @sopel.module.commands('trivia')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if len(triggerargsarray) > 0:
@@ -34,9 +36,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
-            getQuestionFromDb(bot)
+            getQuestionFromDb(bot,trigger)
         else:
-            askQuestion(bot)
+            askQuestion(bot,trigger)
 
 
 def resetDbValues(bot):
@@ -45,7 +47,8 @@ def resetDbValues(bot):
     set_database_value(bot,'triviauser','triviachoices','')
     set_database_value(bot,'triviauser','triviaanswered','t')
 
-def askQuestion(bot):
+
+def askQuestion(bot,trigger):
     type,question,arrAnswers,answer = getQuestion()
     set_database_value(bot,'triviauser','triviaq',question)
     set_database_value(bot,'triviauser','triviaa',answer)
@@ -59,19 +62,21 @@ def askQuestion(bot):
         osd(bot, trigger.sender, 'say', "Question: " + question)
         osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
 
-def getQuestionFromDb(bot):
+
+def getQuestionFromDb(bot,trigger):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
     osd(bot, trigger.sender, 'say', "Still waiting for someone to answer this one: " + question)
-    #if len(str(arrAnswers) > 2):
+    # if len(str(arrAnswers) > 2):
     try:
         osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
-        #correctanswer = get_database_value(bot,'triviauser','triviaa')
-        #osd(bot, trigger.sender, 'say', "The answer is : " + correctanswer)
+        # correctanswer = get_database_value(bot,'triviauser','triviaa')
+        # osd(bot, trigger.sender, 'say', "The answer is : " + correctanswer)
     except IndexError:
         osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + ", " + arrAnswers[1])
-    #else:
-    #osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1])
+    # else:
+    # osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1])
+
 
 def getQuestion():
     url = 'https://opentdb.com/api.php?amount=1'
@@ -98,13 +103,14 @@ def getQuestion():
         arrAnswers[1] = "B) "+arrAnswers[1]
         arrAnswers[2] = "C) "+arrAnswers[2]
         arrAnswers[3] = "D) "+arrAnswers[3]
-        question  = splitEntry(a[2])
+        question = splitEntry(a[2])
     else:
-        question  = splitEntry(a[2])
+        question = splitEntry(a[2])
         answer = splitEntry(a[4])
-        arrAnswers=['True','False']
+        arrAnswers = ['True','False']
 
     return type,question,arrAnswers,answer
+
 
 def answer(bot,trigger,triggerargsarray):
     answered = get_database_value(bot,'triviauser','triviaanswered')
@@ -124,9 +130,9 @@ def answer(bot,trigger,triggerargsarray):
                         correctanswer = correctanswer.lower()
                         break
                 if useranswer == correctanswer:
-                   resetDbValues(bot)
-                   Spicebucks.transfer(bot,'SpiceBank',guesser,5)
-                   osd(bot, trigger.sender, 'say', guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
+                    resetDbValues(bot)
+                    Spicebucks.transfer(bot,'SpiceBank',guesser,5)
+                    osd(bot, trigger.sender, 'say', guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                 else:
                     osd(bot, trigger.sender, 'say', "Sorry, " + guesser + ", that is incorrect.")
             else:
@@ -144,6 +150,7 @@ def splitEntry(entry):
     result = sanitizeString(result)
     return result
 
+
 def sanitizeString(entry):
     result = entry.replace('[','')
     result = result.replace(']','')
@@ -152,22 +159,26 @@ def sanitizeString(entry):
     result = result.replace("'","",len(result))
     return result
 
+
 # Get a value
 def get_database_value(bot, nick, databasekey):
     databasecolumn = str('trivia_' + databasekey)
     database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
     return database_value
 
+
 # Set a value
 def set_database_value(bot, nick, databasekey, value):
     databasecolumn = str('trivia_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, value)
+
 
 # get current value and update it adding newvalue
 def adjust_database_value(bot, nick, databasekey, value):
     oldvalue = get_database_value(bot, nick, databasekey)
     databasecolumn = str('trivia_' + databasekey)
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
+
 
 def getTimeSinceLastAttempt(bot,nick,databasekey):
     now = time.time()
