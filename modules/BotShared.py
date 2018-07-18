@@ -440,10 +440,10 @@ def osd(bot, target_array, text_type, text_array):
     # if text_array is a string, make it an array
     textarraycomplete = []
     if not isinstance(text_array, list):
-        textarraycomplete.append(str(text_array))
+        textarraycomplete.append(text_array)
     else:
         for x in text_array:
-            textarraycomplete.append(str(x))
+            textarraycomplete.append(x)
 
     # if target_array is a string, make it an array
     texttargetarray = []
