@@ -455,6 +455,7 @@ def subcommands(bot, trigger, triggerargsarray, command_full, command_main, duel
                 duels_check_nick_condition(bot, player, duels)
 
     # If the above passes all above checks
+    bot.say("debug here")
     duels_command_function_run = str('duels_command_function_' + command_main.lower() + '(bot, triggerargsarray, command_main, trigger, command_full, duels, instigatorbio)')
     eval(duels_command_function_run)
     # Don't allow event repetition
