@@ -39,14 +39,6 @@ def rpg_trigger_precede(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
 
-    testarray = ['cat','dog','mouse','bird']
-
-    bot.say("and")
-    bot.say(str(get_trigger_arg(bot, testarray, 'andlist')))
-    bot.say("or")
-    bot.say(str(get_trigger_arg(bot, testarray, 'orlist')))
-    return
-
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
 
