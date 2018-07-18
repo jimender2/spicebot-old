@@ -63,14 +63,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         while damageone == damagetwo:
                             damageone = randint(50, 80)
                             damagetwo = randint(50, 80)
-                    bot.notice(tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ", trigger.nick)
+                    osd(bot, trigger.nick, 'priv', tributes[0][0] + " hits " + tributes[1][0] + " with a " + tributes[0][2] + "(-" + str(damageone) + "). " + tributes[1][0] + " hits " + tributes[0][0] + " with a " + tributes[1][2] + "(-" + str(damagetwo) + "). ")
                     tributes[0][1] = tributes[0][1] - damageone
                     tributes[1][1] = tributes[1][1] - damageone
                     if tributes[0][1] <= 0:
-                        bot.notice(tributes[1][0] + " killed " + tributes[0][0], trigger.nick)
+                        osd(bot, trigger.nick, 'priv', tributes[1][0] + " killed " + tributes[0][0])
                     if tributes[1][1] <= 0:
                         if len(tributes) > 1:
-                            bot.notice(tributes[0][0] + " killed " + tributes[1][0], trigger.nick)
+                            osd(bot, trigger.nick, 'priv', tributes[0][0] + " killed " + tributes[1][0])
                     if tributes[1][1] <= 0:  # remove second tribute first is killed to not mess up order if first is killed
                         tributes.pop(1)
                     if tributes[0][1] <= 0:
@@ -81,4 +81,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 osd(bot, trigger.sender, 'say', "The victor is " + tributes[0][0])
                 # Spicebucks.spicebucks(bot,tributes[0][0],'plus',payout)
         # else:
-            # bot.notice("It costs " + str(hungergamesfee) + " to play HungerGames.",trigger.nick)
+            # osd(bot, trigger.nick, 'priv', "It costs " + str(hungergamesfee) + " to play HungerGames.")

@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     pointsreason = get_trigger_arg(bot, triggerargsarray, '2+')
     pointsreasonmsg = '.'
     if not channel.startswith("#"):
-        bot.notice(instigator + ", " + pointsstring.title() + " must be in a channel.", instigator)
+        osd(bot, trigger.nick, 'notice', pointsstring.title() + " must be in a channel.")
         return
     rando = randint(1, 666)
     commortarget = get_trigger_arg(bot, triggerargsarray, 1)

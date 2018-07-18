@@ -44,7 +44,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         # ###MakeitRain
         elif commandused == 'makeitrain':
             if not channel.startswith("#"):
-                bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
+                osd(bot, trigger.nick, 'notice', commandused + " can only be used in a channel.")
             else:
                     target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                     if (target == 'notarget' or target == 'everyone'):
@@ -131,7 +131,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         # Taxes
         elif (commandused == 'taxes' or commandused == 'tax'):
             if not channel.startswith("#"):
-                bot.notice(trigger.nick + ", " + commandused + " can only be used in a channel.", trigger.nick)
+                osd(bot, trigger.nick, 'priv', commandused + " can only be used in a channel.")
             else:
                 target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                 if not target == 'notarget':

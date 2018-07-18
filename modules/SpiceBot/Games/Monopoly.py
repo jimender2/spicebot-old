@@ -49,4 +49,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
           payout = balance
         adjust_database_value(bot,instigator, 'spicebucks_bank', payout)
     else:
-        bot.notice("You need " + str(monopolyfee) + " Spicebucks to use this command.",instigator)
+        osd(bot, instigator, 'priv', "You need " + str(monopolyfee) + " Spicebucks to use this command.")

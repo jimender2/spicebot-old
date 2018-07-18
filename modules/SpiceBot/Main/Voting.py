@@ -28,9 +28,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if timing.isdigit():
                 timing=int(timing)
                 set_database_value(bot,bot.nick,'votetimer',timing)
-                bot.notice("Voting delay set to 10 plus" + str(timing),player)
+                osd(bot, player, 'priv', "Voting delay set to 10 plus" + str(timing))
             else:
-                bot.notice("Please enter a valid number",player)
+                osd(bot, player, 'priv', "Please enter a valid number")
         else:
             yesvotes=0
             novotes = 0
@@ -39,7 +39,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             voters = get_database_value(bot, bot.nick, 'voters') or []
             if player not in voters:
                 if choice == 'yes' or choice == 'ya':
-                    bot.notice("Your yes vote has been recorded", player)
+                    osd(bot, player, 'priv', "Your yes vote has been recorded")
                     adjust_database_value(bot,bot.nick, 'yesvotes', 1)
                     adjust_database_array(bot, bot.nick, player, 'voters', 'add')
                     set_database_value(bot,bot.nick,'voting',1)
@@ -47,7 +47,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     set_database_value(bot,bot.nick,'votechannel',trigger.sender)
                     set_database_value(bot,bot.nick,'votingstart',now)
                 elif choice == 'no' or choice == 'na':
-                    bot.notice("Your no vote has been recorded", player)
+                    osd(bot, player, 'priv', "Your no vote has been recorded")
                     adjust_database_value(bot,bot.nick, 'novotes', 1)
                     adjust_database_array(bot, bot.nick, player, 'voters', 'add')
                     set_database_value(bot,bot.nick,'voting','True')
@@ -57,7 +57,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 else:
                     osd(bot, trigger.sender, 'say', "Vote yes or no")
             else:
-                bot.notice("You have already voted",player)
+                osd(bot, player, 'priv', "You have already voted")
 
     elif commandused == 'rate':
         raters = get_database_value(bot, bot.nick, 'raters') or []
@@ -70,7 +70,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if timing.isdigit():
                 timing=int(timing)
                 set_database_value(bot,bot.nick,'ratetimer',timing)
-                bot.notice("Rating delay set to 10 plus" + str(timing),player)
+                osd(bot, player, 'priv', "Rating delay set to 10 plus" + str(timing))
         else:
             if not player in raters:
                 if isfloat(choice):
@@ -79,16 +79,16 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         choice = 10
                     if choice < -10:
                         choice = -10
-                    bot.notice("Your rating of " + str(choice) + " has been recorded", player)
+                    osd(bot, player, 'priv', "Your rating of " + str(choice) + " has been recorded")
                     adjust_database_array(bot, bot.nick, player, 'raters', 'add')
                     adjust_database_array(bot, bot.nick, choice, 'ratings', 'add')
                     set_database_value(bot,bot.nick,'rating','True')
                     set_database_value(bot,bot.nick,'ratechannel',trigger.sender)
                     set_database_value(bot,bot.nick,'ratestart',now)
                 else:
-                    bot.notice(str(choice) + " is not a number between -10 and 10",player)
+                    osd(bot, player, 'priv', str(choice) + " is not a number between -10 and 10")
             else:
-                bot.notice("You already submitted a rating this round",player)
+                osd(bot, player, 'priv', "You already submitted a rating this round")
 
 
 

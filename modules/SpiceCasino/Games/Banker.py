@@ -71,7 +71,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         # Taxes
         elif (commandused == 'taxes' or commandused == 'tax'):
             if not channel.startswith("#"):
-                bot.notice(player + ", " + commandused + " can only be used in a channel.", player)
+                osd(bot, player, 'notice', commandused + " can only be used in a channel.")
             else:
                 target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
                 if not target == 'notarget':

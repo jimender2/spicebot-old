@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     pointsworth = random.uniform(.03,.08)
     if not channel.startswith("#"):
-        bot.notice(instigator + " Clue must be in a channel.", instigator)
+        osd(bot, instigator, 'notice', "Clue must be in a channel.")
         return
     target = get_trigger_arg(bot, triggerargsarray, 1)
     suspect = get_trigger_arg(bot, triggerargsarray, 2)
@@ -75,4 +75,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             Spicebucks.spicebucks(bot,instigator,'minus',pointsworth)
             osd(bot, trigger.sender, 'say', bot.nick + ' takes ' + pointsvalue + ' Spicebucks from ' + instigator)
     else:
-        bot.notice("You need " + str(cluefee) + " spicebucks to use this command.",instigator)
+        osd(bot, instigator, 'priv', "You need " + str(cluefee) + " spicebucks to use this command.")

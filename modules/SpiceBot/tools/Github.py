@@ -101,7 +101,7 @@ def make_github_issue(bot, body, labels, title, assignee, instigator):
                  'labels': labels}
     r = session.post(url, json.dumps(issue))
     if r.status_code == 201:
-        bot.notice("Successfully created " + title, instigator)
+        osd(bot, instigator, 'priv', "Successfully created " + title)
     else:
-        bot.notice("Could not create " + title, instigator)
-        bot.notice(str('Response:' + r.content), instigator)
+        osd(bot, instigator, 'priv', "Could not create " + title)
+        osd(bot, instigator, 'priv', str('Response:' + r.content))
