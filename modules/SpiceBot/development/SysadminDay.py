@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
-import datetime
+from datetime import datetime
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     today = datetime.datetime.now().strftime("%m/%d/%Y")
-    sysadminday = datetime.datetime.strptime('Jul 27 2018', '%b %d %Y')
+    sysadminday = datetime.strptime('Jul 27 2018', '%b %d %Y')
     if sysadminday > today:
         daystillsysadminday = sysadminday - today
         message = "There are " + daystillsysadminday + " till sysadminday"
