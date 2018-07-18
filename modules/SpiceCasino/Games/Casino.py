@@ -380,7 +380,7 @@ def lottery(bot,trigger, arg):
                         if(pick > lotterymax or pick < 1):
                             valid = 0
                     if valid == 0:
-                        osd(bot, player, 'priv', 'One of the numbers you entered is not within the valid range of 1 to ' + str(lotterymax)))
+                        osd(bot, player, 'priv', 'One of the numbers you entered is not within the valid range of 1 to ' + str(lotterymax))
                     else:
                         lottoplayers= get_database_value(bot,'casino','lottoplayers') or []
                         if player in lottoplayers:
