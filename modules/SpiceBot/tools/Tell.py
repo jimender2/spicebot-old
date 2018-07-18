@@ -194,7 +194,7 @@ def message(bot, trigger):
     if reminders[maximum:]:
         osd(bot, trigger.sender, 'say', 'Further messages sent privately')
         for line in reminders[maximum:]:
-            osd(bot, target, 'action', , line)
+            osd(bot, target, 'action', line)
 
     if len(bot.memory['reminders'].keys()) != remkeys:
         dumpReminders(bot.tell_filename, bot.memory['reminders'], bot.memory['tell_lock'])  # @@ tell
