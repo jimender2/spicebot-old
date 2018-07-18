@@ -528,8 +528,7 @@ def duel_combat(bot, maindueler, targetarray, triggerargsarray, typeofduel, duel
 
         # Announce Combat
         if typeofduel in duels_commands_events:
-            bot.notice("  ", playerbio_maindueler.actual)
-            bot.notice("  ", playerbio_target.actual)
+            osd(bot, [maindueler,target], 'priv', "  ")
         if typeofduel in duels_commands_events:
             osd(bot, [maindueler,target], 'priv', playerbio_maindueler.announce + " VERSUS " + playerbio_target.announce)
         else:
@@ -7391,7 +7390,7 @@ def duelclassic_combat(bot, channel, instigator, target, duels_classic_timeout, 
         return module.NOLIMIT
     time_since = duelclassic_time_since_duel(bot, channel, instigator)
     if time_since < duels_classic_timeout:
-        bot.notice("Next duel will be available in %d seconds." % (duels_classic_timeout - time_since), instigator)
+        osd(bot, instigator, 'priv', "Next duel will be available in %d seconds." % (duels_classic_timeout - time_since))
         return module.NOLIMIT
     msg = "%s vs. %s, " % (instigator, target)
     msg += "loser's a yeller belly!"
