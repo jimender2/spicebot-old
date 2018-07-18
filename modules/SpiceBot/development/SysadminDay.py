@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     today = datetime.datetime.now().strftime("%m/%d/%Y")
-    sysadminday = datetime.strptime('Jul 27 2018', '%b %d %Y')
+    sysadminday = datetime.datetime.strptime('Jul 27 2018', '%b %d %Y')
     if sysadminday > today:
         daystillsysadminday = sysadminday - today
         message = "There are " + daystillsysadminday + " till sysadminday"
