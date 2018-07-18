@@ -34,9 +34,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
         if lastquestionanswered == 'f':
-            getQuestionFromDb(bot)
+            getQuestionFromDb(bot,trigger)
         else:
-            askQuestion(bot)
+            askQuestion(bot,trigger)
 
 
 def resetDbValues(bot):
@@ -45,7 +45,7 @@ def resetDbValues(bot):
     set_database_value(bot,'triviauser','triviachoices','')
     set_database_value(bot,'triviauser','triviaanswered','t')
 
-def askQuestion(bot):
+def askQuestion(bot,trigger):
     type,question,arrAnswers,answer = getQuestion()
     set_database_value(bot,'triviauser','triviaq',question)
     set_database_value(bot,'triviauser','triviaa',answer)
@@ -59,7 +59,7 @@ def askQuestion(bot):
         osd(bot, trigger.sender, 'say', "Question: " + question)
         osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
 
-def getQuestionFromDb(bot):
+def getQuestionFromDb(bot,trigger):
     question = get_database_value(bot,'triviauser','triviaq')
     arrAnswers = get_database_value(bot,'triviauser','triviachoices')
     osd(bot, trigger.sender, 'say', "Still waiting for someone to answer this one: " + question)
