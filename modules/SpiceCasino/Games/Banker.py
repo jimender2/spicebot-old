@@ -25,8 +25,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
     amount = (get_trigger_arg(bot, triggerargsarray, 2)).lower() or 'noamount'
-    player = instigator.default
-    bot.say("Command used:" + str(commandused))
+    channel = botcom.channel_current
+    player = trigger.nick
     if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
@@ -37,6 +37,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'payday':
         paydayamount = 0
         paydayamount = checkpayday(bot,botcom, player)
+        bot.say(str(paydayamount))
         if paydayamount > 0:
             addbucks(bot,botcom, player, paydayamount)
             message = "You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks."
