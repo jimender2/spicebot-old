@@ -89,7 +89,7 @@ def execute_main(bot, trigger, triggerargsarray):
         rpg.admin = 0
         if [x for x in rpg.triggerargsarray if x == "-a"]:
             rpg.triggerargsarray.remove("-a")
-            if trigger.admin:
+            if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
 
         # Split commands to pass
@@ -104,7 +104,8 @@ def execute_main(bot, trigger, triggerargsarray):
             eval(command_function_run)
         else:
             for failcom in rpg.command_run:
-                rpg.command_run_fail.append(failcom)
+                if failcom not in rpg.command_run_fail:
+                    rpg.command_run_fail.append(failcom)
 
     if rpg.command_run_fail != []:
         osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
@@ -116,8 +117,10 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
         rpg.command_run.append("You have not specified a valid command.")
 
+    # Admin Block
     if rpg.command_main in rpg_commands_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
+
     return rpg
 
 
