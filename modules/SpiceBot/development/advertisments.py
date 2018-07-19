@@ -21,6 +21,8 @@ testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
 
 databasekey = 'ads'
 
+hardcoded_not_in_this_chan = ["#spiceworks"]
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
@@ -95,4 +97,6 @@ def advertisement(bot):
     message = get_trigger_arg(bot, existingarray, "random") or ''
     if not message:
         message = "Spiceduck for Spiceworks mascot 2k18"
-    osd(bot, trigger.sender, 'say', message)
+    for channel in bot.channels:
+        if channel not in hardcoded_not_in_this_chan:
+            osd(bot, channel, 'say', message)
