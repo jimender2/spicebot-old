@@ -68,6 +68,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Error Display System
     rpg_errors_start(bot, rpg)
+    errors(bot, rpg, 'admin', 1, 1)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -183,6 +184,8 @@ def rpg_errors_end(bot, rpg):
             currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
             if currenterrorvalue != []:
                 errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
+                if error_type in rpg.valid_commands_all:
+                    errormessage = str("[" + str(error_type.title()) + "]" + errormessage)
                 totalnumber = len(currenterrorvalue)
                 errormessage = str("(" + str(totalnumber) + ")" + errormessage)
                 if "$list" in errormessage:
