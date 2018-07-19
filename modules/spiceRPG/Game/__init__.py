@@ -19,7 +19,6 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
-    rpg = class_create('main')
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     execute_main(bot, trigger, triggerargsarray, rpg)
 
@@ -30,7 +29,6 @@ def rpg_trigger_main(bot, trigger):
 @module.rule('^(?:,rpg)\s+?.*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
-    rpg = class_create('main')
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
@@ -38,6 +36,14 @@ def rpg_trigger_precede(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, rpg):
+
+    # RPG dynamic Class
+    rpg = class_create('main')
+
+    # instigator
+    instigator = class_create('instigator')
+    instigator.default = trigger.nick
+    rpg.instigator = trigger.nick
 
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
@@ -47,9 +53,17 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # No Empty Commands
     if triggerargsarray == []:
-        valid_commands_list = get_trigger_arg(bot, rpg_commands_valid, 'andlist')  # TODO make this commands that the user is able to run
-        osd(bot, trigger.nick, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
-        return
+        user_capable_coms = []
+        for vcom in rpg_commands_valid:
+            if vcom in rpg_commands_admin:
+                if rpg.instigator in rpg.botadmins:
+                    user_capable_coms.append(vcom)
+            else:
+                user_capable_coms.append(vcom)
+        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')  # TODO make this commands that the user is able to run
+        return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
+
+    # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -63,14 +77,13 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         for command_split in command_full_split:
             rpg.multi_com_list.append(command_split)
 
-    # instigator
-    instigator = class_create('instigator')
-    instigator.default = trigger.nick
-    rpg.instigator = trigger.nick
-
     # Cycle through command array
+    rpg.command_run_fail = []
     for command_split_partial in rpg.multi_com_list:
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
+
+        # Log unsuccessful commands
+        rpg.command_run = []
 
         # Admin only
         rpg.admin = 0
@@ -83,26 +96,33 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
 
-        # Run command process
-        command_process(bot, trigger, rpg, instigator)
+        # Check Command can run
+        rpg = command_process(bot, trigger, rpg, instigator)
+        if rpg.command_run != []:
+            # Run the command's function
+            command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+            eval(command_function_run)
+        else:
+            for failcom in rpg.command_run:
+                rpg.command_run_fail.append(failcom)
+
+    if rpg.command_run_fail != []:
+        osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
 
 
 def command_process(bot, trigger, rpg, instigator):
 
-    # Handle rpg commands
-    if rpg.command_main not in rpg_commands_valid:
-        return osd(bot, rpg.instigator, 'notice', "You have not specified a valid command.")
+    # Verify Command is valid
+    if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
+        rpg.command_run.append("You have not specified a valid command.")
 
-    if rpg.command_main not in rpg_commands_admin and not rpg.admin:
-        return osd(bot, rpg.instigator, 'notice', rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
-
-    # Run the command's function
-    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    eval(command_function_run)
+    if rpg.command_main in rpg_commands_admin and not rpg.admin:
+        rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
+    return rpg
 
 
 def rpg_command_main_admin(bot, rpg, instigator):
-    osd(bot, instigator.default, 'say', "wip")
+    osd(bot, rpg.instigator, 'say', "wip")
 
 
 """
