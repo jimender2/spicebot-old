@@ -247,6 +247,9 @@ def rpg_command_main_admin(bot, rpg, instigator):
             adjust_database_array(bot, 'rpg_game_records', [channeltarget], activation_type_db, 'del')
             osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been disabled in " + channeltarget + "!")
 
+        if activation_type == 'game':
+            errors_reset(bot, rpg, 'commands', 1)
+
         return
 
 
