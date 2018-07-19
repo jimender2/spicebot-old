@@ -7,6 +7,7 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
+import inspect
 from .Global_Vars import *
 
 
@@ -68,6 +69,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Error Display System
     rpg_errors_start(bot, rpg)
+    bot.say(str(lineno()))
+    # errors(bot, rpg, 'debug', 1, 1)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -141,6 +144,13 @@ def command_process(bot, trigger, rpg, instigator):
 def rpg_command_main_admin(bot, rpg, instigator):
     osd(bot, rpg.instigator, 'say', "wip")
 
+"""
+Debug
+"""
+
+def lineno():
+    """Returns the current line number in our program."""
+    return inspect.currentframe().f_back.f_lineno
 
 """
 Errors
@@ -159,6 +169,7 @@ def rpg_errors_start(bot, rpg):
         errorscanlist.append(vcom)
     for error_type in rpg_error_list:
         errorscanlist.append(error_type)
+    errorscanlist.append("debug")
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
@@ -167,13 +178,14 @@ def rpg_errors_start(bot, rpg):
             exec(current_error_value)
 
 
-def rpg_errors_end(bot, rpg):  # TODO dev output, and admin output
+def rpg_errors_end(bot, rpg):
     rpg.error_display = []
     errorscanlist = []
     for vcom in rpg.valid_commands_all:
         errorscanlist.append(vcom)
     for error_type in rpg_error_list:
         errorscanlist.append(error_type)
+    errorscanlist.append("debug")
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
