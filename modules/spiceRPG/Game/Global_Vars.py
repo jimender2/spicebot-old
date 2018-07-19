@@ -39,11 +39,11 @@ Error messages System
 rpg_error_list = ['admin','commands']
 
 rpg_error_admin = [
-                    "Only bot admins may utilize the -a switch."
+                    "Only bot admins may utilize the -a switch.",
+                    " is an admin command. If you are an admin, you need to run with the -a admin switch."
 ]
 
 rpg_error_commands = [
                     "You may only run a unique command once at a time using the multicom feature.",
                     " does not appear to be a valid command."
-                    " is an admin command. If you are an admin, you need to run with the -a admin switch."
 ]
