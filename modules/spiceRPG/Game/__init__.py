@@ -51,11 +51,14 @@ def execute_main(bot, trigger, triggerargsarray):
     # Bacic User List
     rpg = rpg_command_users(bot,rpg)
 
+    # Commands list
+    rpg = rpg_valid_commands_all(bot, rpg)
+
     # No Empty Commands
     if triggerargsarray == []:
         user_capable_coms = []
-        for vcom in rpg_commands_valid:
-            if vcom in rpg_commands_admin:
+        for vcom in rpg.valid_commands_all:
+            if vcom in rpg_commands_valid_admin:
                 if rpg.instigator in rpg.botadmins:
                     user_capable_coms.append(vcom)
             else:
@@ -112,11 +115,11 @@ def execute_main(bot, trigger, triggerargsarray):
                 # Run the command's function
                 command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
                 eval(command_function_run)
-                rpg.commands_ran.append(rpg.command_main)
             else:
                 for failcom in rpg.command_run:
                     if failcom not in rpg.command_run_fail:
                         rpg.command_run_fail.append(failcom)
+            rpg.commands_ran.append(rpg.command_main)
 
     if rpg.command_run_fail != []:
         osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
@@ -125,11 +128,11 @@ def execute_main(bot, trigger, triggerargsarray):
 def command_process(bot, trigger, rpg, instigator):
 
     # Verify Command is valid
-    if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
         rpg.command_run.append(rpg.command_main + "is not a valid command.")
 
     # Admin Block
-    if rpg.command_main in rpg_commands_admin and not rpg.admin:
+    if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
 
     return rpg
@@ -137,6 +140,21 @@ def command_process(bot, trigger, rpg, instigator):
 
 def rpg_command_main_admin(bot, rpg, instigator):
     osd(bot, rpg.instigator, 'say', "wip")
+
+
+"""
+Commands
+"""
+
+
+# All valid character stats
+def rpg_valid_commands_all(bot, rpg):
+    rpg.valid_commands_all = []
+    for command_type in rpg_valid_command_types:
+        typeeval = eval("rpg_commands_valid_"+command_type)
+        for vcom in typeeval:
+            rpg.valid_commands_all.append(vcom)
+    return rpg.valid_commands_all
 
 
 """

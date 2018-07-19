@@ -13,11 +13,11 @@ osd_limit = 420
 Commands
 """
 
-# Valid Commands
-rpg_commands_valid = ['admin']
+# Valid Command Types
+rpg_valid_command_types = ['admin']
 
 # Admin Commands
-rpg_commands_admin = ['admin']
+rpg_commands_valid_admin = ['admin']
 
 """
 Map System
