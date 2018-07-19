@@ -59,8 +59,8 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg_errors_start(bot, rpg)
 
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.rpg_enabled_channels and rpg.inchannel:
-        if rpg.rpg_enabled_channels == []:
+    if rpg.channel_current not in rpg.channels_enabled and rpg.inchannel:
+        if rpg.channels_enabled == []:
             errors(bot, rpg, 'commands', 8, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
