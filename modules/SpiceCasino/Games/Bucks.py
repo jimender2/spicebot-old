@@ -1,5 +1,16 @@
 # Variblies for casino
 
+from __future__ import unicode_literals, absolute_import, print_function, division
+import sopel.module
+from sopel import module, tools
+import sys
+import os
+import random
+moduledir = os.path.dirname(__file__)
+shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(shareddir)
+sys.path.append(moduledir)
+from BotShared import *
 
 development_team = ['deathbybandaid','Mace_Whatdo','dysonparkes','under_score','jimender2']
 casino_bot_owner = "under_score"
@@ -81,12 +92,11 @@ def setlotterytimeout(bot,commandvalue):
 
 # ______banking
 def bank(bot, nick):
-    instigator = ''
     balance = 0
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
-        isvalid = targetcheck(bot,nick,instigator)
+        isvalid = targetcheck(bot,botcom,nick)
         if isvalid == 1:
             balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
@@ -106,4 +116,26 @@ def transfer(bot, instigator, target, amount):
             adjust_database_value(bot,instigator, 'spicebucks_bank', -(amount))
             adjust_database_value(bot,target, 'spicebucks_bank', amount)
             success = True
+    return success
+
+
+def addbucks(bot,target,amount):
+    instigator = bot
+    if not (target == 'Spicebank' or instigator == 'Spicebank'):
+        isvalid = targetcheck(bot,target,instigator)
+        isvalidtarget = targetcheck(bot,instigator,target)
+        if not (isvalid == 1 and isvalidtarget == 1):
+            return success
+    success = False
+    if amount > 0:
+        adjust_database_value(bot,target, 'spicebucks_bank', amount)
+        success = True
+    return success
+
+
+def minusbucks(bot,target,amount):
+    success = False
+    if amount > 0:
+        adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
+        success = True
     return success

@@ -12,15 +12,12 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('ww')
+@sopel.module.commands('jfive','j5')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'jfive')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    what =  get_trigger_arg(bot, triggerargsarray, 0)
-    if not what:
-        what = "wait what command"
-    osd(bot, trigger.sender, 'say', "Wait...What? there\'s a " + what + " now?")
+    osd(bot, trigger.sender, 'say', "Johnny Five needs moar innnnnpuuuuuut")

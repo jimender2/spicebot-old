@@ -4,9 +4,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import requests
 from lxml import html
-import datetime
-from time import strptime
-from dateutil import parser
 import calendar
 import arrow
 import sys
@@ -18,7 +15,9 @@ from BotShared import *
 
 # author jimender2
 
-testarray = ["test1", "test2", "test3", "test4", "test5",]
+testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
+             "Spiceduck for spicerex mascot 2k18",
+             "Deathbybandaid is looking for developers for spicebot and spicethings"]
 
 databasekey = 'ads'
 
@@ -83,12 +82,10 @@ def database_initialize(bot, nick, array, database):
     if not existingarray:
         arraycount = (len(array) - 1)
         i = 0
-        osd(bot, trigger.sender, 'say', "tester")
         while (i <= arraycount):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
-            osd(bot, trigger.sender, 'say', i)
 
 
 @sopel.module.interval(60)

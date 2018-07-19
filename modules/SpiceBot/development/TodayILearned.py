@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import sys
 import os
+import datetime
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
@@ -51,7 +52,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', message)
 
     else:
-        weapontype = get_trigger_arg(bot, existingarray, "random") or ''
+        day = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':
             message = "No response found. Have any been added?"
     target = get_trigger_arg(bot, triggerargsarray, 1)
