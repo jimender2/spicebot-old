@@ -53,7 +53,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)
-    bot.say(str(rpg.valid_commands_all))
 
     # No Empty Commands
     if triggerargsarray == []:
@@ -155,7 +154,7 @@ def rpg_valid_commands_all(bot, rpg):
         typeeval = eval("rpg_commands_valid_"+command_type)
         for vcom in typeeval:
             rpg.valid_commands_all.append(vcom)
-    return rpg.valid_commands_all
+    return rpg
 
 
 """
