@@ -106,9 +106,7 @@ def execute_main(bot, trigger, triggerargsarray):
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
 
         if rpg.command_main in rpg.commands_ran:
-            failcom = str("You may only run a command once at a time using the multicom feature.")
-            if failcom not in rpg.command_run_fail:
-                rpg.command_run_fail.append(failcom)
+            errors(bot, rpg, 'commands', 1, 1)
         else:
             # Check Command can run
             rpg = command_process(bot, trigger, rpg, instigator)
