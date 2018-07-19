@@ -103,3 +103,4 @@ def advertisement(bot):
             if channel not in hardcoded_not_in_this_chan:
                 osd(bot, channel, 'say', message)
     else:
+        message = "none"
