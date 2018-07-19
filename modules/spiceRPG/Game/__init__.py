@@ -138,12 +138,12 @@ def rpg_errors_start(bot, rpg):
         current_error_type = eval("rpg_error_" + error_type)
         total_errors = len(current_error_type)
         while total_errors > 1:
-            current_error = get_trigger_arg(bot, current_error_type, total_errors)
-            bot.say(str(current_error))
+            bot.say(str(total_errors))
+            # current_error = get_trigger_arg(bot, current_error_type, total_errors)
             total_errors = total_errors - 1
         # for i in len(current_error_type):
-            #current_error_value = str("rpg.errors." + x + " = []")
-            #exec(current_error_value)
+            # current_error_value = str("rpg.errors." + x + " = []")
+            # exec(current_error_value)
     return rpg
 
 
