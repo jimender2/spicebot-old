@@ -39,7 +39,7 @@ Error messages System
 rpg_error_list = ['commands']
 
 rpg_error_admin = [
-                    "test error"
+                    ""
 ]
 
 rpg_error_commands = [
