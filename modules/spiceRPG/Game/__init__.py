@@ -98,7 +98,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
         # Check Command can run
         rpg = command_process(bot, trigger, rpg, instigator)
-        if rpg.command_run != []:
+        if rpg.command_run == []:
             # Run the command's function
             command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
             eval(command_function_run)
