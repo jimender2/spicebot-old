@@ -69,8 +69,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Error Display System
     rpg_errors_start(bot, rpg)
-    bot.say(str(lineno()))
-    # errors(bot, rpg, 'debug', 1, 1)
+    errors(bot, rpg, 'debug', 1, lineno())
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
