@@ -47,7 +47,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
     # No Empty Commands
     if triggerargsarray == []:
-        osd(bot, trigger.nick, 'notice', "No Command issued.")
+        valid_commands_list = get_trigger_arg(bot, rpg_commands_valid, 'andlist')  # TODO make this commands that the user is able to run
+        osd(bot, trigger.nick, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
         return
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
