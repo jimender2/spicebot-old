@@ -61,7 +61,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     amount = int(amount)
                     if amount >= 0 and amount < 10000001:
                         set_database_value(bot,target, 'spicebucks_bank', amount)
-                        targetbalance = bank(bot,botcom,target)
+                        targetbalance = bank(bot,target)
                         osd(bot, trigger.sender, 'say', target + ' now has ' + str(targetbalance) + ' in the bank')
                     else:
                         osd(bot, trigger.sender, 'say', 'Please enter a postive number less then 1,000,000')
@@ -101,7 +101,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
         elif commandused == 'rob':
             usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 2
-            balance = bank(bot,botcom, target)
+            balance = bank(bot, target)
             if buckscheck(bot,botcom,target) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
             else:
@@ -115,7 +115,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     adjust_database_value(bot,player,'usedtaxes',1)
                     randomcheck = random.randint(0,5)
                     if randomcheck == 3:
-                        triggerbalance = bank(bot,botcom, player)
+                        triggerbalance = bank(bot, player)
                         fine = int(triggerbalance*.20)
                         osd(bot, trigger.sender, 'say', player + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
                         minusbucks(bot,botcom,player,fine)
@@ -127,8 +127,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'banker' or commandused == 'banker':
         if target == 'notarget':
             target = player
-            balance = bank(bot,botcom,target)
-            osd(bot,trigger.sender, 'say', target + " has " + balance + " in the Spicebank.")
+            balance = bank(bot,target)
+            osd(bot,trigger.sender, 'say', target + " has " + str(balance) + " in the Spicebank.")
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
