@@ -95,7 +95,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
             else:
-                errors(bot, rpg, 'admin', 1, 1)
+                errors(bot, rpg, 'commands', 1, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
@@ -111,7 +111,8 @@ def execute_main(bot, trigger, triggerargsarray):
     rpg_errors_end(bot, rpg)
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
-    bot.say("end")
+
+    # bot.say("end")
 
 
 def command_process(bot, trigger, rpg, instigator):
@@ -120,19 +121,20 @@ def command_process(bot, trigger, rpg, instigator):
 
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
-        errors(bot, rpg, 'commands', 1, 1)
+        errors(bot, rpg, 'commands', 2, 1)
         return rpg
 
     # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
-        errors(bot, rpg, 'commands', 2, rpg.command_main)
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
+        errors(bot, rpg, 'commands', 3, rpg.command_main)
         return rpg
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
-        errors(bot, rpg, 'admin', 2, rpg.command_main)
+        errors(bot, rpg, 'commands', 4, rpg.command_main)
         return rpg
 
+    # Safe to run command
     rpg.command_run = 1
 
     return rpg
