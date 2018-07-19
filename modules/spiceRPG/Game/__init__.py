@@ -101,7 +101,7 @@ def command_process(bot, trigger, rpg, instigator):
     eval(command_function_run)
 
 
-def rpg_command_main_admin(bot,rpg):
+def rpg_command_main_admin(bot, rpg, instigator):
     osd(bot, trigger.sender, 'say', "wip")
 
 
