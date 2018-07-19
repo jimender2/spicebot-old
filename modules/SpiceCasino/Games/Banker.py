@@ -179,7 +179,7 @@ def checkpayday(bot,botcom, target):
         set_database_value(bot,target, 'spicebucks_payday', datetoday)
     else:
         paydaymsg = "Spicbank: " + str(spicebank) + "lastpay: " + str(lastpayday)
-    return paydayamount.paydaymsg
+    return paydayamount,paydaymsg
 
 
 def paytaxes(bot,botcom,target):
