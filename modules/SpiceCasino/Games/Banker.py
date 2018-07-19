@@ -36,9 +36,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bot.say(str(validbank))
     elif commandused == 'payday':
         paydayamount = 0
-        paydayamount = checkpayday(bot,botcom, player)
-        spicebank = bank(bot,botcom,'jackpot')
-        bot.say(str(spicebank))
+        paydayamount,msg = checkpayday(bot,botcom, player)
+        bot.say(msg)
         if paydayamount > 0:
             addbucks(bot,botcom, player, paydayamount)
             message = "You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks."
@@ -170,15 +169,17 @@ def checkpayday(bot,botcom, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     spicebank = bank(bot,botcom,'jackpot')
+    paydaymsg = ""
     if spicebank <= 0:
         spicebank = 500
     lastpayday = get_database_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
+        paydaymsg = "Pay day found"
         paydayamount = int(spicebank * 0.01)
         set_database_value(bot,target, 'spicebucks_payday', datetoday)
     else:
-        paydayamount = 0
-    return paydayamount
+        paydaymsg = "Spicbank: " + str(spicebank) + "lastpay: " + str(lastpayday) + "Today: " + str(datetoday)
+    return paydayamount,paydaymsg
 
 
 def paytaxes(bot,botcom,target):
