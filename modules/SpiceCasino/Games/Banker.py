@@ -14,7 +14,7 @@ from BotShared import *
 from Bucks import *
 
 
-@sopel.module.commands('banker','bank','payday','tax','taxes','funds')
+@sopel.module.commands('banker','payday','tax','taxes','funds','rob','bankreset')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'banker')
     if not enablestatus:
@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
     player = instigator.default
-
+    bot.say("Command used:" + str(commandused))
     if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
@@ -74,9 +74,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 randomaudit = random.randint(1,usedamount)
                 if not target == 'notarget':
-                    if targetcheck(bot,target,player) == 0:
+                    if targetcheck(bot,botcom,target,player) == 0:
                         osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
-                    elif targetcheck(bot,target,player) == 3:
+                    elif targetcheck(bot,botcom,target,player) == 3:
                         message = audit(bot,player)
                         osd(bot, trigger.sender, 'action',message)
                     else:
@@ -120,11 +120,23 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
                         transfer(bot,target,player,payout)
         # Bank
-        elif commandused == 'bank':
-            if target == 'notarget':
-                target = player
-            balance = bank(bot,target)
+    elif commandused == 'banker' or commandused == 'banker':
+        if target == 'notarget':
+            target = player
+            balance = bank(bot,botcom,target)
             osd(bot,trigger.sender, 'say', target + " has " + balance + " in the Spicebank.")
+
+    elif commandused == 'bankreset' and trigger.admin:  # admin only command
+        target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
+        validtarget = targetcheck(bot,botcom,target,instigator)
+        if target == 'notarget'or target == trigger.nick:
+            reset(bot,target)
+            osd(bot, trigger.sender, 'say', 'Payday reset for ' + trigger.nick)
+        elif not validtarget == 1:
+            reset(bot,target)
+            osd(bot, trigger.sender, 'say', 'Payday reset for ' + target)
+        else:
+            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
 
 
 # admin command reset user values
