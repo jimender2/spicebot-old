@@ -113,7 +113,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 def command_process(bot, trigger, rpg, instigator):
 
-    bot.say(str(rpg.admin))
+    bot.say(str(rpg.command_main))
 
     # Verify Command is valid
     if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
