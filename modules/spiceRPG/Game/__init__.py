@@ -68,6 +68,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Error Display System
     rpg_errors_start(bot, rpg)
+    errors(bot, rpg, 'admin', 1, 1)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -156,7 +157,12 @@ def errors(bot, rpg, error_type, number, append):
 
 def rpg_errors_start(bot, rpg):
     rpg.errors = class_create('errors')
+    errorscanlist = []
+    for vcom in rpg.valid_commands_all:
+        errorscanlist.append(vcom)
     for error_type in rpg_error_list:
+        errorscanlist.append(error_type)
+    for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
             current_error_number = i + 1
@@ -166,7 +172,12 @@ def rpg_errors_start(bot, rpg):
 
 def rpg_errors_end(bot, rpg):
     rpg.error_display = []
+    errorscanlist = []
+    for vcom in rpg.valid_commands_all:
+        errorscanlist.append(vcom)
     for error_type in rpg_error_list:
+        errorscanlist.append(error_type)
+    for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
             current_error_number = i + 1
