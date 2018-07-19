@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 def errors(bot, rpg, error_type, number, append):
-    currenterrorvalue = eval("rpg.errors." + error_type + str(number))
+    current_error_value = eval("rpg.errors." + error_type + str(number))
     current_error_value.append(append)
     bot.say(str(append))
     return rpg
