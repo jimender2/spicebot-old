@@ -99,7 +99,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
             else:
-                errors(bot, rpg, 'admin', 1, 1)
+                rpg = errors(bot, rpg, 'admin', 1, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
