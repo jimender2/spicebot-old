@@ -66,6 +66,12 @@ def execute_main(bot, trigger, triggerargsarray):
         valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')  # TODO make this commands that the user is able to run
         return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
 
+    # Error Display System
+    rpg.errors = class_create('errors')
+    for x in rpg_error_list:
+        currenterrorvalue = str("rpg.errors." + x + " = []")
+        exec(currentvalue)
+
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
@@ -81,6 +87,9 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.multi_com_list.append(command_split)
 
     # Cycle through command array
+    rpg.command_run_fail_invalid = []
+    rpg.command_run_fail_notadmin = []
+
     rpg.command_run_fail = []
     rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
@@ -124,16 +133,24 @@ def execute_main(bot, trigger, triggerargsarray):
     if rpg.command_run_fail != []:
         osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
 
+    error_display = []
+    for x in rpg_error_list:
+        currenterrorvalue = eval("rpg.errors." + x)
+        if currenterrorvalue != []:
+            bot.say(x + " errors detected")
+
 
 def command_process(bot, trigger, rpg, instigator):
 
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
-        rpg.command_run.append(rpg.command_main + "is not a valid command.")
+        rpg.command_run.append(rpg.command_main + " does not appear to be a valid command.")
+        rpg.errors.command_run_fail_invalid.append(rpg.command_main)
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
+        rpg.errors.command_run_fail_notadmin.append(rpg.command_main)
 
     return rpg
 
