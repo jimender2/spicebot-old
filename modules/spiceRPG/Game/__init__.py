@@ -273,7 +273,7 @@ def timed_logcheck(bot):
                 bot.memory[startupmonologue] = 1
 
                 startup_monologue = []
-                startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
+                startup_monologue.append("The Spice Realm is vast; full of wonder, loot, monsters, and peril!")
                 startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
                 osd(bot, channel, 'notice', startup_monologue)
 
