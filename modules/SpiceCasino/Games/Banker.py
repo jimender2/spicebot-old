@@ -24,6 +24,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
+    amount = (get_trigger_arg(bot, triggerargsarray, 2)).lower() or 'noamount'
     player = instigator.default
     bot.say("Command used:" + str(commandused))
     if commandused == '':
@@ -55,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amount = get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
+
             if not amount == 'noamount':
                 if amount.isdigit():
                     amount = int(amount)
