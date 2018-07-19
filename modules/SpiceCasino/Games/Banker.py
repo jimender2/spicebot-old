@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if target == 'spicebank':
                 target = 'SpiceBank'
                 success = 1
-            elif targetcheck(bot,botcom,target,instigator) == 0:
+            elif buckscheck(bot,botcom,target) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
                 success = 0
             else:
@@ -78,9 +78,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 randomaudit = random.randint(1,usedamount)
                 if not target == 'notarget':
-                    if targetcheck(bot,botcom,target,player) == 0:
+                    if buckscheck(bot,botcom,target) == 0:
                         osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
-                    elif targetcheck(bot,botcom,target,player) == 3:
+                    elif buckscheck(bot,botcom,target) == 3:
                         message = audit(bot,botcom,player)
                         osd(bot, trigger.sender, 'action',message)
                     else:
@@ -102,7 +102,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif commandused == 'rob':
             usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 2
             balance = bank(bot,botcom, target)
-            if targetcheck(bot,botcom,target,player) == 0:
+            if buckscheck(bot,botcom,target) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
             else:
                 if usedamount > 10:
@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
-        validtarget = targetcheck(bot,botcom,target,instigator)
+        validtarget = buckscheck(bot,botcom,target)
         if target == 'notarget'or target == trigger.nick:
             reset(bot,target)
             osd(bot, trigger.sender, 'say', 'Payday reset for ' + trigger.nick)

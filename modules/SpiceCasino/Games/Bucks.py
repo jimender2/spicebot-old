@@ -96,7 +96,7 @@ def bank(bot, botcom, nick):
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
-        isvalid = targetcheck(bot,botcom,nick,nick)
+        isvalid = buckscheck(bot,botcom,nick)
         if isvalid == 1 or isvalid == 2:
             balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
@@ -105,8 +105,8 @@ def bank(bot, botcom, nick):
 def transfer(bot,botcom, instigator, target, amount):
     success = False
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,botcom,target,instigator)
-        isvalidtarget = targetcheck(bot,botcom,instigator,target)
+        isvalid = buckscheck(bot,botcom,target)
+        isvalidtarget = buckscheck(bot,botcom,target)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
 
@@ -122,8 +122,8 @@ def transfer(bot,botcom, instigator, target, amount):
 def addbucks(bot,botcom,target,amount):
     instigator = bot
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,botcom,target,instigator)
-        isvalidtarget = targetcheck(bot,botcom,instigator,target)
+        isvalid = buckscheck(bot,botcom,target)
+        isvalidtarget = buckscheck(bot,botcom,instigator)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
     success = False
@@ -156,7 +156,7 @@ def buckscheck(bot, botcom, target):
     if target == bot.nick:
         validtarget = 3
         validtargetmsg.append("Target is a bot")
-        return validtarget, validtargetmsg
+        return validtarget
 
     # Null Target
     if not target:
@@ -165,8 +165,8 @@ def buckscheck(bot, botcom, target):
         return validtarget,validtargetmsg
 
     if target in botcom.users_current:
-        return validtarget, validtargetmsg
+        return validtarget
     else:
         validtarget = 0
         validtargetmsg.append(target + " isn't a valid user")
-        return validtarget,validtargetmsg
+        return validtarget
