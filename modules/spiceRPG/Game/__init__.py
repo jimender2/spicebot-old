@@ -84,13 +84,9 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.multi_com_list.append(command_split)
 
     # Cycle through command array
-    rpg.command_run_fail = []
     rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
-
-        # Log unsuccessful commands
-        rpg.command_run = []
 
         # Admin only
         rpg.admin = 0
@@ -104,29 +100,51 @@ def execute_main(bot, trigger, triggerargsarray):
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
-
-        if rpg.command_main in rpg.commands_ran:
-            errors(bot, rpg, 'commands', 1, 1)
-        else:
-            # Check Command can run
-            rpg = command_process(bot, trigger, rpg, instigator)
-            if rpg.command_run == []:
-                # Run the command's function
-                command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-                eval(command_function_run)
-            else:
-                for failcom in rpg.command_run:
-                    if failcom not in rpg.command_run_fail:
-                        rpg.command_run_fail.append(failcom)
-            rpg.commands_ran.append(rpg.command_main)
-
-    # if rpg.command_run_fail != []:
-    #    osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
+        # Check Command can run
+        rpg = command_process(bot, trigger, rpg, instigator)
+        if rpg.command_run:
+            # Run the command's function
+            command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+            eval(command_function_run)
+        rpg.commands_ran.append(rpg.command_main)
 
     rpg_errors_end(bot, rpg)
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
     bot.say("end")
+
+
+def command_process(bot, trigger, rpg, instigator):
+
+    rpg.command_run = 0
+
+    # multicom multiple of the same
+    if rpg.command_main in rpg.commands_ran and not rpg.admin:
+        errors(bot, rpg, 'commands', 1, 1)
+        return rpg
+
+    # Verify Command is valid
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
+        errors(bot, rpg, 'commands', 2, rpg.command_main)
+        return rpg
+
+    # Admin Block
+    if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
+        errors(bot, rpg, 'commands', 3, rpg.command_main)
+        return rpg
+
+    rpg.command_run = 1
+
+    return rpg
+
+
+def rpg_command_main_admin(bot, rpg, instigator):
+    osd(bot, rpg.instigator, 'say', "wip")
+
+
+"""
+Errors
+"""
 
 
 def errors(bot, rpg, error_type, number, append):
@@ -155,23 +173,6 @@ def rpg_errors_end(bot, rpg):
                 errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
                 if errormessage not in rpg.error_display:
                     rpg.error_display.append(errormessage)
-
-
-def command_process(bot, trigger, rpg, instigator):
-
-    # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
-        rpg.command_run.append(rpg.command_main + " does not appear to be a valid command.")
-
-    # Admin Block
-    if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
-        rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
-
-    return rpg
-
-
-def rpg_command_main_admin(bot, rpg, instigator):
-    osd(bot, rpg.instigator, 'say', "wip")
 
 
 """
