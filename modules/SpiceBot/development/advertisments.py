@@ -92,7 +92,7 @@ def database_initialize(bot, nick, array, database):
 
 @sopel.module.interval(120)
 def advertisement(bot):
-    rand = random.randint(1,10)
+    rand = random.randint(1,5)
     if rand == 5:
         databasekey = 'ads'
         existingarray = get_database_value(bot, bot.nick, databasekey) or []
