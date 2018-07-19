@@ -68,9 +68,9 @@ rpg_error_admin = [
                     "You must Specify a valid game facet to activate. Valid options include: $valid_game_change",  # 2
                     "You must specify a valid channel. Valid channels include $valid_channels.",  # 3
                     "You must specify toggle status. Valid options include $valid_onoff.",  # 4
-                    "RPG devmode is already on in $dev_chans."  # 5
-                    "RPG devmode is already off in $dev_chans."  # 6
-                    "RPG is already on in $game_chans."  # 7
+                    "RPG devmode is already on in $dev_chans.",  # 5
+                    "RPG devmode is already off in $dev_chans.",  # 6
+                    "RPG is already on in $game_chans.",  # 7
                     "RPG is already off in $game_chans."  # 8
 ]
 
