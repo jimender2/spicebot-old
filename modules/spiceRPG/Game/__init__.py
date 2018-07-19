@@ -91,6 +91,7 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.triggerargsarray.remove("-a")
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
+                bot.say("here")
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
