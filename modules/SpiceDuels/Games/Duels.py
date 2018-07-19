@@ -6721,12 +6721,12 @@ User Nicks
 
 # Outputs Nicks with correct capitalization
 def nick_actual(bot,nick):
-    actualnick = nick
+    nick_actual = nick
     for u in bot.users:
-        if u.lower() == actualnick.lower():
-            actualnick = u
+        if u.lower() == nick_actual.lower():
+            nick_actual = u
             continue
-    return actualnick
+    return nick_actual
 
 
 # Build Duel Name Text

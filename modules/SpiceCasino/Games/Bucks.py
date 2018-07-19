@@ -31,11 +31,6 @@ roulettetimeout = 25
 maxwheel = 29
 
 
-def jackpot(bot):
-    nick = 'SpiceBank'
-    balance = bank(bot,nick)
-
-
 def deal(bot, cardcount):
     # choose a random card from a deck and remove it from deck
     hand = []
@@ -47,7 +42,7 @@ def deal(bot, cardcount):
 
 
 def lotterypayout(bot,level):
-    balance = jackpot(bot)
+    balance = casino(bot)
     payout = 0
     if level == 1:
         payout = int(0.04 * balance)
@@ -58,17 +53,17 @@ def lotterypayout(bot,level):
         if payout < 20:
             payout = 8
     elif level == 3:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(0.1 * balance)
         if payout < 50:
             payout = 8
     elif level == 4:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(0.5 * balance)
         if payout < 250:
             payout = 8
     elif level == 5:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(balance)
         if payout < 500:
             payout = 500
@@ -91,42 +86,40 @@ def setlotterytimeout(bot,commandvalue):
 
 
 # ______banking
-def bank(bot, botcom, nick):
+def bank(bot,botcom, nick):
     balance = 0
-    if nick == 'SpiceBank':
+    if nick == 'casino':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
-        isvalid = targetcheck(bot,botcom,nick,bot)
-        if isvalid == 1:
+        isvalid = buckscheck(bot,botcom,nick)
+        if isvalid == 1 or isvalid == 2:
             balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
 
 
-def transfer(bot,botcom, instigator, target, amount):
+def transfer(bot,botcom, target, instigator, amount):
     success = False
-    if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,botcom,target,instigator)
-        isvalidtarget = targetcheck(bot,botcom,instigator,target)
+    if not (target == 'casino' or instigator == 'casino'):
+        isvalid = buckscheck(bot,botcom,target)
+        isvalidtarget = buckscheck(bot,botcom,instigator)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
 
     if amount >= 0:
-        instigator_balance = bank(bot,instigator)
+        instigator_balance = bank(bot,botcom,instigator)
         if amount <= instigator_balance:
-            adjust_database_value(bot,instigator, 'spicebucks_bank', -(amount))
-            adjust_database_value(bot,target, 'spicebucks_bank', amount)
+            adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
+            adjust_database_value(bot,instigator, 'spicebucks_bank', amount)
             success = True
     return success
 
 
 def addbucks(bot,botcom,target,amount):
-    instigator = bot
-    if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,botcom,target,instigator)
-        isvalidtarget = targetcheck(bot,botcom,instigator,target)
-        if not (isvalid == 1 and isvalidtarget == 1):
-            return success
     success = False
+    if not (target == 'casino'):
+        isvalid = buckscheck(bot,botcom,target)
+        if not (isvalid == 1):
+            return success
     if amount > 0:
         adjust_database_value(bot,target, 'spicebucks_bank', amount)
         success = True
@@ -135,7 +128,41 @@ def addbucks(bot,botcom,target,amount):
 
 def minusbucks(bot,botcom,target,amount):
     success = False
+    isvalid = buckscheck(bot,botcom,target)
+    if not (isvalid == 1):
+        return success
     if amount > 0:
         adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
         success = True
     return success
+
+
+def buckscheck(bot, botcom, target):
+    # Guilty until proven Innocent
+    validtarget = 1
+    validtargetmsg = []
+    # target = target.lower()
+    """ Target is instigator
+    if target == ''botcom.instigator.default'':
+        validtarget = 2
+        validtargetmsg.append("Target is instigator")
+        return validtarget, validtargetmsg
+    """
+
+    if target == bot.nick:
+        validtarget = 3
+        validtargetmsg.append("Target is a bot")
+        return validtarget
+
+    # Null Target
+    if not target:
+        validtarget = 0
+        validtargetmsg.append("You must specify a target.")
+        return validtarget,validtargetmsg
+
+    if target in botcom.users_current:
+        return validtarget
+    else:
+        validtarget = 0
+        validtargetmsg.append(target + " isn't a valid user")
+        return validtarget

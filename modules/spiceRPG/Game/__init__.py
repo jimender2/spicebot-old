@@ -7,11 +7,31 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
+# Additional
+import random
+from random import randint
+import time
+import datetime
+import re
+import sys
+import os
+from os.path import exists
+from num2words import num2words
+from difflib import SequenceMatcher
+from more_itertools import sort_together
+from operator import itemgetter
+import requests
+from fake_useragent import UserAgent
+from lxml import html
+from statistics import mean
+import itertools
+import inspect
+# Game Folder
 from .Global_Vars import *
 
 
 """
-Idea, use exec to dynamically import the subcommands?
+Triggers for usage
 """
 
 
@@ -20,7 +40,7 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_main(bot, trigger, triggerargsarray)
+    execute_start(bot, trigger, triggerargsarray)
 
 
 # respond to alternate start for command
@@ -32,13 +52,21 @@ def rpg_trigger_precede(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    execute_main(bot, trigger, triggerargsarray)
+    execute_start(bot, trigger, triggerargsarray)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+"""
+Command Processing
+"""
+
+
+def execute_start(bot, trigger, triggerargsarray):
 
     # RPG dynamic Class
     rpg = class_create('main')
+
+    # Time when Module use started
+    rpg.start = time.time()
 
     # instigator
     instigator = class_create('instigator')
@@ -52,7 +80,32 @@ def execute_main(bot, trigger, triggerargsarray):
     rpg = rpg_command_users(bot,rpg)
 
     # Commands list
-    rpg = rpg_valid_commands_all(bot, rpg)
+    rpg = rpg_valid_commands_all(bot, rpg)  # TODO alt coms
+
+    # TODO valid stats
+
+    # Error Display System Create
+    rpg_errors_start(bot, rpg)
+
+    # Run the Process
+    execute_main(bot, rpg, instigator, trigger, triggerargsarray)
+
+    # Error Display System Display
+    rpg_errors_end(bot, rpg)
+
+
+def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
+
+    # Verify Game enabled in current channel
+    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real:
+        if rpg.channels_game_enabled == []:
+            errors(bot, rpg, 'commands', 1, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return
+        else:
+            errors(bot, rpg, 'commands', 2, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return
 
     # No Empty Commands
     if triggerargsarray == []:
@@ -63,11 +116,9 @@ def execute_main(bot, trigger, triggerargsarray):
                     user_capable_coms.append(vcom)
             else:
                 user_capable_coms.append(vcom)
-        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')  # TODO make this commands that the user is able to run
-        return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
-
-    # Error Display System
-    rpg_errors_start(bot, rpg)
+        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')
+        errors(bot, rpg, 'commands', 3, 1)
+        return
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -95,7 +146,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
             else:
-                errors(bot, rpg, 'commands', 1, 1)
+                errors(bot, rpg, 'commands', 4, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
@@ -108,12 +159,6 @@ def execute_main(bot, trigger, triggerargsarray):
             eval(command_function_run)
         rpg.commands_ran.append(rpg.command_main)
 
-    rpg_errors_end(bot, rpg)
-    if rpg.error_display != []:
-        osd(bot, rpg.instigator, 'notice', rpg.error_display)
-
-    # bot.say("end")
-
 
 def command_process(bot, trigger, rpg, instigator):
 
@@ -121,17 +166,17 @@ def command_process(bot, trigger, rpg, instigator):
 
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
-        errors(bot, rpg, 'commands', 2, 1)
+        errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
-        errors(bot, rpg, 'commands', 3, rpg.command_main)
+        errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
-        errors(bot, rpg, 'commands', 4, rpg.command_main)
+        errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
     # Safe to run command
@@ -140,8 +185,107 @@ def command_process(bot, trigger, rpg, instigator):
     return rpg
 
 
+"""
+Commands
+"""
+
+
 def rpg_command_main_admin(bot, rpg, instigator):
-    osd(bot, rpg.instigator, 'say', "wip")
+
+    # Subcommand
+    subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
+    subcommand_default = eval('subcommands_default_' + rpg.command_main)
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or subcommand_default
+    if not subcommand:
+        errors(bot, rpg, rpg.command_main, 1, 1)
+        return
+
+    if subcommand == 'channel':
+
+        # Toggle Type
+        activation_type = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_admin_channel], 1)
+        if not activation_type:
+            errors(bot, rpg, 'admin', 2, 1)
+            return
+
+        activation_type_db = str(activation_type + "_enabled")
+
+        # Channel
+        channeltarget = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
+        if not channeltarget:
+            if rpg.channel_current.startswith('#'):
+                channeltarget = rpg.channel_current
+            else:
+                errors(bot, rpg, 'admin', 3, 1)
+                return
+
+        # on/off
+        activation_direction = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in onoff_list], 1)
+        if not activation_direction:
+            errors(bot, rpg, rpg.command_main, 4, 1)
+            return
+
+        # Evaluate change
+        current_channel_facet = eval("rpg.channels_" + activation_type_db)
+        if activation_type == 'devmode':
+            if activation_direction in activate_list:
+                current_channel_facet_error = 5
+            else:
+                current_channel_facet_error = 6
+        elif activation_type == 'game':
+            if activation_direction in activate_list:
+                current_channel_facet_error = 7
+            else:
+                current_channel_facet_error = 8
+
+        # make the change
+        if activation_direction in activate_list:
+            if channeltarget.lower() in [x.lower() for x in current_channel_facet]:
+                errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
+                return
+            adjust_database_array(bot, 'rpg_game_records', [channeltarget], activation_type_db, 'add')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been enabled in " + channeltarget + "!")
+        elif activation_direction in deactivate_list:
+            if channeltarget.lower() not in [x.lower() for x in current_channel_facet]:
+                errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
+                return
+            adjust_database_array(bot, 'rpg_game_records', [channeltarget], activation_type_db, 'del')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been disabled in " + channeltarget + "!")
+
+        if activation_type == 'game':
+            errors_reset(bot, rpg, 'commands', 1)
+
+        return
+
+
+"""
+Bot Start
+"""
+
+
+@sopel.module.interval(1)  # TODO make this progress with the game
+def timed_logcheck(bot):
+    channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
+    for channel in bot.channels:
+        if channel in channels_game_enabled:
+            startupmonologue = str("startup_monologue_" + channel)
+            if startupmonologue not in bot.memory:
+                bot.memory[startupmonologue] = 1
+
+                startup_monologue = []
+                startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
+                startup_monologue.append("Will you, heroes, be triumphant over the darkness that awaits?")
+                osd(bot, channel, 'notice', startup_monologue)
+
+
+"""
+Debug
+"""
+
+
+def lineno():
+    """Returns the current line number in our program."""
+    return inspect.currentframe().f_back.f_lineno
 
 
 """
@@ -152,6 +296,11 @@ Errors
 def errors(bot, rpg, error_type, number, append):
     current_error_value = eval("rpg.errors." + error_type + str(number))
     current_error_value.append(append)
+
+
+def errors_reset(bot, rpg, error_type, number):
+    current_error_value = str("rpg.errors." + error_type + str(number) + " = []")
+    exec(current_error_value)
 
 
 def rpg_errors_start(bot, rpg):
@@ -183,13 +332,47 @@ def rpg_errors_end(bot, rpg):
             currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
             if currenterrorvalue != []:
                 errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
+                if error_type in rpg.valid_commands_all:
+                    errormessage = str("[" + str(error_type.title()) + "] " + errormessage)
                 totalnumber = len(currenterrorvalue)
-                errormessage = str("(" + str(totalnumber) + ")" + errormessage)
+                errormessage = str("(" + str(totalnumber) + ") " + errormessage)
                 if "$list" in errormessage:
                     errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
                     errormessage = str(errormessage.replace("$list", errorlist))
+                if "$valid_coms" in errormessage:
+                    validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
+                    errormessage = str(errormessage.replace("$valid_coms", validcomslist))
+                if "$game_chans" in errormessage:
+                    gamechanlist = get_trigger_arg(bot, rpg.channels_game_enabled, 'list')
+                    errormessage = str(errormessage.replace("$game_chans", gamechanlist))
+                if "$valid_channels" in errormessage:
+                    validchanlist = get_trigger_arg(bot, rpg.channels_list, 'list')
+                    errormessage = str(errormessage.replace("$valid_channels", validchanlist))
+                if "$valid_onoff" in errormessage:
+                    validtogglelist = get_trigger_arg(bot, onoff_list, 'list')
+                    errormessage = str(errormessage.replace("$valid_onoff", validtogglelist))
+                if "$valid_subcoms" in errormessage:
+                    subcommand_valid = eval('subcommands_valid_' + error_type)
+                    subcommand_valid = get_trigger_arg(bot, subcommand_valid, 'list')
+                    errormessage = str(errormessage.replace("$valid_subcoms", subcommand_valid))
+                if "$valid_game_change" in errormessage:
+                    subcommand_arg_valid = get_trigger_arg(bot, subcommands_valid_admin_channel, 'list')
+                    errormessage = str(errormessage.replace("$valid_game_change", subcommand_arg_valid))
+                if "$dev_chans" in errormessage:
+                    devchans = get_trigger_arg(bot, rpg.channels_devmode_enabled, 'list')
+                    errormessage = str(errormessage.replace("$dev_chans", devchans))
+                if "$game_chans" in errormessage:
+                    gamechans = get_trigger_arg(bot, rpg.channels_game_enabled, 'list')
+                    errormessage = str(errormessage.replace("$game_chans", gamechans))
+                if "$current_chan" in errormessage:
+                    if rpg.channel_real:
+                        errormessage = str(errormessage.replace("$current_chan", rpg.channel_current))
+                    else:
+                        errormessage = str(errormessage.replace("$current_chan", 'privmsg'))
                 if errormessage not in rpg.error_display:
                     rpg.error_display.append(errormessage)
+    if rpg.error_display != []:
+        osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
 
 """
@@ -231,12 +414,12 @@ def rpg_command_channels(bot,rpg,trigger):
         rpg.channels_list.append(channel)
 
     # Game Enabled
-    rpg.channels_enabled = get_database_value(bot, 'rpg_game_records', 'gameenabled') or []
+    rpg.channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
 
     # Development mode
-    rpg.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
+    rpg.channels_devmode_enabled = get_database_value(bot, 'rpg_game_records', 'dev_enabled') or []
     rpg.dev_bypass = 0
-    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode]:
+    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode_enabled]:
         rpg.dev_bypass = 1
     return rpg
 
@@ -380,12 +563,12 @@ How to Display Nicks
 
 # Outputs Nicks with correct capitalization
 def nick_actual(bot,nick):
-    actualnick = nick
+    nick_actual = nick
     for u in bot.users:
-        if u.lower() == actualnick.lower():
-            actualnick = u
+        if u.lower() == nick_actual.lower():
+            nick_actual = u
             continue
-    return actualnick
+    return nick_actual
 
 
 """
