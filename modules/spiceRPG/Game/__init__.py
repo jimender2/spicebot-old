@@ -260,6 +260,7 @@ def rpg_errors_end(bot, rpg):
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
                 if "$valid_subcoms" in errormessage:
                     subcommand_valid = eval('subcommands_valid_' + error_type)
+                    subcommand_valid = get_trigger_arg(bot, subcommand_valid, 'list')
                     errormessage = str(errormessage.replace("$valid_subcoms", subcommand_valid))
                 if "$current_chan" in errormessage:
                     if rpg.channel_real:
