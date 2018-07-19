@@ -21,7 +21,7 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_main(bot, trigger, triggerargsarray)
+    execute_start(bot, trigger, triggerargsarray)
 
 
 # respond to alternate start for command
@@ -33,10 +33,10 @@ def rpg_trigger_precede(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    execute_main(bot, trigger, triggerargsarray)
+    execute_start(bot, trigger, triggerargsarray)
 
 
-def execute_main(bot, trigger, triggerargsarray):
+def execute_start(bot, trigger, triggerargsarray):
 
     # RPG dynamic Class
     rpg = class_create('main')
@@ -55,6 +55,20 @@ def execute_main(bot, trigger, triggerargsarray):
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)
 
+    # Error Display System
+    rpg_errors_start(bot, rpg)
+
+    # Verify Game enabled in current channel
+    if rpg.channel_current not in rpg.rpg_enabled_channels and rpg.inchannel:
+        if rpg.rpg_enabled_channels == []:
+            errors(bot, rpg, 'commands', 8, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return
+        if not trigger.admin:
+            errors(bot, rpg, 'commands', 7, 1)
+            if rpg.instigator not in rpg.botadmins:
+                return
+
     # No Empty Commands
     if triggerargsarray == []:
         user_capable_coms = []
@@ -64,12 +78,16 @@ def execute_main(bot, trigger, triggerargsarray):
                     user_capable_coms.append(vcom)
             else:
                 user_capable_coms.append(vcom)
-        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')  # TODO make this commands that the user is able to run
-        return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
+        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')
+        errors(bot, rpg, 'commands', 6, 1)
+        return
+    else:
+        execute_main(bot, rpg, instigator, trigger, triggerargsarray)
 
-    # Error Display System
-    rpg_errors_start(bot, rpg)
-    errors(bot, rpg, 'debug', 1, lineno())
+    rpg_errors_end(bot, rpg)
+
+
+def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -110,10 +128,6 @@ def execute_main(bot, trigger, triggerargsarray):
             eval(command_function_run)
         rpg.commands_ran.append(rpg.command_main)
 
-    rpg_errors_end(bot, rpg)
-
-    # bot.say("end")
-
 
 def command_process(bot, trigger, rpg, instigator):
 
@@ -143,13 +157,16 @@ def command_process(bot, trigger, rpg, instigator):
 def rpg_command_main_admin(bot, rpg, instigator):
     osd(bot, rpg.instigator, 'say', "wip")
 
+
 """
 Debug
 """
 
+
 def lineno():
     """Returns the current line number in our program."""
     return inspect.currentframe().f_back.f_lineno
+
 
 """
 Errors
@@ -202,6 +219,11 @@ def rpg_errors_end(bot, rpg):
                 if "$valid_coms" in errormessage:
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
+                if "$current_chan" in errormessage:
+                    if rpg.channel_real:
+                        errormessage = str(errormessage.replace("$current_chan", rpg.channel_current))
+                    else:
+                        errormessage = str(errormessage.replace("$current_chan", 'privmsg'))
                 if errormessage not in rpg.error_display:
                     rpg.error_display.append(errormessage)
     if rpg.error_display != []:

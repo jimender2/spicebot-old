@@ -50,5 +50,9 @@ rpg_error_commands = [
                     "Only bot admins may utilize the -a switch.",
                     "You may only run a unique command once at a time using the multicom feature.",
                     "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms",
-                    "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch."
+                    "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",
+                    "rpg has not been enabled in any bot channels. Talk to a bot admin.",
+                    "Which rpg command do you wish to run? Valid Commands include: $valid_coms",
+                    "rpg has not been enabled in $current_chan. Talk to a bot admin.",
+                    "rpg has not been enabled in any bot channels. Talk to a bot admin."
 ]
