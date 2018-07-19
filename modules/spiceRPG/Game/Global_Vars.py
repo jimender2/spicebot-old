@@ -40,4 +40,5 @@ rpg_error_list = ['admin']
 
 rpg_error_admin = [
                     "Only bot admins may utilize the -a switch."
+                    "dummy errrrrr"
 ]
