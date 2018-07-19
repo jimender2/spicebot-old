@@ -137,7 +137,7 @@ def rpg_errors_start(bot, rpg):
     for error_type in rpg_error_list:
         current_error_type = eval("rpg_error_" + error_type)
         bot.say(str(current_error_type))
-        #for i in len(current_error_type):
+        # for i in len(current_error_type):
         #    current_error_value = str("rpg.errors." + x + " = []")
         #    exec(current_error_value)
     return rpg
@@ -157,12 +157,10 @@ def command_process(bot, trigger, rpg, instigator):
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
         rpg.command_run.append(rpg.command_main + " does not appear to be a valid command.")
-        # rpg.errors.command_run_fail_invalid.append(rpg.command_main)
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
-        # rpg.errors.command_run_fail_notadmin.append(rpg.command_main)
 
     return rpg
 
