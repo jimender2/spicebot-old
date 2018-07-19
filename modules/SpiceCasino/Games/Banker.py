@@ -133,11 +133,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
+        if target == 'notarget':
+            target = trigger.nick
         validtarget = buckscheck(bot,botcom,target)
-        if target == 'notarget'or target == trigger.nick:
-            reset(bot,target)
-            osd(bot, trigger.sender, 'say', 'Payday reset for ' + trigger.nick)
-        elif not validtarget == 1:
+        if not validtarget == 0:
             reset(bot,target)
             osd(bot, trigger.sender, 'say', 'Payday reset for ' + target)
         else:
