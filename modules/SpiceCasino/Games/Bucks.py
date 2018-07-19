@@ -32,7 +32,7 @@ maxwheel = 29
 
 
 def jackpot(bot):
-    nick = 'SpiceBank'
+    nick = 'jackpot'
     balance = bank(bot,botcom,nick)
 
 
@@ -93,7 +93,7 @@ def setlotterytimeout(bot,commandvalue):
 # ______banking
 def bank(bot,botcom, nick):
     balance = 0
-    if nick == 'SpiceBank':
+    if nick == 'jackpot':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
         isvalid = buckscheck(bot,botcom,nick)
@@ -104,7 +104,7 @@ def bank(bot,botcom, nick):
 
 def transfer(bot,botcom, instigator, target, amount):
     success = False
-    if not (target == 'Spicebank' or instigator == 'Spicebank'):
+    if not (target == 'jackpot' or instigator == 'jackpot'):
         isvalid = buckscheck(bot,botcom,target)
         isvalidtarget = buckscheck(bot,botcom,target)
         if not (isvalid == 1 and isvalidtarget == 1):
@@ -121,7 +121,7 @@ def transfer(bot,botcom, instigator, target, amount):
 
 def addbucks(bot,botcom,target,amount):
     instigator = bot
-    if not (target == 'Spicebank' or instigator == 'Spicebank'):
+    if not (target == 'jackpot' or instigator == 'jackpot'):
         isvalid = buckscheck(bot,botcom,target)
         isvalidtarget = buckscheck(bot,botcom,instigator)
         if not (isvalid == 1 and isvalidtarget == 1):
