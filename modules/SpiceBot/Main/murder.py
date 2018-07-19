@@ -55,10 +55,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
         if weapontype == '':
-            message = "No response found. Have any been added?"
-            target = get_trigger_arg(bot, triggerargsarray, 1)
-            reason = get_trigger_arg(bot, triggerargsarray, '2+')
-            msg = "a " + weapontype
+            weapontype = "gun"
+        target = get_trigger_arg(bot, triggerargsarray, 1)
+        reason = get_trigger_arg(bot, triggerargsarray, '2+')
+        msg = "a " + weapontype
 
     # No target specified
     if not target:

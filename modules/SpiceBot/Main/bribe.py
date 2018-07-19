@@ -53,7 +53,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif target.lower() in [u.lower() for u in bot.users]:
             balance = bank(bot, instigator)
             money = random.randint(0, balance)
-            osd(bot, trigger.sender, 'action', instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
+            if money == 0:
+                osd(bot, trigger.sender, 'action', instigator + " attempts to bribe " + target + " with $" + str(money) + " but " + target + " wacks them upside the head.")
+            elif money == 1:
+                osd(bot, trigger.sender, 'action', instigator + " bribes " + target + " with $" + str(money) + " in an unmarked bill.")
+            else:
+                osd(bot, trigger.sender, 'action', instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
             set_database_value(bot,target, databasekey, inputstring)
             spicebucks(bot, instigator, 'minus', money)
