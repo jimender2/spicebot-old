@@ -116,7 +116,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Verify Command is valid
     if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
-        rpg.command_run.append("You have not specified a valid command.")
+        rpg.command_run.append(rpg.command_main + "is not a valid command.")
 
     # Admin Block
     if rpg.command_main in rpg_commands_admin and not rpg.admin:
