@@ -88,7 +88,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 else:
                     if usedamount == 1:
                         adjust_database_value(bot,player,'usedtaxes',3)
-                        taxtotal,message = paytaxes(bot, target)
+                        taxtotal,message = paytaxes(bot,botcom, target)
                         osd(bot,trigger.send,'say',message)
                         if taxtotal >= 100:
                             kickback = int(taxtotal*0.1)
@@ -111,7 +111,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 triggerbalance = bank(bot,botcom, player)
                 fine = int(triggerbalance*.20)
                 osd(bot, trigger.sender, 'say', player + " get's caught for pickpocketing too much and is fined " + str(fine))
-                minusbucks(bot,player,fine)
+                minusbucks(bot,botcom,player,fine)
             else:
                 adjust_database_value(bot,player,'usedtaxes',1)
                 randomcheck = random.randint(0,5)

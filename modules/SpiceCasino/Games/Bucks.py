@@ -133,6 +133,9 @@ def addbucks(bot,botcom,target,amount):
 
 def minusbucks(bot,botcom,target,amount):
     success = False
+    isvalid = buckscheck(bot,botcom,target)
+    if not (isvalid == 1):
+        return success
     if amount > 0:
         adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
         success = True
