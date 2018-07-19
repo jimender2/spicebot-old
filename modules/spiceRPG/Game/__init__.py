@@ -137,7 +137,7 @@ def rpg_errors_start(bot, rpg):
     for error_type in rpg_error_list:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
-            current_error = get_trigger_arg(bot, current_error_type, i - 1)
+            current_error = get_trigger_arg(bot, current_error_type, i + 1)
             bot.say(str(current_error))
         # for i in len(current_error_type):
             # current_error_value = str("rpg.errors." + x + " = []")
