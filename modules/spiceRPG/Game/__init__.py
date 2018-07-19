@@ -102,7 +102,7 @@ def command_process(bot, trigger, rpg, instigator):
 
 
 def rpg_command_main_admin(bot, rpg, instigator):
-    osd(bot, trigger.sender, 'say', "wip")
+    osd(bot, instigator.default, 'say', "wip")
 
 
 """
