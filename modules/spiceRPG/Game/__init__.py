@@ -172,7 +172,7 @@ def rpg_errors_end(bot, rpg):
             if currenterrorvalue != []:
                 errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
                 totalnumber = len(currenterrorvalue)
-                errormessage = str("$count", "(" + str(totalnumber) + ")" + errormessage)
+                errormessage = str("(" + str(totalnumber) + ")" + errormessage)
                 if "$list" in errormessage:
                     errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
                     errormessage = str(errormessage.replace("$list", errorlist))
