@@ -67,10 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
 
     # Error Display System
-    rpg.errors = class_create('errors')
-    for x in rpg_error_list:
-        currenterrorvalue = str("rpg.errors." + x + " = []")
-        exec(currenterrorvalue)
+    rpg = rpg_errors_start(bot, rpg)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -87,9 +84,6 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.multi_com_list.append(command_split)
 
     # Cycle through command array
-    rpg.command_run_fail_invalid = []
-    rpg.command_run_fail_notadmin = []
-
     rpg.command_run_fail = []
     rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
@@ -132,7 +126,17 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if rpg.command_run_fail != []:
         osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
+    rpg = rpg_errors_end(bot, rpg)
 
+
+def rpg_errors_start(bot, rpg):
+    rpg.errors = class_create('errors')
+    for x in rpg_error_list:
+        currenterrorvalue = str("rpg.errors." + x + " = []")
+        exec(currenterrorvalue)
+
+
+def rpg_errors_end(bot, rpg):
     error_display = []
     for x in rpg_error_list:
         currenterrorvalue = eval("rpg.errors." + x)
