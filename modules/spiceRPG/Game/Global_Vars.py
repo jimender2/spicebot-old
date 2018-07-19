@@ -36,8 +36,12 @@ Error messages System
 """
 
 
-rpg_error_list = ['admin']
+rpg_error_list = ['admin','commands']
 
 rpg_error_admin = [
                     "Only bot admins may utilize the -a switch."
+]
+
+rpg_error_commands = [
+                    "You may only run a command once at a time using the multicom feature."
 ]
