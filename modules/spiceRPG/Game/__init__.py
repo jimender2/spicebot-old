@@ -189,7 +189,7 @@ def rpg_command_main_admin(bot, rpg, instigator):
     # Subcommand
     subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
     subcommand_default = eval('subcommands_default_' + rpg.command_main)
-    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or subcommand_default
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or subcommand_default
     if not subcommand:
         errors(bot, rpg, rpg.command_main, 1, 1)
         return
