@@ -145,7 +145,7 @@ def buckscheck(bot, botcom, target):
     # Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
-    target = target.lower()
+    # target = target.lower()
     """ Target is instigator
     if target == ''botcom.instigator.default'':
         validtarget = 2
