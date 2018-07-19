@@ -20,7 +20,7 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_main(bot, trigger, triggerargsarray, rpg)
+    execute_main(bot, trigger, triggerargsarray)
 
 
 # respond to alternate start for command
@@ -32,10 +32,10 @@ def rpg_trigger_precede(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    execute_main(bot, trigger, triggerargsarray, rpg)
+    execute_main(bot, trigger, triggerargsarray)
 
 
-def execute_main(bot, trigger, triggerargsarray, rpg):
+def execute_main(bot, trigger, triggerargsarray):
 
     # RPG dynamic Class
     rpg = class_create('main')
