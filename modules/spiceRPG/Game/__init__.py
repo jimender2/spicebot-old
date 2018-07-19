@@ -102,6 +102,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
             errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
+        else:
             errors(bot, rpg, 'commands', 2, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
