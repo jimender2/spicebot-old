@@ -198,7 +198,7 @@ def rpg_command_main_admin(bot, rpg, instigator):
     if subcommand == 'channel':
 
         # Channel
-        channeltarget = get_trigger_arg(bot, [x for x in triggerargsarray if x in rpg.channels_list], 1)
+        channeltarget = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
         if not channeltarget:
             if rpg.channel_current.startswith('#'):
                 channeltarget = rpg.channel_current
