@@ -31,11 +31,6 @@ roulettetimeout = 25
 maxwheel = 29
 
 
-def jackpot(bot):
-    nick = 'jackpot'
-    balance = bank(bot,botcom,nick)
-
-
 def deal(bot, cardcount):
     # choose a random card from a deck and remove it from deck
     hand = []
@@ -47,7 +42,7 @@ def deal(bot, cardcount):
 
 
 def lotterypayout(bot,level):
-    balance = jackpot(bot)
+    balance = casino(bot)
     payout = 0
     if level == 1:
         payout = int(0.04 * balance)
@@ -58,17 +53,17 @@ def lotterypayout(bot,level):
         if payout < 20:
             payout = 8
     elif level == 3:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(0.1 * balance)
         if payout < 50:
             payout = 8
     elif level == 4:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(0.5 * balance)
         if payout < 250:
             payout = 8
     elif level == 5:
-        balance = jackpot(bot)
+        balance = casino(bot)
         payout = int(balance)
         if payout < 500:
             payout = 500
@@ -93,7 +88,7 @@ def setlotterytimeout(bot,commandvalue):
 # ______banking
 def bank(bot,botcom, nick):
     balance = 0
-    if nick == 'jackpot':
+    if nick == 'casino':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
         isvalid = buckscheck(bot,botcom,nick)
@@ -102,11 +97,11 @@ def bank(bot,botcom, nick):
     return balance
 
 
-def transfer(bot,botcom, instigator, target, amount):
+def transfer(bot,botcom, target, instigator, amount):
     success = False
-    if not (target == 'jackpot' or instigator == 'jackpot'):
+    if not (target == 'casino' or instigator == 'casino'):
         isvalid = buckscheck(bot,botcom,target)
-        isvalidtarget = buckscheck(bot,botcom,target)
+        isvalidtarget = buckscheck(bot,botcom,instigator)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
 
@@ -121,7 +116,7 @@ def transfer(bot,botcom, instigator, target, amount):
 
 def addbucks(bot,botcom,target,amount):
     success = False
-    if not (target == 'jackpot'):
+    if not (target == 'casino'):
         isvalid = buckscheck(bot,botcom,target)
         if not (isvalid == 1):
             return success
