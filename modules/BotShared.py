@@ -101,19 +101,19 @@ def spicebot_prerun(bot,trigger,commandused):
 
 # Outputs Nicks with correct capitalization
 def actualname(bot,nick):
-    actualnick = str(nick)
+    nick_actual = str(nick)
     for u in bot.users:
         if u.lower() == str(nick).lower():
-            actualnick = u
-    return actualnick
+            nick_actual = u
+    return nick_actual
 
 
 def nick_actual(bot,nick):
-    actualnick = str(nick)
+    nick_actual = str(nick)
     for u in bot.users:
         if u.lower() == str(nick).lower():
-            actualnick = u
-    return actualnick
+            nick_actual = u
+    return nick_actual
 
 
 def bot_command_users(bot,botcom):
