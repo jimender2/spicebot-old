@@ -24,3 +24,10 @@ Map System
 """
 
 rpg_valid_directions = ['north','south','east','west']
+
+
+"""
+Error messages System
+"""
+
+rpg_error_list = ['command_run_fail_invalid','command_run_fail_notadmin']
