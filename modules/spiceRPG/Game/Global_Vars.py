@@ -28,6 +28,7 @@ rpg_commands_valid_admin = ['admin']
 Subcommands
 """
 
+# Admin
 subcommands_valid_admin = ['channel']
 subcommands_default_admin = 0
 
@@ -51,7 +52,8 @@ rpg_error_debug = [
 ]
 
 rpg_error_admin = [
-                    "Subcommand missing. Valid subcommands include: $valid_subcoms"
+                    "Subcommand missing. Valid subcommands include: $valid_subcoms",
+                    "You must specify a valid channel. Valide Channels include $valid_channels"
 ]
 
 rpg_error_commands = [

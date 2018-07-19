@@ -195,6 +195,18 @@ def rpg_command_main_admin(bot, rpg, instigator):
         errors(bot, rpg, rpg.command_main, 1, 1)
         return
 
+    if subcommand == 'channel':
+
+        # Channel
+        channeltarget = get_trigger_arg(bot, [x for x in triggerargsarray if x in rpg.channels_list], 1)
+        if not channeltarget:
+            if rpg.channel_current.startswith('#'):
+                channeltarget = rpg.channel_current
+            else:
+                errors(bot, rpg, 'admin', 2, 1)
+                return
+        return
+
 
 """
 Debug
@@ -258,6 +270,9 @@ def rpg_errors_end(bot, rpg):
                 if "$game_chans" in errormessage:
                     gamechanlist = get_trigger_arg(bot, rpg.channels_enabled, 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
+                if "$valid_channels" in errormessage:
+                    validchanlist = get_trigger_arg(bot, rpg.channels_list, 'list')
+                    errormessage = str(errormessage.replace("$game_chans", validchanlist))
                 if "$valid_subcoms" in errormessage:
                     subcommand_valid = eval('subcommands_valid_' + error_type)
                     subcommand_valid = get_trigger_arg(bot, subcommand_valid, 'list')
