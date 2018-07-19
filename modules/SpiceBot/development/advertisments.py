@@ -21,6 +21,8 @@ testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
 
 databasekey = 'ads'
 
+hardcoded_not_in_this_chan = ["#spiceworks"]
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
@@ -88,11 +90,17 @@ def database_initialize(bot, nick, array, database):
             i = i + 1
 
 
-@sopel.module.interval(60)
+@sopel.module.interval(120)
 def advertisement(bot):
-    databasekey = 'ads'
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
-    message = get_trigger_arg(bot, existingarray, "random") or ''
-    if not message:
-        message = "Spiceduck for Spiceworks mascot 2k18"
-    osd(bot, trigger.sender, 'say', message)
+    rand = random.randint(1,5)
+    if rand == 5:
+        databasekey = 'ads'
+        existingarray = get_database_value(bot, bot.nick, databasekey) or []
+        message = get_trigger_arg(bot, existingarray, "random") or ''
+        if not message:
+            message = "Spiceduck for Spiceworks mascot 2k18"
+        for channel in bot.channels:
+            if channel not in hardcoded_not_in_this_chan:
+                osd(bot, channel, 'say', message)
+    else:
+        message = "none"

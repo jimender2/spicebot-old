@@ -19,9 +19,8 @@ Idea, use exec to dynamically import the subcommands?
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
-    rpg = class_create('main')
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_main(bot, trigger, triggerargsarray, rpg)
+    execute_main(bot, trigger, triggerargsarray)
 
 
 # respond to alternate start for command
@@ -30,14 +29,21 @@ def rpg_trigger_main(bot, trigger):
 @module.rule('^(?:,rpg)\s+?.*')
 @sopel.module.thread(True)
 def rpg_trigger_precede(bot, trigger):
-    rpg = class_create('main')
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    execute_main(bot, trigger, triggerargsarray, rpg)
+    execute_main(bot, trigger, triggerargsarray)
 
 
-def execute_main(bot, trigger, triggerargsarray, rpg):
+def execute_main(bot, trigger, triggerargsarray):
+
+    # RPG dynamic Class
+    rpg = class_create('main')
+
+    # instigator
+    instigator = class_create('instigator')
+    instigator.default = trigger.nick
+    rpg.instigator = trigger.nick
 
     # Channel Listing
     rpg = rpg_command_channels(bot,rpg,trigger)
@@ -45,10 +51,25 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
     # Bacic User List
     rpg = rpg_command_users(bot,rpg)
 
+    # Commands list
+    rpg = rpg_valid_commands_all(bot, rpg)
+
     # No Empty Commands
     if triggerargsarray == []:
-        osd(bot, trigger.nick, 'notice', "No Command issued.")
-        return
+        user_capable_coms = []
+        for vcom in rpg.valid_commands_all:
+            if vcom in rpg_commands_valid_admin:
+                if rpg.instigator in rpg.botadmins:
+                    user_capable_coms.append(vcom)
+            else:
+                user_capable_coms.append(vcom)
+        valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')  # TODO make this commands that the user is able to run
+        return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
+
+    # Error Display System
+    rpg_errors_start(bot, rpg)
+
+    # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
 
     # IF "&&" is in the full input, it is treated as multiple commands, and is split
@@ -62,12 +83,8 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         for command_split in command_full_split:
             rpg.multi_com_list.append(command_split)
 
-    # instigator
-    instigator = class_create('instigator')
-    instigator.default = trigger.nick
-    rpg.instigator = trigger.nick
-
     # Cycle through command array
+    rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
 
@@ -75,32 +92,119 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
         rpg.admin = 0
         if [x for x in rpg.triggerargsarray if x == "-a"]:
             rpg.triggerargsarray.remove("-a")
-            if trigger.admin:
+            if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
+            else:
+                errors(bot, rpg, 'commands', 1, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
+        # Check Command can run
+        rpg = command_process(bot, trigger, rpg, instigator)
+        if rpg.command_run:
+            # Run the command's function
+            command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+            eval(command_function_run)
+        rpg.commands_ran.append(rpg.command_main)
 
-        # Run command process
-        command_process(bot, trigger, rpg, instigator)
+    rpg_errors_end(bot, rpg)
+    if rpg.error_display != []:
+        osd(bot, rpg.instigator, 'notice', rpg.error_display)
+
+    # bot.say("end")
 
 
 def command_process(bot, trigger, rpg, instigator):
 
-    # Handle rog commands
-    if rpg.command_main not in rpg_valid_commands:
-        return osd(bot, rpg.instigator, 'notice', "You have not specified a valid command.")
+    rpg.command_run = 0
 
-    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    try:
-        eval(command_function_run)
-    except NameError:
-        return osd(bot, rpg.instigator, 'notice', "That is a valid command, however the functionality has not been developed yet.")
+    # multicom multiple of the same
+    if rpg.command_main in rpg.commands_ran and not rpg.admin:
+        errors(bot, rpg, 'commands', 2, 1)
+        return rpg
+
+    # Verify Command is valid
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
+        errors(bot, rpg, 'commands', 3, rpg.command_main)
+        return rpg
+
+    # Admin Block
+    if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
+        errors(bot, rpg, 'commands', 4, rpg.command_main)
+        return rpg
+
+    # Safe to run command
+    rpg.command_run = 1
+
+    return rpg
 
 
-def rpg_command_main_admin(bot,rpg):
-    osd(bot, trigger.sender, 'say', "wip")
+def rpg_command_main_admin(bot, rpg, instigator):
+    osd(bot, rpg.instigator, 'say', "wip")
+
+
+"""
+Errors
+"""
+
+
+def errors(bot, rpg, error_type, number, append):
+    current_error_value = eval("rpg.errors." + error_type + str(number))
+    current_error_value.append(append)
+
+
+def rpg_errors_start(bot, rpg):
+    rpg.errors = class_create('errors')
+    errorscanlist = []
+    for vcom in rpg.valid_commands_all:
+        errorscanlist.append(vcom)
+    for error_type in rpg_error_list:
+        errorscanlist.append(error_type)
+    for error_type in errorscanlist:
+        current_error_type = eval("rpg_error_" + error_type)
+        for i in range(0,len(current_error_type)):
+            current_error_number = i + 1
+            current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
+            exec(current_error_value)
+
+
+def rpg_errors_end(bot, rpg):
+    rpg.error_display = []
+    errorscanlist = []
+    for vcom in rpg.valid_commands_all:
+        errorscanlist.append(vcom)
+    for error_type in rpg_error_list:
+        errorscanlist.append(error_type)
+    for error_type in errorscanlist:
+        current_error_type = eval("rpg_error_" + error_type)
+        for i in range(0,len(current_error_type)):
+            current_error_number = i + 1
+            currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
+            if currenterrorvalue != []:
+                errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
+                totalnumber = len(currenterrorvalue)
+                errormessage = str("(" + str(totalnumber) + ")" + errormessage)
+                if "$list" in errormessage:
+                    errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
+                    errormessage = str(errormessage.replace("$list", errorlist))
+                if errormessage not in rpg.error_display:
+                    rpg.error_display.append(errormessage)
+
+
+"""
+Commands
+"""
+
+
+# All valid character stats
+def rpg_valid_commands_all(bot, rpg):
+    rpg.valid_commands_all = []
+    for command_type in rpg_valid_command_types:
+        typeeval = eval("rpg_commands_valid_"+command_type)
+        for vcom in typeeval:
+            rpg.valid_commands_all.append(vcom)
+    return rpg
 
 
 """

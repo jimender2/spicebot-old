@@ -14,7 +14,7 @@ from BotShared import *
 from Bucks import *
 
 
-@sopel.module.commands('banker','bank','payday','tax','taxes','funds')
+@sopel.module.commands('banker','payday','tax','taxes','funds','rob','bankreset')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'banker')
     if not enablestatus:
@@ -25,15 +25,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
     player = instigator.default
-
+    bot.say("Command used:" + str(commandused))
     if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
     elif commandused == 'payday':
         paydayamount = 0
-        paydayamount = checkpayday(bot, player)
+        paydayamount = checkpayday(bot,botcom, player)
         if paydayamount > 0:
-            addbucks(bot, player, paydayamount)
+            addbucks(bot,botcom, player, paydayamount)
             message = "You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks."
             osd(bot, trigger.sender, 'say', message)
         else:
@@ -57,7 +57,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     amount = int(amount)
                     if amount >= 0 and amount < 10000001:
                         set_database_value(bot,target, 'spicebucks_bank', amount)
-                        targetbalance = bank(bot,target)
+                        targetbalance = bank(bot,botcom,target)
                         osd(bot, trigger.sender, 'say', target + ' now has ' + str(targetbalance) + ' in the bank')
                     else:
                         osd(bot, trigger.sender, 'say', 'Please enter a postive number less then 1,000,000')
@@ -74,10 +74,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 randomaudit = random.randint(1,usedamount)
                 if not target == 'notarget':
-                    if targetcheck(bot,target,player) == 0:
+                    if targetcheck(bot,botcom,target,player) == 0:
                         osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
-                    elif targetcheck(bot,target,player) == 3:
-                        message = audit(bot,player)
+                    elif targetcheck(bot,botcom,target,player) == 3:
+                        message = audit(bot,botcom,player)
                         osd(bot, trigger.sender, 'action',message)
                     else:
                         if usedamount == 1:
@@ -86,10 +86,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                             osd(bot,trigger.send,'say',message)
                             if taxtotal >= 100:
                                 kickback = int(taxtotal*0.1)
-                                addbucks(bot,player,kickback)
+                                addbucks(bot,botcom,player,kickback)
                                 osd(bot, trigger.sender, 'action', "gives " + player + " a kickback of " + str(kickback) + " for bringing this delinquent to our attention")
                         else:
-                            message = audit(bot,player)
+                            message = audit(bot,botcom,player)
                             osd(bot, trigger.sender, 'action',message)
                 else:
                     taxtotal,message = paytaxes(bot, player)
@@ -97,8 +97,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
         elif commandused == 'rob':
             usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 2
-            balance = bank(bot, target)
-            if targetcheck(bot,target,player) == 0:
+            balance = bank(bot,botcom, target)
+            if targetcheck(bot,botcom,target,player) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
             else:
                 if usedamount > 10:
@@ -111,20 +111,32 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     adjust_database_value(bot,player,'usedtaxes',1)
                     randomcheck = random.randint(0,5)
                     if randomcheck == 3:
-                        triggerbalance = bank(bot, player)
+                        triggerbalance = bank(bot,botcom, player)
                         fine = int(triggerbalance*.20)
                         osd(bot, trigger.sender, 'say', player + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
-                        minusbucks(bot,player,fine)
+                        minusbucks(bot,botcom,player,fine)
                     else:
                         payout = int(balance * .01)
                         osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
-                        transfer(bot,target,player,payout)
+                        transfer(bot,botcom,target,player,payout)
         # Bank
-        elif commandused == 'bank':
-            if target == 'notarget':
-                target = player
-            balance = bank(bot,target)
+    elif commandused == 'banker' or commandused == 'banker':
+        if target == 'notarget':
+            target = player
+            balance = bank(bot,botcom,target)
             osd(bot,trigger.sender, 'say', target + " has " + balance + " in the Spicebank.")
+
+    elif commandused == 'bankreset' and trigger.admin:  # admin only command
+        target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
+        validtarget = targetcheck(bot,botcom,target,instigator)
+        if target == 'notarget'or target == trigger.nick:
+            reset(bot,target)
+            osd(bot, trigger.sender, 'say', 'Payday reset for ' + trigger.nick)
+        elif not validtarget == 1:
+            reset(bot,target)
+            osd(bot, trigger.sender, 'say', 'Payday reset for ' + target)
+        else:
+            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
 
 
 # admin command reset user values
@@ -134,7 +146,7 @@ def reset(bot, target):
     reset_database_value(bot,target,'usedtaxes')
 
 
-def audit(bot,player):
+def audit(bot,botcom,player):
     inbank = bank(bot,player)
     auditamount = int(inbank * .20)
     msg = ""
@@ -147,7 +159,7 @@ def audit(bot,player):
     return msg
 
 
-def checkpayday(bot, target):
+def checkpayday(bot,botcom, target):
     paydayamount = 0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
@@ -161,7 +173,7 @@ def checkpayday(bot, target):
     return paydayamount
 
 
-def paytaxes(bot, target):
+def paytaxes(bot,botcom,target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = get_database_value(bot,target, 'spicebucks_taxday') or 0

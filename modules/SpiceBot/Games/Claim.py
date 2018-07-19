@@ -10,7 +10,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-import Spicebucks
+# import Spicebucks
 
 # Commands that work in privmsg
 privcmdlist = ['check','admin','bladder','fridge']
@@ -185,7 +185,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'action', "facepalms")
         osd(bot, trigger.sender, 'say', "You can't claim " + target + ", "+ instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
-        Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
+        # Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
 
     # Can't claim everyone at once
     elif target == 'everyone':
@@ -216,7 +216,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             bot.db.set_nick_value(target,'claimed',instigator)
             bot.db.set_nick_value(target,'claimdate',storedate)
             # Pay instigator Spicebucks (firstclaim)
-            Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
+            # Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
 
         # Renewed claim
         elif claimedby == instigator:
@@ -233,7 +233,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (renewclaim)
-                Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
+                # Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
             else:
                 osd(bot, trigger.sender, 'say', instigator + ", you already claimed " + target +".")
         else:
@@ -251,7 +251,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 bot.db.set_nick_value(target,'claimed',instigator)
                 bot.db.set_nick_value(target,'claimdate',storedate)
                 # Pay instigator Spicebucks (stolenclaim)
-                Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
+                #Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
                 osd(bot, trigger.sender, 'say', target + " has already been claimed by " + str(claimedby) + ", so back off!")
     elif not okaytoclaim:
