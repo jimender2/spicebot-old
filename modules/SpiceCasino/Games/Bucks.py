@@ -120,12 +120,11 @@ def transfer(bot,botcom, instigator, target, amount):
 
 
 def addbucks(bot,botcom,target,amount):
-    if not (target == 'jackpot' or instigator == 'jackpot'):
-        isvalid = buckscheck(bot,botcom,target)
-        isvalidtarget = buckscheck(bot,botcom,target)
-        if not (isvalid == 1 and isvalidtarget == 1):
-            return success
     success = False
+    if not (target == 'jackpot'):
+        isvalid = buckscheck(bot,botcom,target)
+        if not (isvalid == 1):
+            return success
     if amount > 0:
         adjust_database_value(bot,target, 'spicebucks_bank', amount)
         success = True
