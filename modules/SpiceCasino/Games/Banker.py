@@ -178,7 +178,7 @@ def checkpayday(bot,botcom, target):
         paydayamount = int(spicebank * 0.01)
         set_database_value(bot,target, 'spicebucks_payday', datetoday)
     else:
-        paydaymsg = "Spicbank: " + str(spicebank) + "lastpay: " + str(lastpayday)
+        paydaymsg = "Spicbank: " + str(spicebank) + "lastpay: " + str(lastpayday) + "Today: " + str(datetoday)
     return paydayamount,paydaymsg
 
 
