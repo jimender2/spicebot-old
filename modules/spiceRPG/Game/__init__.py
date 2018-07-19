@@ -70,10 +70,10 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
     # Verify Game enabled in current channel
     if rpg.channel_current not in rpg.channels_enabled and rpg.channel_real:
         if rpg.channels_enabled == []:
-            errors(bot, rpg, 'commands', 8, 1)
+            errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
-            errors(bot, rpg, 'commands', 7, 1)
+            errors(bot, rpg, 'commands', 2, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
 
@@ -87,7 +87,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
             else:
                 user_capable_coms.append(vcom)
         valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')
-        errors(bot, rpg, 'commands', 6, 1)
+        errors(bot, rpg, 'commands', 3, 1)
         return
 
     # Entire command string
@@ -116,7 +116,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
             else:
-                errors(bot, rpg, 'commands', 1, 1)
+                errors(bot, rpg, 'commands', 4, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
@@ -136,17 +136,17 @@ def command_process(bot, trigger, rpg, instigator):
 
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
-        errors(bot, rpg, 'commands', 2, 1)
+        errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
-        errors(bot, rpg, 'commands', 3, rpg.command_main)
+        errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
-        errors(bot, rpg, 'commands', 4, rpg.command_main)
+        errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
     # Safe to run command
@@ -220,6 +220,9 @@ def rpg_errors_end(bot, rpg):
                 if "$valid_coms" in errormessage:
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
+                if "$game_chans" in errormessage:
+                    gamechanlist = get_trigger_arg(bot, rpg.channels_enabled, 'list')
+                    errormessage = str(errormessage.replace("$game_chans", gamechanlist))
                 if "$current_chan" in errormessage:
                     if rpg.channel_real:
                         errormessage = str(errormessage.replace("$current_chan", rpg.channel_current))
