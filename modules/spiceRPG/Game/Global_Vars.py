@@ -39,11 +39,11 @@ Error messages System
 rpg_error_list = ['admin','commands']
 
 rpg_error_admin = [
-                    "$count Only bot admins may utilize the -a switch.",
-                    "$count $list is an admin command. If you are an admin, you need to run with the -a admin switch."
+                    "Only bot admins may utilize the -a switch.",
+                    "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch."
 ]
 
 rpg_error_commands = [
-                    "$count You may only run a unique command once at a time using the multicom feature.",
-                    "$count $list does not appear to be a valid command."
+                    "You may only run a unique command once at a time using the multicom feature.",
+                    "The following command(s) do not appear to be valid: $list"
 ]
