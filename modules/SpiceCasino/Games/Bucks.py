@@ -33,7 +33,7 @@ maxwheel = 29
 
 def jackpot(bot):
     nick = 'SpiceBank'
-    balance = bank(bot,nick)
+    balance = bank(bot,botcom,nick)
 
 
 def deal(bot, cardcount):
@@ -91,7 +91,7 @@ def setlotterytimeout(bot,commandvalue):
 
 
 # ______banking
-def bank(bot, nick):
+def bank(bot,botcom nick):
     balance = 0
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
@@ -111,7 +111,7 @@ def transfer(bot,botcom, instigator, target, amount):
             return success
 
     if amount >= 0:
-        instigator_balance = bank(bot,instigator)
+        instigator_balance = bank(bot,botcom,instigator)
         if amount <= instigator_balance:
             adjust_database_value(bot,instigator, 'spicebucks_bank', -(amount))
             adjust_database_value(bot,target, 'spicebucks_bank', amount)
