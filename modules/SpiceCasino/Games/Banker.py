@@ -24,6 +24,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
+    amount = (get_trigger_arg(bot, triggerargsarray, 2)).lower() or 'noamount'
     player = instigator.default
     bot.say("Command used:" + str(commandused))
     if commandused == '':
@@ -55,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amount = get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
+
             if not amount == 'noamount':
                 if amount.isdigit():
                     amount = int(amount)
@@ -107,7 +108,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 if usedamount > 10:
                     adjust_database_value(bot,player,'usedtaxes',0)
-                    triggerbalance = bank(bot, player)
+                    triggerbalance = bank(bot,botcom, player)
                     fine = int(triggerbalance*.20)
                     osd(bot, trigger.sender, 'say', player + " get's caught for pickpocketing too much and is fined " + str(fine))
                     minusbucks(bot,player,fine)
@@ -128,7 +129,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if target == 'notarget':
             target = player
             balance = bank(bot,botcom,target)
-            osd(bot,trigger.sender, 'say', target + " has " + balance + " in the Spicebank.")
+            osd(bot,trigger.sender, 'say', target + " has " + str(balance) + " in the Spicebank.")
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
@@ -151,7 +152,7 @@ def reset(bot, target):
 
 
 def audit(bot,botcom,player):
-    inbank = bank(bot,player)
+    inbank = bank(bot,botcom,player)
     auditamount = int(inbank * .20)
     msg = ""
     if auditamount > 0:
@@ -167,7 +168,7 @@ def checkpayday(bot,botcom, target):
     paydayamount = 0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    spicebank = bank(bot,'SpiceBank')
+    spicebank = bank(bot,botcom,'SpiceBank')
     lastpayday = get_database_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
         paydayamount = int(spicebank * 0.01)
@@ -181,7 +182,7 @@ def paytaxes(bot,botcom,target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     lasttaxday = get_database_value(bot,target, 'spicebucks_taxday') or 0
-    inbank = bank(bot,target) or 0
+    inbank = bank(bot,botcom,target) or 0
     taxtotal = 0
     message = ""
     if lasttaxday == 0 or lasttaxday < datetoday:
