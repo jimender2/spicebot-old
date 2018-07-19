@@ -55,16 +55,24 @@ def execute_start(bot, trigger, triggerargsarray):
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)
 
-    # Error Display System
+    # Error Display System Create
     rpg_errors_start(bot, rpg)
 
+    # Run the Process
+    execute_main(bot, rpg, instigator, trigger, triggerargsarray)
+
+    # Error Display System Display
+    rpg_errors_end(bot, rpg)
+
+
+def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
+
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_enabled and rpg.inchannel:
+    if rpg.channel_current not in rpg.channels_enabled and rpg.channel_real:
         if rpg.channels_enabled == []:
             errors(bot, rpg, 'commands', 8, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
-        if not trigger.admin:
             errors(bot, rpg, 'commands', 7, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
@@ -81,13 +89,6 @@ def execute_start(bot, trigger, triggerargsarray):
         valid_commands_list = get_trigger_arg(bot, user_capable_coms, 'andlist')
         errors(bot, rpg, 'commands', 6, 1)
         return
-    else:
-        execute_main(bot, rpg, instigator, trigger, triggerargsarray)
-
-    rpg_errors_end(bot, rpg)
-
-
-def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
