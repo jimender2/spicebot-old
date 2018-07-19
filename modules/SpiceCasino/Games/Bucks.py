@@ -96,7 +96,7 @@ def bank(bot, nick):
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
-        isvalid = targetcheck(bot,botcom,nick)
+        isvalid = targetcheck(bot,botcom,nick,bot)
         if isvalid == 1:
             balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
@@ -105,8 +105,8 @@ def bank(bot, nick):
 def transfer(bot, instigator, target, amount):
     success = False
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,target,instigator)
-        isvalidtarget = targetcheck(bot,instigator,target)
+        isvalid = targetcheck(bot,botcom,target,instigator)
+        isvalidtarget = targetcheck(bot,botcom,instigator,target)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
 
@@ -122,8 +122,8 @@ def transfer(bot, instigator, target, amount):
 def addbucks(bot,target,amount):
     instigator = bot
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
-        isvalid = targetcheck(bot,target,instigator)
-        isvalidtarget = targetcheck(bot,instigator,target)
+        isvalid = targetcheck(bot,botcom,target,instigator)
+        isvalidtarget = targetcheck(bot,botcom,instigator,target)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
     success = False
