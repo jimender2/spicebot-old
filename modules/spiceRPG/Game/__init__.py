@@ -103,6 +103,7 @@ def execute_main(bot, trigger, triggerargsarray):
             command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
             eval(command_function_run)
         else:
+            bot.say(str(rpg.command_run))
             for failcom in rpg.command_run:
                 if failcom not in rpg.command_run_fail:
                     rpg.command_run_fail.append(failcom)
@@ -113,8 +114,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
 def command_process(bot, trigger, rpg, instigator):
 
-    bot.say(str(rpg.command_main))
-
     # Verify Command is valid
     if rpg.command_main not in rpg_commands_valid:  # TODO add similar() here
         rpg.command_run.append(rpg.command_main + "is not a valid command.")
@@ -122,7 +121,6 @@ def command_process(bot, trigger, rpg, instigator):
     # Admin Block
     if rpg.command_main in rpg_commands_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
-        bot.say("here")
 
     return rpg
 
