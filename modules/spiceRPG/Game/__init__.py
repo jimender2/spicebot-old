@@ -128,6 +128,7 @@ def execute_main(bot, trigger, triggerargsarray):
     rpg = rpg_errors_end(bot, rpg)
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
+    bot.say("end")
 
 
 def errors(bot, rpg, error_type, number, append):
