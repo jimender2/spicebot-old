@@ -91,7 +91,7 @@ def setlotterytimeout(bot,commandvalue):
 
 
 # ______banking
-def bank(bot,botcom nick):
+def bank(bot,botcom, nick):
     balance = 0
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
