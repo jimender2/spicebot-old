@@ -15,7 +15,9 @@ from BotShared import *
 
 # author jimender2
 
-testarray = ["test1", "test2", "test3", "test4", "test5",]
+testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
+             "Spiceduck for spicerex mascot 2k18",
+             "Deathbybandaid is looking for developers for spicebot and spicethings"]
 
 databasekey = 'ads'
 
