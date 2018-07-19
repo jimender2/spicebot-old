@@ -47,7 +47,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'funds' and trigger.admin:  # admin only command
         success = 0
         if not target == 'notarget':
-            if target == 'jackpot':
+            if target == 'casino':
                 success = 1
             elif buckscheck(bot,botcom,target) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
@@ -89,7 +89,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     if usedamount == 1:
                         adjust_database_value(bot,player,'usedtaxes',3)
                         taxtotal,message = paytaxes(bot,botcom, target)
-                        osd(bot,trigger.send,'say',message)
+                        osd(bot,trigger.sender,'say',message)
                         if taxtotal >= 100:
                             kickback = int(taxtotal*0.1)
                             addbucks(bot,botcom,player,kickback)
@@ -111,7 +111,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 triggerbalance = bank(bot,botcom, player)
                 fine = int(triggerbalance*.20)
                 osd(bot, trigger.sender, 'say', player + " get's caught for pickpocketing too much and is fined " + str(fine))
-                minusbucks(bot,botcom,player,fine)
+                transfer(bot,botcom,'casino',player,fine)
             else:
                 adjust_database_value(bot,player,'usedtaxes',1)
                 randomcheck = random.randint(0,5)
@@ -119,7 +119,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     triggerbalance = bank(bot,botcom, player)
                     fine = int(triggerbalance*.20)
                     osd(bot, trigger.sender, 'say', player + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
-                    minusbucks(bot,botcom,player,fine)
+                    transfer(bot,botcom,'casino',player,fine)
                 else:
                     payout = int(balance * .01)
                     osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
@@ -156,7 +156,7 @@ def audit(bot,botcom,player):
     msg = ""
     if auditamount > 0:
         msg = "carries out an audit on " + player + " and takes " + str(auditamount) + " spicebucks for the pleasure."
-        minusbucks(bot,player,auditamount)
+        transfer(bot,botcom,player,'casino',auditamount)
     else:
         msg = "carries out an audit on " + player + " but finds no spicebucks to take."
         reset_database_value(bot,player,'usedtaxes')
@@ -167,7 +167,7 @@ def checkpayday(bot,botcom, target):
     paydayamount = 0
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
-    spicebank = bank(bot,botcom,'jackpot')
+    spicebank = bank(bot,botcom,'casino')
     paydaymsg = "none"
     if spicebank <= 0:
         spicebank = 500
@@ -194,8 +194,7 @@ def paytaxes(bot,botcom,target):
         if inbank == 1:
             taxtotal = 1
         if taxtotal > 0:
-            addbucks(bot, 'jackpot', taxtotal)
-            minusbucks(bot, target, taxtotal)
+            transfer(bot,botcom,'casino',player,taxtotal)
             set_database_value(bot,target, 'spicebucks_taxday', datetoday)
             message = "Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank."
         else:
