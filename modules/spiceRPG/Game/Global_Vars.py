@@ -14,4 +14,13 @@ Commands
 """
 
 # Valid Commands
-rpg_valid_commands = ['admin']
+rpg_commands_valid = ['admin']
+
+# Admin Commands
+rpg_commands_admin = ['admin']
+
+"""
+Map System
+"""
+
+rpg_valid_directions = ['north','south','east','west']
