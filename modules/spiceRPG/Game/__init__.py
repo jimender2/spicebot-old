@@ -97,8 +97,8 @@ def execute_start(bot, trigger, triggerargsarray):
 def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
 
     # Verify Game enabled in current channel
-    if rpg.channel_current not in rpg.channels_enabled and rpg.channel_real:
-        if rpg.channels_enabled == []:
+    if rpg.channel_current not in rpg.channels_game_enabled and rpg.channel_real:
+        if rpg.channels_game_enabled == []:
             errors(bot, rpg, 'commands', 1, 1)
             if rpg.instigator not in rpg.botadmins:
                 return
@@ -197,14 +197,56 @@ def rpg_command_main_admin(bot, rpg, instigator):
 
     if subcommand == 'channel':
 
+        # Toggle Type
+        activation_type = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_admin_channel], 1)
+        if not activation_type:
+            errors(bot, rpg, 'admin', 2, 1)
+            return
+
+        activation_type_db = str(activation_type + "_enabled")
+
         # Channel
         channeltarget = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.channels_list], 1)
         if not channeltarget:
             if rpg.channel_current.startswith('#'):
                 channeltarget = rpg.channel_current
             else:
-                errors(bot, rpg, 'admin', 2, 1)
+                errors(bot, rpg, 'admin', 3, 1)
                 return
+
+        # on/off
+        activation_direction = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in onoff_list], 1)
+        if not activation_direction:
+            errors(bot, rpg, rpg.command_main, 4, 1)
+            return
+
+        # Evaluate change
+        current_channel_facet = eval("rpg.channels_" + activation_type_db)
+        if activation_type == 'devmode':
+            if activation_direction in activate_list:
+                current_channel_facet_error = 5
+            else:
+                current_channel_facet_error = 6
+        elif activation_type == 'game':
+            if activation_direction in activate_list:
+                current_channel_facet_error = 7
+            else:
+                current_channel_facet_error = 8
+
+        # make the change
+        if activation_direction in activate_list:
+            if channeltarget.lower() in [x.lower() for x in current_channel_facet]:
+                errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
+                return
+            adjust_database_array(bot, 'rpg_game_records', [channeltarget], activation_type_db, 'add')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been enabled in " + channeltarget + "!")
+        elif activation_direction in deactivate_list:
+            if channeltarget.lower() not in [x.lower() for x in current_channel_facet]:
+                errors(bot, rpg, rpg.command_main, current_channel_facet_error, 1)
+                return
+            adjust_database_array(bot, 'rpg_game_records', [channeltarget], activation_type_db, 'del')
+            osd(bot, channeltarget, 'say', "RPG " + activation_type + " has been disabled in " + channeltarget + "!")
+
         return
 
 
@@ -226,6 +268,11 @@ Errors
 def errors(bot, rpg, error_type, number, append):
     current_error_value = eval("rpg.errors." + error_type + str(number))
     current_error_value.append(append)
+
+
+def errors_reset(bot, rpg, error_type, number):
+    current_error_value = str("rpg.errors." + error_type + str(number) + " = []")
+    exec(current_error_value)
 
 
 def rpg_errors_start(bot, rpg):
@@ -268,15 +315,27 @@ def rpg_errors_end(bot, rpg):
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
                 if "$game_chans" in errormessage:
-                    gamechanlist = get_trigger_arg(bot, rpg.channels_enabled, 'list')
+                    gamechanlist = get_trigger_arg(bot, rpg.channels_game_enabled, 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
                 if "$valid_channels" in errormessage:
                     validchanlist = get_trigger_arg(bot, rpg.channels_list, 'list')
-                    errormessage = str(errormessage.replace("$game_chans", validchanlist))
+                    errormessage = str(errormessage.replace("$valid_channels", validchanlist))
+                if "$valid_onoff" in errormessage:
+                    validtogglelist = get_trigger_arg(bot, onoff_list, 'list')
+                    errormessage = str(errormessage.replace("$valid_onoff", validtogglelist))
                 if "$valid_subcoms" in errormessage:
                     subcommand_valid = eval('subcommands_valid_' + error_type)
                     subcommand_valid = get_trigger_arg(bot, subcommand_valid, 'list')
                     errormessage = str(errormessage.replace("$valid_subcoms", subcommand_valid))
+                if "$valid_game_change" in errormessage:
+                    subcommand_arg_valid = get_trigger_arg(bot, subcommands_valid_admin_channel, 'list')
+                    errormessage = str(errormessage.replace("$valid_game_change", subcommand_arg_valid))
+                if "$dev_chans" in errormessage:
+                    devchans = get_trigger_arg(bot, rpg.channels_devmode_enabled, 'list')
+                    errormessage = str(errormessage.replace("$dev_chans", devchans))
+                if "$game_chans" in errormessage:
+                    gamechans = get_trigger_arg(bot, rpg.channels_game_enabled, 'list')
+                    errormessage = str(errormessage.replace("$game_chans", gamechans))
                 if "$current_chan" in errormessage:
                     if rpg.channel_real:
                         errormessage = str(errormessage.replace("$current_chan", rpg.channel_current))
@@ -327,12 +386,12 @@ def rpg_command_channels(bot,rpg,trigger):
         rpg.channels_list.append(channel)
 
     # Game Enabled
-    rpg.channels_enabled = get_database_value(bot, 'rpg_game_records', 'gameenabled') or []
+    rpg.channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
 
     # Development mode
-    rpg.channels_devmode = get_database_value(bot, 'rpg_game_records', 'devenabled') or []
+    rpg.channels_devmode_enabled = get_database_value(bot, 'rpg_game_records', 'dev_enabled') or []
     rpg.dev_bypass = 0
-    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode]:
+    if rpg.channel_current.lower() in [x.lower() for x in rpg.channels_devmode_enabled]:
         rpg.dev_bypass = 1
     return rpg
 

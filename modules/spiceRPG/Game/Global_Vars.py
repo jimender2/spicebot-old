@@ -12,6 +12,17 @@ OSD
 # How Many characters to put on the display
 osd_limit = 420
 
+
+"""
+Activation/Deactivate
+"""
+
+
+onoff_list = ['activate','enable','on','deactivate','disable','off']
+activate_list = ['activate','enable','on']
+deactivate_list = ['deactivate','disable','off']
+
+
 """
 Commands
 """
@@ -31,6 +42,7 @@ Subcommands
 # Admin
 subcommands_valid_admin = ['channel']
 subcommands_default_admin = 0
+subcommands_valid_admin_channel = ['game','devmode']
 
 """
 Map System
@@ -52,16 +64,22 @@ rpg_error_debug = [
 ]
 
 rpg_error_admin = [
-                    "Subcommand missing. Valid subcommands include: $valid_subcoms",
-                    "You must specify a valid channel. Valide Channels include $valid_channels"
+                    "Subcommand missing. Valid subcommands include: $valid_subcoms.",  # 1
+                    "You must Specify a valid game facet to activate. Valid options include: $valid_game_change",  # 2
+                    "You must specify a valid channel. Valid channels include $valid_channels.",  # 3
+                    "You must specify toggle status. Valid options include $valid_onoff.",  # 4
+                    "RPG devmode is already on in $dev_chans."  # 5
+                    "RPG devmode is already off in $dev_chans."  # 6
+                    "RPG is already on in $game_chans."  # 7
+                    "RPG is already off in $game_chans."  # 8
 ]
 
 rpg_error_commands = [
                     "RPG has not been enabled in any bot channels.",  # 1
                     "RPG has not been enabled in $current_chan. The game is enabled in: $game_chans.",  # 2
-                    "Which rpg command do you wish to run? Valid Commands include: $valid_coms",  # 3
+                    "Which rpg command do you wish to run? Valid Commands include: $valid_coms.",  # 3
                     "Only bot admins may utilize the -a switch.",  # 4
                     "You may only run a unique command once at a time using the multicom feature.",  # 5
-                    "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms",  # 6
+                    "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
 ]
