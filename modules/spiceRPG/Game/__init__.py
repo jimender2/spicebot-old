@@ -134,6 +134,7 @@ def rpg_errors_start(bot, rpg):
     for x in rpg_error_list:
         currenterrorvalue = str("rpg.errors." + x + " = []")
         exec(currenterrorvalue)
+    return rpg
 
 
 def rpg_errors_end(bot, rpg):
@@ -142,6 +143,7 @@ def rpg_errors_end(bot, rpg):
         currenterrorvalue = eval("rpg.errors." + x)
         if currenterrorvalue != []:
             bot.say(x + " errors detected")
+    return rpg
 
 
 def command_process(bot, trigger, rpg, instigator):
