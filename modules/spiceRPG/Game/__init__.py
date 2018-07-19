@@ -7,7 +7,26 @@ from sopel.module import commands, nickname_commands, rule, priority, example, O
 from sopel.formatting import bold
 import sopel
 from sopel import module, tools, formatting
+# Additional
+import random
+from random import randint
+import time
+import datetime
+import re
+import sys
+import os
+from os.path import exists
+from num2words import num2words
+from difflib import SequenceMatcher
+from more_itertools import sort_together
+from operator import itemgetter
+import requests
+from fake_useragent import UserAgent
+from lxml import html
+from statistics import mean
+import itertools
 import inspect
+# Game Folder
 from .Global_Vars import *
 
 
