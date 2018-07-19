@@ -274,7 +274,7 @@ def timed_logcheck(bot):
 
                 startup_monologue = []
                 startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
-                startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that awaits?")
+                startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
                 osd(bot, channel, 'notice', startup_monologue)
 
 
