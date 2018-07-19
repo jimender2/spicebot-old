@@ -13,7 +13,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 sys.path.append(moduledir)
-import Spicebucks
+from Bucks import *
 
 
 shareddir = os.path.dirname(os.path.dirname(__file__))

@@ -91,7 +91,7 @@ def setlotterytimeout(bot,commandvalue):
 
 
 # ______banking
-def bank(bot, nick):
+def bank(bot, botcom, nick):
     balance = 0
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
@@ -102,7 +102,7 @@ def bank(bot, nick):
     return balance
 
 
-def transfer(bot, instigator, target, amount):
+def transfer(bot,botcom, instigator, target, amount):
     success = False
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
         isvalid = targetcheck(bot,botcom,target,instigator)
@@ -119,7 +119,7 @@ def transfer(bot, instigator, target, amount):
     return success
 
 
-def addbucks(bot,target,amount):
+def addbucks(bot,botcom,target,amount):
     instigator = bot
     if not (target == 'Spicebank' or instigator == 'Spicebank'):
         isvalid = targetcheck(bot,botcom,target,instigator)
@@ -133,7 +133,7 @@ def addbucks(bot,target,amount):
     return success
 
 
-def minusbucks(bot,target,amount):
+def minusbucks(bot,botcom,target,amount):
     success = False
     if amount > 0:
         adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
