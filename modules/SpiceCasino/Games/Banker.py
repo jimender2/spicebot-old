@@ -11,24 +11,22 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-from Casino_Vars import *
+from Bucks import *
 
 
-@sopel.module.commands('spicebucks','bank','payday','tax','taxes','funds')
+@sopel.module.commands('banker','bank','payday','tax','taxes','funds')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'spicebucks')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'banker')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
-    channel = trigger.sender
-    commandused = trigger.group(1) or 'nocommand'
+    commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
     player = instigator.default
 
-    if commandused == 'nocommand':
+    if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
     elif commandused == 'payday':
@@ -185,23 +183,3 @@ def paytaxes(bot, target):
     else:
         message = "Taxes already paid today."
     return taxtotal,message
-
-
-def transfer(bot, instigator, target, amount):
-    validamount = 0
-    if amount >= 0:
-        if spicebucks(bot, instigator, 'minus', amount) == 'true':
-            spicebucks(bot, target, 'plus', amount)
-            validamount = 1
-    return validamount
-
-
-def randomuser(bot,nick):
-    randompersons = []
-    randomperson = ''
-    botusersarray = get_database_value(bot, bot.nick, 'botusers') or []
-    for u in bot.users:
-        if u in botusersarray and u != bot.nick and u != nick:
-            randompersons.append(u)
-    randomperson = get_trigger_arg(bot, randompersons,'random')
-    return randomperson

@@ -11,8 +11,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 sys.path.append(moduledir)
 from BotShared import *
-import Spicebucks
-from Casino_Vars import *
+from Bucks import *
 
 
 now = time.time()
