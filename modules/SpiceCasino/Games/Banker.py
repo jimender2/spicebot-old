@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not target == 'notarget':
             if target == 'jackpot':
                 success = 1
-            if buckscheck(bot,botcom,target) == 0:
+            elif buckscheck(bot,botcom,target) == 0:
                 osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
                 success = 0
             else:
