@@ -79,6 +79,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Cycle through command array
     rpg.command_run_fail = []
+    rpg.commands_ran = []
     for command_split_partial in rpg.multi_com_list:
         rpg.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
 
@@ -91,22 +92,31 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.triggerargsarray.remove("-a")
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
+            else:
+                failcom = str("Only bot admins may utilize the -a switch.")
+                if failcom not in rpg.command_run_fail:
+                    rpg.command_run_fail.append(failcom)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
         rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1).lower()
 
-        # Check Command can run
-        rpg = command_process(bot, trigger, rpg, instigator)
-        if rpg.command_run == []:
-            # Run the command's function
-            command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-            eval(command_function_run)
+        if rpg.command_main in rpg.commands_ran:
+            failcom = str("You may only run a command once at a time using the multicom feature.")
+            if failcom not in rpg.command_run_fail:
+                rpg.command_run_fail.append(failcom)
         else:
-            bot.say(str(rpg.command_run))
-            for failcom in rpg.command_run:
-                if failcom not in rpg.command_run_fail:
-                    rpg.command_run_fail.append(failcom)
+            # Check Command can run
+            rpg = command_process(bot, trigger, rpg, instigator)
+            if rpg.command_run == []:
+                # Run the command's function
+                command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+                eval(command_function_run)
+                rpg.commands_ran.append(rpg.command_main)
+            else:
+                for failcom in rpg.command_run:
+                    if failcom not in rpg.command_run_fail:
+                        rpg.command_run_fail.append(failcom)
 
     if rpg.command_run_fail != []:
         osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
