@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     command = get_trigger_arg(bot, triggerargsarray, '1+')
     if not command:
-        rand = random.randint(1,3)
+        rand = random.randint(1,10)
         if rand == 3:
             osd(bot, trigger.sender, 'say', "I like porn")
         else:
