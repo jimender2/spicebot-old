@@ -146,11 +146,12 @@ def buckscheck(bot, botcom, target):
     validtarget = 1
     validtargetmsg = []
     target = target.lower()
-    # Target is instigator
-    if target == botcom.instigator.default:
+    """ Target is instigator
+    if target == ''botcom.instigator.default'':
         validtarget = 2
         validtargetmsg.append("Target is instigator")
         return validtarget, validtargetmsg
+    """
 
     if target == bot.nick:
         validtarget = 3
