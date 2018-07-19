@@ -38,6 +38,10 @@ Error messages System
 
 rpg_error_list = ['commands']
 
+rpg_error_debug = [
+                    "The Script works at line $list"
+]
+
 rpg_error_admin = [
                     ""
 ]
