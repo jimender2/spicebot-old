@@ -91,7 +91,6 @@ def execute_main(bot, trigger, triggerargsarray):
             rpg.triggerargsarray.remove("-a")
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
-                bot.say("here")
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
@@ -121,6 +120,7 @@ def command_process(bot, trigger, rpg, instigator):
     # Admin Block
     if rpg.command_main in rpg_commands_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
+        bot.say("here")
 
     return rpg
 
