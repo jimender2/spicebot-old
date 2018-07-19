@@ -194,7 +194,7 @@ def paytaxes(bot,botcom,target):
         if inbank == 1:
             taxtotal = 1
         if taxtotal > 0:
-            transfer(bot,botcom,'casino',player,taxtotal)
+            transfer(bot,botcom,'casino',target,taxtotal)
             set_database_value(bot,target, 'spicebucks_taxday', datetoday)
             message = "Thank you for reminding me that " + target + " has not paid their taxes today. " + str(taxtotal) + " spicebucks will be transfered to the SpiceBank."
         else:
