@@ -29,6 +29,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, trigger.sender, 'say', "I like porn")
         else:
             osd(bot, trigger.sender, 'say', "I like turtles")
+    elif command == "trains":
+        osd(bot, trigger.sender, 'say', "I like trains.")
+
     else:
         message = "I like " + command + "."
         osd(bot, trigger.sender, 'say', message)
