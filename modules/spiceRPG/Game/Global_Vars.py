@@ -45,6 +45,6 @@ rpg_error_admin = [
 rpg_error_commands = [
                     "Only bot admins may utilize the -a switch.",
                     "You may only run a unique command once at a time using the multicom feature.",
-                    "The following command(s) do not appear to be valid: $list",
+                    "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms",
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch."
 ]

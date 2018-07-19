@@ -68,7 +68,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Error Display System
     rpg_errors_start(bot, rpg)
-    errors(bot, rpg, 'admin', 1, 1)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -110,8 +109,6 @@ def execute_main(bot, trigger, triggerargsarray):
         rpg.commands_ran.append(rpg.command_main)
 
     rpg_errors_end(bot, rpg)
-    if rpg.error_display != []:
-        osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
     # bot.say("end")
 
@@ -170,7 +167,7 @@ def rpg_errors_start(bot, rpg):
             exec(current_error_value)
 
 
-def rpg_errors_end(bot, rpg):
+def rpg_errors_end(bot, rpg):  # TODO dev output, and admin output
     rpg.error_display = []
     errorscanlist = []
     for vcom in rpg.valid_commands_all:
@@ -191,8 +188,13 @@ def rpg_errors_end(bot, rpg):
                 if "$list" in errormessage:
                     errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
                     errormessage = str(errormessage.replace("$list", errorlist))
+                if "$valid_coms" in errormessage:
+                    validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
+                    errormessage = str(errormessage.replace("$valid_coms", validcomslist))
                 if errormessage not in rpg.error_display:
                     rpg.error_display.append(errormessage)
+    if rpg.error_display != []:
+        osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
 
 """
