@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
     player = instigator.default
-
+    bot.say("Command used:" + str(commandused))
     if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
@@ -123,7 +123,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'banker' or commandused == 'banker':
         if target == 'notarget':
             target = player
-            balance = bank(bot,target)
+            balance = bank(bot,botcom,target)
             osd(bot,trigger.sender, 'say', target + " has " + balance + " in the Spicebank.")
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
