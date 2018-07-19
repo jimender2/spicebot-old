@@ -266,14 +266,16 @@ Bot Start
 @sopel.module.interval(1)  # TODO make this progress with the game
 def timed_logcheck(bot):
     channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
-    if "startup_monologue" not in bot.memory and channels_game_enabled != []:
-        bot.memory["startup_monologue"] = 1
+    for channel in bot.channels:
+        if channel in channels_game_enabled:
+            startupmonologue = str("startup_monologue_" + channel)
+            if startupmonologue not in bot.memory:
+                bot.memory[startupmonologue] = 1
 
-        for channel in channels_game_enabled:
-            startup_monologue = []
-            startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
-            startup_monologue.append("Will you, heroes, be triumphant over the darkness that awaits?")
-            osd(bot, channel, 'notice', startup_monologue)
+                startup_monologue = []
+                startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
+                startup_monologue.append("Will you, heroes, be triumphant over the darkness that awaits?")
+                osd(bot, channel, 'notice', startup_monologue)
 
 
 """
