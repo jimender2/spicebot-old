@@ -99,9 +99,7 @@ def execute_main(bot, trigger, triggerargsarray):
             if rpg.instigator in rpg.botadmins:
                 rpg.admin = 1
             else:
-                failcom = str("Only bot admins may utilize the -a switch.")
-                if failcom not in rpg.command_run_fail:
-                    rpg.command_run_fail.append(failcom)
+                errors(bot, rpg, 'admin', 1, 1)
 
         # Split commands to pass
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
@@ -127,9 +125,15 @@ def execute_main(bot, trigger, triggerargsarray):
     # if rpg.command_run_fail != []:
     #    osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
 
-    # rpg = rpg_errors_end(bot, rpg)
-    # if rpg.error_display != []:
-    #    osd(bot, rpg.instigator, 'notice', rpg.error_display)
+    rpg = rpg_errors_end(bot, rpg)
+    if rpg.error_display != []:
+        osd(bot, rpg.instigator, 'notice', rpg.error_display)
+
+
+def errors(bot, rpg, error_type, number, append):
+    currenterrorvalue = eval("rpg.errors." + error_type + str(number))
+    current_error_value.append(append)
+    return rpg
 
 
 def rpg_errors_start(bot, rpg):
@@ -137,20 +141,23 @@ def rpg_errors_start(bot, rpg):
     for error_type in rpg_error_list:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
-            current_error = get_trigger_arg(bot, current_error_type, i + 1)
-            bot.say(str(current_error))
-        # for i in len(current_error_type):
-            # current_error_value = str("rpg.errors." + x + " = []")
-            # exec(current_error_value)
+            current_error_number = i + 1
+            current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
+            exec(current_error_value)
     return rpg
 
 
 def rpg_errors_end(bot, rpg):
     rpg.error_display = []
-    for x in rpg_error_list:
-        currenterrorvalue = eval("rpg.errors." + x)
-        if currenterrorvalue != []:
-            rpg.error_display.append(x + " errors detected")
+    for error_type in rpg_error_list:
+        current_error_type = eval("rpg_error_" + error_type)
+        for i in range(0,len(current_error_type)):
+            current_error_number = i + 1
+            currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
+            if currenterrorvalue != []:
+                errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
+                if errormessage not in rpg.error_display:
+                    rpg.error_display.append(errormessage)
     return rpg
 
 
