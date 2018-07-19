@@ -88,15 +88,16 @@ def execute_main(bot, trigger, triggerargsarray, rpg):
 
 def command_process(bot, trigger, rpg, instigator):
 
-    # Handle rog commands
-    if rpg.command_main not in rpg_valid_commands:
+    # Handle rpg commands
+    if rpg.command_main not in rpg_commands_valid:
         return osd(bot, rpg.instigator, 'notice', "You have not specified a valid command.")
 
+    if rpg.command_main not in rpg_commands_admin and not rpg.admin:
+        return osd(bot, rpg.instigator, 'notice', rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
+
+    # Run the command's function
     command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    try:
-        eval(command_function_run)
-    except NameError:
-        return osd(bot, rpg.instigator, 'notice', "That is a valid command, however the functionality has not been developed yet.")
+    eval(command_function_run)
 
 
 def rpg_command_main_admin(bot,rpg):
