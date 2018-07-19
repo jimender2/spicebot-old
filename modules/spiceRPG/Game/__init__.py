@@ -53,6 +53,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)
+    bot.say(str(rpg.valid_commands_all))
 
     # No Empty Commands
     if triggerargsarray == []:
