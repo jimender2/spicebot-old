@@ -130,7 +130,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
-        errors(bot, rpg, 'commands', 3, rpg.command_main)
+        errors(bot, rpg, 'admin', 2, rpg.command_main)
         return rpg
 
     rpg.command_run = 1
