@@ -124,11 +124,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
                         transfer(bot,botcom,target,player,payout)
         # Bank
-    elif commandused == 'banker' or commandused == 'banker':
+    elif commandused == 'banker' or commandused == 'banking':
         if target == 'notarget':
             target = player
-            balance = bank(bot,botcom,target)
-            osd(bot,trigger.sender, 'say', target + " has " + str(balance) + " in the Spicebank.")
+        balance = bank(bot,botcom,target)
+        osd(bot,trigger.sender, 'say', target + " has " + str(balance) + " in the Spicebank.")
 
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
