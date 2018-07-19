@@ -80,12 +80,12 @@ def database_initialize(bot, nick, array, database):
     if not existingarray:
         arraycount = (len(array) - 1)
         i = 0
-        osd(bot, trigger.sender, 'say', "tester")
+        bot.say("tester")
         while (i <= arraycount):
             inputstring = array[i]
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
             i = i + 1
-            osd(bot, trigger.sender, 'say', i)
+            bot.say(i)
 
 
 @sopel.module.interval(60)
