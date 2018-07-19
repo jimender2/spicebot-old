@@ -37,7 +37,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'payday':
         paydayamount = 0
         paydayamount,msg = checkpayday(bot,botcom, player)
-        bot.say(msg)
         if paydayamount > 0:
             addbucks(bot,botcom, player, paydayamount)
             message = "You haven't been paid yet today. Here's your " + str(paydayamount) + " spicebucks."
@@ -72,58 +71,59 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 osd(bot, trigger.sender, 'say', 'Please enter a target and an amount to set their bank balance at')
 
         # Taxes
-        elif (commandused == 'taxes' or commandused == 'tax'):
-            usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 1
-            if not channel.startswith("#"):
-                osd(bot, player, 'notice', commandused + " can only be used in a channel.")
-            else:
-                randomaudit = random.randint(1,usedamount)
-                if not target == 'notarget':
-                    if buckscheck(bot,botcom,target) == 0:
-                        osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
-                    elif buckscheck(bot,botcom,target) == 3:
+    elif (commandused == 'taxes' or commandused == 'tax'):
+        usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 1
+        if target == 'notarget':
+            target = player
+        if not channel.startswith("#"):
+            osd(bot, player, 'notice', commandused + " can only be used in a channel.")
+        else:
+            randomaudit = random.randint(1,usedamount)
+            if not target == 'notarget':
+                if buckscheck(bot,botcom,target) == 0:
+                    osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
+                elif buckscheck(bot,botcom,target) == 3:
+                    message = audit(bot,botcom,player)
+                    osd(bot, trigger.sender, 'action',message)
+                else:
+                    if usedamount == 1:
+                        adjust_database_value(bot,player,'usedtaxes',3)
+                        taxtotal,message = paytaxes(bot, target)
+                        osd(bot,trigger.send,'say',message)
+                        if taxtotal >= 100:
+                            kickback = int(taxtotal*0.1)
+                            addbucks(bot,botcom,player,kickback)
+                            osd(bot, trigger.sender, 'action', "gives " + player + " a kickback of " + str(kickback) + " for bringing this delinquent to our attention")
+                    else:
                         message = audit(bot,botcom,player)
                         osd(bot, trigger.sender, 'action',message)
-                    else:
-                        if usedamount == 1:
-                            adjust_database_value(bot,player,'usedtaxes',3)
-                            taxtotal,message = paytaxes(bot, target)
-                            osd(bot,trigger.send,'say',message)
-                            if taxtotal >= 100:
-                                kickback = int(taxtotal*0.1)
-                                addbucks(bot,botcom,player,kickback)
-                                osd(bot, trigger.sender, 'action', "gives " + player + " a kickback of " + str(kickback) + " for bringing this delinquent to our attention")
-                        else:
-                            message = audit(bot,botcom,player)
-                            osd(bot, trigger.sender, 'action',message)
-                else:
-                    taxtotal,message = paytaxes(bot, player)
-                    osd(bot,trigger.send,'say',message)
-
-        elif commandused == 'rob':
-            usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 2
-            balance = bank(bot,botcom, target)
-            if buckscheck(bot,botcom,target) == 0:
-                osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
             else:
-                if usedamount > 10:
-                    adjust_database_value(bot,player,'usedtaxes',0)
+                taxtotal,message = paytaxes(bot, player)
+                osd(bot,trigger.send,'say',message)
+
+    elif commandused == 'rob':
+        usedamount = (get_database_value(bot,player,'usedtaxes') or 0) + 2
+        balance = bank(bot,botcom, target)
+        if buckscheck(bot,botcom,target) == 0:
+            osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
+        else:
+            if usedamount > 10:
+                triggerbalance = bank(bot,botcom, player)
+                fine = int(triggerbalance*.20)
+                osd(bot, trigger.sender, 'say', player + " get's caught for pickpocketing too much and is fined " + str(fine))
+                minusbucks(bot,player,fine)
+            else:
+                adjust_database_value(bot,player,'usedtaxes',1)
+                randomcheck = random.randint(0,5)
+                if randomcheck == 3:
                     triggerbalance = bank(bot,botcom, player)
                     fine = int(triggerbalance*.20)
-                    osd(bot, trigger.sender, 'say', player + " get's caught for pickpocketing too much and is fined " + str(fine))
-                    minusbucks(bot,player,fine)
+                    osd(bot, trigger.sender, 'say', player + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
+                    minusbucks(bot,botcom,player,fine)
                 else:
-                    adjust_database_value(bot,player,'usedtaxes',1)
-                    randomcheck = random.randint(0,5)
-                    if randomcheck == 3:
-                        triggerbalance = bank(bot,botcom, player)
-                        fine = int(triggerbalance*.20)
-                        osd(bot, trigger.sender, 'say', player + " get's caught trying to pickpocket " + target + " and is fined for " + str(fine))
-                        minusbucks(bot,botcom,player,fine)
-                    else:
-                        payout = int(balance * .01)
-                        osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
-                        transfer(bot,botcom,target,player,payout)
+                    payout = int(balance * .01)
+                    osd(bot, trigger.sender, 'say', player + " pickpockets " + str(payout) + " from " + target)
+                    transfer(bot,botcom,target,player,payout)
         # Bank
     elif commandused == 'banker' or commandused == 'banking':
         if target == 'notarget':
