@@ -124,25 +124,31 @@ def execute_main(bot, trigger, triggerargsarray):
                         rpg.command_run_fail.append(failcom)
             rpg.commands_ran.append(rpg.command_main)
 
-    if rpg.command_run_fail != []:
-        osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
-    rpg = rpg_errors_end(bot, rpg)
+    # if rpg.command_run_fail != []:
+    #    osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
+
+    # rpg = rpg_errors_end(bot, rpg)
+    # if rpg.error_display != []:
+    #    osd(bot, rpg.instigator, 'notice', rpg.error_display)
 
 
 def rpg_errors_start(bot, rpg):
     rpg.errors = class_create('errors')
-    for x in rpg_error_list:
-        currenterrorvalue = str("rpg.errors." + x + " = []")
-        exec(currenterrorvalue)
+    for error_type in rpg_error_list:
+        current_error_type = eval("rpg_error_" + error_type)
+        bot.say(str(current_error_type))
+        #for i in len(current_error_type):
+        #    current_error_value = str("rpg.errors." + x + " = []")
+        #    exec(current_error_value)
     return rpg
 
 
 def rpg_errors_end(bot, rpg):
-    error_display = []
+    rpg.error_display = []
     for x in rpg_error_list:
         currenterrorvalue = eval("rpg.errors." + x)
         if currenterrorvalue != []:
-            bot.say(x + " errors detected")
+            rpg.error_display.append(x + " errors detected")
     return rpg
 
 
@@ -151,12 +157,12 @@ def command_process(bot, trigger, rpg, instigator):
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() here
         rpg.command_run.append(rpg.command_main + " does not appear to be a valid command.")
-        rpg.errors.command_run_fail_invalid.append(rpg.command_main)
+        # rpg.errors.command_run_fail_invalid.append(rpg.command_main)
 
     # Admin Block
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
         rpg.command_run.append(rpg.command_main + " is an admin command. If you are an admin, you need to run with the -a admin switch.")
-        rpg.errors.command_run_fail_notadmin.append(rpg.command_main)
+        # rpg.errors.command_run_fail_notadmin.append(rpg.command_main)
 
     return rpg
 
