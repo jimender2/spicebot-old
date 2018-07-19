@@ -70,7 +70,7 @@ def execute_main(bot, trigger, triggerargsarray):
     rpg.errors = class_create('errors')
     for x in rpg_error_list:
         currenterrorvalue = str("rpg.errors." + x + " = []")
-        exec(currentvalue)
+        exec(currenterrorvalue)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
