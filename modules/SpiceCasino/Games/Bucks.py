@@ -120,10 +120,9 @@ def transfer(bot,botcom, instigator, target, amount):
 
 
 def addbucks(bot,botcom,target,amount):
-    instigator = bot
     if not (target == 'jackpot' or instigator == 'jackpot'):
         isvalid = buckscheck(bot,botcom,target)
-        isvalidtarget = buckscheck(bot,botcom,instigator)
+        isvalidtarget = buckscheck(bot,botcom,target)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
     success = False
