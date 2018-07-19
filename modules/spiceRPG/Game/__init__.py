@@ -67,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray):
         return osd(bot, rpg.instigator, 'notice', "Which rpg command do you wish to run? Valid Commands include: " + valid_commands_list)
 
     # Error Display System
-    rpg = rpg_errors_start(bot, rpg)
+    rpg_errors_start(bot, rpg)
 
     # Entire command string
     rpg.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
@@ -125,7 +125,7 @@ def execute_main(bot, trigger, triggerargsarray):
     # if rpg.command_run_fail != []:
     #    osd(bot, rpg.instigator, 'notice', rpg.command_run_fail)
 
-    rpg = rpg_errors_end(bot, rpg)
+    rpg_errors_end(bot, rpg)
     if rpg.error_display != []:
         osd(bot, rpg.instigator, 'notice', rpg.error_display)
     bot.say("end")
@@ -134,7 +134,6 @@ def execute_main(bot, trigger, triggerargsarray):
 def errors(bot, rpg, error_type, number, append):
     current_error_value = eval("rpg.errors." + error_type + str(number))
     current_error_value.append(append)
-    return rpg
 
 
 def rpg_errors_start(bot, rpg):
@@ -145,7 +144,6 @@ def rpg_errors_start(bot, rpg):
             current_error_number = i + 1
             current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
             exec(current_error_value)
-    return rpg
 
 
 def rpg_errors_end(bot, rpg):
@@ -159,7 +157,6 @@ def rpg_errors_end(bot, rpg):
                 errormessage = get_trigger_arg(bot, current_error_type, current_error_number)
                 if errormessage not in rpg.error_display:
                     rpg.error_display.append(errormessage)
-    return rpg
 
 
 def command_process(bot, trigger, rpg, instigator):
