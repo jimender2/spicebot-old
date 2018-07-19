@@ -23,6 +23,14 @@ rpg_valid_command_types = ['admin']
 # Admin Commands
 rpg_commands_valid_admin = ['admin']
 
+
+"""
+Subcommands
+"""
+
+subcommands_valid_admin = ['channel']
+subcommands_default_admin = 0
+
 """
 Map System
 """
@@ -36,14 +44,14 @@ Error messages System
 """
 
 
-rpg_error_list = ['commands']
+rpg_error_list = ['commands','debug']
 
 rpg_error_debug = [
                     "The Script works at line $list"
 ]
 
 rpg_error_admin = [
-                    ""
+                    "Subcommand missing. Valid subcommands include: $valid_subcoms"
 ]
 
 rpg_error_commands = [

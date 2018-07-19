@@ -12,7 +12,7 @@ from .Global_Vars import *
 
 
 """
-Idea, use exec to dynamically import the subcommands?
+Triggers for usage
 """
 
 
@@ -36,10 +36,18 @@ def rpg_trigger_precede(bot, trigger):
     execute_start(bot, trigger, triggerargsarray)
 
 
+"""
+Command Processing
+"""
+
+
 def execute_start(bot, trigger, triggerargsarray):
 
     # RPG dynamic Class
     rpg = class_create('main')
+
+    # Time when Module use started
+    rpg.start = time.time()
 
     # instigator
     instigator = class_create('instigator')
@@ -53,7 +61,9 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg = rpg_command_users(bot,rpg)
 
     # Commands list
-    rpg = rpg_valid_commands_all(bot, rpg)
+    rpg = rpg_valid_commands_all(bot, rpg)  # TODO alt coms
+
+    # TODO valid stats
 
     # Error Display System Create
     rpg_errors_start(bot, rpg)
@@ -156,7 +166,14 @@ def command_process(bot, trigger, rpg, instigator):
 
 
 def rpg_command_main_admin(bot, rpg, instigator):
-    osd(bot, rpg.instigator, 'say', "wip")
+
+    # Subcommand
+    subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
+    subcommand_default = eval('subcommands_default_' + rpg.command_main)
+    subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or subcommand_default
+    if not subcommand:
+        errors(bot, rpg, rpg.command_main, 1, 1)
+        return
 
 
 """
@@ -186,7 +203,6 @@ def rpg_errors_start(bot, rpg):
         errorscanlist.append(vcom)
     for error_type in rpg_error_list:
         errorscanlist.append(error_type)
-    errorscanlist.append("debug")
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
@@ -202,7 +218,6 @@ def rpg_errors_end(bot, rpg):
         errorscanlist.append(vcom)
     for error_type in rpg_error_list:
         errorscanlist.append(error_type)
-    errorscanlist.append("debug")
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
         for i in range(0,len(current_error_type)):
@@ -223,6 +238,9 @@ def rpg_errors_end(bot, rpg):
                 if "$game_chans" in errormessage:
                     gamechanlist = get_trigger_arg(bot, rpg.channels_enabled, 'list')
                     errormessage = str(errormessage.replace("$game_chans", gamechanlist))
+                if "$valid_subcoms" in errormessage:
+                    subcommand_valid = eval('subcommands_valid_' + error_type)
+                    errormessage = str(errormessage.replace("$valid_subcoms", gamechanlist))
                 if "$current_chan" in errormessage:
                     if rpg.channel_real:
                         errormessage = str(errormessage.replace("$current_chan", rpg.channel_current))
