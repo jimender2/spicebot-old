@@ -96,8 +96,8 @@ def bank(bot, botcom, nick):
     if nick == 'SpiceBank':
         balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     else:
-        isvalid = targetcheck(bot,botcom,nick,bot)
-        if isvalid == 1:
+        isvalid = targetcheck(bot,botcom,nick,nick)
+        if isvalid == 1 or isvalid == 2:
             balance = get_database_value(bot,nick,'spicebucks_bank') or 0
     return balance
 
@@ -139,3 +139,34 @@ def minusbucks(bot,botcom,target,amount):
         adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
         success = True
     return success
+
+
+def buckscheck(bot, botcom, target):
+    # Guilty until proven Innocent
+    validtarget = 1
+    validtargetmsg = []
+    target = target.lower()
+    """ Target is instigator
+    if target == ''botcom.instigator.default'':
+        validtarget = 2
+        validtargetmsg.append("Target is instigator")
+        return validtarget, validtargetmsg
+    """
+
+    if target == bot.nick:
+        validtarget = 3
+        validtargetmsg.append("Target is a bot")
+        return validtarget, validtargetmsg
+
+    # Null Target
+    if not target:
+        validtarget = 0
+        validtargetmsg.append("You must specify a target.")
+        return validtarget,validtargetmsg
+
+    if target in botcom.users_current:
+        return validtarget, validtargetmsg
+    else:
+        validtarget = 0
+        validtargetmsg.append(target + " isn't a valid user")
+        return validtarget,validtargetmsg
