@@ -10,12 +10,12 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('yourcommandhere')
+@sopel.module.commands('jfive','j5')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'jfive')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    osd(bot, trigger.sender, 'say', "Johnny Five needs moar innnnnpuuuuuut")
