@@ -168,14 +168,14 @@ def checkpayday(bot,botcom, target):
     now = datetime.datetime.now()
     datetoday = int(now.strftime("%Y%j"))
     spicebank = bank(bot,botcom,'jackpot')
-    paydaymsg = ""
+    paydaymsg = "none"
     if spicebank <= 0:
         spicebank = 500
     lastpayday = get_database_value(bot,target, 'spicebucks_payday') or 0
     if lastpayday == 0 or lastpayday < datetoday:
-        paydaymsg = "Pay day found"
         paydayamount = int(spicebank * 0.01)
         set_database_value(bot,target, 'spicebucks_payday', datetoday)
+        paydaymsg = "Pay day found"
     else:
         paydaymsg = "Spicbank: " + str(spicebank) + "lastpay: " + str(lastpayday) + "Today: " + str(datetoday)
     return paydayamount,paydaymsg
