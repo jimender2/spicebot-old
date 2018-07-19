@@ -14,7 +14,7 @@ from BotShared import *
 from Bucks import *
 
 
-@sopel.module.commands('banker','payday','tax','taxes','funds','rob','bankreset')
+@sopel.module.commands('banker','payday','tax','taxes','funds','rob','bankreset','checkbank')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'banker')
     if not enablestatus:
@@ -29,6 +29,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if commandused == '':
         message = "Welcome to the SpiceBank.  Your options are payday, tax, , and bank."
         osd(bot, trigger.sender, 'say', message)
+    elif commandused = 'checkbank':
+        bot.say("Target: " + target + " Player:" + player)
+        validbank = buckscheck(bot,botcom,target)
+        bot.say(str(validbank))
     elif commandused == 'payday':
         paydayamount = 0
         paydayamount = checkpayday(bot,botcom, player)
