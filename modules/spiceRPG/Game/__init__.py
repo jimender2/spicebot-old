@@ -265,10 +265,9 @@ Bot Start
 
 @sopel.module.interval(1)  # TODO make this progress with the game
 def timed_logcheck(bot):
-    if "startup_monologue" not in bot.memory:
+    channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
+    if "startup_monologue" not in bot.memory and channels_game_enabled != []:
         bot.memory["startup_monologue"] = 1
-
-        channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
 
         for channel in channels_game_enabled:
             startup_monologue = []
