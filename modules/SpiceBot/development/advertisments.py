@@ -21,6 +21,8 @@ testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
 
 databasekey = 'ads'
 
+hardcoded_not_in_this_chan = ["#spiceworks"]
+
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
@@ -100,6 +102,7 @@ def advertisement(bot):
         for channel in bot.channels:
             channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
             if channel in channelmodulesarray:
-                osd(bot, channel, 'say', message)
+                if channel not in hardcoded_not_in_this_chan:
+                    osd(bot, channel, 'say', message)
     else:
         message = "none"
