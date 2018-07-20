@@ -298,6 +298,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
 
     # Hokey
     if subcommand == 'hotkey':
+        rpg.triggerargsarray.remove(subcommand)
 
         numberused = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if str(x).isdigit()], 1) or 'nonumber'
 
