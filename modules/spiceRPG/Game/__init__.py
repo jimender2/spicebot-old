@@ -350,9 +350,9 @@ def rpg_command_main_settings(bot, rpg, instigator):
                 errors(bot, rpg, rpg.command_main, 7, 1)
                 return
 
-            actualcommand_main = get_trigger_arg(bot, newcommandhot, 1) or 0
+            actualcommand_main = get_trigger_arg(bot, rpg.triggerargsarray, 1) or 0
             if actualcommand_main not in rpg.valid_commands_all:  # TODO altcoms
-                errors(bot, rpg, rpg.command_main, 8, actualcommand_main)
+                errors(bot, rpg, rpg.command_main, 8, str(actualcommand_main))
                 return
 
             set_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused), newcommandhot)
