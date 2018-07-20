@@ -29,11 +29,13 @@ Commands
 
 
 # Valid Command Types
-rpg_valid_command_types = ['admin']
+rpg_valid_command_types = ['admin','settings']
 
 # Admin Commands
 rpg_commands_valid_admin = ['admin']
 
+# User Settings
+rpg_commands_valid_admin = ['settings']
 
 """
 Subcommands
@@ -43,6 +45,11 @@ Subcommands
 subcommands_valid_admin = ['channel']
 subcommands_default_admin = 0
 subcommands_valid_admin_channel = ['game','devmode']
+
+# settings
+subcommands_valid_settings = ['hotkey']
+subcommands_default_settings = 0
+subcommands_valid_settings_hotkey = ['view','update','reset','list']
 
 """
 Map System
@@ -61,6 +68,17 @@ rpg_error_list = ['commands','debug']
 
 rpg_error_debug = [
                     "The Script works at line $list"
+]
+
+rpg_error_settings = [
+                    "Subcommand missing. Valid subcommands include: $valid_subcoms.",  # 1
+                    "You cannot adjust settings for other players.",  # 2
+                    "The following appear to no be valid RPG players: $list",  # 3
+                    "What number would you like to view/modify?",  # 4
+                    "You don't appear to have any hotkeys.",  # 5
+                    "You don't have a command hotlinked to $list",  # 6
+                    "You can't set an empty hotkey."  # 7
+                    "$list does not appear to be a valid command to hotkey."  # 8
 ]
 
 rpg_error_admin = [

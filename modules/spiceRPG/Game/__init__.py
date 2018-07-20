@@ -276,6 +276,91 @@ def rpg_command_main_admin(bot, rpg, instigator):
         return
 
 
+def rpg_command_main_settings(bot, rpg, instigator):
+
+    # Subcommand
+    subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
+    subcommand_default = eval('subcommands_default_' + rpg.command_main)
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or subcommand_default
+    if not subcommand:
+        errors(bot, rpg, rpg.command_main, 1, 1)
+        return
+
+    # Who is the target
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all_allchan and x != 'random' and x != 'monster'], 1) or rpg.instigator
+    if target != rpg.instigator:
+        if not rpg.admin:
+            errors(bot, rpg, rpg.command_main, 2, 1)
+            return
+        if target not in rpg.users_all:
+            errors(bot, rpg, rpg.command_main, 3, target)
+            return
+
+    # Hokey
+    if subcommand == 'hotkey':
+
+        numberused = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if str(x).isdigit()], 1) or 'nonumber'
+
+        hotkeysetting = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_settings_hotkey], 1) or 'view'
+
+        if hotkeysetting == 'list':
+            hotkeyscurrent = get_database_value(bot, target, 'hotkey_complete') or []
+            if hotkeyscurrent == []:
+                errors(bot, rpg, rpg.command_main, 5, 1)
+                return
+            hotkeyslist = []
+            for key in hotkeyscurrent:
+                keynumber = get_database_value(bot, rpg.instigator, 'hotkey_'+str(key)) or 0
+                if keynumber:
+                    hotkeyslist.append(str(key) + "=" + str(keynumber))
+            hotkeyslist = get_trigger_arg(bot, hotkeyslist, 'list')
+            osd(bot, rpg.channel_current, 'say', "Your hotkey list: " + hotkeyslist)
+            return
+
+        if numberused == 'nonumber':
+            errors(bot, rpg, rpg.command_main, 4, 1)
+            return
+        number_command = get_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused)) or 0
+
+        if hotkeysetting != 'update':
+            if not number_command:
+                errors(bot, rpg, rpg.command_main, 6, numberused)
+                return
+
+        if hotkeysetting == 'view':
+            osd(bot, rpg.channel_current, 'say', "You currently have " + str(numberused) + " set to '" + number_command + "'")
+            return
+
+        if hotkeysetting == 'reset':
+            reset_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused))
+            adjust_database_array(bot, target, [numberused], 'hotkey_complete', 'del')
+            osd(bot, rpg.channel_current, 'say', "Your "+str(numberused)+" command has been reset")
+            return
+
+        if hotkeysetting == 'update':
+            if target in rpg.triggerargsarray:
+                rpg.triggerargsarray.remove(target)
+            rpg.triggerargsarray.remove(numberused)
+            rpg.triggerargsarray.remove(hotkeysetting)
+
+            newcommandhot = get_trigger_arg(bot, rpg.triggerargsarray, 0) or 0
+            if not newcommandhot:
+                errors(bot, rpg, rpg.command_main, 7, 1)
+                return
+
+            actualcommand_main = get_trigger_arg(bot, newcommandhot, 1) or 0
+            if actualcommand_main not in rpg.valid_commands_all:  # TODO altcoms
+                errors(bot, rpg, rpg.command_main, 8, actualcommand_main)
+                return
+
+            set_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused), newcommandhot)
+            adjust_database_array(bot, target, [numberused], 'hotkey_complete', 'add')
+            osd(bot, rpg.channel_current, 'say', "Your "+str(numberused)+" command has been set to '" + newcommandhot+"'")
+            return
+
+        return
+
+
 """
 Bot Start
 """
