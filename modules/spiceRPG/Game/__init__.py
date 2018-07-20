@@ -336,7 +336,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
         if hotkeysetting == 'reset':
             reset_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused))
             adjust_database_array(bot, target, [numberused], 'hotkey_complete', 'del')
-            osd(bot, rpg.channel_current, 'say', "Your "+str(numberused)+" command has been reset")
+            osd(bot, rpg.channel_current, 'say', "Your command for hotkey "+str(numberused)+" has been reset")
             return
 
         if hotkeysetting == 'update':
