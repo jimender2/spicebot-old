@@ -35,7 +35,7 @@ rpg_valid_command_types = ['admin','settings']
 rpg_commands_valid_admin = ['admin']
 
 # User Settings
-rpg_commands_valid_admin = ['settings']
+rpg_commands_valid_settings = ['settings']
 
 """
 Subcommands
