@@ -35,23 +35,23 @@ Triggers for usage
 """
 
 
+@sopel.module.commands('rpga')
+@sopel.module.thread(True)
+def rpg_trigger_maina(bot, trigger):
+    bot.say("wip")
+
+
+@sopel.module.commands('rpgb')
+@sopel.module.thread(True)
+def rpg_trigger_mainb(bot, trigger):
+    bot.say("wip")
+
+
 # Base command
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_start(bot, trigger, triggerargsarray)
-
-
-# respond to alternate start for command
-@module.rule('^(?:rpg)\s+?.*')
-@module.rule('^(?:!rpg)\s+?.*')
-@module.rule('^(?:,rpg)\s+?.*')
-@sopel.module.thread(True)
-def rpg_trigger_precede(bot, trigger):
-    triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
-    triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
-    triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     execute_start(bot, trigger, triggerargsarray)
 
 
