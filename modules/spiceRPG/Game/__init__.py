@@ -64,13 +64,12 @@ def get_database_class(bot, nick, databasekey):
     if database_retrieve == 0:
         class_value = class_create(databasekey)
         return class_value
-    with open(database_retrieve,'rb') as f:
-        class_value = pickle.load(f)
+    class_value = pickle.Unpickler(database_retrieve)
     return class_value
 
 
 def set_database_class(bot, nick, databasekey, class_to_dump):
-    dump_value = pickle.dumps(class_to_dump)
+    dump_value = pickle.Pickler(class_to_dump)
     set_database_value(bot, nick, databasekey, dump_value)
 
 
