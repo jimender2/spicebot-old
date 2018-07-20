@@ -59,6 +59,19 @@ def rpg_trigger_mainb(bot, trigger):
     bot.say(savedclass.testclass)
 
 
+# use bot.memory to track stats
+# use eval() to hold many bot.memory
+# use bot.memory to track users to save at the end
+def get_database_stats(bot, nick):
+    # 2 db reads, one for stat, one for value
+    # array_compare
+    bot.say("wip")
+
+
+def set_database_stats(bot, nick):
+    bot.say("wip")
+
+
 def get_database_class(bot, nick, databasekey):
     database_retrieve = get_database_value(bot, nick, databasekey) or 0
     if database_retrieve == 0:
