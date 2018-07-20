@@ -164,13 +164,31 @@ def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
 
+    # allow players to set custom shortcuts to numbers
+    if str(rpg.command_main).isdigit():
+        number_command = get_database_value(bot, rpg.instigator, 'hotkey_'+str(rpg.command_main)) or 0
+        if not number_command:
+            errors(bot, rpg, 'commands', 8, rpg.command_main)
+            return rpg
+        else:
+            number_command_list = get_database_value(bot, rpg.instigator, 'hotkey_complete') or []
+            if rpg.command_main not in number_command_list:
+                adjust_database_array(bot, rpg.instigator, [rpg.command_main], 'hotkey_complete', 'add')
+            commandremaining = get_trigger_arg(bot, rpg.triggerargsarray, '2+') or ''
+            number_command = str(number_command + " " + commandremaining)
+            rpg.triggerargsarray = get_trigger_arg(bot, number_command, 'create')
+            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+            rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
+
+    # Alternate commands convert TODO
+
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
     # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar()
         errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 

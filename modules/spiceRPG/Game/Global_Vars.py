@@ -82,4 +82,5 @@ rpg_error_commands = [
                     "You may only run a unique command once at a time using the multicom feature.",  # 5
                     "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
+                    "You don't have a command hotlinked to $list"  # 8
 ]
