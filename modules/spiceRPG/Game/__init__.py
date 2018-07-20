@@ -205,7 +205,7 @@ def command_process(bot, trigger, rpg, instigator):
 
 
 """
-Commands
+Configuration Commands
 """
 
 
@@ -361,6 +361,45 @@ def rpg_command_main_settings(bot, rpg, instigator):
             return
 
         return
+
+
+"""
+Basic User Commands
+"""
+
+
+def rpg_command_main_author(bot, rpg, instigator):
+
+    osd(bot, rpg.channel_current, 'say', "The author of RPG is deathbybandaid.")
+
+
+def rpg_command_main_intent(bot, rpg, instigator):
+
+    # Who is the target
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
+
+    osd(bot, rpg.channel_current, 'say', "The intent is to provide "+target+" with a sense of pride and accomplishment...")
+
+
+def rpg_command_main_about(bot, rpg, instigator):
+
+    osd(bot, rpg.channel_current, 'say', "The purpose behind RPG is for deathbybandaid to learn python, while providing a fun, evenly balanced gameplay.")
+
+
+def rpg_command_main_version(bot, rpg, instigator):
+
+    # Attempt to get revision date from Github
+    versionfetch = versionnumber(bot)
+
+    osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(versionfetch) + ".")
+
+
+def rpg_command_main_docs(bot, rpg, instigator):  # TODO
+    bot.say("wip")
+
+
+def rpg_command_main_usage(bot, rpg, instigator):  # TODO
+    bot.say("wip")
 
 
 """
@@ -674,6 +713,23 @@ def nick_actual(bot,nick):
             nick_actual = u
             continue
     return nick_actual
+
+
+"""
+RPG Version
+"""
+
+
+def versionnumber(bot):
+    rpg_version_plainnow = rpg_version_plain
+    page = requests.get(rpg_version_github_page,headers=None)
+    if page.status_code == 200:
+        tree = html.fromstring(page.content)
+        rpg_version_plainnow = str(tree.xpath(rpg_version_github_xpath))
+        for r in (("\\n", ""), ("['",""), ("']",""), ("'",""), ('"',""), (',',""), ('Commits on',"")):
+            rpg_version_plainnow = rpg_version_plainnow.replace(*r)
+        rpg_version_plainnow = rpg_version_plainnow.strip()
+    return rpg_version_plainnow
 
 
 """

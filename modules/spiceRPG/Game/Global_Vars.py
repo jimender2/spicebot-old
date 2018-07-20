@@ -14,6 +14,17 @@ osd_limit = 420
 
 
 """
+Github Information
+"""
+
+
+# This Fethes the last modified date from github
+rpg_version_plain = '1.5.17'  # If the online check fails
+rpg_version_github_page = "https://github.com/deathbybandaid/SpiceBot/commits/master/modules/spiceRPG/Games/__init__.py"
+rpg_version_github_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
+
+
+"""
 Activation/Deactivate
 """
 
@@ -29,13 +40,16 @@ Commands
 
 
 # Valid Command Types
-rpg_valid_command_types = ['admin','settings']
+rpg_valid_command_types = ['admin','settings','basic']
 
 # Admin Commands
 rpg_commands_valid_admin = ['admin']
 
 # User Settings
 rpg_commands_valid_settings = ['settings']
+
+# Basic Commands
+rpg_commands_valid_settings = ['author','intent','about','version','docs','usage']
 
 """
 Subcommands
@@ -70,6 +84,21 @@ rpg_error_debug = [
                     "The Script works at line $list"
 ]
 
+# Command Run
+
+rpg_error_commands = [
+                    "RPG has not been enabled in any bot channels.",  # 1
+                    "RPG has not been enabled in $current_chan. The game is enabled in: $game_chans.",  # 2
+                    "Which rpg command do you wish to run? Valid Commands include: $valid_coms.",  # 3
+                    "Only bot admins may utilize the -a switch.",  # 4
+                    "You may only run a unique command once at a time using the multicom feature.",  # 5
+                    "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
+                    "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
+                    "You don't have a command hotlinked to $list"  # 8
+]
+
+# Configuration
+
 rpg_error_settings = [
                     "Subcommand missing. Valid subcommands include: $valid_subcoms.",  # 1
                     "You cannot adjust settings for other players.",  # 2
@@ -92,13 +121,28 @@ rpg_error_admin = [
                     "RPG is already off in $game_chans."  # 8
 ]
 
-rpg_error_commands = [
-                    "RPG has not been enabled in any bot channels.",  # 1
-                    "RPG has not been enabled in $current_chan. The game is enabled in: $game_chans.",  # 2
-                    "Which rpg command do you wish to run? Valid Commands include: $valid_coms.",  # 3
-                    "Only bot admins may utilize the -a switch.",  # 4
-                    "You may only run a unique command once at a time using the multicom feature.",  # 5
-                    "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
-                    "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
-                    "You don't have a command hotlinked to $list"  # 8
+# Basic
+
+rpg_error_author = [
+                    ""
+]
+
+rpg_error_intent = [
+                    ""
+]
+
+rpg_error_about = [
+                    ""
+]
+
+rpg_error_version = [
+                    ""
+]
+
+rpg_error_docs = [
+                    ""
+]
+
+rpg_error_usage = [
+                    ""
 ]
