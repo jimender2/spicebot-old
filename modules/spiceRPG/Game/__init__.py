@@ -61,7 +61,7 @@ def rpg_trigger_mainb(bot, trigger):
 
 def get_database_class(bot, nick, databasekey):
     database_retrieve = get_database_value(bot, nick, databasekey) or 0
-    if database_retrieve = 0:
+    if database_retrieve == 0:
         class_value = class_create(databasekey)
         return class_value
     class_value = pickle.load(database_retrieve)
