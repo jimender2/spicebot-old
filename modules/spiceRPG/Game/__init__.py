@@ -287,7 +287,7 @@ def rpg_command_main_settings(bot, rpg, instigator):
         return
 
     # Who is the target
-    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all_allchan and x != 'random' and x != 'monster'], 1) or rpg.instigator
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
     if target != rpg.instigator:
         if not rpg.admin:
             errors(bot, rpg, rpg.command_main, 2, 1)
