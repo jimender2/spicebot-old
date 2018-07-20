@@ -21,9 +21,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 2)
     command = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
-    channel = channel
     if command == "first":
-        message = instigator + " welcomes " + target + " to " + channel
+        message = instigator + " welcomes " + target + " to the channel"
     else:
         message = instigator + " is glad to see " + target + " again."
 
