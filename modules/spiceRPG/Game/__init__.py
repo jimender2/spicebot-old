@@ -26,6 +26,7 @@ from lxml import html
 from statistics import mean
 import itertools
 import inspect
+import pickle
 # Game Folder
 from .Global_Vars import *
 
@@ -44,7 +45,7 @@ def rpg_trigger_maina(bot, trigger):
     testclass = class_create('testclass')
     testclass.testclass = 'awesome'
 
-    set_database_value(bot, bot.nick, 'classtest', testclass)
+    set_database_class(bot, bot.nick, 'classtest', testclass)
 
 
 @sopel.module.commands('rpgb')
@@ -53,9 +54,23 @@ def rpg_trigger_mainb(bot, trigger):
 
     bot.say("retrieving")
 
-    savedclass = get_database_value(bot, bot.nick, 'classtest')
+    savedclass = get_database_class(bot, bot.nick, 'classtest')
 
     bot.say(savedclass.testclass)
+
+
+def get_database_class(bot, nick, databasekey):
+    database_retrieve = get_database_value(bot, nick, databasekey) or 0
+    if database_retrieve = o:
+        class_value = class_create(databasekey)
+        return class_value
+    class_value = pickle.load(database_retrieve)
+    return class_value
+
+
+def set_database_class(bot, nick, databasekey, class_to_dump):
+    dump_value = pickle.dumps(class_to_dump)
+    set_database_value(bot, nick, databasekey, dump_value)
 
 
 # Base command
