@@ -49,7 +49,7 @@ rpg_commands_valid_admin = ['admin']
 rpg_commands_valid_settings = ['settings']
 
 # Basic Commands
-rpg_commands_valid_settings = ['author','intent','about','version','docs','usage']
+rpg_commands_valid_basic = ['author','intent','about','version','docs','usage']
 
 """
 Subcommands
