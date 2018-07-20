@@ -77,7 +77,7 @@ rpg_error_settings = [
                     "What number would you like to view/modify?",  # 4
                     "You don't appear to have any hotkeys.",  # 5
                     "You don't have a command hotlinked to $list",  # 6
-                    "You can't set an empty hotkey."  # 7
+                    "You can't set an empty hotkey.",  # 7
                     "$list does not appear to be a valid command to hotkey."  # 8
 ]
 
