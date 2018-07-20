@@ -64,7 +64,8 @@ def get_database_class(bot, nick, databasekey):
     if database_retrieve == 0:
         class_value = class_create(databasekey)
         return class_value
-    class_value = pickle.load(database_retrieve)
+    with open(database_retrieve,'rb') as f:
+        class_value = pickle.load(f)
     return class_value
 
 
