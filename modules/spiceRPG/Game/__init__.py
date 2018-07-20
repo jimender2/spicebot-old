@@ -38,13 +38,24 @@ Triggers for usage
 @sopel.module.commands('rpga')
 @sopel.module.thread(True)
 def rpg_trigger_maina(bot, trigger):
-    bot.say("wip")
+
+    bot.say("saving")
+
+    testclass = class_create('testclass')
+    testclass.testclass = 'awesome'
+
+    set_database_value(bot, bot.nick, 'classtest', testclass)
 
 
 @sopel.module.commands('rpgb')
 @sopel.module.thread(True)
 def rpg_trigger_mainb(bot, trigger):
-    bot.say("wip")
+
+    bot.say("retrieving")
+
+    savedclass = get_database_value(bot, bot.nick, 'classtest')
+
+    bot.say(savedclass.testclass)
 
 
 # Base command
