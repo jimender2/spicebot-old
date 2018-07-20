@@ -9,6 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+# author jimender2
+
 
 @sopel.module.commands('welcome')
 def mainfunction(bot, trigger):
