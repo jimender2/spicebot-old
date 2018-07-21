@@ -113,10 +113,10 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg.instigator = trigger.nick
 
     # Channel Listing
-    rpg = rpg_command_channels(bot,rpg,trigger)
+    rpg = rpg_command_channels(bot, rpg, trigger)
 
     # Bacic User List
-    rpg = rpg_command_users(bot,rpg)
+    rpg = rpg_command_users(bot, rpg)
 
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)  # TODO alt coms
@@ -495,7 +495,7 @@ def rpg_errors_start(bot, rpg):
         errorscanlist.append(error_type)
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
-        for i in range(0,len(current_error_type)):
+        for i in range(0, len(current_error_type)):
             current_error_number = i + 1
             current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
             exec(current_error_value)
@@ -510,7 +510,7 @@ def rpg_errors_end(bot, rpg):
         errorscanlist.append(error_type)
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
-        for i in range(0,len(current_error_type)):
+        for i in range(0, len(current_error_type)):
             current_error_number = i + 1
             currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
             if currenterrorvalue != []:
@@ -578,7 +578,7 @@ Channels
 """
 
 
-def rpg_command_channels(bot,rpg,trigger):
+def rpg_command_channels(bot, rpg, trigger):
 
     # current Channels
     rpg.channel_current = trigger.sender
@@ -612,8 +612,8 @@ Users
 """
 
 
-def rpg_command_users(bot,rpg):
-    rpg.opadmin,rpg.owner,rpg.chanops,rpg.chanvoice,rpg.botadmins,rpg.users_current = [],[],[],[],[],[]
+def rpg_command_users(bot, rpg):
+    rpg.opadmin, rpg.owner, rpg.chanops, rpg.chanvoice, rpg.botadmins, rpg.users_current = [], [], [], [], [], []
 
     for user in bot.users:
         rpg.users_current.append(str(user))
@@ -664,12 +664,12 @@ def osd(bot, target_array, text_type, text_array):
     texttargetarray = []
     if not isinstance(target_array, list):
         if not str(target_array).startswith("#"):
-            target_array = nick_actual(bot,str(target_array))
+            target_array = nick_actual(bot, str(target_array))
         texttargetarray.append(target_array)
     else:
         for target in target_array:
             if not str(target).startswith("#"):
-                target = nick_actual(bot,str(target))
+                target = nick_actual(bot, str(target))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
@@ -727,7 +727,7 @@ def osd(bot, target_array, text_type, text_array):
         textpartsleft = textparts
         for combinedline in combinedtextarray:
             if text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline,target)
+                bot.action(combinedline, target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice' or text_type == 'priv':
@@ -745,7 +745,7 @@ How to Display Nicks
 
 
 # Outputs Nicks with correct capitalization
-def nick_actual(bot,nick):
+def nick_actual(bot, nick):
     nick_actual = nick
     for u in bot.users:
         if u.lower() == nick_actual.lower():
@@ -761,11 +761,11 @@ RPG Version
 
 def versionnumber(bot):
     rpg_version_plainnow = rpg_version_plain
-    page = requests.get(rpg_version_github_page,headers=None)
+    page = requests.get(rpg_version_github_page, headers=None)
     if page.status_code == 200:
         tree = html.fromstring(page.content)
         rpg_version_plainnow = str(tree.xpath(rpg_version_github_xpath))
-        for r in (("\\n", ""), ("['",""), ("']",""), ("'",""), ('"',""), (',',""), ('Commits on',"")):
+        for r in (("\\n", ""), ("['", ""), ("']", ""), ("'", ""), ('"', ""), (',', ""), ('Commits on', "")):
             rpg_version_plainnow = rpg_version_plainnow.replace(*r)
         rpg_version_plainnow = rpg_version_plainnow.strip()
     return rpg_version_plainnow
@@ -935,7 +935,7 @@ def random_array(bot, inputs):
     for d in inputs:
         temparray.append(d)
     shuffledarray = random.shuffle(temparray)
-    randomselected = random.randint(0,len(temparray) - 1)
+    randomselected = random.randint(0, len(temparray) - 1)
     string = str(temparray[randomselected])
     return string
 
@@ -980,7 +980,7 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         return string
-    for i in range(int(rangea),int(rangeb) + 1):
+    for i in range(int(rangea), int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
@@ -997,7 +997,7 @@ def excludefrom_array(bot, inputs, number):
     if str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
-        for i in range(1,len(inputs)):
+        for i in range(1, len(inputs)):
             if int(i) != int(number):
                 arg = number_array(bot, inputs, i)
                 if string != '':
@@ -1093,7 +1093,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):
-    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     return sortbyarray, arrayb
 
 
@@ -1183,6 +1183,6 @@ def class_create(classname):
             return str(self.default).lower()
         pass
         """
-    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
