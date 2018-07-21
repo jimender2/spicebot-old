@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     whatistoday, whatdayofweek = whatdayofweeknow()
-    daystilfriday = howlonguntilfriday(whatistoday)
+    daystilfriday = howlonguntilfriday(bot, whatistoday)
     if whatdayofweek == 'Monday':
         specialmsg = "Mondays Suck!"
     if whatdayofweek == 'Tuesday':
@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', botmotd)
 
 
-def howlonguntilfriday(whatistoday):
+def howlonguntilfriday(bot, whatistoday):
     fridaynumber = '4'
     if whatistoday == fridaynumber:
         deityofchoice = get_trigger_arg(bot, deities, 'random')
@@ -57,7 +57,7 @@ def howlonguntilfriday(whatistoday):
     return daystilfriday
 
 
-def whatdayofweeknow():
+ydef whatdayofweeknow():
     whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':
         whatdayofweek = "Monday"
