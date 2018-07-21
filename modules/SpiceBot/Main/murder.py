@@ -14,7 +14,7 @@ databasekey = 'murder'
 # author jimender2
 
 
-@sopel.module.commands('murder','moida')
+@sopel.module.commands('murder', 'moida')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'murder')
     if not enablestatus:
