@@ -20,14 +20,15 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    target = get_trigger_arg(bot, triggerargsarray, 2)
     command = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
     if command == "first":
+        target = get_trigger_arg(bot, triggerargsarray, 2)
         message = instigator + " welcomes " + target + " to the channel"
     elif command == "major":
         message = instigator + " is really glad to see " + target + " again."
     else:
+        target = get_trigger_arg(bot, triggerargsarray, 1)
         message = instigator + " is glad to see " + target + " again."
 
     osd(bot, trigger.sender, 'say', message)

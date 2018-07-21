@@ -13,4 +13,4 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 
 @sopel.module.commands('help')
 def mainfunction(bot, trigger):
-    osd(bot, instigator.default, 'say', "Online Docs: " + GITWIKIURL)
+    osd(bot, trigger.nick, 'say', "Online Docs: " + GITWIKIURL)

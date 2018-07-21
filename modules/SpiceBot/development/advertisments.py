@@ -100,7 +100,9 @@ def advertisement(bot):
         if not message:
             message = "Spiceduck for Spiceworks mascot 2k18"
         for channel in bot.channels:
-            if channel not in hardcoded_not_in_this_chan:
-                osd(bot, channel, 'say', message)
+            channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
+            if channel in channelmodulesarray:
+                if channel not in hardcoded_not_in_this_chan:
+                    osd(bot, channel, 'say', message)
     else:
         message = "none"
