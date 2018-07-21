@@ -51,6 +51,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
         osd(bot, trigger.sender, 'say', message)
+    elif command == "crows":
+        osd(bot, trigger.sender, 'say', "A Murder of Crows swarms the room looking for dead bodies.")
 
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''
