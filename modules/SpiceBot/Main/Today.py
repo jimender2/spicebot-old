@@ -57,7 +57,7 @@ def howlonguntilfriday(bot, whatistoday):
     return daystilfriday
 
 
-ydef whatdayofweeknow():
+def whatdayofweeknow():
     whatistoday = str(datetime.datetime.today().weekday())
     if whatistoday == '0':
         whatdayofweek = "Monday"
