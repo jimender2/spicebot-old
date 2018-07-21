@@ -14,7 +14,7 @@ from BotShared import *
 
 @sopel.module.commands('aio')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'iao')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'aio')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
