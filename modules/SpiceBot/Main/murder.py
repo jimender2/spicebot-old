@@ -51,7 +51,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
         osd(bot, trigger.sender, 'say', message)
-    elif command == "crows":
+    elif command in ["crows", 'crow']:
         osd(bot, trigger.sender, 'say', "A Murder of Crows swarms the room looking for dead bodies.")
 
     else:
