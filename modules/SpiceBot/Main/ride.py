@@ -16,10 +16,14 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1) or instigator
-    if target == instigator:
-        message = target + " wants to put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
+    diceroll = randint(0, 6)
+    if diceroll == 3:
+        osd(bot, trigger.sender, 'say', "https://www.youtube.com/watch?v=T4287tw_dwk")
     else:
-        message = target + " should put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
-    osd(bot, trigger.sender, 'say', message)
+        instigator = trigger.nick
+        target = get_trigger_arg(bot, triggerargsarray, 1) or instigator
+        if target == instigator:
+            message = target + " wants to put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
+        else:
+            message = target + " should put on some mad max gear, drop acid, and ride a motorcycle through the desert, while listening to some CoC."
+        osd(bot, trigger.sender, 'say', message)
