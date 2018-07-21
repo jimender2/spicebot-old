@@ -26,7 +26,7 @@ hardcoded_not_in_this_chan = ["#spiceworks"]
 
 @sopel.module.commands('ads', 'advertisements', 'ad', 'advertisement')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger,'ads')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ads')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
@@ -92,7 +92,7 @@ def database_initialize(bot, nick, array, database):
 
 @sopel.module.interval(120)
 def advertisement(bot):
-    rand = random.randint(1,5)
+    rand = random.randint(1, 5)
     if rand == 5:
         databasekey = 'ads'
         existingarray = get_database_value(bot, bot.nick, databasekey) or []

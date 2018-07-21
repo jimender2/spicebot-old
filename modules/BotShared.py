@@ -100,6 +100,16 @@ def spicebot_prerun(bot, trigger, commandused):
 """
 
 
+# Bot Nicks
+def bot_config_names(bot):
+    config_listing = []
+    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/")
+    for filename in os.listdir(validconfigsdir):
+        filenameminuscfg = str(filename).replace(".cfg", "")
+        config_listing.append(filenameminuscfg)
+    return
+
+
 # Outputs Nicks with correct capitalization
 def actualname(bot, nick):
     nick_actual = str(nick)
