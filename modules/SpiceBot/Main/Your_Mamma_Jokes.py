@@ -11,11 +11,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('urmom')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     joke = getJoke()
@@ -28,21 +30,22 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             if not target.lower() not in bot.privileges[channel.lower()]:
                 if target == bot.nick:
-                    osd(bot, trigger.sender, 'say', 'I have no mother' )
+                    osd(bot, trigger.sender, 'say', 'I have no mother')
                 else:
                     osd(bot, trigger.sender, 'say', 'Hey, ' + target + '! ' + joke)
             else:
-                osd(bot, trigger.sender, 'say', target + ' is not here but ' + trigger.nick + ' ' + joke )
+                osd(bot, trigger.sender, 'say', target + ' is not here but ' + trigger.nick + ' ' + joke)
     else:
         osd(bot, trigger.sender, 'say', 'Please leave the mothers out of it.')
+
 
 def getJoke():
     url = 'http://api.yomomma.info'
     try:
-      page = requests.get(url)
-      result = page.content
-      jsonjoke = json.loads(result)
-      joke = jsonjoke['joke']
+        page = requests.get(url)
+        result = page.content
+        jsonjoke = json.loads(result)
+        joke = jsonjoke['joke']
     except:
-      joke = "yo momma broke the interwebs."
+        joke = "yo momma broke the interwebs."
     return joke
