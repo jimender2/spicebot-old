@@ -107,7 +107,7 @@ def bot_config_names(bot):
     for filename in os.listdir(validconfigsdir):
         filenameminuscfg = str(filename).replace(".cfg", "")
         config_listing.append(filenameminuscfg)
-    return
+    return config_listing
 
 
 # Outputs Nicks with correct capitalization
