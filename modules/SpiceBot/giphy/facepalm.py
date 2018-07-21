@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 0)
     if not target:
         query = "facepalm"
-        gif,randno = getGif(query)
+        gif, randno = getGif(query)
         if gif:
             osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
@@ -43,10 +43,10 @@ def getGif(query):
     limit = 50
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,limit)
+    randno = randint(0, limit)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
-    return gif,randno
+    return gif, randno
