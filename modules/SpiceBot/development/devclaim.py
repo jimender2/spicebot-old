@@ -168,7 +168,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'action', 'mutters "moron".')
 
     # Can't claim the bot
-    elif target.lower() in botnicks:
+    elif target.lower() in [u.lower() for u in botnicks]:
         okaytoclaim = 0
         if instigator in creatornicks:
             osd(bot, trigger.sender, 'say', "I'm sorry Sir, but %s cannot be claimed by anyone but %s." % (target, owner))
