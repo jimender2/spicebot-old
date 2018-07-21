@@ -19,7 +19,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    decide = random.randint(1,10)
+    decide = random.randint(1, 10)
     if decide == 1:
         message = "Who needs the Kwik-E-Mart? I do..."
         osd(bot, trigger.sender, 'say', message)

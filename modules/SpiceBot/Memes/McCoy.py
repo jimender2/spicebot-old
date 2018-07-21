@@ -18,11 +18,13 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    doctorlines = ["I'm a doctor, Jim, I'm busy!","I don't need a doctor, damn it, I am a doctor!"]
+    doctorlines = [
+                    "I'm a doctor, Jim, I'm busy!",
+                    "I don't need a doctor, damn it, I am a doctor!"]
     string = get_trigger_arg(bot, triggerargsarray, '1+')
     if string:
         if string == 'doctor':
-            reply = get_trigger_arg(bot,doctorlines,'random')
+            reply = get_trigger_arg(bot, doctorlines, 'random')
             message = str(reply)
         else:
             message = "Dammit Jim, I'm a doctor, not a " + str(string) + "!!!"
