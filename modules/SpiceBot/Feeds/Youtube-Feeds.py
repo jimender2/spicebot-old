@@ -13,15 +13,16 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-## user agent and header
+# user agent and header
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 
+
 @sopel.module.require_admin
 @sopel.module.commands('ytrssreset')
-def reset(bot,trigger):
+def reset(bot, trigger):
     feedselect = trigger.group(2)
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick+"/RSS-Feeds/youtube/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/" + bot.nick + "/RSS-Feeds/youtube/")
     if not feedselect:
         osd(bot, trigger.sender, 'say', "Which Feed are we resetting?")
     elif feedselect == 'all':
@@ -36,10 +37,11 @@ def reset(bot,trigger):
         else:
             osd(bot, trigger.sender, 'say', "There doesn't appear to be record of that feed.")
 
-## Automatic Run
+
+# Automatic Run
 @sopel.module.interval(600)
 def autorss(bot):
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+bot.nick+"/RSS-Feeds/youtube/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/" + bot.nick + "/RSS-Feeds/youtube/")
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
@@ -47,8 +49,8 @@ def autorss(bot):
         configfile = os.path.join(RSSFEEDSDIR, rssfeed)
         config = ConfigParser.ConfigParser()
         config.read(configfile)
-        feedname = config.get("configuration","feedname")
-        url = str(config.get("configuration","url"))
+        feedname = config.get("configuration", "feedname")
+        url = str(config.get("configuration", "url"))
         dispmsg = []
         dispmsg.append("["+feedname+"]")
         page = requests.get(url, headers=header)
@@ -63,7 +65,7 @@ def autorss(bot):
             newcontent = True
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
-            if newcontent == True:
+            if newcontent:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[1].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')

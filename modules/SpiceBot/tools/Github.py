@@ -14,22 +14,23 @@ from BotShared import *
 from sopel.module import ADMIN
 
 
-## Creds
+# Creds
 config = ConfigParser.ConfigParser()
 config.read("/home/spicebot/spicebot.conf")
-USERNAME = config.get("github","username")
-PASSWORD = config.get("github","password")
+USERNAME = config.get("github", "username")
+PASSWORD = config.get("github", "password")
 
 # Repo
 REPO_OWNER = 'deathbybandaid'
 REPO_NAME = 'SpiceBot'
 
 # Invalid Requests
-dontaskforthese = ['instakill','instant kill','random kill','random deaths','butterfingers','bad grenade','grenade failure','suicide','go off in','dud grenade']
+dontaskforthese = ['instakill', 'instant kill', 'random kill', 'random deaths', 'butterfingers', 'bad grenade', 'grenade failure', 'suicide', 'go off in', 'dud grenade']
 
-@sopel.module.commands('feature','feetcher','fr','bug','br','borked','issue','wiki')
+
+@sopel.module.commands('feature', 'feetcher', 'fr', 'bug', 'br', 'borked', 'issue', 'wiki')
 def execute_main(bot, trigger):
-    banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or [] # Banned Users
+    banneduserarray = get_database_value(bot, bot.nick, 'users_blocked_github') or []  # Banned Users
     maincommand = trigger.group(1)
     instigator = trigger.nick
     inputtext = trigger.group(2) or 'nothing'
@@ -37,18 +38,18 @@ def execute_main(bot, trigger):
     baduser = 0
     noquery = 0
     if maincommand == 'feature' or maincommand == 'feetcher' or maincommand == 'fr':
-        labels=['Feature Request']
-        title='Feature Request'
+        labels = ['Feature Request']
+        title = 'Feature Request'
         action = " requested"
         assignee = ''
     elif maincommand == 'wiki':
-        labels=['Wiki Update']
-        title='Wiki Update'
+        labels = ['Wiki Update']
+        title = 'Wiki Update'
         action = " requested"
         assignee = "Berserkir-Wolf"
     else:
-        labels=['Issue Report']
-        title='Issue Report'
+        labels = ['Issue Report']
+        title = 'Issue Report'
         action = " found an issue"
         assignee = ''
     if inputtext == 'nothing':
@@ -85,6 +86,7 @@ def execute_main(bot, trigger):
             body = inputtext
             body = str(instigator + action + ": " + body)
             make_github_issue(bot, body, labels, title, assignee, instigator)
+
 
 def make_github_issue(bot, body, labels, title, assignee, instigator):
     url = 'https://api.github.com/repos/%s/%s/issues' % (REPO_OWNER, REPO_NAME)

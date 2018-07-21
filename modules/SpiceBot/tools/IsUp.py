@@ -18,6 +18,7 @@ from BotShared import *
 
 baseurl = 'https://down.com/?q='
 
+
 @sopel.module.commands('isup')
 def execute_main(bot, trigger):
     checksite = trigger.group(2)
@@ -25,26 +26,28 @@ def execute_main(bot, trigger):
         osd(bot, trigger.sender, 'say', "please enter a site")
     else:
         url = str(baseurl + checksite)
-        page = requests.get(url,headers = None)
+        page = requests.get(url, headers=None)
         if page.status_code == 200:
             dispmsg = []
-            upornot = isupparse(bot,url)
+            upornot = isupparse(bot, url)
             if upornot:
                 osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be online.")
             else:
                 osd(bot, trigger.sender, 'say', "Looks like " + checksite + " appears to be offline.")
 
-def isupparse(bot,url):
+
+def isupparse(bot, url):
     upornot = 0
-    tree = gettree(bot,url)
+    tree = gettree(bot, url)
     isuptext = str(tree.xpath('//*[@id="content"]/div/div/center[2]/p/strong/text()'))
-    isuptext = isuptext.replace('"]',"")
-    isuptext = isuptext.replace('["',"")
+    isuptext = isuptext.replace('"]', "")
+    isuptext = isuptext.replace('["', "")
     if str(isuptext) == "It's you!":
         upornot = 1
     return upornot
 
-def gettree(bot,url):
-    page = requests.get(url,headers = None)
-    tree= html.fromstring(page.content)
+
+def gettree(bot, url):
+    page = requests.get(url, headers=None)
+    tree = html.fromstring(page.content)
     return tree

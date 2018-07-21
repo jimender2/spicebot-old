@@ -20,10 +20,11 @@ from BotShared import *
 
 url = 'https://www.comptia.org/events/webinars'
 
+
 @sopel.module.commands('comptiawebby')
 def execute_main(bot, trigger):
-    #webbyauto(bot)
-    page = requests.get(url,headers = None)
+    # webbyauto(bot)
+    page = requests.get(url, headers=None)
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[COMPTIA Webinar]")
@@ -32,9 +33,10 @@ def execute_main(bot, trigger):
         dispmsg.append(getwebbylink())
         osd(bot, trigger.sender, 'say', dispmsg)
 
+
 @sopel.module.interval(60)
 def webbyauto(bot):
-    page = requests.get(url,headers = None)
+    page = requests.get(url, headers=None)
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.UTC)
@@ -49,6 +51,7 @@ def webbyauto(bot):
             for channel in bot.channels:
                 osd(bot, channel, 'say', dispmsg)
 
+
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h4/text()'))
@@ -57,23 +60,26 @@ def getwebbytitle():
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
 
+
 def getwebbytimeuntil():
     nowtime = datetime.datetime.utcnow()
     webbytime = getwebbytime()
     timecompare = get_timeuntil(nowtime, webbytime)
     return timecompare
 
+
 def getwebbytime():
     now = datetime.datetime.utcnow()
     tree = gettree()
     webbytime = str(tree.xpath('//*[@id="LeftColumn_C002_pnlEventListing"]/div/ul/li[1]/h5/text()'))
-    #webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
+    # webbytime = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/cite/span[1]/text()'))
     for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
         webbytime = webbytime.replace(*r)
     webbytz = pytz.timezone('US/Eastern')
     webbytime = parser.parse(webbytime)
     webbytime = webbytz.localize(webbytime)
     return webbytime
+
 
 def getwebbylink():
     tree = gettree()
@@ -83,7 +89,8 @@ def getwebbylink():
     webbylink = str("https://www.comptia.org"+webbylink)
     return webbylink
 
+
 def gettree():
-    page = requests.get(url,headers = None)
-    tree= html.fromstring(page.content)
+    page = requests.get(url, headers=None)
+    tree = html.fromstring(page.content)
     return tree
