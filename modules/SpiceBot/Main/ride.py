@@ -21,7 +21,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     diceroll = randint(0, 6)
     if diceroll == 3:
-        osd(bot, trigger.sender, 'say', "https://www.youtube.com/watch?v=T4287tw_dwk")
+        osd(bot, trigger.sender, 'say', "Slow ride https://www.youtube.com/watch?v=T4287tw_dwk")
     else:
         instigator = trigger.nick
         target = get_trigger_arg(bot, triggerargsarray, 1) or instigator
