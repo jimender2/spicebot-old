@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not trigger.group(2):
         playlist = party
     else:
-        query = trigger.group(2).replace(' ','20%')
+        query = trigger.group(2).replace(' ', '20%')
         query = str(query)
         playlist = getplaylist(query)
         if playlist == party:

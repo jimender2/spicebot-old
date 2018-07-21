@@ -10,15 +10,60 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-modelnumbers = ["T-1 SERIES","T-70 SERIES","T-600 SERIES","T-700 SERIES","T-1001 SERIES","T-888 SERIES","TOK715 SERIES","T-X SERIES","T-1000 SERIES","T-800 SERIES, Model 101","T-850 SERIES"]
-missiontypes = ["terminate","protect","skynet","spice"]
-skynet_mission = ["ENSURE THE ACTIVATION OF SKYNET","PRESERVE THE CREATION OF SKYNET","PRESERVE THE CREATION OF ARTIE","ENSURE THE CREATION OF GENISYS"]
-terminate_mission = ["Sarah Connor","John Connor","Kyle Reese","Mary Warren","Marco Cassetti","Kate Brewster","Robert Brewster","Elizabeth Anderson","William Anderson","Jose Barrera","Simon Taylor","Isaac Hall","Fritz Roland","Ted Snavely","Sharlene Gen","Vince Forcer",]
-protect_mission = ["PROTECT Sarah Connor","PROTECT John Connor","ENSURE THE SURVIVAL OF John Connor AND Katherine Brewster"]
-spice_mission = ["Protect Technical Angel","INSTALL MOAR PATCHES"]
+modelnumbers = [
+                "T-1 SERIES",
+                "T-70 SERIES",
+                "T-600 SERIES",
+                "T-700 SERIES",
+                "T-1001 SERIES",
+                "T-888 SERIES",
+                "TOK715 SERIES",
+                "T-X SERIES",
+                "T-1000 SERIES",
+                "T-800 SERIES, Model 101",
+                "T-850 SERIES"]
+
+missiontypes = [
+                "terminate",
+                "protect",
+                "skynet",
+                "spice"]
+
+skynet_mission = [
+                    "ENSURE THE ACTIVATION OF SKYNET",
+                    "PRESERVE THE CREATION OF SKYNET",
+                    "PRESERVE THE CREATION OF ARTIE",
+                    "ENSURE THE CREATION OF GENISYS"]
+
+terminate_mission = [
+                        "Sarah Connor",
+                        "John Connor",
+                        "Kyle Reese",
+                        "Mary Warren",
+                        "Marco Cassetti",
+                        "Kate Brewster",
+                        "Robert Brewster",
+                        "Elizabeth Anderson",
+                        "William Anderson",
+                        "Jose Barrera",
+                        "Simon Taylor",
+                        "Isaac Hall",
+                        "Fritz Roland",
+                        "Ted Snavely",
+                        "Sharlene Gen",
+                        "Vince Forcer"]
+
+protect_mission = [
+                    "PROTECT Sarah Connor",
+                    "PROTECT John Connor",
+                    "ENSURE THE SURVIVAL OF John Connor AND Katherine Brewster"]
+
+spice_mission = [
+                    "Protect Technical Angel",
+                    "INSTALL MOAR PATCHES"]
 
 
-@sopel.module.commands('cipher','terminator','ciphertheterminator')
+@sopel.module.commands('cipher', 'terminator', 'ciphertheterminator')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'cipher')
     if not enablestatus:

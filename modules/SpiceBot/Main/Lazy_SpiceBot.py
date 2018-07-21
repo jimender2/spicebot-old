@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('lazy','lazyfuckingspicebot','fuckinglazyspicebot','lazyspicebot')
+@sopel.module.commands('lazy', 'lazyfuckingspicebot', 'fuckinglazyspicebot', 'lazyspicebot')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -18,8 +18,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    target = get_trigger_arg(bot,triggerargsarray,1)
-    validtarget = targetcheck(bot,target,trigger.nick)
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    validtarget = targetcheck(bot, target, trigger.nick)
     if validtarget == '1':
         osd(bot, trigger.sender, 'say', 'I do not tell you how to do your job, ' + target + '!!')
     else:

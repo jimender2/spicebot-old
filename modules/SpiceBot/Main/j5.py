@@ -12,7 +12,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('jfive','j5')
+@sopel.module.commands('jfive', 'j5')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'jfive')
     if not enablestatus:

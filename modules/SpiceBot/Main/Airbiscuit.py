@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('airbiscuit','float')
+@sopel.module.commands('airbiscuit', 'float')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'airbiscuit')
     if not enablestatus:
@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     message = ""
-    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     if not target:
         message = trigger.nick + " floats an air biscuit."
     elif isvalid == 0:
