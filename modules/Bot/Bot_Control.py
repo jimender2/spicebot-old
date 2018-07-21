@@ -31,16 +31,16 @@ GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
 """
 
 
-@nickname_commands('uptime','modules','msg','action','block','github','on','off','devmode','update','restart','permfix','debug','pip','channel','gender','owner','admin','canyouseeme','help','docs','cd','dir','gitpull')
+@nickname_commands('uptime', 'modules', 'msg', 'action', 'block', 'github', 'on', 'off', 'devmode', 'update', 'restart', 'permfix', 'debug', 'pip', 'channel', 'gender', 'owner', 'admin', 'canyouseeme', 'help', 'docs', 'cd', 'dir', 'gitpull')
 @sopel.module.thread(True)
 def bot_command_hub(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    bot_command_process(bot,trigger,triggerargsarray)
+    bot_command_process(bot, trigger, triggerargsarray)
 
 
-def bot_command_process(bot,trigger,triggerargsarray):
+def bot_command_process(bot, trigger, triggerargsarray):
 
     # Dyno Classes
     botcom = class_create('bot')
@@ -51,10 +51,10 @@ def bot_command_process(bot,trigger,triggerargsarray):
     botcom.now = time.time()
 
     # User
-    botcom = bot_command_users(bot,botcom)
+    botcom = bot_command_users(bot, botcom)
 
     # Channels
-    botcom = bot_command_channels(bot,botcom,trigger)
+    botcom = bot_command_channels(bot, botcom, trigger)
 
     # Command Used
     botcom.command_main = get_trigger_arg(bot, triggerargsarray, 1)
@@ -72,7 +72,7 @@ Commands
 """
 
 
-def bot_command_function_gitpull(bot,trigger,botcom,instigator):
+def bot_command_function_gitpull(bot, trigger, botcom, instigator):
 
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     osd(bot, botcom.channel_current, 'say', "attempting to git pull " + botcom.directory)
@@ -80,14 +80,14 @@ def bot_command_function_gitpull(bot,trigger,botcom,instigator):
     g.pull()
 
 
-def bot_command_function_dir(bot,trigger,botcom,instigator):
+def bot_command_function_dir(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
         return
 
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    botcom = bot_list_directory(bot,botcom)
+    botcom = bot_list_directory(bot, botcom)
     if botcom.directory == []:
         osd(bot, botcom.channel_current, 'say', "It appears this directory is empty.")
         return
@@ -98,15 +98,15 @@ def bot_command_function_dir(bot,trigger,botcom,instigator):
     osd(bot, botcom.channel_current, 'say', displaymsgarray)
 
 
-def bot_command_function_cd(bot,trigger,botcom,instigator):
+def bot_command_function_cd(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
         return
 
-    validfolderoptions = ['..','reset']
+    validfolderoptions = ['..', 'reset']
     botcom.directory = get_database_value(bot, bot.nick, 'current_admin_dir') or os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    botcom = bot_list_directory(bot,botcom)
+    botcom = bot_list_directory(bot, botcom)
 
     for filename, filefoldertype in zip(botcom.directory_listing, botcom.filefoldertype):
         if filefoldertype == 'folder':
@@ -132,32 +132,32 @@ def bot_command_function_cd(bot,trigger,botcom,instigator):
     osd(bot, botcom.channel_current, 'say', "Directory Changed to : " + str(movepath))
 
 
-def bot_command_function_docs(bot,trigger,botcom,instigator):
+def bot_command_function_docs(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', "Online Docs: " + GITWIKIURL)
 
 
-def bot_command_function_canyouseeme(bot,trigger,botcom,instigator):
+def bot_command_function_canyouseeme(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', instigator.default + ", I can see you.")
 
 
-def bot_command_function_owner(bot,trigger,botcom,instigator):
+def bot_command_function_owner(bot, trigger, botcom, instigator):
     ownerlist = get_trigger_arg(bot, botcom.owner, 'list')
     osd(bot, instigator.default, 'notice', "Bot Owners are: " + ownerlist)
 
 
-def bot_command_function_admin(bot,trigger,botcom,instigator):
+def bot_command_function_admin(bot, trigger, botcom, instigator):
     adminlist = get_trigger_arg(bot, botcom.botadmins, 'list')
     osd(bot, instigator.default, 'notice', "Bot Admin are: " + adminlist)
 
 
-def bot_command_function_gender(bot,trigger,botcom,instigator):
+def bot_command_function_gender(bot, trigger, botcom, instigator):
     osd(bot, botcom.channel_current, 'say', "My gender is Female")
 
 
-def bot_command_function_channel(bot,trigger,botcom,instigator):
+def bot_command_function_channel(bot, trigger, botcom, instigator):
 
     # SubCommand used
-    valid_subcommands = ['list','op','voice']
+    valid_subcommands = ['list', 'op', 'voice']
     subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
 
     # list channels
@@ -182,7 +182,7 @@ def bot_command_function_channel(bot,trigger,botcom,instigator):
         return
 
 
-def bot_command_function_on(bot,trigger,botcom,instigator):
+def bot_command_function_on(bot, trigger, botcom, instigator):
 
     target = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or instigator.default
     if target != instigator.default and instigator.default not in botcom.opadmin:
@@ -198,7 +198,7 @@ def bot_command_function_on(bot,trigger,botcom,instigator):
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'add')
 
 
-def bot_command_function_off(bot,trigger,botcom,instigator):
+def bot_command_function_off(bot, trigger, botcom, instigator):
     target = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.users_all], 1) or instigator.default
     if target != instigator.default and instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function on other users.")
@@ -213,7 +213,7 @@ def bot_command_function_off(bot,trigger,botcom,instigator):
     adjust_database_array(bot, bot.nick, target, 'users_opted', 'del')
 
 
-def bot_command_function_modules(bot,trigger,botcom,instigator):
+def bot_command_function_modules(bot, trigger, botcom, instigator):
 
     # Channel
     channeltarget = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x.startswith('#')], 1)
@@ -225,7 +225,7 @@ def bot_command_function_modules(bot,trigger,botcom,instigator):
             return
 
     # SubCommand used
-    valid_subcommands = ['enable','disable','list','count']
+    valid_subcommands = ['enable', 'disable', 'list', 'count']
     subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'list'
 
     bot_visible_coms = []
@@ -283,7 +283,7 @@ def bot_command_function_modules(bot,trigger,botcom,instigator):
         osd(bot, botcom.channel_current, 'say', module_adjust + " command(s) should now be "+str(subcommand)+"d for " + channeltarget + ".")
 
 
-def bot_command_function_msg(bot,trigger,botcom,instigator):
+def bot_command_function_msg(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -307,7 +307,7 @@ def bot_command_function_msg(bot,trigger,botcom,instigator):
     osd(bot, channeltarget, 'say', botmessage)
 
 
-def bot_command_function_action(bot,trigger,botcom,instigator):
+def bot_command_function_action(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -331,7 +331,7 @@ def bot_command_function_action(bot,trigger,botcom,instigator):
     osd(bot, channeltarget, 'action', botmessage)
 
 
-def bot_command_function_block(bot,trigger,botcom,instigator):
+def bot_command_function_block(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.opadmin:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -349,7 +349,7 @@ def bot_command_function_block(bot,trigger,botcom,instigator):
         botcom.triggerargsarray.remove(channeltarget)
 
     # SubCommand used
-    valid_subcommands = ['current','add','del']
+    valid_subcommands = ['current', 'add', 'del']
     subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
 
     bot_blocked_users = get_database_value(bot, channeltarget, 'users_blocked') or []
@@ -397,10 +397,10 @@ def bot_command_function_block(bot,trigger,botcom,instigator):
             osd(bot, botcom.channel_current, 'say', "The following users have been " + adddelword + " the " + channeltarget + " block list: " + blocknewlisttext)
 
 
-def bot_command_function_github(bot,trigger,botcom,instigator):
+def bot_command_function_github(bot, trigger, botcom, instigator):
 
     # main subcom
-    valid_main_subcom = ['show','block']
+    valid_main_subcom = ['show', 'block']
     main_subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_main_subcom], 1) or 'show'
 
     if main_subcommand == 'show':
@@ -419,13 +419,13 @@ def bot_command_function_github(bot,trigger,botcom,instigator):
             if botcom.channel_current.startswith('#'):
                 channeltarget = botcom.channel_current
             else:
-                osd(bot, instigator.default, 'notice',"You must specify a valid channel.")
+                osd(bot, instigator.default, 'notice', "You must specify a valid channel.")
                 return
         if channeltarget in botcom.triggerargsarray:
             botcom.triggerargsarray.remove(channeltarget)
 
         # SubCommand used
-        valid_subcommands = ['current','add','del']
+        valid_subcommands = ['current', 'add', 'del']
         subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1) or 'current'
 
         bot_blocked_users_github = get_database_value(bot, channeltarget, 'users_blocked_github') or []
@@ -473,7 +473,7 @@ def bot_command_function_github(bot,trigger,botcom,instigator):
         return
 
 
-def bot_command_function_devmode(bot,trigger,botcom,instigator):
+def bot_command_function_devmode(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.botadmins:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -491,7 +491,7 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
         botcom.triggerargsarray.remove(channeltarget)
 
     # SubCommand used
-    valid_subcommands = ['on','off']
+    valid_subcommands = ['on', 'off']
     subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_subcommands], 1)
     if not subcommand:
         osd(bot, instigator.default, 'notice', "Do you want devmode on or off in " + channeltarget + "?")
@@ -504,9 +504,9 @@ def bot_command_function_devmode(bot,trigger,botcom,instigator):
     osd(bot, botcom.channel_current, 'say', "devmode should now be " + subcommand + " for " + channeltarget + ".")
 
 
-def bot_command_function_update(bot,trigger,botcom,instigator):
+def bot_command_function_update(bot, trigger, botcom, instigator):
 
-    botcom = bot_config_directory(bot,botcom)
+    botcom = bot_config_directory(bot, botcom)
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
@@ -528,18 +528,18 @@ def bot_command_function_update(bot,trigger,botcom,instigator):
     if targetbot != bot.nick:
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
     else:
-        dungeonmasterarray = ['spiceRPG','spiceRPGdev']
+        dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
         if targetbot in dungeonmasterarray:
             osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
         else:
             osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
-    update(bot, botcom, trigger,targetbot)
+    update(bot, botcom, trigger, targetbot)
     restart(bot, botcom, trigger, targetbot)
 
 
-def bot_command_function_restart(bot,trigger,botcom,instigator):
+def bot_command_function_restart(bot, trigger, botcom, instigator):
 
-    botcom = bot_config_directory(bot,botcom)
+    botcom = bot_config_directory(bot, botcom)
 
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
@@ -561,7 +561,7 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
     if targetbot != bot.nick:
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to restart " + targetbot + ". Be Back Soon!")
     else:
-        dungeonmasterarray = ['spiceRPG','spiceRPGdev']
+        dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
         if targetbot in dungeonmasterarray:
             osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + instigator.default + ", commandeth me to restart. I shall return post haste!")
         else:
@@ -569,7 +569,7 @@ def bot_command_function_restart(bot,trigger,botcom,instigator):
     restart(bot, botcom, trigger, targetbot)
 
 
-def bot_command_function_permfix(bot,trigger,botcom,instigator):
+def bot_command_function_permfix(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.botadmins:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -579,7 +579,7 @@ def bot_command_function_permfix(bot,trigger,botcom,instigator):
     osd(bot, botcom.channel_current, 'say', "Permissions should now be fixed")
 
 
-def bot_command_function_pip(bot,trigger,botcom,instigator):
+def bot_command_function_pip(bot, trigger, botcom, instigator):
 
     if instigator.default not in botcom.botadmins:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
@@ -594,9 +594,9 @@ def bot_command_function_pip(bot,trigger,botcom,instigator):
         osd(bot, botcom.channel_current, 'say', "Possibly done installing " + str(pippackage))
 
 
-def bot_command_function_debug(bot,trigger,botcom,instigator):
+def bot_command_function_debug(bot, trigger, botcom, instigator):
 
-    botcom = bot_config_directory(bot,botcom)
+    botcom = bot_config_directory(bot, botcom)
     targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
 
     if targetbot == bot.nick:
@@ -619,7 +619,7 @@ def bot_command_function_debug(bot,trigger,botcom,instigator):
     os.system("sudo journalctl -u " + targetbot + " >> " + log_file_path)
     osd(bot, botcom.channel_current, 'action', "Is Filtering Log")
     search_phrase = "Welcome to Sopel. Loading modules..."
-    ignorearray = ['session closed for user root','COMMAND=/bin/journalctl','COMMAND=/bin/rm','pam_unix(sudo:session): session opened for user root']
+    ignorearray = ['session closed for user root', 'COMMAND=/bin/journalctl', 'COMMAND=/bin/rm', 'pam_unix(sudo:session): session opened for user root']
     mostrecentstartbot = 0
     with open(log_file_path) as f:
         line_num = 0
@@ -652,7 +652,7 @@ def restart(bot, botcom, trigger, service):
         os.system("sudo service " + str(service) + " restart")
 
 
-def update(bot, botcom, trigger,targetbot):
+def update(bot, botcom, trigger, targetbot):
     os.system("sudo chown -R spicebot:sudo /home/spicebot/.sopel/")
     joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
     osd(bot, botcom.channel_current, 'action', "Is Pulling " + str(joindpath) + " From Github...")
@@ -665,7 +665,7 @@ dir listing
 """
 
 
-def bot_list_directory(bot,botcom):
+def bot_list_directory(bot, botcom):
     botcom.directory_listing = []
     botcom.filefoldertype = []
     for filename in os.listdir(botcom.directory):
@@ -678,11 +678,11 @@ def bot_list_directory(bot,botcom):
     return botcom
 
 
-def bot_config_directory(bot,botcom):
+def bot_config_directory(bot, botcom):
     botcom.config_listing = []
     validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/")
     for filename in os.listdir(validconfigsdir):
-        filenameminuscfg = str(filename).replace(".cfg","")
+        filenameminuscfg = str(filename).replace(".cfg", "")
         botcom.config_listing.append(filenameminuscfg)
     return botcom
 
@@ -692,9 +692,9 @@ def bot_target_admins(bot, targetbot):
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + targetbot + ".cfg")
     config = ConfigParser.ConfigParser()
     config.read(configfile)
-    owner = config.get("core","owner")
+    owner = config.get("core", "owner")
     targetbotadmins.append(owner)
-    admins = config.get("core","admins")
+    admins = config.get("core", "admins")
     admins = admins.split(",")
     for admin in admins:
         if admin not in targetbotadmins:
@@ -716,10 +716,9 @@ def setup(bot):
         bot.memory["uptime"] = datetime.datetime.utcnow()
 
 
-def bot_command_function_uptime(bot,trigger,botcom,instigator):
+def bot_command_function_uptime(bot, trigger, botcom, instigator):
     """.uptime - Returns the uptime of Sopel."""
     delta = datetime.timedelta(seconds=round((datetime.datetime.utcnow() -
                                               bot.memory["uptime"])
                                              .total_seconds()))
-    osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep "
-            "going!".format(delta))
+    osd(bot, trigger.sender, 'say', "I've been sitting here for {} and I keep going!".format(delta))
