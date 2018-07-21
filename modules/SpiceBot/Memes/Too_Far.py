@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     else:
         if firstitem.endswith('ing') and substring != 'empty':
             itema = item
-            itemb = firstitem.replace('ing','') + ' ' + substring
+            itemb = firstitem.replace('ing', '') + ' ' + substring
         elif firstitem.endswith('e') and substring != 'empty':
             itema = firstitem[:-1]+"ing" + ' ' + substring
             itemb = item
@@ -35,6 +35,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             itemb = item
         else:
             itema = item
-            itemb = item.replace('ing','')
+            itemb = item.replace('ing', '')
         message = "Only those people who risk " + str(itema) + " too far, ever find out how far they can " + str(itemb) + "!"
     osd(bot, trigger.sender, 'say', message)

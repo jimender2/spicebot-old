@@ -9,8 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-fishtypes = ["Pike","Carp","Marlin","Trout","Cod","Anchovy","Venezuelan Beaverfish","fish","jellyfish"]
-vowels = ('a','e','i','o','u','A','E','I','O','U')
+fishtypes = ["Pike", "Carp", "Marlin", "Trout", "Cod", "Anchovy", "Venezuelan Beaverfish", "fish", "jellyfish"]
+vowels = ('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U')
 
 
 @sopel.module.commands('fish')
@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     reason = get_trigger_arg(bot, triggerargsarray, '2+')
     message = "Whoops, something went wrong."
-    fishtype = get_trigger_arg(bot,fishtypes,'random')
+    fishtype = get_trigger_arg(bot, fishtypes, 'random')
     fishmsg = "a " + fishtype
     # Vowel awareness
     if fishtype.startswith(vowels):
