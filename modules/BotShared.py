@@ -14,7 +14,8 @@ from sopel.module import VOICE
 from sopel.module import event, rule
 import time
 import os
-import sys, re
+import sys
+import re
 import fnmatch
 import random
 import urllib
@@ -23,11 +24,11 @@ from os.path import exists
 osd_limit = 420  # Ammount of text allowed to display per line
 
 devbot = 'dev'  # If using a development bot and want to bypass commands, this is what the bots name ends in
-botdevteam = ['deathbybandaid','DoubleD','Mace_Whatdo','dysonparkes','PM','under_score']
+botdevteam = ['deathbybandaid', 'DoubleD', 'Mace_Whatdo', 'dysonparkes', 'PM', 'under_score']
 
 
 # This runs for every custom module and decides if the module runs or not
-def spicebot_prerun(bot,trigger,commandused):
+def spicebot_prerun(bot, trigger, commandused):
 
     # Enable Status default is 1 = don't run
     enablestatus = 1
@@ -48,10 +49,10 @@ def spicebot_prerun(bot,trigger,commandused):
     botcom.now = time.time()
 
     # User
-    botcom = bot_command_users(bot,botcom)
+    botcom = bot_command_users(bot, botcom)
 
     # Channels
-    botcom = bot_command_channels(bot,botcom,trigger)
+    botcom = bot_command_channels(bot, botcom, trigger)
 
     # User was Blocked by a bot.admin or an OP
     blockedusersarray = get_database_value(bot, botcom.channel_current, 'users_blocked') or []
@@ -80,7 +81,7 @@ def spicebot_prerun(bot,trigger,commandused):
         return enablestatus, triggerargsarray, botcom, instigator
 
     enablestatus = 0
-    increment_counter(bot, trigger,commandused)
+    increment_counter(bot, trigger, commandused)
 
     # Send Status Forward
     return enablestatus, triggerargsarray, botcom, instigator
@@ -100,7 +101,7 @@ def spicebot_prerun(bot,trigger,commandused):
 
 
 # Outputs Nicks with correct capitalization
-def actualname(bot,nick):
+def actualname(bot, nick):
     nick_actual = str(nick)
     for u in bot.users:
         if u.lower() == str(nick).lower():
@@ -108,7 +109,7 @@ def actualname(bot,nick):
     return nick_actual
 
 
-def nick_actual(bot,nick):
+def nick_actual(bot, nick):
     nick_actual = str(nick)
     for u in bot.users:
         if u.lower() == str(nick).lower():
@@ -116,8 +117,8 @@ def nick_actual(bot,nick):
     return nick_actual
 
 
-def bot_command_users(bot,botcom):
-    botcom.opadmin,botcom.owner,botcom.chanops,botcom.chanvoice,botcom.botadmins,botcom.users_current = [],[],[],[],[],[]
+def bot_command_users(bot, botcom):
+    botcom.opadmin, botcom.owner, botcom.chanops, botcom.chanvoice, botcom.botadmins, botcom.users_current = [], [], [], [], [], []
 
     for user in bot.users:
         botcom.users_current.append(str(user))
@@ -149,7 +150,7 @@ def bot_command_users(bot,botcom):
     return botcom
 
 
-def bot_command_channels(bot,botcom,trigger):
+def bot_command_channels(bot, botcom, trigger):
     botcom.channel_current = trigger.sender
     if not botcom.channel_current.startswith("#"):
         botcom.channel_priv = 1
@@ -220,7 +221,7 @@ def increment_counter(bot, trigger, commandused):
 """
 
 
-def targetcheck(bot, botcom, target,instigator):
+def targetcheck(bot, botcom, target, instigator):
     # Guilty until proven Innocent
     validtarget = 1
     validtargetmsg = []
@@ -240,14 +241,14 @@ def targetcheck(bot, botcom, target,instigator):
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
-        return validtarget,validtargetmsg
+        return validtarget, validtargetmsg
 
     if target in botcom.users_current:
         return validtarget, validtargetmsg
     else:
         validtarget = 0
         validtargetmsg.append(target + " isn't a valid user")
-        return validtarget,validtargetmsg
+        return validtarget, validtargetmsg
 
 
 """
@@ -315,7 +316,31 @@ def hours_minutes_seconds(countdownseconds):
     time %= 60
     second = time
     displaymsg = ''
-    timearray = ['hour','minute','second']
+    timearray = ['hour', 'minute', 'second']
+    for x in timearray:
+        currenttimevar = eval(x)
+        if currenttimevar >= 1:
+            timetype = x
+            if currenttimevar > 1:
+                timetype = str(x+"s")
+            displaymsg = str(displaymsg + str(int(currenttimevar)) + " " + timetype + " ")
+    return displaymsg
+
+
+def humanized_time(countdownseconds):
+    time = float(countdownseconds)
+    year = time // (365 * 24 * 3600)
+    time = time % (365 * 24 * 3600)
+    day = time // (24 * 3600)
+    time = time % (24 * 3600)
+    time = time % (24 * 3600)
+    hour = time // 3600
+    time %= 3600
+    minute = time // 60
+    time %= 60
+    second = time
+    displaymsg = ''
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
     for x in timearray:
         currenttimevar = eval(x)
         if currenttimevar >= 1:
@@ -338,7 +363,7 @@ def hours_minutes_secondsold(countdownseconds):
     time %= 60
     second = time
     displaymsg = ''
-    timearray = ['year','day''hour','minute','second']
+    timearray = ['year', 'day', 'hour', 'minute', 'second']
     for x in timearray:
         currenttimevar = eval(x)
         if currenttimevar >= 1:
@@ -449,12 +474,12 @@ def osd(bot, target_array, text_type, text_array):
     texttargetarray = []
     if not isinstance(target_array, list):
         if not str(target_array).startswith("#"):
-            target_array = nick_actual(bot,str(target_array))
+            target_array = nick_actual(bot, str(target_array))
         texttargetarray.append(target_array)
     else:
         for target in target_array:
             if not str(target).startswith("#"):
-                target = nick_actual(bot,str(target))
+                target = nick_actual(bot, str(target))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
@@ -512,7 +537,7 @@ def osd(bot, target_array, text_type, text_array):
         textpartsleft = textparts
         for combinedline in combinedtextarray:
             if text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline,target)
+                bot.action(combinedline, target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice' or text_type == 'priv':
@@ -688,7 +713,7 @@ def random_array(bot, inputs):
     for d in inputs:
         temparray.append(d)
     shuffledarray = random.shuffle(temparray)
-    randomselected = random.randint(0,len(temparray) - 1)
+    randomselected = random.randint(0, len(temparray) - 1)
     string = str(temparray[randomselected])
     return string
 
@@ -733,7 +758,7 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         return string
-    for i in range(int(rangea),int(rangeb) + 1):
+    for i in range(int(rangea), int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
@@ -750,7 +775,7 @@ def excludefrom_array(bot, inputs, number):
     if str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
-        for i in range(1,len(inputs)):
+        for i in range(1, len(inputs)):
             if int(i) != int(number):
                 arg = number_array(bot, inputs, i)
                 if string != '':
@@ -846,7 +871,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):
-    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     return sortbyarray, arrayb
 
 
@@ -867,6 +892,6 @@ def class_create(classname):
             return str(self.default)
         pass
         """
-    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass
