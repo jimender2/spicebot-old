@@ -9,14 +9,16 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-commandarray = ["add","remove","count","last"]
-#add reset and sort list
+commandarray = ["add", "remove", "count", "last"]
+# add reset and sort list
+
 
 @sopel.module.commands('confucius')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'yes')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
@@ -41,7 +43,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif command == "count":
             messagecount = len(existingarray)
             message = "There are currently " + str(messagecount) + " responses in the database for that."
-        #elif command == "list":
+        # elif command == "list":
         #    if inchannel.startswith("#"):
         #        message = "List can only be run in privmsg to avoid flooding."
         #    else:
