@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, botcom.channel_current, 'say', "I am Offended")
+    osd(bot, botcom.channel_current, 'say', "I am so offended that , that I just can't even. #i-am-offended")
