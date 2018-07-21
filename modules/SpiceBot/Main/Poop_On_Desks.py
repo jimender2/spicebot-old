@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('poop','poops','shit','shits')
+@sopel.module.commands('poop', 'poops', 'shit', 'shits')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'poop')
     if not enablestatus:
@@ -36,9 +36,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif target == 'all' or target == 'everyone' or target == 'everyones':
         osd(bot, trigger.sender, 'say', trigger.nick + " poops on everyone's desk, one at a time!")
     elif target != bot.nick:
-        failchance = random.randint(1,failureodds)
+        failchance = random.randint(1, failureodds)
         if failchance == 1:
-            poopfail = get_trigger_arg(bot, backfires,'random')
+            poopfail = get_trigger_arg(bot, backfires, 'random')
             osd(bot, trigger.sender, 'say', trigger.nick + poopfail)
         else:
             osd(bot, trigger.sender, 'say', trigger.nick + ' poops on ' + target + "'s desk, maintaining eye contact the entire time!")

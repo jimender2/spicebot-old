@@ -12,14 +12,16 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('trivia')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'triva')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    category,type,question,answer = getQuestion()
+    category, type, question, answer = getQuestion()
     osd(bot, trigger.sender, 'say', "Category: " + category + " Type: " + type + " Question: " + question)
 
 
@@ -30,6 +32,6 @@ def getQuestion():
     a = results.split(',')
     category = a[0]
     type = a[1]
-    question  = a[2]
+    question = a[2]
     answer = a[4]
-    return category,type,question,answer
+    return category, type, question, answer

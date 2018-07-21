@@ -12,7 +12,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('piglatin','pl')
+@sopel.module.commands('piglatin', 'pl')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'piglatin')
     if not enablestatus:
@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
 
     pyg = 'ay'
-    firstsarray = ['a','e','i','o','u']
+    firstsarray = ['a', 'e', 'i', 'o', 'u']
 
     rebuildarray = []
     if len(triggerargsarray) > 0:

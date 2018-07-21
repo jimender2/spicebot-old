@@ -11,7 +11,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-validpicarray = ['dog','cat','bird','fox']
+validpicarray = ['dog', 'cat', 'bird', 'fox']
 dog_url = 'https://random.dog/woof.json'
 dog_json = 'url'
 cat_url = 'http://aws.random.cat/meow'
@@ -28,6 +28,7 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     pictype = get_trigger_arg(bot, triggerargsarray, 1)
     outputtext = ''
@@ -41,14 +42,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         outputtext = "An error has occured."
     osd(bot, trigger.sender, 'say', outputtext)
 
+
 def getoutputtext(bot, pictype):
     url = eval(pictype+"_url")
     jsontype = eval(pictype+"_json")
     try:
-      page = requests.get(url)
-      result = page.content
-      jsonpoop = json.loads(result)
-      outputtext = jsonpoop[jsontype]
+        page = requests.get(url)
+        result = page.content
+        jsonpoop = json.loads(result)
+        outputtext = jsonpoop[jsontype]
     except:
-      outputtext = ""
+        outputtext = ""
     return outputtext

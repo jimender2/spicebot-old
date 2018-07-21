@@ -13,11 +13,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-@sopel.module.commands('points','pants')
+
+@sopel.module.commands('points', 'pants')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'points')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channel = trigger.sender
@@ -57,7 +59,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 pointsreasonmsg = ' for ' + str(pointsreason) + '.'
             if pointsreason[-1] not in string.punctuation:
                 pointsreason = pointsreason + "."
-        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone'+ str(pointsreasonmsg))
+        randopoints = str(instigator + " awards " + str(rando) + ' ' + pointsstring + ' to everyone' + str(pointsreasonmsg))
         osd(bot, trigger.sender, 'say', randopoints)
         for u in bot.users:
             if u in botusersarray and u != bot.nick and u != instigator:
@@ -184,8 +186,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', randopoints)
         adjust_database_value(bot, commortarget, 'points', rando)
 
+
 def addpoints(bot, target, amount):
     adjust_database_value(bot, target, 'points', abs(amount))
+
 
 def takepoints(bot, target, amount):
     adjust_database_value(bot, target, 'points', -abs(amount))

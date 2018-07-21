@@ -12,11 +12,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-@sopel.module.commands('webmd','webmdadd','webmddel')
+
+@sopel.module.commands('webmd', 'webmdadd', 'webmddel')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandtrimmed = trigger.group(1)
@@ -24,14 +26,17 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     webmd = get_webmd(bot)
     if commandtrimmed == '':
         target = trigger.group(3) or trigger.nick
-        responses  = ["has died from","is being treated for","is recovering from"]
-        reply = random.randint(0,len(responses) - 1)
-        condition = str(responses [reply])
+        responses = [
+                    "has died from",
+                    "is being treated for",
+                    "is recovering from"]
+        reply = random.randint(0, len(responses) - 1)
+        condition = str(responses[reply])
         if webmd == []:
             result = "death"
         else:
-            resultselected = random.randint(0,len(webmd) - 1)
-            result = str(webmd [resultselected])
+            resultselected = random.randint(0, len(webmd) - 1)
+            result = str(webmd[resultselected])
         conclusion = str(target + ' ' + condition + ' ' + result + '.')
         osd(bot, trigger.sender, 'say', conclusion)
     elif not trigger.group(2):
@@ -61,10 +66,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 osd(bot, trigger.sender, 'say', webmdchange + ' has been removed from the webmd locker.')
 
+
 def get_webmd(bot):
     for channel in bot.channels:
         webmd = bot.db.get_nick_value(channel, 'webmd_locker') or []
         return webmd
+
 
 def update_webmd(bot, webmd):
     for channel in bot.channels:
