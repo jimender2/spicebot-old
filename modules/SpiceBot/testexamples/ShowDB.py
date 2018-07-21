@@ -12,15 +12,17 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('dbshow')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     nick = get_trigger_arg(triggerargsarray, 0)
     osd(bot, trigger.sender, 'say', "nick: " + nick)
     dbkey = get_trigger_arg(triggerargsarray, 1)
     osd(bot, trigger.sender, 'say', "dbkey: " + dbkey)
-    #dbresult = get_database_value(bot,
-    #get_database_value(bot, nick, databasekey):
+    # dbresult = get_database_value(bot,
+    # get_database_value(bot, nick, databasekey):

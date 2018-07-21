@@ -22,19 +22,19 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    commandused = get_trigger_arg(bot, triggerargsarray,1)
+    commandused = get_trigger_arg(bot, triggerargsarray, 1)
     if commandused == 'on':
-        set_database_value(bot,bot.nick,'testclock',1)
+        set_database_value(bot, bot.nick, 'testclock', 1)
     elif commandused == 'off':
-        set_database_value(bot,bot.nick,'testclock',0)
+        set_database_value(bot, bot.nick, 'testclock', 0)
     elif commandused == 'check':
-        currentsetting = get_database_value(bot,bot.nick,'testclock')
+        currentsetting = get_database_value(bot, bot.nick, 'testclock')
         osd(bot, trigger.sender, 'say', str(currentsetting))
 
 
 @sopel.module.interval(15)
 def countdown(bot):
-    currentsetting = get_database_value(bot,bot.nick,'testclock')
+    currentsetting = get_database_value(bot, bot.nick, 'testclock')
     if currentsetting == 1:
         channel = '##spicebottest'
         dispmsg = '15 secs have passed'
