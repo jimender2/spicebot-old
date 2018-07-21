@@ -25,6 +25,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     if command == "first":
         message = instigator + " welcomes " + target + " to the channel"
+    elif command == "major":
+        message = instigator + " is really glad to see " + target + " again."
     else:
         message = instigator + " is glad to see " + target + " again."
 
