@@ -24,7 +24,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     "You called in a fake propane emergency? That's a $50 fine after I report it.",
                     "Bobby, from now on when I ask you how your day was, what I mean is 'how was shop'?",
                     "The only woman I'm pimping is sweet lady propane! And I'm tricking her out all over this town.",
-                    'Maybe my father is Tom Landry. That would explain my strong chin and my love for the flex defense. I wonder if I would call him "dad" or "coach". Nah who am I kidding? I would call him "sir."",
+                    'Maybe my father is Tom Landry. That would explain my strong chin and my love for the flex defense. I wonder if I would call him "dad" or "coach". Nah who am I kidding? I would call him "sir".',
                     "If Bobby doesn't love football, he won't lead a fulfilling life, and then he'll die.",
                     "I wasn't flirting with her! I didn't even mention that I worked in propane.",
                     "Why are we watching a foreign movie? You'd think if it was any good they would make an American version.",
