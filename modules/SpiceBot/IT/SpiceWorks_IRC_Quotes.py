@@ -14,6 +14,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('spicyquote')
 def execute_main(bot, trigger):
     query = trigger.group(2)
@@ -29,8 +30,9 @@ def execute_main(bot, trigger):
     else:
         osd(bot, trigger.sender, 'say', "Please provide a quote number or search term and try again!")
 
+
 def getQuote(bot, query):
-    unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;":" "})
+    unescape_xml_entities = lambda s: unescape(s, {"&apos;": "'", "&quot;": '"', "&nbsp;": " "})
     stripper = (anyOpenTag | anyCloseTag).suppress()
     urlsuffix = 'http://spice.dussed.com/?'
     if query.isdigit():
@@ -49,14 +51,14 @@ def getQuote(bot, query):
         return txt
     for qlink in links:
         if str(qlink).startswith("./?"):
-            link = qlink.replace(".","http://spice.dussed.com")
+            link = qlink.replace(".", "http://spice.dussed.com")
             qlinks.append(link)
-    url = get_trigger_argnew(bot, qlinks, 'random') ## update when replacement happens
+    url = get_trigger_arg(bot, qlinks, 'random')  # update when replacement happens
     if url == '':
         txt = "Invalid quote"
         return txt
     soup = BeautifulSoup(urllib2.urlopen(url).read())
-    txt = soup.find('td',{'class':'body'}).text
+    txt = soup.find('td', {'class': 'body'}).text
     txt = unescape_xml_entities(stripper.transformString(txt))
     if len(txt) > 200:
         quote = url
