@@ -2,7 +2,7 @@
 """
 # pep ignores
 """
-# pylama:ignore=W,E201,E202,E203,E221,E222
+# pylama:ignore=W,E201,E202,E203,E221,E222,E231
 
 """
 Easy Configurables
@@ -21,7 +21,7 @@ duels_version_github_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/di
 
 # Documentation and Development
 GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels"  # Wiki URL, change if not using with spicebot
-development_team = ['deathbybandaid','Mace_Whatdo','dysonparkes','under_score','jimender2']  # Dev Team
+development_team = ['deathbybandaid', 'Mace_Whatdo', 'dysonparkes', 'under_score', 'jimender2']  # Dev Team
 
 duels_bot_owner = "deathbybandaid"
 
