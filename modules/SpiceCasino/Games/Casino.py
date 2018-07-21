@@ -29,32 +29,32 @@ def execute_main(bot, trigger, arg, botcom, instigator):
     if mygame == 'docs' or mygame == 'help':
         osd(bot, trigger.sender, 'say', "For help with this module, see here: " + wikiurl)
     elif mygame == 'slots':
-        slots(bot,trigger,arg)
+        slots(bot, trigger, arg)
     elif mygame == 'blackjack':
-        blackjack(bot,trigger,arg)
+        blackjack(bot, trigger, arg)
     elif (mygame == 'roulette' or mygame == 'spin'):
-        roulette(bot,trigger,arg)
+        roulette(bot, trigger, arg)
     elif mygame == 'lottery':
-        lottery(bot,trigger,arg)
+        lottery(bot, trigger, arg)
     elif mygame == 'freebie':
-        freebie(bot,trigger)
+        freebie(bot, trigger)
     elif mygame == 'bank':
-        bankbalance = Spicebucks.bank(bot,trigger.nick)
+        bankbalance = Spicebucks.bank(bot, trigger.nick)
         osd(bot, trigger.nick, 'priv', trigger.nick + ' has ' + str(bankbalance) + ' spicebucks in the bank.')
     elif mygame == 'jackpot':
-        bankbalance = Spicebucks.bank(bot,'SpiceBank')
+        bankbalance = Spicebucks.bank(bot, 'SpiceBank')
         osd(bot, trigger.sender, 'say', 'The current jackpot is: ' + str(bankbalance))
     elif mygame == 'admin':
         if trigger.admin or trigger.nick == 'under_score':
-            admincommands(bot,trigger,arg)
+            admincommands(bot, trigger, arg)
         else:
             osd(bot, trigger.nick, 'priv', 'You must be an admin to use this command')
     else:
         osd(bot, trigger.sender, 'say', 'Please choose a game. Options include: slots, blackjack, roulette, and lottery.')
 
 
-def freebie(bot,trigger):
-    bankbalance = Spicebucks.bank(bot,trigger.nick) or 0
+def freebie(bot, trigger):
+    bankbalance = Spicebucks.bank(bot, trigger.nick) or 0
     spicebankbalance = Spicebucks.bank(bot, 'SpiceBank') or 0
     if bankbalance < 1:
         if spicebankbalance >= 1:
@@ -66,7 +66,7 @@ def freebie(bot,trigger):
         osd(bot, trigger.nick, 'priv', 'Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
 
 
-def slots(bot,trigger,arg):
+def slots(bot, trigger, arg):
     # _____________Game 1 slots___________
     # slot machine that uses computer terms with a jackpot tied to how much money has been gambled
     player = trigger.nick
@@ -75,12 +75,12 @@ def slots(bot,trigger,arg):
     # __payouts___
     match3 = 25
     match2 = 5
-    bankbalance = Spicebucks.bank(bot,'SpiceBank')
+    bankbalance = Spicebucks.bank(bot, 'SpiceBank')
     if bankbalance <= 500:
         bankbalance = 500
-        set_database_value(bot,'SpiceBank', 'spicebucks_bank',  bankbalance)
+        set_database_value(bot, 'SpiceBank', 'spicebucks_bank',  bankbalance)
 
-    keyword = get_database_value(bot, 'casino','slotkeyword') or 'BSOD'
+    keyword = get_database_value(bot, 'casino', 'slotkeyword') or 'BSOD'
     # match3jackpot = jackpot or 500
     mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if mychoice == 'payout':
@@ -90,16 +90,16 @@ def slots(bot,trigger,arg):
         if not channel.startswith("#"):
             osd(bot, player, 'notice', "slots can only be used in a channel.")
         else:
-            lastslot = get_database_value(bot,'casino','slotimer')
-            nextslot = get_timesince(bot,'casino','slotimer')
+            lastslot = get_database_value(bot, 'casino', 'slotimer')
+            nextslot = get_timesince(bot, 'casino', 'slotimer')
 
             if nextslot >= slottimeout:
                 if Spicebucks.transfer(bot, trigger.nick, 'SpiceBank', 1) == 1:
-                    set_database_value(bot,'casino','slotimer',now)
+                    set_database_value(bot, 'casino', 'slotimer', now)
                     # add bet to spicebank
                     mywinnings = 0
 
-                    wheel = get_database_value(bot, 'casino','slotwheel') or []
+                    wheel = get_database_value(bot, 'casino', 'slotwheel') or []
                     if wheel == []:
                         wheel = ['BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'WIFI', 'ClOUD']
                     wheel1 = spin(wheel)
@@ -128,7 +128,7 @@ def slots(bot,trigger,arg):
                     if mywinnings <= 0:
                         osd(bot, trigger.sender, 'say', trigger.nick + ' gets nothing')
                     else:
-                        bankbalance = Spicebucks.bank(bot,'SpiceBank')
+                        bankbalance = Spicebucks.bank(bot, 'SpiceBank')
                         if mywinnings > bankbalance:
                             Spicebucks.spicebucks(bot, trigger.nick, 'plus', mywinnings)
                             osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings))
@@ -145,10 +145,10 @@ def slots(bot,trigger,arg):
 
 # ------Start Roulette
 # ----------------Roulette-------
-def roulette(bot,trigger,arg):
+def roulette(bot, trigger, arg):
     now = time.time()
     channel = trigger.sender
-    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
+    maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
 
     minbet = 15  # requires at least one payday to play
     wheel = range(maxwheel + 1)
@@ -180,9 +180,9 @@ def roulette(bot,trigger,arg):
             for i in players:
                 if i == player:
                     osd(bot, trigger.sender, 'say', trigger.nick + " has asked Spicebot to finish the roulette game. Last call for bets")
-                    set_database_value(bot,'casino','casinochannel',str(trigger.sender))
-                    set_database_value(bot,'casino','counter','roulette')
-                    set_database_value(bot,'casino','countertimer',now)
+                    set_database_value(bot, 'casino', 'casinochannel', str(trigger.sender))
+                    set_database_value(bot, 'casino', 'counter', 'roulette')
+                    set_database_value(bot, 'casino', 'countertimer', now)
                     callcheck = True
             if not callcheck:
                 osd(bot, player, 'priv', "You must first place a bet")
@@ -254,11 +254,11 @@ def roulette(bot,trigger,arg):
                     Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', mybet)
                     osd(bot, trigger.sender, 'say', trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
                     adjust_database_array(bot, 'casino', player, 'rouletteplayers', 'add')
-                    set_database_value(bot,'casino','casinochannel',str(trigger.sender))
+                    set_database_value(bot, 'casino', 'casinochannel', str(trigger.sender))
                     roulettearray.append(str(mybet))
                     roulettearray.append(str(mynumber))
                     roulettearray.append(mycolor)
-                    testmsg = get_trigger_arg(bot, roulettearray,"list")
+                    testmsg = get_trigger_arg(bot, roulettearray, "list")
                     osd(bot, player, 'priv', "Your bet has been recorded")
                     set_database_value(bot, player, 'roulettearray', roulettearray)
                     numberofplayers = len(players)
@@ -272,13 +272,13 @@ def roulette(bot,trigger,arg):
 
 # -----Run roulette game
 def runroulette(bot):
-    maxwheel = int(get_database_value(bot,'casino','maxwheel')) or 24
+    maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
     wheel = range(maxwheel + 1)
     colors = ['red', 'black']
     players = get_database_value(bot, 'casino', 'rouletteplayers') or []
 
     if not players == []:
-        channel = get_database_value(bot,'casino','casinochannel')
+        channel = get_database_value(bot, 'casino', 'casinochannel')
         dispmsg = "Spicebot collects all bets"
         osd(bot, trigger.sender, 'say', dispmsg)
         winningnumber = spin(wheel)
@@ -325,8 +325,8 @@ def runroulette(bot):
                         reset_database_value(bot, player, 'roulettearray')
 
         reset_database_value(bot, 'casino', 'rouletteplayers')
-        reset_database_value(bot,'casino','counter')
-        winnerarray = get_trigger_arg(bot,winners,'list')
+        reset_database_value(bot, 'casino', 'counter')
+        winnerarray = get_trigger_arg(bot, winners, 'list')
         if len(winners) < 1:
             dispmsg = "No winners this spin"
         elif len(winners) == 1:
@@ -337,15 +337,15 @@ def runroulette(bot):
 
 
 # ______Game 3 Lottery________
-def lottery(bot,trigger, arg):
-    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
-    lotterytimeout = get_database_value(bot,'casino', 'lotterytimeout')  # time between lottery drawings
+def lottery(bot, trigger, arg):
+    lotterymax = int(get_database_value(bot, 'casino', 'lotterymax')) or 25
+    lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')  # time between lottery drawings
     channel = trigger.sender
     player = trigger.nick
-    bankbalance = Spicebucks.bank(bot,'SpiceBank')
+    bankbalance = Spicebucks.bank(bot, 'SpiceBank')
     if bankbalance <= 500:
         bankbalance = 500
-        Spicebucks.spicebucks(bot,'SpiceBank','plus',bankbalance)
+        Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', bankbalance)
 
     commandused = get_trigger_arg(bot, arg, 2) or 'nocommand'
     if not channel.startswith("#"):
@@ -359,7 +359,7 @@ def lottery(bot,trigger, arg):
             success = 0
 
             picklen = len(arg) + 1
-            for i in range(0,picklen):
+            for i in range(0, picklen):
                 picker = get_trigger_arg(bot, arg, i)
                 if picker.isdigit():
                     picks.append(int(picker))
@@ -386,16 +386,16 @@ def lottery(bot,trigger, arg):
                     if valid == 0:
                         osd(bot, player, 'priv', 'One of the numbers you entered is not within the valid range of 1 to ' + str(lotterymax))
                     else:
-                        lottoplayers = get_database_value(bot,'casino','lottoplayers') or []
+                        lottoplayers = get_database_value(bot, 'casino', 'lottoplayers') or []
                         if player in lottoplayers:
                             osd(bot, player, 'priv', "You are already in this drawing")
                         else:
                             if Spicebucks.transfer(bot, player, 'SpiceBank', 1) == 1:
                                 osd(bot, trigger.sender, 'say', player + " bets on the numbers " + str(picks))
-                                set_database_value(bot,player,'picks', picks)
-                                adjust_database_array(bot,'casino',player, 'lottoplayers','add')
-                                set_database_value(bot,'casino','lotterychanel',trigger.sender)
-                                nextlottery = get_timesince(bot,'casino','lastlottery')
+                                set_database_value(bot, player, 'picks', picks)
+                                adjust_database_array(bot, 'casino', player, 'lottoplayers', 'add')
+                                set_database_value(bot, 'casino', 'lotterychanel', trigger.sender)
+                                nextlottery = get_timesince(bot, 'casino', 'lastlottery')
                                 osd(bot, player, 'priv', "Next lottery drawing in " + str(hours_minutes_seconds((lotterytimeout-nextlottery))))
                             else:
                                 osd(bot, player, 'priv', 'You dont have enough Spicebucks')
@@ -403,13 +403,13 @@ def lottery(bot,trigger, arg):
 
 # _______Lottery drawing
 def lotterydrawing(bot):
-    lotterymax = int(get_database_value(bot,'casino','lotterymax')) or 25
-    bankbalance = Spicebucks.bank(bot,'SpiceBank')
-    nextlottery = get_timesince(bot,'casino','lastlottery')
-    lotterytimeout = get_database_value(bot,'casino', 'lotterytimeout')
+    lotterymax = int(get_database_value(bot, 'casino', 'lotterymax')) or 25
+    bankbalance = Spicebucks.bank(bot, 'SpiceBank')
+    nextlottery = get_timesince(bot, 'casino', 'lastlottery')
+    lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
 
-    channel = get_database_value(bot,'casino','lotterychanel')
-    lotteryplayers = get_database_value(bot, 'casino','lottoplayers')
+    channel = get_database_value(bot, 'casino', 'lotterychanel')
+    lotteryplayers = get_database_value(bot, 'casino', 'lottoplayers')
     lotterywinners = []
     totalwon = 0
     bigwinner = ''
@@ -419,18 +419,18 @@ def lotterydrawing(bot):
     #    msg= "No one entered this lottery. Next lottery drawing will be in " + str(hours_minutes_seconds(lotterytimeout-nextlottery))
     #    osd(bot, channel, 'say', msg)
     # else:
-    if get_database_array_total(bot, 'casino','lottoplayers') > 0:
+    if get_database_array_total(bot, 'casino', 'lottoplayers') > 0:
         if bankbalance <= 500:
             bankbalance = 500
-            set_database_value(bot,'SpiceBank', 'spicebucks_bank', bankbalance)
+            set_database_value(bot, 'SpiceBank', 'spicebucks_bank', bankbalance)
 
-        winningnumbers = random.sample(range(1,lotterymax), 5)
+        winningnumbers = random.sample(range(1, lotterymax), 5)
 
         msg = 'The winning numbers are ' + str(winningnumbers)
         osd(bot, channel, 'say', msg)
         for player in lotteryplayers:
             correct = 0
-            picks = get_database_value(bot,player,'picks') or []
+            picks = get_database_value(bot, player, 'picks') or []
             for pick in picks:
                 if pick in winningnumbers:
                     correct = correct + 1
@@ -447,7 +447,7 @@ def lotterydrawing(bot):
                 payout = bankbalance
 
             if payout > bankbalance:
-                Spicebucks.spicebucks(bot,'SpiceBank','plus',payout)
+                Spicebucks.spicebucks(bot, 'SpiceBank', 'plus', payout)
             if payout > 0:
                 osd(bot, player, 'priv', "You won " + str(payout) + " in the lottery drawing")
                 Spicebucks.transfer(bot, 'SpiceBank', player, payout)
@@ -456,7 +456,7 @@ def lotterydrawing(bot):
                 if payout > bigwinpayout:
                     bigwinpayout = payout
                     bigwinner = player
-                bankbalance = Spicebucks.bank(bot,'SpiceBank')
+                bankbalance = Spicebucks.bank(bot, 'SpiceBank')
             else:
                 osd(bot, player, 'priv', 'You are not a lottery winner')
 
@@ -470,11 +470,11 @@ def lotterydrawing(bot):
         else:
             msg = "No one won this drawing."
             osd(bot, channel, 'say', msg)
-    reset_database_value(bot, 'casino','lottoplayers')
+    reset_database_value(bot, 'casino', 'lottoplayers')
 
 
 # ____Game 4 Blackjack___
-def blackjack(bot,trigger,arg):
+def blackjack(bot, trigger, arg):
     minbet = 30
     blackjackpayout = 2
     beatdealerpayout = 2
@@ -508,11 +508,11 @@ def blackjack(bot,trigger,arg):
                             osd(bot, player, 'priv', "You already have a game start. Use hit or stand to finish the current game.")
                         else:
                             if Spicebucks.transfer(bot, player, 'SpiceBank', mybet) == 1:
-                                myhand = deal(bot,deck, 2)
-                                dealerhand = deal(bot,deck, 2)
+                                myhand = deal(bot, deck, 2)
+                                dealerhand = deal(bot, deck, 2)
                                 osd(bot, trigger.sender, 'say', player + ' has a ' + str(myhand[0]) + ' and a ' + str(myhand[1]) + ' Spicebot has a ' + str(dealerhand[1]) + ' showing.')
-                                myscore = blackjackscore(bot,myhand)
-                                dealerscore = blackjackscore(bot,dealerhand)
+                                myscore = blackjackscore(bot, myhand)
+                                dealerscore = blackjackscore(bot, dealerhand)
                                 payout = mybet
                                 if myscore == 21:
                                     payout = payout + (mybet*blackjackpayout)
@@ -528,8 +528,8 @@ def blackjack(bot,trigger,arg):
                             else:
                                 osd(bot, player, 'priv', 'You do not have enough spicebucks.')
         elif mychoice == 'hit' or mychoice == '2':
-            myhand = get_database_value(bot,player, 'myhand') or 0
-            payout = get_database_value(bot,player, 'mybet') or 0
+            myhand = get_database_value(bot, player, 'myhand') or 0
+            payout = get_database_value(bot, player, 'mybet') or 0
             if (myhand == [] or myhand == 0):
                 osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
             else:
@@ -537,58 +537,58 @@ def blackjack(bot,trigger,arg):
                     payment = payout+(int(payout/2))
                     osd(bot, trigger.sender, 'say', player + str(payment) + " wins for having more then 5 cards.")
                     Spicebucks.spicebucks(bot, player, 'plus', payout)
-                    blackjackreset(bot,player)
+                    blackjackreset(bot, player)
 
                 else:
                     osd(bot, trigger.sender, 'say', "Player hand before hit: " + str(myhand))
                     playerhitlist = ''
-                    hitcard = deal(bot,deck, 1)
+                    hitcard = deal(bot, deck, 1)
                     playerhits = hitcard[0]
 
                     myhand.append(playerhits)
                     osd(bot, trigger.sender, 'say', "Player hand after hit: " + str(myhand))
-                    myscore = blackjackscore(bot,myhand)
+                    myscore = blackjackscore(bot, myhand)
 
                     if myscore <= 21:
                         set_database_value(bot, player, 'myhand', myhand)
                         osd(bot, trigger.sender, 'say', player + " takes a hit and a gets a " + str(playerhits) + " " + player + "'s score is now " + str(myscore))
                     else:
                         osd(bot, trigger.sender, 'say', player + ' got ' + str(playerhits) + ' busted and gets nothing')
-                        blackjackreset(bot,player)
+                        blackjackreset(bot, player)
 
         elif mychoice == 'check':
             target = mychoice2
-            if targetcheck(bot, target,player) == 0:
+            if targetcheck(bot, target, player) == 0:
                 osd(bot, trigger.sender, 'say', "Target not found.")
             else:
-                myhand = get_database_value(bot,target, 'myhand') or 0
-                dealerhand = get_database_value(bot,target, 'dealerhand') or 0
+                myhand = get_database_value(bot, target, 'myhand') or 0
+                dealerhand = get_database_value(bot, target, 'dealerhand') or 0
                 osd(bot, trigger.sender, 'say', target + ' has ' + str(myhand) + ' Spicebot has ' + str(dealerhand))
 
         elif mychoice == 'double' or mychoice == '4':
-            myhand = get_database_value(bot,player, 'myhand') or 0
-            payout = get_database_value(bot,player, 'mybet') or 0
-            dealerhand = get_database_value(bot,player, 'dealerhand') or 0
+            myhand = get_database_value(bot, player, 'myhand') or 0
+            payout = get_database_value(bot, player, 'mybet') or 0
+            dealerhand = get_database_value(bot, player, 'dealerhand') or 0
             if (myhand == [] or myhand == 0):
                 osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
             else:
                 if len(myhand) == 2:
                     mybet = payout + payout
-                    set_database_value(bot,player, 'mybet', mybet)
+                    set_database_value(bot, player, 'mybet', mybet)
                     playerhitlist = ''
 
-                    playerhits = deal(bot,deck, 1)
+                    playerhits = deal(bot, deck, 1)
                     playerhits = playerhits[0]
                     myhand.append(playerhits)
-                    set_database_value(bot,player, 'myhand', myhand)
+                    set_database_value(bot, player, 'myhand', myhand)
                     osd(bot, trigger.sender, 'say', player + " doubles down and gets " + str(playerhits))
-                    blackjackstand(bot,player,myhand,dealerhand,mybet)
+                    blackjackstand(bot, player, myhand, dealerhand, mybet)
 
         elif mychoice == 'stand' or mychoice == '3':
-            myhand = get_database_value(bot,player, 'myhand') or 0
-            dealerhand = get_database_value(bot,player, 'dealerhand') or 0
-            payout = get_database_value(bot,player, 'mybet') or 0
-            blackjackstand(bot,player,myhand,dealerhand,payout)
+            myhand = get_database_value(bot, player, 'myhand') or 0
+            dealerhand = get_database_value(bot, player, 'dealerhand') or 0
+            payout = get_database_value(bot, player, 'mybet') or 0
+            blackjackstand(bot, player, myhand, dealerhand, payout)
 
         elif mychoice == 'payout':
             osd(bot, trigger.sender, 'say', "Getting blackjack pays 2x, getting 21 pays 1x, beating Spicebot pays 1/2 your bet.")
@@ -600,7 +600,7 @@ def blackjack(bot,trigger,arg):
 # __________________________Shared Functions____________________
 def spin(wheel):
     random.seed()
-    selected = random.randint(0,(len(wheel)-1))
+    selected = random.randint(0, (len(wheel)-1))
     reel = wheel[selected]
     return reel
 
@@ -610,20 +610,20 @@ def deal(bot, deck, cardcount):
     hand = []
 
     for i in range(cardcount):
-        card = get_trigger_arg(bot, deck,'random')
+        card = get_trigger_arg(bot, deck, 'random')
 
         hand.append(card)
     return hand
 
 
-def blackjackstand(bot,player,myhand,dealerhand,payout):
+def blackjackstand(bot, player, myhand, dealerhand, payout):
     deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
     if (myhand == [] or myhand == 0):
         osd(bot, trigger.sender, 'say', 'Use deal to start a new game')
     else:
-        myscore = blackjackscore(bot,myhand)
+        myscore = blackjackscore(bot, myhand)
 
-        dealerscore = blackjackscore(bot,dealerhand)
+        dealerscore = blackjackscore(bot, dealerhand)
         dealerwins = ''
         if myscore == 21:
             payout = payout + payout
@@ -634,11 +634,11 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
         elif myscore < 21:
             dealerhitlist = ''
             while dealerscore < 18:
-                dealerhits = deal(bot,deck, 1)
+                dealerhits = deal(bot, deck, 1)
                 dealerhits = dealerhits[0]
                 dealerhitlist = dealerhitlist + ' ' + str(dealerhits)
                 dealerhand.append(dealerhits)
-                dealerscore = blackjackscore(bot,dealerhand)
+                dealerscore = blackjackscore(bot, dealerhand)
             if not dealerhitlist == '':
                 hitlist = int(len(dealerhitlist)/2)  # count spaces
                 if hitlist > 1:
@@ -668,16 +668,16 @@ def blackjackstand(bot,player,myhand,dealerhand,payout):
                 osd(bot, trigger.sender, 'say', 'It is a draw and ' + player + ' gets ' + str(payout))
             else:
                 osd(bot, trigger.sender, 'say', 'No games found say .gamble blackjack deal to start a new game')
-        blackjackreset(bot,player)
+        blackjackreset(bot, player)
 
 
-def blackjackscore(bot,hand):
+def blackjackscore(bot, hand):
     myscore = 0
     # hand = get_trigger_arg(bot,hand,'list')
     i = 0
     myhand = []
     handlen = len(hand)
-    for i in range(0,handlen):
+    for i in range(0, handlen):
         card = get_trigger_arg(bot, hand, i)
         if card.isdigit():
             myscore = myscore + int(card)
@@ -688,8 +688,8 @@ def blackjackscore(bot,hand):
     if myscore > 21:
         # osd(bot, trigger.sender, 'say', "Player score: " + str(myscore))
         if 'A' in hand:
-            myhand = hand.replace('A','1')
-            newscore = blackjackscore(bot,myhand)
+            myhand = hand.replace('A', '1')
+            newscore = blackjackscore(bot, myhand)
             return newscore
         else:
             # osd(bot, trigger.sender, 'say', "Return player score : " + str(myscore))
@@ -699,66 +699,66 @@ def blackjackscore(bot,hand):
     return myscore
 
 
-def blackjackreset(bot,player):
-    reset_database_value(bot,player, 'myhand')
-    reset_database_value(bot,player, 'dealerhand')
-    reset_database_value(bot,player, 'mybet')
+def blackjackreset(bot, player):
+    reset_database_value(bot, player, 'myhand')
+    reset_database_value(bot, player, 'dealerhand')
+    reset_database_value(bot, player, 'mybet')
 
 
 @sopel.module.interval(10)
 def countdown(bot):
     now = time.time()
-    currentsetting = get_database_value(bot,'casino','counter')
-    roulettetimediff = get_timesince(bot,'casino','countertimer')
-    lotterytimediff = get_timesince(bot,'casino','lastlottery')
-    lotterytimeout = get_database_value(bot,'casino', 'lotterytimeout')
+    currentsetting = get_database_value(bot, 'casino', 'counter')
+    roulettetimediff = get_timesince(bot, 'casino', 'countertimer')
+    lotterytimediff = get_timesince(bot, 'casino', 'lastlottery')
+    lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
     if currentsetting == 'roulette':
         if roulettetimediff >= roulettetimeout:
             runroulette(bot)
     if lotterytimediff >= lotterytimeout and lotterytimeout >= 10:
-        set_database_value(bot,'casino','lastlottery',now)
+        set_database_value(bot, 'casino', 'lastlottery', now)
         lotterydrawing(bot)
 
 
-def admincommands(bot,trigger,arg):
+def admincommands(bot, trigger, arg):
     player = trigger.nick
     subcommand = get_trigger_arg(bot, arg, 2) or 'nocommand'
     commandvalue = get_trigger_arg(bot, arg, 3) or 'nocommand'
     if subcommand == 'slotadd':
-        adjust_database_array(bot,'casino',commandvalue,'slotwheel','add')
+        adjust_database_array(bot, 'casino', commandvalue, 'slotwheel', 'add')
         osd(bot, trigger.nick, 'priv', commandvalue + " added to slot wheel.")
     elif subcommand == 'slotdefault':
-        wheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI','DARKWEB','BLOCKCHAIN','PASSWORD']
-        set_database_value(bot,'casino','slotwheel',wheel)
-        set_database_value(bot, 'casino','slotkeyword','BSOD')
+        wheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI', 'DARKWEB', 'BLOCKCHAIN', 'PASSWORD']
+        set_database_value(bot, 'casino', 'slotwheel', wheel)
+        set_database_value(bot, 'casino', 'slotkeyword', 'BSOD')
         osd(bot, trigger.nick, 'priv', "Slot wheel set to defaults.")
     elif subcommand == 'slotremove':
-        existingwheel = get_database_value(bot,'casino','slotwheel')
+        existingwheel = get_database_value(bot, 'casino', 'slotwheel')
         if commandvalue in existingwheel:
-            adjust_database_array(bot,'casino',commandvalue,'slotwheel','del')
+            adjust_database_array(bot, 'casino', commandvalue, 'slotwheel', 'del')
             osd(bot, trigger.nick, 'priv', commandvalue + " removed from slot wheel.")
     elif subcommand == 'slotkeyword':
-        existingwheel = get_database_value(bot,'casino','slotwheel')
+        existingwheel = get_database_value(bot, 'casino', 'slotwheel')
         if commandvalue in existingwheel:
-            set_database_value(bot, 'casino','slotkeyword',commandvalue)
+            set_database_value(bot, 'casino', 'slotkeyword', commandvalue)
             osd(bot, trigger.nick, 'priv', "Slot keyword '" + commandvalue + "' added to slot wheel.")
     elif subcommand == 'slotlist':
-        slotlist = get_database_value(bot,'casino','slotwheel')
-        listslots = get_trigger_arg(bot,slotlist,'list')
+        slotlist = get_database_value(bot, 'casino', 'slotwheel')
+        listslots = get_trigger_arg(bot, slotlist, 'list')
         osd(bot, player, 'priv', "Slot wheel: " + listslots)
 
     elif subcommand == 'roulettereset':
         reset_database_value(bot, 'casino', 'rouletteplayers')
-        reset_database_value(bot,'casino','counter')
+        reset_database_value(bot, 'casino', 'counter')
         osd(bot, trigger.nick, 'priv', "Stats reset for roulette")
     elif subcommand == 'rouletteend':
-        set_database_value(bot,'casino','casinochannel',str(trigger.sender))
+        set_database_value(bot, 'casino', 'casinochannel', str(trigger.sender))
         runroulette(bot)
     elif subcommand == 'roulettemax':
         if commandvalue.isdigit():
             wheelmax = int(commandvalue)
             if wheelmax >= 10:
-                set_database_value(bot,'casino','maxwheel',wheelmax)
+                set_database_value(bot, 'casino', 'maxwheel', wheelmax)
                 osd(bot, trigger.nick, 'priv', "Roulette wheel max set to " + str(wheelmax))
             else:
                 osd(bot, trigger.nick, 'priv', "Enter a number larger then 10")
@@ -769,7 +769,7 @@ def admincommands(bot,trigger,arg):
         if maxvalue.isdigit():
             maxvalue = int(maxvalue)
             if maxvalue >= 10:
-                set_database_value(bot,'casino','lotterymax',maxvalue)
+                set_database_value(bot, 'casino', 'lotterymax', maxvalue)
                 osd(bot, player, 'priv', "Lottery max set to " + str(maxvalue))
             else:
                 osd(bot, player, 'priv', "Please enter a number large then 10")
@@ -781,7 +781,7 @@ def admincommands(bot,trigger,arg):
         if commandvalue.isdigit():
             lotterytime = int(commandvalue)
             if lotterytime >= 10:
-                set_database_value(bot,'casino', 'lotterytimeout',lotterytime)
+                set_database_value(bot, 'casino', 'lotterytimeout', lotterytime)
                 osd(bot, trigger.nick, 'priv', "Lottery time out is set " + str(lotterytime) + " seconds")
             else:
                 osd(bot, player, 'priv', "Please enter a number larger then 10")
@@ -789,10 +789,10 @@ def admincommands(bot,trigger,arg):
             osd(bot,  trigger.nick, 'priv', "Please enter a valid number")
 
     elif subcommand == 'blackjackset':
-        if targetcheck(bot, commandvalue,player) == 0:
+        if targetcheck(bot, commandvalue, player) == 0:
             osd(bot, trigger.sender, 'say', "Target not found.")
         else:
-            reset_database_value(bot,commandvalue, 'myhand')
-            reset_database_value(bot,commandvalue, 'dealerhand')
-            reset_database_value(bot,commandvalue, 'mybet')
+            reset_database_value(bot, commandvalue, 'myhand')
+            reset_database_value(bot, commandvalue, 'dealerhand')
+            reset_database_value(bot, commandvalue, 'mybet')
             osd(bot, trigger.nick, 'priv', "Blackjack reset for: " + commandvalue)
