@@ -33,5 +33,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     i = 0
     while i <= max:
         meassage = message + data[i]
+        i++
 
     osd(bot, trigger.sender, 'say', message)
