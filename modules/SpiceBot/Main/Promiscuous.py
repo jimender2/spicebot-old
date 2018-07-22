@@ -2,6 +2,9 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+import urllib2
+import json
+from BeautifulSoup import BeautifulSoup
 from random import random
 from random import randint
 import sys
