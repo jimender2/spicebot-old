@@ -14,6 +14,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+BITCOIN_API_URL = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/'
+
 
 @sopel.module.commands('sexbot', 'cockbot', 'fuckbot')
 def mainfunction(bot, trigger):
@@ -30,10 +32,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 def get_price():
-    url = 'https://api.coindesk.com/v1/bpi/currentprice.json'
-    data = json.loads(urllib2.urlopen(url).read())
-    try:
-        price = USD['rate']
-    except IndexError:
-        price = "unknown"
-    return price
+    response = requests.get(BITCOIN_API_URL)
+    response_json = response.json()
+    # Convert the price to a floating point number
+    return float(response_json[0]['price_usd'])
