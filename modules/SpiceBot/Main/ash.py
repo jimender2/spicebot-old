@@ -13,7 +13,8 @@ from BotShared import *
 
 # author jimender2
 
-replies = ["Ash: Yeah! [after shooting King Arthur's sword in half]",
+replies = [
+            "Ash: Yeah! [after shooting King Arthur's sword in half]",
             "Ash: Alright you Primitive Screwheads, listen up! You see this? This... is my BOOMSTICK! The twelve-gauge double-barreled Remington. S-Mart's top of the line. You can find this in the sporting goods department. That's right, this sweet baby was made in Grand Rapids, Michigan. Retails for about a hundred and nine, ninety five. It's got a walnut stock, cobalt blue steel, and a hair trigger. That's right. Shop smart. Shop S-Mart. You got that?",
             "Ash: [voiceover] Sure, I could have stayed in the past. I could have even been king. But in my own way, I *am* king. [Ash grabs girl close]",
             "Ash: Hail to the king, baby. [Ash kisses the girl]",

@@ -9,15 +9,13 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author jimender2
 
-
-@sopel.module.commands('iao', 'iamoffended')
+@sopel.module.commands('aio')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'iao')
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'aio')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, botcom.channel_current, 'say', '')
+    osd(bot, botcom.channel_current, 'say', "all in one?")

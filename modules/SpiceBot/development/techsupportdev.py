@@ -12,7 +12,7 @@ from BotShared import *
 # add reset and sort list
 
 
-@sopel.module.commands('techsupport','itsupport')
+@sopel.module.commands('techsupport', 'itsupport')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'techsupport')
     if not enablestatus:

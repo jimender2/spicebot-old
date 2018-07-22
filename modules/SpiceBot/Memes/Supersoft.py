@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     channel = trigger.sender
     if not target:
         message = "Who is supersoft?"
@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif isvalid == 3:
         message = "I'm all metal, baby"
     else:
-        pick = random.randint(1,10)
+        pick = random.randint(1, 10)
         if pick == 1:
             message = target + " is going to have a super soft birthday party this year."
         else:

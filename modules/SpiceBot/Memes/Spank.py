@@ -9,10 +9,10 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-spankweapons = ['paddle','belt']
+spankweapons = ['paddle', 'belt']
 
 
-@sopel.module.commands("spank","paddle","paddlin")
+@sopel.module.commands("spank", "paddle", "paddlin")
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'spank')
     if not enablestatus:

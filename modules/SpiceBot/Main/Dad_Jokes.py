@@ -11,7 +11,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('dad','dadjoke')
+@sopel.module.commands('dad', 'dadjoke')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'dad')
     if not enablestatus:
@@ -28,6 +28,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def getDadJoke():
     url = 'https://icanhazdadjoke.com'
-    page = requests.get(url, headers={'Accept':'text/plain'})
+    page = requests.get(url, headers={'Accept': 'text/plain'})
     joke = page.content
     return joke

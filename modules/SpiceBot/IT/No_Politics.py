@@ -9,7 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-@sopel.module.commands('sign','politics','religion','genders')
+
+@sopel.module.commands('sign', 'politics', 'religion', 'genders')
 def execute_main(bot, trigger):
     channel = trigger.sender
     osd(bot, trigger.sender, 'say', "NO POLITICS, RELIGION, OR EXCESSIVE GENDER/SJWing IN " + channel + "!")

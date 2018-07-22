@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('notsaying','aliens')
+@sopel.module.commands('notsaying', 'aliens')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'notsaying')
     if not enablestatus:
@@ -18,7 +18,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    itwas = get_trigger_arg(bot,triggerargsarray, 0) or "it was aliens"
+    itwas = get_trigger_arg(bot, triggerargsarray, 0) or "it was aliens"
     itwas2 = itwas.upper()
     message = "I'm not saying " + str(itwas) + ", but " + str(itwas2) + "."
     osd(bot, trigger.sender, 'say', message)

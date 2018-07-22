@@ -12,7 +12,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('cdh','colddeadhands')
+@sopel.module.commands('cdh', 'colddeadhands')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'cdh')
     if not enablestatus:

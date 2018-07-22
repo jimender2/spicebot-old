@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('nuke','killit','terminate')
+@sopel.module.commands('nuke', 'killit', 'terminate')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'nuke')
     if not enablestatus:

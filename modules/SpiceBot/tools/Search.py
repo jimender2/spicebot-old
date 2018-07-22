@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             url = 'https://www.youtube.com/'
             url2 = 'https://youtube.com/'
             searchterm = data+site
-            query = searchfor(bot,searchterm)
+            query = searchfor(bot, searchterm)
             if not query:
                 osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
@@ -56,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             url = 'knowyourmeme.com'
             url2 = 'http://knowyourmeme.com'
             searchterm = data+site
-            query = searchfor(bot,searchterm)
+            query = searchfor(bot, searchterm)
             if not query:
                 osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
@@ -71,7 +71,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             url = 'http://www.peopleofwalmart.com'
             url2 = 'https://www.peopleofwalmart.com'
             searchterm = data+site
-            query = searchfor(bot,searchterm)
+            query = searchfor(bot, searchterm)
             if not query:
                 osd(bot, trigger.sender, 'say', 'https://goo.gl/SsAhv')
             else:
@@ -81,30 +81,30 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     osd(bot, trigger.sender, 'say', 'I could not find that but check this out: https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         elif mysite == 'urban':
-            query = urbansearch(bot,querystring)
+            query = urbansearch(bot, querystring)
             osd(bot, trigger.sender, 'say', query)
 
         elif mysite == 'imdb' or mysite == 'movie':
-            query = moviesearch(bot,querystring)
+            query = moviesearch(bot, querystring)
             osd(bot, trigger.sender, 'say', query)
 
         else:
             data = searchterm.replace(' ', '+')
-            query = searchfor(bot,data)
+            query = searchfor(bot, data)
             if not query:
                 osd(bot, trigger.sender, 'say', 'I cannot find anything about that')
             else:
                 osd(bot, trigger.sender, 'say', query)
 
 
-def searchfor(bot,data):
+def searchfor(bot, data):
     lookfor = data.replace(':', '%3A')
     var = requests.get(r'http://www.google.com/search?q=' + lookfor + '&btnI')
     query = str(var.url)
     return query
 
 
-def urbansearch(bot,searchterm):
+def urbansearch(bot, searchterm):
     try:
         data = web.get("http://api.urbandictionary.com/v0/define?term={0}".format(web.quote(searchterm)))
         data = json.loads(data)
@@ -118,7 +118,7 @@ def urbansearch(bot,searchterm):
     return response
 
 
-def moviesearch(bot,searchterm):
+def moviesearch(bot, searchterm):
     """
     Returns some information about a movie, like Title, Year, Rating, Genre and IMDB Link.
     """

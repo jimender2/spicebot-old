@@ -23,7 +23,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     insult = get_trigger_arg(bot, insultnames, 'random')
-    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     if not target:
         osd(bot, trigger.sender, 'say', "Who are you pissed at now?")
     elif isvalid == 1:

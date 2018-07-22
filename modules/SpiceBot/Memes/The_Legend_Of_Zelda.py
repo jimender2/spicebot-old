@@ -10,7 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('sword','link','zelda')
+@sopel.module.commands('sword', 'link', 'zelda')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'sword')
     if not enablestatus:

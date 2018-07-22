@@ -14,7 +14,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('gif','giphy')
+@sopel.module.commands('gif', 'giphy')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -26,7 +26,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if target != "roulette":
         query = target.replace(' ', '%20')
         query = str(query)
-        gif,randno = getGif(query)
+        gif, randno = getGif(query)
         if gif:
             osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
         else:
@@ -44,13 +44,13 @@ def getGif(query):
     limit = 50
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(query)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,limit)
+    randno = randint(0, limit)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
-    return gif,randno
+    return gif, randno
 
 
 def roulette():

@@ -50,6 +50,7 @@ def loadReminders(fn, lock):
         lock.release()  # release lock
     return result  # return info
 
+
 # write reminders to file
 def dumpReminders(fn, data, lock):
     lock.acquire()  # lock file
@@ -123,13 +124,13 @@ def execute_main(bot, trigger):
             if not message.startswith('please'):
                 return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
-    if not tellee in (Identifier(teller), bot.nick, 'me'):
+    if tellee not in (Identifier(teller), bot.nick, 'me'):
         tz = get_timezone(bot.db, bot.config, None, tellee)
         timenow = format_time(bot.db, bot.config, tz, tellee)
         msg = msg.lstrip('please').rstrip('please').lstrip().rstrip()
         bot.memory['tell_lock'].acquire()
         try:
-            if not tellee in bot.memory['reminders']:
+            if tellee not in bot.memory['reminders']:
                 bot.memory['reminders'][tellee] = [(teller, verb, timenow, msg)]
             else:
                 bot.memory['reminders'][tellee].append((teller, verb, timenow, msg))

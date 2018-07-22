@@ -30,30 +30,30 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if len(triggerargsarray) > 0:
         if triggerargsarray[0] == 'answer':
-            answer(bot,trigger,triggerargsarray)
+            answer(bot, trigger, triggerargsarray)
         elif triggerargsarray[0] == 'clearq':
             resetDbValues(bot)
     else:
-        lastquestionanswered = get_database_value(bot,'triviauser','triviaanswered')
+        lastquestionanswered = get_database_value(bot, 'triviauser', 'triviaanswered')
         if lastquestionanswered == 'f':
-            getQuestionFromDb(bot,trigger)
+            getQuestionFromDb(bot, trigger)
         else:
-            askQuestion(bot,trigger)
+            askQuestion(bot, trigger)
 
 
 def resetDbValues(bot):
-    set_database_value(bot,'triviauser','triviaq','')
-    set_database_value(bot,'triviauser','triviaa','')
-    set_database_value(bot,'triviauser','triviachoices','')
-    set_database_value(bot,'triviauser','triviaanswered','t')
+    set_database_value(bot, 'triviauser', 'triviaq', '')
+    set_database_value(bot, 'triviauser', 'triviaa', '')
+    set_database_value(bot, 'triviauser', 'triviachoices', '')
+    set_database_value(bot, 'triviauser', 'triviaanswered', 't')
 
 
-def askQuestion(bot,trigger):
-    type,question,arrAnswers,answer = getQuestion()
-    set_database_value(bot,'triviauser','triviaq',question)
-    set_database_value(bot,'triviauser','triviaa',answer)
-    set_database_value(bot,'triviauser','triviachoices',arrAnswers)
-    set_database_value(bot,'triviauser','triviaanswered','f')
+def askQuestion(bot, trigger):
+    type, question, arrAnswers, answer = getQuestion()
+    set_database_value(bot, 'triviauser', 'triviaq', question)
+    set_database_value(bot, 'triviauser', 'triviaa', answer)
+    set_database_value(bot, 'triviauser', 'triviachoices', arrAnswers)
+    set_database_value(bot, 'triviauser', 'triviaanswered', 'f')
 
     if type == "boolean":
         question = "(T)rue or (F)alse: " + question
@@ -63,9 +63,9 @@ def askQuestion(bot,trigger):
         osd(bot, trigger.sender, 'say', "Choices:" + arrAnswers[0] + " " + arrAnswers[1] + " " + arrAnswers[2] + " " + arrAnswers[3])
 
 
-def getQuestionFromDb(bot,trigger):
-    question = get_database_value(bot,'triviauser','triviaq')
-    arrAnswers = get_database_value(bot,'triviauser','triviachoices')
+def getQuestionFromDb(bot, trigger):
+    question = get_database_value(bot, 'triviauser', 'triviaq')
+    arrAnswers = get_database_value(bot, 'triviauser', 'triviachoices')
     osd(bot, trigger.sender, 'say', "Still waiting for someone to answer this one: " + question)
     # if len(str(arrAnswers) > 2):
     try:
@@ -89,15 +89,15 @@ def getQuestion():
         wrongAnswers = data['results'][0]
         wrongAnswers = wrongAnswers['incorrect_answers']
         arrWrong = str(wrongAnswers).split("',")
-        choiceOne = arrWrong[0].replace("u'","",1).strip()
-        choiceTwo = arrWrong[1].replace("u'","",1).strip()
-        choiceThree = arrWrong[2].replace("u'","",1).strip()
+        choiceOne = arrWrong[0].replace("u'", "", 1).strip()
+        choiceTwo = arrWrong[1].replace("u'", "", 1).strip()
+        choiceThree = arrWrong[2].replace("u'", "", 1).strip()
         choiceOne = sanitizeString(choiceOne)
         choiceTwo = sanitizeString(choiceTwo)
         choiceThree = sanitizeString(choiceThree)
         answer = splitEntry(a[4])
         answer = sanitizeString(answer)
-        arrAnswers = [choiceOne,choiceTwo,choiceThree,answer]
+        arrAnswers = [choiceOne, choiceTwo, choiceThree, answer]
         random.shuffle(arrAnswers)
         arrAnswers[0] = "A) "+arrAnswers[0]
         arrAnswers[1] = "B) "+arrAnswers[1]
@@ -107,22 +107,22 @@ def getQuestion():
     else:
         question = splitEntry(a[2])
         answer = splitEntry(a[4])
-        arrAnswers = ['True','False']
+        arrAnswers = ['True', 'False']
 
-    return type,question,arrAnswers,answer
+    return type, question, arrAnswers, answer
 
 
-def answer(bot,trigger,triggerargsarray):
-    answered = get_database_value(bot,'triviauser','triviaanswered')
+def answer(bot, trigger, triggerargsarray):
+    answered = get_database_value(bot, 'triviauser', 'triviaanswered')
     if answered != 't':
         if triggerargsarray[0] == "answer":
             guesser = trigger.nick
-            lastAttemptTime = getTimeSinceLastAttempt(bot,guesser,'trivia_lastattempt')
+            lastAttemptTime = getTimeSinceLastAttempt(bot, guesser, 'trivia_lastattempt')
             if lastAttemptTime > 10:
-                set_database_value(bot,guesser,'trivia_lastattempt',time.time())
+                set_database_value(bot, guesser, 'trivia_lastattempt', time.time())
                 useranswer = triggerargsarray[1]
-                correctanswer = get_database_value(bot,'triviauser','triviaa')
-                possibleanswers = get_database_value(bot,'triviauser','triviachoices')
+                correctanswer = get_database_value(bot, 'triviauser', 'triviaa')
+                possibleanswers = get_database_value(bot, 'triviauser', 'triviachoices')
                 for answer in possibleanswers:
                     if correctanswer in answer:
                         correctanswer = answer[0]
@@ -131,13 +131,13 @@ def answer(bot,trigger,triggerargsarray):
                         break
                 if useranswer == correctanswer:
                     resetDbValues(bot)
-                    Spicebucks.transfer(bot,'SpiceBank',guesser,5)
+                    Spicebucks.transfer(bot, 'SpiceBank', guesser, 5)
                     osd(bot, trigger.sender, 'say', guesser + " has answered correctly! Congrats, " + guesser + ", you have won 5 Spicebucks!")
                 else:
                     osd(bot, trigger.sender, 'say', "Sorry, " + guesser + ", that is incorrect.")
             else:
                 timeDiff = 10 - lastAttemptTime
-                osd(bot, trigger.sender, 'say', guesser + ", you must wait " + str(round(timeDiff,2)) + " seconds before attempting to guess again!")
+                osd(bot, trigger.sender, 'say', guesser + ", you must wait " + str(round(timeDiff, 2)) + " seconds before attempting to guess again!")
     else:
         osd(bot, trigger.sender, 'say', "The last question has been answered! Type .trivia for a new question!")
 
@@ -146,17 +146,17 @@ def splitEntry(entry):
     splitChar = ':'
     a = entry.split(splitChar)
     result = a[1]
-    result = result.replace("u'","",1).strip()
+    result = result.replace("u'", "", 1).strip()
     result = sanitizeString(result)
     return result
 
 
 def sanitizeString(entry):
-    result = entry.replace('[','')
-    result = result.replace(']','')
-    result = result.replace("&quot;",'"')
-    result = result.replace("&#039;","'")
-    result = result.replace("'","",len(result))
+    result = entry.replace('[', '')
+    result = result.replace(']', '')
+    result = result.replace("&quot;", '"')
+    result = result.replace("&#039;", "'")
+    result = result.replace("'", "", len(result))
     return result
 
 
@@ -180,7 +180,7 @@ def adjust_database_value(bot, nick, databasekey, value):
     bot.db.set_nick_value(nick, databasecolumn, int(oldvalue) + int(value))
 
 
-def getTimeSinceLastAttempt(bot,nick,databasekey):
+def getTimeSinceLastAttempt(bot, nick, databasekey):
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))

@@ -16,9 +16,9 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-def execute_main(bot, trigger,triggerargsarray):
+def execute_main(bot, trigger, triggerargsarray):
     # No input
-    target = get_trigger_arg(bot,triggerargsarray,0)
+    target = get_trigger_arg(bot, triggerargsarray, 0)
     if not target:
         currentdate = arrow.now().format('YYYY-MM-DD')
         message = "http://dilbert.com/strip/" + currentdate

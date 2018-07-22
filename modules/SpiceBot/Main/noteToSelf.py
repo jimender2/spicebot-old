@@ -14,7 +14,7 @@ from BotShared import *
 # author jimender2
 
 
-@sopel.module.commands('nts','noteToSelf')
+@sopel.module.commands('nts', 'noteToSelf')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'nts')
     if not enablestatus:
@@ -43,4 +43,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         time = datetime.datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
         input = time + " " + command
         adjust_database_array(bot, instigator, input, databasekey, 'add')
-        osd(bot, trigger.sender, 'say', "I will remeber that as best as I can")
+        osd(bot, trigger.sender, 'say', "I will remember that as best as I can")

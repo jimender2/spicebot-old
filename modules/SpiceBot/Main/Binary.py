@@ -24,11 +24,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         spititout = randint(0, 1)
     elif not str(current_translate).isdigit():
         spititout = str(string2bits(current_translate)) or 'error'
-        spititout = spititout.replace("[","")
-        spititout = spititout.replace("]","")
-        spititout = spititout.replace("'","")
-        spititout = spititout.replace(",","")
-        spititout = spititout.replace(" ","")
+        spititout = spititout.replace("[", "")
+        spititout = spititout.replace("]", "")
+        spititout = spititout.replace("'", "")
+        spititout = spititout.replace(",", "")
+        spititout = spititout.replace(" ", "")
     else:
         spititout = bits2string(current_translate) or 'error'
     osd(bot, trigger.sender, 'action', str(spititout))
@@ -39,4 +39,4 @@ def string2bits(s=''):
 
 
 def bits2string(b=None):
-    return ''.join(chr(int(b[i*8:i*8+8],2)) for i in range(len(b)//8))
+    return ''.join(chr(int(b[i*8:i*8+8], 2)) for i in range(len(b)//8))

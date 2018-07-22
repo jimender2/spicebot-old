@@ -26,6 +26,7 @@ from lxml import html
 from statistics import mean
 import itertools
 import inspect
+import pickle
 # Game Folder
 from .Global_Vars import *
 
@@ -35,23 +36,61 @@ Triggers for usage
 """
 
 
+@sopel.module.commands('rpga')
+@sopel.module.thread(True)
+def rpg_trigger_maina(bot, trigger):
+
+    bot.say("saving")
+
+    testclass = class_create('testclass')
+    testclass.testclass = 'awesome'
+
+    set_database_class(bot, bot.nick, 'classtest', testclass)
+
+
+@sopel.module.commands('rpgb')
+@sopel.module.thread(True)
+def rpg_trigger_mainb(bot, trigger):
+
+    bot.say("retrieving")
+
+    savedclass = get_database_class(bot, bot.nick, 'classtest')
+
+    bot.say(savedclass.testclass)
+
+
+# use bot.memory to track stats
+# use eval() to hold many bot.memory
+# use bot.memory to track users to save at the end
+def get_database_stats(bot, nick):
+    # 2 db reads, one for stat, one for value
+    # array_compare
+    bot.say("wip")
+
+
+def set_database_stats(bot, nick):
+    bot.say("wip")
+
+
+def get_database_class(bot, nick, databasekey):
+    database_retrieve = get_database_value(bot, nick, databasekey) or 0
+    if database_retrieve == 0:
+        class_value = class_create(databasekey)
+        return class_value
+    class_value = pickle.Unpickler(database_retrieve)
+    return class_value
+
+
+def set_database_class(bot, nick, databasekey, class_to_dump):
+    dump_value = pickle.Pickler(class_to_dump)
+    set_database_value(bot, nick, databasekey, dump_value)
+
+
 # Base command
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_start(bot, trigger, triggerargsarray)
-
-
-# respond to alternate start for command
-@module.rule('^(?:rpg)\s+?.*')
-@module.rule('^(?:!rpg)\s+?.*')
-@module.rule('^(?:,rpg)\s+?.*')
-@sopel.module.thread(True)
-def rpg_trigger_precede(bot, trigger):
-    triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
-    triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
-    triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     execute_start(bot, trigger, triggerargsarray)
 
 
@@ -74,10 +113,10 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg.instigator = trigger.nick
 
     # Channel Listing
-    rpg = rpg_command_channels(bot,rpg,trigger)
+    rpg = rpg_command_channels(bot, rpg, trigger)
 
     # Bacic User List
-    rpg = rpg_command_users(bot,rpg)
+    rpg = rpg_command_users(bot, rpg)
 
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)  # TODO alt coms
@@ -154,6 +193,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         # Check Command can run
         rpg = command_process(bot, trigger, rpg, instigator)
         if rpg.command_run:
+            rpg.triggerargsarray.remove(rpg.command_main)
             # Run the command's function
             command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
             eval(command_function_run)
@@ -164,13 +204,31 @@ def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
 
+    # allow players to set custom shortcuts to numbers
+    if str(rpg.command_main).isdigit():
+        number_command = get_database_value(bot, rpg.instigator, 'hotkey_'+str(rpg.command_main)) or 0
+        if not number_command:
+            errors(bot, rpg, 'commands', 8, rpg.command_main)
+            return rpg
+        else:
+            number_command_list = get_database_value(bot, rpg.instigator, 'hotkey_complete') or []
+            if rpg.command_main not in number_command_list:
+                adjust_database_array(bot, rpg.instigator, [rpg.command_main], 'hotkey_complete', 'add')
+            commandremaining = get_trigger_arg(bot, rpg.triggerargsarray, '2+') or ''
+            number_command = str(number_command + " " + commandremaining)
+            rpg.triggerargsarray = get_trigger_arg(bot, number_command, 'create')
+            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+            rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
+
+    # Alternate commands convert TODO
+
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
     # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar() and altcoms here
+    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar()
         errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 
@@ -186,7 +244,7 @@ def command_process(bot, trigger, rpg, instigator):
 
 
 """
-Commands
+Configuration Commands
 """
 
 
@@ -258,6 +316,131 @@ def rpg_command_main_admin(bot, rpg, instigator):
         return
 
 
+def rpg_command_main_settings(bot, rpg, instigator):
+
+    # Subcommand
+    subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
+    subcommand_default = eval('subcommands_default_' + rpg.command_main)
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommand_valid], 1) or subcommand_default
+    if not subcommand:
+        errors(bot, rpg, rpg.command_main, 1, 1)
+        return
+
+    # Who is the target
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
+    if target != rpg.instigator:
+        if not rpg.admin:
+            errors(bot, rpg, rpg.command_main, 2, 1)
+            return
+        if target not in rpg.users_all:
+            errors(bot, rpg, rpg.command_main, 3, target)
+            return
+
+    # Hokey
+    if subcommand == 'hotkey':
+        rpg.triggerargsarray.remove(subcommand)
+
+        numberused = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if str(x).isdigit()], 1) or 'nonumber'
+
+        hotkeysetting = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_settings_hotkey], 1) or 'view'
+
+        if hotkeysetting == 'list':
+            hotkeyscurrent = get_database_value(bot, target, 'hotkey_complete') or []
+            if hotkeyscurrent == []:
+                errors(bot, rpg, rpg.command_main, 5, 1)
+                return
+            hotkeyslist = []
+            for key in hotkeyscurrent:
+                keynumber = get_database_value(bot, rpg.instigator, 'hotkey_'+str(key)) or 0
+                if keynumber:
+                    hotkeyslist.append(str(key) + "=" + str(keynumber))
+            hotkeyslist = get_trigger_arg(bot, hotkeyslist, 'list')
+            osd(bot, rpg.channel_current, 'say', "Your hotkey list: " + hotkeyslist)
+            return
+
+        if numberused == 'nonumber':
+            errors(bot, rpg, rpg.command_main, 4, 1)
+            return
+        number_command = get_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused)) or 0
+
+        if hotkeysetting != 'update':
+            if not number_command:
+                errors(bot, rpg, rpg.command_main, 6, numberused)
+                return
+
+        if hotkeysetting == 'view':
+            osd(bot, rpg.channel_current, 'say', "You currently have " + str(numberused) + " set to '" + number_command + "'")
+            return
+
+        if hotkeysetting == 'reset':
+            reset_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused))
+            adjust_database_array(bot, target, [numberused], 'hotkey_complete', 'del')
+            osd(bot, rpg.channel_current, 'say', "Your command for hotkey "+str(numberused)+" has been reset")
+            return
+
+        if hotkeysetting == 'update':
+            if target in rpg.triggerargsarray:
+                rpg.triggerargsarray.remove(target)
+            rpg.triggerargsarray.remove(numberused)
+            rpg.triggerargsarray.remove(hotkeysetting)
+
+            newcommandhot = get_trigger_arg(bot, rpg.triggerargsarray, 0) or 0
+            if not newcommandhot:
+                errors(bot, rpg, rpg.command_main, 7, 1)
+                return
+
+            actualcommand_main = get_trigger_arg(bot, rpg.triggerargsarray, 1) or 0
+            if actualcommand_main not in rpg.valid_commands_all:  # TODO altcoms
+                errors(bot, rpg, rpg.command_main, 8, str(actualcommand_main))
+                return
+
+            set_database_value(bot, rpg.instigator, 'hotkey_'+str(numberused), newcommandhot)
+            adjust_database_array(bot, target, [numberused], 'hotkey_complete', 'add')
+            osd(bot, rpg.channel_current, 'say', "Your "+str(numberused)+" command has been set to '" + newcommandhot+"'")
+            return
+
+        return
+
+
+"""
+Basic User Commands
+"""
+
+
+def rpg_command_main_author(bot, rpg, instigator):
+
+    osd(bot, rpg.channel_current, 'say', "The author of RPG is deathbybandaid.")
+
+
+def rpg_command_main_intent(bot, rpg, instigator):
+
+    # Who is the target
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
+
+    osd(bot, rpg.channel_current, 'say', "The intent is to provide "+target+" with a sense of pride and accomplishment...")
+
+
+def rpg_command_main_about(bot, rpg, instigator):
+
+    osd(bot, rpg.channel_current, 'say', "The purpose behind RPG is for deathbybandaid to learn python, while providing a fun, evenly balanced gameplay.")
+
+
+def rpg_command_main_version(bot, rpg, instigator):
+
+    # Attempt to get revision date from Github
+    versionfetch = versionnumber(bot)
+
+    osd(bot, rpg.channel_current, 'say', "The RPG framework was last modified on " + str(versionfetch) + ".")
+
+
+def rpg_command_main_docs(bot, rpg, instigator):  # TODO
+    bot.say("wip")
+
+
+def rpg_command_main_usage(bot, rpg, instigator):  # TODO
+    bot.say("wip")
+
+
 """
 Bot Start
 """
@@ -273,8 +456,8 @@ def timed_logcheck(bot):
                 bot.memory[startupmonologue] = 1
 
                 startup_monologue = []
-                startup_monologue.append("The worldmap is vast; full of wonder, loot, monsters, and peril!")
-                startup_monologue.append("Will you, heroes, be triumphant over the darkness that awaits?")
+                startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
+                startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
                 osd(bot, channel, 'notice', startup_monologue)
 
 
@@ -312,7 +495,7 @@ def rpg_errors_start(bot, rpg):
         errorscanlist.append(error_type)
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
-        for i in range(0,len(current_error_type)):
+        for i in range(0, len(current_error_type)):
             current_error_number = i + 1
             current_error_value = str("rpg.errors." + error_type + str(current_error_number) + " = []")
             exec(current_error_value)
@@ -327,7 +510,7 @@ def rpg_errors_end(bot, rpg):
         errorscanlist.append(error_type)
     for error_type in errorscanlist:
         current_error_type = eval("rpg_error_" + error_type)
-        for i in range(0,len(current_error_type)):
+        for i in range(0, len(current_error_type)):
             current_error_number = i + 1
             currenterrorvalue = eval("rpg.errors." + error_type + str(current_error_number))
             if currenterrorvalue != []:
@@ -395,7 +578,7 @@ Channels
 """
 
 
-def rpg_command_channels(bot,rpg,trigger):
+def rpg_command_channels(bot, rpg, trigger):
 
     # current Channels
     rpg.channel_current = trigger.sender
@@ -429,8 +612,8 @@ Users
 """
 
 
-def rpg_command_users(bot,rpg):
-    rpg.opadmin,rpg.owner,rpg.chanops,rpg.chanvoice,rpg.botadmins,rpg.users_current = [],[],[],[],[],[]
+def rpg_command_users(bot, rpg):
+    rpg.opadmin, rpg.owner, rpg.chanops, rpg.chanvoice, rpg.botadmins, rpg.users_current = [], [], [], [], [], []
 
     for user in bot.users:
         rpg.users_current.append(str(user))
@@ -481,12 +664,12 @@ def osd(bot, target_array, text_type, text_array):
     texttargetarray = []
     if not isinstance(target_array, list):
         if not str(target_array).startswith("#"):
-            target_array = nick_actual(bot,str(target_array))
+            target_array = nick_actual(bot, str(target_array))
         texttargetarray.append(target_array)
     else:
         for target in target_array:
             if not str(target).startswith("#"):
-                target = nick_actual(bot,str(target))
+                target = nick_actual(bot, str(target))
             texttargetarray.append(target)
 
     # Make sure we don't cross over IRC limits
@@ -544,7 +727,7 @@ def osd(bot, target_array, text_type, text_array):
         textpartsleft = textparts
         for combinedline in combinedtextarray:
             if text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline,target)
+                bot.action(combinedline, target)
             elif str(target).startswith("#"):
                 bot.msg(target, combinedline)
             elif text_type == 'notice' or text_type == 'priv':
@@ -562,13 +745,30 @@ How to Display Nicks
 
 
 # Outputs Nicks with correct capitalization
-def nick_actual(bot,nick):
+def nick_actual(bot, nick):
     nick_actual = nick
     for u in bot.users:
         if u.lower() == nick_actual.lower():
             nick_actual = u
             continue
     return nick_actual
+
+
+"""
+RPG Version
+"""
+
+
+def versionnumber(bot):
+    rpg_version_plainnow = rpg_version_plain
+    page = requests.get(rpg_version_github_page, headers=None)
+    if page.status_code == 200:
+        tree = html.fromstring(page.content)
+        rpg_version_plainnow = str(tree.xpath(rpg_version_github_xpath))
+        for r in (("\\n", ""), ("['", ""), ("']", ""), ("'", ""), ('"', ""), (',', ""), ('Commits on', "")):
+            rpg_version_plainnow = rpg_version_plainnow.replace(*r)
+        rpg_version_plainnow = rpg_version_plainnow.strip()
+    return rpg_version_plainnow
 
 
 """
@@ -735,7 +935,7 @@ def random_array(bot, inputs):
     for d in inputs:
         temparray.append(d)
     shuffledarray = random.shuffle(temparray)
-    randomselected = random.randint(0,len(temparray) - 1)
+    randomselected = random.randint(0, len(temparray) - 1)
     string = str(temparray[randomselected])
     return string
 
@@ -780,7 +980,7 @@ def range_array(bot, inputs, rangea, rangeb):
         rangea = 1
     if int(rangeb) > len(inputs):
         return string
-    for i in range(int(rangea),int(rangeb) + 1):
+    for i in range(int(rangea), int(rangeb) + 1):
         arg = number_array(bot, inputs, i)
         if string != '':
             string = str(string + " " + arg)
@@ -797,7 +997,7 @@ def excludefrom_array(bot, inputs, number):
     if str(number).endswith("!"):
         number = re.sub(r"!", '', str(number))
     if str(number).isdigit():
-        for i in range(1,len(inputs)):
+        for i in range(1, len(inputs)):
             if int(i) != int(number):
                 arg = number_array(bot, inputs, i)
                 if string != '':
@@ -893,7 +1093,7 @@ def array_compare(bot, indexitem, arraytoindex, arraytocompare):
 
 
 def array_arrangesort(bot, sortbyarray, arrayb):
-    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb),key=itemgetter(0))))
+    sortbyarray, arrayb = (list(x) for x in zip(*sorted(zip(sortbyarray, arrayb), key=itemgetter(0))))
     return sortbyarray, arrayb
 
 
@@ -983,6 +1183,6 @@ def class_create(classname):
             return str(self.default).lower()
         pass
         """
-    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass

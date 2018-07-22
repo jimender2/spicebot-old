@@ -31,7 +31,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     amo = get_database_value(bot, instigator, databasekey) or '0'
     amount = int(amo)
     if command == "accept":
-        reset_database_value(bot,instigator, databasekey)
+        reset_database_value(bot, instigator, databasekey)
         spicebucks(bot, instigator, "plus", amount)
         if amount == 0:
             osd(bot, trigger.sender, 'action', "There are no bribes for you to accept")
@@ -60,14 +60,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 osd(bot, trigger.sender, 'action', instigator + " bribes " + target + " with $" + str(money) + " in nonsequental, unmarked bills.")
             inputstring = str(money)
-            set_database_value(bot,target, databasekey, inputstring)
+            set_database_value(bot, target, databasekey, inputstring)
             spicebucks(bot, instigator, 'minus', money)
         else:
             osd(bot, trigger.sender, 'action', "I'm sorry, I do not know who " + target + " is.")
 
 
 def bank(bot, nick):
-    balance = get_database_value(bot,nick,'spicebucks_bank') or 0
+    balance = get_database_value(bot, nick, 'spicebucks_bank') or 0
     return balance
 
 
@@ -75,7 +75,7 @@ def spicebucks(bot, target, plusminus, amount):
     # command for getting and adding money to account
     success = 'false'
     if type(amount) == int:
-        inbank = bank(bot,target)
+        inbank = bank(bot, target)
     if plusminus == 'plus':
         adjust_database_value(bot, target, 'spicebucks_bank', amount)
         success = 'true'

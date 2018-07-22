@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    gif,randno = getGif("Darwin Award")
+    gif, randno = getGif("Darwin Award")
     if gif:
         osd(bot, trigger.sender, 'say', "Result no: %s: %s" % (randno, gif))
     else:
@@ -32,13 +32,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def getGif(query):
     api = 'Wi33J3WxSDxWsrxLREcQqmO3iJ0dk52N'
     limit = 50
-    urlquery = query.replace(" ","%20")
+    urlquery = query.replace(" ", "%20")
     url = 'http://api.giphy.com/v1/gifs/search?q=' + str(urlquery)+'&api_key=' + str(api) + '&limit=' + str(limit) + '&rating=r'
     data = json.loads(urllib2.urlopen(url).read())
-    randno = randint(0,limit)
+    randno = randint(0, limit)
     try:
         id = data['data'][randno]['id']
         gif = 'https://media2.giphy.com/media/'+id+'/giphy.gif'
     except IndexError:
         gif = ""
-    return gif,randno
+    return gif, randno

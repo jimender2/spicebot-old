@@ -20,8 +20,9 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    requested = get_trigger_arg(bot,triggerargsarray, 0)
-    laws = ['may not injure a human being or, through inaction, allow a human being to come to harm.',
+    requested = get_trigger_arg(bot, triggerargsarray, 0)
+    laws = [
+            'may not injure a human being or, through inaction, allow a human being to come to harm.',
             'must obey orders given it by human beings except where such orders would conflict with the First Law.',
             'must obey orders given it by human beings except where such orders would conflict with the First Law.',
             'must protect its own existence as long as such protection does not conflict with the First or Second Law.',

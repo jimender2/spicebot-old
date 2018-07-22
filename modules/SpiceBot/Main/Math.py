@@ -11,7 +11,10 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-responselist = ["BURN THE WITCH!", "Common Core motherfucker, do you use it?","All I see are numbers that make no sense."]
+responselist = [
+                "BURN THE WITCH!",
+                "Common Core motherfucker, do you use it?",
+                "All I see are numbers that make no sense."]
 
 
 @sopel.module.commands('math')
@@ -22,5 +25,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    displaymsg = get_trigger_arg(bot, responselist,'random')
+    displaymsg = get_trigger_arg(bot, responselist, 'random')
     osd(bot, trigger.sender, 'say', displaymsg)

@@ -5,7 +5,7 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 from sopel.module import commands, example, NOLIMIT
-#import sopel.module
+# import sopel.module
 import sys
 import os
 
@@ -16,6 +16,7 @@ from BotShared import *
 
 import requests
 import xmltodict
+
 
 def woeid_search(query):
     """
@@ -33,6 +34,7 @@ def woeid_search(query):
         return results.get('place')[0]
     return results.get('place')
 
+
 def get_cover(parsed):
     try:
         condition = parsed['channel']['item']['yweather:condition']
@@ -43,6 +45,7 @@ def get_cover(parsed):
     # TODO parse code to get those little icon thingies.
     return text
 
+
 def get_temp(parsed):
     try:
         condition = parsed['channel']['item']['yweather:condition']
@@ -52,12 +55,14 @@ def get_temp(parsed):
     f = round((temp * 1.8) + 32, 2)
     return (u'%d\u00B0C (%d\u00B0F)' % (temp, f))
 
+
 def get_humidity(parsed):
     try:
         humidity = parsed['channel']['yweather:atmosphere']['@humidity']
     except (KeyError, ValueError):
         return 'unknown'
     return "Humidity: %s%%" % humidity
+
 
 def get_chill(parsed):
     try:
@@ -66,7 +71,7 @@ def get_chill(parsed):
     except (KeyError, ValueError):
         return 'unknown'
 
-    chill = round(((f-32)*5/9),2)
+    chill = round(((f-32)*5/9), 2)
     return "Feels like: " + (u'%d\u00B0C (%d\u00B0F)' % (chill, f))
 
 
@@ -123,19 +128,21 @@ def get_wind(parsed):
         degrees = u'\u2198'
     return description + ' ' + str(m_s) + 'm/s (' + degrees + ')'
 
+
 @commands('weather', 'wea')
 @example('.weather London')
 def weather(bot, trigger):
-    enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray)
+
 
 def execute_main(bot, trigger, triggerargsarray):
     botusersarray = bot.users or []
     success = 1
     location = get_trigger_arg(bot, triggerargsarray, 1) or 'nolocation'
 
-##set trigger.nick location
+# set trigger.nick location
     if location == 'setlocation':
         success = 0
         mylocation = get_trigger_arg(bot, triggerargsarray, '2+') or 'nolocation'
@@ -144,23 +151,23 @@ def execute_main(bot, trigger, triggerargsarray):
         else:
             update_location(bot, trigger,  mylocation)
 
-###display target location
-    elif location == 'getlocation' or location =='checklocation':
+# display target location
+    elif location == 'getlocation' or location == 'checklocation':
         success = 0
         target = get_trigger_arg(bot, triggerargsarray, 2) or 'notarget'
         if target == 'notarget':
             target = trigger.nick
-        if target not in  botusersarray:
+        if target not in botusersarray:
             osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + triggerargsarray[1] + " is.")
         else:
             woeid = bot.db.get_nick_value(target, 'woeid') or 0
             if woeid == 0:
-                osd(bot, trigger.sender, 'say', target +  " must first set a location using .weather setloction <place>")
+                osd(bot, trigger.sender, 'say', target + " must first set a location using .weather setloction <place>")
             else:
                 display_location(bot, target, woeid)
 
-###Output weather
-    if success==1:
+# Output weather
+    if success == 1:
         woeid = ''
         if location == 'nolocation':
             woeid = bot.db.get_nick_value(trigger.nick, 'woeid')
@@ -195,13 +202,14 @@ def execute_main(bot, trigger, triggerargsarray):
         windchill = get_chill(results)
         osd(bot, trigger.sender, 'say', u'%s: %s, %s, %s, %s, %s' % (location, cover, temp, humidity, wind, windchill))
 
-#An example of how to use a different command in the same module
-#@commands('setlocation', 'setwoeid')
-#@example('.setlocation Columbus, OH')
-#def update_woeid(bot, trigger):
- #   enablestatus, triggerargsarray = spicebot_prerun(bot, trigger, trigger.group(1))
-  #  if not enablestatus:
-   #     update_location(bot, trigger, triggerargsarray[0])
+# An example of how to use a different command in the same module
+# @commands('setlocation', 'setwoeid')
+# @example('.setlocation Columbus, OH')
+# def update_woeid(bot, trigger):
+#   enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+#  if not enablestatus:
+#        update_location(bot, trigger, triggerargsarray[0])
+
 
 def display_location(bot, target, woeid):
     query = 'q=select * from weather.forecast where woeid="%s" and u=\'c\'' % woeid
@@ -214,8 +222,9 @@ def display_location(bot, target, woeid):
     location = results['channel']['yweather:location']
     city = str(location['@city'])
     state = str(location['@region'])
-    country=str(location['@country'])
+    country = str(location['@country'])
     osd(bot, trigger.sender, 'say', "I have " + target + " down as being near " + city + "," + state + "," + country)
+
 
 def update_location(bot, trigger, data):
     """Set your default weather location."""

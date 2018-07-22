@@ -9,6 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.commands('meraki')
 def execute_main(bot, trigger):
     dispmsg = []

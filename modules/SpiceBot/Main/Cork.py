@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     target = get_trigger_arg(bot, triggerargsarray, 1)
-    isvalid,validmsg = targetcheck(bot,botcom,target,instigator)
+    isvalid, validmsg = targetcheck(bot, botcom, target, instigator)
     if isvalid == 1:
         action = "applies the Cork of Sean to " + target
     else:

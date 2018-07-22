@@ -17,10 +17,10 @@ def execute_main(bot, trigger):
     botcom = class_create('bot')
 
     # User
-    botcom = bot_command_users(bot,botcom)
+    botcom = bot_command_users(bot, botcom)
 
     # Channels
-    botcom = bot_command_channels(bot,botcom,trigger)
+    botcom = bot_command_channels(bot, botcom, trigger)
 
     # instigator
     instigator = class_create('instigator')
@@ -37,7 +37,7 @@ def execute_main(bot, trigger):
         osd(bot, trigger.sender, 'say', "not in the user list")
 
 
-def bot_command_channels(bot,botcom,trigger):
+def bot_command_channels(bot, botcom, trigger):
     botcom.channel_current = trigger.sender
     if not botcom.channel_current.startswith("#"):
         botcom.channel_priv = 1
@@ -52,8 +52,8 @@ def bot_command_channels(bot,botcom,trigger):
     return botcom
 
 
-def bot_command_users(bot,botcom):
-    botcom.opadmin,botcom.owner,botcom.chanops,botcom.chanvoice,botcom.botadmins,botcom.users_current = [],[],[],[],[],[]
+def bot_command_users(bot, botcom):
+    botcom.opadmin, botcom.owner, botcom.chanops, botcom.chanvoice, botcom.botadmins, botcom.users_current = [], [], [], [], [], []
 
     for user in bot.users:
         botcom.users_current.append(str(user))
@@ -101,6 +101,6 @@ def class_create(classname):
             return str(self.default).lower()
         pass
         """
-    exec(compile("class class_" + str(classname) + ": " + compiletext,"","exec"))
+    exec(compile("class class_" + str(classname) + ": " + compiletext, "", "exec"))
     newclass = eval('class_'+classname+"()")
     return newclass

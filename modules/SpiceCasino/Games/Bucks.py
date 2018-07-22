@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 sys.path.append(moduledir)
 from BotShared import *
 
-development_team = ['deathbybandaid','Mace_Whatdo','dysonparkes','under_score','jimender2']
+development_team = ['deathbybandaid', 'Mace_Whatdo', 'dysonparkes', 'under_score', 'jimender2']
 casino_bot_owner = "under_score"
 
 
@@ -24,7 +24,7 @@ minjackbot = 500
 wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
 lotterymax = 30
-slotwheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI','DARKWEB','BLOCKCHAIN','PASSWORD']
+slotwheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI', 'DARKWEB', 'BLOCKCHAIN', 'PASSWORD']
 slottimeout = 5
 colors = ['red', 'black']
 roulettetimeout = 25
@@ -36,12 +36,12 @@ def deal(bot, cardcount):
     hand = []
     deckofcards = deck()
     for i in range(cardcount):
-        card = get_trigger_arg(bot, deckofcards,'random')
+        card = get_trigger_arg(bot, deckofcards, 'random')
         hand.append(card)
     return hand
 
 
-def lotterypayout(bot,level):
+def lotterypayout(bot, level):
     balance = casino(bot)
     payout = 0
     if level == 1:
@@ -71,68 +71,68 @@ def lotterypayout(bot,level):
 
 
 def lotterytimeout(bot):
-    time = get_database_value(bot,'casino', 'lotterytimeout')
+    time = get_database_value(bot, 'casino', 'lotterytimeout')
     return time
 
 
-def setlotterytimeout(bot,commandvalue):
+def setlotterytimeout(bot, commandvalue):
     success = False
     if commandvalue.isdigit():
         lotterytime = int(commandvalue)
         if lotterytime >= 10:
-            set_database_value(bot,'casino', 'lotterytimeout',lotterytime)
+            set_database_value(bot, 'casino', 'lotterytimeout', lotterytime)
             success = True
         return success
 
 
 # ______banking
-def bank(bot,botcom, nick):
+def bank(bot, botcom, nick):
     balance = 0
     if nick == 'casino':
-        balance = get_database_value(bot,nick,'spicebucks_bank') or 0
+        balance = get_database_value(bot, nick, 'spicebucks_bank') or 0
     else:
-        isvalid = buckscheck(bot,botcom,nick)
+        isvalid = buckscheck(bot, botcom, nick)
         if isvalid == 1 or isvalid == 2:
-            balance = get_database_value(bot,nick,'spicebucks_bank') or 0
+            balance = get_database_value(bot, nick, 'spicebucks_bank') or 0
     return balance
 
 
-def transfer(bot,botcom, target, instigator, amount):
+def transfer(bot, botcom, target, instigator, amount):
     success = False
     if not (target == 'casino' or instigator == 'casino'):
-        isvalid = buckscheck(bot,botcom,target)
-        isvalidtarget = buckscheck(bot,botcom,instigator)
+        isvalid = buckscheck(bot, botcom, target)
+        isvalidtarget = buckscheck(bot, botcom, instigator)
         if not (isvalid == 1 and isvalidtarget == 1):
             return success
 
     if amount >= 0:
-        instigator_balance = bank(bot,botcom,instigator)
+        instigator_balance = bank(bot, botcom, instigator)
         if amount <= instigator_balance:
-            adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
-            adjust_database_value(bot,instigator, 'spicebucks_bank', amount)
+            adjust_database_value(bot, target, 'spicebucks_bank', -(amount))
+            adjust_database_value(bot, instigator, 'spicebucks_bank', amount)
             success = True
     return success
 
 
-def addbucks(bot,botcom,target,amount):
+def addbucks(bot, botcom, target, amount):
     success = False
     if not (target == 'casino'):
-        isvalid = buckscheck(bot,botcom,target)
+        isvalid = buckscheck(bot, botcom, target)
         if not (isvalid == 1):
             return success
     if amount > 0:
-        adjust_database_value(bot,target, 'spicebucks_bank', amount)
+        adjust_database_value(bot, target, 'spicebucks_bank', amount)
         success = True
     return success
 
 
-def minusbucks(bot,botcom,target,amount):
+def minusbucks(bot, botcom, target, amount):
     success = False
-    isvalid = buckscheck(bot,botcom,target)
+    isvalid = buckscheck(bot, botcom, target)
     if not (isvalid == 1):
         return success
     if amount > 0:
-        adjust_database_value(bot,target, 'spicebucks_bank', -(amount))
+        adjust_database_value(bot, target, 'spicebucks_bank', -(amount))
         success = True
     return success
 
@@ -158,7 +158,7 @@ def buckscheck(bot, botcom, target):
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
-        return validtarget,validtargetmsg
+        return validtarget, validtargetmsg
 
     if target in botcom.users_current:
         return validtarget

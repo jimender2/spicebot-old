@@ -18,8 +18,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    goodarray = ['good','g']
-    badarray = ['bad','b','bad?','good?']
+    goodarray = ['good', 'g']
+    badarray = ['bad', 'b', 'bad?', 'good?']
     goodorbad = get_trigger_arg(bot, triggerargsarray, 0) or 'bad'
     if goodorbad in goodarray:
         message = "WooHoo!"

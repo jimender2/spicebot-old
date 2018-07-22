@@ -9,7 +9,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-specifics = ['brightlights','doctor','EULA','IT','legal','law','Cipher-0','Cipher','IT_Sean','parent','pornhub','porn']
+specifics = ['brightlights', 'doctor', 'EULA', 'IT', 'legal', 'law', 'Cipher-0', 'Cipher', 'IT_Sean', 'parent', 'pornhub', 'porn']
+
 
 @sopel.module.commands('disclaimer')
 def mainfunction(bot, trigger):
@@ -17,12 +18,13 @@ def mainfunction(bot, trigger):
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
-    subdisclaimer = get_trigger_arg(bot,triggerargsarray,1)
-    person = get_trigger_arg(bot,triggerargsarray,2) or instigator
+    subdisclaimer = get_trigger_arg(bot, triggerargsarray, 1)
+    person = get_trigger_arg(bot, triggerargsarray, 2) or instigator
     if subdisclaimer == 'options':
-        osd(bot, trigger.sender, 'say', "Current options for this module are: %s" % get_trigger_arg(bot,specifics,'list'))
+        osd(bot, trigger.sender, 'say', "Current options for this module are: %s" % get_trigger_arg(bot, specifics, 'list'))
     elif subdisclaimer in specifics:
         if subdisclaimer == 'brightlights':
             osd(bot, trigger.sender, 'say', "Individuals sensitive to bright lights or with epilepsy may find the quick bright text the bot speaks with to be troublesome. Any epileptic reaction is not the fault of the bot, the channel, or its denizens.")
@@ -43,4 +45,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif subdisclaimer == 'IT_Sean':
             osd(bot, trigger.sender, 'say', "Should you ever encounter gases released by Sean, please be sure to inform your nearest biosafety agency of the incident.")
     else:
-        osd(bot, trigger.sender, 'say', "%s is not your doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person,person))
+        osd(bot, trigger.sender, 'say', "%s is not your doctor. The views/opinions/information expressed by %s is not intended or implied to be a substitute for professional medical advice, diagnosis or treatment." % (person, person))

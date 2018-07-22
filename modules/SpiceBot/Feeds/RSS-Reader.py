@@ -21,9 +21,9 @@ header = {'User-Agent': str(ua.chrome)}
 
 @sopel.module.require_admin
 @sopel.module.commands('rssreset')
-def reset(bot,trigger):
+def reset(bot, trigger):
     feedselect = trigger.group(2)
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot,bot.nick)+"/RSS-Feeds/main/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot, bot.nick)+"/RSS-Feeds/main/")
     if not feedselect:
         osd(bot, trigger.sender, 'say', "Which Feed are we resetting?")
     elif feedselect == 'all':
@@ -42,7 +42,7 @@ def reset(bot,trigger):
 # Automatic Run
 @sopel.module.interval(60)
 def autorss(bot):
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot,bot.nick)+"/RSS-Feeds/main/")
+    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot, bot.nick)+"/RSS-Feeds/main/")
     rssarray = []
     for filename in os.listdir(RSSFEEDSDIR):
         rssarray.append(filename)
@@ -50,10 +50,10 @@ def autorss(bot):
         configfile = os.path.join(RSSFEEDSDIR, rssfeed)
         config = ConfigParser.ConfigParser()
         config.read(configfile)
-        feedname = config.get("configuration","feedname")
-        url = str(config.get("configuration","url"))
-        parentnumber = int(config.get("configuration","parentnumber"))
-        childnumber = int(config.get("configuration","childnumber"))
+        feedname = config.get("configuration", "feedname")
+        url = str(config.get("configuration", "url"))
+        parentnumber = int(config.get("configuration", "parentnumber"))
+        childnumber = int(config.get("configuration", "childnumber"))
         dispmsg = []
         dispmsg.append("["+feedname+"]")
         page = requests.get(url, headers=header)
@@ -68,7 +68,7 @@ def autorss(bot):
             newcontent = True
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
-            if newcontent == True:
+            if newcontent:
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
                 links = xmldoc.getElementsByTagName('link')

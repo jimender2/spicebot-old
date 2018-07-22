@@ -2,7 +2,8 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
-import sys, re
+import sys
+import re
 from num2words import num2words
 import sys
 import os
@@ -79,7 +80,7 @@ def trernslert(werds):
 
 def ermergerd(w):
     w = w.strip().lower()
-    derctshernerer = {'me':'meh','you':'u', 'are':'er', "you're":"yer", "i'm":"erm", "i've":"erv", "my":"mah", "the":"da", "omg":"ermahgerd"}
+    derctshernerer = {'me': 'meh', 'you': 'u', 'are': 'er', "you're": "yer", "i'm": "erm", "i've": "erv", "my": "mah", "the": "da", "omg": "ermahgerd"}
     if w in derctshernerer:
         return derctshernerer[w].upper()
     else:

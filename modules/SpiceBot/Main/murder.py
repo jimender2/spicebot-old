@@ -14,7 +14,7 @@ databasekey = 'murder'
 # author jimender2
 
 
-@sopel.module.commands('murder','moida')
+@sopel.module.commands('murder', 'moida')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'murder')
     if not enablestatus:
@@ -51,6 +51,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
         osd(bot, trigger.sender, 'say', message)
+    elif command in ["crows", 'crow']:
+        osd(bot, trigger.sender, 'say', "A Murder of Crows swarms the room looking for dead bodies.")
+        return
 
     else:
         weapontype = get_trigger_arg(bot, existingarray, "random") or ''

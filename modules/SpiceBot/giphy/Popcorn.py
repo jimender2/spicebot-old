@@ -9,16 +9,18 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-#author jimender2
+# author jimender2
 
-weapontypes = ["Axe","Sword","Revolver"]
-commandarray = ["add","remove","count","last"]
+weapontypes = ["Axe", "Sword", "Revolver"]
+commandarray = ["add", "remove", "count", "last"]
 
-@sopel.module.commands('popcorn','pc')
+
+@sopel.module.commands('popcorn', 'pc')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'popcorn')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'action', "grabs popcorn and goes to watch the action")

@@ -24,5 +24,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
     displaystring = "bullshit"
     if inputstring:
-        displaystring = inputstring.replace(' ','-')
+        displaystring = inputstring.replace(' ', '-')
     osd(bot, trigger.sender, 'say', basestring+displaystring)

@@ -20,10 +20,11 @@ from BotShared import *
 
 url = 'https://events.actualtechmedia.com'
 
+
 @sopel.module.commands('atwebby')
 def execute_main(bot, trigger):
-    #webbyauto(bot)
-    page = requests.get(url,headers = None)
+    # webbyauto(bot)
+    page = requests.get(url, headers=None)
     if page.status_code == 200:
         dispmsg = []
         dispmsg.append("[ActualTech Webinar]")
@@ -35,9 +36,10 @@ def execute_main(bot, trigger):
             dispmsg.append('BONUS: ' + getwebbybonus())
         osd(bot, trigger.sender, 'say', dispmsg)
 
+
 @sopel.module.interval(60)
 def webbyauto(bot):
-    page = requests.get(url,headers = None)
+    page = requests.get(url, headers=None)
     if page.status_code == 200:
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.UTC)
@@ -55,6 +57,7 @@ def webbyauto(bot):
             for channel in bot.channels:
                 osd(bot, channel, 'say', dispmsg)
 
+
 def getwebbytitle():
     tree = gettree()
     webbytitle = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/h2/a/text()'))
@@ -63,11 +66,13 @@ def getwebbytitle():
     webbytitle = unicode_string_cleanup(webbytitle)
     return webbytitle
 
+
 def getwebbytimeuntil():
     nowtime = datetime.datetime.utcnow()
     webbytime = getwebbytime()
     timecompare = get_timeuntil(nowtime, webbytime)
     return timecompare
+
 
 def getwebbytime():
     now = datetime.datetime.utcnow()
@@ -80,6 +85,7 @@ def getwebbytime():
     webbytime = webbytz.localize(webbytime)
     return webbytime
 
+
 def getwebbylink():
     tree = gettree()
     webbylink = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[1]/a/@href'))
@@ -88,18 +94,20 @@ def getwebbylink():
     webbylink = str(url + webbylink.split("&", 1)[0])
     return webbylink
 
+
 def getwebbybonus():
     tree = gettree()
     try:
         webbybonus = str(tree.xpath('//*[@id="HeaderUpcoming"]/div/div[2]/h3/a/strong/strong/text()'))
-        for r in (("\\r", ""), ("\\n", ""), ("']",""), ("]",""), ('"',''), (" '",""), ("['","")):
+        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", "")):
             webbybonus = webbybonus.replace(*r)
         webbybonus = unicode_string_cleanup(webbybonus)
     except IndexError:
         webbybonus = ''
     return webbybonus
 
+
 def gettree():
-    page = requests.get(url,headers = None)
-    tree= html.fromstring(page.content)
+    page = requests.get(url, headers=None)
+    tree = html.fromstring(page.content)
     return tree

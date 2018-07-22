@@ -11,7 +11,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-import Spicebucks
+# import Spicebucks
 
 # hungergamesfee=5
 
@@ -49,7 +49,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 # random.shuffle(randomtargetarray)
                 # osd(bot, trigger.sender, 'say', volunteer + " volunteered as tribute for " + safetribute + ". The first to die was " + str(randomtargetarray[1]) + ". The victor is " + str(randomtargetarray[0]))
                 tributes = []
-                weapons = ['dagger','sword','knife','bow and arrow', 'crossbow']
+                weapons = ['dagger', 'sword', 'knife', 'bow and arrow', 'crossbow']
                 for tribute in randomtargetarray:
                     random.shuffle(weapons)
                     tributerow = [tribute, 100, weapons[0]]

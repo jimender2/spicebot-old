@@ -14,18 +14,18 @@ from BotShared import *
 import Spicebucks
 
 # Commands that work in privmsg
-privcmdlist = ['check','admin','bladder','fridge']
+privcmdlist = ['check', 'admin', 'bladder', 'fridge']
 
 # Admin Commands
 admincommands = ['reset']
 
 # Protected users
-protectednicks = ['rycuda','Tech_Angel']
+protectednicks = ['rycuda', 'Tech_Angel']
 # Creator user
 creatornicks = ["IT_Sean"]
 
 # Drinks
-drinkslist = ['Gatorade','Water','Soda','Beer']
+drinkslist = ['Gatorade', 'Water', 'Soda', 'Beer']
 drinkscost = 5
 
 # Days before reclaim available
@@ -54,7 +54,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # Names/nicks for code
     instigator = trigger.nick
     owner = bot.config.core.owner
-    mastername = bot.db.get_nick_value(instigator,'claimed') or ''
+    mastername = bot.db.get_nick_value(instigator, 'claimed') or ''
     target = get_trigger_arg(bot, triggerargsarray, 1)
     admintarget = get_trigger_arg(bot, triggerargsarray, 2)
     # Names of channel
@@ -63,6 +63,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # Dates for usage
     todaydate = datetime.date.today()
     storedate = str(todaydate)
+    # List all Bots
+    botnicks = bot_config_names(bot)
     # Good to claim?
     okaytoclaim = 1
 
@@ -82,7 +84,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not admintarget:
             admintarget = instigator
         claimdate = bot.db.get_nick_value(admintarget, 'claimdate')
-        claimedby = bot.db.get_nick_value(admintarget,'claimed')
+        claimedby = bot.db.get_nick_value(admintarget, 'claimed')
         if not claimedby:
             if admintarget == instigator:
                 osd(bot, trigger.sender, 'say', "Nobody has a claim on you yet, %s." % instigator)
@@ -104,20 +106,20 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
         if not admintarget:
             admintarget = instigator
-        bladdercontents = bot.db.get_nick_value(admintarget,'bladdercapacity')
+        bladdercontents = bot.db.get_nick_value(admintarget, 'bladdercapacity')
         if not bladdercontents:
             if admintarget.lower() not in [u.lower() for u in bot.users]:
                 osd(bot, trigger.sender, 'say', "Please specify someone to check")
             elif admintarget == instigator:
-                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bot.db.set_nick_value(admintarget, 'bladdercapacity', bladdersize)
                 bladdercontents = bladdersize
                 osd(bot, trigger.sender, 'say', "You have " + str(int(bladdercontents/claimcost)) + " claims left in your bladder at present.")
             elif admintarget in creatornick:
-                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bot.db.set_nick_value(admintarget, 'bladdercapacity', bladdersize)
                 bladdercontents = bladdersize
                 osd(bot, trigger.sender, 'say', admintarget + "has " + str(int(bladdercontents/SeanCost)) + " claims left in his almighty bladder.")
             else:
-                bot.db.set_nick_value(admintarget,'bladdercapacity',bladdersize)
+                bot.db.set_nick_value(admintarget, 'bladdercapacity', bladdersize)
                 bladdercontents = bladdersize
                 osd(bot, trigger.sender, 'say', admintarget + " has " + str(int(bladdercontents/claimcost)) + " claims left in their bladder at present.")
         else:
@@ -135,13 +137,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         okaytoclaim = 0
         if not admintarget:
             admintarget = instigator
-        fridgecontents = bot.db.get_nick_value(admintarget,'fridgecontents')
+        fridgecontents = bot.db.get_nick_value(admintarget, 'fridgecontents')
         osd(bot, trigger.sender, 'say', "The fridge is a Work in Progress, " + admintarget)
 
     # Admin functions
     elif target == 'admin':
         okaytoclaim = 0
-        function = get_trigger_arg(bot,triggerargsarray, 2)
+        function = get_trigger_arg(bot, triggerargsarray, 2)
         admintarget = get_trigger_arg(bot, triggerargsarray, 3)
         if trigger.admin:
             if function not in admincommands:
@@ -153,8 +155,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     elif admintarget.lower() not in [u.lower() for u in bot.users]:
                         osd(bot, trigger.sender, 'say', "I'm not sure who that is.")
                     else:
-                        bot.db.set_nick_value(admintarget,'claimed','')
-                        bot.db.set_nick_value(admintarget,'claimdate','')
+                        bot.db.set_nick_value(admintarget, 'claimed', '')
+                        bot.db.set_nick_value(admintarget, 'claimdate', '')
                         osd(bot, trigger.sender, 'say', "Claim info for " + admintarget + " has been reset!")
         else:
             osd(bot, trigger.sender, 'say', "Ha. You're not an admin, get lost.")
@@ -166,19 +168,19 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'action', 'mutters "moron".')
 
     # Can't claim the bot
-    elif target == bot.nick:
+    elif target.lower() in [u.lower() for u in botnicks]:
         okaytoclaim = 0
         if instigator in creatornicks:
-            osd(bot, trigger.sender, 'say', "I'm sorry Sir, but I cannot be claimed by anyone but " + owner + ".")
+            osd(bot, trigger.sender, 'say', "I'm sorry Sir, but %s cannot be claimed by anyone but %s." % (target, owner))
         else:
-            osd(bot, trigger.sender, 'say', "I have already been claimed by " + owner + "!")
+            osd(bot, trigger.sender, 'say', "Nope. %s has a permanent claim on %s!" % (owner, target))
 
     # Can't claim the creator
     elif target.lower() in [u.lower() for u in creatornicks]:
         okaytoclaim = 0
         osd(bot, trigger.sender, 'say', "Foolish mortal! Tremble before the might of the Almighty %s!" % target)
-        bot.db.set_nick_value(instigator,'claimed',target)
-        bot.db.set_nick_value(instigator,'claimdate',storedate)
+        bot.db.set_nick_value(instigator, 'claimed', target)
+        bot.db.set_nick_value(instigator, 'claimdate', storedate)
 
     # Can't claim your claimant
     elif target.lower() == mastername.lower():
@@ -206,16 +208,16 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     # Input checks out. Verify dates and go ahead.
     elif okaytoclaim:
-        claimedby = bot.db.get_nick_value(target,'claimed') or ''
-        bladdercontents = bot.db.get_nick_value(instigator,'bladdercapacity') or bladdersize
+        claimedby = bot.db.get_nick_value(target, 'claimed') or ''
+        bladdercontents = bot.db.get_nick_value(instigator, 'bladdercapacity') or bladdersize
         # First time claimed
         if claimedby == '':
             if instigator in creatornicks:
                 osd(bot, trigger.sender, 'say', instigator + " releases the contents of his bladder on " + target + "! All should recognize this profound claim of ownership upon " + target + "!")
             else:
                 osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + "! Claimed!")
-            bot.db.set_nick_value(target,'claimed',instigator)
-            bot.db.set_nick_value(target,'claimdate',storedate)
+            bot.db.set_nick_value(target, 'claimed', instigator)
+            bot.db.set_nick_value(target, 'claimdate', storedate)
             # Pay instigator Spicebucks (firstclaim)
             Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
 
@@ -231,8 +233,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     osd(bot, trigger.sender, 'say', instigator + " releases the contents of his bladder on " + target + "! His Lordship has been renewed for all to recognize!")
                 else:
                     osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + " again! The claim has been renewed!")
-                bot.db.set_nick_value(target,'claimed',instigator)
-                bot.db.set_nick_value(target,'claimdate',storedate)
+                bot.db.set_nick_value(target, 'claimed', instigator)
+                bot.db.set_nick_value(target, 'claimdate', storedate)
                 # Pay instigator Spicebucks (renewclaim)
                 Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
             else:
@@ -249,8 +251,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     osd(bot, trigger.sender, 'say', instigator + ' releases the contents of his bladder on ' + target + '! ' + target + ' should be grateful for their new lord and master!')
                 else:
                     osd(bot, trigger.sender, 'say', instigator + " urinates on " + target + "! The claim has been stolen from " + claimedby + "!")
-                bot.db.set_nick_value(target,'claimed',instigator)
-                bot.db.set_nick_value(target,'claimdate',storedate)
+                bot.db.set_nick_value(target, 'claimed', instigator)
+                bot.db.set_nick_value(target, 'claimdate', storedate)
                 # Pay instigator Spicebucks (stolenclaim)
                 Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
@@ -268,10 +270,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def halfhourtimer(bot):
     now = time.time()
     for u in bot.users:
-        bladdercontents = bot.db.get_nick_value(u,'bladdercapacity') or 'unused'
+        bladdercontents = bot.db.get_nick_value(u, 'bladdercapacity') or 'unused'
         if bladdercontents == 'unused':
             bladdercontents = 10
-            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
+            bot.db.set_nick_value(u, 'bladdercapacity', bladdercontents)
         elif bladdercontents < bladdersize:
             bladdercontents = bladdercontents + 1
-            bot.db.set_nick_value(u,'bladdercapacity',bladdercontents)
+            bot.db.set_nick_value(u, 'bladdercapacity', bladdercontents)

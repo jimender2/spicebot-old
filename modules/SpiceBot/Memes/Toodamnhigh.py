@@ -11,7 +11,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('toodamnhigh','toohigh')
+@sopel.module.commands('toodamnhigh', 'toohigh')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'toodamnhigh')
     if not enablestatus:

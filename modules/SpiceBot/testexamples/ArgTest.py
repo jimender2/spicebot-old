@@ -6,12 +6,14 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
+
 @sopel.module.require_admin
 @sopel.module.commands('argtest')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
+
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     arraytest = ['main']
@@ -31,8 +33,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', str(channel))
     totalarray = len(triggerargsarray)
     totalarray = totalarray + 1
-    simulatedvaluearray = ['5+','5-','5<','5>','last','5^7','5!','random','list']
-    for i in range(0,totalarray):
+    simulatedvaluearray = ['5+', '5-', '5<', '5>', 'last', '5^7', '5!', 'random', 'list']
+    for i in range(0, totalarray):
         arg = get_trigger_arg(triggerargsarray, i)
         osd(bot, trigger.sender, 'say', "arg " + str(i) + " = " + str(arg))
     for x in simulatedvaluearray:
