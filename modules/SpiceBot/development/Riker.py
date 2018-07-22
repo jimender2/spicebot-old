@@ -26,8 +26,8 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     data = urllib.urlopen(site).read()
     data = data.split(" ")
-    max = get_trigger_arg(bot, triggerargsarray, 1)
-    max = max - 1
+    max = int(get_trigger_arg(bot, triggerargsarray, 1))
+    max = max
     message = ""
 
     i = 0
