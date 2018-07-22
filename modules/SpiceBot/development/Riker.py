@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import random
 import urllib
+import urllib2
 import sys
 import os
 from word2number import w2n
