@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import urllib2
 import json
+import requests
 from BeautifulSoup import BeautifulSoup
 from random import random
 from random import randint
