@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     rando = randint(2, 22)
     osd(bot, trigger.sender, 'say', "Please insert " + str(rando) + " bitcoins, for that kind of service.")
     price = get_price()
-    osd(bot, trigger.sender, 'say', "They are $" + str(price) + " for one right now.")
+    osd(bot, trigger.sender, 'say', "One bitcoin is priced at $" + str(price) + " right now.")
 
 
 def get_price():
