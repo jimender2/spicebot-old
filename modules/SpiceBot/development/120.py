@@ -22,5 +22,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not str(current_translate).isdigit():
         osd(bot, trigger.sender, 'say', "Sorry. What you input is not binary")
     else:
-        if '2' in current_translate:
+        if '2' or '3' in current_translate:
             osd(bot, trigger.sender, 'say', "Sorry")
