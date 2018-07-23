@@ -22,8 +22,7 @@ admincommands = ['reset']
 protectednicks = ['rycuda', 'Tech_Angel']
 # Creator user
 creatornicks = ["IT_Sean"]
-# Bot Nicks
-# botnicks = ["spicebot","spiceduels"]
+
 # Drinks
 drinkslist = ['Gatorade', 'Water', 'Soda', 'Beer']
 drinkscost = 5
