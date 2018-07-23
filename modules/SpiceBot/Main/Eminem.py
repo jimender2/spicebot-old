@@ -8,7 +8,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-fra = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/momsspaghetti.txt'
+fra = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files/momsspaghetti.txt'
 
 
 @sopel.module.commands('eminem')

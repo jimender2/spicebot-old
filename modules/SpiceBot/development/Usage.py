@@ -23,7 +23,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
     target = get_trigger_arg(bot, triggerargsarray, 1)
     instigator = trigger.nick
-    GITWIKIURL = 'https://github.com/deathbybandaid/sopel-modules/wiki/Usage'
+    GITWIKIURL = 'https://github.com/SpiceBot/sopel-modules/wiki/Usage'
     ## Variable ARGS
     moduletocheck = get_trigger_arg(bot, triggerargsarray, 1) or instigator
     checktarget = get_trigger_arg(bot, triggerargsarray, 2)

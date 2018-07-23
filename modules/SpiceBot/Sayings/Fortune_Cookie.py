@@ -8,8 +8,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-devcookies = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/fortune_cookie.txt'
-cookies = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/fortune_cookie.txt'
+devcookies = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/dev/Text-Files/fortune_cookie.txt'
+cookies = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files/fortune_cookie.txt'
 devbot = 'dev'  # Enables the bot to distinguish if in test
 
 

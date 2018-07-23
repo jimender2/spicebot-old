@@ -8,7 +8,7 @@ shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
-GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
+GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 
 
 @sopel.module.commands('help')

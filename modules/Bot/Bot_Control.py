@@ -20,7 +20,7 @@ from BotShared import *
 log_path = "data/templog.txt"
 log_file_path = os.path.join(moduledir, log_path)
 
-GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki"
+GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki"
 
 # TODO add a notification of traceback errors
 # TODO add warn functionality
@@ -404,7 +404,7 @@ def bot_command_function_github(bot, trigger, botcom, instigator):
     main_subcommand = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in valid_main_subcom], 1) or 'show'
 
     if main_subcommand == 'show':
-        osd(bot, botcom.channel_current, 'say', 'Spiceworks IRC Modules     https://github.com/deathbybandaid/SpiceBot')
+        osd(bot, botcom.channel_current, 'say', 'Spiceworks IRC Modules     https://github.com/SpiceBot/SpiceBot')
         return
 
     if main_subcommand == 'block':
