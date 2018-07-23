@@ -35,6 +35,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             max = max - 1
 
+    times = 1
+    t = 1
+
+    if max > 963:
+        max = 962
+        msg = "Sorry. I can only do up to 963 words. Here are 963 words and if you need more you can do Ctrl + C / Ctrl + V"
+        osd(bot, trigger.sender, 'say', msg)
+
     i = 0
     while i <= max:
         message = message + dataa[i] + " "
