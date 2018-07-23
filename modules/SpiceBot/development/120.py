@@ -23,3 +23,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "Sorry. What you input is not binary")
     else:
         message = current_translate.replace('0', '1')
+        osd(bot, trigger.sender, 'say', message)
