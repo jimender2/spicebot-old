@@ -105,7 +105,8 @@ rpg_error_commands = [
                     "You may only run a unique command once at a time using the multicom feature.",  # 5
                     "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
-                    "You don't have a command hotlinked to $list"  # 8
+                    "You don't have a command hotlinked to $list",  # 8
+                    "It appears that your use of an alternate command failed. $list command(s) were at fault."  # 9
 ]
 
 # Configuration
@@ -117,7 +118,7 @@ rpg_error_settings = [
                     "What number would you like to view/modify?",  # 4
                     "You don't appear to have any hotkeys.",  # 5
                     "You don't have a command hotlinked to $list",  # 6
-                    "You can't set an empty hotkey.",  # 7
+                    "You cannot set an empty hotkey.",  # 7
                     "$list does not appear to be a valid command to hotkey."  # 8
 ]
 

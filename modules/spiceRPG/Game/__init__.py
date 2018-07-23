@@ -192,8 +192,12 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
+        startcom = rpg.command_main
         rpg.triggerargsarray.remove(rpg.command_main)
         rpg.command_main = rpg_valid_commands_alternative_find_match(bot, rpg.command_main)
+        if rpg.command_main == 'invalidcommand':
+            errors(bot, rpg, 'commands', 9, startcom)
+            return rpg
         rpg.triggerargsarray.insert(0, rpg.command_main)
         rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
