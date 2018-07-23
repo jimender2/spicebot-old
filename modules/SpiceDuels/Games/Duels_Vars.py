@@ -16,11 +16,11 @@ Github Information
 
 # This Fethes the last modified date from github
 duels_version_plain = '1.5.17'  # If the online check fails
-duels_version_github_page = "https://github.com/deathbybandaid/SpiceBot/commits/master/modules/SpiceDuels/Games/Duels.py"
+duels_version_github_page = "https://github.com/SpiceBot/SpiceBot/commits/master/modules/SpiceDuels/Games/Duels.py"
 duels_version_github_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 # Documentation and Development
-GITWIKIURL = "https://github.com/deathbybandaid/SpiceBot/wiki/Duels"  # Wiki URL, change if not using with spicebot
+GITWIKIURL = "https://github.com/SpiceBot/SpiceBot/wiki/Duels"  # Wiki URL, change if not using with spicebot
 development_team = ['deathbybandaid', 'Mace_Whatdo', 'dysonparkes', 'under_score', 'jimender2']  # Dev Team
 
 duels_bot_owner = "deathbybandaid"
