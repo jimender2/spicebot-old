@@ -175,7 +175,10 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
+        rpg.triggerargsarray.remove(rpg.command_main)
         rpg.command_main = rpg_valid_commands_alternative_find_match(bot, rpg.command_main)
+        rpg.triggerargsarray.insert(0, rpg.command_main)
+        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
