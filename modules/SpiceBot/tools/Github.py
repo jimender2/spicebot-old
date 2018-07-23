@@ -70,8 +70,8 @@ def execute_main(bot, trigger):
         if noquery:
             osd(bot, trigger.sender, 'say', "What feature/issue do you want to post?")
     else:
-        if inputtext.startswith('duel'):
-            title = "DUELS: " + title
+        if inputtext.startswith('duel') or inputtext.startswith('rpg'):
+            title = "DUELS/RPG: " + title
             assignee = "deathbybandaid"
             body = inputtext
             body = str(instigator + action + ": " + body)
