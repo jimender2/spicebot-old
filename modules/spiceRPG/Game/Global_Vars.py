@@ -51,6 +51,24 @@ rpg_commands_valid_settings = ['settings']
 # Basic Commands
 rpg_commands_valid_basic = ['author','intent','about','version','docs','usage']
 
+
+"""
+Alternative Commands
+"""
+
+
+# Valid Alternative Commands listing
+rpg_commands_valid_alt_types = ['docs','hotkey','author']
+
+# Docs
+rpg_commands_valid_alt_docs = ['help','man']
+
+# Hotkey
+rpg_commands_valid_alt_hotkey = ['hotlink']
+
+# Author
+rpg_commands_valid_alt_author = ['credit','credits']
+
 """
 Subcommands
 """
@@ -64,13 +82,6 @@ subcommands_valid_admin_channel = ['game','devmode']
 subcommands_valid_settings = ['hotkey']
 subcommands_default_settings = 0
 subcommands_valid_settings_hotkey = ['view','update','reset','list']
-
-"""
-Map System
-"""
-
-
-rpg_valid_directions = ['north','south','east','west']
 
 
 """
