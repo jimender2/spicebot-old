@@ -176,7 +176,7 @@ def command_process(bot, trigger, rpg, instigator):
     # Verify Command spelling if not a real command
     if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts:
         startcom = rpg.command_main
-        command_type_list = ['all', 'alt']
+        command_type_list = ['all', 'alts']
         for comtype in command_type_list:
             if rpg.command_main == startcom:
                 comtype_eval = eval('rpg.valid_commands_' + comtype)
