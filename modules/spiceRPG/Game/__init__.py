@@ -173,6 +173,23 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
             rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
+    # Verify Command spelling if not a real command
+    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts:
+        startcom = rpg.command_main
+        command_type_list = ['all', 'alt']
+        for comtype in command_type_list:
+            if rpg.command_main == startcom:
+                comtype_eval = eval('rpg.valid_commands_' + comtype)
+                for com in comtype_eval:
+                    if rpg.command_main == startcom:
+                        similarlevel = similar(rpg.command_main.lower(), com)
+                        if similarlevel >= .75:
+                            rpg.command_main = com
+        if rpg.command_main != startcom:
+            rpg.triggerargsarray.remove(startcom)
+            rpg.triggerargsarray.insert(0, rpg.command_main)
+            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
         rpg.triggerargsarray.remove(rpg.command_main)
@@ -186,7 +203,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar()
+    if rpg.command_main not in rpg.valid_commands_all:
         errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 
@@ -419,6 +436,52 @@ def timed_logcheck(bot):
                 startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
                 startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
                 osd(bot, channel, 'notice', startup_monologue)
+
+
+"""
+Switches
+"""
+
+
+def find_switch_equal(bot, inputarray, switch):
+    exitoutput = ''
+    switchtofind = str("-"+str(switch)+'="')
+    arraymarker = 0
+    beguinemark, finishmark = 0, 0
+    if [wordpart for wordpart in inputarray if wordpart.startswith(switchtofind)]:
+        for partial in inputarray:
+            arraymarker = arraymarker + 1
+            if partial.startswith(switchtofind):
+                beguinemark = arraymarker
+            if partial.endswith('"'):
+                if not finishmark and beguinemark != 0:
+                    finishmark = arraymarker
+                    continue
+        if finishmark != 0:
+            exitoutputrange = str(str(beguinemark) + "^" + str(finishmark))
+            exitoutput = get_trigger_arg(bot, inputarray, exitoutputrange)
+            exitoutput = get_trigger_arg(bot, exitoutput, 0)  # new
+            # exitoutput = exitoutput.replace("-"+switch+'=', ' ')
+            # exitoutput = exitoutput.replace('"', '')
+            # exitoutput = exitoutput.strip()
+    return exitoutput
+
+
+"""
+Small Functions
+"""
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def countX(lst, x):
+    count = 0
+    for ele in lst:
+        if (ele == x):
+            count = count + 1
+    return count
 
 
 """
