@@ -72,7 +72,7 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg = rpg_valid_commands_all(bot, rpg)
 
     # Alternative Commands
-    rpg = rpg_commands_valid_alts
+    rpg = rpg_commands_valid_alts(bot, rpg)
 
     # TODO valid stats
 
@@ -531,7 +531,7 @@ def rpg_valid_commands_all(bot, rpg):
 
 
 # All Alternative commands
-def rpg_commands_valid_alts(bot):
+def rpg_commands_valid_alts(bot, rpg):
     rpg.valid_commands_alts = []
     for subcom in rpg_commands_valid_alt_types:
         rpg_commands_alternate_eval = eval("rpg_commands_valid_alt_"+subcom)
