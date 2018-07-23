@@ -51,6 +51,24 @@ rpg_commands_valid_settings = ['settings']
 # Basic Commands
 rpg_commands_valid_basic = ['author','intent','about','version','docs','usage']
 
+
+"""
+Alternative Commands
+"""
+
+
+# Valid Alternative Commands listing
+rpg_commands_valid_alt_types = ['docs','hotkey','author']
+
+# Docs
+rpg_commands_valid_alt_docs = ['help','man']
+
+# Hotkey
+rpg_commands_valid_alt_hotkey = ['hotlink']
+
+# Author
+rpg_commands_valid_alt_author = ['credit','credits']
+
 """
 Subcommands
 """
@@ -64,13 +82,6 @@ subcommands_valid_admin_channel = ['game','devmode']
 subcommands_valid_settings = ['hotkey']
 subcommands_default_settings = 0
 subcommands_valid_settings_hotkey = ['view','update','reset','list']
-
-"""
-Map System
-"""
-
-
-rpg_valid_directions = ['north','south','east','west']
 
 
 """
@@ -94,7 +105,8 @@ rpg_error_commands = [
                     "You may only run a unique command once at a time using the multicom feature.",  # 5
                     "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
-                    "You don't have a command hotlinked to $list"  # 8
+                    "You don't have a command hotlinked to $list",  # 8
+                    "It appears that your use of an alternate command failed. $list command(s) were at fault."  # 9
 ]
 
 # Configuration
@@ -106,7 +118,7 @@ rpg_error_settings = [
                     "What number would you like to view/modify?",  # 4
                     "You don't appear to have any hotkeys.",  # 5
                     "You don't have a command hotlinked to $list",  # 6
-                    "You can't set an empty hotkey.",  # 7
+                    "You cannot set an empty hotkey.",  # 7
                     "$list does not appear to be a valid command to hotkey."  # 8
 ]
 

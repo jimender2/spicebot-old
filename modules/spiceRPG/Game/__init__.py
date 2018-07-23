@@ -36,56 +36,6 @@ Triggers for usage
 """
 
 
-@sopel.module.commands('rpga')
-@sopel.module.thread(True)
-def rpg_trigger_maina(bot, trigger):
-
-    bot.say("saving")
-
-    testclass = class_create('testclass')
-    testclass.testclass = 'awesome'
-
-    set_database_class(bot, bot.nick, 'classtest', testclass)
-
-
-@sopel.module.commands('rpgb')
-@sopel.module.thread(True)
-def rpg_trigger_mainb(bot, trigger):
-
-    bot.say("retrieving")
-
-    savedclass = get_database_class(bot, bot.nick, 'classtest')
-
-    bot.say(savedclass.testclass)
-
-
-# use bot.memory to track stats
-# use eval() to hold many bot.memory
-# use bot.memory to track users to save at the end
-def get_database_stats(bot, nick):
-    # 2 db reads, one for stat, one for value
-    # array_compare
-    bot.say("wip")
-
-
-def set_database_stats(bot, nick):
-    bot.say("wip")
-
-
-def get_database_class(bot, nick, databasekey):
-    database_retrieve = get_database_value(bot, nick, databasekey) or 0
-    if database_retrieve == 0:
-        class_value = class_create(databasekey)
-        return class_value
-    class_value = pickle.Unpickler(database_retrieve)
-    return class_value
-
-
-def set_database_class(bot, nick, databasekey, class_to_dump):
-    dump_value = pickle.Pickler(class_to_dump)
-    set_database_value(bot, nick, databasekey, dump_value)
-
-
 # Base command
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
@@ -119,7 +69,10 @@ def execute_start(bot, trigger, triggerargsarray):
     rpg = rpg_command_users(bot, rpg)
 
     # Commands list
-    rpg = rpg_valid_commands_all(bot, rpg)  # TODO alt coms
+    rpg = rpg_valid_commands_all(bot, rpg)
+
+    # Alternative Commands
+    rpg = rpg_commands_valid_alts(bot, rpg)
 
     # TODO valid stats
 
@@ -220,7 +173,33 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
             rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
-    # Alternate commands convert TODO
+    # Verify Command spelling if not a real command
+    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts:
+        startcom = rpg.command_main
+        command_type_list = ['all', 'alts']
+        for comtype in command_type_list:
+            if rpg.command_main == startcom:
+                comtype_eval = eval('rpg.valid_commands_' + comtype)
+                for com in comtype_eval:
+                    if rpg.command_main == startcom:
+                        similarlevel = similar(rpg.command_main.lower(), com)
+                        if similarlevel >= .75:
+                            rpg.command_main = com
+        if rpg.command_main != startcom:
+            rpg.triggerargsarray.remove(startcom)
+            rpg.triggerargsarray.insert(0, rpg.command_main)
+            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+
+    # Alternate commands convert
+    if rpg.command_main in rpg.valid_commands_alts:
+        startcom = rpg.command_main
+        rpg.triggerargsarray.remove(rpg.command_main)
+        rpg.command_main = rpg_valid_commands_alternative_find_match(bot, rpg.command_main)
+        if rpg.command_main == 'invalidcommand':
+            errors(bot, rpg, 'commands', 9, startcom)
+            return rpg
+        rpg.triggerargsarray.insert(0, rpg.command_main)
+        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # multicom multiple of the same
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
@@ -228,7 +207,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Verify Command is valid
-    if rpg.command_main not in rpg.valid_commands_all:  # TODO add similar()
+    if rpg.command_main not in rpg.valid_commands_all:
         errors(bot, rpg, 'commands', 6, rpg.command_main)
         return rpg
 
@@ -236,6 +215,8 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
         errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
+
+    """ TODO Tier block """
 
     # Safe to run command
     rpg.command_run = 1
@@ -462,6 +443,52 @@ def timed_logcheck(bot):
 
 
 """
+Switches
+"""
+
+
+def find_switch_equal(bot, inputarray, switch):
+    exitoutput = ''
+    switchtofind = str("-"+str(switch)+'="')
+    arraymarker = 0
+    beguinemark, finishmark = 0, 0
+    if [wordpart for wordpart in inputarray if wordpart.startswith(switchtofind)]:
+        for partial in inputarray:
+            arraymarker = arraymarker + 1
+            if partial.startswith(switchtofind):
+                beguinemark = arraymarker
+            if partial.endswith('"'):
+                if not finishmark and beguinemark != 0:
+                    finishmark = arraymarker
+                    continue
+        if finishmark != 0:
+            exitoutputrange = str(str(beguinemark) + "^" + str(finishmark))
+            exitoutput = get_trigger_arg(bot, inputarray, exitoutputrange)
+            exitoutput = get_trigger_arg(bot, exitoutput, 0)  # new
+            # exitoutput = exitoutput.replace("-"+switch+'=', ' ')
+            # exitoutput = exitoutput.replace('"', '')
+            # exitoutput = exitoutput.strip()
+    return exitoutput
+
+
+"""
+Small Functions
+"""
+
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def countX(lst, x):
+    count = 0
+    for ele in lst:
+        if (ele == x):
+            count = count + 1
+    return count
+
+
+"""
 Debug
 """
 
@@ -563,7 +590,7 @@ Commands
 """
 
 
-# All valid character stats
+# All valid commands
 def rpg_valid_commands_all(bot, rpg):
     rpg.valid_commands_all = []
     for command_type in rpg_valid_command_types:
@@ -571,6 +598,26 @@ def rpg_valid_commands_all(bot, rpg):
         for vcom in typeeval:
             rpg.valid_commands_all.append(vcom)
     return rpg
+
+
+# All Alternative commands
+def rpg_commands_valid_alts(bot, rpg):
+    rpg.valid_commands_alts = []
+    for subcom in rpg_commands_valid_alt_types:
+        rpg_commands_alternate_eval = eval("rpg_commands_valid_alt_"+subcom)
+        for x in rpg_commands_alternate_eval:
+            rpg.valid_commands_alts.append(x)
+    return rpg
+
+
+# Pinpoint real command from alternate
+def rpg_valid_commands_alternative_find_match(bot, commandcompare):
+    for subcom in rpg_commands_valid_alt_types:
+            rpg_commands_alternate_eval = eval("rpg_commands_valid_alt_"+subcom)
+            if commandcompare.lower() in rpg_commands_alternate_eval:
+                commandcompare = subcom
+                return commandcompare
+    return 'invalidcommand'
 
 
 """
