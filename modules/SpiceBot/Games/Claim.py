@@ -10,7 +10,6 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
-# import Spicebucks
 
 # Commands that work in privmsg
 privcmdlist = ['check', 'admin', 'bladder', 'fridge']
@@ -187,7 +186,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'action', "facepalms")
         osd(bot, trigger.sender, 'say', "You can't claim " + target + ", " + instigator + ". They already have a claim on you.")
         # Take Spicebucks from instigator (masterclaim)
-        # Spicebucks.spicebucks(bot, instigator, 'minus', masterclaim)
+        spicebucks(bot, instigator, 'minus', masterclaim)
 
     # Can't claim everyone at once
     elif target == 'everyone':
@@ -218,7 +217,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             bot.db.set_nick_value(target, 'claimed', instigator)
             bot.db.set_nick_value(target, 'claimdate', storedate)
             # Pay instigator Spicebucks (firstclaim)
-            # Spicebucks.spicebucks(bot, instigator, 'plus', firstclaim)
+            spicebucks(bot, instigator, 'plus', firstclaim)
 
         # Renewed claim
         elif claimedby == instigator:
@@ -235,7 +234,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 bot.db.set_nick_value(target, 'claimed', instigator)
                 bot.db.set_nick_value(target, 'claimdate', storedate)
                 # Pay instigator Spicebucks (renewclaim)
-                # Spicebucks.spicebucks(bot, instigator, 'plus', renewclaim)
+                spicebucks(bot, instigator, 'plus', renewclaim)
             else:
                 osd(bot, trigger.sender, 'say', instigator + ", you already claimed " + target + ".")
         else:
@@ -253,13 +252,35 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 bot.db.set_nick_value(target, 'claimed', instigator)
                 bot.db.set_nick_value(target, 'claimdate', storedate)
                 # Pay instigator Spicebucks (stolenclaim)
-                # Spicebucks.spicebucks(bot, instigator, 'plus', stolenclaim)
+                spicebucks(bot, instigator, 'plus', stolenclaim)
             else:
                 osd(bot, trigger.sender, 'say', target + " has already been claimed by " + str(claimedby) + ", so back off!")
     elif not okaytoclaim:
         return
     else:
         osd(bot, trigger.sender, 'say', bot.nick + " had an issue with their aim and peed absolutely everywhere!")
+
+
+def spicebucks(bot, target, plusminus, amount):
+    """Add or remove Spicebucks from account."""
+    # command for getting and adding money to account
+    success = 'false'
+    if type(amount) == int:
+        inbank = bank(bot, target)
+    if plusminus == 'plus':
+        adjust_database_value(bot, target, 'spicebucks_bank', amount)
+        success = 'true'
+    elif plusminus == 'minus':
+        if inbank - amount < 0:
+            # osd(bot, trigger.sender, 'say', "I'm sorry, you do not have enough spicebucks in the bank to complete this transaction.")
+            success = 'false'
+        else:
+            adjust_database_value(bot, target, 'spicebucks_bank', -amount)
+            success = 'true'
+    else:
+        # osd(bot, trigger.sender, 'say', "The amount you entered does not appear to be a number.  Transaction failed.")
+        success = 'false'
+    return success  # returns simple true or false so modules can check the if tranaction was a success
 
 
 @sopel.module.interval(1800)  # 30 minute automation
