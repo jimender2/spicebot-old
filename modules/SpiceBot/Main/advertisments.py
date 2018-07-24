@@ -17,7 +17,11 @@ from BotShared import *
 
 testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
              "Spiceduck for spicerex mascot 2k18",
-             "Deathbybandaid is looking for developers for spicebot and spicethings"]
+             "Deathbybandaid is looking for developers for spicebot and spicethings",
+             "upgrade to premium to remove ads",
+             "selling panties cheap. Msg doubled for more info.",
+             "tears of an orphan child: On sale now",
+             "one way ticket to hell just $199"]
 
 databasekey = 'ads'
 
