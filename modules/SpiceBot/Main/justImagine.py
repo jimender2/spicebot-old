@@ -26,8 +26,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if not person:
         person = trigger.nick
+
     if not reason:
         reason = "all the time in the world"
+
     message = "Just imagine if " + person + " had " + reason
 
     osd(bot, trigger.sender, 'say', message)
