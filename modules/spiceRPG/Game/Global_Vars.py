@@ -20,7 +20,7 @@ Github Information
 
 # This Fethes the last modified date from github
 rpg_version_plain = '1.5.17'  # If the online check fails
-rpg_version_github_page = "https://github.com/deathbybandaid/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py"
+rpg_version_github_page = "https://github.com/SpiceBot/SpiceBot/commits/master/modules/spiceRPG/Game/__init__.py"
 rpg_version_github_xpath = '//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[2]/div[1]/text()'
 
 

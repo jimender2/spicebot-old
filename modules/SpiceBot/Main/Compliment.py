@@ -12,8 +12,8 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-compliments = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/master/Text-Files/compliments.txt'
-devcompliments = 'https://raw.githubusercontent.com/deathbybandaid/SpiceBot/dev/Text-Files/compliments.txt'
+compliments = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/master/Text-Files/compliments.txt'
+devcompliments = 'https://raw.githubusercontent.com/SpiceBot/SpiceBot/dev/Text-Files/compliments.txt'
 devbot = 'dev'  # Enables the bot to distinguish if in test
 
 

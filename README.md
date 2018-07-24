@@ -17,15 +17,15 @@ ______________________________________
 
 ## SpiceBot Wiki
 
-[Wiki](https://github.com/deathbybandaid/SpiceBot/wiki)
+[Wiki](https://github.com/SpiceBot/SpiceBot/wiki)
 
 ______________________________________
 
 ## Commands
 
-[List Of Commands](https://github.com/deathbybandaid/SpiceBot/wiki/Modules)
+[List Of Commands](https://github.com/SpiceBot/SpiceBot/wiki/Modules)
 ______________________________________
 
 ## Install Procedure
 
-[Install Procedure](https://github.com/deathbybandaid/SpiceBot/wiki/Installation-Procedure)
+[Install Procedure](https://github.com/SpiceBot/SpiceBot/wiki/Installation-Procedure)

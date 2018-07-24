@@ -21,7 +21,7 @@ casino_bot_owner = "under_score"
 
 maxbet = 100
 minjackbot = 500
-wikiurl = 'https://github.com/deathbybandaid/SpiceBot/wiki/Casino'
+wikiurl = 'https://github.com/SpiceBot/SpiceBot/wiki/Casino'
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']*4
 lotterymax = 30
 slotwheel = ['MODEM', 'BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'PATCH', 'WIFI', 'CPU', 'CLOUD', 'VLANS', 'AI', 'DARKWEB', 'BLOCKCHAIN', 'PASSWORD']
@@ -89,11 +89,11 @@ def setlotterytimeout(bot, commandvalue):
 def bank(bot, botcom, nick):
     balance = 0
     if nick == 'casino':
-        balance = get_database_value(bot, nick, 'spicebucks_bank') or 0
+        balance = get_database_value(bot, nick, 'spicychips_bank') or 0
     else:
         isvalid = buckscheck(bot, botcom, nick)
         if isvalid == 1 or isvalid == 2:
-            balance = get_database_value(bot, nick, 'spicebucks_bank') or 0
+            balance = get_database_value(bot, nick, 'spicychips_bank') or 0
     return balance
 
 
@@ -108,8 +108,8 @@ def transfer(bot, botcom, target, instigator, amount):
     if amount >= 0:
         instigator_balance = bank(bot, botcom, instigator)
         if amount <= instigator_balance:
-            adjust_database_value(bot, target, 'spicebucks_bank', -(amount))
-            adjust_database_value(bot, instigator, 'spicebucks_bank', amount)
+            adjust_database_value(bot, target, 'spicychips_bank', -(amount))
+            adjust_database_value(bot, instigator, 'spicychips_bank', amount)
             success = True
     return success
 
@@ -121,7 +121,7 @@ def addbucks(bot, botcom, target, amount):
         if not (isvalid == 1):
             return success
     if amount > 0:
-        adjust_database_value(bot, target, 'spicebucks_bank', amount)
+        adjust_database_value(bot, target, 'spicychips_bank', amount)
         success = True
     return success
 
@@ -132,7 +132,7 @@ def minusbucks(bot, botcom, target, amount):
     if not (isvalid == 1):
         return success
     if amount > 0:
-        adjust_database_value(bot, target, 'spicebucks_bank', -(amount))
+        adjust_database_value(bot, target, 'spicychips_bank', -(amount))
         success = True
     return success
 
