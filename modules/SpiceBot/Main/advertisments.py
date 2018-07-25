@@ -76,24 +76,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', message)
 
 
-def get_database_value(bot, nick, databasekey):
-    databasecolumn = str(databasekey)
-    database_value = bot.db.get_nick_value(nick, databasecolumn) or 0
-    return database_value
-
-
-def database_initialize(bot, nick, array, database):
-    databasekey = str(database)
-    existingarray = get_database_value(bot, bot.nick, databasekey)
-    if not existingarray:
-        arraycount = (len(array) - 1)
-        i = 0
-        while (i <= arraycount):
-            inputstring = array[i]
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-            i = i + 1
-
-
 @sopel.module.interval(120)
 def advertisement(bot):
     rand = random.randint(1, 5)
