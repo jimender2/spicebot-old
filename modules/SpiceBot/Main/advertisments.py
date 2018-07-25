@@ -15,13 +15,13 @@ from BotShared import *
 
 # author jimender2
 
-testarray = ["doubled recommends these new drapes https://goo.gl/BMTMde",
+testarray = ["DoubleD recommends these new drapes https://goo.gl/BMTMde",
              "Spiceduck for spicerex mascot 2k18",
              "Deathbybandaid is looking for developers for spicebot and spicethings",
-             "upgrade to premium to remove ads",
-             "selling panties cheap. Msg doubled for more info.",
-             "tears of an orphan child: On sale now",
-             "one way ticket to hell just $199"]
+             "Upgrade to premium to remove ads",
+             "Selling panties cheap. Msg DoubleD for more info.",
+             "On sale now: tears of an orphan child!",
+             "One-way ticket to hell just $199"]
 
 databasekey = 'ads'
 
