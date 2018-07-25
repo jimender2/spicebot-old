@@ -21,6 +21,6 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "Lando grant me the serenity")
-    osd(bot, trigger.sender, 'say', "to accept the things I cannot change;")
-    osd(bot, trigger.sender, 'say', "courage to change the things I can;")"
+    osd(bot, trigger.sender, 'say', "to accept the things I cannot change")
+    osd(bot, trigger.sender, 'say', "courage to change the things I can")
     osd(bot, trigger.sender, 'say', "and wisdom to know the difference.")
