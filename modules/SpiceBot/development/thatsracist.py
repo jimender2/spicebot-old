@@ -20,4 +20,4 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "That's Racist! (with the trade mark symbol at the end)™")
+    osd(bot, trigger.sender, 'say', "That's Racist!™")
