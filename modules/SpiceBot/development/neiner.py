@@ -20,4 +20,12 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    instigator = trigger.nick
+    target = get_trigger_arg(bot, triggerargsarray, 1)
+    osd(bot, trigger.sender, 'action', instigator + " wispers to " + bot.nick)
+    if not target:
+        osd(bot, trigger.sender, 'action', bot.nick +  " yells neiner neiner at " + instigator)
+    elif target == bot.nick:
+        osd(bot, trigger.sender, 'action', bot.nick + " slaps " + instigator + " in the face for being a complete and utter moron.")
+    else:
+        osd(bot, trigger.sender, 'action', bot.nick +  " yells neiner neiner at " + target)
