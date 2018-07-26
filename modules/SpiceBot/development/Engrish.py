@@ -30,4 +30,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     message = message.replace('z', 'a', 9)
     message = message.replace('p', 'e', 7)
     message = message.replace('q', 'p')
-    osd(bot, trigger.sender, 'say', "message")
+    osd(bot, trigger.sender, 'say', message)
