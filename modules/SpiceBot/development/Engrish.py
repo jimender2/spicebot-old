@@ -20,4 +20,14 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    command = get_trigger_arg(bot, triggerargsarray, 1)
+    message = message.replace('r', 't', 1)
+    message = message.replace('l', 'b', 3)
+    message = message.replace('a', 'l', 6)
+    message = message.replace('e', 'f', 4)
+    message = message.replace('y', 'c', 2)
+    message = message.replace('t', 'n', 4)
+    message = message.replace('z', 'a', 9)
+    message = message.replace('p', 'e', 7)
+    message = message.replace('q', 'p')
+    osd(bot, trigger.sender, 'say', "message")
