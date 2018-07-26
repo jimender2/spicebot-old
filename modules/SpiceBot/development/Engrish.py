@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    command = get_trigger_arg(bot, triggerargsarray, '1+')
+    message = get_trigger_arg(bot, triggerargsarray, '1+')
     message = message.replace('r', 't', 1)
     message = message.replace('l', 'b', 3)
     message = message.replace('a', 'l', 6)
