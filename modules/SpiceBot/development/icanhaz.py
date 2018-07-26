@@ -22,6 +22,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = get_trigger_arg(bot, triggerargsarray, '1+')
+    if not command:
+        command = "Cheezburger"
     rand = random.randint(1,10)
     i = 1
     z = ''
