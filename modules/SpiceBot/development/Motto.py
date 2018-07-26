@@ -10,9 +10,9 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-databasekey = 'motto'
-
 # author jimender2
+
+databasekey = 'motto'
 
 
 @sopel.module.commands('motto', 'tag', 'flair')
