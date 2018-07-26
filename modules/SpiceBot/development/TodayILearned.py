@@ -26,10 +26,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     databasekey = 'til'
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
+    existingarray = get_database_value(bot, instigator, databasekey) or []
     if command == "add":
         if inputstring not in existingarray:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            adjust_database_array(bot, instigator, inputstring, databasekey, 'add')
             message = "Added to database."
             osd(bot, trigger.sender, 'say', message)
         else:
@@ -40,7 +40,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "That response was not found in the database."
             osd(bot, trigger.sender, 'say', message)
         else:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            adjust_database_array(bot, instigator, inputstring, databasekey, 'del')
             message = "Removed from database."
             osd(bot, trigger.sender, 'say', message)
     elif command == "count":
