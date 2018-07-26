@@ -55,7 +55,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command in ["crows", 'crow']:
         rand = random.randint(1, 5)
         if rand == 1:
-            allUsers = get_database_value(bot, bot.nick, 'botusers') or []
+            allUsers = [u.lower() for u in bot.users]
+            # allUsers = get_database_value(bot, bot.nick, 'botusers') or []
             user = get_trigger_arg(bot, allUsers, "random") or 'spicebot'
             osd(bot, trigger.sender, 'say', "A murder of Crows swarms the room and carries " + user + " off.")
         else:
