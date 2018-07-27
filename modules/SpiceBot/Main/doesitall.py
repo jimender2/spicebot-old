@@ -20,5 +20,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "Sneeze more than once a week? Want to have sex with attractive women? Wish your penis was larger? Try Doesitall!")
+    osd(bot, trigger.sender, 'say', "Sneeze more than once a week? Want to have sex with attractive women? Wish your penis was larger? Try Doesitall™!")
     osd(bot, trigger.sender, 'say', "Side effects include: Anal leakage, penile shrinkage, halitosis, HIV, GhonoherpesyphilAIDS, and a wonky eye")
