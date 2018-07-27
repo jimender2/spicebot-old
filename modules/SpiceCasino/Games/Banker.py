@@ -35,7 +35,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         validbank = buckscheck(bot, botcom, target)
         bot.say(str(validbank))
     elif commandused == 'transfer':
-        done = transfer(bot,botcom,target,player)
+        done = transfer(bot,botcom,target,player,amount)
         bot.say(str(done))
     elif commandused == 'payday':
         paydayamount = 0
