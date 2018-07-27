@@ -156,7 +156,7 @@ def audit(bot, botcom, player):
     msg = ""
     if auditamount > 0:
         msg = "carries out an audit on " + player + " and takes " + str(auditamount) + " spicy chips for the pleasure."
-        transfer(bot, botcom, player, 'casino', auditamount)
+        transfer(bot, botcom, 'casino', player, auditamount)
     else:
         msg = "carries out an audit on " + player + " but finds no spicy chips to take."
         reset_database_value(bot, player, 'usedtaxes')
