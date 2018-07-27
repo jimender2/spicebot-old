@@ -78,7 +78,7 @@ def slots(bot, trigger, arg):
     # __payouts___
     match3 = 25*bet
     match2 = 5*bet
-    bankbalance = bank(bot, 'casino')
+    bankbalance = bank(bot, botcom, 'casino')
     if bankbalance < 500:
         bankbalance = 500
         set_database_value(bot, 'casino', 'spicychips_bank',  bankbalance)
@@ -143,7 +143,7 @@ def slots(bot, trigger, arg):
                             if transfer(bot, 'casino', trigger.nick, mywinnings) == 1:
                                 osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings) + " spicychips")
                             else:
-                                osd(bot, trigger.sender, 'say', 'Error in banking system')
+                                osd(bot, trigger.sender, 'say', "Error in banking system")
                 else:
                     osd(bot, player, 'priv', "You don't have enough spicychips")
             else:
