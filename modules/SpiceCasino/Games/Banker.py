@@ -14,7 +14,7 @@ from BotShared import *
 from Bucks import *
 
 
-@sopel.module.commands('banker', 'payday', 'tax', 'taxes', 'funds', 'rob', 'bankreset', 'checkbank')
+@sopel.module.commands('banker', 'payday', 'tax', 'taxes', 'funds', 'rob', 'bankreset', 'checkbank','transfer')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'banker')
     if not enablestatus:
@@ -34,6 +34,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         bot.say("Target: " + target + " Player:" + player)
         validbank = buckscheck(bot, botcom, target)
         bot.say(str(validbank))
+    elif commandused == 'transfer':
+        done = transfer(bot,botcom,target,player)
+        bot.say(str(done))
     elif commandused == 'payday':
         paydayamount = 0
         paydayamount, msg = checkpayday(bot, botcom, player)
