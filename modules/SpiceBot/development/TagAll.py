@@ -20,13 +20,8 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
+    instigator = trigger.nick
     allUsers = [u.lower() for u in bot.users]
-    length = len(allUsers)
-    message = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
-
-    # message = "Tag: "
-    # while i < length:
-    #     user = get_trigger_arg(bot, allUsers, i) or 'spicebot'
-    #     message = message + user + " "
-    #     i = i + 1
+    users = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
+    message = instigator + " is tagging everyone. " + users
     osd(bot, trigger.sender, 'say', message)
