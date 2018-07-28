@@ -22,7 +22,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     allUsers = [u.lower() for u in bot.users]
     length = len(allUsers)
-    i = 0
+    i = 1
     message = "Tag: "
     while i < length:
         user = get_trigger_arg(bot, allUsers, i) or 'spicebot'
