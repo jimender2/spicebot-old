@@ -54,7 +54,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', message)
 
     else:
-        motto = get_trigger_arg(bot, existingarray, "random") or ''
+        motto = get_trigger_arg(bot, existingarray, "random") or 'You have no flair. Add some now!!'
         osd(bot, trigger.sender, 'say', motto)
 
 
