@@ -66,5 +66,7 @@ def feeds_configs(bot, feeds):
     feeds.list = []
     for feed_dir_type in os.listdir(feeds_file_path):
         feed_type_file_path = os.path.join(feeds_file_path, feed_dir_type)
-        bot.say(str(feed_type_file_path))
+        for feed in os.listdir(feed_type_file_path):
+            feeds.list.append(feed)
+            # bot.say(str(feed))
     return feeds
