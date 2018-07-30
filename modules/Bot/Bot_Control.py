@@ -548,6 +548,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         targetbotlist = get_trigger_arg(bot, targetbots, 'list')
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
     for targetbot in targetbots:
+        bot.say(targetbot)
         update(bot, botcom, trigger, targetbot)
         restart(bot, botcom, trigger, targetbot)
 
