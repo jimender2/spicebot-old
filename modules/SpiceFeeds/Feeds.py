@@ -87,10 +87,10 @@ def feeds_configs(bot, feeds):
             config.read(feedfile)
             for each_section in config.sections():
                 for (each_key, each_val) in config.items(each_section):
-                    dummy = 2
-                    # bot.say(str(each_key) + " = " + str(each_val))
+                    exec("feeds." + feed + "." + each_key " = each_val")
+
     for feed in feeds.list:
-        testing = eval("feeds." + feed + ".feed_filename")
+        testing = eval("feeds." + feed + ".url")
         bot.say(str(testing))
 
     return feeds
