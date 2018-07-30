@@ -7728,7 +7728,7 @@ On Screen Text
 """
 
 
-def osd(bot, target_array, text_type, text_array):
+def osd_old(bot, target_array, text_type, text_array):
 
     # if text_array is a string, make it an array
     textarraycomplete = []
@@ -7821,7 +7821,7 @@ def osd(bot, target_array, text_type, text_array):
             textpartsleft = textpartsleft - 1
 
 
-def osd_new(bot, target_array, text_type_array, text_array):
+def osd(bot, target_array, text_type_array, text_array):
 
     # if text_array is a string, make it an array
     textarraycomplete = []
@@ -7862,6 +7862,8 @@ def osd_new(bot, target_array, text_type_array, text_array):
             texttargetarray.append('osd_error_handle')
 
     for target, text_type in zip(texttargetarray, texttypearray):
+
+        bot.say(str(target) + "  " + str(text_type))
 
         # Text array
         temptextarray = []
