@@ -533,6 +533,11 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
 
+    # current bot should be last
+    if bot.nick in targetbots:
+        targetbots.remove(bot.nick)
+        targetbots.append(bot.nick)
+
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
@@ -705,7 +710,6 @@ def bot_target_admins(bot, targetbot):
     targetbotadmins = []
     networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
-    bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
     config.read(configfile)
     owner = config.get("core", "owner")
