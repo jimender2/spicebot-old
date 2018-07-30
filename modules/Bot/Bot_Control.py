@@ -511,22 +511,21 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
 
     targetbots = []
     if botcom.triggerargsarray == []:
-        targetbotadmins = bot_target_admins(bot, bot.nick)
-        if instigator.default in targetbotadmins:
-            targetbots.append(bot.nick)
+        targetbots.append(bot.nick)
     elif 'all' in botcom.triggerargsarray:
-        for targetbot in botcom.users_all:
-            targetbotadmins = bot_target_admins(bot, targetbot)
-            if instigator.default in targetbotadmins:
-                targetbots.append(targetbot)
+        for targetbot in botcom.config_listing:
+            targetbots.append(targetbot)
     else:
         for word in botcom.triggerargsarray:
             if word in botcom.config_listing:
-                targetbotadmins = bot_target_admins(bot, targetbot)
-                if instigator.default in targetbotadmins:
-                    targetbots.append(targetbot)
-
+                targetbots.append(targetbot)
     bot.say("B")
+    for targetbot in targetbots:
+        targetbotadmins = bot_target_admins(bot, targetbot)
+        if instigator.default not in targetbotadmins:
+            targetbots.remove(targetbot)
+
+    bot.say("C")
     for targetbot in targetbots:
         joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
         if not os.path.isdir(joindpath):
@@ -535,7 +534,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
     if targetbots == []:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
-    bot.say("C")
+    bot.say("D")
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
