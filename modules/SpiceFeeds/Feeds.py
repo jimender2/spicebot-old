@@ -19,6 +19,9 @@ header = {'User-Agent': str(ua.chrome)}
 
 # author deathbybandaid
 
+feeds_dir = "feeds/"
+feeds_file_path = os.path.join(moduledir, feeds_dir)
+
 
 @sopel.module.commands('feeds')
 def mainfunction(bot, trigger):
@@ -34,7 +37,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     valid_commands = ['enable', 'disable', 'reset', 'run']
     command = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_commands], 1) or 'run'
-    command = command.lower()
+    if command in triggerargsarray:
+        triggerargsarray.remove(command)
+
+    feeds = feeds_configs(bot, feeds)
+
+    bot.say(str(feeds.list))
 
     if command == 'reset':
         bot.say("reset")
@@ -43,9 +51,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == 'enable':
         bot.say("enable")
         return
+
     elif command == 'disable':
         bot.say("disable")
         return
+
     elif command == 'run':
         bot.say("run")
         return
@@ -54,10 +64,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 # rss feeds list
 def feeds_configs(bot, feeds):
     feeds.list = []
-    RSSFEEDSDIR = str("/home/spicebot/.sopel/"+actualname(bot, bot.nick)+"/RSS-Feeds/main/")
-    for filename in os.listdir(RSSFEEDSDIR):
-        feeds.list.append(filename)
-    YTRSSFEEDSDIR = str("/home/spicebot/.sopel/" + bot.nick + "/RSS-Feeds/youtube/")
-    for filename in os.listdir(YTRSSFEEDSDIR):
-        feeds.list.append(filename)
-    return feeds.list
+    for feed_dir_type in os.listdir(feeds_file_path):
+        feed_type_file_path = os.path.join(feeds_file_path, feed_dir_type)
+        bot.say(str(feed_type_file_path))
+    return feeds
