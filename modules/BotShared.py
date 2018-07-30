@@ -480,7 +480,7 @@ def database_initialize(bot, nick, array, database):
 """
 
 
-def sayingsmodule(bot,databasekey,triggerargsarray,thingtodo):
+def sayingsmodule(bot, databasekey, triggerargsarray, thingtodo):
     """Handle the creation and manipulation of modules that return sayings."""
     # add, remove, last, count, list, initialise?
     resultstring = "test"
@@ -488,9 +488,7 @@ def sayingsmodule(bot,databasekey,triggerargsarray,thingtodo):
 
 
 """
-###########
-# On Screen Text #
-###########
+On Screen Text
 """
 
 
@@ -499,10 +497,10 @@ def osd(bot, target_array, text_type, text_array):
     # if text_array is a string, make it an array
     textarraycomplete = []
     if not isinstance(text_array, list):
-        textarraycomplete.append(text_array)
+        textarraycomplete.append(str(text_array))
     else:
         for x in text_array:
-            textarraycomplete.append(x)
+            textarraycomplete.append(str(x))
 
     # if target_array is a string, make it an array
     texttargetarray = []
@@ -523,6 +521,10 @@ def osd(bot, target_array, text_type, text_array):
             temptextarray.append(target + ", ")
         for part in textarraycomplete:
             temptextarray.append(part)
+
+        # 'say' can equal 'priv'
+        if text_type == 'say' and not str(target).startswith("#"):
+            text_type = 'priv'
 
         # Make sure no individual string ins longer than it needs to be
         currentstring = ''
