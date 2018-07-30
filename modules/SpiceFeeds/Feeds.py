@@ -72,8 +72,8 @@ def feeds_configs(bot, feeds):
             feeds.list.append(feed)
 
             # Every feed gets a class
-            current_feed = str("feeds." + str(feed) + " = " + "class_create(" + str(feed) + ")")
-            exec(current_feed)
+            current_feed = class_create(feed)
+            exec("feeds." + feed + " = " + current_feed)
 
             # get file path
             feedfile = os.path.join(feed_type_file_path, feed)
