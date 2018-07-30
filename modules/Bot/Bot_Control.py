@@ -520,13 +520,13 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
                 targetbots.append(targetbot)
 
     for targetbot in targetbots:
-        targetbotadmins = bot_target_admins(bot, targetbot)
-        if instigator.default not in targetbotadmins:
+        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+        if not os.path.isdir(joindpath):
             targetbots.remove(targetbot)
 
     for targetbot in targetbots:
-        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-        if not os.path.isdir(joindpath):
+        targetbotadmins = bot_target_admins(bot, targetbot)
+        if instigator.default not in targetbotadmins:
             targetbots.remove(targetbot)
 
     if targetbots == []:
