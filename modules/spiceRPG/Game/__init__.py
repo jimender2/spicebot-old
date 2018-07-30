@@ -40,7 +40,7 @@ Triggers for usage
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
-    osd(bot, ['deathbybandaid', 'dbbatest'], 'say', "RPG test")
+    osd(bot, ['deathbybandaid', 'dbbatest'], ['say'], "RPG test")
     return
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     execute_start(bot, trigger, triggerargsarray)
