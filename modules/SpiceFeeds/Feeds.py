@@ -90,7 +90,8 @@ def feeds_configs(bot, feeds):
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
     for feed in feeds.list:
-        testing = eval("feeds." + feed + ".url")
-        bot.say(str(testing))
+        feed_name = eval("feeds." + feed + ".feedname")
+        feed_url = eval("feeds." + feed + ".url")
+        bot.say(str(feed_name) + " " + str(feed_url))
 
     return feeds
