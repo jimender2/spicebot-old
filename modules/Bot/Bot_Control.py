@@ -707,6 +707,7 @@ def bot_target_admins(bot, targetbot):
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + targetbot + ".cfg")
     config = ConfigParser.ConfigParser()
     config.read(configfile)
+    bot.say(targetbot)
     owner = config.get("core", "owner")
     targetbotadmins.append(owner)
     admins = config.get("core", "admins")
