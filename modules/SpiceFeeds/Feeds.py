@@ -77,7 +77,7 @@ def feeds_configs(bot, feeds):
             # Read configuration
             config = ConfigParser.ConfigParser()
             config.read(feedfile)
-            for each_section in feedfile.sections():
+            for each_section in config.sections():
                 for (each_key, each_val) in conf.items(each_section):
                     bot.say(str(each_key) + " = " + str(each_val))
 
