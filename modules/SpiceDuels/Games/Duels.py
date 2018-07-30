@@ -3053,7 +3053,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
             osd(bot, duels.instigator, 'notice', "There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.")
             duels.command_stamina_cost = 0
             return
-        osd(bot, duels.instigator, 'sat', get_trigger_arg(bot, weaponslist, 'list'))
+        osd(bot, duels.instigator, 'say', get_trigger_arg(bot, weaponslist, 'list'))
         duels.command_stamina_cost = 0
         return
 
