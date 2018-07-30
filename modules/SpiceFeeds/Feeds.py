@@ -2,6 +2,10 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+import ConfigParser
+import requests
+from xml.dom import minidom
+from fake_useragent import UserAgent
 import sys
 import os
 moduledir = os.path.dirname(__file__)
