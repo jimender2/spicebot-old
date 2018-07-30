@@ -507,6 +507,7 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
 def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
+    bot.say("A")
 
     targetbots = []
     if botcom.triggerargsarray == []:
@@ -525,6 +526,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
                 if instigator.default in targetbotadmins:
                     targetbots.append(targetbot)
 
+    bot.say("B")
     for targetbot in targetbots:
         joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
         if not os.path.isdir(joindpath):
@@ -533,7 +535,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
     if targetbots == []:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
-
+    bot.say("C")
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
