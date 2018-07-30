@@ -3053,7 +3053,7 @@ def duels_command_function_weaponslocker(bot, triggerargsarray, command_main, tr
             osd(bot, duels.instigator, 'notice', "There doesnt appear to be anything in the weapons locker! Use .duel weaponslocker add/del to adjust Locker Inventory.")
             duels.command_stamina_cost = 0
             return
-        osd(bot, duels.instigator, 'say', get_trigger_arg(bot, weaponslist, 'list'))
+        osd(bot, duels.instigator, 'priv', get_trigger_arg(bot, weaponslist, 'list'))
         duels.command_stamina_cost = 0
         return
 
@@ -7757,6 +7757,10 @@ def osd(bot, target_array, text_type, text_array):
             temptextarray.append(target + ", ")
         for part in textarraycomplete:
             temptextarray.append(part)
+
+        # 'say' can equal 'priv'
+        if text_type == 'say' and not str(target).startswith("#"):
+            text_type = 'priv'
 
         # Make sure no individual string ins longer than it needs to be
         currentstring = ''
