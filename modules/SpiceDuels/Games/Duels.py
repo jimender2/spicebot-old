@@ -7728,7 +7728,7 @@ On Screen Text
 """
 
 
-def osd(bot, target_array, text_type, text_array):
+def osd(bot, target_array, text_type_array, text_array):
 
     # if text_array is a string, make it an array
     textarraycomplete = []
@@ -7750,9 +7750,30 @@ def osd(bot, target_array, text_type, text_array):
                 target = nick_actual(bot, str(target))
             texttargetarray.append(target)
 
-    # Make sure we don't cross over IRC limits
-    for target in texttargetarray:
+    # Handling for text_type
+    texttypearray = []
+    if not isinstance(text_type_array, list):
+        for i in range(len(texttargetarray)):
+            texttypearray.append(str(text_type_array))
+    else:
+        for x in text_type_array:
+            texttypearray.append(str(x))
+    text_array_common = max(((item, texttypearray.count(item)) for item in set(texttypearray)), key=lambda a: a[1])[0]
+
+    # make sure len() equals
+    if len(texttargetarray) > len(texttypearray):
+        while len(texttargetarray) > len(texttypearray):
+            texttypearray.append(text_array_common)
+    elif len(texttargetarray) < len(texttypearray):
+        while len(texttargetarray) < len(texttypearray):
+            texttargetarray.append('osd_error_handle')
+
+    for target, text_type in zip(texttargetarray, texttypearray):
+
+        # Text array
         temptextarray = []
+
+        # Notice handling
         if text_type == 'notice':
             temptextarray.append(target + ", ")
         for part in textarraycomplete:
