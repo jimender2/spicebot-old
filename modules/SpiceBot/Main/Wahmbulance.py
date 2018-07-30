@@ -20,7 +20,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
     isValid = targetcheck(bot, botcom, target, instigator)
-    bot.say(isValid)
+    bot.say(str(isValid))
     if isValid == 1:
         osd(bot, trigger.sender, 'say', trigger.nick + " calls the waaaaaaaaaaahhhhhhmbulance for " + target)
     elif isValid == 2 or isValid == 3:
