@@ -32,14 +32,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if command == "add":
         if inputstring not in existingarray:
             adjust_database_array(bot, instigator, inputstring, databasekey, 'add')
-            message = "Added to database."
+            message = "Added to your flair list."
             osd(bot, trigger.sender, 'say', message)
         else:
-            message = "That response is already in the database."
+            message = "You already have that in your flair list."
             osd(bot, trigger.sender, 'say', message)
     elif command == "remove":
         if inputstring not in existingarray:
-            message = "That response was not found in the database."
+            message = "That response was not found in your flair list."
             osd(bot, trigger.sender, 'say', message)
         else:
             adjust_database_array(bot, instigator, inputstring, databasekey, 'del')
