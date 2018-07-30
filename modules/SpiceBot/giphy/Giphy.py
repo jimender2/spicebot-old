@@ -26,11 +26,15 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if target != "roulette":
         query = target.replace(' ', '%20')
         query = str(query)
-        gif, randno = getGif(query)
-        if gif:
-            osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
-        else:
-            osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
+        i = 0
+        while i == 0:
+            gif, randno = getGif(query)
+            if gif:
+                osd(bot, trigger.sender, 'say', "Result number " + str(randno) + ": " + gif)
+                i = 5
+            else:
+                osd(bot, trigger.sender, 'say', "Hmm...Couldn't find a gif for that!")
+
     elif target == "roulette":
         gif = roulette()
         if gif:
