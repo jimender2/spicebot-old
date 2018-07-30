@@ -67,10 +67,18 @@ def feeds_configs(bot, feeds):
     for feed_dir_type in os.listdir(feeds_file_path):
         feed_type_file_path = os.path.join(feeds_file_path, feed_dir_type)
         for feed in os.listdir(feed_type_file_path):
-            feedfile = os.path.join(feed_type_file_path, feed)
+
+            # Add to main list
             feeds.list.append(feed)
+
+            # get file path
+            feedfile = os.path.join(feed_type_file_path, feed)
+
+            # Read configuration
             config = ConfigParser.ConfigParser()
             config.read(feedfile)
-            for section in config.sections():
-                bot.say(section, dict(config[section]))
+            for each_section in feedfile.sections():
+                for (each_key, each_val) in conf.items(each_section):
+                    bot.say(str(each_key) + " = " + str(each_val))
+
     return feeds
