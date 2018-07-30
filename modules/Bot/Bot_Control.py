@@ -705,12 +705,10 @@ def bot_target_admins(bot, targetbot):
     targetbotadmins = []
     networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
+    bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
     config.read(configfile)
-    try:
-        owner = config.get("core", "owner")
-    except NoSectionError:
-        bot.say(str(configfile))
+    owner = config.get("core", "owner")
     targetbotadmins.append(owner)
     admins = config.get("core", "admins")
     admins = admins.split(",")
