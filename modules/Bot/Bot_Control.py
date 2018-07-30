@@ -507,7 +507,6 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
 def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
-    bot.say(str(botcom.config_listing))
 
     targetbots = []
     if botcom.triggerargsarray == []:
@@ -516,8 +515,8 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         for targetbot in botcom.config_listing:
             targetbots.append(targetbot)
     else:
-        for word in botcom.triggerargsarray:
-            if word in botcom.config_listing:
+        for targetbot in botcom.triggerargsarray:
+            if targetbot in botcom.config_listing:
                 targetbots.append(targetbot)
 
     for targetbot in targetbots:
@@ -534,8 +533,6 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
 
-    bot.say(str(targetbots))
-
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
@@ -549,7 +546,6 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         targetbotlist = get_trigger_arg(bot, targetbots, 'list')
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
     for targetbot in targetbots:
-        bot.say(targetbot)
         update(bot, botcom, trigger, targetbot)
         restart(bot, botcom, trigger, targetbot)
 
