@@ -46,7 +46,7 @@ Main Command Usage
 def duel_action(bot, trigger):
     command_type = 'actionduel'
     triggerargsarray = get_trigger_arg(bot, trigger.group(1), 'create')
-    execute_main(bot, trigger, triggerargsarray, duels, command_type)
+    execute_main(bot, trigger, triggerargsarray, command_type)
 
 
 # bot.nick do this
@@ -64,7 +64,7 @@ def duel_nickcom(bot, trigger):
 def mainfunction(bot, trigger):
     command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_main(bot, trigger, triggerargsarray, duels)
+    execute_main(bot, trigger, triggerargsarray, command_type)
 
 
 # respond to alternate start for command
@@ -86,7 +86,7 @@ def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-    execute_main(bot, trigger, triggerargsarray, duels, command_type)
+    execute_main(bot, trigger, triggerargsarray, command_type)
 
 
 # rule for "use"
@@ -101,7 +101,7 @@ def mainfunctionuse(bot, trigger):
         restoftheline = get_trigger_arg(bot, triggerargsarray, "2+")
         triggerargsarray = str("loot use " + lootitem + " " + restoftheline)
         triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
-        execute_main(bot, trigger, triggerargsarray, duels, command_type)
+        execute_main(bot, trigger, triggerargsarray, command_type)
 
 
 # Misspellings
