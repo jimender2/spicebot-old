@@ -533,6 +533,8 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
 
+    bot.say(str(targetbots))
+
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
