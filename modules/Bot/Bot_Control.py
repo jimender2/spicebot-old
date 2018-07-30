@@ -507,7 +507,6 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
 def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
-    bot.say("A")
 
     targetbots = []
     if botcom.triggerargsarray == []:
@@ -519,13 +518,12 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
         for word in botcom.triggerargsarray:
             if word in botcom.config_listing:
                 targetbots.append(targetbot)
-    bot.say("B")
+
     for targetbot in targetbots:
         targetbotadmins = bot_target_admins(bot, targetbot)
         if instigator.default not in targetbotadmins:
             targetbots.remove(targetbot)
 
-    bot.say("C")
     for targetbot in targetbots:
         joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
         if not os.path.isdir(joindpath):
@@ -534,7 +532,7 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
     if targetbots == []:
         osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
-    bot.say("D")
+
     if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
@@ -695,7 +693,8 @@ def bot_list_directory(bot, botcom):
 
 def bot_config_directory(bot, botcom):
     botcom.config_listing = []
-    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/")
+    networkname = str(bot.config.core.user.replace(bot.nick + "/", "") + "/")
+    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
     for filename in os.listdir(validconfigsdir):
         filenameminuscfg = str(filename).replace(".cfg", "")
         botcom.config_listing.append(filenameminuscfg)
@@ -706,7 +705,6 @@ def bot_target_admins(bot, targetbot):
     targetbotadmins = []
     networkname = str(bot.config.core.user.replace(targetbot + "/", "") + "/")
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
-    bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
     config.read(configfile)
     owner = config.get("core", "owner")
