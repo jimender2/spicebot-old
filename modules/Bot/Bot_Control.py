@@ -508,46 +508,33 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing or x == 'all'], 1) or bot.nick
-
-    if targetbot == 'all':
-        botcom = bot_config_directory(bot, botcom)
-        targetbots = botcom.config_listing
+    targetbots = []
+    if botcom.triggerargsarray == []:
+        targetbotadmins = bot_target_admins(bot, bot.nick)
+        if instigator.default in targetbotadmins:
+            targetbots.append(bot.nick)
+    elif 'all' in botcom.triggerargsarray:
+        for targetbot in botcom.users_all:
+            targetbotadmins = bot_target_admins(bot, targetbot)
+            if instigator.default in targetbotadmins:
+                targetbots.append(targetbot)
     else:
-        targetbots = [targetbot]
+        for word in botcom.triggerargsarray:
+            if word in botcom.config_listing:
+                targetbotadmins = bot_target_admins(bot, targetbot)
+                if instigator.default in targetbotadmins:
+                    targetbots.append(targetbot)
 
-    bot.say("A")
-
-    unauthlist, authlist = [], []
     for targetbot in targetbots:
-        targetbotadmins = bot_target_admins(bot, targetbot)
-        if instigator.default not in targetbotadmins:
-            unauthlist.append(targetbot)
-    if unauthlist != []:
-        unauthlist = get_trigger_arg(bot, unauthlist, 'list')
-        osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for " + unauthlist + ".")
-
-    if authlist == []:
-        return
-
-    bot.say("B")
-
-    invaldir = []
-    for targetbot in authlist:
         joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
         if not os.path.isdir(joindpath):
-            invaldir.append(targetbot)
-            authlist.remove(targetbot)
-    if invaldir != []:
-        invaldir = get_trigger_arg(bot, invaldir, 'list')
-        osd(bot, instigator.default, 'notice', "That doesn't appear to be a valid bot directory" + invaldir + ",.")
+            targetbots.remove(targetbot)
 
-    if authlist == []:
+    if targetbots == []:
+        osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for the selected bots OR the bots directory is missing.")
         return
 
-    bot.say("C")
-
-    if len(authlist) == 1:
+    if len(targetbots) == 1:
         if targetbot != bot.nick:
             osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
         else:
@@ -557,9 +544,9 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
             else:
                 osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
     else:
-        targetbotlist = get_trigger_arg(bot, authlist, 'list')
+        targetbotlist = get_trigger_arg(bot, targetbots, 'list')
         osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
-    for targetbot in authlist:
+    for targetbot in targetbots:
         update(bot, botcom, trigger, targetbot)
         restart(bot, botcom, trigger, targetbot)
 
