@@ -507,6 +507,7 @@ def bot_command_function_devmode(bot, trigger, botcom, instigator):
 def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
+    bot.say(str(botcom.config_listing))
 
     targetbots = []
     if botcom.triggerargsarray == []:
