@@ -693,7 +693,7 @@ def bot_list_directory(bot, botcom):
 
 def bot_config_directory(bot, botcom):
     botcom.config_listing = []
-    networkname = str(bot.config.core.user.replace(bot.nick + "/", "") + "/")
+    networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
     validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
     for filename in os.listdir(validconfigsdir):
         filenameminuscfg = str(filename).replace(".cfg", "")
