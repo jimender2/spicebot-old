@@ -516,6 +516,8 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
     else:
         targetbots = [targetbot]
 
+    bot.say("A")
+
     unauthlist, authlist = [], []
     for targetbot in targetbots:
         targetbotadmins = bot_target_admins(bot, targetbot)
@@ -527,6 +529,8 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
 
     if authlist == []:
         return
+
+    bot.say("B")
 
     invaldir = []
     for targetbot in authlist:
@@ -540,6 +544,8 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
 
     if authlist == []:
         return
+
+    bot.say("C")
 
     if len(authlist) == 1:
         if targetbot != bot.nick:
