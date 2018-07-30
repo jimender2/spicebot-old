@@ -77,6 +77,7 @@ def feeds_configs(bot, feeds):
 
             # get file path
             feedfile = os.path.join(feed_type_file_path, feed)
+            exec("feeds." + feed + ".file_path = feedfile")
 
             # Read configuration
             config = ConfigParser.ConfigParser()
