@@ -72,7 +72,7 @@ def feeds_configs(bot, feeds):
             feeds.list.append(feed)
 
             # Every feed gets a class
-            exec(str(feed) + " = " + str(class_create(feed)))
+            exec(str(feed) + " = " + class_create(feed))
             # current_feed = class_create(feed)
             # exec("feeds." + feed + " = " + str(current_feed))
 
