@@ -40,7 +40,7 @@ Triggers for usage
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
-    osd(bot, ['deathbybandaid', 'dbbatest'], ['priv', 'priv', 'say'], "RPG test")
+    osd(bot, ['deathbybandaid', 'dbbatest'], ['notice', 'priv', 'say'], "RPG test")
     return
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
     execute_start(bot, trigger, triggerargsarray)
@@ -739,80 +739,87 @@ def osd(bot, target_array, text_type_array, text_array):
         while len(texttargetarray) < len(texttypearray):
             texttargetarray.append('osd_error_handle')
 
+    # Rebuild the text array to ensure string lengths
+
     for target, text_type in zip(texttargetarray, texttypearray):
 
-        bot.say(str(target) + "  " + str(text_type))
+        if target == 'osd_error_handle':
+            dont_say_it = 1
+        else:
 
-        # Text array
-        temptextarray = []
+            bot.say(str(target) + "  " + str(text_type))
 
-        # Notice handling
-        if text_type == 'notice':
-            temptextarray.append(target + ", ")
-        for part in textarraycomplete:
-            temptextarray.append(part)
+            # Text array
+            temptextarray = []
 
-        # 'say' can equal 'priv'
-        if text_type == 'say' and not str(target).startswith("#"):
-            text_type = 'priv'
+            # Notice handling
+            if text_type == 'notice':
+                temptextarray.insert(0, target + ", ")
+                # temptextarray.append(target + ", ")
+            for part in textarraycomplete:
+                temptextarray.append(part)
 
-        # Make sure no individual string ins longer than it needs to be
-        currentstring = ''
-        texttargetarray = []
-        for textstring in temptextarray:
-            if len(textstring) > osd_limit:
-                chunks = textstring.split()
-                for chunk in chunks:
-                    if currentstring == '':
-                        currentstring = chunk
-                    else:
-                        tempstring = str(currentstring + " " + chunk)
-                        if len(tempstring) <= osd_limit:
-                            currentstring = tempstring
-                        else:
-                            texttargetarray.append(currentstring)
+            # 'say' can equal 'priv'
+            if text_type == 'say' and not str(target).startswith("#"):
+                text_type = 'priv'
+
+            # Make sure no individual string ins longer than it needs to be
+            currentstring = ''
+            texttargetarray = []
+            for textstring in temptextarray:
+                if len(textstring) > osd_limit:
+                    chunks = textstring.split()
+                    for chunk in chunks:
+                        if currentstring == '':
                             currentstring = chunk
-                if currentstring != '':
-                    texttargetarray.append(currentstring)
-            else:
-                texttargetarray.append(textstring)
-
-        # Split text to display nicely
-        combinedtextarray = []
-        currentstring = ''
-        for textstring in texttargetarray:
-            if currentstring == '':
-                currentstring = textstring
-            elif len(textstring) > osd_limit:
-                if currentstring != '':
-                    combinedtextarray.append(currentstring)
-                    currentstring = ''
-                combinedtextarray.append(textstring)
-            else:
-                tempstring = str(currentstring + "   " + textstring)
-                if len(tempstring) <= osd_limit:
-                    currentstring = tempstring
+                        else:
+                            tempstring = str(currentstring + " " + chunk)
+                            if len(tempstring) <= osd_limit:
+                                currentstring = tempstring
+                            else:
+                                texttargetarray.append(currentstring)
+                                currentstring = chunk
+                    if currentstring != '':
+                        texttargetarray.append(currentstring)
                 else:
-                    combinedtextarray.append(currentstring)
-                    currentstring = textstring
-        if currentstring != '':
-            combinedtextarray.append(currentstring)
+                    texttargetarray.append(textstring)
 
-        # display
-        textparts = len(combinedtextarray)
-        textpartsleft = textparts
-        for combinedline in combinedtextarray:
-            if text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline, target)
-            elif str(target).startswith("#"):
-                bot.msg(target, combinedline)
-            elif text_type == 'notice' or text_type == 'priv':
-                bot.notice(combinedline, target)
-            elif text_type == 'say':
-                bot.say(combinedline)
-            else:
-                bot.say(combinedline)
-            textpartsleft = textpartsleft - 1
+            # Split text to display nicely
+            combinedtextarray = []
+            currentstring = ''
+            for textstring in texttargetarray:
+                if currentstring == '':
+                    currentstring = textstring
+                elif len(textstring) > osd_limit:
+                    if currentstring != '':
+                        combinedtextarray.append(currentstring)
+                        currentstring = ''
+                    combinedtextarray.append(textstring)
+                else:
+                    tempstring = str(currentstring + "   " + textstring)
+                    if len(tempstring) <= osd_limit:
+                        currentstring = tempstring
+                    else:
+                        combinedtextarray.append(currentstring)
+                        currentstring = textstring
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+
+            # display
+            textparts = len(combinedtextarray)
+            textpartsleft = textparts
+            for combinedline in combinedtextarray:
+                if text_type == 'action' and textparts == textpartsleft:
+                    bot.action(combinedline, target)
+                elif str(target).startswith("#"):
+                    bot.msg(target, combinedline)
+                elif text_type == 'notice' or text_type == 'priv':
+                    bot.notice(combinedline, target)
+                elif text_type == 'say':
+                    bot.say(combinedline)
+                else:
+                    bot.say(combinedline)
+                textpartsleft = textpartsleft - 1
 
 
 """
