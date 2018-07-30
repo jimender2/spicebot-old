@@ -75,6 +75,9 @@ def feeds_configs(bot, feeds):
             current_feed = class_create(feed)
             exec("feeds." + feed + " = current_feed")
 
+            # file name
+            exec("feeds." + feed + ".feed_filename = feed")
+
             # get file path
             feedfile = os.path.join(feed_type_file_path, feed)
             exec("feeds." + feed + ".file_path = feedfile")
@@ -87,7 +90,7 @@ def feeds_configs(bot, feeds):
                     dummy = 2
                     # bot.say(str(each_key) + " = " + str(each_val))
     for feed in feeds.list:
-        testing = eval("feeds." + feed + ".file_path")
+        testing = eval("feeds." + feed + ".feed_filename")
         bot.say(str(testing))
 
     return feeds
