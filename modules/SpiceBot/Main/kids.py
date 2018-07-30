@@ -21,6 +21,7 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     target = get_trigger_arg(bot, triggerargsarray, 1)
+    instigator = trigger.nick
     isValid = targetcheck(bot, botcom, target, instigator)
     if not target:
         target = trigger.nick
