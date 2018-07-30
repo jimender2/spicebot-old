@@ -7768,78 +7768,87 @@ def osd(bot, target_array, text_type_array, text_array):
         while len(texttargetarray) < len(texttypearray):
             texttargetarray.append('osd_error_handle')
 
+    # Rebuild the text array to ensure string lengths
+
     for target, text_type in zip(texttargetarray, texttypearray):
 
-        # Text array
-        temptextarray = []
+        if target == 'osd_error_handle':
+            dont_say_it = 1
+        else:
 
-        # Notice handling
-        if text_type == 'notice':
-            temptextarray.append(target + ", ")
-        for part in textarraycomplete:
-            temptextarray.append(part)
+            bot.say(str(target) + "  " + str(text_type))
 
-        # 'say' can equal 'priv'
-        if text_type == 'say' and not str(target).startswith("#"):
-            text_type = 'priv'
+            # Text array
+            temptextarray = []
 
-        # Make sure no individual string ins longer than it needs to be
-        currentstring = ''
-        texttargetarray = []
-        for textstring in temptextarray:
-            if len(textstring) > osd_limit:
-                chunks = textstring.split()
-                for chunk in chunks:
-                    if currentstring == '':
-                        currentstring = chunk
-                    else:
-                        tempstring = str(currentstring + " " + chunk)
-                        if len(tempstring) <= osd_limit:
-                            currentstring = tempstring
-                        else:
-                            texttargetarray.append(currentstring)
+            # Notice handling
+            if text_type == 'notice':
+                temptextarray.insert(0, target + ", ")
+                # temptextarray.append(target + ", ")
+            for part in textarraycomplete:
+                temptextarray.append(part)
+
+            # 'say' can equal 'priv'
+            if text_type == 'say' and not str(target).startswith("#"):
+                text_type = 'priv'
+
+            # Make sure no individual string ins longer than it needs to be
+            currentstring = ''
+            texttargetarray = []
+            for textstring in temptextarray:
+                if len(textstring) > osd_limit:
+                    chunks = textstring.split()
+                    for chunk in chunks:
+                        if currentstring == '':
                             currentstring = chunk
-                if currentstring != '':
-                    texttargetarray.append(currentstring)
-            else:
-                texttargetarray.append(textstring)
-
-        # Split text to display nicely
-        combinedtextarray = []
-        currentstring = ''
-        for textstring in texttargetarray:
-            if currentstring == '':
-                currentstring = textstring
-            elif len(textstring) > osd_limit:
-                if currentstring != '':
-                    combinedtextarray.append(currentstring)
-                    currentstring = ''
-                combinedtextarray.append(textstring)
-            else:
-                tempstring = str(currentstring + "   " + textstring)
-                if len(tempstring) <= osd_limit:
-                    currentstring = tempstring
+                        else:
+                            tempstring = str(currentstring + " " + chunk)
+                            if len(tempstring) <= osd_limit:
+                                currentstring = tempstring
+                            else:
+                                texttargetarray.append(currentstring)
+                                currentstring = chunk
+                    if currentstring != '':
+                        texttargetarray.append(currentstring)
                 else:
-                    combinedtextarray.append(currentstring)
-                    currentstring = textstring
-        if currentstring != '':
-            combinedtextarray.append(currentstring)
+                    texttargetarray.append(textstring)
 
-        # display
-        textparts = len(combinedtextarray)
-        textpartsleft = textparts
-        for combinedline in combinedtextarray:
-            if text_type == 'action' and textparts == textpartsleft:
-                bot.action(combinedline, target)
-            elif str(target).startswith("#"):
-                bot.msg(target, combinedline)
-            elif text_type == 'notice' or text_type == 'priv':
-                bot.notice(combinedline, target)
-            elif text_type == 'say':
-                bot.say(combinedline)
-            else:
-                bot.say(combinedline)
-            textpartsleft = textpartsleft - 1
+            # Split text to display nicely
+            combinedtextarray = []
+            currentstring = ''
+            for textstring in texttargetarray:
+                if currentstring == '':
+                    currentstring = textstring
+                elif len(textstring) > osd_limit:
+                    if currentstring != '':
+                        combinedtextarray.append(currentstring)
+                        currentstring = ''
+                    combinedtextarray.append(textstring)
+                else:
+                    tempstring = str(currentstring + "   " + textstring)
+                    if len(tempstring) <= osd_limit:
+                        currentstring = tempstring
+                    else:
+                        combinedtextarray.append(currentstring)
+                        currentstring = textstring
+            if currentstring != '':
+                combinedtextarray.append(currentstring)
+
+            # display
+            textparts = len(combinedtextarray)
+            textpartsleft = textparts
+            for combinedline in combinedtextarray:
+                if text_type == 'action' and textparts == textpartsleft:
+                    bot.action(combinedline, target)
+                elif str(target).startswith("#"):
+                    bot.msg(target, combinedline)
+                elif text_type == 'notice' or text_type == 'priv':
+                    bot.notice(combinedline, target)
+                elif text_type == 'say':
+                    bot.say(combinedline)
+                else:
+                    bot.say(combinedline)
+                textpartsleft = textpartsleft - 1
 
 
 """
