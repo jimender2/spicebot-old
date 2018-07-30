@@ -25,7 +25,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if not target:
         target = trigger.nick
         message  = "Is that what the kids are calling it these days, " + target
-    elif isvalid == 1:
+    elif isValid == 1:
         message  = "Is that what the kids are calling it these days, " + target
     else:
         something = get_trigger_arg(bot, triggerargsarray, '1+')
