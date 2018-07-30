@@ -703,7 +703,10 @@ def bot_config_directory(bot, botcom):
 
 def bot_target_admins(bot, targetbot):
     targetbotadmins = []
-    networkname = str(bot.config.core.user.replace(targetbot + "/", "") + "/")
+    networkname = str(bot.config.core.user)
+    networkname = networkname.replace(networkname + "/", "")
+    networkname = str(networkname + "/")
+    bot.say(str(networkname))
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
     bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
