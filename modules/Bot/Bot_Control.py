@@ -705,6 +705,7 @@ def bot_target_admins(bot, targetbot):
     targetbotadmins = []
     networkname = str(bot.config.core.user.replace(targetbot + "/", "") + "/")
     configfile = str("/home/spicebot/.sopel/" + targetbot + "/System-Files/Configs/" + networkname + targetbot + ".cfg")
+    bot.say(str(configfile))
     config = ConfigParser.ConfigParser()
     config.read(configfile)
     owner = config.get("core", "owner")
