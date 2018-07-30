@@ -727,6 +727,10 @@ def osd(bot, target_array, text_type, text_array):
         for part in textarraycomplete:
             temptextarray.append(part)
 
+        # 'say' can equal 'priv'
+        if text_type == 'say' and not str(target).startswith("#"):
+            text_type = 'priv'
+
         # Make sure no individual string ins longer than it needs to be
         currentstring = ''
         texttargetarray = []
