@@ -508,33 +508,54 @@ def bot_command_function_update(bot, trigger, botcom, instigator):
 
     botcom = bot_config_directory(bot, botcom)
 
-    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing], 1) or bot.nick
+    targetbot = get_trigger_arg(bot, [x for x in botcom.triggerargsarray if x in botcom.config_listing or x == 'all'], 1) or bot.nick
 
-    if targetbot == bot.nick:
-        if instigator.default not in botcom.botadmins:
-            osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
-            return
+    if targetbot == 'all':
+        botcom = bot_config_directory(bot, botcom)
+        targetbots = botcom.config_listing
     else:
+        targetbots = [targetbot]
+
+    unauthlist, authlist = [], []
+    for targetbot in targetbots:
         targetbotadmins = bot_target_admins(bot, targetbot)
         if instigator.default not in targetbotadmins:
-            osd(bot, instigator.default, 'notice', "You are unauthorized to use this function.")
-            return
+            unauthlist.append(targetbot)
+    if unauthlist != []:
+        unauthlist = get_trigger_arg(bot, unauthlist, 'list')
+        osd(bot, instigator.default, 'notice', "You are unauthorized to use this function for " + unauthlist + ".")
 
-    joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
-    if not os.path.isdir(joindpath):
-        osd(bot, instigator.default, 'notice', "That doesn't appear to be a valid bot directory.")
+    if authlist == []:
         return
 
-    if targetbot != bot.nick:
-        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
-    else:
-        dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
-        if targetbot in dungeonmasterarray:
-            osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
+    invaldir = []
+    for targetbot in authlist:
+        joindpath = os.path.join("/home/spicebot/.sopel/", targetbot)
+        if not os.path.isdir(joindpath):
+            invaldir.append(targetbot)
+            authlist.remove(targetbot)
+    if invaldir != []:
+        invaldir = get_trigger_arg(bot, invaldir, 'list')
+        osd(bot, instigator.default, 'notice', "That doesn't appear to be a valid bot directory" + invaldir + ",.")
+
+    if authlist == []:
+        return
+
+    if len(authlist) == 1:
+        if targetbot != bot.nick:
+            osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbot + " from Github and restart.")
         else:
-            osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
-    update(bot, botcom, trigger, targetbot)
-    restart(bot, botcom, trigger, targetbot)
+            dungeonmasterarray = ['spiceRPG', 'spiceRPGdev']
+            if targetbot in dungeonmasterarray:
+                osd(bot, botcom.channel_list, 'say', "My Dungeon Master, " + trigger.nick + ", hath commandeth me to performeth an update from the Hub of Gits. I shall return post haste!")
+            else:
+                osd(bot, botcom.channel_list, 'say', trigger.nick + " commanded me to update from Github and restart. Be Back Soon!")
+    else:
+        targetbotlist = get_trigger_arg(bot, authlist, 'list')
+        osd(bot, [botcom.channel_current], 'say', trigger.nick + " commanded me to update " + targetbotlist + " from Github and restart.")
+    for targetbot in authlist:
+        update(bot, botcom, trigger, targetbot)
+        restart(bot, botcom, trigger, targetbot)
 
 
 def bot_command_function_restart(bot, trigger, botcom, instigator):
