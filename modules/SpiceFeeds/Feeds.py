@@ -93,6 +93,6 @@ def feeds_configs(bot, feeds):
         feed_name = eval("feeds." + feed + ".displayname")
         feed_url = eval("feeds." + feed + ".url")
         feed_type = eval("feeds." + feed + ".type")
-        bot.say("[" + str(feed_type) + "]" + str(feed_name) + " " + str(feed_url))
+        bot.say("[" + str(feed_type) + "] " + str(feed_name) + " " + str(feed_url))
 
     return feeds
