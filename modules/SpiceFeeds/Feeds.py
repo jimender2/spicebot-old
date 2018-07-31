@@ -164,7 +164,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
             if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
 
-                timecompare = get_timeuntil(nowtime, webbytime)
+                timecompare = get_timeuntil(now, webbytime)
                 dispmsg.append("{" + timecompare + "}")
 
                 scrapetitle = eval("feeds." + feed + ".title")
