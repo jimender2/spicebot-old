@@ -105,7 +105,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
     tree = html.fromstring(page.content)
     if page.status_code == 200:
 
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        now = datetime.datetime.utcnow()
+        now = now.replace(tzinfo=pytz.UTC)
 
         displayname = eval("feeds." + feed + ".displayname")
 
@@ -148,6 +149,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
         elif feed_type == 'webinar':
 
             scrapetime = eval("feeds." + feed + ".time")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
 
             webbytime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
@@ -156,8 +158,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             if feed == 'spiceworkswebby':
                 webbytime = str(webbytime.split("+", 1)[0])
 
-            # webbytz = pytz.timezone('UTC')
-            webbytz = pytz.timezone('US/Eastern')
+            webbytz = pytz.timezone(scrapetimezone)
             webbytime = parser.parse(webbytime)
             webbytime = webbytz.localize(webbytime)
 

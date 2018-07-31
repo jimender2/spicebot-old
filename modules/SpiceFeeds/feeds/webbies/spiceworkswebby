@@ -7,3 +7,4 @@ title = //*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[2]/a/text()
 link = //*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[4]/a/@href
 linkprecede = https://community.spiceworks.com
 bonus = //*[@id="primary"]/div[2]/ul/li[1]/div[2]/div[4]/div[1]/p[1]/text()
+timezone = UTC
