@@ -39,7 +39,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-@sopel.module.commands('packt')
+@sopel.module.commands('packt', 'spicewebby', 'atwebby', 'comptiawebby')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
     if not enablestatus:
@@ -245,7 +245,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 titleappend = 1
 
                 timecompare = get_timeuntil(now, dailytime)
-                dispmsg.append("{Next in " + timecompare + "}")
+                dispmsg.append("{Next " + timecompare + "}")
 
                 dispmsg.append("URL: " + url)
 

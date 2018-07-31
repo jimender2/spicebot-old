@@ -21,7 +21,7 @@ from BotShared import *
 url = 'https://www.comptia.org/events/webinars'
 
 
-@sopel.module.commands('comptiawebby')
+@sopel.module.commands('comptiawebbyo')
 def execute_main(bot, trigger):
     # webbyauto(bot)
     page = requests.get(url, headers=None)

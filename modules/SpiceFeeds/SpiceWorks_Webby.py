@@ -19,7 +19,7 @@ from BotShared import *
 url = 'https://community.spiceworks.com/calendar'
 
 
-@sopel.module.commands('spicewebby')
+@sopel.module.commands('spicewebbyo')
 def execute_main(bot, trigger):
     # webbyauto(bot)
     page = requests.get(url, headers=None)
