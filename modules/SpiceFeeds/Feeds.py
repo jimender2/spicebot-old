@@ -94,6 +94,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
     page = requests.get(feed_url, headers=header)
     if page.status_code == 200:
 
+        displayname = eval("feeds." + feed + ".displayname")
+
         feed_type = eval("feeds." + feed + ".type")
 
         if feed_type == 'rss':
@@ -128,7 +130,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 lastbuildcurrent = lastBuildXML.strip()
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
 
-                dispmsg.insert(0, "[" + feed + "]")
+                dispmsg.insert(0, "[" + displayname + "]")
 
     return dispmsg
 
