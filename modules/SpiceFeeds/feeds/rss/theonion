@@ -2,5 +2,5 @@
 type = rss
 displayname = The Onion
 url = https://www.theonion.com/rss
-parentnumber = 0
+parentnumber = 1
 childnumber = 1
