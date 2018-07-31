@@ -101,6 +101,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for word in triggerargsarray:
             current_feed_list = []
             if word in feeds.list:
+                bot.say(word)
                 current_feed_list.append(word)
     feed_select_text = get_trigger_arg(bot, current_feed_list, 'list')
 
