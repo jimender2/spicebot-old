@@ -48,30 +48,26 @@ def autofeeds(bot):
                     osd(bot, botcom.channel_current, 'say', dispmsg)
 
 
-@sopel.module.commands('feeds')
-def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
-    if not enablestatus:
-        execute_main(bot, trigger, triggerargsarray, botcom, instigator)
-
-
-@sopel.module.commands('packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
+@sopel.module.commands('feeds', 'packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
     if not enablestatus:
-        # feeds dynamic Class
-        feeds = class_create('feeds')
-        feeds = feeds_configs(bot, feeds)
-        feed = trigger.group(1)
-        if feed == 'spicewebby':
-            feed = 'spiceworkswebby'
-        elif feed == 'atwebby':
-            feed = 'actualtechwebby'
-        dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
-        if dispmsg == []:
-            osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+        if trigger.group(1) == 'feeds':
+            execute_main(bot, trigger, triggerargsarray, botcom, instigator)
         else:
-            osd(bot, botcom.channel_current, 'say', dispmsg)
+            # feeds dynamic Class
+            feeds = class_create('feeds')
+            feeds = feeds_configs(bot, feeds)
+            feed = trigger.group(1)
+            if feed == 'spicewebby':
+                feed = 'spiceworkswebby'
+            elif feed == 'atwebby':
+                feed = 'actualtechwebby'
+            dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+            if dispmsg == []:
+                osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+            else:
+                osd(bot, botcom.channel_current, 'say', dispmsg)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
