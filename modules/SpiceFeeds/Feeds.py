@@ -10,6 +10,8 @@ from time import strptime
 from dateutil import parser
 import calendar
 import arrow
+import pytz
+from dateutil import tz
 from xml.dom import minidom
 from fake_useragent import UserAgent
 import sys
