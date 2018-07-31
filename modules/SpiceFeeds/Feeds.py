@@ -90,7 +90,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
     dispmsg = []
 
-    feed_url = eval("feeds." + feed + ".url")
+    feed_url = eval("feeds." + str(feed) + ".url")
     page = requests.get(feed_url, headers=header)
     if page.status_code == 200:
 
