@@ -42,9 +42,9 @@ def autofeeds(bot):
         dispmsg = feeds_display(bot, feed, feeds, 1) or []
         if dispmsg != []:
             for channel in bot.channels:
-                bot.msg(channel, "test")
                 channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
                 if 'feeds' in channelmodulesarray:
+                    bot.msg(channel, "test")
                     feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
                     if feed in feed_enabled:
                         osd(bot, channel, 'say', dispmsg)
