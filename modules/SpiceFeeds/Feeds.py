@@ -219,7 +219,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             dispmsg.append(title)
 
             dailytz = pytz.timezone(scrapetimezone)
-            nowtime = dailytz.localize(now)
+            nowtime = datetime.now(dailytz)
             tomorrow = nowtime + timedelta(days=1)
             dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
             timeuntil = (dailytime - nowtime).total_seconds()
