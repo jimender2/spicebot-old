@@ -39,7 +39,7 @@ def autofeeds(bot):
     feeds = class_create('feeds')
     feeds = feeds_configs(bot, feeds)
     for feed in feeds.list:
-        dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+        dispmsg = feeds_display(bot, feed, feeds, 1) or []
         if dispmsg != []:
             for channel in bot.channels:
                 channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
