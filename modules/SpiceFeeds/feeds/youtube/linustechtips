@@ -1,5 +1,5 @@
 [configuration]
-type = rss
+type = youtube
 displayname = Linus Tech Tips
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw
 parentnumber = 1

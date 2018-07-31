@@ -1,5 +1,5 @@
 [configuration]
-type = rss
+type = youtube
 displayname = The Bitter IT Guy
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UC7lx9EQBwxPaRMlMom61-XQ
 parentnumber = 1
