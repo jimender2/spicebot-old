@@ -156,7 +156,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             if feed == 'spiceworkswebby':
                 webbytime = str(webbytime.split("+", 1)[0])
 
-            webbytz = pytz.timezone('UTC')
+            # webbytz = pytz.timezone('UTC')
+            webbytz = pytz.timezone('US/Eastern')
             webbytime = parser.parse(webbytime)
             webbytime = webbytz.localize(webbytime)
 
