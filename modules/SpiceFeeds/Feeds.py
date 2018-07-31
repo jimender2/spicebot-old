@@ -42,6 +42,7 @@ def autofeeds(bot):
         dispmsg = feeds_display(bot, feed, feeds, 1) or []
         if dispmsg != []:
             for channel in bot.channels:
+                bot.msg(channel, "test")
                 channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
                 if 'feeds' in channelmodulesarray:
                     feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
@@ -64,7 +65,7 @@ def mainfunction(bot, trigger):
                 feed = 'spiceworkswebby'
             elif feed == 'atwebby':
                 feed = 'actualtechwebby'
-            dispmsg = feeds_display(bot, feed, feeds, 0) or []
+            dispmsg = feeds_display(bot, feed, feeds, 1) or []
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
