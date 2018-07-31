@@ -83,7 +83,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # feeds dynamic Class
     feeds = class_create('feeds')
 
-    valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe']
+    valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe', 'unsubscribe']
     command = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_commands], 1) or 'run'
     if command in triggerargsarray:
         triggerargsarray.remove(command)
@@ -118,7 +118,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if command == 'subscribe':
         for feed in current_feed_list:
             adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'add')
-        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + feed_select_text)
+        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + feed_select_text)
         return
 
     if command == 'unsubscribe':
