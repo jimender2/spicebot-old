@@ -42,23 +42,96 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     feeds = feeds_configs(bot, feeds)
 
-    bot.say(str(feeds.list))
+    feed_select = get_trigger_arg(bot, [x for x in triggerargsarray if x in feeds.list or x == 'all'], 1) or 'nofeed'
+    if feed_select == 'nofeed':
+        feed_list = get_trigger_arg(bot, feeds.list, 'list')
+        osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
+        return
+
+    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in feeds.list], 1) or botcom.channel_current
+
+    feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
 
     if command == 'reset':
         bot.say("reset")
         return
 
     elif command == 'enable':
-        bot.say("enable")
+        if feed_select in feed_enabled:
+            osd(bot, botcom.channel_current, 'say', feed_select + " seems to already be " + command + "d.")
+            return
+        adjust_database_array(bot, channelselect, [feed_select], 'feeds_enabled', 'add')
+        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + "d.")
         return
 
     elif command == 'disable':
-        bot.say("disable")
+        if feed_select not in feed_enabled:
+            osd(bot, botcom.channel_current, 'say', feed_select + " seems to already be " + command + "d.")
+            return
+        adjust_database_array(bot, channelselect, [feed_select], 'feeds_enabled', 'del')
+        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + "d.")
         return
 
     elif command == 'run':
-        bot.say("run")
+        if feed_select == 'all':
+            current_feed_list = feeds.list
+        else:
+            current_feed_list = [feed_select]
+        for feed in current_feed_list:
+            dispmsg = feeds_display(bot, botcom, feeds, 1) or []
+            if dispmsg == []:
+                osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+            else:
+                osd(bot, botcom.channel_current, 'say', dispmsg)
         return
+
+
+def feeds_display(bot, botcom, feeds, displayifnotnew):
+
+    dispmsg = []
+
+    feed_url = eval("feeds." + feed + ".url")
+    page = requests.get(feed_url, headers=header)
+    if page.status_code == 200:
+
+        feed_type = eval("feeds." + feed + ".type")
+        feed_filename = eval("feeds." + feed + ".feed_filename")
+
+        if feed_type == 'rss':
+
+            parentnumber = eval("feeds." + feed + ".parentnumber")
+            childnumber = eval("feeds." + feed + ".childnumber")
+
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed_filename + '_lastbuildcurrent') or 0
+
+            xml = page.text
+            xml = xml.encode('ascii', 'ignore').decode('ascii')
+            xmldoc = minidom.parseString(xml)
+
+            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+            lastBuildXML = str(lastBuildXML)
+
+            newcontent = True
+            if lastBuildXML.strip() == lastbuildcurrent:
+                newcontent = False
+
+            if newcontent or displayifnotnew:
+
+                titles = xmldoc.getElementsByTagName('title')
+                title = titles[parentnumber].childNodes[0].nodeValue
+                dispmsg.append(title)
+
+                links = xmldoc.getElementsByTagName('link')
+                link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                dispmsg.append(link)
+
+                lastbuildcurrent = lastBuildXML.strip()
+                set_database_value(bot, bot.nick, feed_filename + '_lastbuildcurrent', lastbuildcurrent)
+
+                dispmsg.insert(0, "[" + feed + "]")
+
+    return dispmsg
 
 
 # rss feeds list
