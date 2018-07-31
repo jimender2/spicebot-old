@@ -98,8 +98,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
     dispmsg = []
     titleappend = 0
 
-    feed_url = eval("feeds." + feed + ".url")
-    page = requests.get(feed_url, headers=header)
+    url = eval("feeds." + feed + ".url")
+    page = requests.get(url, headers=header)
     if page.status_code == 200:
 
         now = datetime.datetime.utcnow()
