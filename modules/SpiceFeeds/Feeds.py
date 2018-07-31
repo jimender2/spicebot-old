@@ -178,7 +178,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 webbylink = str(tree.xpath(scrapelink))
                 for r in (("['", ""), ("']", "")):
                     webbylink = webbylink.replace(*r)
-                if feed == actualtechwebby:
+                if feed == 'actualtechwebby':
                     webbylink = str(url + webbylink.split("&", 1)[0])
                 webbylinkprecede = eval("feeds." + feed + ".linkprecede")
                 if webbylinkprecede != 'noprecede':
