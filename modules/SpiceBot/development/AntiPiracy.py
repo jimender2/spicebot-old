@@ -9,10 +9,11 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author yournamehere
+# author deathbybandaid
 
+piracysayings = ["You Wouldn't download a car!", "Piracy, It's a Crime"]
 
-@sopel.module.commands('smokey')
+@sopel.module.commands('pirate')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -20,8 +21,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    target = get_trigger_arg(bot, triggerargsarray, 1)
-    if not target:
-        osd(bot, trigger.sender, 'say', "Remember... Only YOU Can Prevent Forest Fires")
-    else:
-        osd(bot, trigger.sender, 'say', "Remember... Only " + target.upper() + " Can Prevent Forest Fires")
+    randompiracyslogan = get_trigger_arg(bot, piracysayings, "random")
+    osd(bot, trigger.sender, 'say', randompiracyslogan)
