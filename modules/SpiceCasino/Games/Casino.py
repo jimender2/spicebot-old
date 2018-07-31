@@ -29,7 +29,7 @@ def execute_main(bot, trigger, arg, botcom, instigator):
     if mygame == 'docs' or mygame == 'help':
         osd(bot, trigger.sender, 'say', "For help with this module, see here: " + wikiurl)
     elif mygame == 'slots':
-        slots(bot, trigger, arg)
+        slots(bot, botcom, trigger, arg)
     elif mygame == 'blackjack':
         blackjack(bot, trigger, arg)
     elif (mygame == 'roulette' or mygame == 'spin'):
@@ -66,7 +66,7 @@ def freebie(bot, trigger):
         osd(bot, trigger.nick, 'priv', 'Looks like you dont need a handout because your bank balance is ' + str(bankbalance))
 
 
-def slots(bot, trigger, arg):
+def slots(bot, botcom, trigger, arg):
     # _____________Game 1 slots___________
     # slot machine that uses computer terms with a jackpot tied to how much money has been gambled
     player = trigger.nick
