@@ -254,7 +254,7 @@ def targetcheck(bot, botcom, target, instigator):
         validtargetmsg.append("You must specify a target.")
         return validtarget, validtargetmsg
     bot.say(str(botcom.users_current))
-    if target not in botcom.users_current:
+    if str(target) not in botcom.users_current:
         validtarget = 0
         validtargetmsg.append(target + " isn't a valid user")
         return validtarget, validtargetmsg
