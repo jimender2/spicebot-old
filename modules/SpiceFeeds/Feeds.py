@@ -47,6 +47,10 @@ def mainfunction(bot, trigger):
         feeds = class_create('feeds')
         feeds = feeds_configs(bot, feeds)
         feed = trigger.group(1)
+        if feed == 'spicewebby':
+            feed = 'spiceworkswebby'
+        elif feed == 'atwebby':
+            feed = 'actualtechwebby'
         dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
         if dispmsg == []:
             osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
