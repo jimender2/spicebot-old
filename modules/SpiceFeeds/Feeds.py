@@ -94,7 +94,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
 
     if command == 'reset':
-        bot.say("reset")
+        reset_database_value(bot, bot.nick, feed_select + '_lastbuildcurrent')
+        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + ".")
         return
 
     elif command == 'enable':
