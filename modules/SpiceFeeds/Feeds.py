@@ -93,7 +93,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
         return
 
-    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in feeds.list], 1) or botcom.channel_current
+    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
     feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
 
