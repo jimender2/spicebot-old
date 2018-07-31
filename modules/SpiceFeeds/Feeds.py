@@ -98,7 +98,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if feed_select == 'all':
         current_feed_list = feeds.list
     else:
-        for word in botcom.triggerargsarray:
+        for word in triggerargsarray:
             current_feed_list = []
             if word in feeds.list:
                 current_feed_list.append(word)
