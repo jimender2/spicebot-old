@@ -78,7 +78,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             current_feed_list = [feed_select]
         for feed in current_feed_list:
-            dispmsg = feeds_display(bot, botcom, feeds, 1) or []
+            dispmsg = feeds_display(bot, feed, botcom, feeds, 1) or []
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
@@ -86,11 +86,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
 
-def feeds_display(bot, botcom, feeds, displayifnotnew):
+def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
     dispmsg = []
-
-    feed = eval("feeds." + feed + ".feed_filename")
 
     feed_url = eval("feeds." + feed + ".url")
     page = requests.get(feed_url, headers=header)
