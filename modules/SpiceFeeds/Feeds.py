@@ -64,7 +64,7 @@ def mainfunction(bot, trigger):
                 feed = 'spiceworkswebby'
             elif feed == 'atwebby':
                 feed = 'actualtechwebby'
-            dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+            dispmsg = feeds_display(bot, feed, feeds, 0) or []
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
@@ -120,7 +120,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             current_feed_list = [feed_select]
         for feed in current_feed_list:
-            dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+            dispmsg = feeds_display(bot, feed, feeds, 1) or []
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
@@ -128,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
 
-def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
+def feeds_display(bot, feed, feeds, displayifnotnew):
 
     dispmsg = []
     titleappend = 0
