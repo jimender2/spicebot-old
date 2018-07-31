@@ -162,10 +162,4 @@ def feeds_configs(bot, feeds):
                 for (each_key, each_val) in config.items(each_section):
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
-    for feed in feeds.list:
-        feed_name = eval("feeds." + feed + ".displayname")
-        feed_url = eval("feeds." + feed + ".url")
-        feed_type = eval("feeds." + feed + ".type")
-        bot.say("[" + str(feed_type) + "] " + str(feed_name) + " " + str(feed_url))
-
     return feeds
