@@ -222,7 +222,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             nowtime = datetime.datetime.now(dailytz)
             tomorrow = nowtime + datetime.timedelta(days=1)
             dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
-            dailytime = webbytz.localize(dailytime)
+            dailytime = dailytz.localize(dailytime)
             timeuntil = (dailytime - nowtime).total_seconds()
 
             if displayifnotnew or int(timeuntil) < 60:
