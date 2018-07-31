@@ -90,19 +90,20 @@ def feeds_display(bot, botcom, feeds, displayifnotnew):
 
     dispmsg = []
 
+    feed = eval("feeds." + feed + ".feed_filename")
+
     feed_url = eval("feeds." + feed + ".url")
     page = requests.get(feed_url, headers=header)
     if page.status_code == 200:
 
         feed_type = eval("feeds." + feed + ".type")
-        feed_filename = eval("feeds." + feed + ".feed_filename")
 
         if feed_type == 'rss':
 
             parentnumber = eval("feeds." + feed + ".parentnumber")
             childnumber = eval("feeds." + feed + ".childnumber")
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, feed_filename + '_lastbuildcurrent') or 0
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
 
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
@@ -127,7 +128,7 @@ def feeds_display(bot, botcom, feeds, displayifnotnew):
                 dispmsg.append(link)
 
                 lastbuildcurrent = lastBuildXML.strip()
-                set_database_value(bot, bot.nick, feed_filename + '_lastbuildcurrent', lastbuildcurrent)
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
 
                 dispmsg.insert(0, "[" + feed + "]")
 
