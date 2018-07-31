@@ -227,7 +227,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
             if displayifnotnew or int(timeuntil) < 60:
 
-                timecompare = get_timeuntil(now, webbytime)
+                timecompare = get_timeuntil(now, dailytime)
                 dispmsg.append("{Next in " + timecompare + "}")
 
                 dispmsg.append("URL: " + url)
