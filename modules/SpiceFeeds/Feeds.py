@@ -98,8 +98,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
         if feed_type == 'rss':
 
-            parentnumber = eval("feeds." + feed + ".parentnumber")
-            childnumber = eval("feeds." + feed + ".childnumber")
+            parentnumber = int(eval("feeds." + feed + ".parentnumber"))
+            childnumber = int(eval("feeds." + feed + ".childnumber"))
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
 
