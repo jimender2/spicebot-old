@@ -35,15 +35,15 @@ feeds_file_path = os.path.join(moduledir, feeds_dir)
 # Automatic Run
 @sopel.module.interval(60)
 def autofeeds(bot):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
-    if not enablestatus:
-        # feeds dynamic Class
-        feeds = class_create('feeds')
-        feeds = feeds_configs(bot, feeds)
-        for feed in feeds.list:
-            dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
-            if dispmsg != []:
-                for channel in bot.channels:
+    # feeds dynamic Class
+    feeds = class_create('feeds')
+    feeds = feeds_configs(bot, feeds)
+    for feed in feeds.list:
+        dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+        if dispmsg != []:
+            for channel in bot.channels:
+                channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
+                if 'feeds' in channelmodulesarray:
                     feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
                     if feed in feed_enabled:
                         osd(bot, channel, 'say', dispmsg)
