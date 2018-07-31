@@ -32,6 +32,22 @@ feeds_dir = "feeds/"
 feeds_file_path = os.path.join(moduledir, feeds_dir)
 
 
+# Automatic Run
+@sopel.module.interval(60)
+def autofeeds(bot):
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    if not enablestatus:
+        # feeds dynamic Class
+        feeds = class_create('feeds')
+        feeds = feeds_configs(bot, feeds)
+        feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
+        for feed in feeds.list:
+            if feed in feed_enabled:
+                dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+                if dispmsg != []:
+                    osd(bot, botcom.channel_current, 'say', dispmsg)
+
+
 @sopel.module.commands('feeds')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
@@ -39,7 +55,7 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
-@sopel.module.commands('packt', 'spicewebby', 'atwebby', 'comptiawebby')
+@sopel.module.commands('packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
     if not enablestatus:
