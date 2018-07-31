@@ -12,7 +12,7 @@ sys.path.append(shareddir)
 sys.path.append(moduledir)
 from BotShared import *
 from Bucks import *
-
+from Casino_Var import *
 
 now = time.time()
 
@@ -101,10 +101,6 @@ def slots(bot, botcom, trigger, arg):
                     set_database_value(bot, 'casino', 'slotimer', now)
                     # add bet to casino
                     mywinnings = 0
-
-                    wheel = slotwheel
-                    if slotwheel == []:
-                        slotwheel = ['BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'WIFI', 'ClOUD']
                     wheel1 = get_trigger_arg(bot, slotwheel, 'random')
                     wheel2 = get_trigger_arg(bot, slotwheel, 'random')
                     wheel3 = get_trigger_arg(bot, slotwheel, 'random')
