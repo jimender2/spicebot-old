@@ -39,6 +39,21 @@ def mainfunction(bot, trigger):
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
+@sopel.module.commands('packt')
+def mainfunction(bot, trigger):
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
+    if not enablestatus:
+        # feeds dynamic Class
+        feeds = class_create('feeds')
+        feeds = feeds_configs(bot, feeds)
+        feed = trigger.group(1)
+        dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+        if dispmsg == []:
+            osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+        else:
+            osd(bot, botcom.channel_current, 'say', dispmsg)
+
+
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     # feeds dynamic Class

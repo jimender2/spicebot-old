@@ -24,7 +24,7 @@ from BotShared import *
 packturl = "https://www.packtpub.com/packt/offers/free-learning"
 
 
-@sopel.module.commands('packt')
+@sopel.module.commands('packto')
 def execute_main(bot, trigger):
     osd(bot, trigger.sender, 'say', packt_osd(bot))
 
