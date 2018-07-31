@@ -40,12 +40,13 @@ def autofeeds(bot):
         # feeds dynamic Class
         feeds = class_create('feeds')
         feeds = feeds_configs(bot, feeds)
-        feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
         for feed in feeds.list:
-            if feed in feed_enabled:
-                dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
-                if dispmsg != []:
-                    osd(bot, botcom.channel_current, 'say', dispmsg)
+            dispmsg = feeds_display(bot, botcom, feed, feeds, 1) or []
+            if dispmsg != []:
+                for channel in bot.channels:
+                    feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
+                    if feed in feed_enabled:
+                        osd(bot, channel, 'say', dispmsg)
 
 
 @sopel.module.commands('feeds', 'packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
