@@ -105,7 +105,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
     tree = html.fromstring(page.content)
     if page.status_code == 200:
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 
         displayname = eval("feeds." + feed + ".displayname")
 
