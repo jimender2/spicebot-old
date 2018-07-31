@@ -218,7 +218,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 title = "No Book Today"
             dispmsg.append(title)
 
-            nowtime = datetime.datetime.now(scrapetimezone)
+            dailytz = pytz.timezone(scrapetimezone)
+            nowtime = dailytz.localize(now)
             tomorrow = nowtime + timedelta(days=1)
             dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
             timeuntil = (dailytime - nowtime).total_seconds()
