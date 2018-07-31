@@ -35,7 +35,7 @@ feeds_file_path = os.path.join(moduledir, feeds_dir)
 # Automatic Run
 @sopel.module.interval(60)
 def autofeeds(bot):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'feeds')
     if not enablestatus:
         # feeds dynamic Class
         feeds = class_create('feeds')
