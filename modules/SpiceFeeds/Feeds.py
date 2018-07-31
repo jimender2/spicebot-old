@@ -164,6 +164,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
             if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
 
+                titleappend = 1
+
                 timecompare = get_timeuntil(now, webbytime)
                 dispmsg.append("{" + timecompare + "}")
 
