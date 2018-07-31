@@ -47,6 +47,13 @@ def autofeeds(bot):
                     feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
                     if feed in feed_enabled:
                         osd(bot, channel, 'say', dispmsg)
+            users_current = []
+            for user in bot.users:
+                users_current.append(str(user))
+            for user in users_current:
+                feed_enabled = get_database_value(bot, user, 'feeds_enabled') or []
+                if feed in feed_enabled:
+                    osd(bot, user, 'priv', dispmsg)
 
 
 @sopel.module.commands('feeds', 'packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
