@@ -100,6 +100,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
     url = eval("feeds." + feed + ".url")
     page = requests.get(url, headers=header)
+    tree = html.fromstring(page.content)
     if page.status_code == 200:
 
         now = datetime.datetime.utcnow()
@@ -143,8 +144,6 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
 
         elif feed_type == 'webinar':
-
-            tree = gettree()
 
             scrapetime = eval("feeds." + feed + ".time")
 
@@ -234,9 +233,3 @@ def feeds_configs(bot, feeds):
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
     return feeds
-
-
-def gettree():
-    page = requests.get(url, headers=None)
-    tree = html.fromstring(page.content)
-    return tree
