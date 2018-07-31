@@ -204,6 +204,34 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                     if webbybonus != '':
                         dispmsg.append('BONUS: ' + webbybonus)
 
+        elif feed_type == 'daily':
+
+            timehour = eval("feeds." + feed + ".hour")
+            timeminute = eval("feeds." + feed + ".minute")
+            scrapetimezone = eval("feeds." + feed + ".timezone")
+
+            scrapetitle = eval("feeds." + feed + ".title")
+            title = str(tree.xpath(scrapetitle))
+            for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("]", "")):
+                title = title.replace(*r)
+            if title == "[]" or title == '':
+                title = "No Book Today"
+            dispmsg.append(title)
+
+            tomorrow = now + timedelta(days=1)
+            dailytime = datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
+            dailytz = pytz.timezone(scrapetimezone)
+            dailytime = parser.parse(dailytime)
+            dailytime = webbytz.localize(dailytime)
+            timeuntil = (dailytime - now).total_seconds()
+
+            if displayifnotnew or int(timeuntil) < 60:
+
+                timecompare = get_timeuntil(now, webbytime)
+                dispmsg.append("{Next in " + timecompare + "}")
+
+                dispmsg.append("URL: " + url)
+
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
 
