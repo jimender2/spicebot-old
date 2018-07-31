@@ -156,7 +156,10 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
 
-            lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            if feed_type == 'youtube':
+                lastBuildXML = xmldoc.getElementsByTagName('published')
+            else:
+                lastBuildXML = xmldoc.getElementsByTagName('pubDate')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
 
