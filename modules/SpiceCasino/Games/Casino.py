@@ -72,7 +72,7 @@ def slots(bot, trigger, arg):
     player = trigger.nick
     channel = trigger.sender
     now = time.time()
-    bet = get_trigger_arg(bot,arg,'1')
+    bet = get_trigger_arg(bot, arg, '1')
     if not bet.isdigit():
         bet = 1
     # __payouts___
@@ -105,9 +105,9 @@ def slots(bot, trigger, arg):
                     wheel = slotwheel
                     if slotwheel == []:
                         slotwheel = ['BSOD', 'RAM', 'CPU', 'RAID', 'VLANS', 'WIFI', 'ClOUD']
-                    wheel1 = get_trigger_arg(bot,slotwheel,'random')
-                    wheel2 = get_trigger_arg(bot,slotwheel,'random')
-                    wheel3 = get_trigger_arg(bot,slotwheel,'random')
+                    wheel1 = get_trigger_arg(bot, slotwheel, 'random')
+                    wheel2 = get_trigger_arg(bot, slotwheel, 'random')
+                    wheel3 = get_trigger_arg(bot, slotwheel, 'random')
                     reel = [wheel1, wheel2, wheel3]
                 if bet < 2:
                     chipcount = "spicychip"
