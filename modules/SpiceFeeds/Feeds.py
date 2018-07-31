@@ -44,10 +44,12 @@ def autofeeds(bot):
             for channel in bot.channels:
                 channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
                 if 'feeds' in channelmodulesarray:
-                    bot.msg(channel, "test")
                     feed_enabled = get_database_value(bot, channel, 'feeds_enabled') or []
                     if feed in feed_enabled:
+                        bot.msg(channel, "test good")
                         osd(bot, channel, 'say', dispmsg)
+                    else:
+                        bot.msg(channel, "test bad")
 
 
 @sopel.module.commands('feeds', 'packt', 'spicewebby', 'atwebby', 'comptiawebby', 'spiceworkswebby', 'actualtechwebby')
