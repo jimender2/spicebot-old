@@ -76,7 +76,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # feeds dynamic Class
     feeds = class_create('feeds')
 
-    valid_commands = ['enable', 'disable', 'reset', 'run']
+    valid_commands = ['enable', 'disable', 'reset', 'run', 'subscribe']
     command = get_trigger_arg(bot, [x for x in triggerargsarray if x in valid_commands], 1) or 'run'
     if command in triggerargsarray:
         triggerargsarray.remove(command)
@@ -88,43 +88,58 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         feed_list = get_trigger_arg(bot, feeds.list, 'list')
         osd(bot, botcom.channel_current, 'say', "Valid Feeds are " + feed_list)
         return
+    if feed_select == 'all':
+        current_feed_list = feeds.list
+    else:
+        for word in botcom.triggerargsarray:
+            current_feed_list = []
+            if word in feeds.list:
+                current_feed_list.append(word)
+    feed_select_text = get_trigger_arg(bot, current_feed_list, 'list')
 
     channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
-    feed_enabled = get_database_value(bot, channelselect, 'feeds_enabled') or []
-
-    if command == 'reset':
-        reset_database_value(bot, bot.nick, feed_select + '_lastbuildcurrent')
-        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + ".")
-        return
-
-    elif command == 'enable':
-        if feed_select in feed_enabled:
-            osd(bot, botcom.channel_current, 'say', feed_select + " seems to already be " + command + "d.")
-            return
-        adjust_database_array(bot, channelselect, [feed_select], 'feeds_enabled', 'add')
-        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + "d.")
-        return
-
-    elif command == 'disable':
-        if feed_select not in feed_enabled:
-            osd(bot, botcom.channel_current, 'say', feed_select + " seems to already be " + command + "d.")
-            return
-        adjust_database_array(bot, channelselect, [feed_select], 'feeds_enabled', 'del')
-        osd(bot, botcom.channel_current, 'say', feed_select + " has been " + command + "d.")
-        return
-
-    elif command == 'run':
-        if feed_select == 'all':
-            current_feed_list = feeds.list
-        else:
-            current_feed_list = [feed_select]
+    if command == 'run':
         for feed in current_feed_list:
             dispmsg = feeds_display(bot, feed, feeds, 1) or []
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
                 osd(bot, botcom.channel_current, 'say', dispmsg)
+        return
+
+    if command == 'subscribe':
+        for feed in current_feed_list:
+            adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'add')
+        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + feed_select_text)
+        return
+
+    if command == 'unsubscribe':
+        for feed in current_feed_list:
+            adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'del')
+        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + feed_select_text)
+        return
+
+    if instigator.default not in botcom.opadmin:
+        osd(bot, botcom.channel_current, 'say', "Only Bot Admins and Channel Operators are able to adjust Feed settings.")
+        return
+
+    if command == 'reset':
+        for feed in current_feed_list:
+            reset_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
+        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + ".")
+        return
+
+    if command == 'enable':
+        for feed in current_feed_list:
+            adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'add')
+        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + "d.")
+        return
+
+    if command == 'disable':
+        for feed in current_feed_list:
+            adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'del')
+        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + "d.")
         return
 
 
