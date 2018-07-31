@@ -231,7 +231,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                         webbybonus = str(tree.xpath(scrapebonus))
                         if feed == 'spiceworkswebby':
                             webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
-                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", "")):
+                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", ""), ("[", "")):
                             webbybonus = webbybonus.replace(*r)
                         webbybonus = unicode_string_cleanup(webbybonus)
                     except IndexError:
