@@ -145,7 +145,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
         feed_type = eval("feeds." + feed + ".type")
 
-        if feed_type == 'rss':
+        if feed_type == 'rss' or feed_type == 'youtube':
 
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
@@ -173,7 +173,10 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 dispmsg.append(title)
 
                 links = xmldoc.getElementsByTagName('link')
-                link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                if feed_type == 'youtube':
+                    link = links[childnumber].getAttribute('href')
+                else:
+                    link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
                 lastbuildcurrent = lastBuildXML.strip()
