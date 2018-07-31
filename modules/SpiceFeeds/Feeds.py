@@ -4,6 +4,12 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import sopel.module
 import ConfigParser
 import requests
+from lxml import html
+import datetime
+from time import strptime
+from dateutil import parser
+import calendar
+import arrow
 from xml.dom import minidom
 from fake_useragent import UserAgent
 import sys
@@ -12,6 +18,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+
 
 # user agent and header
 ua = UserAgent()
@@ -89,10 +96,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
     dispmsg = []
+    titleappend = 0
 
     feed_url = eval("feeds." + feed + ".url")
     page = requests.get(feed_url, headers=header)
     if page.status_code == 200:
+
+        now = datetime.datetime.utcnow()
 
         displayname = eval("feeds." + feed + ".displayname")
 
@@ -117,7 +127,9 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
 
-            if newcontent or displayifnotnew:
+            if displayifnotnew or newcontent:
+
+                titleappend = 1
 
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
@@ -130,7 +142,65 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
                 lastbuildcurrent = lastBuildXML.strip()
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
 
-                dispmsg.insert(0, "[" + displayname + "]")
+        elif feed_type == 'webinar':
+
+            tree = gettree()
+
+            scrapetime = eval("feeds." + feed + ".time")
+
+            webbytime = str(tree.xpath(scrapetime))
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                webbytime = webbytime.replace(*r)
+
+            if feed == 'spiceworkswebby':
+                webbytime = str(webbytime.split("+", 1)[0])
+
+            webbytz = pytz.timezone('US/Eastern')
+            webbytime = parser.parse(webbytime)
+            webbytime = webbytz.localize(webbytime)
+
+            timeuntil = (webbytime - now).total_seconds()
+
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+
+                timecompare = get_timeuntil(nowtime, webbytime)
+                dispmsg.append("{" + timecompare + "}")
+
+                scrapetitle = eval("feeds." + feed + ".title")
+                webbytitle = str(tree.xpath(scrapetitle))
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    webbytitle = webbytitle.replace(*r)
+                webbytitle = unicode_string_cleanup(webbytitle)
+                dispmsg.append(webbytitle)
+
+                scrapelink = eval("feeds." + feed + ".link")
+                webbylink = str(tree.xpath(scrapelink))
+                for r in (("['", ""), ("']", "")):
+                    webbylink = webbylink.replace(*r)
+                if feed == actualtechwebby:
+                    webbylink = str(url + webbylink.split("&", 1)[0])
+                webbylinkprecede = eval("feeds." + feed + ".linkprecede")
+                if webbylinkprecede != 'noprecede':
+                    webbylink = str(webbylinkprecede + webbylink)
+                dispmsg.append(webbylink)
+
+                scrapebonus = eval("feeds." + feed + ".bonus")
+                if scrapebonus != 'nobonus':
+                    webbybonus = ''
+                    try:
+                        webbybonus = str(tree.xpath(scrapebonus))
+                        if feed == 'spiceworkswebby':
+                            webbybonus = str(webbybonus.split("BONUS: ", 1)[1])
+                        for r in (("\\r", ""), ("\\n", ""), ("']", ""), ("]", ""), ('"', ''), (" '", ""), ("['", "")):
+                            webbybonus = webbybonus.replace(*r)
+                        webbybonus = unicode_string_cleanup(webbybonus)
+                    except IndexError:
+                        webbybonus = ''
+                    if webbybonus != '':
+                        dispmsg.append('BONUS: ' + webbybonus)
+
+        if titleappend:
+            dispmsg.insert(0, "[" + displayname + "]")
 
     return dispmsg
 
@@ -164,3 +234,9 @@ def feeds_configs(bot, feeds):
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
     return feeds
+
+
+def gettree():
+    page = requests.get(url, headers=None)
+    tree = html.fromstring(page.content)
+    return tree
