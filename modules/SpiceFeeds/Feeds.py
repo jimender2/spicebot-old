@@ -212,7 +212,7 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
 
             scrapetitle = eval("feeds." + feed + ".title")
             title = str(tree.xpath(scrapetitle))
-            for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("]", "")):
+            for r in (("\\t", ""), ("\\n", ""), ("['", ""), ("']", ""), ("]", "")):
                 title = title.replace(*r)
             if title == "[]" or title == '':
                 title = "No Book Today"
@@ -226,6 +226,8 @@ def feeds_display(bot, botcom, feed, feeds, displayifnotnew):
             timeuntil = (dailytime - nowtime).total_seconds()
 
             if displayifnotnew or int(timeuntil) < 60:
+
+                titleappend = 1
 
                 timecompare = get_timeuntil(now, dailytime)
                 dispmsg.append("{Next in " + timecompare + "}")
