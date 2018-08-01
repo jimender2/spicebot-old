@@ -296,8 +296,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'scrape':
 
-            titleappend = 1
-
             scrapetime = eval("feeds." + feed + ".time")
 
             scrapedtime = str(tree.xpath(scrapetime))
@@ -308,15 +306,21 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
+            if displayifnotnew or lastBuildXML > lastbuildcurrent:
 
-            bot.say(str(lastbuildcurrent))
-            bot.say(str(scrapedtime))
+                titleappend = 1
+
+                scrapetitle = eval("feeds." + feed + ".title")
+                scrapedtitle = str(tree.xpath(scrapetitle))
+                for r in (("u'", ""), ("['", ""), ("[", ""), ("']", ""), ("\\n", ""), ("\\t", "")):
+                    scrapedtitle = scrapedtitle.replace(*r)
+                scrapedtitle = unicode_string_cleanup(scrapedtitle)
+                dispmsg.append(scrapedtitle)
+
 
             set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
-
-            titleappend = 1
 
             prefix = eval("feeds." + feed + ".prefix")
             searchterm = eval("feeds." + feed + ".searchterm")
@@ -335,6 +339,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             title = data.get('title')
             bot.say(str(title))
+
+            titleappend = 1
 
             # contentpage = requests.get(combinedjson)
             # result = contentpage.content
