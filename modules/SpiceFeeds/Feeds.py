@@ -326,7 +326,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     scrapedlink = str(scrapedlinkprecede + scrapedlink)
                 dispmsg.append(scrapedlink)
 
-
             set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
