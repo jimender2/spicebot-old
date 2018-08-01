@@ -184,10 +184,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             if feed_type == 'youtube':
                 lastBuildXML = xmldoc.getElementsByTagName('published')
+                lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             else:
                 lastBuildXML = xmldoc.getElementsByTagName('pubDate')
-            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
-            lastBuildXML = str(lastBuildXML)
+                lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+            # lastBuildXML = str(lastBuildXML)
 
             lastBuildXML = parser.parse(lastBuildXML)
 
