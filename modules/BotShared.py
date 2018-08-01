@@ -248,21 +248,23 @@ def targetcheck(bot, botcom, target, instigator):
         validtarget = 3
         validtargetmsg.append("Target is a bot")
         return validtarget, validtargetmsg
+# offline
+    # if target not in [x.lower() for x in botcom.users_current] and target in [x.lower() for x in botcom.users_all]:
 
     # Null Target
     if not target:
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
         return validtarget, validtargetmsg
+    if target not in [x.lower() for x in botcom.users_current] and target in [x.lower() for x in botcom.users_all]:
+        validtarget = 4
+        realnick = nick_actual(bot, target)
+        validtargetmsg.append(realnick + " is currently offline")
+        return validtarget, validtargetmsg
     if target in [x.lower() for x in botcom.users_current]:
         validtarget = 1
         realnick = nick_actual(bot, target)
         validtargetmsg.append(realnick + " is currently online")
-        return validtarget, validtargetmsg
-    elif target in [x.lower() for x in botcom.users_all]:
-        validtarget = 4
-        realnick = nick_actual(bot, target)
-        validtargetmsg.append(realnick + " is currently offline")
         return validtarget, validtargetmsg
     else:
         validtarget = 0
