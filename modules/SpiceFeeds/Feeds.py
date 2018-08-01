@@ -174,8 +174,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
 
-            timezone = eval("feeds." + feed + ".timezone")
-
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
 
             xml = page.text
