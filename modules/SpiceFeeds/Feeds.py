@@ -299,6 +299,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             searchterm = eval("feeds." + feed + ".searchterm")
             if str(searchterm).startswith("http"):
+                bot.say("yes")
                 searchterm = requests.get(searchterm, headers=header)
                 searchterm = page.content
 
