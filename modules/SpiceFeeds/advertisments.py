@@ -109,3 +109,10 @@ def advertisement(bot):
     # how long until next event
     ads_next_timeout = randint(1200, 7200)
     set_database_value(bot, bot.nick, "ads_next_timeout", ads_next_timeout)
+
+
+# compare timestamps
+def duels_time_since(bot, nick, databasekey):
+    now = time.time()
+    last = get_database_value(bot, nick, databasekey)
+    return abs(now - int(last))
