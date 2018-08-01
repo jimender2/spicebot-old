@@ -110,6 +110,7 @@ def advertisement(bot):
 
     # how long until next event
     next_timeout = randint(1200, 7200)
+    bot.msg("#spicebottest", str(next_timeout))
     set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
 
 
