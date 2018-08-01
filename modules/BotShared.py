@@ -260,11 +260,11 @@ def targetcheck(bot, botcom, target, instigator):
         return validtarget, validtargetmsg
     elif target in [x.lower() for x in botcom.users_all]:
         validtarget = 4
-        alidtargetmsg.append(target + " is currently offline")
+        validtargetmsg.append(target + " is currently offline")
         return validtarget, validtargetmsg
     else:
         validtarget = 0
-        validtargetmsg.append(target + "is invalid user")
+        validtargetmsg.append(target + " is invalid user")
         return validtarget, validtargetmsg
 
 
