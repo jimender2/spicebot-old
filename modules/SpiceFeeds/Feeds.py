@@ -303,7 +303,14 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 scrapedtime = scrapedtime.replace(*r)
             scrapedtime = parser.parse(str(scrapedtime))
 
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
+            lastbuildcurrent = parser.parse(str(lastbuildcurrent))
+
+
+            bot.say(str(lastbuildcurrent))
             bot.say(str(scrapedtime))
+
+            set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
 
