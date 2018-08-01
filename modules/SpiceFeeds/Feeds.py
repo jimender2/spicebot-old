@@ -155,7 +155,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def feeds_display(bot, feed, feeds, displayifnotnew):
 
-    bot.msg("#spicebottest", feed)
+    # bot.msg("#spicebottest", feed)
 
     dispmsg = []
     titleappend = 0
@@ -279,8 +279,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             dailytime = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, int(timehour), int(timeminute), 0, 0)
             dailytime = dailytz.localize(dailytime)
             timeuntil = (dailytime - nowtime).total_seconds()
-
-            dispmsg.append(str(dailytime) + " - " + str(nowtime) + "=" + str(timeuntil))
 
             if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
 
