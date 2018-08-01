@@ -192,9 +192,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = parser.parse(lastBuildXML)
 
             bot.say(str(lastBuildXML))
+            bot.say(str(lastbuildcurrent))
 
             newcontent = True
-            if lastBuildXML.strip() == lastbuildcurrent:
+            if lastBuildXML == lastbuildcurrent:
                 newcontent = False
 
             if displayifnotnew or newcontent:
