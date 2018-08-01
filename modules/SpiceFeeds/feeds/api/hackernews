@@ -1,0 +1,7 @@
+[configuration]
+type = api
+displayname = 	Hacker News
+url = https://hacker-news.firebaseio.com
+prefix = /v0/
+searchterm = https://hacker-news.firebaseio.com/v0/maxitem.json?print=pretty
+suffix = .json

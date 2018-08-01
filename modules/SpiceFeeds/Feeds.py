@@ -293,6 +293,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 dispmsg.append("URL: " + url)
 
+        elif feed_type == 'api':
+            dd
+
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
 
