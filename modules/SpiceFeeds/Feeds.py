@@ -301,6 +301,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             scrapedtime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 scrapedtime = scrapedtime.replace(*r)
+            scrapedtime = parser.parse(str(scrapedtime))
 
             bot.say(str(scrapedtime))
 
