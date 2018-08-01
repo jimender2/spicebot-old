@@ -186,11 +186,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 lastBuildXML = xmldoc.getElementsByTagName('published')
                 lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             else:
-                lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+                # lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+                lastBuildXML = xmldoc.getElementsByTagName('lastBuildDate')
                 lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
-            # lastBuildXML = str(lastBuildXML)
-
-            lastBuildXML = parser.parse(lastBuildXML)
+            lastBuildXML = parser.parse(str(lastBuildXML))
 
             if displayifnotnew or lastBuildXML != lastbuildcurrent:
 
