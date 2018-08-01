@@ -184,14 +184,13 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             if feed_type == 'youtube':
                 lastBuildXML = xmldoc.getElementsByTagName('published')
-                lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             else:
-                # lastBuildXML = xmldoc.getElementsByTagName('pubDate')
-                lastBuildXML = xmldoc.getElementsByTagName('lastBuildDate')
-                lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+                lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
-            if displayifnotnew or lastBuildXML != lastbuildcurrent:
+            # if displayifnotnew or lastBuildXML > lastbuildcurrent:
+            if lastBuildXML > lastbuildcurrent:
 
                 titleappend = 1
 
