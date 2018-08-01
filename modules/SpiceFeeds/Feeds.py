@@ -317,6 +317,15 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 scrapedtitle = unicode_string_cleanup(scrapedtitle)
                 dispmsg.append(scrapedtitle)
 
+                scrapelink = eval("feeds." + feed + ".link")
+                scrapedlink = str(tree.xpath(scrapelink))
+                for r in (("['", ""), ("']", "")):
+                    scrapedlink = scrapedlink.replace(*r)
+                scrapedlinkprecede = eval("feeds." + feed + ".linkprecede")
+                if scrapedlinkprecede != 'noprecede':
+                    scrapedlink = str(scrapedlinkprecede + scrapedlink)
+                dispmsg.append(scrapedlink)
+
 
             set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
