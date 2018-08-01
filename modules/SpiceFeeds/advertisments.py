@@ -109,8 +109,8 @@ def advertisement(bot):
     set_database_value(bot, bot.nick, "ads_last_time", now)
 
     # how long until next event
-    ads_next_timeout = randint(1200, 7200)
-    set_database_value(bot, bot.nick, "ads_next_timeout", ads_next_timeout)
+    next_timeout = randint(1200, 7200)
+    set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
 
 
 # compare timestamps
