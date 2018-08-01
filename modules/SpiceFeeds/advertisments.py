@@ -53,38 +53,33 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
     existingarray = get_database_value(bot, bot.nick, databasekey) or []
+
     if command == "add":
         if inputstring not in existingarray:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
-            message = "Added to database."
-            osd(bot, trigger.sender, 'say', message)
+            osd(bot, trigger.sender, 'say', "Added to database.")
         else:
-            message = "That response is already in the database."
-            osd(bot, trigger.sender, 'say', message)
-    elif command == "remove":
+            osd(bot, trigger.sender, 'say', "That response is already in the database.")
+        return
+
+    if command == "remove":
         if inputstring not in existingarray:
-            message = "That response was not found in the database."
-            osd(bot, trigger.sender, 'say', message)
+            osd(bot, trigger.sender, 'say', "That response was not found in the database.")
         else:
             adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
-            message = "Removed from database."
-            osd(bot, trigger.sender, 'say', message)
-    elif command == "count":
-        messagecount = len(existingarray)
-        message = "There are currently " + str(messagecount) + " ads in the database."
-        osd(bot, trigger.sender, 'say', message)
+            osd(bot, trigger.sender, 'say', "Removed from database.")
+        return
 
-    elif command == "last":
-        message = get_trigger_arg(bot, existingarray, "last")
-        osd(bot, trigger.sender, 'say', "[Advertisement] " + message)
+    if command == "count":
+        osd(bot, trigger.sender, 'say', "There are currently " + str(len(existingarray)) + " ads in the database.")
+        return
 
-    else:
-        message = get_trigger_arg(bot, existingarray, "random") or ''
-        if message == '':
-            message = "No response found. Have any been added?"
-        else:
-            message = str("[Advertisement] " + message)
-        osd(bot, trigger.sender, 'say', message)
+    if command == "last":
+        osd(bot, trigger.sender, 'say', ["[Advertisement]", get_trigger_arg(bot, existingarray, "last"), "[Advertisement]"])
+        return
+
+    message = get_trigger_arg(bot, existingarray, "random") or "No response found. Have any been added?"
+    osd(bot, trigger.sender, 'say', ["[Advertisement]", message, "[Advertisement]"])
 
 
 @sopel.module.interval(600)
@@ -95,10 +90,9 @@ def advertisement(bot):
         existingarray = get_database_value(bot, bot.nick, databasekey) or []
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if not message:
-            message = "[Advertisement] Spiceduck for Spiceworks mascot 2k18"
+            osd(bot, channel, 'say', ["[Advertisement]", "Spiceduck for Spiceworks mascot 2k18", "[Advertisement]"])
+            return
 
         for channel in bot.channels:
             if channel not in hardcoded_not_in_this_chan:
-                osd(bot, channel, 'say', "[Advertisement] " + message)
-    else:
-        message = "none"
+                osd(bot, channel, 'say', ["[Advertisement]", message, "[Advertisement]"])
