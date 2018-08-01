@@ -195,11 +195,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             bot.say(str(lastBuildXML))
             bot.say(str(lastbuildcurrent))
 
-            newcontent = True
-            if lastBuildXML == lastbuildcurrent:
-                newcontent = False
-
-            if displayifnotnew or newcontent:
+            if displayifnotnew or lastBuildXML != lastbuildcurrent:
 
                 titleappend = 1
 
