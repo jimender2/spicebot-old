@@ -188,10 +188,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
-            # if displayifnotnew or lastBuildXML > lastbuildcurrent:
-            bot.say(str(lastBuildXML))
-            bot.say(str(lastbuildcurrent))
-            if lastBuildXML.replace(tzinfo=None) > lastbuildcurrent.replace(tzinfo=None):
+            if displayifnotnew or lastBuildXML.replace(tzinfo=None) > lastbuildcurrent.replace(tzinfo=None):
 
                 titleappend = 1
 
