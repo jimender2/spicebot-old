@@ -1,5 +1,5 @@
 [configuration]
-type = api
+type = json
 displayname = 	Hacker News
 url = https://hacker-news.firebaseio.com
 prefix = /v0/

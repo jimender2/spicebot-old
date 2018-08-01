@@ -293,16 +293,19 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 dispmsg.append("URL: " + url)
 
-        elif feed_type == 'api':
+        elif feed_type == 'json':
 
             contents = page.content
-
+            prefix = eval("feeds." + feed + ".prefix")
             searchterm = eval("feeds." + feed + ".searchterm")
+            suffix = eval("feeds." + feed + ".suffix")
+
             if str(searchterm).startswith("http"):
                 searchtermpage = requests.get(searchterm, headers={'Accept': 'text/plain'})
                 searchterm = searchtermpage.content
 
-            bot.say(str(searchterm))
+            combinedjson = str(url + prefix + searchterm + suffix)
+            bot.say(str(combinedjson))
 
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
