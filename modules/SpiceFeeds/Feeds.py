@@ -155,6 +155,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def feeds_display(bot, feed, feeds, displayifnotnew):
 
+    bot.msg("#spicebottest", feed)
+
     dispmsg = []
     titleappend = 0
 
