@@ -306,14 +306,17 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             combinedjson = str(url + prefix + searchterm + suffix)
 
-            contentpage = requests.get(combinedjson)
-            result = contentpage.content
-            jsonload = json.loads(result)
-            #jsonpart = jsonload['joke']
+            data = requests.get(combinedjson, verify=verify_ssl).json()
+            bot.say(str(data))
+
+            # contentpage = requests.get(combinedjson)
+            # result = contentpage.content
+            # jsonload = json.loads(result)
+            # jsonpart = jsonload['joke']
 
             # contentpage = requests.get(combinedjson, headers={'Accept': 'text/plain'})
             # content = contentpage.content
-            bot.say(str(jsonload))
+            # bot.say(str(jsonload))
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or
 
