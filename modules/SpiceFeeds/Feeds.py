@@ -75,7 +75,7 @@ def mainfunction(bot, trigger):
                 feed = 'theonion'
             dispmsg = feeds_display(bot, feed, feeds, 1) or []
             if dispmsg == []:
-                osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
+                osd(bot, botcom.channel_current, 'say', feed + " appears to have had an unknown error.")
             else:
                 osd(bot, botcom.channel_current, 'say', dispmsg)
 
