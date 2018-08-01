@@ -88,6 +88,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def advertisement(bot):
 
     now = time.time()
+    bot.msg("#spicebottest", str(now))
 
     last_timesince = time_since(bot, bot.nick, "ads_last_time") or 0
     next_timeout = get_database_value(bot, bot.nick, "ads_next_timeout") or 0
