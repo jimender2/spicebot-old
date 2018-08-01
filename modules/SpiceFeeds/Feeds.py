@@ -294,7 +294,15 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 dispmsg.append("URL: " + url)
 
         elif feed_type == 'api':
-            dd
+
+            contents = page.content
+
+            searchterm = eval("feeds." + feed + ".searchterm")
+            if str(searchterm).startswith("http"):
+                searchterm = requests.get(searchterm, headers=header)
+                searchterm = page.content
+
+            bot.say(str(searchterm))
 
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
