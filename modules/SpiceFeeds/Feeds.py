@@ -304,7 +304,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             scrapedtime = str(tree.xpath(scrapetime))
             for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
                 scrapedtime = scrapedtime.replace(*r)
-            scrapedtime = parser.parse(str(scrapedtime))
+            scrapedtime = parser.parse(str(scrapedtime)).replace(tzinfo=pytz.UTC)
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
