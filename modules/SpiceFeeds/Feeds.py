@@ -306,6 +306,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             combinedjson = str(url + prefix + searchterm + suffix)
 
+            verify_ssl = bot.config.core.verify_ssl
             data = requests.get(combinedjson, verify=verify_ssl).json()
             bot.say(str(data))
 
