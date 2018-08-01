@@ -191,7 +191,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
-            if displayifnotnew or lastBuildXML != lastbuildcurrent:
+            if displayifnotnew or lastBuildXML > lastbuildcurrent:
 
                 titleappend = 1
 
@@ -309,7 +309,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
-            if displayifnotnew or lastBuildXML != lastbuildcurrent:
+            if displayifnotnew or scrapedtime > lastbuildcurrent:
 
                 titleappend = 1
 
