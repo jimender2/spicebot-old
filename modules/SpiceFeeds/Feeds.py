@@ -309,7 +309,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
-            bot.msg("#spicebottest", "scraping")
+            bot.msg("#spicebottest", "current " + str(scrapedtime))
+            bot.msg("#spicebottest", "last " + str(lastbuildcurrent))
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
 
