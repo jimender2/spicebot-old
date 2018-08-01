@@ -204,7 +204,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
-                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
+                if not displayifnotnew:
+                    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
         elif feed_type == 'webinar':
 
@@ -326,7 +327,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     scrapedlink = str(scrapedlinkprecede + scrapedlink)
                 dispmsg.append(scrapedlink)
 
-            set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
+            if not displayifnotnew:
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
 
@@ -361,7 +363,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or
 
-            # set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
+            # if not displayifnotnew:
+            #    set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
