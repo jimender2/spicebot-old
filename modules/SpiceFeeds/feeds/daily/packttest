@@ -4,5 +4,5 @@ displayname = Packttest
 title = //*[@id="deal-of-the-day"]/div/div/div[2]/div[2]/h2/text()
 url = https://www.packtpub.com/packt/offers/free-learning
 timezone = EST
-hour = 16
-minute = 10
+hour = 15
+minute = 12
