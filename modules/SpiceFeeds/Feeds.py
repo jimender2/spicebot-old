@@ -163,14 +163,14 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     tree = html.fromstring(page.content)
     if page.status_code == 200:
 
-        bot.msg("#spicebottest", feed + " " + feed_type)
-
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.UTC)
 
         displayname = eval("feeds." + feed + ".displayname")
 
         feed_type = eval("feeds." + feed + ".type")
+
+        bot.msg("#spicebottest", feed + " " + feed_type)
 
         if feed_type == 'rss' or feed_type == 'youtube':
 
