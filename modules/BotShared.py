@@ -266,8 +266,7 @@ def targetcheck(bot, botcom, target, instigator):
         return validtarget, validtargetmsg
     else:
         validtarget = 0
-        realnick = nick_actual(bot, target)
-        validtargetmsg.append(realnick + " is invalid user")
+        validtargetmsg.append(target + " is invalid user")
         return validtarget, validtargetmsg
 
 
