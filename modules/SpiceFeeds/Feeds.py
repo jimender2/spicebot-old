@@ -211,7 +211,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
-                lastbuildcurrent = lastBuildXML.strip()
+                lastbuildcurrent = lastBuildXML
                 set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
 
         elif feed_type == 'webinar':
