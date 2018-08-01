@@ -187,6 +187,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
 
+            bot.say(str(lastBuildXML))
+
             newcontent = True
             if lastBuildXML.strip() == lastbuildcurrent:
                 newcontent = False
@@ -226,10 +228,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             webbytime = webbytz.localize(webbytime)
 
             timeuntil = (webbytime - now).total_seconds()
-            bot.say(str(timeuntil))
 
-            # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
-            if int(timeuntil) < 900 and int(timeuntil) > 840:
+            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
 
                 titleappend = 1
 
