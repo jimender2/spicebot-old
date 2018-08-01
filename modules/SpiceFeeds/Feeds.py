@@ -305,9 +305,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 searchterm = searchtermpage.content
 
             combinedjson = str(url + prefix + searchterm + suffix)
+            bot.say(str(combinedjson))
 
             verify_ssl = bot.config.core.verify_ssl
             data = requests.get(combinedjson, verify=verify_ssl).json()
+            bot.say(str(data))
 
             title = data.get('title')
             bot.say(str(title))
