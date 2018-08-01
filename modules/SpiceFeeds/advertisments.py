@@ -30,7 +30,7 @@ testarray = ["DoubleD recommends these new drapes https://goo.gl/BMTMde",
              "Did you know that I am a female?",
              "Wanna be friends?",
              "New Features released every day",
-             "I feel neglected. Use me more. Duel assult in me!"]
+             "I feel neglected. Use me more. Duel assualt in me!"]
 
 
 hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest"]
@@ -87,7 +87,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 @sopel.module.interval(60)
 def advertisement(bot):
 
-    last_timesince = duels_time_since(bot, bot.nick, "ads_last_time") or 0
+    now = time.time()
+
+    last_timesince = time_since(bot, bot.nick, "ads_last_time") or 0
     next_timeout = get_database_value(bot, bot.nick, "ads_next_timeout") or 0
     if last_timesince <= next_timeout:
         return
@@ -102,8 +104,8 @@ def advertisement(bot):
                 osd(bot, channel, 'say', ["[Advertisement]", message, "[Advertisement]"])
 
     # set time to now
-    set_database_value(bot, bot.nick, "ads_last_time", duels.now)
+    set_database_value(bot, bot.nick, "ads_last_time", now)
 
     # how long until next event
     ads_next_timeout = randint(1200, 7200)
-    set_database_value(bot, 'duelrecorduser', "ads_next_timeout", ads_next_timeout)
+    set_database_value(bot, bot.nick, "ads_next_timeout", ads_next_timeout)
