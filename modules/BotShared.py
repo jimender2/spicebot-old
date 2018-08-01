@@ -256,15 +256,18 @@ def targetcheck(bot, botcom, target, instigator):
         return validtarget, validtargetmsg
     if target in [x.lower() for x in botcom.users_current]:
         validtarget = 1
-        validtargetmsg.append(target + " is currently online")
+        realnick = nick_actual(bot, target)
+        validtargetmsg.append(realnick + " is currently online")
         return validtarget, validtargetmsg
     elif target in [x.lower() for x in botcom.users_all]:
         validtarget = 4
-        validtargetmsg.append(target + " is currently offline")
+        realnick = nick_actual(bot, target)
+        validtargetmsg.append(realnick + " is currently offline")
         return validtarget, validtargetmsg
     else:
         validtarget = 0
-        validtargetmsg.append(target + " is invalid user")
+        realnick = nick_actual(bot, target)
+        validtargetmsg.append(realnick + " is invalid user")
         return validtarget, validtargetmsg
 
 
