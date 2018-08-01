@@ -76,12 +76,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     elif command == "last":
         message = get_trigger_arg(bot, existingarray, "last")
-        osd(bot, trigger.sender, 'say', message)
+        osd(bot, trigger.sender, 'say', "[Advertisement] " + message)
 
     else:
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if message == '':
             message = "No response found. Have any been added?"
+        else:
+            message = str("[Advertisement] " + message)
         osd(bot, trigger.sender, 'say', message)
 
 
@@ -93,10 +95,10 @@ def advertisement(bot):
         existingarray = get_database_value(bot, bot.nick, databasekey) or []
         message = get_trigger_arg(bot, existingarray, "random") or ''
         if not message:
-            message = "Spiceduck for Spiceworks mascot 2k18"
+            message = "[Advertisement] Spiceduck for Spiceworks mascot 2k18"
 
         for channel in bot.channels:
             if channel not in hardcoded_not_in_this_chan:
-                osd(bot, channel, 'say', message)
+                osd(bot, channel, 'say', "[Advertisement] " + message)
     else:
         message = "none"
