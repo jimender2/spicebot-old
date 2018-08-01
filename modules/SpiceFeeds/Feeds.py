@@ -295,7 +295,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'json':
 
-            contents = page.content
             prefix = eval("feeds." + feed + ".prefix")
             searchterm = eval("feeds." + feed + ".searchterm")
             suffix = eval("feeds." + feed + ".suffix")
@@ -305,9 +304,15 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 searchterm = searchtermpage.content
 
             combinedjson = str(url + prefix + searchterm + suffix)
-            contentpage = requests.get(combinedjson, headers={'Accept': 'text/plain'})
-            content = contentpage.content
-            bot.say(str(content))
+
+            contentpage = requests.get(combinedjson)
+            result = contentpage.content
+            jsonload = json.loads(result)
+            #jsonpart = jsonload['joke']
+
+            # contentpage = requests.get(combinedjson, headers={'Accept': 'text/plain'})
+            # content = contentpage.content
+            bot.say(str(jsonload))
 
             # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or
 
