@@ -8,6 +8,7 @@ import calendar
 import arrow
 import sys
 import os
+from random import randint
 moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
