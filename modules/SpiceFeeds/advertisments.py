@@ -32,7 +32,6 @@ testarray = ["DoubleD recommends these new drapes https://goo.gl/BMTMde",
              "New Features released every day",
              "I feel neglected. Use me more. Duel assult in me!"]
 
-databasekey = 'ads'
 
 hardcoded_not_in_this_chan = ["#spiceworks", "##spicebottest"]
 
@@ -48,15 +47,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
     inchannel = trigger.sender
 
-    database_initialize(bot, bot.nick, testarray, databasekey)
+    # database_initialize(bot, bot.nick, testarray, 'ads')
+    existingarray = get_database_value(bot, bot.nick, 'ads') or []
+    if existingarray == []:
+        adjust_database_array(bot, bot.nick, testarray, 'ads', 'add')
+        existingarray = testarray
 
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
-    existingarray = get_database_value(bot, bot.nick, databasekey) or []
 
     if command == "add":
         if inputstring not in existingarray:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'add')
+            adjust_database_array(bot, bot.nick, inputstring, 'ads', 'add')
             osd(bot, trigger.sender, 'say', "Added to database.")
         else:
             osd(bot, trigger.sender, 'say', "That response is already in the database.")
@@ -66,7 +68,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if inputstring not in existingarray:
             osd(bot, trigger.sender, 'say', "That response was not found in the database.")
         else:
-            adjust_database_array(bot, bot.nick, inputstring, databasekey, 'del')
+            adjust_database_array(bot, bot.nick, inputstring, 'ads', 'del')
             osd(bot, trigger.sender, 'say', "Removed from database.")
         return
 
@@ -82,17 +84,26 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', ["[Advertisement]", message, "[Advertisement]"])
 
 
-@sopel.module.interval(600)
+@sopel.module.interval(60)
 def advertisement(bot):
-    rand = random.randint(1, 5)
-    if rand == 5:
-        databasekey = 'ads'
-        existingarray = get_database_value(bot, bot.nick, databasekey) or []
-        message = get_trigger_arg(bot, existingarray, "random") or ''
-        if not message:
-            osd(bot, channel, 'say', ["[Advertisement]", "Spiceduck for Spiceworks mascot 2k18", "[Advertisement]"])
-            return
 
-        for channel in bot.channels:
-            if channel not in hardcoded_not_in_this_chan:
+    last_timesince = duels_time_since(bot, bot.nick, "ads_last_time") or 0
+    next_timeout = get_database_value(bot, bot.nick, "ads_next_timeout") or 0
+    if last_timesince <= next_timeout:
+        return
+
+    existingarray = get_database_value(bot, bot.nick, 'ads') or []
+    message = get_trigger_arg(bot, existingarray, "random") or "Spiceduck for Spiceworks mascot 2k18"
+
+    for channel in bot.channels:
+        if channel not in hardcoded_not_in_this_chan:
+            channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
+            if 'ads' in channelmodulesarray:
                 osd(bot, channel, 'say', ["[Advertisement]", message, "[Advertisement]"])
+
+    # set time to now
+    set_database_value(bot, bot.nick, "ads_last_time", duels.now)
+
+    # how long until next event
+    ads_next_timeout = randint(1200, 7200)
+    set_database_value(bot, 'duelrecorduser', "ads_next_timeout", ads_next_timeout)
