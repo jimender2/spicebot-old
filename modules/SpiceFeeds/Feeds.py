@@ -174,7 +174,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1)
             if lastbuildcurrent:
                 lastbuildcurrent = parser.parse(lastbuildcurrent)
 
