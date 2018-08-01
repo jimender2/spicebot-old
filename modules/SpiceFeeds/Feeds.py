@@ -155,8 +155,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def feeds_display(bot, feed, feeds, displayifnotnew):
 
-    # bot.msg("#spicebottest", feed)
-
     dispmsg = []
     titleappend = 0
 
@@ -164,6 +162,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
     if page.status_code == 200:
+
+        bot.msg("#spicebottest", feed + " " + feed_type)
 
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.UTC)
