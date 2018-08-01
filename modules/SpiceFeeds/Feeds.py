@@ -308,7 +308,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             verify_ssl = bot.config.core.verify_ssl
             data = requests.get(combinedjson, verify=verify_ssl).json()
-            bot.say(str(data))
+
+            title = jsonload['title']
+            bot.say(str(title))
 
             # contentpage = requests.get(combinedjson)
             # result = contentpage.content
