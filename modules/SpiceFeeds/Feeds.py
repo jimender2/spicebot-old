@@ -175,6 +175,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             childnumber = int(eval("feeds." + feed + ".childnumber"))
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
+            if lastbuildcurrent:
+                lastbuildcurrent = parser.parse(lastbuildcurrent)
+
 
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
@@ -211,8 +214,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
-                lastbuildcurrent = lastBuildXML
-                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', lastbuildcurrent)
+                set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
         elif feed_type == 'webinar':
 
