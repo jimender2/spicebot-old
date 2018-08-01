@@ -96,6 +96,14 @@ def advertisement(bot):
     if last_timesince <= next_timeout:
         return
 
+    # set time to now
+    set_database_value(bot, bot.nick, "ads_last_time", now)
+
+    # how long until next event
+    next_timeout = randint(1200, 7200)
+    bot.msg("#spicebottest", str(next_timeout))
+    set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
+
     existingarray = get_database_value(bot, bot.nick, 'ads') or []
     message = get_trigger_arg(bot, existingarray, "random") or "Spiceduck for Spiceworks mascot 2k18"
 
@@ -104,14 +112,6 @@ def advertisement(bot):
             channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
             if 'ads' in channelmodulesarray:
                 osd(bot, channel, 'say', ["[Advertisement]", message, "[Advertisement]"])
-
-    # set time to now
-    set_database_value(bot, bot.nick, "ads_last_time", now)
-
-    # how long until next event
-    next_timeout = randint(1200, 7200)
-    bot.msg("#spicebottest", str(next_timeout))
-    set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
 
 
 # compare timestamps
