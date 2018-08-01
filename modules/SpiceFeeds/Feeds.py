@@ -170,8 +170,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         feed_type = eval("feeds." + feed + ".type")
 
-        bot.msg("#spicebottest", feed + " " + feed_type)
-
         if feed_type == 'rss' or feed_type == 'youtube':
 
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
@@ -308,9 +306,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
-
-            bot.msg("#spicebottest", "current " + str(scrapedtime))
-            bot.msg("#spicebottest", "last " + str(lastbuildcurrent))
 
             if displayifnotnew or scrapedtime > lastbuildcurrent:
 
