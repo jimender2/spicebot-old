@@ -89,12 +89,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 def advertisement(bot):
 
     now = time.time()
-    bot.msg("#spicebottest", str(now))
 
     last_timesince = time_since(bot, bot.nick, "ads_last_time") or 0
     next_timeout = get_database_value(bot, bot.nick, "ads_next_timeout") or 0
-    bot.msg("#spicebottest", str(last_timesince))
-    bot.msg("#spicebottest", str(next_timeout))
     if last_timesince <= next_timeout:
         return
 
@@ -103,7 +100,6 @@ def advertisement(bot):
 
     # how long until next event
     next_timeout = randint(1200, 7200)
-    bot.msg("#spicebottest", str(next_timeout))
     set_database_value(bot, bot.nick, "ads_next_timeout", next_timeout)
 
     existingarray = get_database_value(bot, bot.nick, 'ads') or []
