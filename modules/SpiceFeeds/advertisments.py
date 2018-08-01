@@ -91,6 +91,8 @@ def advertisement(bot):
 
     last_timesince = time_since(bot, bot.nick, "ads_last_time") or 0
     next_timeout = get_database_value(bot, bot.nick, "ads_next_timeout") or 0
+    bot.msg("#spicebottest", str(last_timesince))
+    bot.msg("#spicebottest", str(next_timeout))
     if last_timesince <= next_timeout:
         return
 
