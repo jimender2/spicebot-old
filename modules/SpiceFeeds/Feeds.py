@@ -296,6 +296,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         elif feed_type == 'scrape':
 
+            titleappend = 1
+
             scrapetime = eval("feeds." + feed + ".time")
 
             scrapedtime = str(tree.xpath(scrapetime))
@@ -313,6 +315,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(scrapedtime))
 
         elif feed_type == 'json':
+
+            titleappend = 1
 
             prefix = eval("feeds." + feed + ".prefix")
             searchterm = eval("feeds." + feed + ".searchterm")
