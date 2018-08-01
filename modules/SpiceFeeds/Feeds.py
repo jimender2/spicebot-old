@@ -189,9 +189,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
 
-            rsstz = pytz.timezone(timezone)
             lastBuildXML = parser.parse(lastBuildXML)
-            lastBuildXML = rsstz.localize(lastBuildXML)
 
             bot.say(str(lastBuildXML))
 
