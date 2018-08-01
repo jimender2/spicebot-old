@@ -226,8 +226,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             webbytime = webbytz.localize(webbytime)
 
             timeuntil = (webbytime - now).total_seconds()
+            bot.say(str(timeuntil))
 
-            if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+            # if displayifnotnew or (int(timeuntil) < 900 and int(timeuntil) > 840):
+            if int(timeuntil) < 900 and int(timeuntil) > 840:
 
                 titleappend = 1
 
@@ -280,11 +282,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             dailytime = dailytz.localize(dailytime)
             timeuntil = (dailytime - nowtime).total_seconds()
 
-            bot.say(str(nowtime.hour))
-            bot.say(str(nowtime.minute))
-
-            # if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
-            if nowtime.hour == int(timehour) and nowtime.minute == int(timeminute):
+            if displayifnotnew or (nowtime.hour == int(timehour) and nowtime.minute == int(timeminute)):
 
                 scrapetitle = eval("feeds." + feed + ".title")
                 title = str(tree.xpath(scrapetitle))
