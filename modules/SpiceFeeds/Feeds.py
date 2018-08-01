@@ -174,6 +174,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
 
+            timezone = eval("feeds." + feed + ".timezone")
+
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or 0
 
             xml = page.text
@@ -186,6 +188,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 lastBuildXML = xmldoc.getElementsByTagName('pubDate')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = str(lastBuildXML)
+
+            rsstz = pytz.timezone(timezone)
+            lastBuildXML = parser.parse(lastBuildXML)
+            lastBuildXML = rsstz.localize(lastBuildXML)
 
             bot.say(str(lastBuildXML))
 
