@@ -174,7 +174,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
 
-            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1)
+            lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
             xml = page.text
@@ -188,7 +188,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
-            if displayifnotnew or lastBuildXML.replace(tzinfo=None) > lastbuildcurrent.replace(tzinfo=None):
+            if displayifnotnew or lastBuildXML > lastbuildcurrent:
 
                 titleappend = 1
 
