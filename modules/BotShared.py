@@ -234,7 +234,7 @@ def increment_counter(bot, trigger, commandused):
 
 def targetcheck(bot, botcom, target, instigator):
     # Guilty until proven Innocent
-    validtarget = 1
+    validtarget = 0  # 0 = invalid, 1 = valid 2 = instigator, 3 = bot, 4 =offline
     validtargetmsg = []
     target = target.lower()
 
@@ -254,15 +254,17 @@ def targetcheck(bot, botcom, target, instigator):
         validtarget = 0
         validtargetmsg.append("You must specify a target.")
         return validtarget, validtargetmsg
-
-    # offline
-    # if target not in [x.lower() for x in botcom.users_current] and target in [x.lower() for x in botcom.users_all]:
-
-    if target not in [x.lower() for x in botcom.users_current]:
-        validtarget = 0
-        validtargetmsg.append(target + " isn't a valid user")
+    if target in [x.lower() for x in botcom.users_current]:
+        validtarget = 1
+        validtargetmsg.append(target + " is currently online")
+        return validtarget, validtargetmsg
+    elif target in [x.lower() for x in botcom.users_all]:
+        validtarget = 4
+        alidtargetmsg.append(target + " is currently offline")
         return validtarget, validtargetmsg
     else:
+        validtarget = 0
+        validtargetmsg.append(target + "is invalid user")
         return validtarget, validtargetmsg
 
 
