@@ -178,7 +178,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             if lastbuildcurrent:
                 lastbuildcurrent = parser.parse(lastbuildcurrent)
 
-
             xml = page.text
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
@@ -192,11 +191,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             lastBuildXML = parser.parse(lastBuildXML)
 
-            bot.say(str(lastBuildXML))
-            bot.say(str(lastbuildcurrent))
-
-            # if displayifnotnew or lastBuildXML != lastbuildcurrent:
-            if lastBuildXML != lastbuildcurrent:
+            if displayifnotnew or lastBuildXML != lastbuildcurrent:
 
                 titleappend = 1
 
