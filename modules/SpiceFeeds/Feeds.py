@@ -305,7 +305,13 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 searchterm = searchtermpage.content
 
             combinedjson = str(url + prefix + searchterm + suffix)
-            bot.say(str(combinedjson))
+            contentpage = requests.get(combinedjson, headers={'Accept': 'text/plain'})
+            content = contentpage.content
+            bot.say(str(content))
+
+            # lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or
+
+            # set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
         if titleappend:
             dispmsg.insert(0, "[" + displayname + "]")
