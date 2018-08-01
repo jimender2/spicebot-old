@@ -112,7 +112,7 @@ def advertisement(bot):
 
 
 # compare timestamps
-def duels_time_since(bot, nick, databasekey):
+def time_since(bot, nick, databasekey):
     now = time.time()
     last = get_database_value(bot, nick, databasekey)
     return abs(now - int(last))
