@@ -294,6 +294,16 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 dispmsg.append("URL: " + url)
 
+        elif feed_type == 'scrape':
+
+            scrapetime = eval("feeds." + feed + ".time")
+
+            scrapedtime = str(tree.xpath(scrapetime))
+            for r in (("['", ""), ("']", ""), ("\\n", ""), ("\\t", ""), ("@ ", "")):
+                scrapedtime = scrapedtime.replace(*r)
+
+            bot.say(str(scrapedtime))
+
         elif feed_type == 'json':
 
             prefix = eval("feeds." + feed + ".prefix")
