@@ -1,6 +1,6 @@
 [configuration]
 type = github
 displayname = SpiceBot Github
-url = https://github.com/SpiceBot/SpiceBot/commits/XXXXXXX.atom
+url = https://github.com/SpiceBot/SpiceBot/commits/master.atom
 parentnumber = 1
 childnumber = 1

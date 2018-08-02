@@ -197,9 +197,12 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     titleappend = 0
 
     url = eval("feeds." + feed + ".url")
+    if feed == 'spicebot':
+        if bot.nick.endswith('dev'):
+            url.replace("master", "dev")
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
-    bot.say(str(page.status_code))
+
     if page.status_code == 200:
 
         now = datetime.datetime.utcnow()
