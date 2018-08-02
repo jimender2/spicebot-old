@@ -216,6 +216,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
+            lastbuildtype = int(eval("feeds." + feed + ".lastbuildtype"))
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
@@ -224,12 +225,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
 
-            if feed_type == 'youtube':
-                lastBuildXML = xmldoc.getElementsByTagName('published')
-            elif feed_type == 'github':
-                lastBuildXML = xmldoc.getElementsByTagName('updated')
-            else:
-                lastBuildXML = xmldoc.getElementsByTagName('pubDate')
+            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 

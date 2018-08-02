@@ -4,3 +4,4 @@ displayname = The Verge
 url = https://www.theverge.com/rss/index.xml
 parentnumber = 1
 childnumber = 1
+lastbuildtype = pubDate
