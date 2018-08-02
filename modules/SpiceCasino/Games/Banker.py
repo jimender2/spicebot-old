@@ -55,12 +55,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-
-            if not amount == 'noamount':
-                if amount.isdigit():
-                    amount = int(amount)
+            amountfund = (get_trigger_arg(bot, triggerargsarray, 2)).lower()
+            if not amountfund == 'noamount':
+                if amountfund.isdigit():
+                    amountfund = int(amountfund)
                     if amount >= 0 and amount < 10000001:
-                        set_database_value(bot, target, 'spicychips_bank', amount)
+                        set_database_value(bot, target, 'spicychips_bank', amountfund)
                         targetbalance = bank(bot, botcom, target)
                         osd(bot, trigger.sender, 'say', target + ' now has ' + str(targetbalance) + ' in the bank')
                     else:
@@ -137,7 +137,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif commandused == 'bankreset' and trigger.admin:  # admin only command
         if target == 'notarget':
             target = trigger.nick
-        validtarget = buckscheck(bot, botcom, target)
+        validtarget = targetcheck(bot, botcom, target, instigator)
         if validtarget == 0:
             osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
         else:
