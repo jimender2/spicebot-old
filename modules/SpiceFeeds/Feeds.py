@@ -226,6 +226,8 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             if feed_type == 'youtube':
                 lastBuildXML = xmldoc.getElementsByTagName('published')
+            elif feed_type == 'github':
+                lastBuildXML = xmldoc.getElementsByTagName('updated')
             else:
                 lastBuildXML = xmldoc.getElementsByTagName('pubDate')
             lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
