@@ -119,7 +119,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
     if command == 'subscribe':
-        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'modules_enabled') or []
+        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'feeds_enabled') or []
         for feed in current_feed_list:
             if feed in instigatormodulesarray:
                 current_feed_list.remove(feed)
@@ -132,7 +132,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
     if command == 'unsubscribe':
-        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'modules_enabled') or []
+        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'feeds_enabled') or []
         for feed in current_feed_list:
             if feed not in instigatormodulesarray:
                 current_feed_list.remove(feed)
