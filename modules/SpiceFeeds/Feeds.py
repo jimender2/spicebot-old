@@ -222,7 +222,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             xmldoc = minidom.parseString(xml)
 
             lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
-            lastbuildparent - int(eval("feeds." + feed + ".lastbuildparent"))
+            lastbuildparent = int(eval("feeds." + feed + ".lastbuildparent"))
             lastbuildchild = int(eval("feeds." + feed + ".lastbuildchild"))
             lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
             lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
@@ -234,7 +234,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 titletype = eval("feeds." + feed + ".titletype")
                 titles = xmldoc.getElementsByTagName(titletype)
-                titleparent - int(eval("feeds." + feed + ".titleparent"))
+                titleparent = int(eval("feeds." + feed + ".titleparent"))
                 titlechild = int(eval("feeds." + feed + ".titlechild"))
                 title = titles[titleparent].childNodes[titlechild].nodeValue
                 if feed_type == 'github':
@@ -246,7 +246,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 linktype = eval("feeds." + feed + ".linktype")
                 links = xmldoc.getElementsByTagName(linktype)
-                linkparent - int(eval("feeds." + feed + ".linkparent"))
+                linkparent = int(eval("feeds." + feed + ".linkparent"))
                 linkchild = int(eval("feeds." + feed + ".linkchild"))
                 if feed_type in ['youtube', 'github']:
                     link = links[linkparent].getAttribute('href')
