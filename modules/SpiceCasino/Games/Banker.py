@@ -55,7 +55,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amountfund = (get_trigger_arg(bot, triggerargsarray, 3)).lower() or 'noamount'
+            amountfund = get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
+            bot.say(str(amountfund))
             if not amountfund == 'noamount':
                 if amountfund.isdigit():
                     amountfund = int(amountfund)
@@ -65,10 +66,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                         osd(bot, trigger.sender, 'say', target + ' now has ' + str(targetbalance) + ' in the bank')
                     else:
                         osd(bot, trigger.sender, 'say', 'Please enter a postive number less then 1,000,000')
-                else:
-                    osd(bot, trigger.sender, 'say', 'Please enter a valid a amount to set the bank balance to')
             else:
-                osd(bot, trigger.sender, 'say', 'Please enter a target and an amount to set their bank balance at')
+                osd(bot, trigger.sender, 'say', 'Please enter a valid a amount to set the bank balance to')
+        else:
+            osd(bot, trigger.sender, 'say', 'Please enter a target and an amount to set their bank balance at')
 
         # Taxes
     elif (commandused == 'taxes' or commandused == 'tax'):
@@ -82,7 +83,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if not target == 'notarget':
                 if targetcheck(bot, botcom, target, instigator) == 0:
                     osd(bot, trigger.sender, 'say', "I'm sorry, I do not know who " + target + " is.")
-                elif targetcheck(bot, botcom, target) == 3:
+                elif targetcheck(bot, botcom, target, instigator) == 3:
                     message = audit(bot, botcom, player)
                     osd(bot, trigger.sender, 'action', message)
                 else:
