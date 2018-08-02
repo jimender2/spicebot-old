@@ -1,0 +1,6 @@
+[configuration]
+type = rss
+displayname = SpiceBot Github
+url = https://github.com/SpiceBot/SpiceBot/commits/dev.atom
+parentnumber = 1
+childnumber = 1
