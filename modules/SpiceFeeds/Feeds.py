@@ -336,21 +336,21 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             searchterm = eval("feeds." + feed + ".searchterm")
             suffix = eval("feeds." + feed + ".suffix")
 
-            if str(searchterm).startswith("http"):
-                searchtermpage = requests.get(searchterm, headers={'Accept': 'text/plain'})
-                searchterm = searchtermpage.content
+            # if str(searchterm).startswith("http"):
+            #    searchtermpage = requests.get(searchterm, headers={'Accept': 'text/plain'})
+            #    searchterm = searchtermpage.content
 
-            combinedjson = str(url + prefix + searchterm + suffix)
+            # combinedjson = str(url + prefix + searchterm + suffix)
             # bot.say(str(combinedjson))
 
-            verify_ssl = bot.config.core.verify_ssl
-            data = requests.get(combinedjson, verify=verify_ssl).json()
+            # verify_ssl = bot.config.core.verify_ssl
+            # data = requests.get(combinedjson, verify=verify_ssl).json()
             # bot.say(str(data))
 
-            title = data.get('title')
+            # title = data.get('title')
             # bot.say(str(title))
 
-            titleappend = 1
+            # titleappend = 1
 
             # contentpage = requests.get(combinedjson)
             # result = contentpage.content
