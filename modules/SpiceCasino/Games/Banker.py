@@ -14,7 +14,7 @@ from BotShared import *
 from Bucks import *
 
 
-@sopel.module.commands('banker', 'payday', 'tax', 'taxes', 'funds', 'rob', 'bankreset', 'checkbank', 'transfer')
+@sopel.module.commands('banker', 'bank', 'payday', 'tax', 'taxes', 'funds', 'rob', 'bankreset', 'checkbank', 'transfer')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'banker')
     if not enablestatus:
@@ -55,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amountfund = (get_trigger_arg(bot, triggerargsarray, 2)).lower()
+            amountfund = (get_trigger_arg(bot, triggerargsarray, 2)).lower() or 'noamount'
             if not amountfund == 'noamount':
                 if amountfund.isdigit():
                     amountfund = int(amountfund)
@@ -128,7 +128,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     else:
                         osd(bot, trigger.sender, 'say', target + "'s pockets are empty")
         # Bank
-    elif commandused == 'banker' or commandused == 'banking':
+    elif commandused == 'banker' or commandused == 'bank':
         if target == 'notarget':
             target = player
         balance = bank(bot, botcom, target)
