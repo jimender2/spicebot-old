@@ -249,7 +249,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
-
                 if not displayifnotnew:
                     set_database_value(bot, bot.nick, feed + '_lastbuildcurrent', str(lastBuildXML))
 
