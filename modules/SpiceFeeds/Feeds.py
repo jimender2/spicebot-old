@@ -120,7 +120,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if command == 'subscribe':
         instigatormodulesarray = get_database_value(bot, botcom.instigator, 'feeds_enabled') or []
-        bot.say(str(instigatormodulesarray))
         newlist = []
         for feed in current_feed_list:
             if feed not in instigatormodulesarray:
