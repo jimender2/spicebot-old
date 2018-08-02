@@ -248,11 +248,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 links = xmldoc.getElementsByTagName(linktype)
                 linkparent = int(eval("feeds." + feed + ".linkparent"))
                 linkchild = eval("feeds." + feed + ".linkchild")
-                if linkchild == 'href:
-                    link = links[linkparent].getAttribute('href')
-                else:
+                if str(linkchild).isdigit():
                     linkchild = int(linkchild)
                     link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
+                else:
+                    link = links[linkparent].getAttribute(linkchild)
                 dispmsg.append(link)
 
                 if not displayifnotnew:
