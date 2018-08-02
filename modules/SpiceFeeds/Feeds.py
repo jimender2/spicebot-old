@@ -199,6 +199,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     url = eval("feeds." + feed + ".url")
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
+    bot.say(str(page.status_code))
     if page.status_code == 200:
 
         now = datetime.datetime.utcnow()
@@ -208,7 +209,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         feed_type = eval("feeds." + feed + ".type")
 
-        if feed_type == 'rss' or feed_type == 'youtube':
+        if feed_type in ['rss', 'youtube', 'github']:
 
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
