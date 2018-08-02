@@ -23,8 +23,8 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     commandused = trigger.group(1)
-    target = (get_trigger_arg(bot, triggerargsarray, 1)).lower() or 'notarget'
-    amount = (get_trigger_arg(bot, triggerargsarray, 2)).lower() or 'noamount'
+    target = get_trigger_arg(bot, triggerargsarray, 1) or 'notarget'
+    amount = get_trigger_arg(bot, triggerargsarray, 2) or 'noamount'
     channel = botcom.channel_current
     player = trigger.nick
     if commandused == '':
@@ -55,13 +55,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amountfund = get_trigger_arg(bot, triggerargsarray, 2) or 'noamount'
-            bot.say(str(amountfund))
-            if not amountfund == 'noamount':
-                if amountfund.isdigit():
-                    amountfund = int(amountfund)
-                    if amountfund >= 0 and amountfund < 10000001:
-                        set_database_value(bot, target, 'spicychips_bank', amountfund)
+            bot.say("Amount " + str(amount))
+            if not amount == 'noamount':
+                if amount.isdigit():
+                    amount = int(amount)
+                    if amount >= 0 and amount < 10000001:
+                        set_database_value(bot, target, 'spicychips_bank', amount)
                         targetbalance = bank(bot, botcom, target)
                         osd(bot, trigger.sender, 'say', target + ' now has ' + str(targetbalance) + ' in the bank')
                     else:
