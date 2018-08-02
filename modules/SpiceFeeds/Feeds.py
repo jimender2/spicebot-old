@@ -196,7 +196,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     dispmsg = []
     titleappend = 0
 
-    url = eval("feeds." + feed + ".url")
+    url = str(eval("feeds." + feed + ".url"))
     if feed == 'spicebot':
         if bot.nick.endswith('dev'):
             url.replace("master", "dev")
