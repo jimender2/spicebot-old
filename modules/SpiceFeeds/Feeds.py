@@ -200,6 +200,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     if feed == 'spicebot':
         if bot.nick.endswith('dev'):
             url.replace("master", "dev")
+    bot.say(str(url))
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
 
