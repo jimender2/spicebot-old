@@ -239,7 +239,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 dispmsg.append(title)
 
                 links = xmldoc.getElementsByTagName('link')
-                if feed_type == 'youtube':
+                if feed_type in ['youtube', 'github']:
                     link = links[childnumber].getAttribute('href')
                 else:
                     link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
