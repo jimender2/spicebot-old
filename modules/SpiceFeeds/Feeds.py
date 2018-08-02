@@ -105,9 +105,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         for word in triggerargsarray:
             if word in feeds.list:
                 current_feed_list.append(word)
-    feed_select_text = get_trigger_arg(bot, current_feed_list, 'list')
-
-    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
     if command == 'run':
         for feed in current_feed_list:
@@ -115,19 +112,38 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             if dispmsg == []:
                 osd(bot, botcom.channel_current, 'say', feed_select + " appears to have had an unknown error.")
             else:
-                osd(bot, botcom.channel_current, 'say', dispmsg)
+                if feed_select == 'all':
+                    osd(bot, botcom.instigator, 'priv', dispmsg)
+                else:
+                    osd(bot, botcom.channel_current, 'say', dispmsg)
         return
 
+    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
+
     if command == 'subscribe':
+        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'modules_enabled') or []
         for feed in current_feed_list:
-            adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'add')
-        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + feed_select_text)
+            if feed in instigatormodulesarray:
+                current_feed_list.remove(feed)
+        if current_feed_list != []:
+            for feed in current_feed_list:
+                adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'add')
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d to " + get_trigger_arg(bot, current_feed_list, 'list'))
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
     if command == 'unsubscribe':
+        instigatormodulesarray = get_database_value(bot, botcom.instigator, 'modules_enabled') or []
         for feed in current_feed_list:
-            adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'del')
-        osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + feed_select_text)
+            if feed not in instigatormodulesarray:
+                current_feed_list.remove(feed)
+        if current_feed_list != []:
+            for feed in current_feed_list:
+                adjust_database_array(bot, botcom.instigator, [feed], 'feeds_enabled', 'del')
+            osd(bot, botcom.channel_current, 'say', "You are now " + command + "d from " + get_trigger_arg(bot, current_feed_list, 'list'))
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
     if instigator.default not in botcom.opadmin:
@@ -136,20 +152,41 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if command == 'reset':
         for feed in current_feed_list:
-            reset_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + ".")
+            feed_type = eval("feeds." + feed + ".type")
+            if feed_type not in ['rss', 'youtube', 'scrape', 'json']:
+                current_feed_list.remove(feed)
+        if current_feed_list != []:
+            for feed in current_feed_list:
+                reset_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, current_feed_list, 'list') + " has/have been " + command + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
     if command == 'enable':
+        channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
         for feed in current_feed_list:
-            adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'add')
-        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + "d for " + str(channelselect) + ".")
+            if feed in channelmodulesarray:
+                current_feed_list.remove(feed)
+        if current_feed_list != []:
+            for feed in current_feed_list:
+                adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'add')
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, current_feed_list, 'list') + " has/have been " + command + "d for " + str(channelselect) + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
     if command == 'disable':
+        channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
         for feed in current_feed_list:
-            adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'del')
-        osd(bot, botcom.channel_current, 'say', feed_select_text + " has been " + command + "d for " + str(channelselect) + ".")
+            if feed not in channelmodulesarray:
+                current_feed_list.remove(feed)
+        if current_feed_list != []:
+            for feed in current_feed_list:
+                adjust_database_array(bot, channelselect, [feed], 'feeds_enabled', 'del')
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, current_feed_list, 'list') + " has/have been " + command + "d for " + str(channelselect) + ".")
+        else:
+            osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
 
 
