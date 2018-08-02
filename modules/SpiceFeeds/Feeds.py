@@ -232,6 +232,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
+                title = unicode_string_cleanup(title)
                 dispmsg.append(title)
 
                 links = xmldoc.getElementsByTagName('link')
@@ -323,6 +324,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                     title = title.replace(*r)
                 if title == "[]" or title == '':
                     title = "No Book Today"
+                title = unicode_string_cleanup(title)
                 dispmsg.append(title)
 
                 titleappend = 1
