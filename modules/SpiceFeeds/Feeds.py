@@ -222,9 +222,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             xmldoc = minidom.parseString(xml)
 
             lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
+            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
             lastbuildparent = int(eval("feeds." + feed + ".lastbuildparent"))
             lastbuildchild = int(eval("feeds." + feed + ".lastbuildchild"))
-            lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
             lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 

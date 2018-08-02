@@ -2,7 +2,7 @@
 type = youtube
 displayname = Level1Techs
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UC4w1YQAJMWOz4qtxinq55LQ
-lastbuildtype = pubDate
+lastbuildtype = published
 lastbuildparent = 0
 lastbuildchild = 0
 titletype = title
