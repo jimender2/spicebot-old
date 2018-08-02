@@ -196,11 +196,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
     dispmsg = []
     titleappend = 0
 
-    url = str(eval("feeds." + feed + ".url"))
+    url = eval("feeds." + feed + ".url")
+    url = str(url)
     if feed == 'spicebot':
         if bot.nick.endswith('dev'):
             url.replace("master", "dev")
-            bot.say(str(url))
     page = requests.get(url, headers=header)
     tree = html.fromstring(page.content)
 
