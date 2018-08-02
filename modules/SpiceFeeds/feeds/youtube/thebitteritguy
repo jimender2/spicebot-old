@@ -3,7 +3,7 @@ type = youtube
 displayname = The Bitter IT Guy
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UC7lx9EQBwxPaRMlMom61-XQ
 lastbuildtype = pubDate
-lastbuildparent = 1
+lastbuildparent = 0
 lastbuildchild = 0
 titletype = title
 titleparent = 1

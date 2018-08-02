@@ -3,7 +3,7 @@ type = youtube
 displayname = Techquickie
 url = https://www.youtube.com/feeds/videos.xml?channel_id=UC0vBXGSyV14uvJ4hECDOl0Q
 lastbuildtype = pubDate
-lastbuildparent = 1
+lastbuildparent = 0
 lastbuildchild = 0
 titletype = title
 titleparent = 1
