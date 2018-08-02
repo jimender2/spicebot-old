@@ -450,7 +450,7 @@ def feeds_configs(bot, feeds):
             for each_section in config.sections():
                 for (each_key, each_val) in config.items(each_section):
                     if each_val == 0:
-                        each_val = str(each_val)
+                        each_val = "zero"
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
     return feeds
