@@ -1,0 +1,6 @@
+[configuration]
+type = rss
+displayname = Technowize
+url = https://www.technowize.com/feed/
+parentnumber = 1
+childnumber = 1
