@@ -118,8 +118,6 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                     osd(bot, botcom.channel_current, 'say', dispmsg)
         return
 
-    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
-
     if command == 'subscribe':
         instigatormodulesarray = get_database_value(bot, botcom.instigator, 'modules_enabled') or []
         for feed in current_feed_list:
@@ -162,6 +160,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
+
+    channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
     if command == 'enable':
         channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
