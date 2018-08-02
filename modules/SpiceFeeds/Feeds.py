@@ -157,7 +157,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if newlist != []:
             for feed in newlist:
                 reset_database_value(bot, bot.nick, feed + '_lastbuildcurrent')
-            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " has/have been " + command + ".")
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -172,7 +172,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 newlist.append(feed)
         if newlist != []:
             adjust_database_array(bot, channelselect, newlist, 'feeds_enabled', 'add')
-            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " has/have been " + command + "d for " + str(channelselect) + ".")
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -185,7 +185,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 newlist.append(feed)
         if newlist != []:
             adjust_database_array(bot, channelselect, newlist, 'feeds_enabled', 'del')
-            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " has/have been " + command + "d for " + str(channelselect) + ".")
+            osd(bot, botcom.channel_current, 'say', get_trigger_arg(bot, newlist, 'list') + " " + hashave(newlist) + " been " + command + "d for " + str(channelselect) + ".")
         else:
             osd(bot, botcom.channel_current, 'say', "No selected feeds to " + command + ".")
         return
@@ -441,3 +441,11 @@ def feeds_configs(bot, feeds):
                     exec("feeds." + feed + "." + each_key + " = each_val")
 
     return feeds
+
+
+def hashave(mylist):
+    if len(mylist) > 1:
+        hashave = have''
+    else:
+        hashave = 'has'
+    return hashave
