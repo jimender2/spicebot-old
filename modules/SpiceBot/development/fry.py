@@ -20,5 +20,5 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "shuddup and take my money!")
+    osd(bot, trigger.sender, 'say', "Shuddup and take my money!")
     osd(bot, trigger.sender, 'say', "https://knowyourmeme.com/memes/shut-up-and-take-my-money")
