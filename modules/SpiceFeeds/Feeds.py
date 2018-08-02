@@ -214,8 +214,6 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            childnumber = int(eval("feeds." + feed + ".childnumber"))
-
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
 
