@@ -216,7 +216,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
             parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
-            lastbuildtype = int(eval("feeds." + feed + ".lastbuildtype"))
+            lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
