@@ -55,7 +55,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             else:
                 success = 1
         if success == 1:
-            amountfund = get_trigger_arg(bot, triggerargsarray, 3) or 'noamount'
+            amountfund = get_trigger_arg(bot, triggerargsarray, 2) or 'noamount'
             bot.say(str(amountfund))
             if not amountfund == 'noamount':
                 if amountfund.isdigit():
