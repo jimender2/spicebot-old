@@ -164,7 +164,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     channelselect = get_trigger_arg(bot, [x for x in triggerargsarray if x in botcom.channel_list], 1) or botcom.channel_current
 
     if command == 'enable':
-        channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
+        channelmodulesarray = get_database_value(bot, channelselect, 'modules_enabled') or []
         for feed in current_feed_list:
             if feed in channelmodulesarray:
                 current_feed_list.remove(feed)
@@ -177,7 +177,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
     if command == 'disable':
-        channelmodulesarray = get_database_value(bot, channel, 'modules_enabled') or []
+        channelmodulesarray = get_database_value(bot, channelselect, 'modules_enabled') or []
         for feed in current_feed_list:
             if feed not in channelmodulesarray:
                 current_feed_list.remove(feed)
