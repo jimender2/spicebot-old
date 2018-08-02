@@ -214,9 +214,7 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
         if feed_type in ['rss', 'youtube', 'github']:
 
-            parentnumber = int(eval("feeds." + feed + ".parentnumber"))
             childnumber = int(eval("feeds." + feed + ".childnumber"))
-            lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
 
             lastbuildcurrent = get_database_value(bot, bot.nick, feed + '_lastbuildcurrent') or datetime.datetime(1999, 1, 1, 1, 1, 1, 1).replace(tzinfo=pytz.UTC)
             lastbuildcurrent = parser.parse(str(lastbuildcurrent))
@@ -225,16 +223,22 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
             xml = xml.encode('ascii', 'ignore').decode('ascii')
             xmldoc = minidom.parseString(xml)
 
+            lastbuildtype = eval("feeds." + feed + ".lastbuildtype")
+            lastbuildparent - int(eval("feeds." + feed + ".lastbuildparent"))
+            lastbuildchild = int(eval("feeds." + feed + ".lastbuildchild"))
             lastBuildXML = xmldoc.getElementsByTagName(lastbuildtype)
-            lastBuildXML = lastBuildXML[0].childNodes[0].nodeValue
+            lastBuildXML = lastBuildXML[lastbuildparent].childNodes[lastbuildchild].nodeValue
             lastBuildXML = parser.parse(str(lastBuildXML))
 
             if displayifnotnew or lastBuildXML > lastbuildcurrent:
 
                 titleappend = 1
 
-                titles = xmldoc.getElementsByTagName('title')
-                title = titles[parentnumber].childNodes[0].nodeValue
+                titletype = eval("feeds." + feed + ".titletype")
+                titles = xmldoc.getElementsByTagName(titletype)
+                titleparent - int(eval("feeds." + feed + ".titleparent"))
+                titlechild = int(eval("feeds." + feed + ".titlechild"))
+                title = titles[titleparent].childNodes[titlechild].nodeValue
                 if feed_type == 'github':
                     authors = xmldoc.getElementsByTagName('name')
                     author = authors[0].childNodes[0].nodeValue
@@ -242,11 +246,14 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 title = unicode_string_cleanup(title)
                 dispmsg.append(title)
 
-                links = xmldoc.getElementsByTagName('link')
+                linktype = eval("feeds." + feed + ".linktype")
+                links = xmldoc.getElementsByTagName(linktype)
+                linkparent - int(eval("feeds." + feed + ".linkparent"))
+                linkchild = int(eval("feeds." + feed + ".linkchild"))
                 if feed_type in ['youtube', 'github']:
-                    link = links[childnumber].getAttribute('href')
+                    link = links[linkparent].getAttribute('href')
                 else:
-                    link = links[childnumber].childNodes[0].nodeValue.split("?")[0]
+                    link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
                 if not displayifnotnew:
