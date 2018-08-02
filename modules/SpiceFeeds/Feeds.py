@@ -235,6 +235,10 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 titles = xmldoc.getElementsByTagName('title')
                 title = titles[parentnumber].childNodes[0].nodeValue
+                if feed_type == 'github':
+                    authors = xmldoc.getElementsByTagName('author')
+                    author = titles[1].childNodes[0].nodeValue
+                    dispmsg.append(author + " committed")
                 title = unicode_string_cleanup(title)
                 dispmsg.append(title)
 
