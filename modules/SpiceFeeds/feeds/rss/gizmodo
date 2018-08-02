@@ -1,0 +1,6 @@
+[configuration]
+type = rss
+displayname = Gizmodo
+url = https://gizmodo.com/rss
+parentnumber = 1
+childnumber = 1
