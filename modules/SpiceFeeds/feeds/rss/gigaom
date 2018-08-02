@@ -1,0 +1,6 @@
+[configuration]
+type = rss
+displayname = Gigaom
+url = https://gigaom.com/feed/
+parentnumber = 1
+childnumber = 1
