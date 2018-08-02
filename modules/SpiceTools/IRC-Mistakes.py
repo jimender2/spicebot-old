@@ -12,6 +12,7 @@ sys.path.append(shareddir)
 from BotShared import *
 
 
-@sopel.module.commands('msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
+@sopel.module.commands('ircmistakes', 'msg', 'nick', 'attach', 'server', 'join', 'whois', 'me', 'ban')
 def execute_main(bot, trigger):
-    osd(bot, trigger.sender, 'say', 'I believe you wanted to say ' + "/" + trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ircmistakes')
+    osd(bot, trigger.sender, 'say', 'I believe you wanted to say ' + "/" + get_trigger_arg(bot, triggerargsarray, 0))
