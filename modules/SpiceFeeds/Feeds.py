@@ -445,7 +445,7 @@ def feeds_configs(bot, feeds):
 
 def hashave(mylist):
     if len(mylist) > 1:
-        hashave = have''
+        hashave = 'have'
     else:
         hashave = 'has'
     return hashave
