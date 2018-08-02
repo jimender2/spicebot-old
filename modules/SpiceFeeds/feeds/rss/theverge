@@ -10,4 +10,4 @@ titleparent = 1
 titlechild = 0
 linktype = link
 linkparent = 1
-linkchild = 0
+linkchild = href

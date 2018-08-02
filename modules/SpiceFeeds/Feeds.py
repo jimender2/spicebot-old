@@ -247,10 +247,11 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
                 linktype = eval("feeds." + feed + ".linktype")
                 links = xmldoc.getElementsByTagName(linktype)
                 linkparent = int(eval("feeds." + feed + ".linkparent"))
-                linkchild = int(eval("feeds." + feed + ".linkchild"))
-                if feed_type in ['youtube', 'github']:
+                linkchild = eval("feeds." + feed + ".linkchild")
+                if linkchild == 'href:
                     link = links[linkparent].getAttribute('href')
                 else:
+                    linkchild = int(linkchild)
                     link = links[linkparent].childNodes[linkchild].nodeValue.split("?")[0]
                 dispmsg.append(link)
 
