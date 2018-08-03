@@ -24,14 +24,21 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     osd(bot, trigger.sender, 'say', "do the thing")
-    inputstring = get_trigger_arg(bot, triggerargsarray, '1+')
+    command = get_trigger_arg(bot, triggerargsarray, 1)
+    inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
 
-    if not command:
-        database_initialize(bot, bot.nick, testarray, 'idea')
-        existingarray = get_database_value(bot, bot.nick, 'idea') or []
-    else:
-        existingarray = get_database_value(bot, bot.nick, 'idea') or []
-        if inputstring not in existingarray:
-            adjust_database_array(bot, bot.nick, inputstring, 'idea', 'add')
-            message = ""
-            osd(bot, trigger.sender, 'say', message)
+    if command == 'good':
+        if not inputstring:
+            good()
+        else:
+            existingarray = get_database_value(bot, bot.nick, 'idea') or []
+            if inputstring not in existingarray:
+                adjust_database_array(bot, bot.nick, inputstring, 'idea', 'add')
+                message = ""
+                osd(bot, trigger.sender, 'say', message)
+
+
+def good():
+    database_initialize(bot, bot.nick, testarray, 'idea')
+    existingarray = get_database_value(bot, bot.nick, 'idea') or []
+    idea = get_trigger_arg(bot, existingarray, "random") or ''
