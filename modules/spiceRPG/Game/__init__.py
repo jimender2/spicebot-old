@@ -210,6 +210,16 @@ def command_process(bot, trigger, rpg, instigator):
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
+    # Instigator versus Bot
+    if rpg.command_main == bot.nick and not rpg.admin:
+        osd(bot, rpg.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        return
+
+    # Instigator versus RPG Bot
+    if rpg.command_main in rpg.bots_list and not rpg.admin:
+        osd(bot, rpg.channel_current, 'say', rpg.command_main + " would kick your butt in a competition.")
+        return
+
     # Target Check
 
     # Verify Command is valid
@@ -684,6 +694,8 @@ def rpg_command_users(bot, rpg):
     adjust_database_array(bot, 'channel', rpg.users_current, 'users_all', 'add')
     rpg.users_all = get_database_value(bot, 'channel', 'users_all') or []
 
+    rpg.bots_list = bot_config_names(bot)
+
     for user in rpg.users_current:
 
         if user in bot.config.core.owner:
@@ -707,6 +719,17 @@ def rpg_command_users(bot, rpg):
                 dummyvar = 1
 
     return rpg
+
+
+# Bot Nicks
+def bot_config_names(bot):
+    config_listing = []
+    networkname = str(bot.config.core.user.split("/", 1)[1] + "/")
+    validconfigsdir = str("/home/spicebot/.sopel/" + bot.nick + "/System-Files/Configs/" + networkname)
+    for filename in os.listdir(validconfigsdir):
+        filenameminuscfg = str(filename).replace(".cfg", "")
+        config_listing.append(filenameminuscfg)
+    return config_listing
 
 
 """
