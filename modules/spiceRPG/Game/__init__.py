@@ -156,28 +156,6 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         rpg.commands_ran.append(rpg.command_main)
 
 
-def command_run(bot, rpg, instigator):
-
-    # Clear triggerargsarray of the main command
-    rpg.triggerargsarray.remove(rpg.command_main)
-
-    # Check Initial Stamina
-    instigator.stamina = get_database_value(bot, instigator.default, 'stamina') or 10
-    rpg.staminarequired, rpg.staminacharge = 0, 0
-    """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
-
-    # Run the command's function
-    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    eval(command_function_run)
-
-    if rpg.staminacharge:
-        bot.say("charge")
-
-    # Deduct stamina from instigator
-    # if rpg.staminarequired:
-    #    adjust_database_value(bot, instigator.default, 'stamina', -abs(rpg.staminarequired))
-
-
 def command_process(bot, trigger, rpg, instigator):
 
     rpg.command_run = 0
@@ -298,6 +276,28 @@ def command_process(bot, trigger, rpg, instigator):
     rpg.command_run = 1
 
     return rpg
+
+
+def command_run(bot, rpg, instigator):
+
+    # Clear triggerargsarray of the main command
+    rpg.triggerargsarray.remove(rpg.command_main)
+
+    # Check Initial Stamina
+    instigator.stamina = get_database_value(bot, instigator.default, 'stamina') or 10
+    rpg.staminarequired, rpg.staminacharge = 0, 0
+    """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
+
+    # Run the command's function
+    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+    eval(command_function_run)
+
+    if rpg.staminacharge:
+        bot.say("charge")
+
+    # Deduct stamina from instigator
+    # if rpg.staminarequired:
+    #    adjust_database_value(bot, instigator.default, 'stamina', -abs(rpg.staminarequired))
 
 
 """
@@ -538,7 +538,7 @@ def find_switch_equal(bot, inputarray, switch):
     beguinemark, finishmark = 0, 0
     if [wordpart for wordpart in inputarray if wordpart.startswith(switchtofind)]:
         for partial in inputarray:
-            arraymarker = arraymarker + 1
+            arraymarker += 1
             if partial.startswith(switchtofind):
                 beguinemark = arraymarker
             if partial.endswith('"'):
@@ -568,7 +568,7 @@ def countX(lst, x):
     count = 0
     for ele in lst:
         if (ele == x):
-            count = count + 1
+            count += 1
     return count
 
 
