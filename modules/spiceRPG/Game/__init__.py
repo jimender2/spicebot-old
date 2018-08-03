@@ -185,7 +185,7 @@ def command_process(bot, trigger, rpg, instigator):
                 if rpg.command_main == startcom:
                     similarlevel = similar(rpg.command_main.lower(), user.lower())
                     if similarlevel >= .75:
-                        rpg.command_main = com
+                        rpg.command_main = user
         if rpg.command_main != startcom:
             bot.say(str(rpg.triggerargsarray))
             rpg.triggerargsarray.remove(startcom)
