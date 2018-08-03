@@ -40,8 +40,9 @@ Triggers for usage
 @sopel.module.commands('rpg')
 @sopel.module.thread(True)
 def rpg_trigger_main(bot, trigger):
+    command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(2), 'create')
-    execute_start(bot, trigger, triggerargsarray)
+    execute_start(bot, trigger, triggerargsarray, command_type)
 
 
 """
@@ -49,10 +50,13 @@ Command Processing
 """
 
 
-def execute_start(bot, trigger, triggerargsarray):
+def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # RPG dynamic Class
     rpg = class_create('main')
+
+    # Command type
+    rpg.command_type = command_type
 
     # Time when Module use started
     rpg.start = time.time()
@@ -206,6 +210,8 @@ def command_process(bot, trigger, rpg, instigator):
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
+    # Target Check
+
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:
         errors(bot, rpg, 'commands', 6, rpg.command_main)
@@ -222,6 +228,13 @@ def command_process(bot, trigger, rpg, instigator):
     rpg.command_run = 1
 
     return rpg
+
+
+def rpg_targetcheck(bot, rpg, instigator):
+
+    validtarget = 0
+
+    return validtarget
 
 
 """
@@ -428,14 +441,13 @@ Bot Start
 
 
 @sopel.module.interval(1)  # TODO make this progress with the game
-def timed_logcheck(bot):
+def rpg_bot_start_script(bot):
     channels_game_enabled = get_database_value(bot, 'rpg_game_records', 'game_enabled') or []
     for channel in bot.channels:
         if channel in channels_game_enabled:
             startupmonologue = str("startup_monologue_" + channel)
             if startupmonologue not in bot.memory:
                 bot.memory[startupmonologue] = 1
-
                 startup_monologue = []
                 startup_monologue.append("The Spice Realms are vast; full of wonder, loot, monsters, and peril!")
                 startup_monologue.append("Will you, Brave Adventurers, be triumphant over the challenges that await?")
