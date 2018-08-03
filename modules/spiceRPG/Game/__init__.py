@@ -615,28 +615,17 @@ def rpg_errors_end(bot, rpg):
                 if "$list" in errormessage:
                     errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
                     errormessage = str(errormessage.replace("$list", errorlist))
-                if "$peppers" in errormessage:
-                    comparedarray = []
+                if "$tiers_nums_peppers" in errormessage:
+                    numberarray, pepperarray, combinedarray = [], [], []
                     for command in currenterrorvalue:
-                        compareval = eval("rpg." + command + ".tier_pepper")
-                        comparedarray.append(compareval)
-                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$peppers", errorlist))
-                if "$tiers" in errormessage:
-                    comparedarray = []
-                    for command in currenterrorvalue:
-                        compareval = int(eval("rpg." + command + ".tier_number"))
-                        comparedarray.append(compareval)
-                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$tiers", errorlist))
-                if "$tiermath" in errormessage:
-                    comparedarray = []
-                    for command in currenterrorvalue:
-                        compareval = int(eval("rpg." + command + ".tier_number"))
-                        compareval = int(compareval) - int(rpg.tier_current)
-                        comparedarray.append(compareval)
-                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$tiermath", errorlist))
+                        peppereval = eval("rpg." + command + ".tier_pepper")
+                        pepperarray.append(peppereval)
+                        numbereval = int(eval("rpg." + command + ".tier_number"))
+                        numberarray.append(numbereval)
+                    for num, pepp in zip(numberarray, pepperarray):
+                        combinedarray.append(str(num) + " " + pepp)
+                    errorlist = get_trigger_arg(bot, combinedarray, 'list')
+                    errormessage = str(errormessage.replace("$tiers_nums_peppers", errorlist))
                 if "$valid_coms" in errormessage:
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
