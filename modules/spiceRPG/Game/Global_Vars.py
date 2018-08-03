@@ -53,6 +53,14 @@ rpg_commands_valid_basic = ['author','intent','about','version','docs','usage']
 
 
 """
+Commands that must be run in channel
+"""
+
+
+rpg_commands_valid_inchannel = ['docs']
+
+
+"""
 Alternative Commands
 """
 
@@ -106,7 +114,8 @@ rpg_error_commands = [
                     "The following command(s) do not appear to be valid: $list. Valid commands include: $valid_coms.",  # 6
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
                     "You don't have a command hotlinked to $list",  # 8
-                    "It appears that your use of an alternate command failed. $list command(s) were at fault."  # 9
+                    "It appears that your use of an alternate command failed. $list command(s) were at fault.",  # 9
+                    "The Following Command(s) must be used in channel, and don't work via private message: $list"  # 10
 ]
 
 # Configuration

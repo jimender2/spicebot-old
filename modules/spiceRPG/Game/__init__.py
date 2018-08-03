@@ -222,6 +222,11 @@ def command_process(bot, trigger, rpg, instigator):
         errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
+    # Commands that Must be run in a channel
+    if rpg.command_main in rpg_commands_valid_inchannel and not rpg.admin:
+        errors(bot, rpg, 'commands', 10, rpg.command_main)
+        return rpg
+
     """ TODO Tier block """
 
     # Safe to run command
