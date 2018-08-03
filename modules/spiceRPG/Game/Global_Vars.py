@@ -155,7 +155,7 @@ rpg_error_commands = [
                     "I refuse to fight a biological entity! If I did, you'd be sure to lose!",  # 12
                     "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.",  # 13
                     "Action rpg should not be able to run commands; Targets Only: $list",  # 14
-                    "RPG $list will be unlocked at tier $tiers $peppers. $tiermath tier(s) remaining!"  # 15
+                    "RPG $list will be unlocked at tier(s) $tiers_nums_peppers."  # 15
 ]
 
 # Configuration
