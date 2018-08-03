@@ -189,12 +189,12 @@ def command_process(bot, trigger, rpg, instigator):
                         similarlevel = similar(rpg.command_main.lower(), com)
                         if similarlevel >= .75:
                             rpg.command_main = com
-        if rpg.command_main == startcom:
-            for user in rpg.users_all:
-                if rpg.command_main == startcom:
-                    similarlevel = similar(rpg.command_main.lower(), user.lower())
-                    if similarlevel >= .75:
-                        rpg.command_main = com
+        # if rpg.command_main == startcom:
+        #     for user in rpg.users_all:
+        #         if rpg.command_main == startcom:
+        #             similarlevel = similar(rpg.command_main.lower(), user.lower())
+        #             if similarlevel >= .75:
+        #                 rpg.command_main = com
         if rpg.command_main != startcom:
             bot.say(str(rpg.triggerargsarray))
             if startcom in rpg.triggerargsarray:
