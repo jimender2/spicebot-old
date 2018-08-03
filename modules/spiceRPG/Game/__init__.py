@@ -655,7 +655,11 @@ def rpg_valid_commands_all(bot, rpg):
     for command_type in rpg_valid_command_types:
         typeeval = eval("rpg_commands_valid_"+command_type)
         for vcom in typeeval:
+            exec("rpg." str(vcom) + " = " + compile(class_create(vcom), "", "exec"))
+            exec("rpg." str(vcom) + ".number = 1")
             rpg.valid_commands_all.append(vcom)
+    for command in rpg.valid_commands_all:
+        currenttier = eval("rpg." + command + ".number")
     return rpg
 
 

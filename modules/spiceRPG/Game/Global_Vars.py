@@ -84,6 +84,18 @@ rpg_commands_valid_alt_hotkey = ['hotlink']
 # Author
 rpg_commands_valid_alt_author = ['credit','credits']
 
+
+"""
+Command Tiers
+"""
+
+
+rpg_commands_tier_unlocks = []
+
+duels_commands_tier_ratio =    [  1   ,    1.1   ,  1.2   ,   1.3   ,   1.4   ,   1.5    ,   1.6   ,   1.7    ,   1.8   ,   1.9   ,     2       , 2.1   ,   2.2    ,    2.3      , 2.4     ,     2.5        ]  # Tier Ratios
+duels_commands_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace'   ,'pure capsaicin']  # Pepper Levels
+
+
 """
 Subcommands
 """
@@ -126,7 +138,7 @@ rpg_error_commands = [
                     "$list would kick your butt in a competition.",  # 11
                     "I refuse to fight a biological entity! If I did, you'd be sure to lose!",  # 12
                     "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.",  # 13
-                    "Action duels should not be able to run commands; Targets Only: $list"  # 14
+                    "Action rpg should not be able to run commands; Targets Only: $list"  # 14
 ]
 
 # Configuration
