@@ -216,6 +216,7 @@ def command_process(bot, trigger, rpg, instigator):
         return
 
     # Instigator versus RPG Bot
+    bot.say(str(rpg.bots_list))
     if rpg.command_main in rpg.bots_list and not rpg.admin:
         osd(bot, rpg.channel_current, 'say', rpg.command_main + " would kick your butt in a competition.")
         return
