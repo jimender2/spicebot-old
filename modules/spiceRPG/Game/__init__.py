@@ -177,6 +177,22 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
             rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
+    # Target Checking
+    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
+        startcom = rpg.command_main
+        if rpg.command_main == startcom:
+            for user in rpg.users_all:
+                if rpg.command_main == startcom:
+                    similarlevel = similar(rpg.command_main.lower(), user.lower())
+                    if similarlevel >= .75:
+                        rpg.command_main = com
+        if rpg.command_main != startcom:
+            bot.say(str(rpg.triggerargsarray))
+            rpg.triggerargsarray.remove(startcom)
+            rpg.triggerargsarray.insert(0, rpg.command_main)
+            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+            bot.say(str(rpg.triggerargsarray))
+
     # Verify Command spelling if not a real command
     if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
         startcom = rpg.command_main
@@ -190,22 +206,6 @@ def command_process(bot, trigger, rpg, instigator):
                         if similarlevel >= .75:
                             rpg.command_main = com
         if rpg.command_main != startcom:
-            rpg.triggerargsarray.remove(startcom)
-            rpg.triggerargsarray.insert(0, rpg.command_main)
-            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
-            bot.say(str(rpg.triggerargsarray))
-
-    # Target Checking
-    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
-        startcom = rpg.command_main
-        if rpg.command_main == startcom:
-            for user in rpg.users_all:
-                if rpg.command_main == startcom:
-                    similarlevel = similar(rpg.command_main.lower(), user.lower())
-                    if similarlevel >= .75:
-                        rpg.command_main = com
-        if rpg.command_main != startcom:
-            bot.say(str(rpg.triggerargsarray))
             rpg.triggerargsarray.remove(startcom)
             rpg.triggerargsarray.insert(0, rpg.command_main)
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
