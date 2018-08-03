@@ -106,10 +106,10 @@ def slots(bot, botcom, trigger, arg):
                     wheel3 = get_trigger_arg(bot, slotwheel, 'random')
                     reel = [wheel1, wheel2, wheel3]
                     if bet < 2:
-                        chipcount = "spicychip"
-                        bot.say(chipcount)
+                        chipcount = " spicychip"
+                        # bot.say(chipcount)
                     else:
-                        chipcount = "spicychips"
+                        chipcount = " spicychips"
                     osd(bot, trigger.sender, 'say', trigger.nick + " insert " + str(bet) + chipcount + " and the slot machine displays | " + wheel1 + " | " + wheel2 + " | " + wheel3 + " | ")
                     for i in reel:
                         if i == keyword:
@@ -137,7 +137,7 @@ def slots(bot, botcom, trigger, arg):
                             spicychips(bot, trigger.nick, 'plus', mywinnings)
                             osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings))
                         else:
-                            if transfer(bot, 'casino', trigger.nick, mywinnings):
+                            if transfer(bot, botcom, 'casino', trigger.nick, mywinnings):
                                 osd(bot, trigger.sender, 'say', trigger.nick + ' wins ' + str(mywinnings) + " spicychips")
                             else:
                                 osd(bot, trigger.sender, 'say', "Error in banking system")
@@ -154,9 +154,8 @@ def roulette(bot, trigger, arg):
     channel = trigger.sender
     maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
 
-    minbet = 15  # requires at least one payday to play
+    minbet = 5  # requires at least one payday to play
     wheel = range(maxwheel + 1)
-    colors = ['red', 'black']
     inputcheck = 0
     maxplayers = 3
     callcheck = False
@@ -253,7 +252,7 @@ def roulette(bot, trigger, arg):
                     osd(bot, player, 'priv', "You already placed a bet")
                     inputcheck = 0
             if inputcheck == 1:
-                if transfer(bot, trigger.nick, 'casino', mybet) == 1:
+                if transfer(bot, botcom, trigger.nick, 'casino', mybet):
                     roulettearray = []
                     spicychips(bot, 'casino', 'plus', mybet)
                     osd(bot, trigger.sender, 'say', trigger.nick + " puts " + str(mybet) + " on " + str(mynumber) + " " + str(mycolor))
