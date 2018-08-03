@@ -90,7 +90,22 @@ Command Tiers
 """
 
 
-rpg_commands_tier_unlocks = []
+rpg_commands_tier_unlocks = [['admin'],  # 1
+                             ['settings'],  # 2
+                             ['author'],  # 3
+                             [],  # 4
+                             [],  # 5
+                             [],  # 6
+                             [],  # 7
+                             [],  # 8
+                             [],  # 9
+                             [],  # 10
+                             [],  # 11
+                             ['usage'],  # 12
+                             [],  # 13
+                             [],  # 14
+                             [],  # 15
+                             ]
 
 rpg_commands_tier_ratio =    [  1   ,    1.1   ,  1.2   ,   1.3   ,   1.4   ,   1.5    ,   1.6   ,   1.7    ,   1.8   ,   1.9   ,     2       , 2.1   ,   2.2    ,    2.3      , 2.4     ,     2.5        ]  # Tier Ratios
 rpg_commands_pepper_levels = ['n00b','pimiento','sonora','anaheim','poblano','jalapeno','serrano','chipotle','tabasco','cayenne','thai pepper','datil','habanero','ghost chili','mace'   ,'pure capsaicin']  # Pepper Levels
