@@ -66,6 +66,8 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     instigator.default = trigger.nick
     rpg.instigator = trigger.nick
 
+    rpg.tier_current = get_database_value(bot, 'rpg_game_records', 'current_tier') or 0
+
     # Channel Listing
     rpg = rpg_command_channels(bot, rpg, trigger)
 
@@ -269,8 +271,8 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Tier Check
     command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
-    if command_tier_required:
-        bot.say(str(command_tier_required))
+    if command_tier_required > int(rpg.tier_current):
+        bot.say(str(command_tier_required) + " > " + str(rpg.tier_current))
 
     # Safe to run command
     rpg.command_run = 1
