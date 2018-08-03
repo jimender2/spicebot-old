@@ -33,7 +33,7 @@ def execute_main(bot, trigger, arg, botcom, instigator):
     elif mygame == 'blackjack':
         blackjack(bot, trigger, arg)
     elif (mygame == 'roulette' or mygame == 'spin'):
-        roulette(bot, trigger, arg)
+        roulette(bot, botcom, trigger, arg)
     elif mygame == 'lottery':
         lottery(bot, trigger, arg)
     elif mygame == 'freebie':
@@ -149,7 +149,7 @@ def slots(bot, botcom, trigger, arg):
 
 # ------Start Roulette
 # ----------------Roulette-------
-def roulette(bot, trigger, arg):
+def roulette(bot, botcom, trigger, arg):
     now = time.time()
     channel = trigger.sender
     maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
