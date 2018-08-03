@@ -621,14 +621,14 @@ def rpg_errors_end(bot, rpg):
                         compareval = eval("rpg." + command + ".tier_pepper")
                         comparedarray.append(compareval)
                     errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$list", errorlist))
-                if "$tier" in errormessage:
+                    errormessage = str(errormessage.replace("$peppers", errorlist))
+                if "$tiers" in errormessage:
                     comparedarray = []
                     for command in currenterrorvalue:
                         compareval = int(eval("rpg." + command + ".tier_number"))
                         comparedarray.append(compareval)
                     errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$list", errorlist))
+                    errormessage = str(errormessage.replace("$tiers", errorlist))
                 if "$tiermath" in errormessage:
                     comparedarray = []
                     for command in currenterrorvalue:
@@ -636,7 +636,7 @@ def rpg_errors_end(bot, rpg):
                         compareval = int(compareval) - int(rpg.tier_current)
                         comparedarray.append(compareval)
                     errorlist = get_trigger_arg(bot, comparedarray, 'list')
-                    errormessage = str(errormessage.replace("$list", errorlist))
+                    errormessage = str(errormessage.replace("$tiermath", errorlist))
                 if "$valid_coms" in errormessage:
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
                     errormessage = str(errormessage.replace("$valid_coms", validcomslist))
