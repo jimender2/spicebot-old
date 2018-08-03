@@ -105,7 +105,6 @@ def slots(bot, botcom, trigger, arg):
                     wheel2 = get_trigger_arg(bot, slotwheel, 'random')
                     wheel3 = get_trigger_arg(bot, slotwheel, 'random')
                     reel = [wheel1, wheel2, wheel3]
-                    bot.say(reel)
                     if bet < 2:
                         chipcount = "spicychip"
                         bot.say(chipcount)
