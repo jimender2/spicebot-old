@@ -210,7 +210,7 @@ def command_process(bot, trigger, rpg, instigator):
             bot.say(str(rpg.triggerargsarray))
 
     # Instigator versus Instigator
-    if command_main.lower() == rpg.instigator.lower() and not rpg.admin:
+    if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.admin:
         osd(bot, rpg.channel_current, 'say', "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
         return
 
