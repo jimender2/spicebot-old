@@ -166,17 +166,12 @@ def command_run(bot, rpg, instigator):
     rpg.staminarequired, rpg.staminacharge = 0, 0
     """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
 
+    # Run the command's function
     command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-
-    while not rpg.staminarequired > instigator.stamina:
-        eval(command_function_run)
+    eval(command_function_run)
 
     if rpg.staminacharge:
         bot.say("charge")
-
-    # Run the command's function
-    # command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    # eval(command_function_run)
 
     # Deduct stamina from instigator
     # if rpg.staminarequired:
@@ -479,19 +474,8 @@ Basic User Commands
 
 
 def rpg_command_main_author(bot, rpg, instigator):
-    rpg.staminarequired += 8
-    bot.say("a")
 
-    rpg.staminarequired += 1
-    bot.say("b")
-
-    rpg.staminarequired += 1
-    bot.say("c")
-
-    rpg.staminarequired += 1
-    bot.say("d")
     osd(bot, rpg.channel_current, 'say', "The author of RPG is deathbybandaid.")
-    rpg.staminacharge = 1
 
 
 def rpg_command_main_intent(bot, rpg, instigator):
