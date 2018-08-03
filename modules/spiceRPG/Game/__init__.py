@@ -213,13 +213,12 @@ def command_process(bot, trigger, rpg, instigator):
     # Instigator versus Bot
     if rpg.command_main == bot.nick and not rpg.admin:
         osd(bot, rpg.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
-        return
+        return rpg
 
-    # Instigator versus RPG Bot
-    bot.say(str(rpg.bots_list))
+    # Instigator versus Other Bots
     if rpg.command_main.lower() in [x.lower() for x in rpg.bots_list]:
-        osd(bot, rpg.channel_current, 'say', rpg.command_main + " would kick your butt in a competition.")
-        return
+        osd(bot, rpg.channel_current, 'say', nick_actual(bot, rpg.command_main) + " would kick your butt in a competition.")
+        return rpg
 
     # Target Check
 
