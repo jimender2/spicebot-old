@@ -211,17 +211,17 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Instigator versus Instigator
     if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.admin:
-        osd(bot, rpg.channel_current, 'say', "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.")
+        errors(bot, rpg, 'commands', 13, 1)
         return rpg
 
     # Instigator versus Bot
     if rpg.command_main == bot.nick and not rpg.admin:
-        osd(bot, rpg.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        errors(bot, rpg, 'commands', 12, 1)
         return rpg
 
     # Instigator versus Other Bots
     if rpg.command_main.lower() in [x.lower() for x in rpg.bots_list]:
-        osd(bot, rpg.channel_current, 'say', nick_actual(bot, rpg.command_main) + " would kick your butt in a competition.")
+        errors(bot, rpg, 'commands', 11, nick_actual(bot, rpg.command_main))
         return rpg
 
     # Targets

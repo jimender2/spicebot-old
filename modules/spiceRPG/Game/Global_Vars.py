@@ -115,7 +115,10 @@ rpg_error_commands = [
                     "The following command(s) is/are for admin use only: $list. If you are an admin, you need to run with the -a admin switch.",  # 7
                     "You don't have a command hotlinked to $list",  # 8
                     "It appears that your use of an alternate command failed. $list command(s) were at fault.",  # 9
-                    "The Following Command(s) must be used in channel, and do not work via private message: $list"  # 10
+                    "The Following Command(s) must be used in channel, and do not work via private message: $list",  # 10
+                    "$list would kick your butt in a competition.",  # 11
+                    "I refuse to fight a biological entity! If I did, you'd be sure to lose!",  # 12
+                    "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command."  # 13
 ]
 
 # Configuration
