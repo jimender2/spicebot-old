@@ -178,7 +178,7 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
     # Verify Command spelling if not a real command
-    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts:
+    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
         startcom = rpg.command_main
         command_type_list = ['all', 'alts']
         for comtype in command_type_list:
@@ -189,10 +189,31 @@ def command_process(bot, trigger, rpg, instigator):
                         similarlevel = similar(rpg.command_main.lower(), com)
                         if similarlevel >= .75:
                             rpg.command_main = com
+        if rpg.command_main == startcom:
+            for user in rpg.users_all:
+                if rpg.command_main == startcom:
+                    similarlevel = similar(rpg.command_main.lower(), user.lower())
+                    if similarlevel >= .75:
+                        rpg.command_main = com
         if rpg.command_main != startcom:
             rpg.triggerargsarray.remove(startcom)
             rpg.triggerargsarray.insert(0, rpg.command_main)
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+
+    # Instigator versus Bot
+    if rpg.command_main == bot.nick and not rpg.admin:
+        osd(bot, rpg.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
+        return rpg
+
+    # Instigator versus Other Bots
+    if rpg.command_main.lower() in [x.lower() for x in rpg.bots_list]:
+        osd(bot, rpg.channel_current, 'say', nick_actual(bot, rpg.command_main) + " would kick your butt in a competition.")
+        return rpg
+
+    # Targets
+    if rpg.command_main.lower() in [x.lower() for x in rpg.users_all]:
+        rpg.command_main = 'combat'
+        rpg.triggerargsarray.insert(rpg.command_main)
 
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
@@ -209,18 +230,6 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main in rpg.commands_ran and not rpg.admin:
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
-
-    # Instigator versus Bot
-    if rpg.command_main == bot.nick and not rpg.admin:
-        osd(bot, rpg.channel_current, 'say', "I refuse to fight a biological entity! If I did, you'd be sure to lose!")
-        return rpg
-
-    # Instigator versus Other Bots
-    if rpg.command_main.lower() in [x.lower() for x in rpg.bots_list]:
-        osd(bot, rpg.channel_current, 'say', nick_actual(bot, rpg.command_main) + " would kick your butt in a competition.")
-        return rpg
-
-    # Target Check
 
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:
@@ -250,6 +259,15 @@ def rpg_targetcheck(bot, rpg, instigator):
     validtarget = 0
 
     return validtarget
+
+
+"""
+Combat
+"""
+
+
+def rpg_command_main_combat(bot, rpg, instigator):
+    bot.say("combat not written yet")
 
 
 """
