@@ -61,6 +61,13 @@ rpg_commands_valid_inchannel = []
 
 
 """
+Commands that can be run with /me
+"""
+
+
+rpg_commands_valid_action = ['combat']
+
+"""
 Alternative Commands
 """
 
@@ -118,7 +125,8 @@ rpg_error_commands = [
                     "The Following Command(s) must be used in channel, and do not work via private message: $list",  # 10
                     "$list would kick your butt in a competition.",  # 11
                     "I refuse to fight a biological entity! If I did, you'd be sure to lose!",  # 12
-                    "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command."  # 13
+                    "If you are feeling self-destructive, there are places you can call. Alternatively, you can run the harakiri command.",  # 13
+                    "Action duels should not be able to run commands; Targets Only: $list"  # 14
 ]
 
 # Configuration

@@ -228,6 +228,7 @@ def command_process(bot, trigger, rpg, instigator):
     if rpg.command_main.lower() in [x.lower() for x in rpg.users_all] and rpg.command_main not in rpg.valid_commands_all:
         rpg.command_main = 'combat'
         rpg.triggerargsarray.insert(0, rpg.command_main)
+        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
@@ -245,6 +246,8 @@ def command_process(bot, trigger, rpg, instigator):
         errors(bot, rpg, 'commands', 5, 1)
         return rpg
 
+    # konami
+
     # Verify Command is valid
     if rpg.command_main not in rpg.valid_commands_all:
         errors(bot, rpg, 'commands', 6, rpg.command_main)
@@ -258,6 +261,10 @@ def command_process(bot, trigger, rpg, instigator):
     # Commands that Must be run in a channel
     if rpg.command_main in rpg_commands_valid_inchannel and not rpg.admin:
         errors(bot, rpg, 'commands', 10, rpg.command_main)
+        return rpg
+
+    if rpg.command_type == 'action' and rpg.command_main not in rpg_commands_valid_action:
+        errors(bot, rpg, 'commands', 14, rpg.command_main)
         return rpg
 
     """ TODO Tier block """
