@@ -75,6 +75,8 @@ def slots(bot, botcom, trigger, arg):
     bet = get_trigger_arg(bot, arg, '2') or 'nocommand'
     if not bet.isdigit():
         bet = 1
+    else:
+        bet = int(bet)
     # __payouts___
     match3 = 25*bet
     match2 = 5*bet
@@ -103,8 +105,10 @@ def slots(bot, botcom, trigger, arg):
                     wheel2 = get_trigger_arg(bot, slotwheel, 'random')
                     wheel3 = get_trigger_arg(bot, slotwheel, 'random')
                     reel = [wheel1, wheel2, wheel3]
+                    bot.say(reel)
                     if bet < 2:
                         chipcount = "spicychip"
+                        bot.say(chipcount)
                     else:
                         chipcount = "spicychips"
                         osd(bot, trigger.sender, 'say', trigger.nick + " insert " + str(bet) + chipcount + " and the slot machine displays | " + wheel1 + " | " + wheel2 + " | " + wheel3 + " | ")
