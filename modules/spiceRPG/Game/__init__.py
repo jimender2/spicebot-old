@@ -196,9 +196,12 @@ def command_process(bot, trigger, rpg, instigator):
                     if similarlevel >= .75:
                         rpg.command_main = com
         if rpg.command_main != startcom:
-            rpg.triggerargsarray.remove(startcom)
+            bot.say(str(rpg.triggerargsarray))
+            if startcom in rpg.triggerargsarray:
+                rpg.triggerargsarray.remove(startcom)
             rpg.triggerargsarray.insert(0, rpg.command_main)
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+            bot.say(str(rpg.triggerargsarray))
 
     # Instigator versus Bot
     if rpg.command_main == bot.nick and not rpg.admin:
@@ -213,7 +216,7 @@ def command_process(bot, trigger, rpg, instigator):
     # Targets
     if rpg.command_main.lower() in [x.lower() for x in rpg.users_all]:
         rpg.command_main = 'combat'
-        rpg.triggerargsarray.insert(rpg.command_main)
+        rpg.triggerargsarray.insert(0, rpg.command_main)
 
     # Alternate commands convert
     if rpg.command_main in rpg.valid_commands_alts:
