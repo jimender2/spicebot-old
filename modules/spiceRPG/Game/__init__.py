@@ -594,6 +594,7 @@ def rpg_errors_start(bot, rpg):
 
 def rpg_errors_end(bot, rpg):
     rpg.error_display = []
+    rpg.tier_current = get_database_value(bot, 'rpg_game_records', 'current_tier') or 0
     errorscanlist = []
     for vcom in rpg.valid_commands_all:
         errorscanlist.append(vcom)
@@ -612,6 +613,28 @@ def rpg_errors_end(bot, rpg):
                 errormessage = str("(" + str(totalnumber) + ") " + errormessage)
                 if "$list" in errormessage:
                     errorlist = get_trigger_arg(bot, currenterrorvalue, 'list')
+                    errormessage = str(errormessage.replace("$list", errorlist))
+                if "$peppers" in errormessage:
+                    comparedarray = []
+                    for command in currenterrorvalue:
+                        compareval = eval("rpg." + command + ".tier_pepper")
+                        comparedarray.append(compareval)
+                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
+                    errormessage = str(errormessage.replace("$list", errorlist))
+                if "$tier" in errormessage:
+                    comparedarray = []
+                    for command in currenterrorvalue:
+                        compareval = int(eval("rpg." + command + ".tier_number"))
+                        comparedarray.append(compareval)
+                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
+                    errormessage = str(errormessage.replace("$list", errorlist))
+                if "$tiermath" in errormessage:
+                    comparedarray = []
+                    for command in currenterrorvalue:
+                        compareval = int(eval("rpg." + command + ".tier_number"))
+                        compareval = int(compareval) - int(rpg.tier_current)
+                        comparedarray.append(compareval)
+                    errorlist = get_trigger_arg(bot, comparedarray, 'list')
                     errormessage = str(errormessage.replace("$list", errorlist))
                 if "$valid_coms" in errormessage:
                     validcomslist = get_trigger_arg(bot, rpg.valid_commands_all, 'list')
