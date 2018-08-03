@@ -661,6 +661,7 @@ def rpg_valid_commands_all(bot, rpg):
             rpg.valid_commands_all.append(vcom)
     for command in rpg.valid_commands_all:
         currenttier = eval("rpg." + command + ".number")
+        bot.say(command + " = " + str(currenttier))
     return rpg
 
 
