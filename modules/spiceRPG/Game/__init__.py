@@ -152,11 +152,31 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
         # Check Command can run
         rpg = command_process(bot, trigger, rpg, instigator)
         if rpg.command_run:
-            rpg.triggerargsarray.remove(rpg.command_main)
-            # Run the command's function
-            command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-            eval(command_function_run)
+            command_run(bot, rpg, instigator)
         rpg.commands_ran.append(rpg.command_main)
+
+
+def command_run(bot, rpg, instigator):
+
+    # Clear triggerargsarray of the main command
+    rpg.triggerargsarray.remove(rpg.command_main)
+
+    # Check Initial Stamina
+    instigator.stamina = get_database_value(bot, instigator.default, 'stamina') or 10
+    rpg.staminarequired = 0
+    """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
+
+    while not rpg.staminarequired > instigator.stamina:
+        bot.say(str(rpg.staminarequired) + " " + str(instigator.stamina))
+        rpg.staminarequired = rpg.staminarequired + 1
+
+    # Run the command's function
+    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+    eval(command_function_run)
+
+    # Deduct stamina from instigator
+    # if rpg.staminarequired:
+    #    adjust_database_value(bot, instigator.default, 'stamina', -abs(rpg.staminarequired))
 
 
 def command_process(bot, trigger, rpg, instigator):
@@ -673,8 +693,12 @@ def rpg_valid_commands_all(bot, rpg):
     for command_type in rpg_valid_command_types:
         typeeval = eval("rpg_commands_valid_"+command_type)
         for vcom in typeeval:
+
+            # create class
             currentcommandclass = class_create(vcom)
             exec("rpg." + str(vcom) + " = currentcommandclass")
+
+            # Tier number
             currenttiernumber = 0
             for i in range(0, len(rpg_commands_tier_unlocks)):
                 current_tier_eval_number = i + 1
@@ -683,12 +707,22 @@ def rpg_valid_commands_all(bot, rpg):
                     currenttiernumber = current_tier_eval_number
                     continue
             exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
+
+            # self use command
+            currenttiernumber_self = 0
+            for i in range(0, len(rpg_commands_tier_unlocks_self)):
+                current_tier_eval_number = i + 1
+                currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks_self, current_tier_eval_number) or []
+                if vcom in currenttiereval:
+                    currenttiernumber_self = current_tier_eval_number
+                    continue
+            exec("rpg." + str(vcom) + ".tier_number_self = currenttiernumber_self")
+
+            # Tier Pepper
             currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
             exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
             rpg.valid_commands_all.append(vcom)
-    for command in rpg.valid_commands_all:
-        currenttiernum = eval("rpg." + command + ".tier_number")
-        currenttierpep = eval("rpg." + command + ".tier_pepper")
+
     return rpg
 
 
