@@ -163,16 +163,20 @@ def command_run(bot, rpg, instigator):
 
     # Check Initial Stamina
     instigator.stamina = get_database_value(bot, instigator.default, 'stamina') or 10
-    rpg.staminarequired = 0
+    rpg.staminarequired, rpg.staminacharge = 0, 0
     """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
 
+    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+
     while not rpg.staminarequired > instigator.stamina:
-        bot.say(str(rpg.staminarequired) + " " + str(instigator.stamina))
-        rpg.staminarequired = rpg.staminarequired + 1
+        eval(command_function_run)
+
+    if rpg.staminacharge:
+        bot.say("charge")
 
     # Run the command's function
-    command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
-    eval(command_function_run)
+    # command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
+    # eval(command_function_run)
 
     # Deduct stamina from instigator
     # if rpg.staminarequired:
@@ -475,8 +479,19 @@ Basic User Commands
 
 
 def rpg_command_main_author(bot, rpg, instigator):
+    rpg.staminarequired += 8
+    bot.say("a")
 
+    rpg.staminarequired += 1
+    bot.say("b")
+
+    rpg.staminarequired += 1
+    bot.say("c")
+
+    rpg.staminarequired += 1
+    bot.say("d")
     osd(bot, rpg.channel_current, 'say', "The author of RPG is deathbybandaid.")
+    rpg.staminacharge = 1
 
 
 def rpg_command_main_intent(bot, rpg, instigator):
