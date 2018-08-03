@@ -267,7 +267,10 @@ def command_process(bot, trigger, rpg, instigator):
         errors(bot, rpg, 'commands', 14, rpg.command_main)
         return rpg
 
-    """ TODO Tier block """
+    # Tier Check
+    command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
+    if command_tier_required:
+        bot.say(str(currenttiernum))
 
     # Safe to run command
     rpg.command_run = 1
@@ -671,7 +674,6 @@ def rpg_valid_commands_all(bot, rpg):
     for command in rpg.valid_commands_all:
         currenttiernum = eval("rpg." + command + ".tier_number")
         currenttierpep = eval("rpg." + command + ".tier_pepper")
-        bot.say(command + " = " + str(currenttiernum) + " " + currenttierpep)
     return rpg
 
 
