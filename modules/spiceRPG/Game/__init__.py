@@ -272,7 +272,8 @@ def command_process(bot, trigger, rpg, instigator):
     # Tier Check
     command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
     if command_tier_required > int(rpg.tier_current):
-        bot.say(str(command_tier_required) + " > " + str(rpg.tier_current))
+        errors(bot, rpg, 'commands', 15, rpg.command_main)
+        return rpg
 
     # Safe to run command
     rpg.command_run = 1
