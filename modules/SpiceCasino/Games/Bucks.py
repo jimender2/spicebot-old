@@ -96,7 +96,7 @@ def transfer(bot, botcom, target, instigator, amount):
         # bot.say(str(instigator_balance))
         if amount <= instigator_balance:
             testamount = instigator_balance - amount
-            bot.say(str(testamount))
+            # bot.say(str(testamount))
             adjust_database_value(bot, target, 'spicychips_bank', amount)
             adjust_database_value(bot, instigator, 'spicychips_bank', -(amount))
             success = True
