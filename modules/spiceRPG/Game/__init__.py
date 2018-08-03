@@ -657,9 +657,9 @@ def rpg_valid_commands_all(bot, rpg):
         for vcom in typeeval:
             currentcommandclass = class_create(vcom)
             exec("rpg." + str(vcom) + " = currentcommandclass")
-            currenttiernumber = 1
+            currenttiernumber = randint(1, 10)
             exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
-            currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber)
+            currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
             exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
             rpg.valid_commands_all.append(vcom)
     for command in rpg.valid_commands_all:
