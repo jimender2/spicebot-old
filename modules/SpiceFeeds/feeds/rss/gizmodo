@@ -1,9 +1,9 @@
 [configuration]
 type = rss
-displayname = iT News
-url = https://www.itnews.com.au/RSS/rss.ashx
+displayname = Gizmodo
+url = https://gizmodo.com/rss
 lastbuildtype = pubDate
-lastbuildparent = 0
+lastbuildparent = 1
 lastbuildchild = 0
 titletype = title
 titleparent = 1

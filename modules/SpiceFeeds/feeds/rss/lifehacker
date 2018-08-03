@@ -1,7 +1,7 @@
 [configuration]
 type = rss
-displayname = iT News
-url = https://www.itnews.com.au/RSS/rss.ashx
+displayname = Lifehacker
+url = https://lifehacker.com/rss
 lastbuildtype = pubDate
 lastbuildparent = 0
 lastbuildchild = 0

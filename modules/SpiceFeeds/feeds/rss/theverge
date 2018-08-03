@@ -1,7 +1,7 @@
 [configuration]
-type = youtube
-displayname = Techquickie
-url = https://www.youtube.com/feeds/videos.xml?channel_id=UC0vBXGSyV14uvJ4hECDOl0Q
+type = rss
+displayname = The Verge
+url = https://www.theverge.com/rss/index.xml
 lastbuildtype = published
 lastbuildparent = 0
 lastbuildchild = 0
@@ -9,5 +9,5 @@ titletype = title
 titleparent = 1
 titlechild = 0
 linktype = link
-linkparent = 2
+linkparent = 1
 linkchild = href

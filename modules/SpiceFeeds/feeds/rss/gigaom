@@ -1,7 +1,7 @@
 [configuration]
 type = rss
-displayname = iT News
-url = https://www.itnews.com.au/RSS/rss.ashx
+displayname = Gigaom
+url = https://gigaom.com/feed/
 lastbuildtype = pubDate
 lastbuildparent = 0
 lastbuildchild = 0

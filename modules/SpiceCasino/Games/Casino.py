@@ -72,7 +72,7 @@ def slots(bot, botcom, trigger, arg):
     player = trigger.nick
     channel = trigger.sender
     now = time.time()
-    bet = get_trigger_arg(bot, arg, '1')
+    bet = get_trigger_arg(bot, arg, '2') or 'nocommand'
     if not bet.isdigit():
         bet = 1
     # __payouts___
@@ -82,11 +82,7 @@ def slots(bot, botcom, trigger, arg):
     if bankbalance < 500:
         bankbalance = 500
         set_database_value(bot, 'casino', 'spicychips_bank',  bankbalance)
-
-    keyword = get_database_value(bot, 'casino', 'slotkeyword') or 'BSOD'
-    # match3jackpot = jackpot or 500
-    mychoice = get_trigger_arg(bot, arg, 2) or 'nocommand'
-    if mychoice == 'payout':
+    if bet == 'payout':
             osd(bot, trigger.sender, 'say', "Today's jackpot word is " + keyword + " getting it three times will get you " + str(bankbalance) + ". Match 3 and get " + str(match3))
     else:
         # start slots
@@ -97,7 +93,9 @@ def slots(bot, botcom, trigger, arg):
             nextslot = get_timesince(bot, 'casino', 'slotimer')
 
             if nextslot >= slottimeout:
-                if transfer(bot, botcom, 'casino', trigger.nick, bet):
+                successes = transfer(bot, botcom, 'casino', trigger.nick, bet)
+                bot.say(str(successes))
+                if successes:
                     set_database_value(bot, 'casino', 'slotimer', now)
                     # add bet to casino
                     mywinnings = 0

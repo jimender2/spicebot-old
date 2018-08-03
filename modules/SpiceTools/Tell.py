@@ -22,7 +22,7 @@ from sopel.module import commands, nickname_commands, rule, priority, example
 import sopel.module
 
 moduledir = os.path.dirname(__file__)
-shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+shareddir = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(shareddir)
 from BotShared import *
 
@@ -119,10 +119,6 @@ def execute_main(bot, trigger):
         return bot.reply('That nickname is too long.')
     if tellee == bot.nick:
         return bot.reply("I'm here now, you can tell me whatever you want!")
-    if tellee.lower() in [u.lower() for u in bot.users]:
-        if not message.endswith('please'):
-            if not message.startswith('please'):
-                return bot.reply("Tell %s that yourself you lazy fuck, they're online now." % tellee)
 
     if tellee not in (Identifier(teller), bot.nick, 'me'):
         tz = get_timezone(bot.db, bot.config, None, tellee)
