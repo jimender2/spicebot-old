@@ -15,7 +15,7 @@ from BotShared import *
 array = ["jump off a bridge"]
 
 
-@sopel.module.commands('idea')
+@sopel.module.commands('idea', 'goodidea, =')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'idea')
     if not enablestatus:
