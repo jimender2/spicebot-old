@@ -23,7 +23,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
     command = get_trigger_arg(bot, triggerargsarray, 1)
     inputstring = get_trigger_arg(bot, triggerargsarray, '2+')
 
