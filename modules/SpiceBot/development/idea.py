@@ -61,6 +61,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 message = "I already know that this is a bad idea."
                 osd(bot, trigger.sender, 'say', message)
     else:
+        message = "Is this a good or a bad idea?"
+        osd(bot, trigger.sender, 'say', message)
 
 
 def getIdea(bot, trigger, type):
