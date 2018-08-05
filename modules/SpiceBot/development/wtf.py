@@ -11,7 +11,7 @@ from BotShared import *
 
 # author jimender2
 
-randomWordArray = ["flying fuck", "frickle frackal", "fuck", "fudgical", ""]
+randomFuckArray = ["flying fuck", "frickle frackal", "fuck", "fudgical"]
 
 
 @sopel.module.commands('wtf', 'whatthefuck')
@@ -23,14 +23,21 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     instigator = trigger.nick
-    rand = random.randint(1,5)
     target = get_trigger_arg(bot, triggerargsarray, 1)
+    reason = get_trigger_arg(bot, triggerargsarray, '2+')
     check = easytargetcheck(bot, botcom, target, instigator)
+    fuckType = get_trigger_arg(bot, randomFuckArray, "random") or ''
     if check == 'bot':
-        message = "What the fuck " + bot.nick
+        message = "What the " + fuckType + bot.nick
     elif check == 'instigator':
-        message = "What the fuck "
+        message = "What the " + fuckType
     elif check == 'valid':
-        message = "What the fuck " + target
+        message = "What the " + fuckType + target
+    else:
+        reason = target + reason
 
-    osd(bot, trigger.sender, 'say', "do the thing")
+    if not reason:
+        message = message + "!!"
+    else:
+        message = message + reason + "!!"
+    osd(bot, trigger.sender, 'say', message)
