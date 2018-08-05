@@ -30,10 +30,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if not inputstring:
             getIdea(bot, trigger, 'good')
         else:
-            existingarray = get_database_value(bot, bot.nick, 'idea') or []
+            existingarray = get_database_value(bot, bot.nick, 'ideagood') or []
             if inputstring not in existingarray:
-                adjust_database_array(bot, bot.nick, inputstring, 'idea', 'add')
+                adjust_database_array(bot, bot.nick, inputstring, 'ideagood', 'add')
                 message = "I think this is a good idea. Let me remember it."
+                osd(bot, trigger.sender, 'say', message)
+            else:
+                message = "I already thought this was a good idea. Don't make me regret it"
                 osd(bot, trigger.sender, 'say', message)
 
 
