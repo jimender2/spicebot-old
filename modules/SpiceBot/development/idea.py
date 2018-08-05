@@ -40,6 +40,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def getIdea(type):
     ideaType = 'idea' + type
-    database_initialize(bot, bot.nick, testarray, ideaType)
     existingarray = get_database_value(bot, bot.nick, ideaType) or []
+    if existingarray == []:
+        if ideaType == "good":
+            existingarray = "kissing your mommy goodbye"
+        elif ideaType == "bad":
+            existingarray = "killing your friends"
     idea = get_trigger_arg(bot, existingarray, "random") or ''
