@@ -47,3 +47,4 @@ def getIdea(bot, type):
         elif ideaType == "bad":
             existingarray = "killing your friends"
     idea = get_trigger_arg(bot, existingarray, "random") or ''
+    osd(bot, trigger.sender, 'say', idea)
