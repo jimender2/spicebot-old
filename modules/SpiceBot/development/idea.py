@@ -29,16 +29,17 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if command == 'good':
         if not inputstring:
-            good()
+            getIdea('good')
         else:
             existingarray = get_database_value(bot, bot.nick, 'idea') or []
             if inputstring not in existingarray:
                 adjust_database_array(bot, bot.nick, inputstring, 'idea', 'add')
-                message = ""
+                message = "I think this is a good idea. Let me remember it."
                 osd(bot, trigger.sender, 'say', message)
 
 
-def good():
-    database_initialize(bot, bot.nick, testarray, 'idea')
-    existingarray = get_database_value(bot, bot.nick, 'idea') or []
+def getIdea(type):
+    ideaType = 'idea' + type
+    database_initialize(bot, bot.nick, testarray, ideaType)
+    existingarray = get_database_value(bot, bot.nick, ideaType) or []
     idea = get_trigger_arg(bot, existingarray, "random") or ''
