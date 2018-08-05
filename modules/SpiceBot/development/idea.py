@@ -28,7 +28,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     if command == 'good':
         if not inputstring:
-            getIdea(bot, 'good')
+            getIdea(bot, trigger, 'good')
         else:
             existingarray = get_database_value(bot, bot.nick, 'idea') or []
             if inputstring not in existingarray:
@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 osd(bot, trigger.sender, 'say', message)
 
 
-def getIdea(bot, type):
+def getIdea(bot, trigger, type):
     ideaType = 'idea' + type
     existingarray = get_database_value(bot, bot.nick, ideaType) or []
     if existingarray == []:
