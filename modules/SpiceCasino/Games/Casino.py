@@ -190,7 +190,7 @@ def roulette(bot, botcom, trigger, arg):
             if not callcheck:
                 osd(bot, player, 'priv', "You must first place a bet")
         elif mybet == 'end' and bot.nick == 'SpiceCasinoDEV':
-            runroulette(bot)
+            runroulette(bot, botcom)
 
         else:
             if mybet == 'allin':
@@ -275,7 +275,7 @@ def roulette(bot, botcom, trigger, arg):
 
 
 # -----Run roulette game
-def runroulette(bot):
+def runroulette(bot, botcom):
     maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
     wheel = range(maxwheel + 1)
     colors = ['red', 'black']
@@ -289,7 +289,7 @@ def runroulette(bot):
         if winningnumber == 0:
             winningnumber == 1
         color = spin(colors)
-        casinobalance = bank(bot, 'casino') or 0
+        casinobalance = bank(bot, botcom, 'casino') or 0
         mywinnings = 0
         winners = []
         totalwon = 0
@@ -710,7 +710,7 @@ def blackjackreset(bot, player):
 
 
 @sopel.module.interval(10)
-def countdown(bot):
+def countdown(bot, botcom):
     now = time.time()
     currentsetting = get_database_value(bot, 'casino', 'counter')
     roulettetimediff = get_timesince(bot, 'casino', 'countertimer')
