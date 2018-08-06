@@ -25,10 +25,34 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     # setting up variables
     osd(bot, trigger.sender, 'say', "")
     instigator = trigger.nick
-    target = get_trigger_arg(bot, triggerargsarray, 1)
+    command = get_trigger_arg(bot, triggerargsarray, 1)
 
-    # get the opposing person
-    if target == instigator:
-        osd(bot, trigger.sender, 'say', "Sorry dude. You cant race yourself.")
-    elif target == bot.nick:
-        osd(bot, trigger.sender, 'say', "I would let you race me but I am under Asimov's laws. Your feelings would be crushed by me")
+    if command == "help":
+        test
+    elif command == "track":
+        test
+    elif command == "location":
+        test
+    elif command == "practice":
+        test
+    elif command == "random":
+        test
+    else:
+        target = command
+        # get the opposing person
+        targetcheck = easytargetcheck(bot, botcom, target, instigator)
+        if targetcheck == "instigator":
+            osd(bot, trigger.sender, 'say', "Sorry dude. You cant race yourself.")
+        elif targetcheck == "bot":
+            osd(bot, trigger.sender, 'say', "I would let you race me but I am under Asimov's laws. Your feelings would be crushed by my winningness")
+        elif targetcheck == "false":
+            osd(bot, trigger.sender, 'say', "Dude, You cant race your imaginary friend ")
+        elif targetcheck == "offline":
+            osd(bot, trigger.sender, 'say', "You cannot race someone that is offline")
+        elif targetcheck == "online":
+            test
+
+
+def race(bot, botcom, target, instigator):
+    allUsers = [u.lower() for u in bot.users]
+    user = get_trigger_arg(bot, allUsers, "random") or ''

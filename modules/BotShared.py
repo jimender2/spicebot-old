@@ -304,7 +304,7 @@ def easytargetcheck(bot, botcom, target, instigator):
         realnick = nick_actual(bot, target)
         return validtarget
     else:
-        validtarget = 0
+        validtarget = true
         return validtarget
 
 
