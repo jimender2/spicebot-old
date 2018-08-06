@@ -221,7 +221,7 @@ def roulette(bot, botcom, trigger, arg):
                 mycolor = ''
                 if myitem.isdigit():
                     mynumber = int(myitem)
-                    if(mynumber < 1 or mynumber > maxwheel):
+                    if(mynumber < 0 or mynumber > maxwheel):
                         osd(bot, player, 'priv', 'Please pick a number between 1 and ' + str(maxwheel))
                         inputcheck = 0
                         # check to see if a color was selected
@@ -321,11 +321,10 @@ def runroulette(bot, botcom):
                     if mywinnings >= 1:
                         osd(bot, player, 'priv', "Roulette has ended and you have won " + str(mywinnings))
                         if casinobalance < mywinnings:
-                            spicychips(bot, player, 'plus', mywinnings)
-                        else:
-                            transfer(bot, 'casino', player, mywinnings)
-                            winners.append(player)
-                            totalwon = totalwon + mywinnings
+                            addbucks(bot, botcom, 'casino', mywinnings)
+                        transfer(bot, botcom, player, 'casino', mywinnings)
+                        winners.append(player)
+                        totalwon = totalwon + mywinnings
                         reset_database_value(bot, player, 'roulettearray')
 
         reset_database_value(bot, 'casino', 'rouletteplayers')
