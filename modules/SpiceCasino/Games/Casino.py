@@ -189,6 +189,8 @@ def roulette(bot, botcom, trigger, arg):
                     callcheck = True
             if not callcheck:
                 osd(bot, player, 'priv', "You must first place a bet")
+        elif mybet = 'end' and bot.nick == 'SpiceCasinoDEV':
+            runroulette(bot)
 
         else:
             if mybet == 'allin':
@@ -714,9 +716,9 @@ def countdown(bot):
     roulettetimediff = get_timesince(bot, 'casino', 'countertimer')
     lotterytimediff = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
-    if currentsetting == 'roulette':
-        if roulettetimediff >= roulettetimeout:
-            runroulette(bot)
+    # if currentsetting == 'roulette':
+    # if roulettetimediff >= roulettetimeout:
+    # runroulette(bot)
     if lotterytimediff >= lotterytimeout and lotterytimeout >= 10:
         set_database_value(bot, 'casino', 'lastlottery', now)
         lotterydrawing(bot)
