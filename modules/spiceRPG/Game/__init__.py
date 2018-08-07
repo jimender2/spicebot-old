@@ -267,7 +267,8 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Tier Check
-    command_tier_required = int(eval("rpg." + rpg.command_main + ".tier_number"))
+    bot.say(str(rpg.command_main.lower()) + " " + str(eval("rpg." + rpg.command_main.lower() + ".tier_number")))
+    command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
     if command_tier_required > int(rpg.tier_current):
         errors(bot, rpg, 'commands', 15, rpg.command_main)
         return rpg
@@ -748,10 +749,6 @@ def rpg_valid_commands_all(bot, rpg):
         # Tier Pepper
         currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
         exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
-
-    for vcom in rpg.valid_commands_all:
-        value = eval("rpg." + str(vcom) + ".tier_number")
-        bot.say(str(vcom) + " " + str(value))
 
     return rpg
 
