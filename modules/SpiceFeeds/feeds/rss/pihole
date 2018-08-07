@@ -1,7 +1,7 @@
 [configuration]
 type = rss
 displayname = Pi-hole
-url = https://pi-hole.net/category/updates/feed/atom/
+url = https://pi-hole.net/category/updates/feed/
 lastbuildtype = updated
 lastbuildparent = 0
 lastbuildchild = 0
