@@ -52,6 +52,8 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
+    bot.say(str(sys.getsizeof(get_trigger_arg(bot, triggerargsarray, 0))))
+
     # RPG dynamic Class
     rpg = class_create('main')
 
@@ -483,7 +485,6 @@ def rpg_command_main_intent(bot, rpg, instigator):
     target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
 
     osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
-    osd(bot, '', 'reply', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
 
 
 def rpg_command_main_about(bot, rpg, instigator):
