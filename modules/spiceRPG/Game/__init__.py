@@ -179,7 +179,6 @@ def command_process(bot, trigger, rpg, instigator):
     # Spell Check
     if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
         startcom = rpg.command_main
-        bot.say(startcom)
         sim_com, sim_num = [], []
         for user in rpg.users_all:
             similarlevel = similar(rpg.command_main.lower(), user.lower())
@@ -195,8 +194,6 @@ def command_process(bot, trigger, rpg, instigator):
                     sim_com.append(com)
                     sim_num.append(similarlevel)
         if sim_com != [] and sim_num != []:
-            bot.say(str(sim_com))
-            bot.say(str(sim_num))
             sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
             rpg.command_main = get_trigger_arg(bot, sim_com, 'last')
         if rpg.command_main != startcom:
