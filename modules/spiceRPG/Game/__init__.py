@@ -482,8 +482,8 @@ def rpg_command_main_intent(bot, rpg, instigator):
     # Who is the target
     target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
 
-    # osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
-    osd(bot, 'rpg.channel_current', 'reply', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
+    osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
+    osd(bot, '', 'reply', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
 
 
 def rpg_command_main_about(bot, rpg, instigator):
