@@ -52,10 +52,6 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
-    # bot.reply("test", notice=True)
-
-    bot.say(str(bot.channels.users))
-
     # RPG dynamic Class
     rpg = class_create('main')
 
@@ -486,7 +482,8 @@ def rpg_command_main_intent(bot, rpg, instigator):
     # Who is the target
     target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all], 1) or rpg.instigator
 
-    osd(bot, rpg.channel_current, 'say', "The intent is to provide "+target+" with a sense of pride and accomplishment...")
+    # osd(bot, rpg.channel_current, 'say', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
+    osd(bot, 'rpg.channel_current', 'reply', "The intent is to provide " + target + " with a sense of pride and accomplishment...")
 
 
 def rpg_command_main_about(bot, rpg, instigator):
@@ -967,7 +964,9 @@ def osd(bot, target_array, text_type_array, text_array):
             textparts = len(combinedtextarray)
             textpartsleft = textparts
             for combinedline in combinedtextarray:
-                if text_type == 'action' and textparts == textpartsleft:
+                if text_type == 'reply':
+                    bot.reply(combinedline)
+                elif text_type == 'action' and textparts == textpartsleft:
                     bot.action(combinedline, target)
                 elif str(target).startswith("#"):
                     bot.msg(target, combinedline)
