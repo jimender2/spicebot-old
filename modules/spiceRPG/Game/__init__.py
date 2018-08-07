@@ -737,6 +737,7 @@ def rpg_valid_commands_all(bot, rpg):
                 if vcom in currenttiereval:
                     currenttiernumber = current_tier_eval_number
             exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
+            bot.say(str(vcom) + " " + str(currenttiernumber))
 
             # self use command
             currenttiernumber_self = 0
