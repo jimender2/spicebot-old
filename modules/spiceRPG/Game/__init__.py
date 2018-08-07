@@ -52,7 +52,7 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
-    bot.say(str(sys.getsizeof(get_trigger_arg(bot, triggerargsarray, 0))))
+    # bot.say(str(sys.getsizeof(get_trigger_arg(bot, triggerargsarray, 0))))
 
     # RPG dynamic Class
     rpg = class_create('main')
