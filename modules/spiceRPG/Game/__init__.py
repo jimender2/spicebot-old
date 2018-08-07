@@ -206,7 +206,6 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.triggerargsarray.remove(startcom)
             rpg.triggerargsarray.insert(0, rpg.command_main)
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
-            bot.say(str(rpg.triggerargsarray))
 
     # Instigator versus Instigator
     if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.admin:
