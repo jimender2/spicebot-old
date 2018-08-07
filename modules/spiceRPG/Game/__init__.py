@@ -730,6 +730,7 @@ def rpg_valid_commands_all(bot, rpg):
                 rpg.valid_commands_all.append(vcom)
 
     # data regarding each command
+    bot.say(str(rpg.valid_commands_all))
     for vcom in rpg.valid_commands_all:
 
         # create class
@@ -745,15 +746,6 @@ def rpg_valid_commands_all(bot, rpg):
                 currenttiernumber = current_tier_eval_number
         exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
         bot.say(str(vcom) + " " + str(currenttiernumber))
-
-        # self use command
-        currenttiernumber_self = 0
-        for i in range(0, len(rpg_commands_tier_unlocks_self)):
-            current_tier_eval_number = i + 1
-            currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks_self, current_tier_eval_number) or []
-            if vcom in currenttiereval:
-                currenttiernumber_self = current_tier_eval_number
-        exec("rpg." + str(vcom) + ".tier_number_self = currenttiernumber_self")
 
         # Tier Pepper
         currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
