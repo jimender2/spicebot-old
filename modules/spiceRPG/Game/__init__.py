@@ -102,6 +102,11 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
             if rpg.instigator not in rpg.botadmins:
                 return
 
+    # block instigator if
+    if rpg.instigator.lower() in rpg.valid_commands_all and rpg.instigator.lower() in rpg.valid_commands_alts and rpg.instigator.lower() in [x.lower() for x in rpg.bots_list]:
+        errors(bot, rpg, 'commands', 17, 1)
+        return
+
     # No Empty Commands
     if triggerargsarray == []:
         user_capable_coms = []
@@ -792,13 +797,20 @@ Users
 
 
 def rpg_command_users(bot, rpg):
-    rpg.opadmin, rpg.owner, rpg.chanops, rpg.chanvoice, rpg.botadmins, rpg.users_current = [], [], [], [], [], []
+    # rpg.opadmin, rpg.owner, rpg.chanops, rpg.chanvoice, rpg.botadmins, rpg.users_current = [], [], [], [], [], []
+    usertypes = ['users_all', 'opadmin', 'owner', 'chanops', 'chanvoice', 'botadmins', 'users_current', 'bots_list']
+    for x in usertypes:
+        currentvalue = str("rpg."+x+"=[]")
+        exec(currentvalue)
 
     for user in bot.users:
-        if user not in rpg.valid_commands_all:
+        if user not in rpg.valid_commands_all and user not in rpg.valid_commands_alts:
             rpg.users_current.append(str(user))
+    users_all = get_database_value(bot, 'channel', 'users_all') or []
+    for user in users_all:
+        if user in rpg.users_current:
+            rpg.users_current.remove(user)
     adjust_database_array(bot, 'channel', rpg.users_current, 'users_all', 'add')
-    rpg.users_all = get_database_value(bot, 'channel', 'users_all') or []
 
     rpg.bots_list = bot_config_names(bot)
 
