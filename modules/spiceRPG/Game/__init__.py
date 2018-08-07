@@ -54,7 +54,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
 
     # bot.reply("test", notice=True)
 
-    bot.say(str(bot.channels))
+    bot.say(str(bot.channels.users))
 
     # RPG dynamic Class
     rpg = class_create('main')
