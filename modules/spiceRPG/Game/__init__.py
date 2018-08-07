@@ -287,14 +287,6 @@ def command_run(bot, rpg, instigator):
     rpg.staminarequired, rpg.staminacharge = 0, 0
     """ TODO track rpg.staminarequired  adding/subtracting in comparison to completion of any action, and error if not enough"""
 
-    while not rpg.staminarequired > instigator.stamina:
-        bot.say(str(rpg.staminarequired))
-        bot.say("test 1")
-        rpg.staminarequired += 1
-        bot.say("test 2")
-        rpg.staminarequired += 14
-        bot.say("test 3")
-
     # Run the command's function
     command_function_run = str('rpg_command_main_' + rpg.command_main + '(bot, rpg, instigator)')
     eval(command_function_run)
