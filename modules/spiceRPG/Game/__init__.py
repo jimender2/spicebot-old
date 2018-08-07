@@ -514,10 +514,10 @@ def rpg_command_main_docs(bot, rpg, instigator):  # TODO
 def rpg_command_main_usage(bot, rpg, instigator):  # TODO
 
     # Get The Command Used
-    subcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.commands_valid], 1) or 'total'
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.commands_valid], 1) or 'total'
 
     # Who is the target
-    target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan or x == 'channel'], 1) or duels.instigator
+    target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all or x == 'channel'], 1) or rpg.instigator
     targetname = target
     if target == 'channel':
         target = 'rpg_game_records'
@@ -528,7 +528,7 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
     if not totaluses:
         if subcommand == 'total':
             subcommand = ''
-        osd(bot, duels.channel_current, 'say', targetname + " has no record of using duel " + subcommand + ". ")
+        osd(bot, rpg.channel_current, 'say', targetname + " has no record of using duel " + subcommand + ". ")
         return
 
     # Display
@@ -536,7 +536,7 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
         subcommand = 'a total of'
     else:
         subcommand = str(subcommand + ' a total of')
-    osd(bot, duels.channel_current, 'say', targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
+    osd(bot, rpg.channel_current, 'say', targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
 
 
 """
