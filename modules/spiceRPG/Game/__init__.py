@@ -267,6 +267,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Tier Check
+    bot.say(str(lineno()))
     command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
     bot.say(str(lineno()))
     if command_tier_required > int(rpg.tier_current):
@@ -672,6 +673,7 @@ def rpg_errors_end(bot, rpg):
                     for command in currenterrorvalue:
                         peppereval = eval("rpg." + command + ".tier_pepper")
                         pepperarray.append(peppereval)
+                        bot.say(str(lineno()))
                         numbereval = int(eval("rpg." + command + ".tier_number"))
                         bot.say(str(lineno()))
                         numberarray.append(numbereval)
@@ -739,6 +741,7 @@ def rpg_valid_commands_all(bot, rpg):
                 if vcom in currenttiereval:
                     currenttiernumber = current_tier_eval_number
                     continue
+            bot.say(str(lineno()))
             exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
             bot.say(str(lineno()))
 
