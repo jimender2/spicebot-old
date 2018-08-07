@@ -292,7 +292,7 @@ def command_run(bot, rpg, instigator):
         bot.say("test 1")
         rpg.staminarequired += 1
         bot.say("test 2")
-        rpg.staminarequired += 1
+        rpg.staminarequired += 14
         bot.say("test 3")
 
     # Run the command's function
