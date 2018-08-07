@@ -514,7 +514,7 @@ def rpg_command_main_docs(bot, rpg, instigator):  # TODO
 def rpg_command_main_usage(bot, rpg, instigator):  # TODO
 
     # Get The Command Used
-    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.commands_valid], 1) or 'total'
+    subcommand = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.valid_commands_all], 1) or 'total'
 
     # Who is the target
     target = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in rpg.users_all or x == 'channel'], 1) or rpg.instigator
