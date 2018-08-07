@@ -268,6 +268,7 @@ def command_process(bot, trigger, rpg, instigator):
 
     # Tier Check
     bot.say(str(lineno()))
+    bot.say(str(rpg.command_main.lower()))
     testing = eval("rpg." + rpg.command_main.lower() + ".default")
     bot.say(str(testing))
     command_tier_required = eval("rpg." + rpg.command_main.lower() + ".tier_number")
