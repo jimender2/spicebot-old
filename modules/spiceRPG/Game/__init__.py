@@ -71,14 +71,14 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     # Channel Listing
     rpg = rpg_command_channels(bot, rpg, trigger)
 
-    # Bacic User List
-    rpg = rpg_command_users(bot, rpg)
-
     # Commands list
     rpg = rpg_valid_commands_all(bot, rpg)
 
     # Alternative Commands
     rpg = rpg_commands_valid_alts(bot, rpg)
+
+    # Bacic User List
+    rpg = rpg_command_users(bot, rpg)
 
     # TODO valid stats
 
