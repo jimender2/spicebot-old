@@ -75,7 +75,7 @@ def execute_start(bot, trigger, triggerargsarray, command_type):
     rpg = rpg_valid_commands_all(bot, rpg)
 
     # Alternative Commands
-    rpg = rpg_commands_valid_alts(bot, rpg)
+    # rpg = rpg_commands_valid_alts(bot, rpg)
 
     # Bacic User List
     rpg = rpg_command_users(bot, rpg)
@@ -712,6 +712,7 @@ def rpg_valid_commands_all(bot, rpg):
 
     # make list of all valid commands
     rpg.valid_commands_all = []
+    rpg.valid_commands_alts = []
     for command_type in rpg_valid_command_types:
         typeeval = eval("rpg_commands_valid_"+command_type)
         for vcom in typeeval:
@@ -738,6 +739,23 @@ def rpg_valid_commands_all(bot, rpg):
         currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
         exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
 
+        # alternate commands
+        current_alts = eval("rpg_commands_valid_alt_"+vcom) or []
+        for acom in current_alts:
+            if acom not in rpg.valid_commands_alts:
+                rpg.valid_commands_alts.append(acom)
+
+            # create class
+            currentaltcommandclass = class_create(acom)
+            exec("rpg." + str(acom) + " = currentcommandclass")
+            exec("rpg." + str(acom) + ".realcom = vcom")
+
+        exec("rpg." + str(vcom) + ".altcoms = current_alts")
+
+    for tcom in rpg.valid_commands_alts:
+        tcomeval = eval("rpg." + str(tcom) + ".realcom")
+        bot.say(str(tcom) + " " + str(tcomeval))
+
     return rpg
 
 
@@ -754,10 +772,10 @@ def rpg_commands_valid_alts(bot, rpg):
 # Pinpoint real command from alternate
 def rpg_valid_commands_alternative_find_match(bot, commandcompare):
     for subcom in rpg_commands_valid_alt_types:
-            rpg_commands_alternate_eval = eval("rpg_commands_valid_alt_"+subcom)
-            if commandcompare.lower() in rpg_commands_alternate_eval:
-                commandcompare = subcom
-                return commandcompare
+        rpg_commands_alternate_eval = eval("rpg_commands_valid_alt_"+subcom)
+        if commandcompare.lower() in rpg_commands_alternate_eval:
+            commandcompare = subcom
+            return commandcompare
     return 'invalidcommand'
 
 
