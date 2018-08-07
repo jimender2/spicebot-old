@@ -528,7 +528,7 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
     if not totaluses:
         if subcommand == 'total':
             subcommand = ''
-        osd(bot, rpg.channel_current, 'say', targetname + " has no record of using duel " + subcommand + ". ")
+        osd(bot, rpg.channel_current, 'say', targetname + " has no record of using rpg " + subcommand + ". ")
         return
 
     # Display
@@ -536,7 +536,7 @@ def rpg_command_main_usage(bot, rpg, instigator):  # TODO
         subcommand = 'a total of'
     else:
         subcommand = str(subcommand + ' a total of')
-    osd(bot, rpg.channel_current, 'say', targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
+    osd(bot, rpg.channel_current, 'say', targetname + " has used rpg " + subcommand + " " + str(totaluses) + " times.")
 
 
 """
