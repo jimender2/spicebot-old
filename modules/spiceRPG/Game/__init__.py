@@ -109,7 +109,7 @@ def execute_main(bot, rpg, instigator, trigger, triggerargsarray):
     if triggerargsarray == []:
         user_capable_coms = []
         for vcom in rpg.valid_commands_all:
-            if vcom in rpg_commands_valid_admin:
+            if vcom in rpg_commands_valid_administrator:
                 if rpg.instigator in rpg.botadmins:
                     user_capable_coms.append(vcom)
             else:
@@ -253,7 +253,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Admin Block
-    if rpg.command_main in rpg_commands_valid_admin and not rpg.admin:
+    if rpg.command_main in rpg_commands_valid_administrator and not rpg.admin:
         errors(bot, rpg, 'commands', 7, rpg.command_main)
         return rpg
 
@@ -267,8 +267,6 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Tier Check
-    bot.say(str(rpg.command_main.lower()))
-    bot.say(str(rpg.admin))
     command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number")) or 0
     if command_tier_required > int(rpg.tier_current):
         errors(bot, rpg, 'commands', 15, rpg.command_main)
@@ -324,7 +322,7 @@ Configuration Commands
 """
 
 
-def rpg_command_main_admin(bot, rpg, instigator):
+def rpg_command_main_administrator(bot, rpg, instigator):
 
     # Subcommand
     subcommand_valid = eval('subcommands_valid_' + rpg.command_main)
@@ -337,9 +335,9 @@ def rpg_command_main_admin(bot, rpg, instigator):
     if subcommand == 'channel':
 
         # Toggle Type
-        activation_type = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_admin_channel], 1)
+        activation_type = get_trigger_arg(bot, [x for x in rpg.triggerargsarray if x in subcommands_valid_administrator_channel], 1)
         if not activation_type:
-            errors(bot, rpg, 'admin', 2, 1)
+            errors(bot, rpg, 'administrator', 2, 1)
             return
 
         activation_type_db = str(activation_type + "_enabled")
@@ -350,7 +348,7 @@ def rpg_command_main_admin(bot, rpg, instigator):
             if rpg.channel_current.startswith('#'):
                 channeltarget = rpg.channel_current
             else:
-                errors(bot, rpg, 'admin', 3, 1)
+                errors(bot, rpg, 'administrator', 3, 1)
                 return
 
         # on/off
@@ -696,7 +694,7 @@ def rpg_errors_end(bot, rpg):
                     subcommand_valid = get_trigger_arg(bot, subcommand_valid, 'list')
                     errormessage = str(errormessage.replace("$valid_subcoms", subcommand_valid))
                 if "$valid_game_change" in errormessage:
-                    subcommand_arg_valid = get_trigger_arg(bot, subcommands_valid_admin_channel, 'list')
+                    subcommand_arg_valid = get_trigger_arg(bot, subcommands_valid_administrator_channel, 'list')
                     errormessage = str(errormessage.replace("$valid_game_change", subcommand_arg_valid))
                 if "$dev_chans" in errormessage:
                     devchans = get_trigger_arg(bot, rpg.channels_devmode_enabled, 'list')
