@@ -720,38 +720,45 @@ Commands
 
 # All valid commands
 def rpg_valid_commands_all(bot, rpg):
+
+    # make list of all valid commands
     rpg.valid_commands_all = []
     for command_type in rpg_valid_command_types:
         typeeval = eval("rpg_commands_valid_"+command_type)
         for vcom in typeeval:
+            if vcom not in rpg.valid_commands_all:
+                rpg.valid_commands_all.append(vcom)
 
-            # create class
-            currentcommandclass = class_create(vcom)
-            exec("rpg." + str(vcom) + " = currentcommandclass")
+    # data regarding each command
+    for vcom in rpg.valid_commands_all:
 
-            # Tier number
-            currenttiernumber = 0
-            for i in range(0, len(rpg_commands_tier_unlocks)):
-                current_tier_eval_number = i + 1
-                currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks, current_tier_eval_number) or []
-                if vcom in currenttiereval:
-                    currenttiernumber = current_tier_eval_number
-            exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
-            bot.say(str(vcom) + " " + str(currenttiernumber))
+        # create class
+        currentcommandclass = class_create(vcom)
+        exec("rpg." + str(vcom) + " = currentcommandclass")
 
-            # self use command
-            currenttiernumber_self = 0
-            for i in range(0, len(rpg_commands_tier_unlocks_self)):
-                current_tier_eval_number = i + 1
-                currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks_self, current_tier_eval_number) or []
-                if vcom in currenttiereval:
-                    currenttiernumber_self = current_tier_eval_number
-            exec("rpg." + str(vcom) + ".tier_number_self = currenttiernumber_self")
+        # Tier number
+        currenttiernumber = 0
+        for i in range(0, len(rpg_commands_tier_unlocks)):
+            current_tier_eval_number = i + 1
+            currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks, current_tier_eval_number) or []
+            if vcom in currenttiereval:
+                currenttiernumber = current_tier_eval_number
+        exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
+        bot.say(str(vcom) + " " + str(currenttiernumber))
 
-            # Tier Pepper
-            currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
-            exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
-            rpg.valid_commands_all.append(vcom)
+        # self use command
+        currenttiernumber_self = 0
+        for i in range(0, len(rpg_commands_tier_unlocks_self)):
+            current_tier_eval_number = i + 1
+            currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks_self, current_tier_eval_number) or []
+            if vcom in currenttiereval:
+                currenttiernumber_self = current_tier_eval_number
+        exec("rpg." + str(vcom) + ".tier_number_self = currenttiernumber_self")
+
+        # Tier Pepper
+        currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
+        exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
+        rpg.valid_commands_all.append(vcom)
 
     return rpg
 
