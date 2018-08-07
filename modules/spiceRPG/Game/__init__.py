@@ -267,13 +267,7 @@ def command_process(bot, trigger, rpg, instigator):
         return rpg
 
     # Tier Check
-    bot.say(str(lineno()))
-    bot.say(str(rpg.command_main.lower()))
-    testing = eval("rpg." + rpg.command_main.lower() + ".default")
-    bot.say(str(testing))
-    command_tier_required = eval("rpg." + rpg.command_main.lower() + ".tier_number")
-    command_tier_required = int(command_tier_required)
-    bot.say(str(lineno()))
+    command_tier_required = int(eval("rpg." + rpg.command_main.lower() + ".tier_number"))
     if command_tier_required > int(rpg.tier_current):
         errors(bot, rpg, 'commands', 15, rpg.command_main)
         return rpg
@@ -742,7 +736,6 @@ def rpg_valid_commands_all(bot, rpg):
                 currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks, current_tier_eval_number) or []
                 if vcom in currenttiereval:
                     currenttiernumber = current_tier_eval_number
-                    continue
             exec("rpg." + str(vcom) + ".tier_number = currenttiernumber")
 
             # self use command
@@ -752,7 +745,6 @@ def rpg_valid_commands_all(bot, rpg):
                 currenttiereval = get_trigger_arg(bot, rpg_commands_tier_unlocks_self, current_tier_eval_number) or []
                 if vcom in currenttiereval:
                     currenttiernumber_self = current_tier_eval_number
-                    continue
             exec("rpg." + str(vcom) + ".tier_number_self = currenttiernumber_self")
 
             # Tier Pepper
