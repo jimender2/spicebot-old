@@ -176,36 +176,63 @@ def command_process(bot, trigger, rpg, instigator):
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
             rpg.command_main = get_trigger_arg(bot, rpg.triggerargsarray, 1)
 
-    # Target Checking
+    # Spell Check
     if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
         startcom = rpg.command_main
-        if rpg.command_main == startcom:
-            for user in rpg.users_all:
-                if rpg.command_main == startcom:
-                    similarlevel = similar(rpg.command_main.lower(), user.lower())
-                    if similarlevel >= .75:
-                        rpg.command_main = user
+        sim_com, sim_num = [], []
+        for user in rpg.users_all:
+            similarlevel = similar(rpg.command_main.lower(), user.lower())
+            if similarlevel >= .75:
+                sim_com.append(user)
+                sim_num.append(similarlevel)
+        command_type_list = ['all', 'alts']
+        for comtype in command_type_list:
+            comtype_eval = eval('rpg.valid_commands_' + comtype)
+            for com in comtype_eval:
+                similarlevel = similar(rpg.command_main.lower(), com.lower())
+                if similarlevel >= .75:
+                    sim_com.append(com)
+                    sim_num.append(similarlevel)
+        if sim_com != [] and sim_num != []:
+            bot.say(str(sim_com))
+            bot.say(str(sim_num))
+            sim_num, sim_com = array_arrangesort(bot, sim_num, sim_com)
+            rpg.command_main = get_trigger_arg(bot, sim_com, 'last')
         if rpg.command_main != startcom:
             rpg.triggerargsarray.remove(startcom)
             rpg.triggerargsarray.insert(0, rpg.command_main)
             rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
+    # Target Checking
+    # if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
+    #    startcom = rpg.command_main
+    #    if rpg.command_main == startcom:
+    #        for user in rpg.users_all:
+    #            if rpg.command_main == startcom:
+    #                similarlevel = similar(rpg.command_main.lower(), user.lower())
+    #                if similarlevel >= .75:
+    #                    rpg.command_main = user
+    #    if rpg.command_main != startcom:
+    #        rpg.triggerargsarray.remove(startcom)
+    #        rpg.triggerargsarray.insert(0, rpg.command_main)
+    #        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+
     # Verify Command spelling if not a real command
-    if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
-        startcom = rpg.command_main
-        command_type_list = ['all', 'alts']
-        for comtype in command_type_list:
-            if rpg.command_main == startcom:
-                comtype_eval = eval('rpg.valid_commands_' + comtype)
-                for com in comtype_eval:
-                    if rpg.command_main == startcom:
-                        similarlevel = similar(rpg.command_main.lower(), com)
-                        if similarlevel >= .75:
-                            rpg.command_main = com
-        if rpg.command_main != startcom:
-            rpg.triggerargsarray.remove(startcom)
-            rpg.triggerargsarray.insert(0, rpg.command_main)
-            rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
+    # if rpg.command_main not in rpg.valid_commands_all and rpg.command_main not in rpg.valid_commands_alts and rpg.command_main.lower() not in [x.lower() for x in rpg.users_all]:
+    #    startcom = rpg.command_main
+    #    command_type_list = ['all', 'alts']
+    #    for comtype in command_type_list:
+    #        if rpg.command_main == startcom:
+    #            comtype_eval = eval('rpg.valid_commands_' + comtype)
+    #            for com in comtype_eval:
+    #                if rpg.command_main == startcom:
+    #                    similarlevel = similar(rpg.command_main.lower(), com)
+    #                    if similarlevel >= .75:
+    #                        rpg.command_main = com
+    #    if rpg.command_main != startcom:
+    #        rpg.triggerargsarray.remove(startcom)
+    #        rpg.triggerargsarray.insert(0, rpg.command_main)
+    #        rpg.command_full = get_trigger_arg(bot, rpg.triggerargsarray, 0)
 
     # Instigator versus Instigator
     if rpg.command_main.lower() == rpg.instigator.lower() and not rpg.admin:
