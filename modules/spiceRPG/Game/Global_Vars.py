@@ -71,10 +71,6 @@ rpg_commands_valid_action = ['combat']
 Alternative Commands
 """
 
-
-# Valid Alternative Commands listing
-rpg_commands_valid_alt_types = ['administrator','docs','hotkey','author']
-
 # Hotkey
 rpg_commands_valid_alt_administrator = ['admin']
 
