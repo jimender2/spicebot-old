@@ -299,6 +299,14 @@ def command_run(bot, rpg, instigator):
     # if rpg.staminarequired:
     #    adjust_database_value(bot, instigator.default, 'stamina', -abs(rpg.staminarequired))
 
+    # usage counter - instigator
+    adjust_database_value(bot, rpg.instigator, 'usage_total', 1)
+    adjust_database_value(bot, rpg.instigator, 'usage_' + rpg.command_main, 1)
+
+    # usage counter - Total
+    adjust_database_value(bot, 'rpg_game_records', 'usage_total', 1)
+    adjust_database_value(bot, 'rpg_game_records', 'usage_' + rpg.command_main, 1)
+
 
 """
 Combat
@@ -504,7 +512,31 @@ def rpg_command_main_docs(bot, rpg, instigator):  # TODO
 
 
 def rpg_command_main_usage(bot, rpg, instigator):  # TODO
-    bot.say("wip")
+
+    # Get The Command Used
+    subcommand = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.commands_valid], 1) or 'total'
+
+    # Who is the target
+    target = get_trigger_arg(bot, [x for x in duels.command_restructure if x in duels.users_all_allchan or x == 'channel'], 1) or duels.instigator
+    targetname = target
+    if target == 'channel':
+        target = 'rpg_game_records'
+        targetname = "The channel"
+
+    # Usage Counter
+    totaluses = get_database_value(bot, target, 'usage_' + subcommand) or 0
+    if not totaluses:
+        if subcommand == 'total':
+            subcommand = ''
+        osd(bot, duels.channel_current, 'say', targetname + " has no record of using duel " + subcommand + ". ")
+        return
+
+    # Display
+    if subcommand == 'total':
+        subcommand = 'a total of'
+    else:
+        subcommand = str(subcommand + ' a total of')
+    osd(bot, duels.channel_current, 'say', targetname + " has used duel " + subcommand + " " + str(totaluses) + " times.")
 
 
 """
