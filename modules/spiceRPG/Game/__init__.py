@@ -750,7 +750,6 @@ def rpg_valid_commands_all(bot, rpg):
         # Tier Pepper
         currentpepper = get_trigger_arg(bot, rpg_commands_pepper_levels, currenttiernumber) or 'Spicy'
         exec("rpg." + str(vcom) + ".tier_pepper = currentpepper")
-        rpg.valid_commands_all.append(vcom)
 
     return rpg
 
