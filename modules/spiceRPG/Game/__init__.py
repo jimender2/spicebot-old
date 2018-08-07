@@ -749,10 +749,6 @@ def rpg_valid_commands_all(bot, rpg):
 
         exec("rpg." + str(vcom) + ".altcoms = current_alts")
 
-    for tcom in rpg.valid_commands_alts:
-        tcomeval = eval("rpg." + str(tcom) + ".realcom")
-        bot.say(str(tcom) + " " + str(tcomeval))
-
     return rpg
 
 
