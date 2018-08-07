@@ -52,6 +52,8 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
+    bot.reply("test")
+
     # RPG dynamic Class
     rpg = class_create('main')
 
