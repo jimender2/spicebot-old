@@ -11,9 +11,8 @@ from BotShared import *
 
 # author deathbybandaid
 
-temp_scales_disp = ['Kelvin', 'Celsius', 'Fahrenheit', 'Rankine', 'Rømer', 'Newton', 'Delisle', 'Réaumur']
 temp_scales = ['kelvin', 'celsius', 'fahrenheit', 'rankine', 'romer', 'newton', 'delisle', 'reaumur']
-temp_scales_short = ['K', 'C', 'F', 'Ra', 'Rø', 'N', 'D', 'Ré']
+temp_scales_short = ['K', 'C', 'F', 'Ra', 'Ro', 'N', 'D', 'Re']
 
 
 @sopel.module.commands('thermostat')
@@ -29,17 +28,36 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     tempcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in validtempcommands], 1) or 'check'
 
     currenttemp = get_database_value(bot, botcom.channel_current, 'temperature') or 32
-    currenttemp_type = get_database_value(bot, botcom.channel_current, 'temperature_type') or 'fahrenheit'
+    currentscale = get_database_value(bot, botcom.channel_current, 'temperature_scale') or 'fahrenheit'
 
     if tempcommand == 'check':
-        osd(bot, trigger.sender, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(currenttemp_type) + ".")
+        tempconvert = get_trigger_arg(bot, temp_scales, 'random')
+        if tempconvert != currentscale:
+            temperature = temperature(bot, currenttemp, currentscale, tempconvert)
+        osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(temperature) + "° " + str(tempconvert) + ".")
         return
 
     if tempcommand in ['change', 'set']:
-        degree = 450
-        for original in temp_scales:
-            for desired in temp_scales:
-                bot.say(original + ": " + str(degree) + "     " + desired + str(temperature(bot, degree, original, desired)))
+
+        missingarray = []
+
+        number = get_trigger_arg(bot, [x for x in triggerargsarray if str(x).isdigit], 1) or 0
+        if not number:
+            missingarray.append("number")
+
+        tempscale = get_trigger_arg(bot, [x for x in triggerargsarray if x in temp_scales or x in temp_scales_short], 1) or 0
+        if not tempscale:
+            missingarray.append("temperature scale")
+
+        if missingarray != []:
+            missinglist = get_trigger_arg(bot, missingarray, 'list')
+            osd(bot, botcom.channel_current, 'say', "The following values were missing: " + missinglist)
+            return
+
+        set_database_value(bot, botcom.channel_current, 'temperature', number)
+        set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
+
+        osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale) + ".")
 
 
 def temperature(bot, degree, original, desired):
