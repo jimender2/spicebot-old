@@ -342,7 +342,9 @@ def feeds_display(bot, feed, feeds, displayifnotnew):
 
                 titleappend = 1
 
-                timecompare = get_timeuntil(now, dailytime)
+                # timecompare = get_timeuntil(now, dailytime)
+                countdownseconds = dailytime - now
+                timecompare = hours_minutes_seconds(countdownseconds)
                 dispmsg.append("{Next " + timecompare + "}")
 
                 dispmsg.append("URL: " + url)
