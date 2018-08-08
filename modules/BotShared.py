@@ -85,31 +85,7 @@ def spicebot_prerun(bot, trigger, commandused):
 
     # Send Status Forward
 
-    # Entire command string
-    botcom.command_full_complete = get_trigger_arg(bot, triggerargsarray, 0)
-
-    # IF "&&" is in the full input, it is treated as multiple commands, and is split
-    botcom.multi_com_list = []
-
-    # Build array of commands used
-    if not [x for x in triggerargsarray if x == "&&"]:
-        botcom.multi_com_list.append(botcom.command_full_complete)
-    else:
-        command_full_split = botcom.command_full_complete.split("&&")
-        for command_split in command_full_split:
-            botcom.multi_com_list.append(command_split)
-    bot.say(str(botcom.multi_com_list))
-    for command_split_partial in botcom.multi_com_list:
-        botcom.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
-
-        # Split commands to pass
-        botcom.command_full = get_trigger_arg(bot, botcom.triggerargsarray, 0)
-        botcom.command_main = get_trigger_arg(bot, botcom.triggerargsarray, 1)
-
-        # return enablestatus, botcom.triggerargsarray, botcom, instigator
-        execute_main(bot, trigger, botcom.triggerargsarray, botcom, instigator)
-
-    # return enablestatus, triggerargsarray, botcom, instigator
+    return enablestatus, triggerargsarray, botcom, instigator
 
 
 """
