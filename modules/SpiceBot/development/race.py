@@ -12,7 +12,7 @@ from BotShared import *
 
 # author jimender2
 
-vehicalType = ["ford f150", "toyota corrola", "Kia Ultima", "shermin tank", "walking"]
+vehicleType = ["ford f150", "toyota corrola", "Kia Ultima", "shermin tank", "walking"]
 
 maximumHealth = ["100", "90", "50", "1000", "1"]
 
@@ -62,32 +62,38 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def race(bot, botcom, target, instigator, trigger):
     osd(bot, trigger.sender, 'say', instigator + " vs. " + str(target))
-    targetVehical, targetMaxHealth = pickVehical(bot, botcom, target)
-    instigatorVehical, instigatorMaxHealth = pickVehical(bot, botcom, instigator)
-    osd(bot, trigger.sender, 'say', instigator + " is driving a " + instigatorVehical)
-    osd(bot, trigger.sender, 'say', target + " is driving a " + targetVehical)
-    targetVehicalStats = random.randint(1, targetMaxHealth)
-    instigatorVehicalStats = random.randint(1, instigatorMaxHealth)
-    targetVehicalStats = damage(targetVehical)
-    instigatorVehicalStats = damage(instigatorVehical)
-    if targetVehicalStats  <= 0:
-        osd(bot, trigger.sender, 'say', target + " crashes their " + targetVehical)
-    if instigatorVehicalStats  <= 0:
-        osd(bot, trigger.sender, 'say', instigator + " crashes their " + instigatorVehical)
-    winner
+    targetVehicle, targetMaxHealth = pickVehicle(bot, botcom, target)
+    instigatorVehicle, instigatorMaxHealth = pickVehicle(bot, botcom, instigator)
+    osd(bot, trigger.sender, 'say', instigator + " is driving a " + instigatorVehicle)
+    osd(bot, trigger.sender, 'say', target + " is driving a " + targetVehicle)
+    targetVehicleStats = random.randint(1, targetMaxHealth)
+    instigatorVehicleStats = random.randint(1, instigatorMaxHealth)
+    targetVehicleStats = damage(targetVehicle)
+    instigatorVehicleStats = damage(instigatorVehicle)
+    if targetVehicleStats <= 0:
+        osd(bot, trigger.sender, 'say', target + " crashes their " + targetVehicle)
+    if instigatorVehicleStats <= 0:
+        osd(bot, trigger.sender, 'say', instigator + " crashes their " + instigatorVehicle)
+    if targetVehicleStats >= 0 and instigatorVehicleStats >= 0:
+        if targetVehicleStats > instigatorVehicleStats:
+            osd(bot, trigger.sender, 'say', target + " is the winner of the race")
+        elif targetVehicleStats < instigatorVehicleStats:
+            osd(bot, trigger.sender, 'say', instigator + " is the winner of the race")
+        else:
+            osd(bot, trigger.sender, 'say', target + " and " + instigator + " end the race in a tie.")
 
 
-def damage(vehical):
+def damage(vehicle):
     damage = random.randint(-100, 100)
-    vehical = vehical - damage
-    return vehical
+    vehicle = vehicle - damage
+    return vehicle
 
 
-def pickVehical():
+def pickVehicle(bot, botcom, target):
     rand = random.randint(1,5)
-    vehical = get_trigger_arg(bot, vehicalType, rand) or 'walkin'
+    vehicle = get_trigger_arg(bot, vehicleType, rand) or 'walkin'
     maxHealth = get_trigger_arg(bot, maximumHealth, rand) or '1'
-    return vehical, maxHealth
+    return vehicle, maxHealth
 
 
 def randomUser(bot, botcom, instigator):
