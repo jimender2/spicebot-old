@@ -75,8 +75,6 @@ def temp_condition(bot, degree, degreetype):
 
     kelvin = eval(str(degreetype.lower() + "_to_kelvin(bot, degree)"))
 
-    bot.say(str(kelvin))
-
     if int(kelvin) == 0:
         comment = "Absolute zero has been reached, a spaceheater won't even help."
     elif int(kelvin) <= 273:
@@ -91,6 +89,8 @@ def temp_condition(bot, degree, degreetype):
         comment = "Everyone in the channel gets heat stroke."
     elif int(kelvin) > 373:
         comment = "Everyone in the channel feels their blood start to boil"
+    elif int(kelvin) >= 5800:
+        comment = "You have reached the surface of the sun. There is no SPF that will protect you."
 
     return comment
 
