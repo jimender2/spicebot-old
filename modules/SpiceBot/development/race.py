@@ -64,3 +64,4 @@ def race(bot, botcom, target, instigator, trigger):
 def randomUser(bot, botcom, instigator):
     allUsers = [u.lower() for u in bot.users]
     user = get_trigger_arg(bot, allUsers, "random") or 'spicebot'
+    return user
