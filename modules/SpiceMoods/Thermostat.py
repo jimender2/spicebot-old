@@ -72,8 +72,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def temp_condition(bot, degree, degreetype):
 
-    if degreetype != 'kelvin':
-        degree = temperature(bot, degree, degreetype, 'kelvin')
+    degree = temperature(bot, degree, degreetype, 'kelvin')
     comment = ''
 
     if int(degree) <= 273:
