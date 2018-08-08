@@ -346,7 +346,7 @@ def lottery(bot, botcom, trigger, arg):
     channel = trigger.sender
     player = trigger.nick
     success = 0
-    bankbalance = bank(bot, 'casino')
+    bankbalance = bank(bot, botcom, 'casino')
     if bankbalance <= 500:
         bankbalance = 500
         spicychips(bot, 'casino', 'plus', bankbalance)
