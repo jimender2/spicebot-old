@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         if tempconvert != currentscale:
             currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
         tempcond = temp_condition(bot, currenttemp, tempconvert)
-        osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + "." + tempcond)
+        osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + ". " + tempcond)
         return
 
     missingarray = []
@@ -67,7 +67,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     tempcond = temp_condition(bot, number, tempscale)
 
-    osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale.title()) + "." + tempcond)
+    osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale.title()) + ". " + tempcond)
 
 
 def temp_condition(bot, degree, degreetype):
