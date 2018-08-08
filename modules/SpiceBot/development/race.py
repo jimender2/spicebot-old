@@ -56,5 +56,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 def race(bot, botcom, target, instigator):
+    message = instigator + " wants to race " + target
+    osd(bot, trigger.sender, 'say', message)
+
+
+
+def randomUser(bot, botcom, target, instigator):
     allUsers = [u.lower() for u in bot.users]
     user = get_trigger_arg(bot, allUsers, "random") or ''
