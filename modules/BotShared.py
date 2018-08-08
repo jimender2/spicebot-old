@@ -98,7 +98,7 @@ def spicebot_prerun(bot, trigger, commandused):
         command_full_split = botcom.command_full_complete.split("&&")
         for command_split in command_full_split:
             botcom.multi_com_list.append(command_split)
-
+    bot.say(str(botcom.multi_com_list))
     for command_split_partial in botcom.multi_com_list:
         botcom.triggerargsarray = get_trigger_arg(bot, command_split_partial, 'create')
 
