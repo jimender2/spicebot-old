@@ -106,7 +106,7 @@ def spicebot_prerun(bot, trigger, commandused):
         botcom.command_full = get_trigger_arg(bot, botcom.triggerargsarray, 0)
         botcom.command_main = get_trigger_arg(bot, botcom.triggerargsarray, 1)
 
-        yield enablestatus, botcom.triggerargsarray, botcom, instigator
+        return enablestatus, botcom.triggerargsarray, botcom, instigator
 
     # return enablestatus, triggerargsarray, botcom, instigator
 
