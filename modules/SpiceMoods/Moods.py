@@ -30,7 +30,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     currentmood = get_database_value(bot, botcom.channel_current, 'mood') or 'happy'
 
     if moodcommand == 'check':
-        osd(bot, trigger.sender, 'say', botcom.channel_current + " is currently in a " + currentmood + ".")
+        osd(bot, trigger.sender, 'say', botcom.channel_current + " is currently in a " + currentmood + " mood.")
         return
 
     if moodcommand in ['change', 'set']:
