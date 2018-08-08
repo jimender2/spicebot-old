@@ -71,11 +71,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 
 def temp_condition(bot, degree, degreetype):
-    bot.say(degreetype)
 
     if degreetype != 'kelvin':
-        bot.say("convert")
-        degree = eval(str(degreetype.lower() + "_to_kelvin(bot, degree)"))
+        degree = temperature(bot, degree, degreetype, 'kelvin')
     comment = ''
 
     if int(degree) <= 273:
