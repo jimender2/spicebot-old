@@ -28,5 +28,5 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     currenttemp_type = get_database_value(bot, botcom.channel_current, 'temperature_type') or 'fahrenheit'
 
     if tempcommand == 'check':
-        osd(bot, trigger.sender, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + " " + str(currenttemp_type) + ".")
+        osd(bot, trigger.sender, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + " degrees " + str(currenttemp_type) + ".")
         return
