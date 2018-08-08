@@ -74,6 +74,7 @@ def temp_condition(bot, degree, degreetype):
     bot.say(degreetype)
 
     if degreetype != 'kelvin':
+        bot.say("convert")
         degree = eval(str(degreetype.lower() + "_to_kelvin(bot, degree)"))
     comment = ''
 
