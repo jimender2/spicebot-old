@@ -410,24 +410,19 @@ def lotterydrawing(bot, botcom):
     nextlottery = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
 
-    channel = get_database_value(bot, 'casino', 'lotterychanel')
+    channel = botcom.channel
     lotteryplayers = get_database_value(bot, 'casino', 'lottoplayers')
     lotterywinners = []
     totalwon = 0
     bigwinner = ''
     bigwinpayout = 0
 
-    # if get_database_array_total(bot, 'casino','lottoplayers') <1:
-    #    msg= "No one entered this lottery. Next lottery drawing will be in " + str(hours_minutes_seconds(lotterytimeout-nextlottery))
-    #    osd(bot, channel, 'say', msg)
-    # else:
     if get_database_array_total(bot, 'casino', 'lottoplayers') > 0:
         if bankbalance <= 500:
             bankbalance = 500
-            set_database_value(bot, 'casino', 'spicychips_bank', bankbalance)
+            addbucks(bot, botcom 'casino', bankbalance)
 
         winningnumbers = random.sample(range(1, lotterymax), 5)
-
         msg = 'The winning numbers are ' + str(winningnumbers)
         osd(bot, channel, 'say', msg)
         for player in lotteryplayers:
@@ -449,15 +444,15 @@ def lotterydrawing(bot, botcom):
                 payout = bankbalance
 
             if payout > bankbalance:
-                spicychips(bot, 'casino', 'plus', payout)
+                addbucks(bot, botcom 'casino', payout)
             if payout > 0:
                 osd(bot, player, 'priv', "You won " + str(payout) + " in the lottery drawing")
-                transfer(bot, 'casino', player, payout)
+                transfer(bot, player, , 'casino' payout)
                 lotterywinners.append(player)
                 totalwon = totalwon + payout
                 if payout > bigwinpayout:
                     bigwinpayout = payout
-                    bigwinner = player
+                    bigwinner = playerwhich
                 bankbalance = bank(bot, 'casino')
             else:
                 osd(bot, player, 'priv', 'You are not a lottery winner')
