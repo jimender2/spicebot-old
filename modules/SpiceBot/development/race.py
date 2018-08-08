@@ -81,6 +81,10 @@ def race(bot, botcom, target, instigator, trigger):
             osd(bot, trigger.sender, 'say', instigator + " is the winner of the race")
         else:
             osd(bot, trigger.sender, 'say', target + " and " + instigator + " end the race in a tie.")
+    elif targetVehicleStats <= 0:
+            osd(bot, trigger.sender, 'say', instigator + " wins the race")
+    elif instigatorVehicleStats <= 0:
+            osd(bot, trigger.sender, 'say', target + " wins the race")
 
 
 def damage(vehicle):
