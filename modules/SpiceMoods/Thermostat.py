@@ -75,6 +75,8 @@ def temp_condition(bot, degree, degreetype):
 
     kelvin = temperature(bot, degree, degreetype, 'kelvin')
 
+    bot.say(str(kelvin))
+
     if int(kelvin) == 0:
         comment = "Absolute zero has been reached, a spaceheater won't even help."
     elif int(kelvin) <= 273:
@@ -95,8 +97,6 @@ def temp_condition(bot, degree, degreetype):
 
 def temperature(bot, degree, original, desired):
     temperature = 0
-
-    bot.say(original + " " + desired)
 
     kelvin = eval(str(original.lower() + "_to_kelvin(bot, degree)"))
     temperature = eval("kelvin_to_" + str(desired.lower() + "(bot, degree)"))
