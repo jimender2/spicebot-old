@@ -418,9 +418,6 @@ def lotterydrawing(bot, botcom):
     bigwinpayout = 0
 
     if get_database_array_total(bot, 'casino', 'lottoplayers') > 0:
-        if bankbalance <= 500:
-            bankbalance = 500
-            addbucks(bot, botcom 'casino', bankbalance)
 
         winningnumbers = random.sample(range(1, lotterymax), 5)
         msg = 'The winning numbers are ' + str(winningnumbers)
@@ -432,28 +429,16 @@ def lotterydrawing(bot, botcom):
                 if pick in winningnumbers:
                     correct = correct + 1
             payout = 0
-            if correct == 1:
-                payout = match1payout
-            elif correct == 2:
-                payout = match2payout
-            elif correct == 3:
-                payout = int(match3payout*bankbalance)
-            elif correct == 4:
-                payout = int(match4payout*bankbalance)
-            elif correct == 5:
-                payout = bankbalance
-
-            if payout > bankbalance:
-                addbucks(bot, botcom 'casino', payout)
+            if correct >= 1:
+                payout = lotterypayout(bot, botcom, correct)
             if payout > 0:
                 osd(bot, player, 'priv', "You won " + str(payout) + " in the lottery drawing")
-                transfer(bot, player, , 'casino' payout)
+                transfer(bot, player, , 'casino', payout)
                 lotterywinners.append(player)
                 totalwon = totalwon + payout
                 if payout > bigwinpayout:
                     bigwinpayout = payout
-                    bigwinner = playerwhich
-                bankbalance = bank(bot, 'casino')
+                    bigwinner = player
             else:
                 osd(bot, player, 'priv', 'You are not a lottery winner')
 
