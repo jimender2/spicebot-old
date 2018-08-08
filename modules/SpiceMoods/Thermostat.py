@@ -24,13 +24,18 @@ def mainfunction(bot, trigger):
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
-    tempcommand = get_trigger_arg(bot, triggerargsarray, 1)
+    tempcommand = get_trigger_arg(bot, triggerargsarray, 1) or 0
 
     currenttemp = get_database_value(bot, botcom.channel_current, 'temperature') or 32
     currentscale = get_database_value(bot, botcom.channel_current, 'temperature_scale') or 'fahrenheit'
 
-    if not tempcommand:
-        tempconvert = get_trigger_arg(bot, temp_scales, 'random')
+    if not tempcommand or tempcommand in temp_scales or tempcommand in temp_scales_short:
+        if tempcommand in temp_scales or tempcommand in temp_scales_short:
+            if tempcommand in temp_scales_short:
+                tempcommand = array_compare(bot, tempcommand, temp_scales_short, temp_scales)
+            tempconvert = tempcommand
+        else:
+            tempconvert = get_trigger_arg(bot, temp_scales, 'random')
         if tempconvert != currentscale:
             currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
         osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + ".")
