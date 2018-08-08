@@ -25,6 +25,7 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     tempcommand = get_trigger_arg(bot, triggerargsarray, 1) or 0
+    tempcommand = tempcommand.lower()
 
     currenttemp = get_database_value(bot, botcom.channel_current, 'temperature') or 32
     currentscale = get_database_value(bot, botcom.channel_current, 'temperature_scale') or 'fahrenheit'
