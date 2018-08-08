@@ -38,8 +38,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             tempconvert = tempcommand
         else:
             tempconvert = get_trigger_arg(bot, temp_scales, 'random')
-        if tempconvert != currentscale:
-            currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
+        currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
         tempcond = temp_condition(bot, currenttemp, tempconvert)
         osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + ". " + tempcond)
         return
@@ -76,7 +75,9 @@ def temp_condition(bot, degree, degreetype):
 
     kelvin = temperature(bot, degree, degreetype, 'kelvin')
 
-    if int(kelvin) <= 273:
+    if int(kelvin) == 0:
+        comment = "Absolute zero has been reached, a spaceheater won't even help."
+    elif int(kelvin) <= 273:
         comment = "Everyone in the channel grabs a jacket, as they watch their beverages turn to ice."
     elif int(kelvin) > 299 and int(kelvin) <= 305:
         comment = "Everyone in the channel feels sleepy."
