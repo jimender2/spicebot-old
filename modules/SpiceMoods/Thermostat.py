@@ -72,20 +72,21 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
 def temp_condition(bot, degree, degreetype):
 
-    degree = temperature(bot, degree, degreetype, 'kelvin')
     comment = ''
 
-    if int(degree) <= 273:
+    kelvin = temperature(bot, degree, degreetype, 'kelvin')
+
+    if int(kelvin) <= 273:
         comment = "Everyone in the channel grabs a jacket, as they watch their beverages turn to ice."
-    elif int(degree) > 299 and int(degree) <= 305:
+    elif int(kelvin) > 299 and int(kelvin) <= 305:
         comment = "Everyone in the channel feels sleepy."
-    elif int(degree) > 305 and int(degree) <= 313:
+    elif int(kelvin) > 305 and int(kelvin) <= 313:
         comment = "Everyone in the channel feels exhausted."
-    elif int(degree) > 313 and int(degree) <= 327:
+    elif int(kelvin) > 313 and int(kelvin) <= 327:
         comment = "Everyone in the channel gets heat cramps."
-    elif int(degree) > 327 and int(degree) <= 373:
+    elif int(kelvin) > 327 and int(kelvin) <= 373:
         comment = "Everyone in the channel gets heat stroke."
-    elif int(degree) > 373:
+    elif int(kelvin) > 373:
         comment = "Everyone in the channel feels their blood start to boil"
 
     return comment
@@ -117,13 +118,13 @@ Celsius
 
 def celsius_to_kelvin(bot, celsius):
     celsius = float(celsius)
-    kelvin = (celsius + 273)
+    kelvin = (celsius + 273.15)
     return kelvin
 
 
 def kelvin_to_celsius(bot, kelvin):
     kelvin = float(kelvin)
-    celsius = (kelvin - 273)
+    celsius = (kelvin - 273.15)
     return celsius
 
 
@@ -134,13 +135,13 @@ Fahrenheit
 
 def fahrenheit_to_kelvin(bot, fahrenheit):
     fahrenheit = float(fahrenheit)
-    kelvin = ((5/9) * (fahrenheit - 32) + 273)
+    kelvin = ((fahrenheit + 459.67) / 1.8)
     return kelvin
 
 
 def kelvin_to_fahrenheit(bot, kelvin):
     kelvin = float(kelvin)
-    fahrenheit = (1.8 * (kelvin - 273) + 32)
+    fahrenheit = (1.8 * kelvin + 459.67)
     return fahrenheit
 
 
@@ -151,13 +152,13 @@ Rankine
 
 def rankine_to_kelvin(bot, rankine):
     rankine = float(rankine)
-    kelvin = (rankine * (5/9))
+    kelvin = (rankine / 1.8)
     return kelvin
 
 
 def kelvin_to_rankine(bot, kelvin):
     kelvin = float(kelvin)
-    rankine = (kelvin * (9/5))
+    rankine = (1.8 * kelvin)
     return rankine
 
 
@@ -168,13 +169,13 @@ Delisle
 
 def delisle_to_kelvin(bot, delisle):
     delisle = float(delisle)
-    kelvin = (373 - (delisle * (2/3)))
+    kelvin = (373.15 - (2/3) * delisle)
     return kelvin
 
 
 def kelvin_to_delisle(bot, kelvin):
     kelvin = float(kelvin)
-    delisle = ((373 - kelvin) * (3/2))
+    delisle = (1.5 * (373.15 - kelvin))
     return delisle
 
 
@@ -185,13 +186,13 @@ Newton
 
 def newton_to_kelvin(bot, newton):
     newton = float(newton)
-    kelvin = (newton * (100/33) + 273)
+    kelvin = ((100 / 33) * newton + 273.15)
     return kelvin
 
 
 def kelvin_to_newton(bot, kelvin):
     kelvin = float(kelvin)
-    newton = ((kelvin - 273) * (33/100))
+    newton = (0.33 * (kelvin - 273.15))
     return newton
 
 
@@ -202,13 +203,13 @@ Reaumur
 
 def reaumur_to_kelvin(bot, reaumur):
     reaumur = float(reaumur)
-    kelvin = (reaumur * (5/4) + 273)
+    kelvin = (1.25 * reaumur + 273.15)
     return kelvin
 
 
 def kelvin_to_reaumur(bot, kelvin):
     kelvin = float(kelvin)
-    reaumur = ((kelvin - 273) * (4/5))
+    reaumur = (0.8 * (kelvin - 273.15))
     return reaumur
 
 
@@ -219,11 +220,11 @@ Romer
 
 def romer_to_kelvin(bot, romer):
     romer = float(romer)
-    kelvin = ((romer - 7.5) * (40/21) + 273)
+    kelvin = ((40 / 21) * (romer - 7.5) + 273.15)
     return kelvin
 
 
 def kelvin_to_romer(bot, kelvin):
     kelvin = float(kelvin)
-    romer = ((kelvin - 273) * (21/40) + 7.5)
+    romer = ((21 / 40) * (kelvin - 273.15) + 7.5)
     return romer
