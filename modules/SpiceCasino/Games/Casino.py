@@ -410,7 +410,7 @@ def lotterydrawing(bot, botcom):
     nextlottery = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
 
-    channel = botcom.channel
+    channel = get_database_value(bot, 'casino', 'lotterychanel')
     lotteryplayers = get_database_value(bot, 'casino', 'lottoplayers')
     lotterywinners = []
     totalwon = 0
