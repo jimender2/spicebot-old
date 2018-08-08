@@ -46,7 +46,7 @@ def execute_main(bot, trigger, arg, botcom, instigator):
         osd(bot, trigger.sender, 'say', 'The current jackpot is: ' + str(bankbalance))
     elif mygame == 'admin':
         if trigger.admin or trigger.nick == 'under_score':
-            admincommands(bot, trigger, arg)
+            admincommands(bot, botcom, trigger, arg)
         else:
             osd(bot, trigger.nick, 'priv', 'You must be an admin to use this command')
     else:
