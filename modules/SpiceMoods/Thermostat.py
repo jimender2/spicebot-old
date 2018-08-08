@@ -73,7 +73,7 @@ def temp_condition(bot, degree, degreetype):
 
     comment = ''
 
-    kelvin = temperature(bot, degree, degreetype, 'kelvin')
+    kelvin = eval(str(degreetype.lower() + "_to_kelvin(bot, degree)"))
 
     bot.say(str(kelvin))
 
