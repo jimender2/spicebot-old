@@ -23,6 +23,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     validmoodcommands = ['check', 'change', 'set']
     moodcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in validmoodcommands], 1) or 'check'
+    if moodcommand in triggerargsarray:
+        triggerargsarray.remove(moodcommand)
+    moodcommand = moodcommand.lower()
 
     currentmood = get_database_value(bot, botcom.channel_current, 'mood') or 'happy'
 
@@ -31,7 +34,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         return
 
     if moodcommand in ['change', 'set']:
-        moodset = get_trigger_arg(bot, triggerargsarray, 1) or 0
+        moodset = get_trigger_arg(bot, triggerargsarray, 0) or 0
         if not moodset:
             osd(bot, trigger.sender, 'say', "What mood is " + botcom.channel_current + " in?")
             return
