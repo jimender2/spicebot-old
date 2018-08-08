@@ -54,6 +54,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, botcom.channel_current, 'say', "The following values were missing: " + missinglist)
             return
 
+        if tempscale in temp_scales_short:
+            tempscale = array_compare(bot, tempscale, temp_scales_short, temp_scales)
+
         set_database_value(bot, botcom.channel_current, 'temperature', number)
         set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
 
