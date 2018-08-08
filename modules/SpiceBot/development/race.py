@@ -36,8 +36,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "practice":
         test
     elif command == "random":
-        target = randomUser(bot, botcom, target, instigator)
-        race(bot, botcom, target, instigator)
+        target = randomUser(bot, botcom, instigator)
+        race(bot, botcom, target, instigator, trigger)
     else:
         target = command
         # get the opposing person
@@ -56,11 +56,11 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             osd(bot, trigger.sender, 'say', "You cannot race someone that I have never seen!")
 
 
-def race(bot, botcom, target, instigator):
-    message = instigator + " wants to race " + target
+def race(bot, botcom, target, instigator, trigger):
+    message = instigator + " wants to race " + str(target)
     osd(bot, trigger.sender, 'say', message)
 
 
-def randomUser(bot, botcom, target, instigator):
+def randomUser(bot, botcom, instigator):
     allUsers = [u.lower() for u in bot.users]
-    user = get_trigger_arg(bot, allUsers, "random") or ''
+    user = get_trigger_arg(bot, allUsers, "random") or 'spicebot'
