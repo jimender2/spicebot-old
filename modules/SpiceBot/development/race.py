@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     elif command == "practice":
         test
     elif command == "random":
-        target = randomUser()
+        target = randomUser(bot, botcom, target, instigator)
         race(bot, botcom, target, instigator)
     else:
         target = command
