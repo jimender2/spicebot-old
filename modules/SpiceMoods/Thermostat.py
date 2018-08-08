@@ -33,8 +33,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if tempcommand == 'check':
         tempconvert = get_trigger_arg(bot, temp_scales, 'random')
         if tempconvert != currentscale:
-            temperature = temperature(bot, currenttemp, currentscale, tempconvert)
-        osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(temperature) + "° " + str(tempconvert) + ".")
+            currenttemp = temperature(bot, currenttemp, currentscale, tempconvert)
+        osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert) + ".")
         return
 
     if tempcommand in ['change', 'set']:
