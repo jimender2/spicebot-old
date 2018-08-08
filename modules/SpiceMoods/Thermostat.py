@@ -108,18 +108,25 @@ def temperature(bot, degree, original, desired):
 
 
 """
+Kelvin
+"""
+
+
+def kelvin_to_kelvin(bot, kelvin):
+    return kelvin
+
+
+"""
 Celsius
 """
 
 
-def celsius_to_kelvin(bot, degree):
-    celsius = float(degree)
+def celsius_to_kelvin(bot, celsius):
     kelvin = (celsius + 273)
     return kelvin
 
 
-def kelvin_to_celsius(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_celsius(bot, kelvin):
     celsius = (kelvin - 273)
     return celsius
 
@@ -129,14 +136,12 @@ Fahrenheit
 """
 
 
-def fahrenheit_to_kelvin(bot, degree):
-    fahrenheit = float(degree)
+def fahrenheit_to_kelvin(bot, fahrenheit):
     kelvin = ((5/9) * (fahrenheit - 32) + 273)
     return kelvin
 
 
-def kelvin_to_fahrenheit(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_fahrenheit(bot, kelvin):
     fahrenheit = (1.8 * (kelvin - 273) + 32)
     return fahrenheit
 
@@ -146,14 +151,12 @@ Rankine
 """
 
 
-def rankine_to_kelvin(bot, degree):
-    rankine = float(degree)
+def rankine_to_kelvin(bot, rankine):
     kelvin = (rankine * (5/9))
     return kelvin
 
 
-def kelvin_to_rankine(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_rankine(bot, kelvin):
     rankine = (kelvin * (9/5))
     return rankine
 
@@ -163,14 +166,12 @@ Delisle
 """
 
 
-def delisle_to_kelvin(bot, degree):
-    delisle = float(degree)
+def delisle_to_kelvin(bot, delisle):
     kelvin = (373 - (delisle * (2/3)))
     return kelvin
 
 
-def kelvin_to_delisle(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_delisle(bot, kelvin):
     delisle = ((373 - kelvin) * (3/2))
     return delisle
 
@@ -180,14 +181,12 @@ Newton
 """
 
 
-def newton_to_kelvin(bot, degree):
-    newton = float(degree)
+def newton_to_kelvin(bot, newton):
     kelvin = (newton * (100/33) + 273)
     return kelvin
 
 
-def kelvin_to_newton(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_newton(bot, kelvin):
     newton = ((kelvin - 273) * (33/100))
     return newton
 
@@ -197,14 +196,12 @@ Reaumur
 """
 
 
-def reaumur_to_kelvin(bot, degree):
-    reaumur = float(degree)
+def reaumur_to_kelvin(bot, reaumur):
     kelvin = (reaumur * (5/4) + 273)
     return kelvin
 
 
-def kelvin_to_reaumur(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_reaumur(bot, kelvin):
     reaumur = ((kelvin - 273) * (4/5))
     return reaumur
 
@@ -214,13 +211,11 @@ Romer
 """
 
 
-def romer_to_kelvin(bot, degree):
-    romer = float(degree)
+def romer_to_kelvin(bot, romer):
     kelvin = ((romer - 7.5) * (40/21) + 273)
     return kelvin
 
 
-def kelvin_to_romer(bot, degree):
-    kelvin = float(degree)
+def kelvin_to_romer(bot, kelvin):
     romer = ((kelvin - 273) * (21/40) + 7.5)
     return romer
