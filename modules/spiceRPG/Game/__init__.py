@@ -52,6 +52,12 @@ Command Processing
 
 def execute_start(bot, trigger, triggerargsarray, command_type):
 
+    string = "Python is interesting."
+
+    # string with encoding 'utf-8'
+    arr = bytes(string, 'utf-8')
+    bot.say(str(arr))
+
     fullcom = str(get_trigger_arg(bot, triggerargsarray, 0))
     # fullcom = str(sys.getsizeof(fullcom))
     fullcom = bytes(fullcom, 'utf-8')
