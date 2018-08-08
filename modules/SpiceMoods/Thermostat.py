@@ -63,7 +63,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     set_database_value(bot, botcom.channel_current, 'temperature', number)
     set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
 
-    osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale) + ".")
+    osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale.title()) + ".")
 
 
 def temperature(bot, degree, original, desired):
