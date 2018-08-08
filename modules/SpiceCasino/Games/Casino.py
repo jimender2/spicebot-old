@@ -357,7 +357,7 @@ def lottery(bot, botcom, trigger, arg):
         osd(bot, trigger.nick, 'notice', "lottery can only be used in a channel.")
     else:
         if commandused == 'payout':
-            osd(bot, trigger.sender, 'say', "Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(lotterypayout(bot, botcom, 4)) + " and getting 3 correct = " + str(lotterypayout(bot, botcom, 3)))
+            osd(bot, trigger.sender, 'say', "Current lottery jackpot is " + str(bankbalance) + ". Getting 4 number correct pays " + str(lotterypayout(bot, botcom, 4)) + " and getting 3 correct pays " + str(lotterypayout(bot, botcom, 3)))
         elif commandused == 'random':
             picks = random.sample(range(1, lotterymax), 5)
             success = 1
