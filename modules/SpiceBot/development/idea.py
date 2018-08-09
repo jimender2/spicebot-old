@@ -78,4 +78,6 @@ def getIdea(bot, trigger, type):
         message = idea + " is a good idea... (prolly)"
     elif ideaType == "bad":
         message = "I'm telling you, " + idea + " is a bad idea"
+    else:
+        message = "I'm not sure that if that is a good or a bad idea? Try asking the magic eight ball?"
     osd(bot, trigger.sender, 'say', message)
