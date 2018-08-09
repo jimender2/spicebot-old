@@ -50,5 +50,4 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         else:
             message = "What the " + fuckType + reason
 
-        message = message + " are you doing " + reason + " for?!?!"
     osd(bot, trigger.sender, 'say', message)
