@@ -192,7 +192,7 @@ Newton
 
 def newton_to_kelvin(bot, newton):
     newton = float(newton)
-    kelvin = (newton * ​100/33 + 273.15)
+    kelvin = (newton * 100/33 + 273.15)
     return kelvin
 
 
