@@ -28,16 +28,18 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     check = easytargetcheck(bot, botcom, target, instigator)
     fuckType = get_trigger_arg(bot, randomFuckArray, "random") or ''
     if check == 'bot':
-        message = "What the " + fuckType + bot.nick
+        message = "What the " + fuckType + " " + bot.nick
     elif check == 'instigator':
         message = "What the " + fuckType
     elif check == 'valid':
-        message = "What the " + fuckType + target
+        message = "What the " + fuckType + " " + target
     else:
+        message = "What the " + fuckType
         reason = target + reason
 
     if not reason:
         message = message + "!!"
+
     else:
-        message = message + reason + "!!"
+        message = message + " are you doing " + reason + " for?!?!"
     osd(bot, trigger.sender, 'say', message)
