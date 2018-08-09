@@ -198,7 +198,7 @@ def newton_to_kelvin(bot, newton):
 
 def kelvin_to_newton(bot, kelvin):
     kelvin = float(kelvin)
-    newton = ((kelvin - 273.15) * ​33/100)
+    newton = ((kelvin - 273.15) * 33/100)
     return newton
 
 
@@ -209,13 +209,13 @@ Reaumur
 
 def reaumur_to_kelvin(bot, reaumur):
     reaumur = float(reaumur)
-    kelvin = (reaumur * ​5/4 + 273.15)
+    kelvin = (reaumur * 5/4 + 273.15)
     return kelvin
 
 
 def kelvin_to_reaumur(bot, kelvin):
     kelvin = float(kelvin)
-    reaumur = ((kelvin - 273.15) * ​4/5)
+    reaumur = ((kelvin - 273.15) * 4/5)
     return reaumur
 
 
@@ -226,11 +226,11 @@ Romer
 
 def romer_to_kelvin(bot, romer):
     romer = float(romer)
-    kelvin = ((romer - 7.5) * ​40/21 + 273.15)
+    kelvin = ((romer - 7.5) * 40/21 + 273.15)
     return kelvin
 
 
 def kelvin_to_romer(bot, kelvin):
     kelvin = float(kelvin)
-    romer = ((kelvin - 273.15) * ​21/40 + 7.5)
+    romer = ((kelvin - 273.15) * 21/40 + 7.5)
     return romer
