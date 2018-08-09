@@ -167,14 +167,13 @@ Rankine
 
 def rankine_to_kelvin(bot, rankine):
     rankine = float(rankine)
-    # kelvin = (rankine * ​5/9)
     kelvin = (rankine * 5/9)
     return kelvin
 
 
 def kelvin_to_rankine(bot, kelvin):
     kelvin = float(kelvin)
-    rankine = (1.8 * ​9/5)
+    rankine = (1.8 * 9/5)
     return rankine
 
 
