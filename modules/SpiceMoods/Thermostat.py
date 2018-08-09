@@ -121,6 +121,9 @@ def kelvin_to_kelvin(bot, kelvin):
 Celsius
 """
 
+# [K] = [°C] + 273.15
+# [°C] = [K] − 273.15
+
 
 def celsius_to_kelvin(bot, celsius):
     celsius = float(celsius)
@@ -138,16 +141,19 @@ def kelvin_to_celsius(bot, kelvin):
 Fahrenheit
 """
 
+# [K] = ([°F] + 459.67) × ​5⁄9
+# [°F] = [K] × ​9⁄5 − 459.67
+
 
 def fahrenheit_to_kelvin(bot, fahrenheit):
     fahrenheit = float(fahrenheit)
-    kelvin = ((fahrenheit + 459.67) / 1.8)
+    kelvin = ((fahrenheit + 459.67) × ​5⁄9)
     return kelvin
 
 
 def kelvin_to_fahrenheit(bot, kelvin):
     kelvin = float(kelvin)
-    fahrenheit = (1.8 * kelvin + 459.67)
+    fahrenheit = (kelvin × ​9⁄5 − 459.67)
     return fahrenheit
 
 
@@ -155,16 +161,19 @@ def kelvin_to_fahrenheit(bot, kelvin):
 Rankine
 """
 
+# [K] = [°R] × ​5⁄9
+# [°R] = [K] × ​9⁄5
+
 
 def rankine_to_kelvin(bot, rankine):
     rankine = float(rankine)
-    kelvin = (rankine / 1.8)
+    kelvin = (rankine × ​5⁄9)
     return kelvin
 
 
 def kelvin_to_rankine(bot, kelvin):
     kelvin = float(kelvin)
-    rankine = (1.8 * kelvin)
+    rankine = (1.8  × ​9⁄5)
     return rankine
 
 
@@ -172,16 +181,19 @@ def kelvin_to_rankine(bot, kelvin):
 Delisle
 """
 
+# [K] = 373.15 − [°De] × ​2⁄3
+# [°De] = (373.15 − [K]) × ​3⁄2
+
 
 def delisle_to_kelvin(bot, delisle):
     delisle = float(delisle)
-    kelvin = (373.15 - (2/3) * delisle)
+    kelvin = (373.15 − delisle × ​2⁄3)
     return kelvin
 
 
 def kelvin_to_delisle(bot, kelvin):
     kelvin = float(kelvin)
-    delisle = (1.5 * (373.15 - kelvin))
+    delisle = ((373.15 − kelvin) × ​3⁄2)
     return delisle
 
 
@@ -189,16 +201,19 @@ def kelvin_to_delisle(bot, kelvin):
 Newton
 """
 
+# [K] = [°N] × ​100⁄33 + 273.15
+# [°N] = ([K] − 273.15) × ​33⁄100
+
 
 def newton_to_kelvin(bot, newton):
     newton = float(newton)
-    kelvin = ((100 / 33) * newton + 273.15)
+    kelvin = (newton × ​100⁄33 + 273.15)
     return kelvin
 
 
 def kelvin_to_newton(bot, kelvin):
     kelvin = float(kelvin)
-    newton = (0.33 * (kelvin - 273.15))
+    newton = ((kelvin − 273.15) × ​33⁄100)
     return newton
 
 
@@ -206,16 +221,19 @@ def kelvin_to_newton(bot, kelvin):
 Reaumur
 """
 
+# [K] = [°Ré] × ​5⁄4 + 273.15
+# [°Ré] = ([K] − 273.15) × ​4⁄5
+
 
 def reaumur_to_kelvin(bot, reaumur):
     reaumur = float(reaumur)
-    kelvin = (1.25 * reaumur + 273.15)
+    kelvin = (reaumur × ​5⁄4 + 273.15)
     return kelvin
 
 
 def kelvin_to_reaumur(bot, kelvin):
     kelvin = float(kelvin)
-    reaumur = (0.8 * (kelvin - 273.15))
+    reaumur = ((kelvin − 273.15) × ​4⁄5)
     return reaumur
 
 
@@ -223,14 +241,17 @@ def kelvin_to_reaumur(bot, kelvin):
 Romer
 """
 
+# [K] = ([°Rø] − 7.5) × ​40⁄21 + 273.15
+# [°Rø] = ([K] − 273.15) × ​21⁄40 + 7.5
+
 
 def romer_to_kelvin(bot, romer):
     romer = float(romer)
-    kelvin = ((40 / 21) * (romer - 7.5) + 273.15)
+    kelvin = ((romer − 7.5) × ​40⁄21 + 273.15)
     return kelvin
 
 
 def kelvin_to_romer(bot, kelvin):
     kelvin = float(kelvin)
-    romer = ((21 / 40) * (kelvin - 273.15) + 7.5)
+    romer = ((kelvin − 273.15) × ​21⁄40 + 7.5)
     return romer
