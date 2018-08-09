@@ -121,9 +121,6 @@ def kelvin_to_kelvin(bot, kelvin):
 Celsius
 """
 
-# [K] = [°C] + 273.15
-# [°C] = [K] - 273.15
-
 
 def celsius_to_kelvin(bot, celsius):
     celsius = float(celsius)
@@ -141,9 +138,6 @@ def kelvin_to_celsius(bot, kelvin):
 Fahrenheit
 """
 
-# [K] = ([°F] + 459.67) * ​5/9
-# [°F] = [K] * ​9/5 - 459.67
-
 
 def fahrenheit_to_kelvin(bot, fahrenheit):
     fahrenheit = float(fahrenheit)
@@ -160,9 +154,6 @@ def kelvin_to_fahrenheit(bot, kelvin):
 """
 Rankine
 """
-
-# [K] = [°R] * ​5/9
-# [°R] = [K] * ​9/5
 
 
 def rankine_to_kelvin(bot, rankine):
