@@ -44,6 +44,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         tempcond = temp_condition(bot, currenttemp, tempconvert)
         osd(bot, botcom.channel_current, 'say', "The current temperature in " + botcom.channel_current + " is " + str(currenttemp) + "° " + str(tempconvert.title()) + ". " + tempcond)
         return
+    bot.say("here")
 
     missingarray = []
 
