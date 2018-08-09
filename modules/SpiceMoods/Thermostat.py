@@ -172,13 +172,10 @@ def kelvin_to_rankine(bot, kelvin):
 Delisle
 """
 
-# [K] = 373.15 - [°De] * ​2/3
-# [°De] = (373.15 - [K]) * ​3/2
-
 
 def delisle_to_kelvin(bot, delisle):
     delisle = float(delisle)
-    kelvin = (373.15 - delisle * ​2/3)
+    kelvin = (373.15 - delisle * 2/3)
     return kelvin
 
 
