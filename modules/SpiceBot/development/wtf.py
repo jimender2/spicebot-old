@@ -36,8 +36,10 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif check == 'valid':
             message = "What the " + fuckType + " " + target
         else:
-            message = "What the " + fuckType
-            reason = target + reason
+            if not target:
+                message = "What the " + fuckType
+            else:
+                message = "What the " + fuckType + ". Why are you " + target + reason + "!?!?"
 
     else:
         reason = ". Why are you " + reason + "!?!?"
