@@ -78,19 +78,21 @@ def race(bot, botcom, target, instigator, trigger):
         if targetVehicleStats > instigatorVehicleStats:
             osd(bot, trigger.sender, 'say', target + " is the winner of the race")
             increaseWin(bot, botcom, target)
+            resetWin(bot, botcom, instigator)
         elif targetVehicleStats < instigatorVehicleStats:
             osd(bot, trigger.sender, 'say', instigator + " is the winner of the race")
             increaseWin(bot, botcom, instigator)
+            resetWin(bot, botcom, target)
         else:
             osd(bot, trigger.sender, 'say', target + " and " + instigator + " end the race in a tie.")
     elif targetVehicleStats < 0:
-            osd(bot, trigger.sender, 'say', instigator + " wins the race")
-            increaseWin(bot, botcom, instigator)
+        osd(bot, trigger.sender, 'say', instigator + " wins the race")
+        increaseWin(bot, botcom, instigator)
+        resetWin(bot, botcom, target)
     elif instigatorVehicleStats < 0:
-            osd(bot, trigger.sender, 'say', target + " wins the race")
-            increaseWin(bot, botcom, target)
-    getWins(bot, botcom, trigger, target)
-    getWins(bot, botcom, trigger, instigator)
+        osd(bot, trigger.sender, 'say', target + " wins the race")
+        increaseWin(bot, botcom, target)
+        resetWin(bot, botcom, instigator)
 
 
 def resetWin(bot, botcom, person):
@@ -108,7 +110,7 @@ def increaseWin(bot, botcom, person):
 def getWins(bot, botcom, trigger, person):
     databasekey = "raceStreak"
     wins = get_database_value(bot, person, databasekey) or 0
-    osd(bot, trigger.sender, 'say', instigator + " has a streak of " + str(wins) + " wins")
+    osd(bot, trigger.sender, 'say', person + " has a streak of " + str(wins) + " wins")
 
 
 def damage(vehicleStats):
