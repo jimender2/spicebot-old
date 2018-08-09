@@ -99,12 +99,10 @@ def temp_condition(bot, degree, degreetype):
 def temperature(bot, degree, original, desired):
 
     # convert to kelvin
-    degstr = str(original.lower() + "_to_kelvin(bot, " + degree + ")")
-    degree = eval(degstr)
+    degree = eval(str(original.lower() + "_to_kelvin(bot, degree)"))
 
     # convert from kelvin
-    degstr = str("kelvin_to_" + desired.lower() + "(bot, " + degree + ")")
-    degree = eval(degstr)
+    degree = eval("kelvin_to_" + desired.lower() + "(bot, degree)")
 
     return degree
 
