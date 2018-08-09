@@ -147,13 +147,13 @@ Fahrenheit
 
 def fahrenheit_to_kelvin(bot, fahrenheit):
     fahrenheit = float(fahrenheit)
-    kelvin = ((fahrenheit + 459.67) * ​5 / 9)
+    kelvin = (fahrenheit + 459.67) * ​5/9
     return kelvin
 
 
 def kelvin_to_fahrenheit(bot, kelvin):
     kelvin = float(kelvin)
-    fahrenheit = (kelvin * 9 / 5 - 459.67)
+    fahrenheit = (kelvin * 9/5 - 459.67)
     return fahrenheit
 
 
