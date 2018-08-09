@@ -68,8 +68,8 @@ def race(bot, botcom, target, instigator, trigger):
     osd(bot, trigger.sender, 'say', target + " is driving a " + targetVehicle)
     targetVehicleStats = random.randint(1, targetMaxHealth)
     instigatorVehicleStats = random.randint(1, instigatorMaxHealth)
-    targetVehicleStats = damage(targetVehicle)
-    instigatorVehicleStats = damage(instigatorVehicle)
+    targetVehicleStats = damage(targetVehicleStats)
+    instigatorVehicleStats = damage(instigatorVehicleStats)
     if targetVehicleStats <= 0:
         osd(bot, trigger.sender, 'say', target + " crashes their " + targetVehicle)
     if instigatorVehicleStats <= 0:
@@ -87,16 +87,17 @@ def race(bot, botcom, target, instigator, trigger):
             osd(bot, trigger.sender, 'say', target + " wins the race")
 
 
-def damage(vehicle):
-    damage = random.randint(-100, 100)
-    vehicle = vehicle - damage
-    return vehicle
+def damage(vehicleStats):
+    damage = random.randint(0, 200) - 100
+    vehicleStats = vehicleStats - damage
+    return vehicleStats
 
 
 def pickVehicle(bot, botcom, target):
     rand = random.randint(1,5)
     vehicle = get_trigger_arg(bot, vehicleType, rand) or 'walkin'
-    maxHealth = get_trigger_arg(bot, maximumHealth, rand) or '1'
+    maxHealth = get_trigger_arg(bot, maximumHealth, rand)
+    maxHealth = int(maxHealth)
     return vehicle, maxHealth
 
 
