@@ -147,7 +147,6 @@ Fahrenheit
 
 def fahrenheit_to_kelvin(bot, fahrenheit):
     fahrenheit = float(fahrenheit)
-    # kelvin = ((fahrenheit + 459.67) * ​5/9)
     kelvin = ((fahrenheit + 459.67) * 5/9)
     return kelvin
 
@@ -168,7 +167,8 @@ Rankine
 
 def rankine_to_kelvin(bot, rankine):
     rankine = float(rankine)
-    kelvin = (rankine * ​5/9)
+    # kelvin = (rankine * ​5/9)
+    kelvin = (rankine * 5/9)
     return kelvin
 
 
