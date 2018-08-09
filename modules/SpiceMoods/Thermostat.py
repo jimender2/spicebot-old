@@ -30,6 +30,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     currenttemp = get_database_value(bot, botcom.channel_current, 'temperature') or 32
     currentscale = get_database_value(bot, botcom.channel_current, 'temperature_scale') or 'fahrenheit'
+    bot.say(str(currenttemp))
+    bot.say(str(currentscale))
 
     if not tempcommand or tempcommand in temp_scales or tempcommand in temp_scales_short:
         if tempcommand in temp_scales or tempcommand in temp_scales_short:
@@ -63,6 +65,8 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     set_database_value(bot, botcom.channel_current, 'temperature', number)
     set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
+    bot.say(str(number))
+    bot.say(str(tempscale))
 
     tempcond = temp_condition(bot, number, tempscale)
 
