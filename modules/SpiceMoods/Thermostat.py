@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import unicode_literals, absolute_import, print_function, division
 import sopel.module
+from collections import OrderedDict
 import sys
 import os
 moduledir = os.path.dirname(__file__)
@@ -61,12 +62,12 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
     if tempscale in temp_scales_short:
         tempscale = array_compare(bot, tempscale, temp_scales_short, temp_scales)
 
-    set_database_value(bot, botcom.channel_current, 'temperature', number)
-    set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
-
     tempcond = temp_condition(bot, number, tempscale)
 
     osd(bot, botcom.channel_current, 'say', botcom.instigator + " has set the temperature in " + botcom.channel_current + " to " + str(number) + "° " + str(tempscale.title()) + ". " + tempcond)
+
+    set_database_value(bot, botcom.channel_current, 'temperature', number)
+    set_database_value(bot, botcom.channel_current, 'temperature_scale', tempscale)
 
 
 def temp_condition(bot, degree, degreetype):
@@ -96,12 +97,16 @@ def temp_condition(bot, degree, degreetype):
 
 
 def temperature(bot, degree, original, desired):
-    temperature = 0
 
-    kelvin = eval(str(original.lower() + "_to_kelvin(bot, degree)"))
-    temperature = eval("kelvin_to_" + str(desired.lower() + "(bot, kelvin)"))
+    # convert to kelvin
+    degstr = str(original.lower() + "_to_kelvin(bot, " + degree + ")")
+    degree = eval(degstr)
 
-    return temperature
+    # convert from kelvin
+    degstr = str("kelvin_to_" + desired.lower() + "(bot, " + degree + ")")
+    degree = eval(degstr)
+
+    return degree
 
 
 """
