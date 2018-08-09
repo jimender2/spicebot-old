@@ -89,8 +89,8 @@ def race(bot, botcom, target, instigator, trigger):
     elif instigatorVehicleStats < 0:
             osd(bot, trigger.sender, 'say', target + " wins the race")
             increaseWin(bot, botcom, target)
-    getWins(bot, botcom, target)
-    getWins(bot, botcom, instigator)
+    getWins(bot, botcom, trigger, target)
+    getWins(bot, botcom, trigger, instigator)
 
 
 def resetWin(bot, botcom, person):
@@ -105,7 +105,7 @@ def increaseWin(bot, botcom, person):
     set_database_value(bot, person, databasekey, wins)
 
 
-def getWins(bot, botcom, person):
+def getWins(bot, botcom, trigger, person):
     databasekey = "raceStreak"
     wins = get_database_value(bot, person, databasekey) or 0
     osd(bot, trigger.sender, 'say', instigator + " has a streak of " + str(wins) + " wins")
