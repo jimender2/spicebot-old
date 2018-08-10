@@ -37,7 +37,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
                 user = get_trigger_arg(bot, allUsers, "random")
                 message = bot.nick + " laughs at " + user
             else:
-                message = bot.nick + " laughs at " + instigator + " because " + tartget
+                message = bot.nick + " laughs at " + instigator + " because " + target
 
     else:
         if check == 'bot':
