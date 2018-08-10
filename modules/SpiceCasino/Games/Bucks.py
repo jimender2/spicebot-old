@@ -27,7 +27,7 @@ def deal(bot, cardcount):
 
 
 def lotterypayout(bot, level):
-    balance = bank(bot, botcom, 'casino')
+    balance = bankdev(bot, 'casino')
     if balance < 500:
         addbucksdev(bot, 'casino', 500)
         balance = bank(bot, botcom, 'casino')
