@@ -32,10 +32,9 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         elif check == 'valid':
             message = bot.nick + " laughs at " + target
         else:
-            if not target:
-                allUsers = [u.lower() for u in bot.users]
-                user = get_trigger_arg(bot, allUsers, "random")
-                message = bot.nick + " laughs at " + user
+            allUsers = [u.lower() for u in bot.users]
+            user = get_trigger_arg(bot, allUsers, "random")
+            message = bot.nick + " laughs at " + user
 
     else:
         if check == 'bot':
