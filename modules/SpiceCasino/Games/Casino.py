@@ -275,7 +275,7 @@ def roulette(bot, botcom, trigger, arg):
 
 
 # -----Run roulette game
-def runroulette(bot, botcom):
+def runroulette(bot):
     maxwheel = int(get_database_value(bot, 'casino', 'maxwheel')) or 24
     wheel = range(maxwheel + 1)
     colors = ['red', 'black']
@@ -289,7 +289,7 @@ def runroulette(bot, botcom):
         if winningnumber == 0:
             winningnumber == 1
         color = spin(colors)
-        casinobalance = bank(bot, botcom, 'casino') or 0
+        casinobalance = bankdev(bot, 'casino') or 0
         mywinnings = 0
         winners = []
         totalwon = 0
@@ -321,8 +321,8 @@ def runroulette(bot, botcom):
                     if mywinnings >= 1:
                         osd(bot, player, 'priv', "Roulette has ended and you have won " + str(mywinnings))
                         if casinobalance < mywinnings:
-                            addbucks(bot, botcom, 'casino', mywinnings)
-                        transfer(bot, botcom, player, 'casino', mywinnings)
+                            addbucksdev(bot, 'casino', mywinnings)
+                        transferdev(bot, player, 'casino', mywinnings)
                         winners.append(player)
                         totalwon = totalwon + mywinnings
                         reset_database_value(bot, player, 'roulettearray')
@@ -406,7 +406,7 @@ def lottery(bot, botcom, trigger, arg):
 
 
 # _______Lottery drawing
-def lotterydrawing(bot, botcom):
+def lotterydrawing(bot):
     bankbalance = bank(bot, botcom, 'casino')
     nextlottery = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
@@ -431,10 +431,10 @@ def lotterydrawing(bot, botcom):
                     correct = correct + 1
             payout = 0
             if correct >= 1:
-                payout = lotterypayout(bot, botcom, correct)
+                payout = lotterypayout(bot, correct)
             if payout > 0:
                 osd(bot, player, 'priv', "You won " + str(payout) + " in the lottery drawing")
-                transfer(bot, botcom, player, 'casino', payout)
+                transferdev(bot, player, 'casino', payout)
                 lotterywinners.append(player)
                 totalwon = totalwon + payout
                 if payout > bigwinpayout:
@@ -689,15 +689,15 @@ def blackjackreset(bot, player):
 
 
 @sopel.module.interval(10)
-def countdown(bot, botcom):
+def countdown(bot):
     now = time.time()
     currentsetting = get_database_value(bot, 'casino', 'counter')
     roulettetimediff = get_timesince(bot, 'casino', 'countertimer')
     lotterytimediff = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
-    # if currentsetting == 'roulette':
-    # if roulettetimediff >= roulettetimeout:
-    # runroulette(bot)
+    if currentsetting == 'roulette':
+        if roulettetimediff >= roulettetimeout:
+            runroulette(bot)
     if lotterytimediff >= lotterytimeout and lotterytimeout >= 10:
         set_database_value(bot, 'casino', 'lastlottery', now)
         lotterydrawing(bot)
