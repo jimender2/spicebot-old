@@ -11,8 +11,9 @@ from BotShared import *
 
 # author jimender2
 
-replies = ["test",
-           "test"]
+replies = ["ooooohh",
+           "sick burn",
+           "get the aloe"]
 
 
 @sopel.module.commands('burn')
