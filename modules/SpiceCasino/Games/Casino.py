@@ -407,7 +407,7 @@ def lottery(bot, botcom, trigger, arg):
 
 # _______Lottery drawing
 def lotterydrawing(bot):
-    bankbalance = bank(bot, botcom, 'casino')
+    bankbalance = bankdev(bot, 'casino')
     nextlottery = get_timesince(bot, 'casino', 'lastlottery')
     lotterytimeout = get_database_value(bot, 'casino', 'lotterytimeout')
 
