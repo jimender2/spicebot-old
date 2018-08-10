@@ -9,15 +9,15 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 
-# author yournamehere
+# author jimender2
 
 
-@sopel.module.commands('yourcommandhere')
+@sopel.module.commands('ibb', 'illbeback')
 def mainfunction(bot, trigger):
-    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
+    enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, 'ibb')
     if not enablestatus:
         execute_main(bot, trigger, triggerargsarray, botcom, instigator)
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    osd(bot, trigger.sender, 'say', "https://tenor.com/view/arnold-schwarzenegger-the-terminator-ill-be-back-gif-4367793")
