@@ -759,7 +759,7 @@ def admincommands(bot, botcom, trigger, arg):
         else:
             osd(bot, player, 'priv', "Please enter a valid number")
     elif subcommand == 'lotteryend':
-        lotterydrawing(bot, botcom)
+        lotterydrawing(bot)
     elif subcommand == 'lotterytime':
         if commandvalue.isdigit():
             lotterytime = int(commandvalue)
