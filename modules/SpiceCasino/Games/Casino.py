@@ -91,14 +91,14 @@ def slots(bot, botcom, trigger, arg):
         if not channel.startswith("#"):
             osd(bot, player, 'notice', "slots can only be used in a channel.")
         else:
-            lastslot = get_database_value(bot, 'casino', 'slotimer')
-            nextslot = get_timesince(bot, 'casino', 'slotimer')
+            lastslot = get_database_value(bot, player, 'gambletimer')
+            nextslot = get_timesince(bot, player, 'gambletimer')
 
-            if nextslot >= slottimeout:
-                successes = transfer(bot, botcom, player, 'casino', bet)
+            if nextslot >= gambletimeout:
+                successes = transfer(bot, botcom, 'casino', player, bet)
                 # bot.say(str(successes))
                 if successes:
-                    set_database_value(bot, 'casino', 'slotimer', now)
+                    set_database_value(bot, player, 'gambletimer', now)
                     # add bet to casino
                     mywinnings = 0
                     wheel1 = get_trigger_arg(bot, slotwheel, 'random')
