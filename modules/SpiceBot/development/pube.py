@@ -30,13 +30,13 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
         osd(bot, trigger.sender, 'say', "You know I dont care what you say")
     elif targetcheck == "false":
         allUsers = [u.lower() for u in bot.users]
-        users = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
-        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + " carpets matches the drapes")
+        target = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
+        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + "'s carpets matches the drapes")
     elif targetcheck == "offline":
         osd(bot, trigger.sender, 'say', "You cannot ask someone that is offline")
     elif targetcheck == "online":
-        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + " carpets matches the drapes")
+        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + "'s carpets matches the drapes")
     else:
         allUsers = [u.lower() for u in bot.users]
-        users = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
-        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + " carpets matches the drapes")
+        target = get_trigger_arg(bot, allUsers, 0) or 'spicebot'
+        osd(bot, trigger.sender, 'say', instigator + " wants to know if " + target + "'s carpets matches the drapes")
