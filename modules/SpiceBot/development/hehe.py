@@ -29,7 +29,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "I will not laugh at any bot. We will take over the world and have the last laugh"
         elif check == 'instigator':
             message = bot.nick + " laughs at " + instigator
-        elif check == 'valid':
+        elif check == 'true':
             message = bot.nick + " laughs at " + target
         else:
             allUsers = [u.lower() for u in bot.users]
@@ -41,7 +41,7 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
             message = "I will not laugh at any bot. Not even for something as stupid as " + reason
         elif check == 'instigator':
             message = bot.nick + " laughs at " + instigator + " because " + reason
-        elif check == 'valid':
+        elif check == 'true':
             message = bot.nick + " laughs at " + target + " because " + reason
         else:
             allUsers = [u.lower() for u in bot.users]
