@@ -38,14 +38,14 @@ def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
 
     else:
         if check == 'bot':
-            message = "I will not laugh at any bot. Not even for something as stupid as " + reason
+            message = "I will not laugh at any bot. Not even for something as stupid as " + reason + "."
         elif check == 'instigator':
-            message = bot.nick + " laughs at " + instigator + " because " + reason
+            message = bot.nick + " laughs at " + instigator + " because " + reason + "."
         elif check == 'true':
-            message = bot.nick + " laughs at " + target + " because " + reason
+            message = bot.nick + " laughs at " + target + " because " + reason + "."
         else:
             allUsers = [u.lower() for u in bot.users]
             user = get_trigger_arg(bot, allUsers, "random")
-            message = bot.nick + " laughs at " + user + " because " + reason
+            message = bot.nick + " laughs at " + user + " because " + reason + "."
 
     osd(bot, trigger.sender, 'say', message)
