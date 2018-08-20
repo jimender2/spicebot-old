@@ -31,8 +31,17 @@ def execute_main(bot, trigger, triggerargsarray):
         osd(bot, trigger.sender, 'say', url)
 
 
-# @module.rule('^(?:r/)?.*')
-@module.rule('^(:r\/)')
+@rule(r"""(?:
+            (\S+)           # Catch a nick in group 1
+          [:,]\s+)?         # Followed by colon/comma and whitespace, if given
+          r/                # The literal s/
+          (                 # Group 2 is the thing to find
+            (?:\\/ | [^/])+ # One or more non-slashes or escaped slashes
+          )/(               # Group 3 is what to replace with
+            (?:\\/ | [^/])* # One or more non-slashes or escaped slashes
+          )
+          (?:/(\S+))?       # Optional slash, followed by group 4 (flags)
+          """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
