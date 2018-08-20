@@ -45,10 +45,7 @@ def execute_main(bot, trigger, triggerargsarray):
           r/                # The literal s/
           (                 # Group 2 is the thing to find
             (?:\\/ | [^/])+ # One or more non-slashes or escaped slashes
-          )/(               # Group 3 is what to replace with
-            (?:\\/ | [^/])* # One or more non-slashes or escaped slashes
           )
-          (?:/(\S+))?       # Optional slash, followed by group 4 (flags)
           """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
