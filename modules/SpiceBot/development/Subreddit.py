@@ -40,7 +40,6 @@ def execute_main(bot, trigger, triggerargsarray):
 
 
 @rule(r"""(?:)r/(
-            (?:\\/ | [^/])+ # One or more non-slashes or escaped slashes
           )
           """)
 @sopel.module.thread(True)
