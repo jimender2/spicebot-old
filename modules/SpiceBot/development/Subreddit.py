@@ -54,6 +54,7 @@ def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
     startingchar = get_trigger_arg(bot, triggerargsarray, 1)
     if startingchar.startswith("u/"):
+        bot.say("yes")
         startingchar.replace("u/", "user/")
         triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
         triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
