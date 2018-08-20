@@ -12,7 +12,7 @@ from BotShared import *
 # author deathbybandaid
 
 
-@sopel.module.commands('subreddit')
+@sopel.module.commands('reddit')
 def mainfunction(bot, trigger):
     enablestatus, triggerargsarray, botcom, instigator = spicebot_prerun(bot, trigger, trigger.group(1))
     if not enablestatus:
@@ -20,11 +20,13 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    osd(bot, trigger.sender, 'say', get_trigger_arg(bot, triggerargsarray, 0))
+    url = str("https://www.reddit.com/")
+    url = str(url + get_trigger_arg(bot, triggerargsarray, 0))
+    osd(bot, trigger.sender, 'say', url)
 
 
-# respond to alternate start for command
 @module.rule('^(?:r/)?.*')
+@module.rule('^(?:u/)?.*')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
