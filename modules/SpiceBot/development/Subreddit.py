@@ -8,6 +8,7 @@ moduledir = os.path.dirname(__file__)
 shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
+import requests
 
 # author deathbybandaid
 
@@ -23,6 +24,11 @@ def execute_main(bot, trigger, triggerargsarray):
     url = str("https://www.reddit.com/")
     url = str(url + get_trigger_arg(bot, triggerargsarray, 0))
     osd(bot, trigger.sender, 'say', url)
+
+    # page = requests.get(url, headers=header)
+    # tree = html.fromstring(page.content)
+
+    # if page.status_code == 200:
 
 
 @module.rule('^(?:r/)?.*')
