@@ -44,6 +44,11 @@ def execute_main(bot, trigger, triggerargsarray):
             (?:\\/ | [^/])+
           )
           """)
+@rule(r"""(?:)u/
+          (
+            (?:\\/ | [^/])+
+          )
+          """)
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
