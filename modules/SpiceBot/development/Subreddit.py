@@ -20,15 +20,14 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray):
-    osd(bot, trigger.sender, 'say', "do the thing")
+    osd(bot, trigger.sender, 'say', get_trigger_arg(bot, triggerargsarray, 0))
 
 
 # respond to alternate start for command
 @module.rule('^(?:r/)\s+?.*')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
-    command_type = 'normalcom'
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
-    triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
+    triggerargsarray = get_trigger_arg(bot, triggerargsarray, 0).replace(" ", "")
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     execute_main(bot, trigger, triggerargsarray)
