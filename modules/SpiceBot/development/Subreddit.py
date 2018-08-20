@@ -10,6 +10,10 @@ sys.path.append(shareddir)
 from BotShared import *
 import requests
 
+# user agent and header
+ua = UserAgent()
+header = {'User-Agent': str(ua.chrome)}
+
 # author deathbybandaid
 
 
