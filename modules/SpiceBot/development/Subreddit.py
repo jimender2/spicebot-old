@@ -44,7 +44,6 @@ def execute_main(bot, trigger, triggerargsarray):
           [:,]\s+)?         # Followed by colon/comma and whitespace, if given
           r/                # The literal s/
           (                 # Group 2 is the thing to find
-            (?:\\/ | [^/])+ # One or more non-slashes or escaped slashes
           )
           """)
 @sopel.module.thread(True)
