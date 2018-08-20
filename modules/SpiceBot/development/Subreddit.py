@@ -39,11 +39,8 @@ def execute_main(bot, trigger, triggerargsarray):
         osd(bot, trigger.sender, 'say', url + " failed")
 
 
-@rule(r"""(?:
-            (\S+)           # Catch a nick in group 1
-          [:,]\s+)?         # Followed by colon/comma and whitespace, if given
-          r/                # The literal s/
-          (                 # Group 2 is the thing to find
+@rule(r"""(?:)r/(
+            (?:\\/ | [^/])+ # One or more non-slashes or escaped slashes
           )
           """)
 @sopel.module.thread(True)
