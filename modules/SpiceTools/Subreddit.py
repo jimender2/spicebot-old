@@ -34,9 +34,9 @@ def execute_main(bot, trigger, triggerargsarray):
     tree = html.fromstring(page.content)
 
     if page.status_code == 200:
-        osd(bot, trigger.sender, 'say', url)
+        osd(bot, trigger.sender, 'say', url + " is valid!")
     else:
-        osd(bot, trigger.sender, 'say', url + " failed")
+        osd(bot, trigger.sender, 'say', url + " is not valid.")
 
 
 @rule(r"""(?:)r/
