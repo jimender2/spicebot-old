@@ -52,6 +52,11 @@ def execute_main(bot, trigger, triggerargsarray):
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
+    startingchar = get_trigger_arg(bot, triggerargsarray, 1)
+    if startingchar == "u/":
+        triggerargsarray = get_trigger_arg(bot, triggerargsarray, '2+')
+        triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
+        triggerargsarray.insert(0, "user/")
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 0).replace(" ", "")
     triggerargsarray = get_trigger_arg(bot, triggerargsarray, 'create')
     execute_main(bot, trigger, triggerargsarray)
