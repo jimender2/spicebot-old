@@ -23,16 +23,16 @@ def mainfunction(bot, trigger):
 def execute_main(bot, trigger, triggerargsarray):
     url = str("https://www.reddit.com/")
     url = str(url + get_trigger_arg(bot, triggerargsarray, 0))
-    osd(bot, trigger.sender, 'say', url)
 
-    # page = requests.get(url, headers=header)
-    # tree = html.fromstring(page.content)
+    page = requests.get(url, headers=header)
+    tree = html.fromstring(page.content)
 
-    # if page.status_code == 200:
+    if page.status_code == 200:
+        osd(bot, trigger.sender, 'say', url)
 
 
-@module.rule('^(?:r/)?.*')
-@module.rule('^(?:u/)?.*')
+# @module.rule('^(?:r/)?.*')
+@module.rule('^(:r\/)')
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
