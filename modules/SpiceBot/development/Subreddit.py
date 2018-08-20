@@ -35,6 +35,8 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if page.status_code == 200:
         osd(bot, trigger.sender, 'say', url)
+    else:
+        osd(bot, trigger.sender, 'say', url + " failed")
 
 
 @rule(r"""(?:
