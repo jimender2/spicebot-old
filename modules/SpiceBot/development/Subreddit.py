@@ -39,10 +39,7 @@ def execute_main(bot, trigger, triggerargsarray):
         osd(bot, trigger.sender, 'say', url + " failed")
 
 
-@rule(r"""(?:)r/(
-            (?:\s+)+ # One or more non-slashes or escaped slashes
-          )
-          """)
+@rule(r"""((?:)r/)\s+?.*)""")
 @sopel.module.thread(True)
 def mainfunctionnobeguine(bot, trigger):
     triggerargsarray = get_trigger_arg(bot, trigger.group(0), 'create')
