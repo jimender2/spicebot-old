@@ -10,6 +10,7 @@ sys.path.append(shareddir)
 from BotShared import *
 import requests
 from fake_useragent import UserAgent
+from lxml import html
 
 # user agent and header
 ua = UserAgent()
