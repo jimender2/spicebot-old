@@ -11,7 +11,7 @@ from BotShared import *
 import praw
 from prawcore import NotFound
 import ConfigParser
-
+import random
 import requests
 from fake_useragent import UserAgent
 from lxml import html
@@ -138,7 +138,7 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
     if subcommand == 'random':
-        submission = submissions[0]
+        submission = submissions[randint(0, len(submissions))]
     else:
         submission = submissions[0]
 
