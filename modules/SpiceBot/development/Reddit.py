@@ -9,6 +9,7 @@ shareddir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(shareddir)
 from BotShared import *
 import praw
+from prawcore import NotFound
 import ConfigParser
 
 import requests
