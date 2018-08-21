@@ -133,9 +133,9 @@ def reddit_r(bot, triggerargsarray, rclass):
     for submission in submissions:
         dispmsg = []
         dispmsg.append("[" + rclass.urltype + "/" + rclass.urlsearch + " " + subcommand + "]")
-        dispmsg.append(submission.score)
-        dispmsg.append(submission.title)
-        dispmsg.append(submission.url)
+        # dispmsg.append(submission.score)
+        # dispmsg.append(submission.title)
+        # dispmsg.append(submission.url)
 
 
 def sub_exists(sub):
