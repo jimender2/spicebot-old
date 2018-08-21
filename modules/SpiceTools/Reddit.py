@@ -133,12 +133,22 @@ def reddit_r(bot, triggerargsarray, rclass):
     elif subcommand == 'hot':
         submissions = subreddit.hot(limit=1)
     elif subcommand == 'random':
-        submissions = subreddit.hot(limit=500)
+        submissions = subreddit.hot(limit=5)
     else:
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
     if subcommand == 'random':
-        submission = submissions[randint(0, len(list(submissions)))]
+        stoppingpoint = randint(0, 4)
+        bot.say(str(stoppingpoint))
+        bot.say("now")
+
+        countings = 0
+        for submission in submissions:
+            bot.say(str(countings))
+            if countings == stoppingpoint:
+                continue
+            countings += 1
+
     else:
         submission = submissions[0]
 
