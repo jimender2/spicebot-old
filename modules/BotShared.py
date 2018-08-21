@@ -543,12 +543,19 @@ On Screen Text
 def osd(bot, target_array, text_type_array, text_array):
 
     # if text_array is a string, make it an array
-    textarraycomplete = []
+    textarraycompletestart = []
     if not isinstance(text_array, list):
-        textarraycomplete.append(text_array)
+        textarraycompletestart.append(text_array)
     else:
         for x in text_array:
-            textarraycomplete.append(x)
+            textarraycompletestart.append(x)
+
+    textarraycomplete = []
+    for string in textarraycompletestart:
+
+        for r in (("\u2013", "-"), ("\u2019", "'"), ("\u2026", "...")):
+            string = string.replace(*r)
+        textarraycomplete.append(string)
 
     # if target_array is a string, make it an array
     texttargetarray = []
