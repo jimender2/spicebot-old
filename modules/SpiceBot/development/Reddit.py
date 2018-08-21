@@ -36,7 +36,7 @@ def execute_main(bot, trigger, triggerargsarray):
     urlsplit = urlinput.split("/", 1)
     urltype = get_trigger_arg(bot, urlsplit, 1)
     urlsearch = get_trigger_arg(bot, urlsplit, 2)
-    bot.say(str(urlsearch))
+    bot.say("test: " + str(urlsearch) + " :test")
     if urltype == 'r':
         urltype = 'subreddit'
     elif urltype == 'u':
