@@ -11,8 +11,6 @@ from BotShared import *
 
 # author jimender2
 
-replies = {}
-
 
 @sopel.module.commands('trump')
 def mainfunction(bot, trigger):
@@ -22,4 +20,6 @@ def mainfunction(bot, trigger):
 
 
 def execute_main(bot, trigger, triggerargsarray, botcom, instigator):
-    osd(bot, trigger.sender, 'say', )
+    instigator = bot.trigger
+    message = "Spicebot builds a wall around " + instigator
+    osd(bot, trigger.sender, 'say', message)
