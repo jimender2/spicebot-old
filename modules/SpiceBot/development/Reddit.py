@@ -21,6 +21,12 @@ header = {'User-Agent': str(ua.chrome)}
 # author deathbybandaid
 redditurl = "https://www.reddit.com/"
 
+# Creds
+config = ConfigParser.ConfigParser()
+config.read("/home/spicebot/spicebot.conf")
+USERNAME = config.get("reddit", "username")
+PASSWORD = config.get("reddit", "password")
+
 
 def execute_main(bot, trigger, triggerargsarray):
 
@@ -29,6 +35,7 @@ def execute_main(bot, trigger, triggerargsarray):
     urlsplit = urlinput.split("/", 1)
     urltype = get_trigger_arg(bot, urlsplit, 1)
     urlsearch = get_trigger_arg(bot, urlsplit, 2)
+    bot.say(str(urlsearch))
     if urltype == 'r':
         urltype = 'subreddit'
     elif urltype == 'u':
@@ -49,7 +56,7 @@ def execute_main(bot, trigger, triggerargsarray):
 
     if triggerargsarray == []:
         url = 'temp'
-        osd(bot, trigger.sender, 'say', url + " appears to be a valid " + urltype + "!")
+        osd(bot, trigger.sender, 'say', urlsearch + " appears to be a valid " + urltype + "!")
         return
 
     bot.say(str(triggerargsarray))
