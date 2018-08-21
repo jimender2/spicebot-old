@@ -107,7 +107,7 @@ def reddit_u(bot, triggerargsarray, rclass):
 
 def reddit_r(bot, triggerargsarray, rclass):
 
-    subcommand_valid = ['check', 'controversial', 'gilded', 'hot', 'new', 'rising', 'top']
+    subcommand_valid = ['check', 'hot', 'new', 'top']
     subcommand = get_trigger_arg(bot, [x for x in triggerargsarray if x in subcommand_valid], 1) or 'check'
 
     subreal = sub_exists(rclass.urlsearch)
@@ -119,22 +119,19 @@ def reddit_r(bot, triggerargsarray, rclass):
         osd(bot, rclass.channel_current, 'say', [rclass.urlsearch + " appears to be a valid " + rclass.urltypetxt + "!", fullrurul])
         return
 
-    if subcommand == 'controversial':
-        submission = reddit.subreddit(rclass.urlsearch).controversial(limit=1)
-    elif subcommand == 'gilded':
-        submission = reddit.subreddit(rclass.urlsearch).gilded(limit=1)
-    elif subcommand == 'new':
-        submission = reddit.subreddit(rclass.urlsearch).new(limit=1)
-    elif subcommand == 'rising':
-        submission = reddit.subreddit(rclass.urlsearch).rising(limit=1)
+    subreddit = reddit.subreddit(rclass.urlsearch)
+
+    if subcommand == 'new':
+        submissions = subreddit.new(limit=1)
     elif subcommand == 'top':
-        submission = reddit.subreddit(rclass.urlsearch).top(limit=1)
+        submissions = subreddit.top(limit=1)
     elif subcommand == 'hot':
-        submission = reddit.subreddit(rclass.urlsearch).hot(limit=1)
+        submissions = subreddit.hot(limit=1)
     else:
         osd(bot, rclass.channel_current, 'say', "An error has occured.")
         return
-    bot.say(str(submission.title))
+    for submission in submissions:
+        bot.say(str(submission.title))
 
 
 """
